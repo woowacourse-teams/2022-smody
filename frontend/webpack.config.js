@@ -5,7 +5,7 @@ const prod = process.env.NODE_ENV === "production";
 
 module.exports = {
   mode: prod ? "production" : "development",
-  devtool: prod ? false : "eval",
+  devtool: prod ? "hidden-source-map" : "eval",
   performance: {
     hints: false,
   },
