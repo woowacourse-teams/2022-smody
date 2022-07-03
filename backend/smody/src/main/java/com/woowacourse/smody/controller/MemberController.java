@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.dto.EmailRequest;
+import com.woowacourse.smody.dto.NicknameRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.dto.SignUpResponse;
 import com.woowacourse.smody.service.MemberService;
@@ -29,6 +30,12 @@ public class MemberController {
     @PostMapping("/emails/checkDuplicate")
     public ResponseEntity<Void> checkDuplicatedEmail(@RequestBody EmailRequest emailRequest) {
         memberService.checkDuplicatedEmail(emailRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/nicknames/checkDuplicate")
+    public ResponseEntity<Void> checkDuplicatedNickname(@RequestBody NicknameRequest nicknameRequest) {
+        memberService.checkDuplicatedNickname(nicknameRequest);
         return ResponseEntity.ok().build();
     }
 }

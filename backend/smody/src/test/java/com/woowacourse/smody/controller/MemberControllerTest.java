@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.dto.EmailRequest;
 import com.woowacourse.smody.dto.ExceptionResponse;
+import com.woowacourse.smody.dto.NicknameRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.dto.SignUpResponse;
 import com.woowacourse.smody.exception.BusinessException;
@@ -78,6 +79,25 @@ class MemberControllerTest {
         result.andExpect(status().isBadRequest())
                 .andExpect(content().json(
                         objectMapper.writeValueAsString(new ExceptionResponse(ExceptionData.DUPLICATED_EMAIL)
+                        )));
+    }
+
+    @DisplayName("닉네임 중복검사 요청과 응답이 정상적으로 동작한다.")
+    @Test
+    void checkDuplicatedNickname() throws Exception {
+        // given
+        doThrow(new BusinessException(ExceptionData.DUPLICATED_NICKNAME))
+                .when(memberService).checkDuplicatedNickname(any(NicknameRequest.class));
+
+        // when
+        ResultActions result = mockMvc.perform(post("/members/nicknames/checkDuplicate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new NicknameRequest(NICKNAME))));
+
+        // then
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(new ExceptionResponse(ExceptionData.DUPLICATED_NICKNAME)
                         )));
     }
 }

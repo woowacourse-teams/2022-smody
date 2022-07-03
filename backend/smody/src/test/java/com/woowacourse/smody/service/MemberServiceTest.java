@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.dto.EmailRequest;
+import com.woowacourse.smody.dto.NicknameRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.dto.SignUpResponse;
 import com.woowacourse.smody.exception.BusinessException;
@@ -110,4 +111,17 @@ public class MemberServiceTest {
                 .isEqualTo(ExceptionData.DUPLICATED_EMAIL);
     }
 
+    @DisplayName("닉네임이 중복되면 예외가 발생한다.")
+    @Test
+    void checkDuplicatedNickname() {
+        // given
+        SignUpRequest signUpRequest = new SignUpRequest(EMAIL, PASSWORD, NICKNAME);
+        memberService.signUp(signUpRequest);
+
+        // when then
+        assertThatThrownBy(() -> memberService.checkDuplicatedNickname(new NicknameRequest(NICKNAME)))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.DUPLICATED_NICKNAME);
+    }
 }
