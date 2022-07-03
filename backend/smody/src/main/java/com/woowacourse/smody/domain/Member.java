@@ -21,17 +21,19 @@ public class Member {
     private Long id;
 
     @Embedded
+    @Column(nullable = false)
     private Email email;
 
+    @Embedded
     @Column(nullable = false)
-    private String password;
+    private Password password;
 
     @Column(nullable = false)
     private String nickname;
 
     public Member(String email, String password, String nickname) {
         this.email = new Email(email);
-        this.password = password;
+        this.password = new Password(password);
         this.nickname = nickname;
     }
 }

@@ -56,4 +56,23 @@ public class MemberServiceTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_EMAIL);
     }
+
+    @DisplayName("회원가입 시 비밀번호 형식이 맞지 않는 경우 예외 발생")
+    @ParameterizedTest(name = "유효하지 않은 password - {0}")
+    @ValueSource(strings = {
+            "12345678a", "12345678901234567890a",
+            "qwertyuiop", "1234567890",
+            "12345678 a", " 12345678a",
+            "12345678a ", "!12345678a",
+            "가12345678a", "12345678a가"})
+    void signUp_invalidPassword(String invalidPassword) {
+        // given
+        SignUpRequest signUpRequest = new SignUpRequest("alpha@naver.com", invalidPassword, "손수건");
+
+        // when then
+        assertThatThrownBy(() -> memberService.signUp(signUpRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_PASSWORD);
+    }
 }

@@ -52,4 +52,23 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
         );
     }
+
+    @ParameterizedTest(name = "유효하지 않은 password - {0}")
+    @ValueSource(strings = {
+            "12345678a", "12345678901234567890a",
+            "qwertyuiop", "1234567890",
+            "12345678 a", " 12345678a",
+            "12345678a ", "!12345678a",
+            "가12345678a", "12345678a가"})
+    void 유효하지_않은_비밀번호는_회원가입을_할_수_없다(String invalidPassword) {
+        // when
+        ExtractableResponse<Response> response = 회원가입(EMAIL, invalidPassword, NICKNAME);
+
+        // then
+        assertAll(
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(1005),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유효하지 않은 비밀번호입니다."),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        );
+    }
 }

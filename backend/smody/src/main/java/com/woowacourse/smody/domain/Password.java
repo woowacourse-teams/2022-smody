@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Email {
+public class Password {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,20}$");
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "password")
     private String value;
 
-    public Email(String value) {
-        validateEmail(value);
+    public Password(String value) {
+        validatePassword(value);
         this.value = value;
     }
 
-    private void validateEmail(String value) {
-        if (!EMAIL_PATTERN.matcher(value).matches()) {
-            throw new BusinessException(ExceptionData.INVALID_EMAIL);
+    private void validatePassword(String value) {
+        if (!PASSWORD_PATTERN.matcher(value).matches()) {
+            throw new BusinessException(ExceptionData.INVALID_PASSWORD);
         }
     }
 }
