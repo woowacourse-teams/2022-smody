@@ -25,6 +25,21 @@ module.exports = {
         test: /\.tsx?$/,
         use: ['babel-loader', 'ts-loader'],
       },
+      {
+        test: /\.(png)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[name].[ext]?[hash]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
     ],
   },
   devServer: {

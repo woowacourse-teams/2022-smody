@@ -18,6 +18,13 @@ module.exports = {
       path.resolve(__dirname, '../src'),
     ];
 
+    // TODO SVG 스토리북 오류 해결 필요
+    config.module.rules.unshift({
+      test: /\.svg$/,
+      enforce: 'pre',
+      use: ['@svgr/webpack'],
+    });
+
     return config;
   },
 };
