@@ -29,4 +29,8 @@ public class Password {
             throw new BusinessException(ExceptionData.INVALID_PASSWORD);
         }
     }
+
+    public boolean match(String password) {
+        return value.equals(password);
+    }
 }

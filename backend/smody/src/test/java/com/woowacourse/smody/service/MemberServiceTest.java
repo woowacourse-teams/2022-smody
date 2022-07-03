@@ -97,7 +97,7 @@ public class MemberServiceTest {
                 .isEqualTo(ExceptionData.INVALID_NICKNAME);
     }
 
-    @DisplayName("이메일이 중복되면 예외가 발생한다.")
+    @DisplayName("이메일이 중복되면 예외가 발생")
     @Test
     void checkDuplicatedEmail() {
         // given
@@ -111,7 +111,7 @@ public class MemberServiceTest {
                 .isEqualTo(ExceptionData.DUPLICATED_EMAIL);
     }
 
-    @DisplayName("닉네임이 중복되면 예외가 발생한다.")
+    @DisplayName("닉네임이 중복되면 예외가 발생")
     @Test
     void checkDuplicatedNickname() {
         // given

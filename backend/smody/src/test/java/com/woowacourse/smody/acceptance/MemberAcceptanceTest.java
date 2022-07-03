@@ -1,11 +1,13 @@
 package com.woowacourse.smody.acceptance;
 
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.닉네임_중복검사;
+import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.로그인;
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.이메일_중복검사;
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.회원가입;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.dto.LoginResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -129,6 +131,55 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(1002),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo("이미 존재하는 닉네임입니다."),
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        );
+    }
+
+    @Test
+    void 로그인을_한다() {
+        // given
+        회원가입(EMAIL, PASSWORD, NICKNAME);
+
+        // when
+        ExtractableResponse<Response> response = 로그인(EMAIL, PASSWORD);
+        LoginResponse loginResponse = response.as(LoginResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(loginResponse.getNickname()).isEqualTo(NICKNAME),
+                () -> assertThat(loginResponse.getAccessToken()).isNotNull()
+        );
+    }
+
+    @Test
+    void 비밀번호가_일치하지_않아서_로그인을_할_수_없다() {
+        // given
+        회원가입(EMAIL, PASSWORD, NICKNAME);
+
+        // when
+        ExtractableResponse<Response> response = 로그인(EMAIL, "failedPassword0");
+
+        // then
+        assertAll(
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(2001),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("이메일 혹은 비밀번호가 일치하지 않습니다."),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        );
+    }
+
+    @Test
+    void 존재하지_않는_이메일로는_로그인을_할_수_없다() {
+        // given
+        회원가입(EMAIL, PASSWORD, NICKNAME);
+
+        // when
+        ExtractableResponse<Response> response = 로그인("notExist@naver.com", PASSWORD);
+
+        // then
+        assertAll(
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(2001),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("이메일 혹은 비밀번호가 일치하지 않습니다."),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value())
         );
     }
 }

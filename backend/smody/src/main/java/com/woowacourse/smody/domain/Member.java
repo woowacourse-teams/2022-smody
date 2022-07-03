@@ -37,4 +37,8 @@ public class Member {
         this.password = new Password(password);
         this.nickname = new Nickname(nickname);
     }
+
+    public boolean matchPassword(String password) {
+        return this.password.match(password);
+    }
 }
