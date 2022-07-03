@@ -71,4 +71,18 @@ class MemberAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
         );
     }
+
+    @ParameterizedTest(name = "유효하지 않은 nickname - {0}")
+    @ValueSource(strings = {"알", "12345678901", " 알파", "파 알", "알파쿤 "})
+    void 유효하지_않은_닉네임은_회원가입을_할_수_없다(String invalidNickname) {
+        // when
+        ExtractableResponse<Response> response = 회원가입(EMAIL, PASSWORD, invalidNickname);
+
+        // then
+        assertAll(
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(1004),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유효하지 않은 닉네임입니다."),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        );
+    }
 }

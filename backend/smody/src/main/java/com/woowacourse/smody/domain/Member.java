@@ -28,12 +28,13 @@ public class Member {
     @Column(nullable = false)
     private Password password;
 
+    @Embedded
     @Column(nullable = false)
-    private String nickname;
+    private Nickname nickname;
 
     public Member(String email, String password, String nickname) {
         this.email = new Email(email);
         this.password = new Password(password);
-        this.nickname = nickname;
+        this.nickname = new Nickname(nickname);
     }
 }

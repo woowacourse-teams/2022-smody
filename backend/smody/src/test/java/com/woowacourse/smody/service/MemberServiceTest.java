@@ -75,4 +75,17 @@ public class MemberServiceTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PASSWORD);
     }
+
+    @ParameterizedTest(name = "유효하지 않은 nickname - {0}")
+    @ValueSource(strings = {"알", "12345678901", " 알파", "파 알", "알파쿤 "})
+    void signUp_invalidNickname(String invalidNickname) {
+        // given
+        SignUpRequest signUpRequest = new SignUpRequest("alpha@naver.com", "abcde12345", invalidNickname);
+
+        // when then
+        assertThatThrownBy(() -> memberService.signUp(signUpRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_NICKNAME);
+    }
 }
