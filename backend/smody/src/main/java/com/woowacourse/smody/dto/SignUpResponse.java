@@ -15,6 +15,6 @@ public class SignUpResponse {
 
     public SignUpResponse(Member member) {
         this.id = member.getId();
-        this.email = member.getEmail();
+        this.email = member.getEmail().getValue();
     }
 }
