@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(uniqueConstraints = {@UniqueConstraint(name = "email_unique", columnNames = "email")})
 public class Member {
 
     @Id
@@ -21,15 +24,12 @@ public class Member {
     private Long id;
 
     @Embedded
-    @Column(nullable = false)
     private Email email;
 
     @Embedded
-    @Column(nullable = false)
     private Password password;
 
     @Embedded
-    @Column(nullable = false)
     private Nickname nickname;
 
     public Member(String email, String password, String nickname) {

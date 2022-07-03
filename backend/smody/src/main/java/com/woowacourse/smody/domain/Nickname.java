@@ -16,7 +16,7 @@ public class Nickname {
 
     private static final Pattern NICKNAME_PATTERN = Pattern.compile("^\\S{2,10}$");
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", nullable = false)
     private String value;
 
     public Nickname(String value) {

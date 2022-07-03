@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.dto.EmailRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.dto.SignUpResponse;
 import com.woowacourse.smody.exception.BusinessException;
@@ -14,9 +15,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 public class MemberServiceTest {
+
+    private static final String EMAIL = "alpha@naver.com";
+    private static final String PASSWORD = "abcde12345";
+    private static final String NICKNAME = "손수건";
 
     @Autowired
     private MemberService memberService;
@@ -25,7 +32,7 @@ public class MemberServiceTest {
     @Test
     void signUp() {
         // given
-        SignUpRequest signUpRequest = new SignUpRequest("alpha@naver.com", "abcde12345", "손수건");
+        SignUpRequest signUpRequest = new SignUpRequest(EMAIL, PASSWORD, NICKNAME);
 
         // when
         SignUpResponse signUpResponse = memberService.signUp(signUpRequest);
@@ -48,7 +55,7 @@ public class MemberServiceTest {
             " ", ""})
     void signUp_invalidEmail(String invalidEmail) {
         // given
-        SignUpRequest signUpRequest = new SignUpRequest(invalidEmail, "abcde12345", "손수건");
+        SignUpRequest signUpRequest = new SignUpRequest(invalidEmail, PASSWORD, NICKNAME);
 
         // when then
         assertThatThrownBy(() -> memberService.signUp(signUpRequest))
@@ -67,7 +74,7 @@ public class MemberServiceTest {
             "가12345678a", "12345678a가"})
     void signUp_invalidPassword(String invalidPassword) {
         // given
-        SignUpRequest signUpRequest = new SignUpRequest("alpha@naver.com", invalidPassword, "손수건");
+        SignUpRequest signUpRequest = new SignUpRequest(EMAIL, invalidPassword, NICKNAME);
 
         // when then
         assertThatThrownBy(() -> memberService.signUp(signUpRequest))
@@ -80,7 +87,7 @@ public class MemberServiceTest {
     @ValueSource(strings = {"알", "12345678901", " 알파", "파 알", "알파쿤 "})
     void signUp_invalidNickname(String invalidNickname) {
         // given
-        SignUpRequest signUpRequest = new SignUpRequest("alpha@naver.com", "abcde12345", invalidNickname);
+        SignUpRequest signUpRequest = new SignUpRequest(EMAIL, PASSWORD, invalidNickname);
 
         // when then
         assertThatThrownBy(() -> memberService.signUp(signUpRequest))
@@ -88,4 +95,19 @@ public class MemberServiceTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_NICKNAME);
     }
+
+    @DisplayName("이메일이 중복되면 예외가 발생한다.")
+    @Test
+    void checkDuplicatedEmail() {
+        // given
+        SignUpRequest signUpRequest = new SignUpRequest(EMAIL, PASSWORD, NICKNAME);
+        memberService.signUp(signUpRequest);
+
+        // when then
+        assertThatThrownBy(() -> memberService.checkDuplicatedEmail(new EmailRequest(EMAIL)))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.DUPLICATED_EMAIL);
+    }
+
 }

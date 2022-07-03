@@ -1,5 +1,6 @@
 package com.woowacourse.smody.acceptance;
 
+import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.이메일_중복검사;
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.회원가입;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -82,6 +83,34 @@ class MemberAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(1004),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유효하지 않은 닉네임입니다."),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        );
+    }
+
+    @Test
+    void 중복되지_않은_이메일임을_알려준다() {
+        // given
+        회원가입(EMAIL, PASSWORD, NICKNAME);
+
+        // when
+        ExtractableResponse<Response> response = 이메일_중복검사("does@gmail.com");
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 중복된_이메일임을_알려준다() {
+        // given
+        회원가입(EMAIL, PASSWORD, NICKNAME);
+
+        // when
+        ExtractableResponse<Response> response = 이메일_중복검사(EMAIL);
+
+        // then
+        assertAll(
+                () -> assertThat(response.jsonPath().getInt("code")).isEqualTo(1001),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("이미 존재하는 이메일입니다."),
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
         );
     }

@@ -16,7 +16,7 @@ public class Password {
 
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,20}$");
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String value;
 
     public Password(String value) {
