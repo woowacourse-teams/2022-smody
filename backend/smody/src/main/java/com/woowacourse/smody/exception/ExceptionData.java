@@ -12,7 +12,9 @@ public enum ExceptionData {
     INVALID_EMAIL(1003, "유효하지 않은 이메일입니다.", 400),
     INVALID_NICKNAME(1004, "유효하지 않은 닉네임입니다.", 400),
     INVALID_PASSWORD(1005, "유효하지 않은 비밀번호입니다.", 400),
-    INVALID_LOGIN(2001, "이메일 혹은 비밀번호가 일치하지 않습니다.", 401);
+
+    INVALID_LOGIN(2001, "이메일 혹은 비밀번호가 일치하지 않습니다.", 401),
+    INVALID_TOKEN(2002, "유효하지 않은 토큰입니다.", 403);
 
     private final int code;
     private final String message;
