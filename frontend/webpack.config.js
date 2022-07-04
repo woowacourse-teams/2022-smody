@@ -36,6 +36,7 @@ module.exports = {
           },
         ],
       },
+      // CRA에서는 svg를 자동으로 처리해주지만, CRA를 사용하지 않은 경우 webpack config를 통한 사용 설정이 필요하다.
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],

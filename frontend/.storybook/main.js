@@ -18,7 +18,12 @@ module.exports = {
       path.resolve(__dirname, '../src'),
     ];
 
-    // TODO SVG 스토리북 오류 해결 필요
+    // storybook의 fileLoader 기본 설정 rule에서 svg를 제거하고, svgr 모듈을 사용하도록 수정한다. modules 배열은 사용하는 라이브러리를 오른쪽에서부터 읽기 때문에, override할 라이브러리를 unshift로 가장 앞에 넣어준다.
+    const fileLoaderRule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test('.svg'),
+    );
+    fileLoaderRule.exclude = /\.svg$/;
+
     config.module.rules.unshift({
       test: /\.svg$/,
       enforce: 'pre',

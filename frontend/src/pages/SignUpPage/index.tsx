@@ -1,3 +1,4 @@
+import EmailIcon from 'assets/email_icon.svg';
 import styled from 'styled-components';
 
 import { Text } from 'components/@shared/Text';
@@ -19,6 +20,7 @@ const SignUpPage = () => {
         onChange={(e) => {}}
         placeholder="이것은 이메일"
         message=""
+        icon={<EmailIcon />}
       />
       {/* <Input />
       <Input />
