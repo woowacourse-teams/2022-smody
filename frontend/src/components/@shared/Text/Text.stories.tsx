@@ -2,7 +2,7 @@ import { Text } from 'components/@shared/Text';
 import { TextProps } from 'components/@shared/Text/type';
 
 export default {
-  title: 'Text',
+  title: '@shared/Text',
   component: Text,
   argTypes: {
     ref: {
@@ -31,6 +31,6 @@ export default {
 export const DefaultText = (args: TextProps) => <Text {...args}>Text component</Text>;
 
 DefaultText.args = {
-  size: 10,
-  color: '#fbdfdf',
+  size: 20,
+  color: '#000000',
 };

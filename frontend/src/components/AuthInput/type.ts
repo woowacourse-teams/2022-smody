@@ -7,12 +7,10 @@ export interface InputProps {
   placeholder: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  isCorrect?: boolean;
+  isValidated?: boolean;
   message: string;
 }
 
-export interface InputContainerProps extends Pick<InputProps, 'isCorrect'> {
+export interface InputContainerProps extends Pick<InputProps, 'isValidated'> {
   isFocus: boolean;
 }
-
-export type ValidationMessageProps = Pick<InputProps, 'value' | 'isCorrect' | 'message'>;
