@@ -22,5 +22,6 @@ module.exports = {
   plugins: ['prettier', 'react', '@typescript-eslint'],
   rules: {
     'prettier/prettier': ['error'],
+    'react/react-in-jsx-scope': 'off',
   },
 };

@@ -1,8 +1,6 @@
 import EmailIcon from 'assets/email_icon.svg';
 import PersonIcon from 'assets/person_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
-import { useState } from 'react';
-import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import {
   validateEmail,
@@ -13,22 +11,31 @@ import {
 
 import useInput from 'hooks/useInput';
 
+import { FlexBox } from 'components/@shared/FlexBox';
 import { Text } from 'components/@shared/Text';
 
 import { AuthInput } from 'components/AuthInput';
+import { Button } from 'components/Button';
 
 const SignUpPage = () => {
   const email = useInput('', validateEmail);
   const nickname = useInput('', validateNickname);
   const password = useInput('', validatePassword);
   const passwordCheck = useInput('', validateSamePassword, password.value);
+  const isAllValidated =
+    email.isValidated &&
+    nickname.isValidated &&
+    password.isValidated &&
+    passwordCheck.isValidated;
+
+  const onSubmit = () => {};
 
   return (
     <Wrapper>
       <Text size={24} color="#000000">
         회원가입
       </Text>
-      <Container>
+      <Form onSubmit={onSubmit}>
         <AuthInput
           icon={<EmailIcon />}
           type="email"
@@ -57,12 +64,18 @@ const SignUpPage = () => {
           placeholder="비밀번호를 다시 입력해 주세요."
           {...passwordCheck}
         />
-      </Container>
+        <Button size="large" disabled={!isAllValidated}>
+          가입하기
+        </Button>
+      </Form>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.main``;
-const Container = styled.main``;
+const Form = styled(FlexBox).attrs({
+  flexDirection: 'column',
+  gap: '20px',
+})``;
 
 export default SignUpPage;

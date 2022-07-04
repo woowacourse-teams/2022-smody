@@ -14,5 +14,6 @@ declare module 'styled-components' {
     onSurface: string;
     onSuccess: string;
     onError: string;
+    disabled: string;
   }
 }
