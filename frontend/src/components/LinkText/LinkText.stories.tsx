@@ -18,6 +18,7 @@ export const DefaultLinkText = (args: LinkTextProps) => (
 
 DefaultLinkText.args = {
   size: 20,
+  color: '#000000',
   fontWeight: 'bold',
   to: '/login',
 };

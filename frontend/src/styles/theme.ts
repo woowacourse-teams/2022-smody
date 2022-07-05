@@ -6,14 +6,14 @@ export const lightTheme: DefaultTheme = {
   primary: COLOR.PURPLE_500,
   onPrimary: COLOR.WHITE,
 
-  secondary: COLOR.GREEN_500,
-  onSecondary: COLOR.BLACK_900,
+  secondary: COLOR.PURPLE_200,
+  onSecondary: COLOR.WHITE,
 
   background: COLOR.WHITE,
   onBackground: COLOR.BLACK_900,
 
   surface: COLOR.WHITE,
-  onSurface: COLOR.LIGHT_GRAY_500,
+  onSurface: COLOR.BLACK_900,
 
   success: COLOR.GREEN_800,
   onSuccess: COLOR.WHITE,
@@ -22,4 +22,6 @@ export const lightTheme: DefaultTheme = {
   onError: COLOR.WHITE,
 
   disabled: COLOR.LIGHT_GRAY_900,
+  border: COLOR.LIGHT_GRAY_300,
+  blur: COLOR.DARK_GRAY_800,
 };

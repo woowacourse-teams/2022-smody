@@ -45,7 +45,7 @@ export const LoginPage = () => {
           로그인
         </Button>
       </Form>
-      <LinkText size={16} to="/sign_up">
+      <LinkText size={16} color={themeContext.primary} to="/sign_up">
         회원가입
       </LinkText>
     </Wrapper>
