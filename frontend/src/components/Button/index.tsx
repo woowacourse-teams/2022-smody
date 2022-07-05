@@ -3,18 +3,19 @@ import styled, { css } from 'styled-components';
 import { ButtonProps } from 'components/Button/type';
 
 const SIZES = {
-  small: { width: '439px', height: '32px' },
-  medium: { width: '439px', height: '40px' },
-  large: { width: '100%', height: '48px' },
+  small: { minWidth: '', height: '1.5rem', fontSize: '0.8rem' },
+  medium: { minWidth: '8rem', height: '2rem', fontSize: '1rem' },
+  large: { minWidth: '100%', height: '3rem', fontSize: '1.2rem' },
 };
 
 export const Button = styled.button<ButtonProps>`
   ${({ theme, size }) => css`
-    width: ${SIZES[size].width};
-    height: ${SIZES[size].height};
-
+  height: ${SIZES[size].height};
+    min-width: ${SIZES[size].minWidth};
+    width: 'fit-content'
+    vertical-align: middle;
     text-align: center;
-    padding: 1rem;
+    padding: 0rem 1rem;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -22,7 +23,7 @@ export const Button = styled.button<ButtonProps>`
     border-radius: 1rem;
     background-color: ${theme.primary};
     color: ${theme.onPrimary};
-    font-size: 1rem;
+    font-size: ${SIZES[size].fontSize};
 
     &:disabled {
       background-color: ${theme.disabled};
