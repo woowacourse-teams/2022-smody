@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { FlexBoxProps } from 'components/@shared/FlexBox/types';
+import { FlexBoxProps } from 'components/@shared/FlexBox/type';
 
 export const FlexBox = styled.div<FlexBoxProps>`
   display: flex;
