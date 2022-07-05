@@ -37,7 +37,7 @@ export const SignUpPage = () => {
       <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         회원가입
       </Text>
-      <Form onSubmit={onSubmit}>
+      <Form as="form" onSubmit={onSubmit}>
         <AuthInput
           icon={<EmailIcon />}
           type="email"
