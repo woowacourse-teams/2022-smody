@@ -1,5 +1,6 @@
 import { ValidatorFunction } from 'commonType';
 import { useState, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 
 const useInput = (
   initialValue: string,
@@ -7,7 +8,7 @@ const useInput = (
   optionalValue?: string,
 ) => {
   const [value, setValue] = useState(initialValue);
-  const [isValidated, setIsValidated] = useState(false);
+  const [isValidated, setIsValidated] = useState<boolean | undefined>();
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const useInput = (
     setMessage(newMessage);
   }, [value, optionalValue]);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
