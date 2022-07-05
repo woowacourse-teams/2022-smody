@@ -17,5 +17,7 @@ declare module 'styled-components' {
     onSuccess: AvailablePickedColor;
     onError: AvailablePickedColor;
     disabled: AvailablePickedColor;
+    border: AvailablePickedColor;
+    blur: AvailablePickedColor;
   }
 }
