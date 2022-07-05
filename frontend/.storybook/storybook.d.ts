@@ -11,3 +11,5 @@ declare module 'components/AuthInput';
 declare module 'components/Button';
 declare module 'components/@shared/Text';
 declare module 'components/@shared/Text/type';
+declare module 'components/Logo';
+declare module 'components/Logo/type';

@@ -14,15 +14,15 @@ export const Button = styled.button<ButtonProps>`
     height: ${SIZES[size].height};
 
     text-align: center;
-    padding: 10px;
+    padding: 1rem;
     background-color: transparent;
     border: none;
     cursor: pointer;
 
-    border-radius: 5px;
+    border-radius: 1rem;
     background-color: ${theme.primary};
     color: ${theme.onPrimary};
-    font-size: 16px;
+    font-size: 1rem;
 
     &:disabled {
       background-color: ${theme.disabled};

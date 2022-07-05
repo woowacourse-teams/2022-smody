@@ -1,19 +1,21 @@
 import 'styled-components';
 
+import { AvailablePickedColor } from 'styles/type';
+
 declare module 'styled-components' {
   export interface DefaultTheme {
-    primary: string;
-    secondary: string;
-    background: string;
-    surface: string;
-    success: string;
-    error: string;
-    onPrimary: string;
-    onSecondary: string;
-    onBackground: string;
-    onSurface: string;
-    onSuccess: string;
-    onError: string;
-    disabled: string;
+    primary: AvailablePickedColor;
+    secondary: AvailablePickedColor;
+    background: AvailablePickedColor;
+    surface: AvailablePickedColor;
+    success: AvailablePickedColor;
+    error: AvailablePickedColor;
+    onPrimary: AvailablePickedColor;
+    onSecondary: AvailablePickedColor;
+    onBackground: AvailablePickedColor;
+    onSurface: AvailablePickedColor;
+    onSuccess: AvailablePickedColor;
+    onError: AvailablePickedColor;
+    disabled: AvailablePickedColor;
   }
 }

@@ -13,7 +13,7 @@ export const lightTheme: DefaultTheme = {
   onBackground: COLOR.BLACK_900,
 
   surface: COLOR.WHITE,
-  onSurface: COLOR.BLACK_900,
+  onSurface: COLOR.LIGHT_GRAY_500,
 
   success: COLOR.GREEN_800,
   onSuccess: COLOR.WHITE,

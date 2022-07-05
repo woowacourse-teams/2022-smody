@@ -41,7 +41,9 @@ const Wrapper = styled.div`
   outline: none;
 `;
 
-const Label = styled.label``;
+const Label = styled.label`
+  font-size: 1rem;
+`;
 
 const InputWrapper = styled.div<InputContainerProps>`
   ${({ theme, isFocus, isValidated }) => css`

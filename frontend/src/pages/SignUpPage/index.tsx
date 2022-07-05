@@ -1,6 +1,8 @@
 import EmailIcon from 'assets/email_icon.svg';
 import PersonIcon from 'assets/person_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
+import { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 import {
   validateEmail,
@@ -11,13 +13,11 @@ import {
 
 import useInput from 'hooks/useInput';
 
-import { FlexBox } from 'components/@shared/FlexBox';
-import { Text } from 'components/@shared/Text';
+import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 
-import { AuthInput } from 'components/AuthInput';
-import { Button } from 'components/Button';
+export const SignUpPage = () => {
+  const themeContext = useContext(ThemeContext);
 
-const SignUpPage = () => {
   const email = useInput('', validateEmail);
   const nickname = useInput('', validateNickname);
   const password = useInput('', validatePassword);
@@ -28,11 +28,13 @@ const SignUpPage = () => {
     password.isValidated &&
     passwordCheck.isValidated;
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    alert('회원가입');
+  };
 
   return (
     <Wrapper>
-      <Text size={24} color="#000000">
+      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         회원가입
       </Text>
       <Form onSubmit={onSubmit}>
@@ -68,14 +70,32 @@ const SignUpPage = () => {
           가입하기
         </Button>
       </Form>
+
+      <LinkText size={16} to="/login">
+        로그인
+      </LinkText>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.main``;
+const Wrapper = styled(FlexBox).attrs({
+  flexDirection: 'column',
+})`
+  margin: 4rem;
+
+  ${Text} {
+    margin-bottom: 2rem;
+    align-self: center;
+  }
+`;
+
 const Form = styled(FlexBox).attrs({
   flexDirection: 'column',
-  gap: '20px',
-})``;
+  gap: '1rem',
+})`
+  margin-bottom: 2rem;
 
-export default SignUpPage;
+  ${Button} {
+    margin-top: 1rem;
+  }
+`;
