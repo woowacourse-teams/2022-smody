@@ -70,8 +70,7 @@ export const SignUpPage = () => {
           가입하기
         </Button>
       </Form>
-
-      <LinkText size={16} to="/login">
+      <LinkText size={16} color={themeContext.primary} to="/login">
         로그인
       </LinkText>
     </Wrapper>

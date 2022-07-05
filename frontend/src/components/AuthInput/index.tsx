@@ -60,7 +60,7 @@ const Label = styled.label`
 const InputWrapper = styled.div<InputContainerProps>`
   ${({ theme, isFocus, isValidated }) => css`
     display: flex;
-    border: 1px solid ${theme.onSurface};
+    border: 1px solid ${theme.border};
     ${isFocus &&
     css`
       border-color: ${typeof isValidated === 'undefined'
