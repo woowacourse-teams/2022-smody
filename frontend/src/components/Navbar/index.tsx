@@ -13,8 +13,8 @@ import { NavLinkProps } from 'components/Navbar/type';
 export const Navbar = () => {
   const themeContext = useContext(ThemeContext);
   const { pathname } = useLocation();
-  const pathMatchRoute = (route: string) => {
-    if (route === pathname) {
+  const pathMatchRoute = (routes: string[]) => {
+    if (routes.includes(pathname)) {
       return {
         fill: themeContext.primary,
         stroke: themeContext.primary,
@@ -23,10 +23,10 @@ export const Navbar = () => {
     return { fill: themeContext.background, stroke: themeContext.blur };
   };
 
-  const homeColor = pathMatchRoute('/home');
-  const searchColor = pathMatchRoute('/search');
-  const certColor = pathMatchRoute('/cert');
-  const profileColor = pathMatchRoute('/login');
+  const homeColor = pathMatchRoute(['/home']);
+  const searchColor = pathMatchRoute(['/search']);
+  const certColor = pathMatchRoute(['/cert']);
+  const profileColor = pathMatchRoute(['/login', '/sign_up']);
 
   return (
     <Footer>
