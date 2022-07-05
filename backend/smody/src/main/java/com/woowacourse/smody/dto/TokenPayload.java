@@ -1,6 +1,6 @@
 package com.woowacourse.smody.dto;
 
-import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.member.Member;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

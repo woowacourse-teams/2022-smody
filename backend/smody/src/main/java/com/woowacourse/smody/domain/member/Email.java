@@ -1,4 +1,4 @@
-package com.woowacourse.smody.domain;
+package com.woowacourse.smody.domain.member;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;

@@ -20,7 +20,7 @@ public class CycleController {
     @PostMapping("/cycles")
     public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
                                        @RequestBody CycleRequest cycleRequest) {
-        Long cycleId = cycleService.create(cycleRequest);
+        Long cycleId = cycleService.create(tokenPayload, cycleRequest);
         return ResponseEntity.created(URI.create("/cycles/" + cycleId)).build();
     }
 }

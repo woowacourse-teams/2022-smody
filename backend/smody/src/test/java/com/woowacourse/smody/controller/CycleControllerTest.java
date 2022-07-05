@@ -28,7 +28,7 @@ public class CycleControllerTest extends ControllerTest {
         Long cycleId = 1L;
 
         CycleRequest request = new CycleRequest(LocalDateTime.now(), 1L);
-        given(cycleService.create(any(CycleRequest.class))).willReturn(cycleId);
+        given(cycleService.create(any(TokenPayload.class), any(CycleRequest.class))).willReturn(cycleId);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
         // when
         ResultActions result = mockMvc.perform(post("/cycles")

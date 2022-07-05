@@ -1,8 +1,8 @@
 package com.woowacourse.smody.service;
 
-import com.woowacourse.smody.domain.Email;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Nickname;
+import com.woowacourse.smody.domain.member.Email;
+import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.member.Nickname;
 import com.woowacourse.smody.dto.EmailRequest;
 import com.woowacourse.smody.dto.NicknameRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
@@ -15,12 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         Member member = memberRepository.save(signUpRequest.toMember());
         return new SignUpResponse(member);

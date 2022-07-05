@@ -1,8 +1,8 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.auth.JwtTokenProvider;
-import com.woowacourse.smody.domain.Email;
-import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.member.Email;
+import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.dto.TokenPayload;

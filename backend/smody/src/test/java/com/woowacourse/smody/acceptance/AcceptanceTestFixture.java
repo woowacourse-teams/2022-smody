@@ -1,6 +1,7 @@
 package com.woowacourse.smody.acceptance;
 
 import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.EmailRequest;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.NicknameRequest;
@@ -57,6 +58,15 @@ public class AcceptanceTestFixture {
                 .body(new CycleRequest(startTime, challengeId))
                 .when()
                 .post("/cycles")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 사이클_조회(String cycleId) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/cycles/" + cycleId)
                 .then().log().all()
                 .extract();
     }
