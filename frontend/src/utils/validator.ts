@@ -2,8 +2,11 @@ import { ValidatorFunction } from 'commonType';
 
 type checkFormatFunction = (value: string, optionalValue?: string) => boolean;
 
-const checkEmailFormat: checkFormatFunction = (email) =>
-  !email.includes('@') || !email.includes('.', email.indexOf('@'));
+const checkEmailFormat: checkFormatFunction = (email) => {
+  const emailRule = /^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+  return !emailRule.test(email);
+};
 
 const checkEmailBlank: checkFormatFunction = (email) =>
   email.length !== email.trim().length;
@@ -34,7 +37,7 @@ export const validateEmail: ValidatorFunction = (email) => {
 
 export const validatePassword: ValidatorFunction = (password) => {
   if (checkPasswordFormat(password)) {
-    return { isValidated: false, message: '올바른 비밀번호 형식을 입력해주세요.' };
+    return { isValidated: false, message: '10~20자 영문자, 숫자를 사용해주세요.' };
   }
 
   return { isValidated: true, message: '사용 가능한 비밀번호입니다.' };
@@ -50,7 +53,7 @@ export const validateSamePassword: ValidatorFunction = (password, passwordCheck)
 
 export const validateNickname: ValidatorFunction = (nickname: string) => {
   if (checkNicknameFormat(nickname)) {
-    return { isValidated: false, message: '올바른 닉네임 형식을 입력해주세요.' };
+    return { isValidated: false, message: '2~10자로 공백 없이 입력해주세요.' };
   }
 
   return { isValidated: true, message: '사용 가능한 닉네임입니다.' };

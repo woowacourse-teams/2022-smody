@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 import { InputProps, InputContainerProps } from 'components/AuthInput/type';
 import { ValidationMessage } from 'components/ValidationMessage';
+import { VisibilityIcon } from 'components/VisibilityIcon';
 
 export const AuthInput = ({
   icon,
@@ -15,6 +16,12 @@ export const AuthInput = ({
   message,
 }: InputProps) => {
   const [isFocus, setIsFocus] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const newType = type !== 'password' ? type : isShowPassword ? 'text' : 'password';
+
+  const handleClickVisibilityIcon = () => {
+    setIsShowPassword((prev) => !prev);
+  };
 
   return (
     <Wrapper>
@@ -23,13 +30,14 @@ export const AuthInput = ({
         {icon}
         <InputElement
           id={label}
-          type={type}
+          type={newType}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
         />
+        <VisibilityIcon type={type} onClick={handleClickVisibilityIcon} />
       </InputWrapper>
       <ValidationMessage isValidated={isValidated} value={value} message={message} />
     </Wrapper>
@@ -39,6 +47,10 @@ export const AuthInput = ({
 const Wrapper = styled.div`
   width: 100%;
   outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const Label = styled.label`
@@ -51,7 +63,11 @@ const InputWrapper = styled.div<InputContainerProps>`
     border: 1px solid ${theme.onSurface};
     ${isFocus &&
     css`
-      border-color: ${isValidated ? theme.success : theme.error};
+      border-color: ${typeof isValidated === 'undefined'
+        ? theme.primary
+        : isValidated
+        ? theme.success
+        : theme.error};
     `};
     border-radius: 1rem;
     padding: 1rem;
