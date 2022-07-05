@@ -1,5 +1,4 @@
 import EmailIcon from 'assets/email_icon.svg';
-import NicknameIcon from 'assets/nickname_icon.svg';
 import PersonIcon from 'assets/person_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
 import { validateEmail, validateNickname, validatePassword } from 'utils/validator';

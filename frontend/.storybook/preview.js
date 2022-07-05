@@ -14,6 +14,29 @@ export const parameters = {
   },
 };
 
+export const argTypes = {
+  ref: {
+    table: {
+      disable: true,
+    },
+  },
+  theme: {
+    table: {
+      disable: true,
+    },
+  },
+  as: {
+    table: {
+      disable: true,
+    },
+  },
+  forwardedAs: {
+    table: {
+      disable: true,
+    },
+  },
+};
+
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={lightTheme}>
