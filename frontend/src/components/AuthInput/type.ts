@@ -3,7 +3,7 @@ import { ReactNode, HTMLInputTypeAttribute, ChangeEventHandler } from 'react';
 export interface InputProps {
   icon?: ReactNode;
   type: HTMLInputTypeAttribute;
-  label: string;
+  label?: string;
   placeholder: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
