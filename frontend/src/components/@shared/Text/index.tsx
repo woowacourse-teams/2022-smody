@@ -3,9 +3,10 @@ import styled, { css } from 'styled-components';
 import { TextProps, FontSizeType } from 'components/@shared/Text/type';
 
 export const Text = styled.p<TextProps>`
-  ${({ size, color }) => css`
+  ${({ size, color, fontWeight }) => css`
     font-size: ${fontSizeMapper[size ?? 16]}rem;
     color: ${color};
+    font-weight: ${fontWeight};
   `}
 `;
 

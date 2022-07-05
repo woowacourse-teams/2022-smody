@@ -5,25 +5,9 @@ export default {
   title: '@shared/Text',
   component: Text,
   argTypes: {
-    ref: {
-      table: {
-        disable: true,
-      },
-    },
-    theme: {
-      table: {
-        disable: true,
-      },
-    },
-    as: {
-      table: {
-        disable: true,
-      },
-    },
-    forwardedAs: {
-      table: {
-        disable: true,
-      },
+    fontWeight: {
+      options: ['bold', 'normal'],
+      control: { type: 'radio' },
     },
   },
 };
@@ -33,4 +17,5 @@ export const DefaultText = (args: TextProps) => <Text {...args}>Text component</
 DefaultText.args = {
   size: 20,
   color: '#000000',
+  fontWeight: 'bold',
 };
