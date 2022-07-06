@@ -20,6 +20,10 @@ const Wrapper = styled(FlexBox).attrs({
   alignItems: 'center',
 })`
   ${({ theme }) => css`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: ${theme.primary};
     padding: 1.2rem 4rem;
   `}

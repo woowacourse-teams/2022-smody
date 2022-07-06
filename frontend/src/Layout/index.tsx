@@ -1,13 +1,22 @@
 import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { Header, Navbar } from 'components';
+import { FlexBox, Header, Navbar } from 'components';
 
 export const Layout = () => {
   return (
     <>
       <Header />
-      <Outlet />
+      <Wrapper>
+        <Outlet />
+      </Wrapper>
       <Navbar />
     </>
   );
 };
+
+const Wrapper = styled(FlexBox).attrs({
+  flexDirection: 'column',
+})`
+  margin: 6rem 4rem 7rem;
+`;

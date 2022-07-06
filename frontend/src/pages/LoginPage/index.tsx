@@ -55,8 +55,6 @@ export const LoginPage = () => {
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
 })`
-  margin: 4rem;
-
   ${Text} {
     margin-bottom: 2rem;
     align-self: center;
