@@ -1,4 +1,4 @@
-import { cycleData } from 'mock/data';
+import { cycleData } from 'mocks/data';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, CertItem } from 'components';
