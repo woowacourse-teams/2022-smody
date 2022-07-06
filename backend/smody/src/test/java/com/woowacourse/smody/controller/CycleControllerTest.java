@@ -2,19 +2,26 @@ package com.woowacourse.smody.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.JwtTokenProvider;
+import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,5 +117,29 @@ public class CycleControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isForbidden());
+    }
+
+    @DisplayName("자신의 진행 중인 사이클을 조회 시 200을 응답한다.")
+    @Test
+    void findAllInProgressOfMine_200() throws Exception {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Challenge challenge1 = new Challenge("공부");
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        List<CycleResponse> cycleResponses = List.of(
+                new CycleResponse(new Cycle(member1, challenge1, Progress.NOTHING, LocalDateTime.now())),
+                new CycleResponse(new Cycle(member2, challenge1, Progress.NOTHING, LocalDateTime.now()))
+        );
+        given(cycleService.findAllInProgressOfMine(any(TokenPayload.class)))
+                .willReturn(cycleResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/me?status=inProgress")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(cycleResponses)));
     }
 }

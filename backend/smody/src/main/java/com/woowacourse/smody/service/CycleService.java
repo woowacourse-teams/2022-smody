@@ -15,6 +15,7 @@ import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,5 +61,9 @@ public class CycleService {
     private Cycle searchCycle(Long cycleId) {
         return cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+    }
+
+    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload) {
+        return null;
     }
 }
