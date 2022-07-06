@@ -9,3 +9,7 @@ export * from 'components/Header';
 export * from 'components/Navbar';
 export * from 'components/ChallengeItem';
 export * from 'components/ChallengeList';
+export * from 'components/CertItem';
+export * from 'components/CheckCircles';
+export * from 'components/Timer';
+export * from 'components/UnderLineText';

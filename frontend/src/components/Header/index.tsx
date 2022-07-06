@@ -26,5 +26,6 @@ const Wrapper = styled(FlexBox).attrs({
     right: 0;
     background-color: ${theme.primary};
     padding: 1.2rem 4rem;
+    z-index: 1000;
   `}
 `;

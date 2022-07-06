@@ -7,8 +7,6 @@ import { FlexBox, Text, Button } from 'components';
 export const ChallengeDetailPage = () => {
   const themeContext = useContext(ThemeContext);
   const { id } = useParams();
-  console.log(id);
-  console.log('challenge detail page');
 
   return (
     <>
