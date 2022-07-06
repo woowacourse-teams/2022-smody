@@ -13,28 +13,43 @@ public enum Progress {
     NOTHING(0) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 1L)) {
+            if (isInProgress(startTime, progressTime)) {
                 return FIRST;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+        }
+
+        @Override
+        public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
+            return isBetween(startTime, now, 1L);
         }
     },
     FIRST(1) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 2L)) {
+            if (isInProgress(startTime, progressTime)) {
                 return SECOND;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+        }
+
+        @Override
+        public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
+            return isBetween(startTime, now, 2L);
         }
     },
     SECOND(2) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 3L)) {
+            if (isInProgress(startTime, progressTime)) {
                 return SUCCESS;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+        }
+
+        @Override
+        public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
+            return isBetween(startTime, now, 3L);
         }
     },
     SUCCESS(3) {
@@ -42,11 +57,18 @@ public enum Progress {
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
             throw new BusinessException(ExceptionData.ALREADY_SUCCESS);
         }
+
+        @Override
+        public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
+            return false;
+        }
     };
 
     private final int count;
 
     abstract public Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
+
+    abstract public boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
 
     private static boolean isBetween(LocalDateTime startTime, LocalDateTime progressTime, Long interval) {
         LocalDateTime fromTime = startTime.plusDays(interval - 1L);

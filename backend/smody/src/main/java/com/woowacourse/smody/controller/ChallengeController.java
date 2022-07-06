@@ -2,6 +2,7 @@ package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.dto.ChallengeResponse;
 import com.woowacourse.smody.service.ChallengeService;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,6 @@ public class ChallengeController {
 
     @GetMapping
     public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount() {
-        return ResponseEntity.ok(challengeService.findAllWithChallengerCount());
+        return ResponseEntity.ok(challengeService.findAllWithChallengerCount(LocalDateTime.now()));
     }
 }

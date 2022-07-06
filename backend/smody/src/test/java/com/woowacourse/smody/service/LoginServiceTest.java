@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
-import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.MemberRepository;

@@ -55,4 +55,8 @@ public class Cycle {
     public boolean matchMember(Long memberId) {
         return member.matchId(memberId);
     }
+
+    public boolean isInProgress(LocalDateTime now) {
+        return progress.isInProgress(startTime, now);
+    }
 }
