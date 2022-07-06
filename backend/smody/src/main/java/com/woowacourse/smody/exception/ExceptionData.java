@@ -16,10 +16,14 @@ public enum ExceptionData {
     INVALID_LOGIN(2001, "이메일 혹은 비밀번호가 일치하지 않습니다.", 401),
     INVALID_TOKEN(2002, "유효하지 않은 토큰입니다.", 403),
 
+    ALREADY_SUCCESS(3001, "이미 성공한 사이클입니다.", 400),
+    INVALID_PROGRESS_TIME(3002, "인증할 수 있는 시간이 아닙니다.", 400),
+
     NOT_FOUND_MEMBER(4001, "존재하지 않는 회원입니다.", 404),
     NOT_FOUND_CHALLENGE(4002, "존재하지 않는 챌린지입니다.", 404),
     NOT_FOUND_CYCLE(4003, "존재하지 않는 사이클입니다.", 404)
     ;
+
 
     private final int code;
     private final String message;

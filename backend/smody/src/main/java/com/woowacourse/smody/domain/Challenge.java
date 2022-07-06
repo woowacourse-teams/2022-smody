@@ -24,4 +24,8 @@ public class Challenge {
 
     @Column(nullable = false)
     private String name;
+
+    public Challenge(String name) {
+        this.name = name;
+    }
 }

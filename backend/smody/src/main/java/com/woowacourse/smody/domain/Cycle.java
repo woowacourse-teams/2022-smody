@@ -1,8 +1,11 @@
 package com.woowacourse.smody.domain;
 
 import com.woowacourse.smody.domain.member.Member;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,8 +35,22 @@ public class Cycle {
     @ManyToOne(fetch = FetchType.LAZY)
     private Challenge challenge;
 
-    public Cycle(Member member, Challenge challenge) {
+    @Enumerated(EnumType.STRING)
+    private Progress progress;
+
+    private LocalDateTime startTime;
+
+    @Builder
+    public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
         this.member = member;
         this.challenge = challenge;
+        this.progress = progress;
+        this.startTime = startTime;
     }
+
+    public void increaseProgress(LocalDateTime progressTime) {
+        progress = progress.increase(startTime, progressTime);
+    }
+
+
 }
