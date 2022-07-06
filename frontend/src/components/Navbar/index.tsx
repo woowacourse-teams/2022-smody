@@ -14,17 +14,20 @@ export const Navbar = () => {
   const themeContext = useContext(ThemeContext);
   const { pathname } = useLocation();
   const pathMatchRoute = (routes: string[]) => {
-    if (routes.includes(pathname)) {
-      return {
-        fill: themeContext.primary,
-        stroke: themeContext.primary,
-      };
-    }
-    return { fill: themeContext.background, stroke: themeContext.blur };
+    let matchResultColor = { fill: themeContext.background, stroke: themeContext.blur };
+    routes.forEach((route) => {
+      if (pathname.includes(route)) {
+        matchResultColor = {
+          fill: themeContext.primary,
+          stroke: themeContext.primary,
+        };
+      }
+    });
+    return matchResultColor;
   };
 
   const homeColor = pathMatchRoute(['/home']);
-  const searchColor = pathMatchRoute(['/search']);
+  const searchColor = pathMatchRoute(['/search', '/challenge/detail/']);
   const certColor = pathMatchRoute(['/cert']);
   const profileColor = pathMatchRoute(['/login', '/sign_up']);
 
