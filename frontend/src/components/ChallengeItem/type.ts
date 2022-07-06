@@ -1,5 +1,5 @@
 export interface ChallengeItemProps {
-  challengeId: string;
+  challengeId: number;
   challengeName: string;
   challengerCount: number;
 }

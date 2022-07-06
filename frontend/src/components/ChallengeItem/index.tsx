@@ -32,10 +32,14 @@ export const ChallengeItem = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  gap: '20px',
-  alignItems: 'center',
-})``;
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: minmax(9.4rem, 2rem) minmax(9.4rem, auto) 1.5rem;
+  padding: 1.25rem 0;
+  &:active {
+    background-color: 'gray';
+  }
+`;
 
 const ChallengeNameWrapper = styled(FlexBox).attrs({
   gap: '10px',
