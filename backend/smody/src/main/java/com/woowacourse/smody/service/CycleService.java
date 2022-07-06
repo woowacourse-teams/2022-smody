@@ -1,5 +1,7 @@
 package com.woowacourse.smody.service;
 
+import static java.util.stream.Collectors.toList;
+
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
@@ -53,6 +55,24 @@ public class CycleService {
         return new ProgressResponse(cycle.getProgress());
     }
 
+    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime) {
+        Member member = searchMember(tokenPayload);
+        List<Cycle> inProgressCycles = cycleRepository.findAllByMemberAndStartTimeIsAfter(
+                        member, searchTime.minusDays(3L)
+                )
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+
+        return inProgressCycles.stream()
+                .map(cycle -> new CycleResponse(
+                        cycle,
+                        cycleRepository.countByMemberAndChallengeAndProgress(
+                                cycle.getMember(), cycle.getChallenge(), Progress.SUCCESS
+                        ).intValue()
+                )).collect(toList());
+    }
+
     private Member searchMember(TokenPayload tokenPayload) {
         return memberRepository.findById(tokenPayload.getId())
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
@@ -61,9 +81,5 @@ public class CycleService {
     private Cycle searchCycle(Long cycleId) {
         return cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
-    }
-
-    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload) {
-        return null;
     }
 }

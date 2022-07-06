@@ -131,7 +131,7 @@ public class CycleControllerTest extends ControllerTest {
                 new CycleResponse(new Cycle(member1, challenge1, Progress.NOTHING, LocalDateTime.now())),
                 new CycleResponse(new Cycle(member2, challenge1, Progress.NOTHING, LocalDateTime.now()))
         );
-        given(cycleService.findAllInProgressOfMine(any(TokenPayload.class)))
+        given(cycleService.findAllInProgressOfMine(any(TokenPayload.class), any(LocalDateTime.class)))
                 .willReturn(cycleResponses);
 
         // when

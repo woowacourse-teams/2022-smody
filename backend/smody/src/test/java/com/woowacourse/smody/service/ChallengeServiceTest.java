@@ -49,13 +49,10 @@ class ChallengeServiceTest {
         memberRepository.save(member3);
         challengeRepository.save(challenge1);
         challengeRepository.save(challenge2);
-
         LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-
         cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
         cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-
         cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
         cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));

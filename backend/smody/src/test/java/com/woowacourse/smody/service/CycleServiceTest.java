@@ -19,6 +19,7 @@ import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -177,5 +178,48 @@ public class CycleServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
+    }
+
+    @DisplayName("진행 중인 자신의 모든 사이클을 조회")
+    @Test
+    void findAllInProgressOfMine() {
+        // given
+        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
+        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.NOTHING, today);
+        Cycle failed1 = new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L));
+        Cycle success1 = new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(3L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, today);
+        Cycle failed2 = new Cycle(member, challenge2, Progress.SECOND, today.minusDays(3L));
+        Cycle success2 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L));
+        Cycle success3 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L));
+        cycleRepository.save(inProgress1);
+        cycleRepository.save(failed1);
+        cycleRepository.save(success1);
+        cycleRepository.save(inProgress2);
+        cycleRepository.save(failed2);
+        cycleRepository.save(success2);
+        cycleRepository.save(success3);
+
+        // when
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(tokenPayload, today);
+
+        // then
+        assertAll(
+                () -> assertThat(actual)
+                        .map(CycleResponse::getCycleId)
+                        .containsAll(List.of(inProgress1.getId(), inProgress2.getId())),
+                () -> assertThat(actual)
+                        .filteredOn(response -> response.getChallengeId().equals(1L))
+                        .map(CycleResponse::getSuccessCount)
+                        .containsExactly(1),
+                () -> assertThat(actual)
+                        .filteredOn(response -> response.getChallengeId().equals(2L))
+                        .map(CycleResponse::getSuccessCount)
+                        .containsExactly(2)
+        );
     }
 }

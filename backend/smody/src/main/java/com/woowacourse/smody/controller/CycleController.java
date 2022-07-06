@@ -43,6 +43,6 @@ public class CycleController {
 
     @GetMapping(value = "/me", params = "status=inProgress")
     public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload) {
-        return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload));
+        return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload, LocalDateTime.now()));
     }
 }
