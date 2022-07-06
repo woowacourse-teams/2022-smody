@@ -34,10 +34,21 @@ public class CycleService {
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
         Member member = searchMember(tokenPayload);
-        Challenge challenge = challengeRepository.findById(cycleRequest.getChallengeId())
-                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
-        Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now()));
+        Challenge challenge = searchChallenge(cycleRequest);
+        if (isDuplicateInProgress(cycleRequest, member, challenge)) {
+            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+        }
+        Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, cycleRequest.getStartTime()));
         return cycle.getId();
+    }
+
+    private boolean isDuplicateInProgress(CycleRequest cycleRequest, Member member, Challenge challenge) {
+        return cycleRepository.findAllByMemberAndChallengeAndStartTimeIsAfter(
+                        member,
+                        challenge,
+                        cycleRequest.getStartTime().minusDays(3L)
+                ).stream()
+                .anyMatch(cycle -> cycle.isInProgress(cycleRequest.getStartTime()));
     }
 
     public CycleResponse findById(Long cycleId) {
@@ -78,6 +89,11 @@ public class CycleService {
     private Member searchMember(TokenPayload tokenPayload) {
         return memberRepository.findById(tokenPayload.getId())
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
+    }
+
+    private Challenge searchChallenge(CycleRequest cycleRequest) {
+        return challengeRepository.findById(cycleRequest.getChallengeId())
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 
     private Cycle searchCycle(Long cycleId) {

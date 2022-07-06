@@ -68,6 +68,24 @@ public class CycleServiceTest {
         );
     }
 
+    @DisplayName("동일한 첼린지에 진행중인 사이클이 존재하는 경우 사이클을 생성할 때 예외를 발생시킨다.")
+    @Test
+    void create_duplicateInProgressChallenge() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Challenge challenge = challengeRepository.findById(1L).orElseThrow();
+        cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now()));
+
+        // when then
+        assertThatThrownBy(() -> cycleService.create(
+                new TokenPayload(member.getId(), NICKNAME),
+                new CycleRequest(LocalDateTime.now(), 1L)
+        )).isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+
+    }
+
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
     @ParameterizedTest
     @CsvSource(value = {

@@ -17,5 +17,8 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
     @EntityGraph(attributePaths = "challenge")
     List<Cycle> findAllByMemberAndStartTimeIsAfter(Member member, LocalDateTime time);
 
+    @EntityGraph(attributePaths = {"challenge", "member"})
+    List<Cycle> findAllByMemberAndChallengeAndStartTimeIsAfter(Member member, Challenge challenge, LocalDateTime time);
+
     Long countByMemberAndChallengeAndProgress(Member member, Challenge challenge, Progress progress);
 }
