@@ -15,7 +15,7 @@ export const ChallengeItem = ({
   const themeContext = useContext(ThemeContext);
 
   return (
-    <Link to={`challenge/${challengeId}`}>
+    <Link to={`/challenge/detail/${challengeId}`}>
       <Wrapper>
         <ChallengeNameWrapper>
           <AiFillFlag />
