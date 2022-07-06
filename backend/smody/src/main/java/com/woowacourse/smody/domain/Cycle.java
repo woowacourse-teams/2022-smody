@@ -1,6 +1,8 @@
 package com.woowacourse.smody.domain;
 
 import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +44,9 @@ public class Cycle {
 
     @Builder
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
+        if (startTime.isAfter(LocalDateTime.now())) {
+            throw new BusinessException(ExceptionData.INVALID_START_TIME);
+        }
         this.member = member;
         this.challenge = challenge;
         this.progress = progress;

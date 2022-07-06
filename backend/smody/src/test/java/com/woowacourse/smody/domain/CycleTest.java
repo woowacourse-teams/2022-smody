@@ -107,4 +107,19 @@ public class CycleTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);
     }
+
+    @DisplayName("시작시간이 유효하지 않을 때 예외를 발생시킨다.")
+    @Test
+    void invalidStartTime() {
+        // given
+        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Challenge challenge = new Challenge("공부");
+        LocalDateTime startTime = LocalDateTime.now().plusSeconds(1L);
+
+        // when then
+        assertThatThrownBy(() -> new Cycle(member, challenge, Progress.NOTHING, startTime))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_START_TIME);
+    }
 }

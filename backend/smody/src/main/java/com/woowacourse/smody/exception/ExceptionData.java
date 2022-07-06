@@ -20,6 +20,7 @@ public enum ExceptionData {
     ALREADY_SUCCESS(3001, "이미 성공한 사이클입니다.", 400),
     INVALID_PROGRESS_TIME(3002, "인증할 수 있는 시간이 아닙니다.", 400),
     DUPLICATE_IN_PROGRESS_CHALLENGE(3003, "이미 진행중인 첼린지입니다.", 400),
+    INVALID_START_TIME(3004, "유효하지 않은 시작시간입니다.", 400),
 
     NOT_FOUND_MEMBER(4001, "존재하지 않는 회원입니다.", 404),
     NOT_FOUND_CHALLENGE(4002, "존재하지 않는 챌린지입니다.", 404),
