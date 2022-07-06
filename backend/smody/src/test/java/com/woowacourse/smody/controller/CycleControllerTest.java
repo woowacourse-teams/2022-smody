@@ -142,4 +142,40 @@ public class CycleControllerTest extends ControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(cycleResponses)));
     }
+
+    @DisplayName("id로 사이클 조회 시 200을 응답한다.")
+    @Test
+    void findById_200() throws Exception {
+        // given
+        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Challenge challenge = new Challenge("공부");
+        CycleResponse cycleResponse = new CycleResponse(
+                new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now())
+        );
+        long cycleId = 1L;
+        given(cycleService.findById(cycleId))
+                .willReturn(cycleResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/" + cycleId));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(cycleResponse)));
+    }
+
+    @DisplayName("존재하지 않은 id로 사이클 조회 시 404를 응답한다.")
+    @Test
+    void findById_404() throws Exception {
+        // given
+        long cycleId = 1L;
+        given(cycleService.findById(cycleId))
+                .willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/" + cycleId));
+
+        // then
+        result.andExpect(status().isNotFound());
+    }
 }

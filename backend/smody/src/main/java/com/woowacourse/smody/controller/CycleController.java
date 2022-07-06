@@ -45,4 +45,9 @@ public class CycleController {
     public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload) {
         return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload, LocalDateTime.now()));
     }
+
+    @GetMapping("/{cycleId}")
+    public ResponseEntity<CycleResponse> findById(@PathVariable Long cycleId) {
+        return ResponseEntity.ok(cycleService.findById(cycleId));
+    }
 }
