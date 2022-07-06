@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ExceptionResponse {
 
-    private int code;
+    private Integer code;
     private String message;
 
     public ExceptionResponse(ExceptionData exceptionData) {

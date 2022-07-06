@@ -1,0 +1,23 @@
+package com.woowacourse.smody.controller;
+
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.service.ChallengeService;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/challenges")
+@RequiredArgsConstructor
+public class ChallengeController {
+
+    private final ChallengeService challengeService;
+
+    @GetMapping
+    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount() {
+        return ResponseEntity.ok(challengeService.findAllWithChallengerCount());
+    }
+}

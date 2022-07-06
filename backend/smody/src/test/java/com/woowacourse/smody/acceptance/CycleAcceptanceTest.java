@@ -2,7 +2,6 @@ package com.woowacourse.smody.acceptance;
 
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.로그인;
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_생성;
-import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_조회;
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.회원가입;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

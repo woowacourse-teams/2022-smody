@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ProgressResponse {
 
-    private int progressCount;
+    private Integer progressCount;
 
     public ProgressResponse(Progress progress) {
         this.progressCount = progress.getCount();
