@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { TextProps, FontSizeType } from 'components/@shared/Text/type';
+import { TextProps } from 'components/@shared/Text/type';
+
+import { FontSizeType } from 'styles/type';
 
 export const Text = styled.p<TextProps>`
   ${({ size, color, fontWeight }) => css`
