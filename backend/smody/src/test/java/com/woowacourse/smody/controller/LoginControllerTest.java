@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class LoginControllerTest extends ControllerTest{
+public class LoginControllerTest extends ControllerTest {
 
     private static final String EMAIL = "alpha@naver.com";
     private static final String PASSWORD = "abcde12345";

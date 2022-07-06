@@ -9,7 +9,6 @@ import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.dto.SignUpResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,6 +6,8 @@ import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -28,8 +30,7 @@ public class CycleService {
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
-        Member member = memberRepository.findById(tokenPayload.getId())
-                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
+        Member member = searchMember(tokenPayload);
         Challenge challenge = challengeRepository.findById(cycleRequest.getChallengeId())
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
         Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now()));
@@ -37,8 +38,27 @@ public class CycleService {
     }
 
     public CycleResponse findById(Long cycleId) {
-        Cycle cycle = cycleRepository.findById(cycleId)
-                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+        Cycle cycle = searchCycle(cycleId);
         return new CycleResponse(cycle);
+    }
+
+    @Transactional
+    public ProgressResponse increaseProgress(TokenPayload tokenPayload, ProgressRequest progressRequest) {
+        Cycle cycle = searchCycle(progressRequest.getCycleId());
+        if (!cycle.matchMember(tokenPayload.getId())) {
+            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
+        }
+        cycle.increaseProgress(progressRequest.getProgressTime());
+        return new ProgressResponse(cycle.getProgress());
+    }
+
+    private Member searchMember(TokenPayload tokenPayload) {
+        return memberRepository.findById(tokenPayload.getId())
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
+    }
+
+    private Cycle searchCycle(Long cycleId) {
+        return cycleRepository.findById(cycleId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 }

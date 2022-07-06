@@ -3,10 +3,14 @@ package com.woowacourse.smody.domain;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+@Getter
 public enum Progress {
 
-    NOTHING {
+    NOTHING(0) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
             if (isBetween(startTime, progressTime, 1L)) {
@@ -15,7 +19,7 @@ public enum Progress {
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
         }
     },
-    FIRST {
+    FIRST(1) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
             if (isBetween(startTime, progressTime, 2L)) {
@@ -24,7 +28,7 @@ public enum Progress {
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
         }
     },
-    SECOND {
+    SECOND(2) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
             if (isBetween(startTime, progressTime, 3L)) {
@@ -33,12 +37,14 @@ public enum Progress {
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
         }
     },
-    SUCCESS {
+    SUCCESS(3) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
             throw new BusinessException(ExceptionData.ALREADY_SUCCESS);
         }
     };
+
+    private final int count;
 
     abstract public Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
 

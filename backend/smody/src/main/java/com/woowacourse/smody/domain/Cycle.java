@@ -52,5 +52,7 @@ public class Cycle {
         progress = progress.increase(startTime, progressTime);
     }
 
-
+    public boolean matchMember(Long memberId) {
+        return member.matchId(memberId);
+    }
 }
