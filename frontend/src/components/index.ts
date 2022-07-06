@@ -8,3 +8,4 @@ export * from 'components/ValidationMessage';
 export * from 'components/Header';
 export * from 'components/Navbar';
 export * from 'components/ChallengeItem';
+export * from 'components/ChallengeList';
