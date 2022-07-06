@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.dto.SignUpRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,13 @@ public class LoginServiceTest {
     private LoginService loginService;
 
     @Autowired
-    private MemberService memberService;
+    private MemberRepository memberRepository;
 
     @DisplayName("로그인 성공")
     @Test
     void login() {
         // given
-        memberService.signUp(new SignUpRequest(EMAIL, PASSWORD, NICKNAME));
+        memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
 
         // when
         LoginResponse loginResponse = loginService.login(new LoginRequest(EMAIL, PASSWORD));
@@ -49,7 +51,7 @@ public class LoginServiceTest {
     @Test
     void login_notExistEmail() {
         // given
-        memberService.signUp(new SignUpRequest(EMAIL, PASSWORD, NICKNAME));
+        memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
 
         // when then
         assertThatThrownBy(() -> loginService.login(new LoginRequest("notExist@naver.com", PASSWORD)))
@@ -62,7 +64,7 @@ public class LoginServiceTest {
     @Test
     void login_unmatchedPassword() {
         // given
-        memberService.signUp(new SignUpRequest(EMAIL, PASSWORD, NICKNAME));
+        memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
 
         // when then
         assertThatThrownBy(() -> loginService.login(new LoginRequest(EMAIL, "unmatchedPassword0")))
