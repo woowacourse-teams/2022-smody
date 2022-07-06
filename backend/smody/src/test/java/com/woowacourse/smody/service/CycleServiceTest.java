@@ -196,13 +196,7 @@ public class CycleServiceTest {
         Cycle failed2 = new Cycle(member, challenge2, Progress.SECOND, today.minusDays(3L));
         Cycle success2 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L));
         Cycle success3 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L));
-        cycleRepository.save(inProgress1);
-        cycleRepository.save(failed1);
-        cycleRepository.save(success1);
-        cycleRepository.save(inProgress2);
-        cycleRepository.save(failed2);
-        cycleRepository.save(success2);
-        cycleRepository.save(success3);
+        cycleRepository.saveAll(List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3));
 
         // when
         List<CycleResponse> actual = cycleService.findAllInProgressOfMine(tokenPayload, today);
@@ -220,6 +214,34 @@ public class CycleServiceTest {
                         .filteredOn(response -> response.getChallengeId().equals(2L))
                         .map(CycleResponse::getSuccessCount)
                         .containsExactly(2)
+        );
+    }
+
+    @DisplayName("id로 사이클 조회 시 성공")
+    @Test
+    void findById() {
+        // given
+        Challenge challenge = challengeRepository.findById(1L).orElseThrow();
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        Cycle inProgress = new Cycle(member, challenge, Progress.NOTHING, today);
+        Cycle failed1 = new Cycle(member, challenge, Progress.FIRST, today.minusDays(3L));
+        Cycle failed2 = new Cycle(member, challenge, Progress.SECOND, today.minusDays(6L));
+        Cycle success1 = new Cycle(member, challenge, Progress.SUCCESS, today.minusDays(9L));
+        Cycle success2 = new Cycle(member, challenge, Progress.SUCCESS, today.minusDays(12L));
+        cycleRepository.saveAll(List.of(inProgress, failed1, failed2, success1, success2));
+
+        // when
+        CycleResponse cycleResponse = cycleService.findById(inProgress.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(cycleResponse.getCycleId()).isEqualTo(inProgress.getId()),
+                () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(inProgress.getChallenge().getId()),
+                () -> assertThat(cycleResponse.getChallengeName()).isEqualTo(inProgress.getChallenge().getName()),
+                () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(inProgress.getProgress().getCount()),
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
+                () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2)
         );
     }
 }

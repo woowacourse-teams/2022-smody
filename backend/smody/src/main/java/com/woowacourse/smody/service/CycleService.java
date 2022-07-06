@@ -42,7 +42,7 @@ public class CycleService {
 
     public CycleResponse findById(Long cycleId) {
         Cycle cycle = searchCycle(cycleId);
-        return new CycleResponse(cycle);
+        return new CycleResponse(cycle, calculateSuccessCount(cycle));
     }
 
     @Transactional
@@ -65,12 +65,14 @@ public class CycleService {
                 .collect(toList());
 
         return inProgressCycles.stream()
-                .map(cycle -> new CycleResponse(
-                        cycle,
-                        cycleRepository.countByMemberAndChallengeAndProgress(
-                                cycle.getMember(), cycle.getChallenge(), Progress.SUCCESS
-                        ).intValue()
-                )).collect(toList());
+                .map(cycle -> new CycleResponse(cycle, calculateSuccessCount(cycle)))
+                .collect(toList());
+    }
+
+    private int calculateSuccessCount(Cycle cycle) {
+        return cycleRepository.countByMemberAndChallengeAndProgress(
+                cycle.getMember(), cycle.getChallenge(), Progress.SUCCESS
+        ).intValue();
     }
 
     private Member searchMember(TokenPayload tokenPayload) {
