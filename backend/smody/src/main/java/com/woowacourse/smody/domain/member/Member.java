@@ -1,4 +1,4 @@
-package com.woowacourse.smody.domain;
+package com.woowacourse.smody.domain.member;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -13,9 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_member", columnNames = {"email", "nickname"})})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_member", columnNames = {"email", "nickname"})})
 public class Member {
 
     @Id
@@ -40,5 +40,9 @@ public class Member {
 
     public boolean matchPassword(String password) {
         return this.password.match(password);
+    }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
     }
 }

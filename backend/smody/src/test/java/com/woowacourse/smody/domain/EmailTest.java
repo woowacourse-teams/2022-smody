@@ -2,6 +2,7 @@ package com.woowacourse.smody.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.smody.domain.member.Email;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import org.junit.jupiter.params.ParameterizedTest;

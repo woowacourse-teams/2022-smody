@@ -1,5 +1,6 @@
 package com.woowacourse.smody.auth;
 
+import com.woowacourse.smody.dto.TokenPayload;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -8,7 +9,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Map;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,22 +25,22 @@ public class JwtTokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createToken(Map<String, Object> payload) {
+    public String createToken(TokenPayload tokenPayload) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + (validityInMilliseconds));
         return Jwts.builder()
-                .addClaims(payload)
+                .addClaims(tokenPayload.toMap())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Map<String, Object> getPayload(String token) {
+    public TokenPayload getPayload(String token) {
         Claims claims = parseClaimsJws(token).getBody();
         Long id = claims.get("id", Long.class);
         String nickname = claims.get("nickname", String.class);
-        return Map.of("id", id, "nickname", nickname);
+        return new TokenPayload(id, nickname);
     }
 
     private Jws<Claims> parseClaimsJws(final String token) {
