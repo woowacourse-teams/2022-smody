@@ -1,17 +1,38 @@
 # SMODY(스모디)
 
-## 깃 브랜치 전략
+## 프로젝트 설명
 
-- 새로운 기능은 develop 브랜치로 부터 feature 브랜치를 만듭니다.
-  - feature 브랜치를 만들기 전 develop 브랜치를 rebase 해서 최신의 상태로 만듭니다.
-  - 프론트엔드는 feature/fe/[작업이름] , 백엔드는 feature/be/[작업이름] 으로 생성합니다.
-- feature 브랜치를 develop 브랜치로 pull request 를 작성합니다.
-- pull request 에 대해 코드 리뷰를 요청합니다.
-- 코드 리뷰가 완료되면 github 의 Squash and merge 기능을 사용해서 merge를 진행합니다.
-- 새로운 버전 배포시에는 develop 에서 release-v0.0.0같은 브랜치를 생성합니다.
-- release 에서 태그 작업, QA후에 release 브랜치에서 main 브랜치에 pull request작성하고 merge합니다.
-  - main으로 merge 시킬때는 github의 create a merge commit 기능을 사용합니다.
-- main 에서 최신화된 내용을 develop 에도 적용합니다.
+원하는 목표나 계획을 쉽게 이루기 위한 동기부여 서비스
+
+목표 주기를 3회로 정하여 작은 성공을 반복하도록 유도한다.
+
+## 멤버
+
+### Frontend
+
+|마르코|빅터|우연|
+|:---:|:--:|:--:|
+|<img src="https://avatars.githubusercontent.com/u/59413128?v=4" alt="marco" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/52148907?v=4" alt="victor" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/70249108?v=4" alt="woo_yeon" width="100" height="100">|
+|[wonsss](https://github.com/wonsss)|[woose28](https://github.com/woose28)|[ronci](https://github.com/ronci)|
+
+### Backend
+
+|토닉|알파|더즈|조조그린|
+|:--:|:--:|:--:|:----:|
+|<img src="https://avatars.githubusercontent.com/u/59171113?v=4" alt="tonic" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/50986686?v=4" alt="alpha" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/78652144?v=4" alt="does" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/82805588?v=4" alt="jojo_green" width="100" height="100">|
+|[tonic523](https://github.com/tonic523)|[bcc0830](https://github.com/bcc0830)|[ldk980130](https://github.com/ldk980130)|[jojogreen91](https://github.com/jojogreen91)|
+
+## 기술스택
+
+### Frontend
+react, typescript, react-query, recoil, styled-component, storybook, webpack, jest
+
+### Backend
+java, spring, jpa, gradle, h2, mockito, junit
+
+## API 명세서
+
+- https://documenter.getpostman.com/view/15795215/UzJJvJAD#9fe16c42-06f8-498d-b24c-b566f5ccf3e4
 
 ## UI 스토리북
 
