@@ -17,6 +17,8 @@ import useInput from 'hooks/useInput';
 
 import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 
+import { PATH } from 'constants/path';
+
 export const SignUpPage = () => {
   const themeContext = useContext(ThemeContext);
 
@@ -34,7 +36,7 @@ export const SignUpPage = () => {
   const { mutate } = usePostSignUp({
     onSuccess: ({ data: { email } }) => {
       alert('회원가입 성공!!');
-      navigate('/login', {
+      navigate(PATH.LOGIN, {
         state: {
           email,
         },

@@ -1,16 +1,25 @@
-import { postSignUp } from 'apis/authApi/api';
-import { postSignUpProps, postSignUpResponse } from 'apis/authApi/type';
+import { postSignUp, postLogin } from 'apis/authApi/api';
+import {
+  AuthProps,
+  LoginProps,
+  PostSignUpResponse,
+  PostLoginResponse,
+} from 'apis/authApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 
 export const usePostSignUp = (
-  options?: UseMutationOptions<
-    AxiosResponse<postSignUpResponse>,
-    AxiosError,
-    postSignUpProps
-  >,
+  options?: UseMutationOptions<AxiosResponse<PostSignUpResponse>, AxiosError, AuthProps>,
 ) =>
-  useMutation<AxiosResponse<postSignUpResponse>, AxiosError, postSignUpProps>(
+  useMutation<AxiosResponse<PostSignUpResponse>, AxiosError, AuthProps>(
     postSignUp,
+    options,
+  );
+
+export const usePostLogin = (
+  options?: UseMutationOptions<AxiosResponse<PostLoginResponse>, AxiosError, LoginProps>,
+) =>
+  useMutation<AxiosResponse<PostLoginResponse>, AxiosError, LoginProps>(
+    postLogin,
     options,
   );
