@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from 'styles/GlobalStyle';
@@ -37,13 +39,19 @@ export const argTypes = {
   },
 };
 
+const queryClient = new QueryClient();
+
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={lightTheme}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    </ThemeProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={lightTheme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <Story />
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </RecoilRoot>
   ),
 ];

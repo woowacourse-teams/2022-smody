@@ -11,6 +11,7 @@ export const CLIENT_PATH = {
   SIGN_UP: '/sign_up',
   SEARCH: '/search',
   CERT: '/cert',
+  PROFILE: '/profile',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   NOT_FOUND: '/not_found',

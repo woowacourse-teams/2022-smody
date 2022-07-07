@@ -1,7 +1,9 @@
 import { usePostCycle } from 'apis/challengeApi';
 import { useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+
+import { RouteChallengeDetailState } from 'pages/ChallengeDetailPage/type';
 
 import { FlexBox, Text, Button } from 'components';
 
@@ -9,6 +11,11 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeDetailPage = () => {
   const navigate = useNavigate();
+
+  //TODO: 후에 상세페이지 API 생성 후 제거
+  const location = useLocation();
+  const state = location.state as RouteChallengeDetailState;
+
   const { mutate } = usePostCycle({
     onSuccess: () => {
       alert('챌린지 참여 성공!!');
@@ -19,18 +26,23 @@ export const ChallengeDetailPage = () => {
     },
   });
   const themeContext = useContext(ThemeContext);
-  const { id } = useParams();
-  const challengeId = Number(id);
+  const { challengeId } = useParams();
+
+  if (typeof challengeId === 'undefined') {
+    return <p>존재하지 않는 챌린지입니다.</p>;
+  }
+
   const handleClickParticipate = () => {
-    const startTime = new Date().toISOString();
-    mutate({ startTime, challengeId });
+    const [startTime, _] = new Date().toISOString().split('.');
+    mutate({ startTime, challengeId: Number(challengeId) });
   };
 
+  // TODO: 챌린지 상세 조회 API 만들어서 리팩토링하기
   return (
     <>
       <Wrapper>
         <Text fontWeight="bold" size={32} color={themeContext.onBackground}>
-          미라클 모닝
+          {state.challengeName}
         </Text>
       </Wrapper>
       <FixedButton size="large" onClick={handleClickParticipate}>

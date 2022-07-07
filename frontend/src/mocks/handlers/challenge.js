@@ -20,7 +20,9 @@ export const challenge = [
     return res(ctx.status(200), ctx.json(cycleData));
   }),
   // 3. 챌린지 사이클의 진척도 증가(POST)
-  rest.get(`${DEV_BASE_URL}/cycles/:cycleId/progress`, (req, res, ctx) => {
+  rest.post(`${DEV_BASE_URL}/cycles/:cycleId/progress`, (req, res, ctx) => {
+    const { cycleId } = req.params;
+    cycleData[cycleId - 1].progressCount++;
     return res(ctx.status(200), ctx.json({ progressCount: 2 }));
   }),
   // 4. 모든 챌린지 조회(GET)

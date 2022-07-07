@@ -31,7 +31,11 @@ export const Navbar = () => {
   const homeColor = pathMatchRoute([CLIENT_PATH.HOME]);
   const searchColor = pathMatchRoute([CLIENT_PATH.SEARCH, CLIENT_PATH.CHALLENGE_DETAIL]);
   const certColor = pathMatchRoute([CLIENT_PATH.CERT]);
-  const profileColor = pathMatchRoute([CLIENT_PATH.LOGIN, CLIENT_PATH.SIGN_UP]);
+  const profileColor = pathMatchRoute([
+    CLIENT_PATH.LOGIN,
+    CLIENT_PATH.SIGN_UP,
+    CLIENT_PATH.PROFILE,
+  ]);
 
   return (
     <Footer>

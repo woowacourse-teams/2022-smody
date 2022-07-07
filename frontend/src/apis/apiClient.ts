@@ -33,7 +33,7 @@ class authApiClientClass extends apiClientClass {
   }
 
   deleteAuth() {
-    localStorage.deleteItem('accessToken');
+    localStorage.removeItem('accessToken');
     this.axios.defaults.headers = { Authorization: `` } as AxiosHeaders;
   }
 }
