@@ -9,6 +9,8 @@ import { FlexBox, Text, Button } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
+const TIMEZONE_OFFSET = 9;
+
 export const ChallengeDetailPage = () => {
   const navigate = useNavigate();
 
@@ -33,7 +35,11 @@ export const ChallengeDetailPage = () => {
   }
 
   const handleClickParticipate = () => {
-    const [startTime, _] = new Date().toISOString().split('.');
+    const date = new Date();
+    date.setHours(date.getHours() + TIMEZONE_OFFSET);
+
+    const [startTime, _] = date.toISOString().split('.');
+
     mutate({ startTime, challengeId: Number(challengeId) });
   };
 
