@@ -146,6 +146,11 @@ ${({ theme }) => css`
     text-decoration: none;
     color: inherit;
   }
+  button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+  }
 `}
 `;
 

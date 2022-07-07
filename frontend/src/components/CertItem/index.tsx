@@ -1,20 +1,20 @@
-import { Cycle } from 'commonType';
 import { useContext } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays, parseTime } from 'utils';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, UnderLineText } from 'components';
+import { CertItemProps } from 'components/CertItem/type';
 
 const cycleUnit = 1;
 
 export const CertItem = ({
   cycleId,
-  challengeId,
   challengeName,
   progressCount,
   startTime,
   successCount,
-}: Cycle) => {
+  handleClickCertification,
+}: CertItemProps) => {
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
@@ -24,7 +24,7 @@ export const CertItem = ({
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
   const handleClick = () => {
-    alert('hi');
+    handleClickCertification(cycleId);
   };
 
   return (
@@ -67,6 +67,7 @@ const Wrapper = styled(FlexBox).attrs({
     border: 1px solid ${theme.border};
     border-radius: 10px;
     align-items: center;
+    width: 100%;
     min-width: 330px;
     background-color: ${theme.surface};
   `}

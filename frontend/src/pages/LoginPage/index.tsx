@@ -15,7 +15,7 @@ import { RouteLoginState } from 'pages/LoginPage/type';
 
 import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 
-import { PATH } from 'constants/path';
+import { CLIENT_PATH } from 'constants/path';
 
 export const LoginPage = () => {
   const setNickname = useSetRecoilState(nicknameState);
@@ -37,10 +37,11 @@ export const LoginPage = () => {
       setNickname(nickname);
 
       authApiClient.updateAuth(accessToken);
-      navigate(PATH.HOME);
+      navigate(CLIENT_PATH.HOME);
     },
     onError: () => {
       alert('로그인 실패...');
+      throw new Error();
     },
   });
 

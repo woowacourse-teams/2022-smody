@@ -1,5 +1,8 @@
 import { Layout } from 'Layout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   Home,
@@ -9,22 +12,50 @@ import {
   ChallengeDetailPage,
   NotFoundPage,
   CertPage,
+  ProfilePage,
 } from 'pages';
 
-import { PATH } from 'constants/path';
+import { CLIENT_PATH } from 'constants/path';
+
+const AuthOnly = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  return accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.LOGIN} />;
+};
+const UnAuthOnly = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  return !accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.PROFILE} />;
+};
 
 const Router = () => {
+  const setIsLogin = useSetRecoilState(isLoginState);
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      setIsLogin(true);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path={PATH.HOME} element={<Home />} />
-          <Route path={PATH.LOGIN} element={<LoginPage />} />
-          <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-          <Route path={PATH.SEARCH} element={<SearchPage />} />
-          <Route path={PATH.CHALLENGE_DETAIL_ID} element={<ChallengeDetailPage />} />
-          <Route path={PATH.CERT} element={<CertPage />} />
-          <Route path={PATH.NOT_FOUND} element={<NotFoundPage />} />
+          <Route element={<AuthOnly />}>
+            <Route path={CLIENT_PATH.CERT} element={<CertPage />} />
+            <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
+          </Route>
+          <Route element={<UnAuthOnly />}>
+            <Route path={CLIENT_PATH.LOGIN} element={<LoginPage />} />
+            <Route path={CLIENT_PATH.SIGN_UP} element={<SignUpPage />} />
+          </Route>
+
+          <Route path={CLIENT_PATH.HOME} element={<Home />} />
+          <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
+          <Route
+            path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
+            element={<ChallengeDetailPage />}
+          />
+          <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={'*'} element={<NotFoundPage />} />
         </Route>
       </Routes>
