@@ -29,7 +29,7 @@ export const Header = () => {
             {nickname}
           </Text>
           <button onClick={handleLogout}>
-            <Text size={20} color={themeContext.primary}>
+            <Text size={20} color={themeContext.onPrimary}>
               로그아웃
             </Text>
           </button>
