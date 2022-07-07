@@ -10,7 +10,7 @@ import { ThemeContext } from 'styled-components';
 import { Text, FlexBox } from 'components';
 import { NavLinkProps } from 'components/Navbar/type';
 
-import { PATH } from 'constants/path';
+import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
   const themeContext = useContext(ThemeContext);
@@ -28,17 +28,17 @@ export const Navbar = () => {
     return matchResultColor;
   };
 
-  const homeColor = pathMatchRoute([PATH.HOME]);
-  const searchColor = pathMatchRoute([PATH.SEARCH, PATH.CHALLENGE_DETAIL]);
-  const certColor = pathMatchRoute([PATH.CERT]);
-  const profileColor = pathMatchRoute([PATH.LOGIN, PATH.SIGN_UP]);
+  const homeColor = pathMatchRoute([CLIENT_PATH.HOME]);
+  const searchColor = pathMatchRoute([CLIENT_PATH.SEARCH, CLIENT_PATH.CHALLENGE_DETAIL]);
+  const certColor = pathMatchRoute([CLIENT_PATH.CERT]);
+  const profileColor = pathMatchRoute([CLIENT_PATH.LOGIN, CLIENT_PATH.SIGN_UP]);
 
   return (
     <Footer>
       <nav>
         <NavItemsContainer as="ul">
           <li>
-            <NavLink as={Link} to={PATH.HOME} {...homeColor}>
+            <NavLink as={Link} to={CLIENT_PATH.HOME} {...homeColor}>
               <Home />
               <Text size={14} color={homeColor.stroke}>
                 홈
@@ -46,7 +46,7 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={PATH.SEARCH} {...searchColor}>
+            <NavLink as={Link} to={CLIENT_PATH.SEARCH} {...searchColor}>
               <Search />
               <Text size={14} color={searchColor.stroke}>
                 검색
@@ -54,7 +54,7 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={PATH.CERT} {...certColor}>
+            <NavLink as={Link} to={CLIENT_PATH.CERT} {...certColor}>
               <Plus />
               <Text size={14} color={certColor.stroke}>
                 인증
@@ -62,7 +62,7 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={PATH.LOGIN} {...profileColor}>
+            <NavLink as={Link} to={CLIENT_PATH.LOGIN} {...profileColor}>
               <Profile />
               <Text size={14} color={profileColor.stroke}>
                 프로필

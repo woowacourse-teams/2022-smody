@@ -13,3 +13,4 @@ export * from 'components/CertItem';
 export * from 'components/CheckCircles';
 export * from 'components/Timer';
 export * from 'components/UnderLineText';
+export * from 'components/ErrorBoundary';

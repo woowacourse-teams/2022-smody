@@ -1,12 +1,30 @@
+import { usePostCycle } from 'apis/challengeApi';
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, Button } from 'components';
 
+import { CLIENT_PATH } from 'constants/path';
+
 export const ChallengeDetailPage = () => {
+  const navigate = useNavigate();
+  const { mutate } = usePostCycle({
+    onSuccess: () => {
+      alert('챌린지 참여 성공!!');
+      navigate(CLIENT_PATH.CERT);
+    },
+    onError: () => {
+      alert('챌린지 참여 실패...');
+    },
+  });
   const themeContext = useContext(ThemeContext);
   const { id } = useParams();
+  const challengeId = Number(id);
+  const handleClickParticipate = () => {
+    const startTime = new Date().toISOString();
+    mutate({ startTime, challengeId });
+  };
 
   return (
     <>
@@ -15,7 +33,9 @@ export const ChallengeDetailPage = () => {
           미라클 모닝
         </Text>
       </Wrapper>
-      <FixedButton size="large">함께 하기</FixedButton>
+      <FixedButton size="large" onClick={handleClickParticipate}>
+        함께 하기
+      </FixedButton>
     </>
   );
 };

@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, HeadersDefaults } from 'axios';
 
+import { DEV_BASE_URL } from 'constants/path';
+
 interface AxiosHeaders extends HeadersDefaults {
   Authorization: string;
 }
@@ -8,10 +10,7 @@ class apiClientClass {
   axios: AxiosInstance;
   constructor() {
     this.axios = axios.create({
-      baseURL:
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:8080'
-          : 'http://localhost:8080',
+      baseURL: process.env.NODE_ENV === 'development' ? DEV_BASE_URL : DEV_BASE_URL,
     });
   }
 }
