@@ -10,7 +10,8 @@
     "build:dev": "webpack --mode development",
     "pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=f15a8265ae89"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -46,6 +47,7 @@
     "@typescript-eslint/parser": "latest",
     "@yarnpkg/pnpify": "^4.0.0-rc.10",
     "babel-loader": "^8.2.5",
+    "chromatic": "^6.7.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -64,5 +66,7 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "frontend@1.0.0"
 }
