@@ -1,7 +1,9 @@
+import { usePostSignUp } from 'apis';
 import EmailIcon from 'assets/email_icon.svg';
 import PersonIcon from 'assets/person_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
-import { useContext } from 'react';
+import { useContext, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 import {
@@ -14,6 +16,8 @@ import {
 import useInput from 'hooks/useInput';
 
 import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
+
+import { PATH } from 'constants/path';
 
 export const SignUpPage = () => {
   const themeContext = useContext(ThemeContext);
@@ -28,8 +32,24 @@ export const SignUpPage = () => {
     password.isValidated &&
     passwordCheck.isValidated;
 
-  const onSubmit = () => {
-    alert('회원가입');
+  const navigate = useNavigate();
+  const { mutate } = usePostSignUp({
+    onSuccess: ({ data: { email } }) => {
+      alert('회원가입 성공!!');
+      navigate(PATH.LOGIN, {
+        state: {
+          email,
+        },
+      });
+    },
+    onError: () => {
+      alert('회원가입 실패...');
+    },
+  });
+
+  const handleSubmitSignUp = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    mutate({ email: email.value, nickname: nickname.value, password: password.value });
   };
 
   return (
@@ -37,7 +57,7 @@ export const SignUpPage = () => {
       <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         회원가입
       </Text>
-      <Form as="form" onSubmit={onSubmit}>
+      <Form as="form" onSubmit={handleSubmitSignUp}>
         <AuthInput
           icon={<EmailIcon />}
           type="email"

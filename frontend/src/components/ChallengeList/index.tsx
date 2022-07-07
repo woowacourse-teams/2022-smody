@@ -1,4 +1,4 @@
-import { challengeData } from 'mock/data';
+import { challengeData } from 'mocks/data';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, ChallengeItem } from 'components';

@@ -1,16 +1,27 @@
 import { useContext } from 'react';
+import { useRecoilValue } from 'recoil';
+import { nicknameState, isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
-import { Logo, FlexBox, LinkText } from 'components';
+import { Logo, FlexBox, LinkText, Text } from 'components';
 
 export const Header = () => {
+  const isLogin = useRecoilValue(isLoginState);
+
+  const nickname = useRecoilValue(nicknameState);
   const themeContext = useContext(ThemeContext);
   return (
     <Wrapper>
       <Logo width="100" color={themeContext.onPrimary} />
-      <LinkText to="/login" size={20} color={themeContext.onPrimary}>
-        로그인
-      </LinkText>
+      {isLogin ? (
+        <Text size={20} color={themeContext.onPrimary}>
+          {nickname}
+        </Text>
+      ) : (
+        <LinkText to="/login" size={20} color={themeContext.onPrimary}>
+          로그인
+        </LinkText>
+      )}
     </Wrapper>
   );
 };
