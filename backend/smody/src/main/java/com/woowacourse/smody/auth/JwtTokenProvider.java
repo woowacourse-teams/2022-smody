@@ -27,7 +27,7 @@ public class JwtTokenProvider {
 
     public String createToken(TokenPayload tokenPayload) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + (validityInMilliseconds));
         return Jwts.builder()
                 .addClaims(tokenPayload.toMap())
                 .setIssuedAt(now)

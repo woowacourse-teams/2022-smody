@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new BusinessException(ExceptionData.INVALID_TOKEN);
         }
-
+        request.setAttribute("payload", jwtTokenProvider.getPayload(token));
         return true;
     }
 }

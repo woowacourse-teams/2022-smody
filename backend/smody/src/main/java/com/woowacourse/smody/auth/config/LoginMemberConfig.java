@@ -13,6 +13,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class LoginMemberConfig implements WebMvcConfigurer {
 
+    private static final List<String> AUTH_REQUIRED_URL = List.of(
+            "/cycles", "/cycles/me", "/cycles/*/progress"
+    );
+
     private final AuthInterceptor authInterceptor;
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
 
@@ -24,6 +28,6 @@ public class LoginMemberConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/cycles");
+                .addPathPatterns(AUTH_REQUIRED_URL);
     }
 }
