@@ -68,5 +68,6 @@
     "workerDirectory": "public"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "frontend@1.0.0"
+  "_id": "frontend@1.0.0",
+  "proxy": "http://localhost:8080"
 }
