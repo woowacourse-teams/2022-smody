@@ -1,8 +1,11 @@
 import { usePostLogin } from 'apis';
+import { authApiClient } from 'apis/apiClient';
 import EmailIcon from 'assets/email_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
 import { useContext, FormEventHandler } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState, nicknameState } from 'recoil/auth/atoms';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 
@@ -15,6 +18,8 @@ import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 import { PATH } from 'constants/path';
 
 export const LoginPage = () => {
+  const setNickname = useSetRecoilState(nicknameState);
+  const setIsLogin = useSetRecoilState(isLoginState);
   const themeContext = useContext(ThemeContext);
   const location = useLocation();
   const state = location.state as RouteLoginState;
@@ -26,12 +31,12 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
     onSuccess: ({ data: { nickname, accessToken } }) => {
-      alert('로그인 성공!!');
-      // TODO: recoil에 nickname과 isLogin 저장
-      // TODO: axios default header에 accessToken 저장
+      alert(`반갑습니다, ${nickname}님!`);
 
-      // TODO: 웹 브라우저 스토리지에 accessToken 저장???
+      setIsLogin(true);
+      setNickname(nickname);
 
+      authApiClient.updateAuth(accessToken);
       navigate(PATH.HOME);
     },
     onError: () => {

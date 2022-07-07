@@ -16,6 +16,8 @@ class apiClientClass {
   }
 }
 
+const accessToken = localStorage.getItem('accessToken');
+
 class authApiClientClass extends apiClientClass {
   constructor() {
     super();
@@ -36,8 +38,6 @@ class authApiClientClass extends apiClientClass {
     this.axios.defaults.headers = { Authorization: `` } as AxiosHeaders;
   }
 }
-
-const accessToken = localStorage.getItem('accessToken');
 
 export const apiClient = new apiClientClass();
 export const authApiClient = new authApiClientClass();
