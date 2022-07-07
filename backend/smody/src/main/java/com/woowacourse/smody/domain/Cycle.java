@@ -64,4 +64,8 @@ public class Cycle {
     public boolean isInProgress(LocalDateTime now) {
         return progress.isInProgress(startTime, now);
     }
+
+    public boolean matchChallenge(Long challengeId) {
+        return challenge.matchId(challengeId);
+    }
 }

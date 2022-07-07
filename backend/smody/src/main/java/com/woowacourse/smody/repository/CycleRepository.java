@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CycleRepository extends JpaRepository<Cycle, Long> {
 
-    @EntityGraph(attributePaths = "challenge")
     List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
 
     @EntityGraph(attributePaths = "challenge")

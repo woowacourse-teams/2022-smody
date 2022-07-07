@@ -28,4 +28,8 @@ public class Challenge {
     public Challenge(String name) {
         this.name = name;
     }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
+    }
 }
