@@ -13,7 +13,7 @@ public enum Progress {
     NOTHING(0) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isInProgress(startTime, progressTime)) {
+            if (isBetween(startTime, progressTime, 1L)) {
                 return FIRST;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
@@ -21,13 +21,14 @@ public enum Progress {
 
         @Override
         public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
-            return isBetween(startTime, now, 1L);
+            LocalDateTime toTime = startTime.plusDays(1L);
+            return now.isBefore(toTime);
         }
     },
     FIRST(1) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isInProgress(startTime, progressTime)) {
+            if (isBetween(startTime, progressTime, 2L)) {
                 return SECOND;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
@@ -35,13 +36,14 @@ public enum Progress {
 
         @Override
         public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
-            return isBetween(startTime, now, 2L);
+            LocalDateTime toTime = startTime.plusDays(2L);
+            return now.isBefore(toTime);
         }
     },
     SECOND(2) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isInProgress(startTime, progressTime)) {
+            if (isBetween(startTime, progressTime, 3L)) {
                 return SUCCESS;
             }
             throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
@@ -49,7 +51,8 @@ public enum Progress {
 
         @Override
         public boolean isInProgress(LocalDateTime startTime, LocalDateTime now) {
-            return isBetween(startTime, now, 3L);
+            LocalDateTime toTime = startTime.plusDays(3L);
+            return now.isBefore(toTime);
         }
     },
     SUCCESS(3) {

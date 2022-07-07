@@ -122,4 +122,25 @@ public class CycleTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_START_TIME);
     }
+
+    @DisplayName("진행중인 사이클을 조회한다.")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "NOTHING,2022-01-01T00:00:01",
+            "FIRST,2022-01-01T00:00:01",
+            "FIRST,2022-01-02T00:00:01",
+            "SECOND,2022-01-01T00:00:01",
+            "SECOND,2022-01-02T00:00:01",
+            "SECOND,2022-01-03T00:00:01"
+    })
+    void isInProgress(Progress progress, LocalDateTime now) {
+        // given
+        LocalDateTime startTime = LocalDateTime.of(2022, 1, 1, 0, 0);
+        Cycle cycle = cycleBuilder.progress(progress)
+                .startTime(startTime)
+                .build();
+
+        // when then
+        assertThat(cycle.isInProgress(now)).isTrue();
+    }
 }
