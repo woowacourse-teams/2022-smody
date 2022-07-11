@@ -1,5 +1,6 @@
 # SMODY(스모디)
 
+
 ## 프로젝트 설명
 
 원하는 목표나 계획을 쉽게 이루기 위한 동기부여 서비스
@@ -25,10 +26,10 @@
 ## 기술스택
 
 ### Frontend
-react, typescript, react-query, recoil, styled-component, storybook, webpack, jest
+<img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/178104342-91963cf6-a01d-4815-9adc-11980fba8980.png">
 
 ### Backend
-java, spring, jpa, gradle, h2, mockito, junit
+<img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/178104351-bd987c2e-2872-4d34-a670-6d2f6e21bf9a.png">
 
 ## API 명세서
 
