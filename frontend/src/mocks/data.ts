@@ -141,7 +141,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '운동',
     progressCount: 0,
-    startTime: '2022-07-10T17:00:00',
+    startTime: '2022-07-10T20:00:00',
     successCount: 3,
   },
   {
