@@ -22,10 +22,14 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
         String token = jwtTokenExtractor.extract(request);
+        validateToken(token);
+        request.setAttribute("payload", jwtTokenProvider.getPayload(token));
+        return true;
+    }
+
+    private void validateToken(String token) {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new BusinessException(ExceptionData.INVALID_TOKEN);
         }
-        request.setAttribute("payload", jwtTokenProvider.getPayload(token));
-        return true;
     }
 }
