@@ -49,7 +49,7 @@ export const LoginPage = () => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    mutate({ email: email.value, password: password.value });
+    // mutate({ email: email.value, password: password.value });
   };
 
   return (
