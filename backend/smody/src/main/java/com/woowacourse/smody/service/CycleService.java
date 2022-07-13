@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.ProgressRequest;

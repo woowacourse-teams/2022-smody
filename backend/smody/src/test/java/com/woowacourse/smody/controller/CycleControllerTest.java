@@ -12,7 +12,7 @@ import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.ProgressRequest;
@@ -40,7 +40,7 @@ public class CycleControllerTest extends ControllerTest {
         Long cycleId = 1L;
         CycleRequest request = new CycleRequest(LocalDateTime.now(), 1L);
         given(cycleService.create(any(TokenPayload.class), any(CycleRequest.class))).willReturn(cycleId);
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         // when
         ResultActions result = mockMvc.perform(post("/cycles")
@@ -73,7 +73,7 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void increaseProgress_200() throws Exception {
         // given
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ProgressResponse response = new ProgressResponse(2);
         given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willReturn(response);
@@ -91,7 +91,7 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void increaseProgress_400() throws Exception {
         // given
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willThrow(new BusinessException(ExceptionData.INVALID_PROGRESS_TIME));
 
@@ -107,7 +107,7 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void increaseProgress_403() throws Exception {
         // given
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willThrow(new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER));
 
@@ -126,7 +126,7 @@ public class CycleControllerTest extends ControllerTest {
         Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
         Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
         Challenge challenge1 = new Challenge("공부");
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         List<CycleResponse> cycleResponses = List.of(
                 new CycleResponse(new Cycle(member1, challenge1, Progress.NOTHING, LocalDateTime.now())),
                 new CycleResponse(new Cycle(member2, challenge1, Progress.NOTHING, LocalDateTime.now()))

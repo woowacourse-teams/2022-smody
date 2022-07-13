@@ -2,7 +2,7 @@ package com.woowacourse.smody.repository;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
