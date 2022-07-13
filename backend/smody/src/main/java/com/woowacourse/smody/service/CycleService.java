@@ -53,7 +53,7 @@ public class CycleService {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }
         if (cycle.isSuccessInToday(startTime)) {
-            return cycle.getStartTime().plusDays(3L);
+            return cycle.getStartTime().plusDays(Cycle.DAYS);
         }
         return startTime;
     }
