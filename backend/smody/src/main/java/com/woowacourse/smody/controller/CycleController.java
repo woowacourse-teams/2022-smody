@@ -26,7 +26,7 @@ public class CycleController {
 
     private final CycleService cycleService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
                                        @RequestBody CycleRequest cycleRequest) {
         Long cycleId = cycleService.create(tokenPayload, cycleRequest);

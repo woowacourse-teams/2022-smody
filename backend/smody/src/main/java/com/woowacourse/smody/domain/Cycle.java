@@ -24,6 +24,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Cycle {
 
+    public static final long DAYS = 3L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cycle_id")
