@@ -2,13 +2,8 @@ package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.dto.GoogleOauthResponse;
 import com.woowacourse.smody.dto.GoogleTokenRequest;
-import com.woowacourse.smody.dto.LoginRequest;
-import com.woowacourse.smody.dto.LoginResponse;
-import com.woowacourse.smody.service.LoginService;
-import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +23,6 @@ public class OauthController {
     private static final String CALLBACK_URI = "http://localhost:8080/oauth/callback";
     private static final String GOOGLE_TOKEN_REQUEST_URI = "https://oauth2.googleapis.com/token";
 
-    private final LoginService loginService;
-
     @GetMapping("/login")
     public ResponseEntity<Void> login() {
         String location = GOOGLE_LOGIN_LINK + "?"
@@ -38,33 +31,26 @@ public class OauthController {
                 + "response_type=" + "code" + "&"
                 + "scope=" + "https://www.googleapis.com/auth/userinfo.profile"
                 + " https://www.googleapis.com/auth/userinfo.email";
+
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .header("Location", location)
                 .build();
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<LoginResponse> callBack(@RequestParam String code) {
+    public ResponseEntity<GoogleOauthResponse> callBack(@RequestParam String code) {
         if (Objects.isNull(code)) {
             throw new IllegalStateException("Google 로그인이 실패했습니다.");
         }
-
-        // access token 구글에 요청
+        RestTemplate restTemplate = new RestTemplate();
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
                 code, CLIENT_ID, CLIENT_SECRET, CALLBACK_URI, "authorization_code"
         );
         GoogleOauthResponse googleOauthResponse =
-                new RestTemplate().postForObject(
-                        GOOGLE_TOKEN_REQUEST_URI,
-                        googleTokenRequest,
-                        GoogleOauthResponse.class
-                );
+                restTemplate.postForObject(GOOGLE_TOKEN_REQUEST_URI, googleTokenRequest, GoogleOauthResponse.class);
 
-        // 유틸 : payload 복호화
-        byte[] tokenPayload = Base64.getDecoder()
-                .decode(googleOauthResponse.getId_token().split("\\.")[1]);
-        JSONObject jsonObject = new JSONObject(new String(tokenPayload));
+        // loginResponse 만들기
 
-        return ResponseEntity.ok(loginService.login(new LoginRequest(jsonObject)));
+        return ResponseEntity.ok(googleOauthResponse);
     }
 }
