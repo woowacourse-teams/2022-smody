@@ -18,6 +18,8 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -55,16 +57,18 @@ public class CycleServiceTest {
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
 
         // when
+        LocalDateTime now = LocalDateTime.now();
         Long cycleId = cycleService.create(
                 new TokenPayload(member.getId(), NICKNAME),
-                new CycleRequest(LocalDateTime.now(), 1L)
+                new CycleRequest(now, 1L)
         );
         CycleResponse cycleResponse = cycleService.findById(cycleId);
 
         // then
         assertAll(
                 () -> assertThat(cycleResponse.getCycleId()).isEqualTo(cycleId),
-                () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(1L)
+                () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(1L),
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(now)
         );
     }
 
@@ -84,6 +88,31 @@ public class CycleServiceTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
 
+    }
+
+    @DisplayName("오늘 성공한 챌린지로 다시 사이클을 생성한 경우 사이클을 내일 날짜로 생성한다.")
+    @Test
+    void create_alreadySuccessChallenge() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Challenge challenge = challengeRepository.findById(1L).orElseThrow();
+
+        Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(2L)));
+        cycleRepository.save(new Cycle(member, challenge, Progress.SECOND, now.minusDays(3L)));
+
+        // when
+        Long cycleId = cycleService.create(
+                new TokenPayload(member.getId(), NICKNAME),
+                new CycleRequest(now, challenge.getId())
+        );
+        CycleResponse cycleResponse = cycleService.findById(cycleId);
+
+        // then
+        assertAll(
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(cycle.getStartTime().plusDays(3L)),
+                () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
+        );
     }
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
@@ -214,7 +243,8 @@ public class CycleServiceTest {
         Cycle failed2 = new Cycle(member, challenge2, Progress.SECOND, today.minusDays(3L));
         Cycle success2 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L));
         Cycle success3 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L));
-        cycleRepository.saveAll(List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3));
+        Cycle future = new Cycle(member, challenge1, Progress.NOTHING, today.plusSeconds(1L));
+        cycleRepository.saveAll(List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3, future));
 
         // when
         List<CycleResponse> actual = cycleService.findAllInProgressOfMine(tokenPayload, today);
@@ -223,11 +253,11 @@ public class CycleServiceTest {
         assertAll(
                 () -> assertThat(actual)
                         .map(CycleResponse::getCycleId)
-                        .containsAll(List.of(inProgress1.getId(), inProgress2.getId())),
+                        .containsAll(List.of(inProgress1.getId(), inProgress2.getId(), future.getId())),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(1L))
                         .map(CycleResponse::getSuccessCount)
-                        .containsExactly(1),
+                        .containsExactly(1, 1),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(2L))
                         .map(CycleResponse::getSuccessCount)
@@ -261,5 +291,19 @@ public class CycleServiceTest {
                 () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
                 () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2)
         );
+    }
+
+    @DisplayName("미래 시점의 사이클은 현재 시점으로 인증할 수 없다.")
+    @Test
+    void progress_future_time() {
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Challenge challenge = challengeRepository.findById(1L).get();
+        LocalDateTime testTime = LocalDateTime.now();
+        Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, testTime.plusSeconds(1L));
+
+        assertThatThrownBy(() -> cycle.increaseProgress(testTime))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
     }
 }

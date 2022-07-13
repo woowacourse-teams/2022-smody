@@ -79,4 +79,8 @@ public enum Progress {
         return (progressTime.isEqual(fromTime) || progressTime.isAfter(fromTime))
                 && progressTime.isBefore(toTime);
     }
+
+    public boolean isSuccess() {
+        return this == SUCCESS;
+    }
 }
