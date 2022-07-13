@@ -1,0 +1,1 @@
+export const TIME_UPDATE_MS_PERIOD = 60000;

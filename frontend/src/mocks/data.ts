@@ -133,7 +133,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '미라클 모닝',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T17:00:00',
     successCount: 3,
   },
   {
@@ -141,7 +141,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '운동',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-10T20:00:00',
     successCount: 3,
   },
   {
@@ -149,7 +149,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '샤워',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T10:00:00',
     successCount: 3,
   },
   {
@@ -157,7 +157,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '취침',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T12:00:00',
     successCount: 3,
   },
   {
@@ -165,7 +165,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '화이팅',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T08:00:00',
     successCount: 3,
   },
   {
@@ -173,7 +173,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '내일은 뭐 먹지?',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T17:00:00',
     successCount: 3,
   },
   {
@@ -181,7 +181,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '마르코 화이팅',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T17:00:00',
     successCount: 3,
   },
   {
@@ -189,7 +189,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '우연 화이팅',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T17:00:00',
     successCount: 3,
   },
   {
@@ -197,7 +197,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '우린 멋져',
     progressCount: 0,
-    startTime: '2022-07-06T17:00:00',
+    startTime: '2022-07-11T17:00:00',
     successCount: 3,
   },
 ];
