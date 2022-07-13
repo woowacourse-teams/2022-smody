@@ -45,7 +45,22 @@ const Wrapper = styled(FlexBox).attrs({
     left: 0;
     right: 0;
     background-color: ${bgColor};
-    padding: 1.2rem 4rem;
+    padding: 1.5rem 1.25rem 1rem;
     z-index: 1000;
+
+    /* PC (해상도 1024px)*/
+    @media all and (min-width: 1024px) {
+      padding: 1.5rem 10rem 1rem;
+    }
+
+    /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
+    @media all and (min-width: 768px) and (max-width: 1023px) {
+      padding: 1.5rem 7rem 1rem;
+    }
+
+    /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
+    @media all and (max-width: 767px) {
+      padding: 1.5rem 1.25rem 1rem;
+    }
   `}
 `;

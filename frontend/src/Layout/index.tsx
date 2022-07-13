@@ -35,6 +35,6 @@ const Wrapper = styled(FlexBox).attrs({
 })<WrapperProps>`
   ${({ bgColor }) => css`
     background-color: ${bgColor};
-    padding: 6rem 4rem 7rem;
+    padding: 6rem 20px 7rem;
   `}
 `;

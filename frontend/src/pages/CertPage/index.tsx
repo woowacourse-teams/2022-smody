@@ -42,13 +42,13 @@ export const CertPage = () => {
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '1rem',
-  alignItems: 'center',
-})`
+const Wrapper = styled.div`
   ${({ theme }) => css`
-    min-width: 330px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(366px, max-content));
+    grid-gap: 16px;
+    justify-content: center;
+    padding: initial;
     background-color: ${theme.secondary};
   `}
 `;

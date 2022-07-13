@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
-import { addDays, parseTime } from 'utils';
+import { addDays } from 'utils';
 
-import { FlexBox, Text, Button, CheckCircles, Timer, UnderLineText } from 'components';
+import { FlexBox, Text, Button, CheckCircles, Timer } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
 const cycleUnit = 1;
@@ -20,7 +20,7 @@ export const CertItem = ({
   const nowDate = new Date();
   const certStartDate = addDays(new Date(startTime), progressCount);
   const certEndDate = addDays(new Date(startTime), progressCount + cycleUnit);
-  const parsedStartTime = parseTime(new Date(startTime));
+
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
   const handleClick = () => {
@@ -29,30 +29,29 @@ export const CertItem = ({
 
   return (
     <Wrapper>
-      <RowWrapper>
-        <UnderLineText
-          fontSize={20}
-          fontColor={themeContext.onSurface}
-          underLineColor={themeContext.primary}
-          fontWeight="bold"
-        >
+      <TitleWrapper>
+        <Text size={24} fontWeight="bold" color={themeContext.onBackground}>
           {challengeName}
-        </UnderLineText>
+        </Text>
         <CheckCircles progressCount={progressCount} />
+      </TitleWrapper>
+      <RowWrapper>
+        <Text color={themeContext.onSurface} size={16}>
+          지금까지 해당 챌린지를 총 {successCount}회 성공하셨어요.
+        </Text>
       </RowWrapper>
+      <EmojiWrapper>
+        <Text color={themeContext.onBackground} size={70}>
+          🌞
+        </Text>
+      </EmojiWrapper>
       <RowWrapper>
         <Timer certEndDate={certEndDate} />
-        <Button disabled={!isCertPossible} onClick={handleClick} size="medium">
-          {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
-        </Button>
       </RowWrapper>
       <RowWrapper>
-        <Text color={themeContext.onBackground} size={20}>
-          {parsedStartTime}부터 도전중🔥
-        </Text>
-        <Text color={themeContext.onBackground} size={20} fontWeight="bold">
-          총 {successCount}회 성공
-        </Text>
+        <Button disabled={!isCertPossible} onClick={handleClick} size="large">
+          {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
+        </Button>
       </RowWrapper>
     </Wrapper>
   );
@@ -63,17 +62,32 @@ const Wrapper = styled(FlexBox).attrs({
   gap: '1rem',
 })`
   ${({ theme }) => css`
-    padding: 1rem;
+    padding: 29px 35px;
     border: 1px solid ${theme.border};
-    border-radius: 10px;
+    border-radius: 20px;
     align-items: center;
     width: 100%;
-    min-width: 330px;
+    max-width: 440px;
+    min-width: 366px;
     background-color: ${theme.surface};
   `}
 `;
 
 const RowWrapper = styled(FlexBox).attrs({
-  alignItems: 'center',
-  gap: '1rem',
-})``;
+  justifyContent: 'center',
+  gap: '1.5rem',
+})`
+  width: 100%;
+`;
+
+const TitleWrapper = styled(FlexBox).attrs({
+  justifyContent: 'space-between',
+})`
+  width: 96%;
+`;
+
+const EmojiWrapper = styled(FlexBox).attrs({
+  justifyContent: 'center',
+})`
+  padding: 14px 0;
+`;

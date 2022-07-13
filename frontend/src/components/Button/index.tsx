@@ -3,16 +3,16 @@ import styled, { css } from 'styled-components';
 import { ButtonProps } from 'components/Button/type';
 
 const SIZES = {
-  small: { minWidth: '', height: '1.5rem', fontSize: '0.8rem' },
-  medium: { minWidth: '8rem', height: '2rem', fontSize: '1rem' },
-  large: { minWidth: '100%', height: '3rem', fontSize: '1.2rem' },
+  small: { minWidth: '50px', height: '29px', fontSize: '12px' },
+  medium: { minWidth: '149px', height: '34px', fontSize: '14px' },
+  large: { minWidth: '100%', height: '45px', fontSize: '15px' },
 };
 
 export const Button = styled.button<ButtonProps>`
   ${({ theme, size }) => css`
-  height: ${SIZES[size].height};
+    height: ${SIZES[size].height};
     min-width: ${SIZES[size].minWidth};
-    width: 'fit-content'
+    width: fit-content;
     vertical-align: middle;
     text-align: center;
     padding: 0rem 1rem;
@@ -20,7 +20,7 @@ export const Button = styled.button<ButtonProps>`
     border: none;
     cursor: pointer;
 
-    border-radius: 1rem;
+    border-radius: 7px;
     background-color: ${theme.primary};
     color: ${theme.onPrimary};
     font-size: ${SIZES[size].fontSize};

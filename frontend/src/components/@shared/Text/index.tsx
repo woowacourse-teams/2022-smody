@@ -22,4 +22,5 @@ const fontSizeMapper: Record<FontSizeType, number> = {
   32: 2,
   40: 2.5,
   48: 3,
+  70: 4.375,
 };

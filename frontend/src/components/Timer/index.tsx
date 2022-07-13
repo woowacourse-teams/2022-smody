@@ -1,18 +1,24 @@
-import { BiAlarm } from 'react-icons/bi';
+import styled from 'styled-components';
 
 import { FlexBox, Text } from 'components';
 import { TimerProps } from 'components/Timer/type';
 import { useTimer } from 'components/Timer/useTimer';
 
 export const Timer = ({ certEndDate }: TimerProps) => {
-  const { message, color } = useTimer(certEndDate);
+  const { message, messageColor, time, timeColor } = useTimer(certEndDate);
 
   return (
-    <FlexBox>
-      <BiAlarm color={color} />
-      <Text color={color} size={20}>
+    <Wrapper>
+      <Text color={messageColor} size={16}>
         {message}
       </Text>
-    </FlexBox>
+      <Text color={timeColor} fontWeight="bold" size={16}>
+        {time}
+      </Text>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled(FlexBox).attrs({
+  gap: '4px',
+})``;
