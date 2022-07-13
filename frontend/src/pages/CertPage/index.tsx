@@ -48,7 +48,6 @@ const Wrapper = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(366px, max-content));
     grid-gap: 16px;
     justify-content: center;
-    padding: initial;
     background-color: ${theme.secondary};
   `}
 `;

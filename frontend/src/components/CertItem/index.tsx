@@ -30,14 +30,14 @@ export const CertItem = ({
   return (
     <Wrapper>
       <TitleWrapper>
-        <Text size={24} fontWeight="bold" color={themeContext.onBackground}>
+        <TitleText size={24} fontWeight="bold" color={themeContext.onBackground}>
           {challengeName}
-        </Text>
+        </TitleText>
         <CheckCircles progressCount={progressCount} />
       </TitleWrapper>
       <RowWrapper>
         <Text color={themeContext.onSurface} size={16}>
-          지금까지 해당 챌린지를 총 {successCount}회 성공하셨어요.
+          해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
       </RowWrapper>
       <EmojiWrapper>
@@ -90,4 +90,11 @@ const EmojiWrapper = styled(FlexBox).attrs({
   justifyContent: 'center',
 })`
   padding: 14px 0;
+`;
+
+const TitleText = styled(Text)`
+  overflow: hidden;
+  width: 186px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
