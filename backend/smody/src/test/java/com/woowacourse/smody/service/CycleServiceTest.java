@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -53,12 +53,12 @@ public class CycleServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PASSWORD));
 
         // when
         LocalDateTime now = LocalDateTime.now();
         Long cycleId = cycleService.create(
-                new TokenPayload(member.getId(), NICKNAME),
+                new TokenPayload(member.getId()),
                 new CycleRequest(now, 1L)
         );
         CycleResponse cycleResponse = cycleService.findById(cycleId);
@@ -81,7 +81,7 @@ public class CycleServiceTest {
 
         // when then
         assertThatThrownBy(() -> cycleService.create(
-                new TokenPayload(member.getId(), NICKNAME),
+                new TokenPayload(member.getId()),
                 new CycleRequest(LocalDateTime.now(), 1L)
         )).isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
@@ -102,7 +102,7 @@ public class CycleServiceTest {
 
         // when
         Long cycleId = cycleService.create(
-                new TokenPayload(member.getId(), NICKNAME),
+                new TokenPayload(member.getId()),
                 new CycleRequest(now, challenge.getId())
         );
         CycleResponse cycleResponse = cycleService.findById(cycleId);
@@ -127,7 +127,7 @@ public class CycleServiceTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
@@ -154,7 +154,7 @@ public class CycleServiceTest {
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
@@ -177,7 +177,7 @@ public class CycleServiceTest {
     void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
         // given
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
@@ -197,7 +197,7 @@ public class CycleServiceTest {
     void increaseProgress_notExistCycle() {
         // given
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
 
         // when then
         assertThatThrownBy(() ->
@@ -211,7 +211,7 @@ public class CycleServiceTest {
     @Test
     void increaseProgress_unauthorized() {
         // given
-        TokenPayload tokenPayload = new TokenPayload(1000L, NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(1000L);
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING,
@@ -233,7 +233,7 @@ public class CycleServiceTest {
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
         Cycle inProgress1 = new Cycle(member, challenge1, Progress.NOTHING, today);
         Cycle failed1 = new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L));

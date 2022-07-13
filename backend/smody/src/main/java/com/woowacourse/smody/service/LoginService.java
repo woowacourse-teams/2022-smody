@@ -1,13 +1,10 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.auth.JwtTokenProvider;
-import com.woowacourse.smody.domain.member.Email;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,16 +19,11 @@ public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public LoginResponse login(LoginRequest loginRequest) {
-        Member member = memberRepository.findByEmail(new Email(loginRequest.getEmail()))
-                .orElseThrow(() -> new BusinessException(ExceptionData.INVALID_LOGIN));
-        checkPassword(loginRequest.getPassword(), member);
-        return new LoginResponse(member.getNickname().getValue(), createToken(member));
-    }
-
-    private void checkPassword(String password, Member member) {
-        if (!member.matchPassword(password)) {
-            throw new BusinessException(ExceptionData.INVALID_LOGIN);
-        }
+        Member member = memberRepository.findByEmail(loginRequest.getEmail())
+                .orElse(memberRepository.save(
+                        new Member(loginRequest.getEmail(), loginRequest.getName(), loginRequest.getPicture())
+                ));
+        return new LoginResponse(createToken(member));
     }
 
     private String createToken(Member member) {
