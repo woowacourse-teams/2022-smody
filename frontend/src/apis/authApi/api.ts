@@ -14,9 +14,6 @@ export const postSignUp = async ({ email, password, nickname }: AuthProps) => {
   });
 };
 
-export const postLogin = async ({ email, password }: LoginProps) => {
-  return apiClient.axios.post<PostLoginResponse>('/login', {
-    email,
-    password,
-  });
+export const postLogin = async () => {
+  return apiClient.axios.post<PostLoginResponse>('/oauth/login');
 };

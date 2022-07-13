@@ -1,11 +1,12 @@
+import { usePostLogin } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { nicknameState, isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
-import { Logo, FlexBox, LinkText, Text } from 'components';
+import { Logo, FlexBox, Text, Button } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -14,6 +15,27 @@ export const Header = () => {
   const nickname = useRecoilValue(nicknameState);
   const themeContext = useContext(ThemeContext);
   const navigate = useNavigate();
+  const setNickname = useSetRecoilState(nicknameState);
+
+  const { mutate } = usePostLogin({
+    onSuccess: ({ data: { accessToken } }) => {
+      setIsLogin(true);
+      setNickname(nickname);
+
+      authApiClient.updateAuth(accessToken);
+      navigate(CLIENT_PATH.HOME);
+    },
+    onError: () => {
+      alert('로그인 실패...');
+      throw new Error();
+    },
+  });
+
+  const handleLogin = () => {
+    console.log('로그인 버튼 눌림!!');
+    mutate();
+  };
+
   const handleLogout = () => {
     authApiClient.deleteAuth();
     setIsLogin(false);
@@ -35,9 +57,9 @@ export const Header = () => {
           </button>
         </UserWrapper>
       ) : (
-        <LinkText to="/login" size={20} color={themeContext.onPrimary}>
+        <Button size="small" onClick={handleLogin}>
           로그인
-        </LinkText>
+        </Button>
       )}
     </Wrapper>
   );
