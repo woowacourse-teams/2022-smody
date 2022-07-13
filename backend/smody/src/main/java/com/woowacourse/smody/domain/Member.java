@@ -1,4 +1,4 @@
-package com.woowacourse.smody.domain.member;
+package com.woowacourse.smody.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -23,23 +23,16 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Embedded
-    private Email email;
+    private String email;
 
-    @Embedded
-    private Password password;
+    private String nickname;
 
-    @Embedded
-    private Nickname nickname;
+    private String picture;
 
-    public Member(String email, String password, String nickname) {
-        this.email = new Email(email);
-        this.password = new Password(password);
-        this.nickname = new Nickname(nickname);
-    }
-
-    public boolean matchPassword(String password) {
-        return this.password.match(password);
+    public Member(final String email, final String nickname, final String picture) {
+        this.email = email;
+        this.nickname = nickname;
+        this.picture = picture;
     }
 
     public boolean matchId(Long id) {

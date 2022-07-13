@@ -2,9 +2,7 @@ package com.woowacourse.smody.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.smody.domain.member.Email;
-import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.domain.member.Nickname;
+import com.woowacourse.smody.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,53 +29,5 @@ public class MemberRepositoryTest {
 
         // then
         assertThat(saved).isEqualTo(member);
-    }
-
-    @DisplayName("Email이 중복임을 확인한다.")
-    @Test
-    void existsByEmail() {
-        // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
-        memberRepository.save(member);
-
-        // when
-        boolean actual = memberRepository.existsByEmail(member.getEmail());
-
-        // then
-        assertThat(actual).isTrue();
-    }
-
-    @DisplayName("Email이 중복되지 않음을 확인한다.")
-    @Test
-    void notExistsByEmail() {
-        // when
-        boolean actual = memberRepository.existsByEmail(new Email(EMAIL));
-
-        // then
-        assertThat(actual).isFalse();
-    }
-
-    @DisplayName("Nickname이 중복임을 확인한다.")
-    @Test
-    void existsByNickname() {
-        // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
-        memberRepository.save(member);
-
-        // when
-        boolean actual = memberRepository.existsByNickname(member.getNickname());
-
-        // then
-        assertThat(actual).isTrue();
-    }
-
-    @DisplayName("Nickname이 중복되지 않음을 확인한다.")
-    @Test
-    void notExistsByNickname() {
-        // when
-        boolean actual = memberRepository.existsByNickname(new Nickname(NICKNAME));
-
-        // then
-        assertThat(actual).isFalse();
     }
 }

@@ -42,8 +42,7 @@ public class JwtTokenProvider {
     public TokenPayload getPayload(String token) {
         Claims claims = parseClaimsJws(token).getBody();
         Long id = claims.get("id", Long.class);
-        String nickname = claims.get("nickname", String.class);
-        return new TokenPayload(id, nickname);
+        return new TokenPayload(id);
     }
 
     private Jws<Claims> parseClaimsJws(final String token) {

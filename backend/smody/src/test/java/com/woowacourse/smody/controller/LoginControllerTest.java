@@ -25,37 +25,12 @@ public class LoginControllerTest extends ControllerTest {
     @DisplayName("로그인이 정상적으로 되었을 때 200을 반환한다.")
     @Test
     void loin_200() throws Exception {
-        // given
-        LoginResponse loginResponse = new LoginResponse(NICKNAME, "accessToken");
-        given(loginService.login(any(LoginRequest.class)))
-                .willReturn(loginResponse);
-
-        // when
-        ResultActions result = mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new LoginRequest(EMAIL, PASSWORD))));
-
-        // then
-        result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(loginResponse)));
+        // TODO
     }
 
     @DisplayName("로그인이 정상적으로 되지않으면 401을 반환한다.")
     @Test
     void loin_401() throws Exception {
-        // given
-        given(loginService.login(any(LoginRequest.class)))
-                .willThrow(new BusinessException(ExceptionData.INVALID_LOGIN));
-
-        // when
-        ResultActions result = mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(new LoginRequest(EMAIL, "unmatchedPassword0"))));
-
-        // then
-        result.andExpect(status().isUnauthorized())
-                .andExpect(content().json(
-                        objectMapper.writeValueAsString(new ExceptionResponse(ExceptionData.INVALID_LOGIN)
-                        )));
+        // TODO
     }
 }

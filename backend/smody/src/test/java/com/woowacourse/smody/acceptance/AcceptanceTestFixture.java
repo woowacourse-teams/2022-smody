@@ -2,7 +2,6 @@ package com.woowacourse.smody.acceptance;
 
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.EmailRequest;
-import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.NicknameRequest;
 import com.woowacourse.smody.dto.SignUpRequest;
 import io.restassured.RestAssured;
@@ -37,15 +36,6 @@ public class AcceptanceTestFixture {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new NicknameRequest(nickname))
                 .when().post("/members/nicknames/checkDuplicate")
-                .then().log().all()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> 로그인(String email, String password) {
-        return RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new LoginRequest(email, password))
-                .when().post("/login")
                 .then().log().all()
                 .extract();
     }
