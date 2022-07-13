@@ -3,25 +3,25 @@ import { DefaultTheme } from 'styled-components';
 import COLOR from 'styles/color';
 
 export const lightTheme: DefaultTheme = {
-  primary: COLOR.PURPLE_500,
+  primary: COLOR.PURPLE,
   onPrimary: COLOR.WHITE,
 
-  secondary: COLOR.PURPLE_200,
+  secondary: COLOR.LIGHT_PURPLE,
   onSecondary: COLOR.WHITE,
 
   background: COLOR.WHITE,
-  onBackground: COLOR.BLACK_900,
+  onBackground: COLOR.BLACK,
 
   surface: COLOR.WHITE,
-  onSurface: COLOR.BLACK_900,
+  onSurface: COLOR.LIGHT_BLACK,
 
-  success: COLOR.GREEN_800,
+  success: COLOR.GREEN,
   onSuccess: COLOR.WHITE,
 
-  error: COLOR.RED_900,
+  error: COLOR.RED,
   onError: COLOR.WHITE,
 
-  disabled: COLOR.LIGHT_GRAY_900,
-  border: COLOR.LIGHT_GRAY_300,
-  blur: COLOR.DARK_GRAY_800,
+  disabled: COLOR.GRAY,
+  border: COLOR.LIGHT_GRAY,
+  blur: COLOR.DARK_GRAY,
 };
