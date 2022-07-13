@@ -35,20 +35,21 @@ public class CycleService {
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
         Member member = searchMember(tokenPayload);
         Challenge challenge = searchChallenge(cycleRequest);
-        if (isDuplicateInProgress(cycleRequest, member, challenge)) {
-            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
-        }
+        validateDuplicateInProgress(cycleRequest, member, challenge);
         Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, cycleRequest.getStartTime()));
         return cycle.getId();
     }
 
+    private void validateDuplicateInProgress(CycleRequest cycleRequest, Member member, Challenge challenge) {
+        if (isDuplicateInProgress(cycleRequest, member, challenge)) {
+            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+        }
+    }
+
     private boolean isDuplicateInProgress(CycleRequest cycleRequest, Member member, Challenge challenge) {
-        return cycleRepository.findAllByMemberAndChallengeAndStartTimeIsAfter(
-                        member,
-                        challenge,
-                        cycleRequest.getStartTime().minusDays(3L)
-                ).stream()
-                .anyMatch(cycle -> cycle.isInProgress(cycleRequest.getStartTime()));
+        return cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge)
+                .map(cycle -> cycle.isInProgress(cycleRequest.getStartTime()))
+                .orElse(false);
     }
 
     public CycleResponse findById(Long cycleId) {
@@ -59,31 +60,35 @@ public class CycleService {
     @Transactional
     public ProgressResponse increaseProgress(TokenPayload tokenPayload, ProgressRequest progressRequest) {
         Cycle cycle = searchCycle(progressRequest.getCycleId());
-        if (!cycle.matchMember(tokenPayload.getId())) {
-            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
-        }
+        validateAuthorizedMember(tokenPayload, cycle);
         cycle.increaseProgress(progressRequest.getProgressTime());
         return new ProgressResponse(cycle.getProgress());
     }
 
+    private void validateAuthorizedMember(TokenPayload tokenPayload, Cycle cycle) {
+        if (!cycle.matchMember(tokenPayload.getId())) {
+            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
+        }
+    }
+
     public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime) {
         Member member = searchMember(tokenPayload);
-        List<Cycle> inProgressCycles = cycleRepository.findAllByMemberAndStartTimeIsAfter(
-                        member, searchTime.minusDays(3L)
-                )
-                .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
-                .collect(toList());
-
+        List<Cycle> inProgressCycles = searchInProgressCycleByMember(searchTime, member);
         return inProgressCycles.stream()
                 .map(cycle -> new CycleResponse(cycle, calculateSuccessCount(cycle)))
                 .collect(toList());
     }
 
+    private List<Cycle> searchInProgressCycleByMember(LocalDateTime searchTime, Member member) {
+        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
+
     private int calculateSuccessCount(Cycle cycle) {
-        return cycleRepository.countByMemberAndChallengeAndProgress(
-                cycle.getMember(), cycle.getChallenge(), Progress.SUCCESS
-        ).intValue();
+        return cycleRepository.countSuccess(cycle.getMember(), cycle.getChallenge())
+                .intValue();
     }
 
     private Member searchMember(TokenPayload tokenPayload) {

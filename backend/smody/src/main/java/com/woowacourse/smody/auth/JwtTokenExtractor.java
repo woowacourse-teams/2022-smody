@@ -13,14 +13,14 @@ public class JwtTokenExtractor {
 
     public String extract(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (isBearerToken(token)) {
-            return token.substring(BEARER_TYPE.length()).trim();
-        }
-        throw new BusinessException(ExceptionData.INVALID_TOKEN);
+        validateBearerToken(token);
+        return token.substring(BEARER_TYPE.length()).trim();
     }
 
-    private boolean isBearerToken(String bearerToken) {
-        return bearerToken != null
-                && bearerToken.toLowerCase().startsWith(BEARER_TYPE.toLowerCase());
+    private void validateBearerToken(String bearerToken) {
+        if (bearerToken == null
+                || !bearerToken.toLowerCase().startsWith(BEARER_TYPE.toLowerCase())) {
+            throw new BusinessException(ExceptionData.INVALID_TOKEN);
+        }
     }
 }

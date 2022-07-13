@@ -16,11 +16,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
+    private static final String SECRET_KEY = "${security.jwt.token.secret-key}";
+    private static final String EXPIRE_LENGTH = "${security.jwt.token.expire-length}";
+
     private final SecretKey key;
     private final long validityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
-                            @Value("${security.jwt.token.expire-length}") final long validityInMilliseconds) {
+    public JwtTokenProvider(@Value(SECRET_KEY) final String secretKey,
+                            @Value(EXPIRE_LENGTH) final long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
     }
