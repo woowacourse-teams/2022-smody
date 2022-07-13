@@ -3,9 +3,11 @@ import Plus from 'assets/plus.svg';
 import Profile from 'assets/profile.svg';
 import Search from 'assets/search.svg';
 import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { ThemeContext } from 'styled-components';
+
+import useMatchPath from 'hooks/useMatchPath';
 
 import { Text, FlexBox } from 'components';
 import { NavLinkProps } from 'components/Navbar/type';
@@ -14,22 +16,15 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
   const themeContext = useContext(ThemeContext);
-  const { pathname } = useLocation();
-  const pathMatchRoute = (routes: string[]) => {
-    let matchResultColor = themeContext.disabled;
-    routes.forEach((route) => {
-      if (pathname.includes(route)) {
-        matchResultColor = themeContext.primary;
-        return;
-      }
-    });
-    return matchResultColor;
-  };
+  const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
 
-  const certColor = pathMatchRoute([CLIENT_PATH.CERT]);
-  const searchColor = pathMatchRoute([CLIENT_PATH.SEARCH, CLIENT_PATH.CHALLENGE_DETAIL]);
-  const feedColor = pathMatchRoute([CLIENT_PATH.FEED]);
-  const profileColor = pathMatchRoute([
+  const certColor = getPathMatchResult([CLIENT_PATH.CERT]);
+  const searchColor = getPathMatchResult([
+    CLIENT_PATH.SEARCH,
+    CLIENT_PATH.CHALLENGE_DETAIL,
+  ]);
+  const feedColor = getPathMatchResult([CLIENT_PATH.FEED]);
+  const profileColor = getPathMatchResult([
     CLIENT_PATH.LOGIN,
     CLIENT_PATH.SIGN_UP,
     CLIENT_PATH.PROFILE,

@@ -1,13 +1,28 @@
+import { WrapperProps } from 'Layout/type';
+import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { ThemeContext, css } from 'styled-components';
+
+import useMatchPath from 'hooks/useMatchPath';
 
 import { FlexBox, Header, Navbar } from 'components';
 
+import { CLIENT_PATH } from 'constants/path';
+
 export const Layout = () => {
+  const themeContext = useContext(ThemeContext);
+
+  const getPathMatchResult = useMatchPath(
+    themeContext.secondary,
+    themeContext.background,
+  );
+
+  const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
+
   return (
     <>
       <Header />
-      <Wrapper>
+      <Wrapper bgColor={bgColor}>
         <Outlet />
       </Wrapper>
       <Navbar />
@@ -17,6 +32,9 @@ export const Layout = () => {
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
-})`
-  margin: 6rem 4rem 7rem;
+})<WrapperProps>`
+  ${({ bgColor }) => css`
+    background-color: ${bgColor};
+    padding: 6rem 4rem 7rem;
+  `}
 `;

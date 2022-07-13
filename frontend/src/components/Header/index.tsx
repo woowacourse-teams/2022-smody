@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
+
+import useMatchPath from 'hooks/useMatchPath';
 
 import { Logo, FlexBox, LinkText } from 'components';
 import { WrapperProps } from 'components/Header/type';
@@ -13,20 +14,12 @@ import { CLIENT_PATH } from 'constants/path';
 export const Header = () => {
   const isLogin = useRecoilValue(isLoginState);
   const themeContext = useContext(ThemeContext);
-  const { pathname } = useLocation();
+  const getPathMatchResult = useMatchPath(
+    themeContext.secondary,
+    themeContext.background,
+  );
 
-  const pathMatchRoute = (routes: string[]) => {
-    let matchResultColor = themeContext.background;
-    routes.forEach((route) => {
-      if (pathname.includes(route)) {
-        matchResultColor = themeContext.secondary;
-        return;
-      }
-    });
-    return matchResultColor;
-  };
-
-  const bgColor = pathMatchRoute([CLIENT_PATH.CERT]);
+  const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
 
   return (
     <Wrapper bgColor={bgColor}>

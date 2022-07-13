@@ -1,7 +1,5 @@
 import { useGetMyCyclesInProgress, usePostCycleProgress } from 'apis/challengeApi';
-import { Cycle } from 'commonType';
-// import { cycleData } from 'mocks/data';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { FlexBox, CertItem } from 'components';
 
@@ -30,7 +28,6 @@ export const CertPage = () => {
   if (isLoading || typeof data === 'undefined') {
     return <p>로딩중...</p>;
   }
-  // const { data } = data;
 
   return (
     <Wrapper>
@@ -50,5 +47,8 @@ const Wrapper = styled(FlexBox).attrs({
   gap: '1rem',
   alignItems: 'center',
 })`
-  min-width: 330px;
+  ${({ theme }) => css`
+    min-width: 330px;
+    background-color: ${theme.secondary};
+  `}
 `;
