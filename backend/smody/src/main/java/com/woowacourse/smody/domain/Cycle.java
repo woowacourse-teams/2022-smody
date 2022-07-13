@@ -1,8 +1,7 @@
 package com.woowacourse.smody.domain;
 
 import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
+
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +48,7 @@ public class Cycle {
 
     @Builder
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
-        if (startTime.isAfter(LocalDateTime.now())) {
+        if (startTime.isAfter(LocalDateTime.now()) && progress != Progress.NOTHING) {
             throw new BusinessException(ExceptionData.INVALID_START_TIME);
         }
         this.member = member;
@@ -69,5 +71,9 @@ public class Cycle {
 
     public boolean matchChallenge(Long challengeId) {
         return challenge.matchId(challengeId);
+    }
+
+    public boolean isSuccessInToday(LocalDateTime now) {
+        return this.progress.isSuccess() && now.isBefore(this.getStartTime().plusDays(DAYS));
     }
 }

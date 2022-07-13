@@ -16,8 +16,11 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,21 +38,24 @@ public class CycleService {
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
         Member member = searchMember(tokenPayload);
         Challenge challenge = searchChallenge(cycleRequest);
-        validateDuplicateInProgress(cycleRequest, member, challenge);
-        Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, cycleRequest.getStartTime()));
-        return cycle.getId();
+        Optional<Cycle> optionalCycle = cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge);
+
+        LocalDateTime startTime = cycleRequest.getStartTime();
+        if (optionalCycle.isPresent()) {
+            startTime = calculateNewStartTime(startTime, optionalCycle.get());
+        }
+        Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
+        return save.getId();
     }
 
-    private void validateDuplicateInProgress(CycleRequest cycleRequest, Member member, Challenge challenge) {
-        if (isDuplicateInProgress(cycleRequest, member, challenge)) {
+    private LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
+        if (cycle.isInProgress(startTime)) {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }
-    }
-
-    private boolean isDuplicateInProgress(CycleRequest cycleRequest, Member member, Challenge challenge) {
-        return cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge)
-                .map(cycle -> cycle.isInProgress(cycleRequest.getStartTime()))
-                .orElse(false);
+        if (cycle.isSuccessInToday(startTime)) {
+            return cycle.getStartTime().plusDays(3L);
+        }
+        return startTime;
     }
 
     public CycleResponse findById(Long cycleId) {

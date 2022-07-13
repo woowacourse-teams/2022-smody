@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class CycleTest {
 
@@ -108,21 +109,6 @@ public class CycleTest {
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);
     }
 
-    @DisplayName("시작시간이 유효하지 않을 때 예외를 발생시킨다.")
-    @Test
-    void invalidStartTime() {
-        // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
-        Challenge challenge = new Challenge("공부");
-        LocalDateTime startTime = LocalDateTime.now().plusSeconds(1L);
-
-        // when then
-        assertThatThrownBy(() -> new Cycle(member, challenge, Progress.NOTHING, startTime))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.INVALID_START_TIME);
-    }
-
     @DisplayName("진행중인 사이클을 조회한다.")
     @ParameterizedTest
     @CsvSource(value = {
@@ -142,5 +128,20 @@ public class CycleTest {
 
         // when then
         assertThat(cycle.isInProgress(now)).isTrue();
+    }
+
+    @DisplayName("미래 시점의 사이클은 인증된 상태일 수 없다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"SUCCESS", "SECOND", "FIRST"})
+    void new_cannotMakeFuture(Progress progress) {
+        // given
+        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Challenge challenge = new Challenge("미라클 모닝");
+
+        // when then
+        assertThatThrownBy(() -> new Cycle(member, challenge, progress, LocalDateTime.now().plusSeconds(1L)))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_START_TIME);
     }
 }
