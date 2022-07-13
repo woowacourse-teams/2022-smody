@@ -1,4 +1,4 @@
-import Home from 'assets/home.svg';
+import Feed from 'assets/feed.svg';
 import Plus from 'assets/plus.svg';
 import Profile from 'assets/profile.svg';
 import Search from 'assets/search.svg';
@@ -16,21 +16,19 @@ export const Navbar = () => {
   const themeContext = useContext(ThemeContext);
   const { pathname } = useLocation();
   const pathMatchRoute = (routes: string[]) => {
-    let matchResultColor = { fill: themeContext.background, stroke: themeContext.blur };
+    let matchResultColor = themeContext.disabled;
     routes.forEach((route) => {
       if (pathname.includes(route)) {
-        matchResultColor = {
-          fill: themeContext.primary,
-          stroke: themeContext.primary,
-        };
+        matchResultColor = themeContext.primary;
+        return;
       }
     });
     return matchResultColor;
   };
 
-  const homeColor = pathMatchRoute([CLIENT_PATH.HOME]);
-  const searchColor = pathMatchRoute([CLIENT_PATH.SEARCH, CLIENT_PATH.CHALLENGE_DETAIL]);
   const certColor = pathMatchRoute([CLIENT_PATH.CERT]);
+  const searchColor = pathMatchRoute([CLIENT_PATH.SEARCH, CLIENT_PATH.CHALLENGE_DETAIL]);
+  const feedColor = pathMatchRoute([CLIENT_PATH.FEED]);
   const profileColor = pathMatchRoute([
     CLIENT_PATH.LOGIN,
     CLIENT_PATH.SIGN_UP,
@@ -42,33 +40,33 @@ export const Navbar = () => {
       <nav>
         <NavItemsContainer as="ul">
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.HOME} {...homeColor}>
-              <Home />
-              <Text size={14} color={homeColor.stroke}>
-                홈
-              </Text>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink as={Link} to={CLIENT_PATH.SEARCH} {...searchColor}>
-              <Search />
-              <Text size={14} color={searchColor.stroke}>
-                검색
-              </Text>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink as={Link} to={CLIENT_PATH.CERT} {...certColor}>
+            <NavLink as={Link} to={CLIENT_PATH.CERT} fill={certColor}>
               <Plus />
-              <Text size={14} color={certColor.stroke}>
+              <Text size={14} color={certColor}>
                 인증
               </Text>
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.LOGIN} {...profileColor}>
+            <NavLink as={Link} to={CLIENT_PATH.SEARCH} fill={searchColor}>
+              <Search />
+              <Text size={14} color={searchColor}>
+                검색
+              </Text>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink as={Link} to={CLIENT_PATH.FEED} fill={feedColor}>
+              <Feed />
+              <Text size={14} color={feedColor}>
+                피드
+              </Text>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink as={Link} to={CLIENT_PATH.LOGIN} fill={profileColor}>
               <Profile />
-              <Text size={14} color={profileColor.stroke}>
+              <Text size={14} color={profileColor}>
                 프로필
               </Text>
             </NavLink>
@@ -107,12 +105,12 @@ const NavLink = styled(FlexBox).attrs({
   alignItems: 'center',
   gap: '6px',
 })`
-  ${({ fill, stroke }: NavLinkProps) => css`
+  ${({ fill }: NavLinkProps) => css`
     cursor: pointer;
 
     & svg path {
       fill: ${fill};
-      stroke: ${stroke};
+      stroke: none;
     }
   `}
 `;

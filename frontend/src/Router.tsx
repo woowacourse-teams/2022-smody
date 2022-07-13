@@ -49,7 +49,7 @@ const Router = () => {
             <Route path={CLIENT_PATH.SIGN_UP} element={<SignUpPage />} />
           </Route>
 
-          <Route path={CLIENT_PATH.HOME} element={<Home />} />
+          <Route path={CLIENT_PATH.FEED} element={<Home />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
           <Route
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}

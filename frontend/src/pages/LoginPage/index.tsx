@@ -37,7 +37,7 @@ export const LoginPage = () => {
       setNickname(nickname);
 
       authApiClient.updateAuth(accessToken);
-      navigate(CLIENT_PATH.HOME);
+      navigate(CLIENT_PATH.CERT);
     },
     onError: () => {
       alert('로그인 실패...');
