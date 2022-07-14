@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.util.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,8 @@ public class CycleService {
     public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime, Pageable pageable) {
         Member member = searchMember(tokenPayload);
         List<Cycle> inProgressCycles = searchInProgressCycleByMember(searchTime, member);
-        List<Cycle> pagedCycles = pageCycles(inProgressCycles, pageable);
+        Collections.sort(inProgressCycles);
+        List<Cycle> pagedCycles = PagingUtil.page(inProgressCycles, pageable);
         return pagedCycles.stream()
                 .map(cycle -> new CycleResponse(cycle, calculateSuccessCount(cycle)))
                 .collect(toList());
@@ -89,18 +91,6 @@ public class CycleService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
-    }
-
-    private List<Cycle> pageCycles(List<Cycle> cycles, Pageable pageable) {
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-        int fromIndex = pageNumber * pageSize;
-
-        if (fromIndex >= cycles.size()) {
-            return Collections.emptyList();
-        }
-        Collections.sort(cycles);
-        return cycles.subList(fromIndex, Math.min(fromIndex + pageSize, cycles.size()));
     }
 
     private int calculateSuccessCount(Cycle cycle) {

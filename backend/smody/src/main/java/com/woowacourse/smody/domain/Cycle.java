@@ -86,4 +86,12 @@ public class Cycle implements Comparable<Cycle> {
         return Long.compare(this.progress.calculateEndTime(this.startTime, now),
                 other.progress.calculateEndTime(other.startTime, now));
     }
+
+    @Override
+    public String toString() {
+        return "Cycle{" +
+                "progress=" + progress +
+                ", startTime=" + startTime +
+                '}';
+    }
 }

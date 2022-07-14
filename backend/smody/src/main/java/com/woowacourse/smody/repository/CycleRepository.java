@@ -6,6 +6,8 @@ import com.woowacourse.smody.domain.member.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +31,9 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
     Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
 
     List<Cycle> findByMember(Member member);
+
+    @EntityGraph(attributePaths = "challenge")
+    @Query("select c from Cycle c where c.member = :member and c.progress = 'SUCCESS' " +
+            "order by c.startTime DESC")
+    List<Cycle> findAllSuccessLatest(Member member);
 }

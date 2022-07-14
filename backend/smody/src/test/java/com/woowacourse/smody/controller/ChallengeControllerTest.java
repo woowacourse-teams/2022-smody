@@ -9,8 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.woowacourse.smody.dto.ChallengeResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.ResultActions;
 
 class ChallengeControllerTest extends ControllerTest {
@@ -31,5 +35,27 @@ class ChallengeControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)));
+    }
+
+    @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회한다.")
+    @Test
+    void searchSuccessOfMine() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        List<SuccessChallengeResponse> successChallengeResponses = List.of(
+                new SuccessChallengeResponse(1L, "미라클 모닝", 2),
+                new SuccessChallengeResponse(2L, "오늘의 운동", 4)
+        );
+        given(challengeService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
+                .willReturn(successChallengeResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/me")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(successChallengeResponses)));
     }
 }

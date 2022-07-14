@@ -27,9 +27,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class CycleControllerTest extends ControllerTest {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
     @DisplayName("사이클을 정상적으로 생성할 때 201을 응답한다.")
     @Test
     void create_201() throws Exception {

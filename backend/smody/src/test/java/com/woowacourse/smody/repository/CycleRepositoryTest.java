@@ -9,10 +9,13 @@ import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.woowacourse.smody.dto.TokenPayload;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 class CycleRepositoryTest {
@@ -51,6 +54,6 @@ class CycleRepositoryTest {
         assertAll(
                 () -> assertThat(cycles.size()).isEqualTo(1),
                 () -> assertThat(cycles.get(0).getId()).isEqualTo(cycle1.getId())
-        );
+       );
     }
 }
