@@ -74,14 +74,13 @@ export const Navbar = () => {
 
 const Footer = styled.footer`
   ${({ theme }) => css`
-    position: fixed;
+    position: sticky;
     left: 0;
     bottom: 0;
     right: 0;
     height: 4.5rem;
     background-color: ${theme.background};
     border-top: 1px solid ${theme.border};
-    z-index: 1000;
   `}
 `;
 

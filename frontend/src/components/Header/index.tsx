@@ -40,12 +40,11 @@ const Wrapper = styled(FlexBox).attrs({
   alignItems: 'center',
 })<WrapperProps>`
   ${({ bgColor }) => css`
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
     background-color: ${bgColor};
-    z-index: 1000;
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
