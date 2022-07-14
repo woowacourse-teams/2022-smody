@@ -27,6 +27,6 @@ public class OauthService {
     }
 
     private String createToken(Member member) {
-        return jwtTokenProvider.createToken(new TokenPayload(member));
+        return jwtTokenProvider.createToken(new TokenPayload(member.getId()));
     }
 }
