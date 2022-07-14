@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class SignUpRequest {
+public class MemberResponse {
 
     private String email;
-    private String password;
     private String nickname;
+    private String picture;
 
-    public Member toMember() {
-        return new Member(email, password, nickname);
+    public MemberResponse(Member member) {
+        this.email = member.getEmail();
+        this.nickname = member.getNickname();
+        this.picture = member.getPicture();
     }
 }

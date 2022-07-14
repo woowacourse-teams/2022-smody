@@ -31,7 +31,7 @@ public class OauthServiceTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @DisplayName("이미 등록된 회원이면 로그인 성공")
+    @DisplayName("이미 등록된 회원이면 로그인에 성공한다.")
     @Test
     void login() {
         // given
@@ -46,7 +46,7 @@ public class OauthServiceTest {
         assertThat(payload.getId()).isEqualTo(member.getId());
     }
 
-    @DisplayName("등록되지 않은 회원이면 회원가입 후 로그인 성공")
+    @DisplayName("등록되지 않은 회원이면 회원가입 후 로그인에 성공한다.")
     @Test
     void login_enroll() {
         // given
