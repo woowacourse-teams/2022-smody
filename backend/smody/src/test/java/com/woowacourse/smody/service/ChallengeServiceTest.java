@@ -2,8 +2,8 @@ package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.ChallengeResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -205,9 +205,9 @@ class ChallengeServiceTest {
     @Test
     void findAllWithChallengerCount_sort() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);

@@ -6,16 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CycleServiceTest {
 
     private static final String EMAIL = "alpha@naver.com";
-    private static final String PASSWORD = "abcde12345";
     private static final String NICKNAME = "손수건";
+    private static final String PICTURE = "사진";
 
     @Autowired
     private CycleService cycleService;
@@ -53,7 +51,7 @@ public class CycleServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PASSWORD));
+        Member member = memberRepository.save(new Member(EMAIL, PICTURE, NICKNAME));
 
         // when
         LocalDateTime now = LocalDateTime.now();
@@ -75,7 +73,7 @@ public class CycleServiceTest {
     @Test
     void create_duplicateInProgressChallenge() {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now()));
 
@@ -94,7 +92,7 @@ public class CycleServiceTest {
     void create_alreadySuccessChallenge() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
 
         Cycle cycle = cycleRepository.save(new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(2L)));
@@ -126,7 +124,7 @@ public class CycleServiceTest {
     })
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
@@ -153,7 +151,7 @@ public class CycleServiceTest {
     })
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
@@ -176,7 +174,7 @@ public class CycleServiceTest {
     })
     void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
         Cycle cycle = new Cycle(member, challenge, progress,
@@ -196,7 +194,7 @@ public class CycleServiceTest {
     @Test
     void increaseProgress_notExistCycle() {
         // given
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         TokenPayload tokenPayload = new TokenPayload(member.getId());
 
         // when then
@@ -213,7 +211,7 @@ public class CycleServiceTest {
         // given
         TokenPayload tokenPayload = new TokenPayload(1000L);
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
         cycleRepository.save(cycle);
@@ -232,7 +230,7 @@ public class CycleServiceTest {
         // given
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         TokenPayload tokenPayload = new TokenPayload(member.getId());
         LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
         Cycle inProgress1 = new Cycle(member, challenge1, Progress.NOTHING, today);
@@ -243,7 +241,8 @@ public class CycleServiceTest {
         Cycle success2 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L));
         Cycle success3 = new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L));
         Cycle future = new Cycle(member, challenge1, Progress.NOTHING, today.plusSeconds(1L));
-        cycleRepository.saveAll(List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3, future));
+        cycleRepository.saveAll(
+                List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3, future));
 
         // when
         List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
@@ -270,7 +269,7 @@ public class CycleServiceTest {
     void findById() {
         // given
         Challenge challenge = challengeRepository.findById(1L).orElseThrow();
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
         Cycle inProgress = new Cycle(member, challenge, Progress.NOTHING, today);
         Cycle failed1 = new Cycle(member, challenge, Progress.FIRST, today.minusDays(3L));
@@ -296,7 +295,7 @@ public class CycleServiceTest {
     @DisplayName("미래 시점의 사이클은 현재 시점으로 인증 불가")
     @Test
     void progress_future_time() {
-        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
         Challenge challenge = challengeRepository.findById(1L).get();
         LocalDateTime testTime = LocalDateTime.now();
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, testTime.plusSeconds(1L));

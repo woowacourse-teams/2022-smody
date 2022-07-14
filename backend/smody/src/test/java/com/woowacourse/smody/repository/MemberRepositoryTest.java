@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 public class MemberRepositoryTest {
 
     private static final String EMAIL = "alpha@naver.com";
-    private static final String PASSWORD = "abcde12345";
     private static final String NICKNAME = "손수건";
+    private static final String PICTURE = "사진";
 
     @Autowired
     private MemberRepository memberRepository;
@@ -22,7 +22,7 @@ public class MemberRepositoryTest {
     @Test
     void save() {
         // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
 
         // when
         Member saved = memberRepository.save(member);
