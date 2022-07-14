@@ -17,5 +17,5 @@ export const usePostSignUp = (
   );
 
 export const usePostLogin = (
-  options?: UseMutationOptions<AxiosResponse<PostLoginResponse>, AxiosError>,
-) => useMutation<AxiosResponse<PostLoginResponse>, AxiosError>(postLogin, options);
+  options?: UseMutationOptions<AxiosResponse<string>, AxiosError>,
+) => useMutation<AxiosResponse<string>, AxiosError>(postLogin, options);

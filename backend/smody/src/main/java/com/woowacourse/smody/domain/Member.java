@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_member", columnNames = {"email", "nickname"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_member", columnNames = "email")})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member {

@@ -30,15 +30,15 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
-    onSuccess: ({ data: { nickname, accessToken } }) => {
-      alert(`반갑습니다, ${nickname}님!`);
-
-      setIsLogin(true);
-      setNickname(nickname);
-
-      authApiClient.updateAuth(accessToken);
-      navigate(CLIENT_PATH.HOME);
-    },
+    // onSuccess: ({ data: { nickname, accessToken } }) => {
+    //   alert(`반갑습니다, ${nickname}님!`);
+    //
+    //   setIsLogin(true);
+    //   setNickname(nickname);
+    //
+    //   authApiClient.updateAuth(accessToken);
+    //   navigate(CLIENT_PATH.HOME);
+    // },
     onError: () => {
       alert('로그인 실패...');
       throw new Error();

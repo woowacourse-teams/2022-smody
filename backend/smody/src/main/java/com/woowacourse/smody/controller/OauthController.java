@@ -9,7 +9,6 @@ import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,23 +23,19 @@ public class OauthController {
 
     private static final String CLIENT_ID = "671293991399-in1m6ggna174bmmvjti10rjg4o85o609.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "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";
-    private static final String GOOGLE_LOGIN_LINK = "https://accounts.google.com/o/oauth2/v2/auth";
-    private static final String CALLBACK_URI = "http://localhost:8080/oauth/callback";
+    private static final String GOOGLE_LOGIN_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_REQUEST_URI = "https://oauth2.googleapis.com/token";
 
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public ResponseEntity<Void> login() {
-        String location = GOOGLE_LOGIN_LINK + "?"
+    public ResponseEntity<String> login() {
+        String googleLoginUri = GOOGLE_LOGIN_URL + "?"
                 + "client_id=" + CLIENT_ID + "&"
-                + "redirect_uri=" + CALLBACK_URI + "&"
                 + "response_type=" + "code" + "&"
                 + "scope=" + "https://www.googleapis.com/auth/userinfo.profile"
                 + " https://www.googleapis.com/auth/userinfo.email";
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header("Location", location)
-                .build();
+        return ResponseEntity.ok(googleLoginUri);
     }
 
     @GetMapping("/callback")
@@ -51,8 +46,9 @@ public class OauthController {
 
         // access token 구글에 요청
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
-                code, CLIENT_ID, CLIENT_SECRET, CALLBACK_URI, "authorization_code"
+                code, CLIENT_ID, CLIENT_SECRET, "http://localhost:3000/home", "authorization_code"
         );
+
         GoogleOauthResponse googleOauthResponse =
                 new RestTemplate().postForObject(
                         GOOGLE_TOKEN_REQUEST_URI,
