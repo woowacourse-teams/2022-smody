@@ -13,33 +13,43 @@ export const ChallengeItem = ({
   const themeContext = useContext(ThemeContext);
 
   return (
-    <Link to={`/challenge/detail/${challengeId}`} state={{ challengeName }}>
-      <Wrapper>
-        <ChallengeInfoWrapper>
-          <ThumbnailWrapper size="small" bgColor="#FED6D6">
-            🌞
-          </ThumbnailWrapper>
-          <ChallengeNameWrapper>
-            <Text color={themeContext.onSurface} size={16}>
-              {challengeName}
-            </Text>
-            <Text color={themeContext.mainText} size={12}>
-              {challengerCount}명 도전중
-            </Text>
-          </ChallengeNameWrapper>
-        </ChallengeInfoWrapper>
-        <Button size="small" isActive={false}>
-          도전
-        </Button>
-      </Wrapper>
-    </Link>
+    <Wrapper>
+      <div>
+        <Link to={`/challenge/detail/${challengeId}`} state={{ challengeName }}>
+          <ChallengeInfoWrapper>
+            <ThumbnailWrapper size="small" bgColor="#FED6D6">
+              🌞
+            </ThumbnailWrapper>
+            <ChallengeNameWrapper>
+              <Text color={themeContext.onSurface} size={16}>
+                {challengeName}
+              </Text>
+              <Text color={themeContext.mainText} size={12}>
+                {challengerCount}명 도전중
+              </Text>
+            </ChallengeNameWrapper>
+          </ChallengeInfoWrapper>
+        </Link>
+      </div>
+      <Button size="small" isActive={false}>
+        도전
+      </Button>
+    </Wrapper>
   );
 };
 
 const Wrapper = styled(FlexBox).attrs({
   justifyContent: 'space-between',
   alignItems: 'center',
-})``;
+})`
+  div {
+    flex-grow: 1;
+  }
+
+  ${Button} {
+    flex-grow: 0;
+  }
+`;
 
 const ChallengeInfoWrapper = styled(FlexBox).attrs({
   gap: '17px',
