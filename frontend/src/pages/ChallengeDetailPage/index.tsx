@@ -1,8 +1,9 @@
-import { usePostCycle } from 'apis/challengeApi';
 import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+
+import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
 import {
   ChallengeExplanationTextProps,
@@ -11,7 +12,6 @@ import {
 
 import { FlexBox, Text, FixedButton, ThumbnailWrapper } from 'components';
 
-import { TIMEZONE_OFFSET } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
 const challengerCount = 10;
@@ -27,15 +27,6 @@ export const ChallengeDetailPage = () => {
   const location = useLocation();
   const state = location.state as RouteChallengeDetailState;
 
-  const { mutate } = usePostCycle({
-    onSuccess: () => {
-      console.log('챌린지 참여 성공!!');
-      navigate(CLIENT_PATH.CERT);
-    },
-    onError: () => {
-      console.log('챌린지 참여 실패...');
-    },
-  });
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
 
@@ -44,24 +35,17 @@ export const ChallengeDetailPage = () => {
   }
 
   const backToPreviousPage = () => {
-    navigate(-1);
+    navigate(CLIENT_PATH.SEARCH);
   };
 
-  const handleClickParticipate = () => {
-    const date = new Date();
-    date.setHours(date.getHours() + TIMEZONE_OFFSET);
-
-    const [startTime, _] = date.toISOString().split('.');
-
-    mutate({ startTime, challengeId: Number(challengeId) });
-  };
+  const { joinChallenge } = usePostJoinChallenge(Number(challengeId));
 
   // TODO: 챌린지 상세 조회 API 만들어서 리팩토링하기
   return (
     <Wrapper>
       <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
-        <MdArrowBackIosNew size={32} />
-        <Text fontWeight="bold" size={32} color={themeContext.onBackground}>
+        <MdArrowBackIosNew size={24} />
+        <Text fontWeight="bold" size={24} color={themeContext.onBackground}>
           {state.challengeName}
         </Text>
         <div />
@@ -79,7 +63,7 @@ export const ChallengeDetailPage = () => {
           🎁
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FixedButton size="large" onClick={handleClickParticipate}>
+      <FixedButton size="large" onClick={joinChallenge}>
         도전하기
       </FixedButton>
     </Wrapper>

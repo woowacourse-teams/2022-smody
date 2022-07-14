@@ -25,4 +25,6 @@ export const lightTheme: DefaultTheme = {
   border: COLOR.LIGHT_GRAY,
   blur: COLOR.DARK_GRAY,
   mainText: COLOR.GRAY,
+
+  backdrop: COLOR.OPAQUE_BLACK,
 };

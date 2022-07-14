@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
+import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
@@ -9,8 +11,14 @@ export const ChallengeItem = ({
   challengeId,
   challengeName,
   challengerCount,
+  challengeListRefetch,
 }: ChallengeItemProps) => {
   const themeContext = useContext(ThemeContext);
+  const { joinChallenge } = usePostJoinChallenge(
+    Number(challengeId),
+    false,
+    challengeListRefetch,
+  );
 
   return (
     <Wrapper>
@@ -31,7 +39,7 @@ export const ChallengeItem = ({
           </ChallengeInfoWrapper>
         </Link>
       </div>
-      <Button size="small" isActive={false}>
+      <Button onClick={joinChallenge} size="small" isActive={false}>
         도전
       </Button>
     </Wrapper>

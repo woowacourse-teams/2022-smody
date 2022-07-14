@@ -13,6 +13,8 @@ const COLOR = {
 
   RED: '#da1b1b',
   GREEN: '#2E7D32',
+
+  OPAQUE_BLACK: 'rgba(0, 0, 0, 0.4)',
 } as const;
 
 export default COLOR;

@@ -2,7 +2,7 @@ import { ThumbnailWrapper } from 'components/ThumbnailWrapper';
 import { ThumbnailWrapperProps } from 'components/ThumbnailWrapper/type';
 
 export default {
-  title: 'Components/ThumbnailWrapper',
+  title: 'components/ThumbnailWrapper',
   component: ThumbnailWrapper,
 };
 

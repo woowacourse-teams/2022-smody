@@ -1,5 +1,5 @@
 import { Cycle } from 'commonType';
 
-export interface CertItemProps extends Omit<Cycle, 'challengeId'> {
+export interface CertItemProps extends Cycle {
   handleClickCertification: (cycleId: number) => void;
 }

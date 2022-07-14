@@ -1,14 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
+import { SuccessModal } from 'components/SuccessModal';
 
 const cycleUnit = 1;
 
 export const CertItem = ({
   cycleId,
+  challengeId,
   challengeName,
   progressCount,
   startTime,
@@ -23,8 +25,15 @@ export const CertItem = ({
 
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
   const handleClick = () => {
     handleClickCertification(cycleId);
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsSuccessModalOpen(false);
   };
 
   return (
@@ -51,6 +60,14 @@ export const CertItem = ({
           {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
         </Button>
       </RowWrapper>
+      {isSuccessModalOpen && (
+        <SuccessModal
+          handleCloseModal={handleCloseModal}
+          challengeId={challengeId}
+          challengeName={challengeName}
+          successCount={successCount}
+        />
+      )}
     </Wrapper>
   );
 };
@@ -82,12 +99,6 @@ const TitleWrapper = styled(FlexBox).attrs({
   justifyContent: 'space-between',
 })`
   width: 96%;
-`;
-
-const EmojiWrapper = styled(FlexBox).attrs({
-  justifyContent: 'center',
-})`
-  padding: 14px 0;
 `;
 
 const TitleText = styled(Text)`
