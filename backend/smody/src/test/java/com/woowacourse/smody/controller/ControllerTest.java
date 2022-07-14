@@ -5,7 +5,6 @@ import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.service.ChallengeService;
 import com.woowacourse.smody.service.CycleService;
-import com.woowacourse.smody.service.LoginService;
 import com.woowacourse.smody.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest({
         MemberController.class,
-        LoginController.class,
         CycleController.class,
         ChallengeController.class
 })
@@ -30,9 +28,6 @@ public class ControllerTest {
 
     @Autowired
     protected JwtTokenProvider jwtTokenProvider;
-
-    @MockBean
-    protected LoginService loginService;
 
     @MockBean
     protected MemberService memberService;

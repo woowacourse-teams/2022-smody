@@ -8,11 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.dto.ChallengeResponse;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -42,11 +41,11 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void searchSuccessOfMine() throws Exception {
         // given
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         List<SuccessChallengeResponse> successChallengeResponses = List.of(
                 new SuccessChallengeResponse(1L, "미라클 모닝", 2),
                 new SuccessChallengeResponse(2L, "오늘의 운동", 1)
-        ) ;
+        );
 
         given(challengeService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
                 .willReturn(successChallengeResponses);
@@ -64,6 +63,7 @@ class ChallengeControllerTest extends ControllerTest {
     @DisplayName("챌린지 하나를 조회할 때 200을 응답한다.")
     @Test
     void findOneWithChallengerCount() throws Exception {
+        // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "공부", 3);
         given(challengeService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))

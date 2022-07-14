@@ -1,29 +1,26 @@
 package com.woowacourse.smody.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.dto.ChallengeResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 @Transactional
@@ -45,15 +42,15 @@ class ChallengeServiceTest {
     @Test
     void searchSuccessOfMine() {
         // given
-        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member = new Member("alpha@naver.com", "손수건", "사진");
         memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), member.getNickname().getValue());
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
         Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
         Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0,0,0);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
         cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
         cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
@@ -79,7 +76,8 @@ class ChallengeServiceTest {
                         .containsExactly(2, 1, 1, 3, 1),
                 () -> assertThat(responses)
                         .map(SuccessChallengeResponse::getChallengeId)
-                        .containsExactly(challenge2.getId(), challenge1.getId(), challenge3.getId(), challenge4.getId(), challenge5.getId())
+                        .containsExactly(challenge2.getId(), challenge1.getId(), challenge3.getId(), challenge4.getId(),
+                                challenge5.getId())
         );
     }
 
@@ -87,15 +85,15 @@ class ChallengeServiceTest {
     @Test
     void searchSuccessOfMine_pageFullSize() {
         // given
-        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member = new Member("alpha@naver.com", "손수건", "사진");
         memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), member.getNickname().getValue());
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
         Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
         Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0,0,0);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
         cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
         cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
@@ -129,15 +127,15 @@ class ChallengeServiceTest {
     @Test
     void searchSuccessOfMine_pagePartialSize() {
         // given
-        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member = new Member("alpha@naver.com", "손수건", "사진");
         memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), member.getNickname().getValue());
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
         Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
         Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0,0,0);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
         cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
         cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
@@ -171,15 +169,15 @@ class ChallengeServiceTest {
     @Test
     void searchSuccessOfMine_pageOverMaxPage() {
         // given
-        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member = new Member("alpha@naver.com", "손수건", "사진");
         memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId(), member.getNickname().getValue());
+        TokenPayload tokenPayload = new TokenPayload(member.getId());
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
         Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
         Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0,0,0);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
         cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
         cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
         cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
@@ -205,9 +203,9 @@ class ChallengeServiceTest {
     @Test
     void findAllWithChallengerCount_sort() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);
@@ -239,9 +237,9 @@ class ChallengeServiceTest {
     @Test
     void findAllWithChallengerCount_pageFullSize() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);
@@ -273,9 +271,9 @@ class ChallengeServiceTest {
     @Test
     void findAllWithChallengerCount_pagePartialSize() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);
@@ -307,9 +305,9 @@ class ChallengeServiceTest {
     @Test
     void findAllWithChallengerCount_pageOverMaxPage() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
         Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);
@@ -335,9 +333,9 @@ class ChallengeServiceTest {
     @Test
     void findOneWithChallengerCount() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
+        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
+        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
         Challenge challenge = challengeRepository.findById(2L).orElseThrow();
         memberRepository.save(member1);
         memberRepository.save(member2);

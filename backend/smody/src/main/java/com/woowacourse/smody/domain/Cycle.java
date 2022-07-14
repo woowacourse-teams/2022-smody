@@ -1,7 +1,7 @@
 package com.woowacourse.smody.domain;
 
-import com.woowacourse.smody.domain.member.Member;
-
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -85,13 +82,5 @@ public class Cycle implements Comparable<Cycle> {
         LocalDateTime now = LocalDateTime.now();
         return Long.compare(this.progress.calculateEndTime(this.startTime, now),
                 other.progress.calculateEndTime(other.startTime, now));
-    }
-
-    @Override
-    public String toString() {
-        return "Cycle{" +
-                "progress=" + progress +
-                ", startTime=" + startTime +
-                '}';
     }
 }

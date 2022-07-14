@@ -2,17 +2,13 @@ package com.woowacourse.smody.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,11 +18,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class CycleTest {
 
     private static final String EMAIL = "alpha@naver.com";
-    private static final String PASSWORD = "abcde12345";
     private static final String NICKNAME = "손수건";
+    private static final String PICTURE = "사진";
 
     private static final Cycle.CycleBuilder cycleBuilder = Cycle.builder()
-            .member(new Member(EMAIL, PASSWORD, NICKNAME))
+            .member(new Member(EMAIL, NICKNAME, PICTURE))
             .challenge(new Challenge("미라클 모닝"));
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
@@ -141,7 +137,7 @@ public class CycleTest {
     @ValueSource(strings = {"SUCCESS", "SECOND", "FIRST"})
     void new_cannotMakeFuture(Progress progress) {
         // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
         Challenge challenge = new Challenge("미라클 모닝");
 
         // when then
@@ -155,7 +151,7 @@ public class CycleTest {
     @Test
     void sort_cycle() {
         // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
         Challenge challenge = new Challenge("미라클 모닝");
         Cycle inProgress1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusHours(43L));
         Cycle inProgress2 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
@@ -164,7 +160,8 @@ public class CycleTest {
         Cycle proceed2 = new Cycle(member, challenge, Progress.SECOND, LocalDateTime.now().minusHours(36L));
         Cycle failed = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(120));
         Cycle success = new Cycle(member, challenge, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
-        List<Cycle> cycles = new ArrayList<>(List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
+        List<Cycle> cycles = new ArrayList<>(
+                List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
 
         // when
         Collections.sort(cycles);
