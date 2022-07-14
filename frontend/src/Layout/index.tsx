@@ -34,6 +34,7 @@ const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
 })<WrapperProps>`
   ${({ bgColor }) => css`
+    height: 100vh;
     background-color: ${bgColor};
 
     /* PC (해상도 1024px)*/
