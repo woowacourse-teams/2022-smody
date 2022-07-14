@@ -8,19 +8,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.ProgressResponse;
+import com.woowacourse.smody.dto.StatResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -117,8 +120,8 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void findAllInProgressOfMine_200() throws Exception {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진");
+        Member member2 = new Member("beta@naver.com", "손수건", "사진");
         Challenge challenge1 = new Challenge("공부");
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         List<CycleResponse> cycleResponses = List.of(
@@ -142,7 +145,7 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void findById_200() throws Exception {
         // given
-        Member member = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member = new Member("alpha@naver.com", "손수건", "사진");
         Challenge challenge = new Challenge("공부");
         CycleResponse cycleResponse = new CycleResponse(
                 new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now())
@@ -178,7 +181,7 @@ public class CycleControllerTest extends ControllerTest {
     @Test
     void searchStat() throws Exception {
         // given
-        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         StatResponse statResponse = new StatResponse(35, 5);
         given(cycleService.searchStat(any(TokenPayload.class)))
                 .willReturn(statResponse);

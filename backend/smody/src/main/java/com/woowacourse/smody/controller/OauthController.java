@@ -64,20 +64,17 @@ public class OauthController {
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
                 code, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, GRANT_TYPE
         );
-        GoogleTokenResponse googleTokenResponse = new RestTemplate()
-                .postForObject(
+        return new RestTemplate().postForObject(
                         GOOGLE_TOKEN_REQUEST_URI,
                         googleTokenRequest,
                         GoogleTokenResponse.class
                 );
-        return googleTokenResponse;
     }
 
     private LoginRequest parseMemberInfo(final GoogleTokenResponse googleTokenResponse) {
         byte[] tokenPayload = Base64.getDecoder()
                 .decode(googleTokenResponse.getId_token().split("\\.")[1]);
         JSONObject jsonObject = new JSONObject(new String(tokenPayload));
-        LoginRequest loginRequest = new LoginRequest(jsonObject);
-        return loginRequest;
+        return new LoginRequest(jsonObject);
     }
 }
