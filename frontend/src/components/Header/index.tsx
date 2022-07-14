@@ -19,19 +19,7 @@ export const Header = () => {
 
   const { mutate } = usePostLogin({
     onSuccess: (data) => {
-      console.log(data.data);
       window.location.href = data.data + '&redirect_uri=http://localhost:3000/home'
-
-      // window.location.
-
-      // const { }
-      // console.log("로그인 응답 데이터 : ", data);
-      // window.location.href = data + '&redirect_uri=http://localhost:3000/'
-      // setIsLogin(true);
-      // setNickname(nickname);
-      //
-      // authApiClient.updateAuth(accessToken);
-      // navigate(CLIENT_PATH.HOME);
     },
     onError: () => {
       alert('로그인 실패...');
