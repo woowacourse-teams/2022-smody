@@ -28,7 +28,7 @@ public class OauthController {
 
     private final LoginService loginService;
 
-    @GetMapping("/login")
+    @GetMapping("/link/google")
     public ResponseEntity<String> login() {
         String googleLoginUri = GOOGLE_LOGIN_URL + "?"
                 + "client_id=" + CLIENT_ID + "&"
@@ -38,7 +38,7 @@ public class OauthController {
         return ResponseEntity.ok(googleLoginUri);
     }
 
-    @GetMapping("/callback")
+    @GetMapping("/login/google")
     public ResponseEntity<LoginResponse> callBack(@RequestParam String code) {
         if (Objects.isNull(code)) {
             throw new IllegalStateException("Google 로그인이 실패했습니다.");
