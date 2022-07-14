@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class GoogleOauthResponse {
+public class GoogleTokenResponse {
 
     private String access_token;
     private String scope;
