@@ -8,11 +8,7 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
@@ -21,13 +17,16 @@ import com.woowacourse.smody.repository.MemberRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -247,7 +246,8 @@ public class CycleServiceTest {
         cycleRepository.saveAll(List.of(inProgress1, inProgress2, failed1, failed2, success1, success2, success3, future));
 
         // when
-        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(tokenPayload, today);
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+                tokenPayload, today, PageRequest.of(0, 10));
 
         // then
         assertAll(
@@ -293,7 +293,7 @@ public class CycleServiceTest {
         );
     }
 
-    @DisplayName("미래 시점의 사이클은 현재 시점으로 인증할 수 없다.")
+    @DisplayName("미래 시점의 사이클은 현재 시점으로 인증 불가")
     @Test
     void progress_future_time() {
         Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
@@ -305,5 +305,164 @@ public class CycleServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
+    }
+
+    @DisplayName("나의 모든 진행 중인 사이클을 남은 인증 시간 기준으로 오름차순 정렬")
+    @Test
+    void findAllInProgress_sort() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        LocalDateTime today = LocalDateTime.now();
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+        // when
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+                tokenPayload, today, PageRequest.of(0, 10));
+
+        // then
+        assertThat(actual)
+                .map(CycleResponse::getCycleId)
+                .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId(),
+                        proceed2.getId(), proceed1.getId());
+    }
+
+    @DisplayName("나의 모든 진행 중인 사이클을 0페이지부터 3개만 조회")
+    @Test
+    void findAllInProgress_pagingFullSize() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        LocalDateTime today = LocalDateTime.now();
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+
+        // when
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+                tokenPayload, today, PageRequest.of(0, 3));
+
+        // then
+        assertThat(actual)
+                .map(CycleResponse::getCycleId)
+                .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId());
+    }
+
+    @DisplayName("나의 모든 진행 중인 사이클을 1페이지부터 2개만 조회")
+    @Test
+    void findAllInProgress_pagingPartialSize() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        LocalDateTime today = LocalDateTime.now();
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+        // when
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+                tokenPayload, today, PageRequest.of(1, 3));
+
+        // then
+        assertThat(actual)
+                .map(CycleResponse::getCycleId)
+                .containsExactly(proceed2.getId(), proceed1.getId());
+    }
+
+    @DisplayName("나의 모든 진행 중인 사이클을 최대 페이지를 초과하여 조회")
+    @Test
+    void findAllInProgress_pagingOverMaxPage() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        LocalDateTime today = LocalDateTime.now();
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+        // when
+        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+                tokenPayload, today, PageRequest.of(2, 3));
+
+        // then
+        assertThat(actual).isEmpty();
+    }
+
+    @DisplayName("나의 모든 사이클 갯수와 성공 사이클 갯수 조회")
+    @Test
+    void searchStat() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+        // when
+        StatResponse response = cycleService.searchStat(tokenPayload);
+
+        // then
+        assertAll(
+                () -> assertThat(response.getTotalCount()).isEqualTo(7),
+                () -> assertThat(response.getSuccessCount()).isEqualTo(1)
+        );
     }
 }

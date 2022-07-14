@@ -28,6 +28,9 @@ public class ControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
+    @Autowired
+    protected JwtTokenProvider jwtTokenProvider;
+
     @MockBean
     protected LoginService loginService;
 
