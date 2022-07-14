@@ -1,8 +1,8 @@
-import { Button } from 'components/Button';
-import { ButtonProps } from 'components/Button/type';
+import { Button } from 'components/@shared/Button';
+import { ButtonProps } from 'components/@shared/Button/type';
 
 export default {
-  title: 'Components/Button',
+  title: '@shared/Button',
   component: Button,
 };
 

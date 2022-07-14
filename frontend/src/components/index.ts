@@ -1,7 +1,7 @@
 export * from 'components/@shared/Text';
 export * from 'components/@shared/FlexBox';
+export * from 'components/@shared/Button';
 export * from 'components/AuthInput';
-export * from 'components/Button';
 export * from 'components/LinkText';
 export * from 'components/Logo';
 export * from 'components/ValidationMessage';
@@ -15,3 +15,4 @@ export * from 'components/Timer';
 export * from 'components/UnderLineText';
 export * from 'components/ErrorBoundary';
 export * from 'components/ThumbnailWrapper';
+export * from 'components/FixedButton';

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { ButtonProps } from 'components/Button/type';
+import { ButtonProps } from 'components/@shared/Button/type';
 
 const SIZES = {
   small: { minWidth: '50px', height: '29px', fontSize: '12px' },
