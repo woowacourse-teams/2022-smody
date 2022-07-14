@@ -15,11 +15,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class CycleTest {
 
     private static final String EMAIL = "alpha@naver.com";
-    private static final String PASSWORD = "abcde12345";
     private static final String NICKNAME = "손수건";
+    private static final String PICTURE = "사진";
 
     private static final Cycle.CycleBuilder cycleBuilder = Cycle.builder()
-            .member(new Member(EMAIL, PASSWORD, NICKNAME))
+            .member(new Member(EMAIL, NICKNAME, PICTURE))
             .challenge(new Challenge("미라클 모닝"));
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
@@ -134,7 +134,7 @@ public class CycleTest {
     @ValueSource(strings = {"SUCCESS", "SECOND", "FIRST"})
     void new_cannotMakeFuture(Progress progress) {
         // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
         Challenge challenge = new Challenge("미라클 모닝");
 
         // when then

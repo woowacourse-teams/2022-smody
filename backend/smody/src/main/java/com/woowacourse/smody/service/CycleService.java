@@ -4,8 +4,8 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.ProgressRequest;
@@ -16,11 +16,9 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +36,8 @@ public class CycleService {
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
         Member member = searchMember(tokenPayload);
         Challenge challenge = searchChallenge(cycleRequest);
-        Optional<Cycle> optionalCycle = cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge);
+        Optional<Cycle> optionalCycle =
+                cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge);
 
         LocalDateTime startTime = cycleRequest.getStartTime();
         if (optionalCycle.isPresent()) {

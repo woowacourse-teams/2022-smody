@@ -25,7 +25,10 @@ public class ChallengeService {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
         return challengeRepository.findAll()
                 .stream()
-                .map(challenge -> new ChallengeResponse(challenge, calculateCountByChallenge(inProgressCycles, challenge)))
+                .map(challenge -> new ChallengeResponse(
+                        challenge,
+                        calculateCountByChallenge(inProgressCycles, challenge)
+                ))
                 .collect(toList());
     }
 

@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ class CycleRepositoryTest {
     @Test
     void findAllByStartTimeIsAfter() {
         // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member1 = new Member("alpha@naver.com", "손수건", "사진");
         Challenge challenge1 = new Challenge("공부");
         Challenge challenge2 = new Challenge("운동");
         memberRepository.save(member1);

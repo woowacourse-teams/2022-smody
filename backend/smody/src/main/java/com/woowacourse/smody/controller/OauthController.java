@@ -6,7 +6,7 @@ import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.service.LoginService;
+import com.woowacourse.smody.service.OauthService;
 import java.util.Base64;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +34,10 @@ public class OauthController {
     @Value("${oauth.google.client-secret}")
     private String CLIENT_SECRET;
 
-    private final LoginService loginService;
+    private final OauthService oauthService;
 
     @GetMapping("/link/google")
-    public ResponseEntity<String> login() {
+    public ResponseEntity<String> linkGoogle() {
         String googleLoginUri = GOOGLE_LOGIN_URL + "?"
                 + "client_id=" + CLIENT_ID + "&"
                 + "response_type=" + "code" + "&"
@@ -47,11 +47,17 @@ public class OauthController {
     }
 
     @GetMapping("/login/google")
-    public ResponseEntity<LoginResponse> callBack(@RequestParam String code) {
+    public ResponseEntity<LoginResponse> loginGoogle(@RequestParam String code) {
         validateAuthorizationCode(code);
         GoogleTokenResponse googleTokenResponse = requestGoogleToken(code);
-        LoginResponse loginResponse = loginService.login(parseMemberInfo(googleTokenResponse));
+        LoginResponse loginResponse = oauthService.login(parseMemberInfo(googleTokenResponse));
         return ResponseEntity.ok(loginResponse);
+    }
+
+    private void validateAuthorizationCode(final String code) {
+        if (Objects.isNull(code)) {
+            throw new BusinessException(ExceptionData.INVALID_AUTHORIZATION_CODE);
+        }
     }
 
     private GoogleTokenResponse requestGoogleToken(final String code) {
@@ -73,11 +79,5 @@ public class OauthController {
         JSONObject jsonObject = new JSONObject(new String(tokenPayload));
         LoginRequest loginRequest = new LoginRequest(jsonObject);
         return loginRequest;
-    }
-
-    private void validateAuthorizationCode(final String code) {
-        if (Objects.isNull(code)) {
-            throw new BusinessException(ExceptionData.INVALID_AUTHORIZATION_CODE);
-        }
     }
 }
