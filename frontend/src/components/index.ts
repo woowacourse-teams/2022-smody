@@ -16,3 +16,5 @@ export * from 'components/UnderLineText';
 export * from 'components/ErrorBoundary';
 export * from 'components/ThumbnailWrapper';
 export * from 'components/FixedButton';
+export * from 'components/CertAuth';
+export * from 'components/CertUnAuth';
