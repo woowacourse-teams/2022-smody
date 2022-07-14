@@ -23,5 +23,8 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
             + "c.challenge = :challenge and c.progress = 'SUCCESS'")
     Long countSuccess(@Param("member") Member member, @Param("challenge") Challenge challenge);
 
-    Optional<Cycle> findTopByMemberAndChallengeOrderByStartTimeDesc(Member member, Challenge challenge);
+    @Query(value = "select * from cycle c where c.member_id = :memberId and c.challenge_id = :challengeId " +
+            "order by c.start_time DESC limit 1",
+            nativeQuery = true)
+    Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
 }

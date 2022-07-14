@@ -11,6 +11,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +42,10 @@ public class CycleController {
         return ResponseEntity.ok(progressResponse);
     }
 
-    @GetMapping(value = "/me", params = "status=inProgress")
-    public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload) {
-        return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload, LocalDateTime.now()));
+    @GetMapping(value = "/me")
+    public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
+                                                                       Pageable pageable) {
+        return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
     }
 
     @GetMapping("/{cycleId}")

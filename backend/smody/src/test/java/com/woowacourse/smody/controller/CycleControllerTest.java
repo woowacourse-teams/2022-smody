@@ -25,6 +25,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -131,11 +132,12 @@ public class CycleControllerTest extends ControllerTest {
                 new CycleResponse(new Cycle(member1, challenge1, Progress.NOTHING, LocalDateTime.now())),
                 new CycleResponse(new Cycle(member2, challenge1, Progress.NOTHING, LocalDateTime.now()))
         );
-        given(cycleService.findAllInProgressOfMine(any(TokenPayload.class), any(LocalDateTime.class)))
+        given(cycleService.findAllInProgressOfMine(
+                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)))
                 .willReturn(cycleResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/cycles/me?status=inProgress")
+        ResultActions result = mockMvc.perform(get("/cycles/me")
                 .header("Authorization", "Bearer " + token));
 
         // then

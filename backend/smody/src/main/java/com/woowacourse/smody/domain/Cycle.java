@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Cycle {
+public class Cycle implements Comparable<Cycle> {
 
     public static final long DAYS = 3L;
 
@@ -75,5 +75,12 @@ public class Cycle {
 
     public boolean isSuccessInToday(LocalDateTime now) {
         return this.progress.isSuccess() && now.isBefore(this.getStartTime().plusDays(DAYS));
+    }
+
+    @Override
+    public int compareTo(Cycle other) {
+        LocalDateTime now = LocalDateTime.now();
+        return Long.compare(this.progress.calculateEndTime(this.startTime, now),
+                other.progress.calculateEndTime(other.startTime, now));
     }
 }

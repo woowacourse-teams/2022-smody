@@ -2,11 +2,17 @@ package com.woowacourse.smody.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -143,5 +149,28 @@ public class CycleTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_START_TIME);
+    }
+
+    @DisplayName("사이클을 남은 인증 시간 별 오름차순으로 정렬한다.")
+    @Test
+    void sort_cycle() {
+        // given
+        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
+        Challenge challenge = new Challenge("미라클 모닝");
+        Cycle inProgress1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        List<Cycle> cycles = new ArrayList<>(List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
+
+        // when
+        Collections.sort(cycles);
+
+        // then
+        assertThat(cycles)
+                .containsExactly(success, failed, inProgress1, inProgress2, inProgress3, proceed2, proceed1);
     }
 }

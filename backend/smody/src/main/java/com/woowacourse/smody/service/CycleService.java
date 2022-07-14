@@ -18,10 +18,12 @@ import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +40,7 @@ public class CycleService {
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
         Member member = searchMember(tokenPayload);
         Challenge challenge = searchChallenge(cycleRequest);
-        Optional<Cycle> optionalCycle = cycleRepository.findTopByMemberAndChallengeOrderByStartTimeDesc(member, challenge);
+        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member, challenge);
 
         LocalDateTime startTime = cycleRequest.getStartTime();
         if (optionalCycle.isPresent()) {
@@ -77,12 +79,25 @@ public class CycleService {
         }
     }
 
-    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime) {
+    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime, Pageable pageable) {
         Member member = searchMember(tokenPayload);
         List<Cycle> inProgressCycles = searchInProgressCycleByMember(searchTime, member);
-        return inProgressCycles.stream()
+        List<Cycle> pagedCycles = pageCycles(inProgressCycles, pageable);
+        return pagedCycles.stream()
                 .map(cycle -> new CycleResponse(cycle, calculateSuccessCount(cycle)))
                 .collect(toList());
+    }
+
+    private List<Cycle> pageCycles(List<Cycle> cycles, Pageable pageable) {
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+        int fromIndex = pageNumber * pageSize;
+
+        if (fromIndex >= cycles.size()) {
+            return Collections.emptyList();
+        }
+        Collections.sort(cycles);
+        return cycles.subList(fromIndex, Math.min(fromIndex + pageSize, cycles.size()));
     }
 
     private List<Cycle> searchInProgressCycleByMember(LocalDateTime searchTime, Member member) {
