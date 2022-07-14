@@ -20,7 +20,7 @@ public class LoginService {
 
     public LoginResponse login(LoginRequest loginRequest) {
         Member member = memberRepository.findByEmail(loginRequest.getEmail())
-                .orElse(memberRepository.save(
+                .orElseGet(() -> memberRepository.save(
                         new Member(loginRequest.getEmail(), loginRequest.getName(), loginRequest.getPicture())
                 ));
         return new LoginResponse(createToken(member));
