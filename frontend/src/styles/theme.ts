@@ -7,7 +7,7 @@ export const lightTheme: DefaultTheme = {
   onPrimary: COLOR.WHITE,
 
   secondary: COLOR.LIGHT_PURPLE,
-  onSecondary: COLOR.WHITE,
+  onSecondary: COLOR.DARK_PURPLE,
 
   background: COLOR.WHITE,
   onBackground: COLOR.BLACK,
@@ -24,4 +24,5 @@ export const lightTheme: DefaultTheme = {
   disabled: COLOR.GRAY,
   border: COLOR.LIGHT_GRAY,
   blur: COLOR.DARK_GRAY,
+  mainText: COLOR.GRAY,
 };

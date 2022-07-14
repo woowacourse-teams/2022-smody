@@ -26,7 +26,7 @@ export const ChallengeList = () => {
               challengeName={challengeName}
               challengerCount={challengerCount}
             />
-            <Line />
+            {/* <Line /> */}
           </li>
         ),
       )}
@@ -36,6 +36,7 @@ export const ChallengeList = () => {
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
+  gap: '27px',
 })``;
 
 const Line = styled.hr`

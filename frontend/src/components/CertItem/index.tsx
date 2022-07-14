@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 
-import { FlexBox, Text, Button, CheckCircles, Timer } from 'components';
+import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
 const cycleUnit = 1;
@@ -40,11 +40,9 @@ export const CertItem = ({
           해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
       </RowWrapper>
-      <EmojiWrapper>
-        <Text color={themeContext.onBackground} size={70}>
-          🌞
-        </Text>
-      </EmojiWrapper>
+      <ThumbnailWrapper size="large" bgColor="transparent">
+        🌞
+      </ThumbnailWrapper>
       <RowWrapper>
         <Timer certEndDate={certEndDate} />
       </RowWrapper>

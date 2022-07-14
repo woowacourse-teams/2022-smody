@@ -45,7 +45,6 @@ const Wrapper = styled(FlexBox).attrs({
     left: 0;
     right: 0;
     background-color: ${bgColor};
-    padding: 1.5rem 1.25rem 1rem;
     z-index: 1000;
 
     /* PC (해상도 1024px)*/

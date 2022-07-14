@@ -9,7 +9,7 @@ const SIZES = {
 };
 
 export const Button = styled.button<ButtonProps>`
-  ${({ theme, size }) => css`
+  ${({ theme, size, isActive = true }) => css`
     height: ${SIZES[size].height};
     min-width: ${SIZES[size].minWidth};
     width: fit-content;
@@ -21,8 +21,16 @@ export const Button = styled.button<ButtonProps>`
     cursor: pointer;
 
     border-radius: 7px;
-    background-color: ${theme.primary};
-    color: ${theme.onPrimary};
+    ${isActive
+      ? css`
+          background-color: ${theme.primary};
+          color: ${theme.onPrimary};
+        `
+      : css`
+          background-color: ${theme.secondary};
+          color: ${theme.onSecondary};
+        `}
+
     font-size: ${SIZES[size].fontSize};
 
     &:disabled {

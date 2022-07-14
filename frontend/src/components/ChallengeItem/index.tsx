@@ -1,10 +1,8 @@
 import { useContext } from 'react';
-import { AiFillFlag } from 'react-icons/ai';
-import { GrNext } from 'react-icons/gr';
 import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
-import { Text, FlexBox } from 'components';
+import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
 export const ChallengeItem = ({
@@ -17,31 +15,38 @@ export const ChallengeItem = ({
   return (
     <Link to={`/challenge/detail/${challengeId}`} state={{ challengeName }}>
       <Wrapper>
-        <ChallengeNameWrapper>
-          <AiFillFlag />
-          <Text color={themeContext.onSurface} size={16} fontWeight="bold">
-            {challengeName}
-          </Text>
-        </ChallengeNameWrapper>
-        <Text color={themeContext.onSurface} size={16}>
-          {challengerCount}명 도전중 🔥
-        </Text>
-        <GrNext size="1rem" color={themeContext.onSurface} />
+        <ChallengeInfoWrapper>
+          <ThumbnailWrapper size="small" bgColor="#FED6D6">
+            🌞
+          </ThumbnailWrapper>
+          <ChallengeNameWrapper>
+            <Text color={themeContext.onSurface} size={16}>
+              {challengeName}
+            </Text>
+            <Text color={themeContext.mainText} size={12}>
+              {challengerCount}명 도전중
+            </Text>
+          </ChallengeNameWrapper>
+        </ChallengeInfoWrapper>
+        <Button size="small" isActive={false}>
+          도전
+        </Button>
       </Wrapper>
     </Link>
   );
 };
 
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: minmax(9.4rem, 2rem) minmax(9.4rem, auto) 1.5rem;
-  padding: 1.25rem 0;
-  &:active {
-    background-color: 'gray';
-  }
-`;
+const Wrapper = styled(FlexBox).attrs({
+  justifyContent: 'space-between',
+  alignItems: 'center',
+})``;
+
+const ChallengeInfoWrapper = styled(FlexBox).attrs({
+  gap: '17px',
+  alignItems: 'center',
+})``;
 
 const ChallengeNameWrapper = styled(FlexBox).attrs({
-  gap: '10px',
-  alignItems: 'center',
+  flexDirection: 'column',
+  gap: '3px',
 })``;
