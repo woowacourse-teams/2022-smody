@@ -22,8 +22,8 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount() {
-        return ResponseEntity.ok(challengeService.findAllWithChallengerCount(LocalDateTime.now()));
+    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(Pageable pageable) {
+        return ResponseEntity.ok(challengeService.findAllWithChallengerCount(LocalDateTime.now(), pageable));
     }
 
     @GetMapping(value = "/me")

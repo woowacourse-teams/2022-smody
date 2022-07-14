@@ -17,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,39 +40,6 @@ class ChallengeServiceTest {
 
     @Autowired
     private CycleRepository cycleRepository;
-
-    @DisplayName("모든 챌린지를 조회")
-    @Test
-    void findAllWithChallengerCount() {
-        // given
-        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
-        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
-        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-
-        // when
-        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(today);
-
-        // then
-        assertAll(
-                () -> assertThat(challengeResponses.size()).isEqualTo(3),
-                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
-                        .containsAll(List.of("스모디 방문하기", "오늘의 운동", "미라클 모닝")),
-                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
-                        .containsAll(List.of(1, 2, 0))
-        );
-    }
 
     @DisplayName("성공한 챌린지를 조회")
     @Test
@@ -230,5 +199,141 @@ class ChallengeServiceTest {
 
         // then
         assertThat(responses).isEmpty();
+    }
+
+    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬")
+    @Test
+    void findAllWithChallengerCount_sort() {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
+        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
+        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
+
+        // when
+        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                today, PageRequest.of(0, 10));
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponses.size()).isEqualTo(3),
+                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
+                        .containsExactly("미라클 모닝", "스모디 방문하기", "오늘의 운동"),
+                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                        .containsExactly(2, 1, 0)
+        );
+    }
+
+    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 0페이지의 2개만 조회")
+    @Test
+    void findAllWithChallengerCount_pageFullSize() {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
+        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
+        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
+
+        // when
+        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                today, PageRequest.of(0, 2));
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
+                        .containsExactly("미라클 모닝", "스모디 방문하기"),
+                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                        .containsExactly(2, 1)
+        );
+    }
+
+    @PersistenceContext
+    EntityManager em;
+
+    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 1페이지의 1개만 조회")
+    @Test
+    void findAllWithChallengerCount_pagePartialSize() {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
+        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
+        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
+
+        em.flush();
+        em.clear();
+        System.out.println("############################");
+        // when
+        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                today, PageRequest.of(1, 2));
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponses.size()).isEqualTo(1),
+                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
+                        .containsExactly("오늘의 운동"),
+                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                        .containsExactly(0)
+        );
+    }
+
+    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 최대 페이지를 초과한 페이지 조회")
+    @Test
+    void findAllWithChallengerCount_pageOverMaxPage() {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
+        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
+        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
+        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
+
+        // when
+        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                today, PageRequest.of(2, 2));
+
+        // then
+        assertThat(challengeResponses).isEmpty();
     }
 }

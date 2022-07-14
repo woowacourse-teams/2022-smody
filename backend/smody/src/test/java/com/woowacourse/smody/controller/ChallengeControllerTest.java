@@ -26,7 +26,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeResponse(1L, "공부", 3),
                 new ChallengeResponse(2L, "운동", 5)
         );
-        given(challengeService.findAllWithChallengerCount(any(LocalDateTime.class)))
+        given(challengeService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
                 .willReturn(challengeResponses);
 
         // when

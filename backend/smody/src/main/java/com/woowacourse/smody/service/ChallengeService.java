@@ -32,12 +32,14 @@ public class ChallengeService {
     private final CycleRepository cycleRepository;
     private final MemberRepository memberRepository;
 
-    public List<ChallengeResponse> findAllWithChallengerCount(LocalDateTime searchTime) {
+    public List<ChallengeResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable) {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
-        return challengeRepository.findAll()
+        List<ChallengeResponse> responses = challengeRepository.findAll()
                 .stream()
                 .map(challenge -> new ChallengeResponse(challenge, calculateCountByChallenge(inProgressCycles, challenge)))
+                .sorted((response1, response2) -> Integer.compare(response2.getChallengerCount(), response1.getChallengerCount()))
                 .collect(toList());
+        return PagingUtil.page(responses, pageable);
     }
 
     private List<Cycle> searchInProgressCycles(LocalDateTime searchTime) {
