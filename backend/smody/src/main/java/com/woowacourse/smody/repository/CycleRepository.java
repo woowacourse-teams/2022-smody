@@ -27,4 +27,6 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
             "order by c.start_time DESC limit 1",
             nativeQuery = true)
     Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
+
+    List<Cycle> findByMember(Member member);
 }

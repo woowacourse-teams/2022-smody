@@ -8,11 +8,7 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
@@ -437,5 +433,36 @@ public class CycleServiceTest {
 
         // then
         assertThat(actual).isEmpty();
+    }
+
+    @DisplayName("나의 모든 사이클 갯수와 성공 사이클 갯수 조회")
+    @Test
+    void searchStat() {
+        // given
+        Member member = memberRepository.save(new Member(EMAIL, PASSWORD, NICKNAME));
+        TokenPayload tokenPayload = new TokenPayload(member.getId(), NICKNAME);
+        Challenge challenge1 = challengeRepository.findById(1L).get();
+        Challenge challenge2 = challengeRepository.findById(2L).get();
+        Challenge challenge3 = challengeRepository.findById(3L).get();
+        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
+        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
+        Cycle inProgress1 = new Cycle(member, challenge1, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge2, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge3, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge4, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge5, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge1, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge1, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        cycleRepository.saveAll(List.of(
+                inProgress1, inProgress2, inProgress3, failed, success, proceed1, proceed2));
+
+        // when
+        StatResponse response = cycleService.searchStat(tokenPayload);
+
+        // then
+        assertAll(
+                () -> assertThat(response.getTotalCount()).isEqualTo(7),
+                () -> assertThat(response.getSuccessCount()).isEqualTo(1)
+        );
     }
 }

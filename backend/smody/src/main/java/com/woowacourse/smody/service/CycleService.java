@@ -6,11 +6,7 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
@@ -54,7 +50,7 @@ public class CycleService {
         if (cycle.isInProgress(startTime)) {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }
-        if (cycle.isSuccessInToday(startTime)) {
+        if (cycle.isSuccess() && cycle.isInDays(startTime)) {
             return cycle.getStartTime().plusDays(Cycle.DAYS);
         }
         return startTime;
@@ -88,6 +84,13 @@ public class CycleService {
                 .collect(toList());
     }
 
+    private List<Cycle> searchInProgressCycleByMember(LocalDateTime searchTime, Member member) {
+        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
+
     private List<Cycle> pageCycles(List<Cycle> cycles, Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
@@ -100,16 +103,18 @@ public class CycleService {
         return cycles.subList(fromIndex, Math.min(fromIndex + pageSize, cycles.size()));
     }
 
-    private List<Cycle> searchInProgressCycleByMember(LocalDateTime searchTime, Member member) {
-        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
-                .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
-                .collect(toList());
-    }
-
     private int calculateSuccessCount(Cycle cycle) {
         return cycleRepository.countSuccess(cycle.getMember(), cycle.getChallenge())
                 .intValue();
+    }
+
+    public StatResponse searchStat(TokenPayload tokenPayload) {
+        Member member = searchMember(tokenPayload);
+        List<Cycle> cycles = cycleRepository.findByMember(member);
+        int successCount = (int) cycles.stream()
+                .filter(Cycle::isSuccess)
+                .count();
+        return new StatResponse(cycles.size(), successCount);
     }
 
     private Member searchMember(TokenPayload tokenPayload) {

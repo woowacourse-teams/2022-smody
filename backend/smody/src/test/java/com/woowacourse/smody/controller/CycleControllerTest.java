@@ -13,11 +13,7 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.domain.member.Member;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -179,5 +175,24 @@ public class CycleControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isNotFound());
+    }
+
+    @DisplayName("나의 전체 사이클 수와 성공 사이클 수를 조회한다.")
+    @Test
+    void searchStat() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
+        StatResponse statResponse = new StatResponse(35, 5);
+        given(cycleService.searchStat(any(TokenPayload.class)))
+                .willReturn(statResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/me/stat")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(statResponse)));
     }
 }
