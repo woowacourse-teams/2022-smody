@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,15 +38,16 @@ class ChallengeControllerTest extends ControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)));
     }
 
-    @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회한다.")
+    @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회 시 200을 응답한다.")
     @Test
     void searchSuccessOfMine() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L, "손수건"));
         List<SuccessChallengeResponse> successChallengeResponses = List.of(
                 new SuccessChallengeResponse(1L, "미라클 모닝", 2),
-                new SuccessChallengeResponse(2L, "오늘의 운동", 4)
-        );
+                new SuccessChallengeResponse(2L, "오늘의 운동", 1)
+        ) ;
+
         given(challengeService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
                 .willReturn(successChallengeResponses);
 
@@ -57,5 +59,21 @@ class ChallengeControllerTest extends ControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(content().json(
                         objectMapper.writeValueAsString(successChallengeResponses)));
+    }
+
+    @DisplayName("챌린지 하나를 조회할 때 200을 응답한다.")
+    @Test
+    void findOneWithChallengerCount() throws Exception {
+        ChallengeResponse challengeResponse =
+                new ChallengeResponse(1L, "공부", 3);
+        given(challengeService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+                .willReturn(challengeResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/1"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)));
     }
 }

@@ -269,9 +269,6 @@ class ChallengeServiceTest {
         );
     }
 
-    @PersistenceContext
-    EntityManager em;
-
     @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 1페이지의 1개만 조회")
     @Test
     void findAllWithChallengerCount_pagePartialSize() {
@@ -292,9 +289,6 @@ class ChallengeServiceTest {
         cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
         cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
 
-        em.flush();
-        em.clear();
-        System.out.println("############################");
         // when
         List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
                 today, PageRequest.of(1, 2));
@@ -335,5 +329,31 @@ class ChallengeServiceTest {
 
         // then
         assertThat(challengeResponses).isEmpty();
+    }
+
+    @DisplayName("하나의 챌린지를 상세 조회")
+    @Test
+    void findOneWithChallengerCount() {
+        // given
+        Member member1 = new Member("alpha@naver.com", "abcde12345", "손수건");
+        Member member2 = new Member("beta@naver.com", "abcde67890", "냅킨");
+        Member member3 = new Member("gamma@naver.com", "fghij67890", "티슈");
+        Challenge challenge = challengeRepository.findById(2L).orElseThrow();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
+        cycleRepository.save(new Cycle(member1, challenge, Progress.NOTHING, today));
+        cycleRepository.save(new Cycle(member2, challenge, Progress.FIRST, today.minusDays(1L)));
+        cycleRepository.save(new Cycle(member3, challenge, Progress.SUCCESS, today.minusDays(3L)));
+
+        // when
+        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(today, challenge.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
+                () -> assertThat(challengeResponse.getChallengeName()).isEqualTo(challenge.getName())
+        );
     }
 }

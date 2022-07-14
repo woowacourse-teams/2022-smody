@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +31,10 @@ public class ChallengeController {
     public ResponseEntity<List<SuccessChallengeResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  Pageable pageable) {
         return ResponseEntity.ok(challengeService.searchSuccessOfMine(tokenPayload, pageable));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@PathVariable Long id) {
+        return ResponseEntity.ok(challengeService.findOneWithChallengerCount(LocalDateTime.now(), id));
     }
 }

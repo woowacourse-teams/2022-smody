@@ -78,7 +78,7 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("닉네임 중복검사 요청과 응답이 정상적으로 동작한다.")
+    @DisplayName("닉네임 중복검사를 통과 시 200을 응답한다.")
     @Test
     void checkDuplicatedNickname_200() throws Exception {
         // when
@@ -90,7 +90,7 @@ class MemberControllerTest extends ControllerTest {
         result.andExpect(status().isOk());
     }
 
-    @DisplayName("닉네임 중복검사 요청과 응답이 정상적으로 동작한다.")
+    @DisplayName("닉네임 중복검사를 통과하지 못할 시 400을 응답한다.")
     @Test
     void checkDuplicatedNickname_400() throws Exception {
         // given

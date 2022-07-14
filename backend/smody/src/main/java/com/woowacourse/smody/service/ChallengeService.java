@@ -36,8 +36,9 @@ public class ChallengeService {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
         List<ChallengeResponse> responses = challengeRepository.findAll()
                 .stream()
-                .map(challenge -> new ChallengeResponse(challenge, calculateCountByChallenge(inProgressCycles, challenge)))
-                .sorted((response1, response2) -> Integer.compare(response2.getChallengerCount(), response1.getChallengerCount()))
+                .map(challenge -> new ChallengeResponse(challenge, countByChallenge(inProgressCycles, challenge)))
+                .sorted((response1, response2) ->
+                        Integer.compare(response2.getChallengerCount(), response1.getChallengerCount()))
                 .collect(toList());
         return PagingUtil.page(responses, pageable);
     }
@@ -49,7 +50,7 @@ public class ChallengeService {
                 .collect(toList());
     }
 
-    private int calculateCountByChallenge(List<Cycle> cycles, Challenge challenge) {
+    private int countByChallenge(List<Cycle> cycles, Challenge challenge) {
         return (int) cycles.stream()
                 .filter(cycle -> cycle.matchChallenge(challenge.getId()))
                 .count();
@@ -79,5 +80,17 @@ public class ChallengeService {
     private Member searchMember(TokenPayload tokenPayload) {
         return memberRepository.findById(tokenPayload.getId())
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
+    }
+
+    public ChallengeResponse findOneWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
+        List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
+        Challenge challenge = searchChallenge(challengeId);
+        int count = countByChallenge(inProgressCycles, challenge);
+        return new ChallengeResponse(challenge, count);
+    }
+
+    private Challenge searchChallenge(Long challengeId) {
+        return challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 }

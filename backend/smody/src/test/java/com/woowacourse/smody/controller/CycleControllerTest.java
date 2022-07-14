@@ -174,7 +174,7 @@ public class CycleControllerTest extends ControllerTest {
         result.andExpect(status().isNotFound());
     }
 
-    @DisplayName("나의 전체 사이클 수와 성공 사이클 수를 조회한다.")
+    @DisplayName("나의 전체 사이클 수와 성공 사이클 수를 조회 시 200을 응답한다.")
     @Test
     void searchStat() throws Exception {
         // given
