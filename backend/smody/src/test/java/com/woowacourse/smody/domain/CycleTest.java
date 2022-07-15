@@ -8,6 +8,7 @@ import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -164,7 +165,7 @@ public class CycleTest {
                 List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
 
         // when
-        Collections.sort(cycles);
+        cycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(LocalDateTime.now())));
 
         // then
         assertThat(cycles)
