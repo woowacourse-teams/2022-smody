@@ -8,17 +8,23 @@ import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 @SuppressWarnings("NonAsciiCharacters")
 public class ResourceFixture {
 
     private final MemberRepository memberRepository;
     private final ChallengeRepository challengeRepository;
     private final CycleRepository cycleRepository;
+
+    public ResourceFixture(final MemberRepository memberRepository,
+                           final ChallengeRepository challengeRepository,
+                           final CycleRepository cycleRepository) {
+        this.memberRepository = memberRepository;
+        this.challengeRepository = challengeRepository;
+        this.cycleRepository = cycleRepository;
+    }
 
     public static Long 조조그린_ID = 1L;
     public static Long 더즈_ID = 2L;
