@@ -24,7 +24,7 @@ export const Header = () => {
 
   const { mutate } = usePostLogin({
     onSuccess: (data) => {
-      window.location.href = data.data + '&redirect_uri=http://localhost:3000/home';
+      window.location.href = data.data + '&redirect_uri=http://localhost:3000/cert';
     },
     onError: () => {
       alert('로그인 실패...');
