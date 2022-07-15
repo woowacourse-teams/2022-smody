@@ -7,7 +7,6 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -21,10 +20,10 @@ public class CycleTest {
     private static final String EMAIL = "alpha@naver.com";
     private static final String NICKNAME = "손수건";
     private static final String PICTURE = "사진";
+    private static final Member member = new Member(EMAIL, NICKNAME, PICTURE);
+    private static final Challenge challenge = new Challenge("미라클 모닝");
 
-    private static final Cycle.CycleBuilder cycleBuilder = Cycle.builder()
-            .member(new Member(EMAIL, NICKNAME, PICTURE))
-            .challenge(new Challenge("미라클 모닝"));
+    private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0,0, 0);
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
     @ParameterizedTest
@@ -38,10 +37,7 @@ public class CycleTest {
     })
     void increaseProgress(Progress progress, LocalDateTime progressTime, Progress expected) {
         // given
-        Cycle cycle = cycleBuilder
-                .progress(progress)
-                .startTime(LocalDateTime.of(2022, 1, 1, 0, 0))
-                .build();
+        Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when
         cycle.increaseProgress(progressTime);
@@ -62,10 +58,7 @@ public class CycleTest {
     })
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
-        Cycle cycle = cycleBuilder
-                .progress(progress)
-                .startTime(LocalDateTime.of(2022, 1, 1, 0, 0))
-                .build();
+        Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when then
         assertThatThrownBy(() -> cycle.increaseProgress(invalidTime))
@@ -82,10 +75,7 @@ public class CycleTest {
     })
     void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
         // given
-        Cycle cycle = cycleBuilder
-                .progress(progress)
-                .startTime(LocalDateTime.of(2022, 1, 1, 0, 0))
-                .build();
+        Cycle cycle = new Cycle(member, challenge, progress, now);
 
         cycle.increaseProgress(progressTime);
 
@@ -100,13 +90,10 @@ public class CycleTest {
     @Test
     void increaseProgress_alreadySuccess() {
         // given
-        Cycle cycle = cycleBuilder
-                .progress(Progress.SUCCESS)
-                .startTime(LocalDateTime.now())
-                .build();
+        Cycle cycle = new Cycle(member, challenge, Progress.SUCCESS, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(LocalDateTime.now()))
+        assertThatThrownBy(() -> cycle.increaseProgress(now))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);
@@ -124,10 +111,7 @@ public class CycleTest {
     })
     void isInProgress(Progress progress, LocalDateTime now) {
         // given
-        LocalDateTime startTime = LocalDateTime.of(2022, 1, 1, 0, 0);
-        Cycle cycle = cycleBuilder.progress(progress)
-                .startTime(startTime)
-                .build();
+        Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when then
         assertThat(cycle.isInProgress(now)).isTrue();
@@ -137,10 +121,6 @@ public class CycleTest {
     @ParameterizedTest
     @ValueSource(strings = {"SUCCESS", "SECOND", "FIRST"})
     void new_cannotMakeFuture(Progress progress) {
-        // given
-        Member member = new Member(EMAIL, NICKNAME, PICTURE);
-        Challenge challenge = new Challenge("미라클 모닝");
-
         // when then
         assertThatThrownBy(() -> new Cycle(member, challenge, progress, LocalDateTime.now().plusSeconds(1L)))
                 .isInstanceOf(BusinessException.class)
@@ -152,8 +132,6 @@ public class CycleTest {
     @Test
     void sort_cycle() {
         // given
-        Member member = new Member(EMAIL, NICKNAME, PICTURE);
-        Challenge challenge = new Challenge("미라클 모닝");
         Cycle inProgress1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusHours(43L));
         Cycle inProgress2 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
         Cycle inProgress3 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());

@@ -35,5 +35,5 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
     @EntityGraph(attributePaths = "challenge")
     @Query("select c from Cycle c where c.member = :member and c.progress = 'SUCCESS' " +
             "order by c.startTime DESC")
-    List<Cycle> findAllSuccessLatest(Member member);
+    List<Cycle> findAllSuccessLatest(@Param("member") Member member);
 }

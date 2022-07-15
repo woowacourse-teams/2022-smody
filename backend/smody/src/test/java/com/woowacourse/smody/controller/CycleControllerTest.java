@@ -129,8 +129,8 @@ public class CycleControllerTest extends ControllerTest {
                 new CycleResponse(new Cycle(member2, challenge1, Progress.NOTHING, LocalDateTime.now()))
         );
         given(cycleService.findAllInProgressOfMine(
-                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)))
-                .willReturn(cycleResponses);
+                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
+        )).willReturn(cycleResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/cycles/me")

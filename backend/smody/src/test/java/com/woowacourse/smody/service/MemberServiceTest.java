@@ -1,9 +1,11 @@
 package com.woowacourse.smody.service;
 
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -20,31 +22,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MemberServiceTest {
 
-    private static final String EMAIL = "alpha@naver.com";
-    private static final String NICKNAME = "손수건";
-    private static final String PICTURE = "사진";
-
     @Autowired
     private MemberService memberService;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private ResourceFixture fixture;
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
     @Test
     void searchMyInfo() {
-        // given
-        Member member = memberRepository.save(new Member(EMAIL, NICKNAME, PICTURE));
-
         // when
-        MemberResponse memberResponse = memberService.searchMyInfo(
-                new TokenPayload(member.getId()));
+        Member member = fixture.회원_조회(조조그린_ID);
+        MemberResponse memberResponse = memberService.searchMyInfo(new TokenPayload(조조그린_ID));
 
         // then
         assertAll(
-                () -> assertThat(memberResponse.getEmail()).isEqualTo(EMAIL),
-                () -> assertThat(memberResponse.getNickname()).isEqualTo(NICKNAME),
-                () -> assertThat(memberResponse.getPicture()).isEqualTo(PICTURE)
+                () -> assertThat(memberResponse.getEmail()).isEqualTo(member.getEmail()),
+                () -> assertThat(memberResponse.getNickname()).isEqualTo(member.getNickname()),
+                () -> assertThat(memberResponse.getPicture()).isEqualTo(member.getPicture())
         );
     }
 
@@ -52,7 +47,7 @@ public class MemberServiceTest {
     @Test
     void searchMyInfo_notExist() {
         // when then
-        assertThatThrownBy(() -> memberService.searchMyInfo(new TokenPayload(100L)))
+        assertThatThrownBy(() -> memberService.searchMyInfo(new TokenPayload(Long.MAX_VALUE)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);

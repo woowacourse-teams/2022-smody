@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +42,6 @@ public class Cycle {
 
     private LocalDateTime startTime;
 
-    @Builder
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
         if (startTime.isAfter(LocalDateTime.now()) && progress != Progress.NOTHING) {
             throw new BusinessException(ExceptionData.INVALID_START_TIME);
@@ -75,7 +73,7 @@ public class Cycle {
     }
 
     public boolean isInDays(LocalDateTime now) {
-         return now.isBefore(this.getStartTime().plusDays(DAYS));
+        return now.isBefore(this.getStartTime().plusDays(DAYS));
     }
 
     public long calculateEndTime(LocalDateTime searchTime) {

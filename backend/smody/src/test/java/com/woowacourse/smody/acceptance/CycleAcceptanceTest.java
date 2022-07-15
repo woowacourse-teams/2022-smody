@@ -1,6 +1,6 @@
 package com.woowacourse.smody.acceptance;
 
-import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_생성;
+import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_생성_요청;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -24,7 +24,7 @@ public class CycleAcceptanceTest extends AcceptanceTest {
         String token = 로그인_혹은_회원가입(new Member(EMAIL, NICKNAME, PICTURE));
 
         // when
-        ExtractableResponse<Response> response = 사이클_생성(token, LocalDateTime.now(), 1L);
+        ExtractableResponse<Response> response = 사이클_생성_요청(token, LocalDateTime.now(), 1L);
 
         // then
         assertAll(
