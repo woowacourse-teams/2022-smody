@@ -1,3 +1,4 @@
+import { usePostLogin } from 'apis';
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
@@ -6,7 +7,7 @@ import styled, { ThemeContext, css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
 
-import { Logo, FlexBox, LinkText } from 'components';
+import { Logo, FlexBox, Button } from 'components';
 import { WrapperProps } from 'components/Header/type';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -21,15 +22,30 @@ export const Header = () => {
 
   const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
 
+  const { mutate } = usePostLogin({
+    onSuccess: (data) => {
+      window.location.href = data.data + '&redirect_uri=http://localhost:3000/home';
+    },
+    onError: () => {
+      alert('로그인 실패...');
+      throw new Error();
+    },
+  });
+
+  const handleLogin = () => {
+    console.log('로그인 버튼 눌림!!');
+    mutate();
+  };
+
   return (
     <Wrapper bgColor={bgColor}>
       <Logo width="100" color={themeContext.primary} />
       {isLogin ? (
         <FaBell size={20} color={themeContext.primary} />
       ) : (
-        <LinkText to="/login" size={20} color={themeContext.primary}>
+        <Button size="small" onClick={handleLogin}>
           로그인
-        </LinkText>
+        </Button>
       )}
     </Wrapper>
   );

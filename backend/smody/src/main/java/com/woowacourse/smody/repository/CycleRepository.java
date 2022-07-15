@@ -2,10 +2,12 @@ package com.woowacourse.smody.repository;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.member.Member;
+import com.woowacourse.smody.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +25,15 @@ public interface CycleRepository extends JpaRepository<Cycle, Long> {
             + "c.challenge = :challenge and c.progress = 'SUCCESS'")
     Long countSuccess(@Param("member") Member member, @Param("challenge") Challenge challenge);
 
-    Optional<Cycle> findTopByMemberAndChallengeOrderByStartTimeDesc(Member member, Challenge challenge);
+    @Query(value = "select * from cycle c where c.member_id = :memberId and c.challenge_id = :challengeId " +
+            "order by c.start_time DESC limit 1",
+            nativeQuery = true)
+    Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
+
+    List<Cycle> findByMember(Member member);
+
+    @EntityGraph(attributePaths = "challenge")
+    @Query("select c from Cycle c where c.member = :member and c.progress = 'SUCCESS' " +
+            "order by c.startTime DESC")
+    List<Cycle> findAllSuccessLatest(Member member);
 }

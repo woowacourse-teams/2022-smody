@@ -1,6 +1,5 @@
 package com.woowacourse.smody.domain;
 
-import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -46,7 +45,7 @@ public class Cycle {
 
     @Builder
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
-        if (startTime.isAfter(LocalDateTime.now())) {
+        if (startTime.isAfter(LocalDateTime.now()) && progress != Progress.NOTHING) {
             throw new BusinessException(ExceptionData.INVALID_START_TIME);
         }
         this.member = member;
@@ -69,5 +68,17 @@ public class Cycle {
 
     public boolean matchChallenge(Long challengeId) {
         return challenge.matchId(challengeId);
+    }
+
+    public boolean isSuccess() {
+        return this.progress.isSuccess();
+    }
+
+    public boolean isInDays(LocalDateTime now) {
+         return now.isBefore(this.getStartTime().plusDays(DAYS));
+    }
+
+    public long calculateEndTime(LocalDateTime searchTime) {
+        return this.progress.calculateEndTime(this.startTime, searchTime);
     }
 }

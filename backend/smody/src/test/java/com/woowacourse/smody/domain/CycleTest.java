@@ -3,23 +3,27 @@ package com.woowacourse.smody.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.smody.domain.member.Member;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class CycleTest {
 
     private static final String EMAIL = "alpha@naver.com";
-    private static final String PASSWORD = "abcde12345";
     private static final String NICKNAME = "손수건";
+    private static final String PICTURE = "사진";
 
     private static final Cycle.CycleBuilder cycleBuilder = Cycle.builder()
-            .member(new Member(EMAIL, PASSWORD, NICKNAME))
+            .member(new Member(EMAIL, NICKNAME, PICTURE))
             .challenge(new Challenge("미라클 모닝"));
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
@@ -108,21 +112,6 @@ public class CycleTest {
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);
     }
 
-    @DisplayName("시작시간이 유효하지 않을 때 예외를 발생시킨다.")
-    @Test
-    void invalidStartTime() {
-        // given
-        Member member = new Member(EMAIL, PASSWORD, NICKNAME);
-        Challenge challenge = new Challenge("공부");
-        LocalDateTime startTime = LocalDateTime.now().plusSeconds(1L);
-
-        // when then
-        assertThatThrownBy(() -> new Cycle(member, challenge, Progress.NOTHING, startTime))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.INVALID_START_TIME);
-    }
-
     @DisplayName("진행중인 사이클을 조회한다.")
     @ParameterizedTest
     @CsvSource(value = {
@@ -142,5 +131,44 @@ public class CycleTest {
 
         // when then
         assertThat(cycle.isInProgress(now)).isTrue();
+    }
+
+    @DisplayName("미래 시점의 사이클은 인증된 상태일 수 없다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"SUCCESS", "SECOND", "FIRST"})
+    void new_cannotMakeFuture(Progress progress) {
+        // given
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
+        Challenge challenge = new Challenge("미라클 모닝");
+
+        // when then
+        assertThatThrownBy(() -> new Cycle(member, challenge, progress, LocalDateTime.now().plusSeconds(1L)))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_START_TIME);
+    }
+
+    @DisplayName("사이클을 남은 인증 시간 별 오름차순으로 정렬한다.")
+    @Test
+    void sort_cycle() {
+        // given
+        Member member = new Member(EMAIL, NICKNAME, PICTURE);
+        Challenge challenge = new Challenge("미라클 모닝");
+        Cycle inProgress1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusHours(43L));
+        Cycle inProgress2 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
+        Cycle proceed1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now());
+        Cycle proceed2 = new Cycle(member, challenge, Progress.SECOND, LocalDateTime.now().minusHours(36L));
+        Cycle failed = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle success = new Cycle(member, challenge, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
+        List<Cycle> cycles = new ArrayList<>(
+                List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
+
+        // when
+        cycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(LocalDateTime.now())));
+
+        // then
+        assertThat(cycles)
+                .containsExactly(success, failed, inProgress1, inProgress2, inProgress3, proceed2, proceed1);
     }
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class NicknameRequest {
-
-    private String nickname;
+public class StatResponse {
+    private Integer totalCount;
+    private Integer successCount;
 }

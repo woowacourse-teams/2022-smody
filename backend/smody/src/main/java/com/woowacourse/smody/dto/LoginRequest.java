@@ -1,8 +1,10 @@
 package com.woowacourse.smody.dto;
 
+import com.woowacourse.smody.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.json.JSONObject;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,5 +12,18 @@ import lombok.NoArgsConstructor;
 public class LoginRequest {
 
     private String email;
-    private String password;
+    private String name;
+    private String picture;
+
+    public LoginRequest(JSONObject jsonObject) {
+        this.email = jsonObject.getString("email");
+        this.name = jsonObject.getString("name");
+        this.picture = jsonObject.getString("picture");
+    }
+
+    public LoginRequest(Member member) {
+        this.email = member.getEmail();
+        this.name = member.getNickname();
+        this.picture = member.getPicture();
+    }
 }

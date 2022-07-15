@@ -4,7 +4,7 @@ import ServiceExampleImage from 'assets/service_example.png';
 import { useContext, MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { isLoginState, nicknameState } from 'recoil/auth/atoms';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, FixedButton } from 'components';
@@ -12,18 +12,15 @@ import { FlexBox, Text, FixedButton } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 export const CertUnAuth = () => {
-  const setNickname = useSetRecoilState(nicknameState);
+  // const setNickname = useSetRecoilState(nicknameState);
   const setIsLogin = useSetRecoilState(isLoginState);
 
   const themeContext = useContext(ThemeContext);
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
-    onSuccess: ({ data: { nickname, accessToken } }) => {
-      console.log(`반갑습니다, ${nickname}님!`);
-
+    onSuccess: () => {
       setIsLogin(true);
-      setNickname(nickname);
-
+      const accessToken = 'temporary_access_token';
       authApiClient.updateAuth(accessToken);
       navigate(CLIENT_PATH.CERT);
     },
@@ -34,7 +31,7 @@ export const CertUnAuth = () => {
   });
 
   const handleClickLogin: MouseEventHandler<HTMLButtonElement> = () => {
-    mutate({ email: 'test@gmail.com', password: '!12345abcd' });
+    mutate();
   };
 
   return (

@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class EmailRequest {
-
-    private String email;
+public class SuccessChallengeResponse {
+    private Long challengeId;
+    private String challengeName;
+    private Integer successCount;
 }
