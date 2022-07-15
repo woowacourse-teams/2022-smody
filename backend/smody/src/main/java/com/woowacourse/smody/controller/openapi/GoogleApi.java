@@ -17,7 +17,7 @@ public class GoogleApi {
 
     private static final String GOOGLE_LOGIN_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_REQUEST_URI = "https://oauth2.googleapis.com/token";
-    private static final String REDIRECT_URI = "http://localhost:3000/home";
+    private static final String REDIRECT_URI = "http://localhost:3000/cert";
     private static final String GRANT_TYPE = "authorization_code";
 
     @Value("${oauth.google.client-id}")
