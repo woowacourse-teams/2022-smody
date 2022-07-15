@@ -96,10 +96,8 @@ const RowWrapper = styled(FlexBox).attrs({
 })``;
 
 const ServiceExample = styled.img`
-  /* margin-top: 100px; */
-  position: fixed;
-  bottom: 0;
-  width: 70%;
+  margin-top: 3rem;
+  width: 17.438rem;
   max-width: 350px;
   aspect-ratio: 0.56;
 `;
