@@ -19,7 +19,7 @@ import { CLIENT_PATH } from 'constants/path';
 
 const AuthOnly = () => {
   const accessToken = localStorage.getItem('accessToken');
-  return accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.LOGIN} />;
+  return accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.CERT} />;
 };
 const UnAuthOnly = () => {
   const accessToken = localStorage.getItem('accessToken');
