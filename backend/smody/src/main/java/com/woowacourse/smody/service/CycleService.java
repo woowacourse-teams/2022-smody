@@ -15,6 +15,7 @@ import com.woowacourse.smody.repository.MemberRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,10 +77,11 @@ public class CycleService {
         }
     }
 
-    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime, Pageable pageable) {
+    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime,
+        Pageable pageable) {
         Member member = searchMember(tokenPayload);
         List<Cycle> inProgressCycles = searchInProgressCycleByMember(searchTime, member);
-        Collections.sort(inProgressCycles);
+        inProgressCycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(searchTime)));
         List<Cycle> pagedCycles = PagingUtil.page(inProgressCycles, pageable);
         return pagedCycles.stream()
                 .map(cycle -> new CycleResponse(cycle, calculateSuccessCount(cycle)))
