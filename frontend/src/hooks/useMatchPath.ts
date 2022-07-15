@@ -1,17 +1,12 @@
 import { useLocation } from 'react-router-dom';
 
-import { AvailablePickedColor } from 'styles/type';
-
-const useMatchPath = (
-  matchedColor: AvailablePickedColor,
-  unMatchedColor: AvailablePickedColor,
-) => {
+const useMatchPath = <T>(matchedData: T, unMatchedData: T) => {
   const { pathname } = useLocation();
   const getPathMatchResult = (routes: string[]) => {
-    let matchResult = unMatchedColor;
+    let matchResult = unMatchedData;
     routes.forEach((route) => {
       if (pathname.includes(route)) {
-        matchResult = matchedColor;
+        matchResult = matchedData;
         return;
       }
     });
