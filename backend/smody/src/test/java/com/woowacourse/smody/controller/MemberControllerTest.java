@@ -14,16 +14,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class MemberControllerTest extends ControllerTest {
 
-    private static final String EMAIL = "alpha@naver.com";
-    private static final String NICKNAME = "손수건";
-    private static final String PICTURE = "사진";
-
     @DisplayName("나의 정보를 조회한다.")
     @Test
     void searchMyInfo() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        MemberResponse memberResponse = new MemberResponse(EMAIL, NICKNAME, PICTURE);
+        MemberResponse memberResponse = new MemberResponse("alpha@naver.com", "손수건", "사진");
         given(memberService.searchMyInfo(any(TokenPayload.class)))
                 .willReturn(memberResponse);
 

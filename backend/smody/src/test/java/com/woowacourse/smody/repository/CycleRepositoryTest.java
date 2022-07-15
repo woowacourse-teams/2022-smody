@@ -1,48 +1,38 @@
 package com.woowacourse.smody.repository;
 
+import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 @DataJpaTest
+@Import(ResourceFixture.class)
 class CycleRepositoryTest {
 
     @Autowired
     private CycleRepository cycleRepository;
 
     @Autowired
-    private ChallengeRepository challengeRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
+    private ResourceFixture fixture;
 
     @DisplayName("startTime 이 기준시간 이후인 사이클을 조회한다.")
     @Test
     void findAllByStartTimeIsAfter() {
         // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진");
-        Challenge challenge1 = new Challenge("공부");
-        Challenge challenge2 = new Challenge("운동");
-        memberRepository.save(member1);
-        challengeRepository.save(challenge1);
-        challengeRepository.save(challenge2);
-
         LocalDateTime today = LocalDateTime.of(2022, 1, 4, 0, 0);
-
-        Cycle cycle1 = new Cycle(member1, challenge1, Progress.FIRST, today.minusDays(1L));
-        Cycle cycle2 = new Cycle(member1, challenge2, Progress.SUCCESS, today.minusDays(3L));
-        cycleRepository.save(cycle1);
-        cycleRepository.save(cycle2);
+        Cycle cycle1 = fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, today.minusDays(1L));
+        Cycle cycle2 = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today.minusDays(3L));
 
         // when
         List<Cycle> cycles = cycleRepository.findAllByStartTimeIsAfter(today.minusDays(3L));

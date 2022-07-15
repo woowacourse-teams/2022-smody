@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class AcceptanceTestFixture {
 
-    public static ExtractableResponse<Response> 사이클_생성(String token, LocalDateTime startTime, Long challengeId) {
+    public static ExtractableResponse<Response> 사이클_생성_요청(String token, LocalDateTime startTime, Long challengeId) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().oauth2(token)
@@ -21,7 +21,7 @@ public class AcceptanceTestFixture {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 사이클_조회(String cycleId) {
+    public static ExtractableResponse<Response> 사이클_조회_요청(String cycleId) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()

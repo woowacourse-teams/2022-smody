@@ -1,7 +1,9 @@
 package com.woowacourse.smody.service;
 
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.LoginRequest;
@@ -18,10 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OauthServiceTest {
 
-    private static final String EMAIL = "alpha@naver.com";
-    private static final String NICKNAME = "손수건";
-    private static final String PICTURE = "사진";
-
     @Autowired
     private OauthService oauthService;
 
@@ -31,12 +29,14 @@ public class OauthServiceTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private ResourceFixture fixture;
+
     @DisplayName("이미 등록된 회원이면 로그인에 성공한다.")
     @Test
     void login() {
         // given
-        Member member = new Member(EMAIL, NICKNAME, PICTURE);
-        memberRepository.save(member);
+        Member member = fixture.회원_조회(조조그린_ID);
 
         // when
         LoginResponse loginResponse = oauthService.login(new LoginRequest(member));
@@ -50,13 +50,13 @@ public class OauthServiceTest {
     @Test
     void login_enroll() {
         // given
-        Member member = new Member(EMAIL, NICKNAME, PICTURE);
+        Member member = fixture.회원_조회(조조그린_ID);
 
         // when
         LoginResponse loginResponse = oauthService.login(new LoginRequest(member));
         TokenPayload payload = jwtTokenProvider.getPayload(loginResponse.getAccessToken());
 
         // then
-        assertThat(payload.getId()).isEqualTo(memberRepository.findByEmail(EMAIL).get().getId());
+        assertThat(payload.getId()).isEqualTo(memberRepository.findByEmail(member.getEmail()).get().getId());
     }
 }

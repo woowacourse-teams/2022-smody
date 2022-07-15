@@ -1,21 +1,26 @@
 package com.woowacourse.smody.service;
 
+import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
+import static com.woowacourse.smody.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.ChallengeResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.repository.ChallengeRepository;
-import com.woowacourse.smody.repository.CycleRepository;
-import com.woowacourse.smody.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,328 +35,192 @@ class ChallengeServiceTest {
     private ChallengeService challengeService;
 
     @Autowired
-    private ChallengeRepository challengeRepository;
+    private ResourceFixture fixture;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final LocalDateTime now = LocalDateTime.now();
 
-    @Autowired
-    private CycleRepository cycleRepository;
+    @DisplayName("나의 모든 챌린지 중 가장 최근에 성공한 순으로 챌린지를")
+    @Nested
+    class SearchSuccessOfMineTest {
 
-    @DisplayName("성공한 챌린지를 조회")
-    @Test
-    void searchSuccessOfMine() {
-        // given
-        Member member = new Member("alpha@naver.com", "손수건", "사진");
-        memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId());
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
-        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
-        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-        cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge3, Progress.SUCCESS, today.minusDays(9L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(20L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(23L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(26L)));
-        cycleRepository.save(new Cycle(member, challenge5, Progress.SUCCESS, today.minusDays(30L)));
+        private TokenPayload tokenPayload;
 
-        // when
-        List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
-                tokenPayload, PageRequest.of(0, 10));
+        @BeforeEach
+        void setUp() {
+            tokenPayload = new TokenPayload(조조그린_ID);
 
-        // then
-        assertAll(
-                () -> assertThat(responses.size()).isEqualTo(5),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getSuccessCount)
-                        .containsExactly(2, 1, 1, 3, 1),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getChallengeId)
-                        .containsExactly(challenge2.getId(), challenge1.getId(), challenge3.getId(), challenge4.getId(),
-                                challenge5.getId())
-        );
+            fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
+            fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.FIRST, now.minusDays(3L));
+            fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(6L));
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(6L));
+            fixture.사이클_생성(조조그린_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(9L));
+            fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(20L));
+            fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(23L));
+            fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(26L));
+            fixture.사이클_생성(조조그린_ID, 알고리즘_풀기_ID, Progress.SUCCESS, now.minusDays(30L));
+        }
+
+        @DisplayName("조회")
+        @Test
+        void searchSuccessOfMine() {
+            // when
+            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+                    tokenPayload, PageRequest.of(0, 10));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(5),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getSuccessCount)
+                            .containsExactly(2, 1, 1, 3, 1),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getChallengeId)
+                            .containsExactly(미라클_모닝_ID, 스모디_방문하기_ID, 오늘의_운동_ID, JPA_공부_ID, 알고리즘_풀기_ID)
+            );
+        }
+
+        @DisplayName("0페이지의 3개만 조회")
+        @Test
+        void searchSuccessOfMine_pageFullSize() {
+            // when
+            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+                    tokenPayload, PageRequest.of(0, 3));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(3),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getSuccessCount)
+                            .containsExactly(2, 1, 1),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getChallengeId)
+                            .containsExactly(미라클_모닝_ID, 스모디_방문하기_ID, 오늘의_운동_ID)
+            );
+        }
+
+        @DisplayName("1페이지의 2개만 조회")
+        @Test
+        void searchSuccessOfMine_pagePartialSize() {
+            // when
+            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+                    tokenPayload, PageRequest.of(1, 3));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(2),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getSuccessCount)
+                            .containsExactly(3, 1),
+                    () -> assertThat(responses)
+                            .map(SuccessChallengeResponse::getChallengeId)
+                            .containsExactly(JPA_공부_ID, 알고리즘_풀기_ID)
+            );
+        }
+
+        @DisplayName("없는 페이지로 조회")
+        @Test
+        void searchSuccessOfMine_pageOverMaxPage() {
+            // when
+            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+                    tokenPayload, PageRequest.of(2, 3));
+
+            // then
+            assertThat(responses).isEmpty();
+        }
     }
 
-    @DisplayName("성공한 챌린지를 0페이지의 3개만 조회")
-    @Test
-    void searchSuccessOfMine_pageFullSize() {
-        // given
-        Member member = new Member("alpha@naver.com", "손수건", "사진");
-        memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId());
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
-        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
-        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-        cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge3, Progress.SUCCESS, today.minusDays(9L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(20L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(23L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(26L)));
-        cycleRepository.save(new Cycle(member, challenge5, Progress.SUCCESS, today.minusDays(30L)));
+    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로")
+    @Nested
+    class FindAllWithChallengerCountSortTest {
 
-        // when
-        List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
-                tokenPayload, PageRequest.of(0, 3));
+        @BeforeEach
+        void setUp() {
+            // given
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now); // 진행 중
+            fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(3L)); // 실패
+            fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L)); // 성공
+            fixture.사이클_생성(더즈_ID, 스모디_방문하기_ID, Progress.FIRST, now.minusDays(1L)); // 진행 중
+            fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now); // 진행 중
+            fixture.사이클_생성(토닉_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(3L)); //성공
+        }
 
-        // then
-        assertAll(
-                () -> assertThat(responses.size()).isEqualTo(3),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getSuccessCount)
-                        .containsExactly(2, 1, 1),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getChallengeId)
-                        .containsExactly(challenge2.getId(), challenge1.getId(), challenge3.getId())
-        );
-    }
+        @DisplayName("정렬")
+        @Test
+        void findAllWithChallengerCount_sort() {
+            // when
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    now, PageRequest.of(0, 10));
 
-    @DisplayName("성공한 챌린지를 1페이지의 2개만 조회")
-    @Test
-    void searchSuccessOfMine_pagePartialSize() {
-        // given
-        Member member = new Member("alpha@naver.com", "손수건", "사진");
-        memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId());
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
-        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
-        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-        cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge3, Progress.SUCCESS, today.minusDays(9L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(20L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(23L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(26L)));
-        cycleRepository.save(new Cycle(member, challenge5, Progress.SUCCESS, today.minusDays(30L)));
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                            .containsExactly(2, 1, 0, 0, 0)
+            );
+        }
 
-        // when
-        List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
-                tokenPayload, PageRequest.of(1, 3));
+        @DisplayName("정렬 후 0페이지의 2개만 조회")
+        @Test
+        void findAllWithChallengerCount_pageFullSize() {
+            // when
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    now, PageRequest.of(0, 2));
 
-        // then
-        assertAll(
-                () -> assertThat(responses.size()).isEqualTo(2),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getSuccessCount)
-                        .containsExactly(3, 1),
-                () -> assertThat(responses)
-                        .map(SuccessChallengeResponse::getChallengeId)
-                        .containsExactly(challenge4.getId(), challenge5.getId())
-        );
-    }
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeId))
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                            .containsExactly(2, 1)
+            );
+        }
 
-    @DisplayName("성공한 챌린지의 최대 페이지를 넘어가는 조회")
-    @Test
-    void searchSuccessOfMine_pageOverMaxPage() {
-        // given
-        Member member = new Member("alpha@naver.com", "손수건", "사진");
-        memberRepository.save(member);
-        TokenPayload tokenPayload = new TokenPayload(member.getId());
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        Challenge challenge3 = challengeRepository.findById(3L).orElseThrow();
-        Challenge challenge4 = challengeRepository.save(new Challenge("알고리즘 1일 1문제"));
-        Challenge challenge5 = challengeRepository.save(new Challenge("JPA 스터디"));
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-        cycleRepository.save(new Cycle(member, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge1, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member, challenge2, Progress.SUCCESS, today.minusDays(6L)));
-        cycleRepository.save(new Cycle(member, challenge3, Progress.SUCCESS, today.minusDays(9L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(20L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(23L)));
-        cycleRepository.save(new Cycle(member, challenge4, Progress.SUCCESS, today.minusDays(26L)));
-        cycleRepository.save(new Cycle(member, challenge5, Progress.SUCCESS, today.minusDays(30L)));
+        @DisplayName("정렬 후 1페이지의 1개만 조회")
+        @Test
+        void findAllWithChallengerCount_pagePartialSize() {
+            // when
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    now, PageRequest.of(1, 2));
 
-        // when
-        List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
-                tokenPayload, PageRequest.of(2, 3));
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                            .containsExactly(0, 0)
+            );
+        }
 
-        // then
-        assertThat(responses).isEmpty();
-    }
+        @DisplayName("정렬 후 최대 페이지를 초과한 페이지 조회")
+        @Test
+        void findAllWithChallengerCount_pageOverMaxPage() {
+            // when
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    now, PageRequest.of(3, 2));
 
-    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬")
-    @Test
-    void findAllWithChallengerCount_sort() {
-        // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
-        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
-        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-
-        // when
-        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
-                today, PageRequest.of(0, 10));
-
-        // then
-        assertAll(
-                () -> assertThat(challengeResponses.size()).isEqualTo(3),
-                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
-                        .containsExactly("미라클 모닝", "스모디 방문하기", "오늘의 운동"),
-                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
-                        .containsExactly(2, 1, 0)
-        );
-    }
-
-    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 0페이지의 2개만 조회")
-    @Test
-    void findAllWithChallengerCount_pageFullSize() {
-        // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
-        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
-        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-
-        // when
-        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
-                today, PageRequest.of(0, 2));
-
-        // then
-        assertAll(
-                () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
-                        .containsExactly("미라클 모닝", "스모디 방문하기"),
-                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
-                        .containsExactly(2, 1)
-        );
-    }
-
-    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 1페이지의 1개만 조회")
-    @Test
-    void findAllWithChallengerCount_pagePartialSize() {
-        // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
-        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
-        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-
-        // when
-        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
-                today, PageRequest.of(1, 2));
-
-        // then
-        assertAll(
-                () -> assertThat(challengeResponses.size()).isEqualTo(1),
-                () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeName))
-                        .containsExactly("오늘의 운동"),
-                () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
-                        .containsExactly(0)
-        );
-    }
-
-    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로 정렬 후 최대 페이지를 초과한 페이지 조회")
-    @Test
-    void findAllWithChallengerCount_pageOverMaxPage() {
-        // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
-        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
-        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
-        Challenge challenge1 = challengeRepository.findById(1L).orElseThrow();
-        Challenge challenge2 = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge1, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge1, Progress.FIRST, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member3, challenge1, Progress.SUCCESS, today.minusDays(3L)));
-        cycleRepository.save(new Cycle(member1, challenge2, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge2, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge2, Progress.SUCCESS, today.minusDays(3L)));
-
-        // when
-        List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
-                today, PageRequest.of(2, 2));
-
-        // then
-        assertThat(challengeResponses).isEmpty();
+            // then
+            assertThat(challengeResponses).isEmpty();
+        }
     }
 
     @DisplayName("하나의 챌린지를 상세 조회")
     @Test
     void findOneWithChallengerCount() {
         // given
-        Member member1 = new Member("alpha@naver.com", "손수건", "사진1");
-        Member member2 = new Member("beta@naver.com", "냅킨", "사진2");
-        Member member3 = new Member("gamma@naver.com", "티슈", "사진3");
-        Challenge challenge = challengeRepository.findById(2L).orElseThrow();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        LocalDateTime today = LocalDateTime.of(2022, 1, 1, 0, 0);
-        cycleRepository.save(new Cycle(member1, challenge, Progress.NOTHING, today));
-        cycleRepository.save(new Cycle(member2, challenge, Progress.FIRST, today.minusDays(1L)));
-        cycleRepository.save(new Cycle(member3, challenge, Progress.SUCCESS, today.minusDays(3L)));
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(today, challenge.getId());
+        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(now, 미라클_모닝_ID);
 
         // then
         assertAll(
                 () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
-                () -> assertThat(challengeResponse.getChallengeName()).isEqualTo(challenge.getName())
+                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID)
         );
     }
 }
