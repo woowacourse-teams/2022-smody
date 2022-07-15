@@ -18,3 +18,6 @@ export * from 'components/ThumbnailWrapper';
 export * from 'components/FixedButton';
 export * from 'components/CertAuth';
 export * from 'components/CertUnAuth';
+export * from 'components/Profile';
+export * from 'components/CardBox';
+export * from 'components/CardGridContainer';

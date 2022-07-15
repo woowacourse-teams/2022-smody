@@ -10,11 +10,15 @@ export type ValidatorFunction = (
 
 export type MappedKeyToUnion<T> = T extends { [key: string]: infer K } ? K : never;
 
-export interface Cycle {
-  cycleId: number;
+// 챌린지 단건 조회 응답 타입
+export interface Challenge {
   challengeId: number;
   challengeName: string;
+  successCount: number;
+}
+// 사이클 단건 조회 응답 타입
+export interface Cycle extends Challenge {
+  cycleId: number;
   progressCount: number;
   startTime: string;
-  successCount: number;
 }

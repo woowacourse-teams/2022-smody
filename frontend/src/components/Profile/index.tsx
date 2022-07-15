@@ -54,9 +54,7 @@ export const Profile = () => {
       </MyProfileWrapper>
       <UserButtonWrapper>
         <EditButton>프로필 편집</EditButton>
-        <Button size="small" isActive={false}>
-          로그아웃
-        </Button>
+        <LogoutButton>로그아웃</LogoutButton>
       </UserButtonWrapper>
     </Wrapper>
   );
@@ -104,4 +102,11 @@ const EditButton = styled(Button).attrs({
   size: 'small',
 })`
   flex-grow: 4;
+`;
+
+const LogoutButton = styled(Button).attrs({
+  size: 'small',
+  isActive: false,
+})`
+  flex-grow: 1;
 `;
