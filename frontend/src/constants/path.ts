@@ -6,6 +6,7 @@ export const API_PATH = {
 };
 
 export const CLIENT_PATH = {
+  HOME: '/',
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',
@@ -15,4 +16,5 @@ export const CLIENT_PATH = {
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   NOT_FOUND: '/not_found',
+  WILD_CARD: '*',
 };

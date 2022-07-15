@@ -59,7 +59,7 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.LOGIN} fill={profileColor}>
+            <NavLink as={Link} to={CLIENT_PATH.PROFILE} fill={profileColor}>
               <Profile />
               <Text size={14} color={profileColor}>
                 프로필

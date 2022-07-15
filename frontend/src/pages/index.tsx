@@ -1,5 +1,5 @@
 export { NotFoundPage } from 'pages/NotFoundPage';
-export { Home } from 'pages/Home';
+export { Feed } from 'pages/Feed';
 export { SignUpPage } from 'pages/SignUpPage';
 export { LoginPage } from 'pages/LoginPage';
 export { SearchPage } from 'pages/SearchPage';
