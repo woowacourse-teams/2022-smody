@@ -15,5 +15,6 @@ export const postSignUp = async ({ email, password, nickname }: AuthProps) => {
 };
 
 export const postLogin = async () => {
+  console.log('여기까지는 되나?');
   return apiClient.axios.get<string>('/oauth/link/google');
 };

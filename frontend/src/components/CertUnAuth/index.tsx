@@ -9,23 +9,17 @@ import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
-import { CLIENT_PATH } from 'constants/path';
-
 export const CertUnAuth = () => {
-  // const setNickname = useSetRecoilState(nicknameState);
   const setIsLogin = useSetRecoilState(isLoginState);
 
   const themeContext = useContext(ThemeContext);
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
-    onSuccess: () => {
-      setIsLogin(true);
-      const accessToken = 'temporary_access_token';
-      authApiClient.updateAuth(accessToken);
-      navigate(CLIENT_PATH.CERT);
+    onSuccess: (data) => {
+      window.location.href = data.data + '&redirect_uri=http://localhost:3000/cert';
     },
-    onError: () => {
-      console.log('로그인 실패...');
+    onError: (err) => {
+      alert('로그인 실패...');
       throw new Error();
     },
   });
