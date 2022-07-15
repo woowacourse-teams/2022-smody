@@ -31,16 +31,16 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
     // onSuccess: ({ data: { nickname, accessToken } }) => {
-    //   alert(`반갑습니다, ${nickname}님!`);
-    //
+    //   console.log(`반갑습니다, ${nickname}님!`);
+
     //   setIsLogin(true);
     //   setNickname(nickname);
-    //
+
     //   authApiClient.updateAuth(accessToken);
-    //   navigate(CLIENT_PATH.HOME);
+    //   navigate(CLIENT_PATH.CERT);
     // },
     onError: () => {
-      alert('로그인 실패...');
+      console.log('로그인 실패...');
       throw new Error();
     },
   });

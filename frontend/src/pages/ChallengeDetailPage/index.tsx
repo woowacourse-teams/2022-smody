@@ -1,15 +1,24 @@
-import { usePostCycle } from 'apis/challengeApi';
 import { useContext } from 'react';
+import { MdArrowBackIosNew } from 'react-icons/md';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
-import { RouteChallengeDetailState } from 'pages/ChallengeDetailPage/type';
+import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
-import { FlexBox, Text, Button } from 'components';
+import {
+  ChallengeExplanationTextProps,
+  RouteChallengeDetailState,
+} from 'pages/ChallengeDetailPage/type';
+
+import { FlexBox, Text, FixedButton, ThumbnailWrapper } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const TIMEZONE_OFFSET = 9;
+const challengerCount = 10;
+
+const makeCursorPointer = {
+  cursor: 'pointer',
+};
 
 export const ChallengeDetailPage = () => {
   const navigate = useNavigate();
@@ -18,15 +27,6 @@ export const ChallengeDetailPage = () => {
   const location = useLocation();
   const state = location.state as RouteChallengeDetailState;
 
-  const { mutate } = usePostCycle({
-    onSuccess: () => {
-      alert('챌린지 참여 성공!!');
-      navigate(CLIENT_PATH.CERT);
-    },
-    onError: () => {
-      alert('챌린지 참여 실패...');
-    },
-  });
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
 
@@ -34,43 +34,71 @@ export const ChallengeDetailPage = () => {
     return <p>존재하지 않는 챌린지입니다.</p>;
   }
 
-  const handleClickParticipate = () => {
-    const date = new Date();
-    date.setHours(date.getHours() + TIMEZONE_OFFSET);
-
-    const [startTime, _] = date.toISOString().split('.');
-
-    mutate({ startTime, challengeId: Number(challengeId) });
+  const backToPreviousPage = () => {
+    navigate(CLIENT_PATH.SEARCH);
   };
+
+  const { joinChallenge } = usePostJoinChallenge(Number(challengeId));
 
   // TODO: 챌린지 상세 조회 API 만들어서 리팩토링하기
   return (
-    <>
-      <Wrapper>
-        <Text fontWeight="bold" size={32} color={themeContext.onBackground}>
+    <Wrapper>
+      <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
+        <MdArrowBackIosNew size={24} />
+        <Text fontWeight="bold" size={24} color={themeContext.onBackground}>
           {state.challengeName}
         </Text>
-      </Wrapper>
-      <FixedButton size="large" onClick={handleClickParticipate}>
-        함께 하기
+        <div />
+      </TitleWrapper>
+      <ChallengeDetailWrapper>
+        <ChallengeTextWrapper>
+          <Text size={16} color={themeContext.primary}>
+            현재 {challengerCount}명이 함께 도전 중이에요
+          </Text>
+          <ChallengeExplanationText color={themeContext.onBackground}>
+            건강을 위해 하루에 만보씩 걷고 걷기 앱을 캡처하여 인증해주세요
+          </ChallengeExplanationText>
+        </ChallengeTextWrapper>
+        <ThumbnailWrapper size="medium" bgColor="#FED6D6">
+          🎁
+        </ThumbnailWrapper>
+      </ChallengeDetailWrapper>
+      <FixedButton size="large" onClick={joinChallenge}>
+        도전하기
       </FixedButton>
-    </>
+    </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
+const Wrapper = styled.div`
+  margin: 0 1.25rem;
+`;
+
+const TitleWrapper = styled(FlexBox).attrs({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+})`
+  margin-bottom: 2rem;
+`;
+
+const ChallengeDetailWrapper = styled(FlexBox).attrs({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  gap: '1rem',
+})`
+  line-height: 1rem;
+`;
+
+const ChallengeTextWrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
-  alignItems: 'center',
+  gap: '1rem',
 })``;
 
-const FixedButton = styled(Button).attrs({
-  size: 'large',
-})`
-  position: fixed;
-  bottom: 0;
-  margin: 0 4rem 6.25rem;
-  left: 0;
-  right: 0;
-  min-width: 70%;
-  z-index: 101;
+const ChallengeExplanationText = styled(Text).attrs<ChallengeExplanationTextProps>(
+  ({ color }) => ({
+    size: 20,
+    color: color,
+  }),
+)<ChallengeExplanationTextProps>`
+  line-height: 1.7rem;
 `;

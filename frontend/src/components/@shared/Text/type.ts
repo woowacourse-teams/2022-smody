@@ -1,7 +1,7 @@
 import { AvailablePickedColor, FontSizeType } from 'styles/type';
 
 export interface TextProps {
-  size: FontSizeType;
+  size?: FontSizeType;
   color: AvailablePickedColor;
   fontWeight?: 'normal' | 'bold';
 }

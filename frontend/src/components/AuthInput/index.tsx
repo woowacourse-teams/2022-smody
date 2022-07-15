@@ -69,7 +69,7 @@ const InputWrapper = styled.div<InputContainerProps>`
         ? theme.success
         : theme.error};
     `};
-    border-radius: 1rem;
+    border-radius: 7px;
     padding: 1rem;
     margin-top: 0.5rem;
   `}

@@ -35,7 +35,7 @@ export const SignUpPage = () => {
   const navigate = useNavigate();
   const { mutate } = usePostSignUp({
     onSuccess: ({ data: { email } }) => {
-      alert('회원가입 성공!!');
+      console.log('회원가입 성공!!');
       navigate(CLIENT_PATH.LOGIN, {
         state: {
           email,
@@ -43,7 +43,7 @@ export const SignUpPage = () => {
       });
     },
     onError: () => {
-      alert('회원가입 실패...');
+      console.log('회원가입 실패...');
     },
   });
 

@@ -133,7 +133,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '미라클 모닝',
     progressCount: 0,
-    startTime: '2022-07-11T17:00:00',
+    startTime: '2022-07-14T17:00:00',
     successCount: 3,
   },
   {
@@ -141,7 +141,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '운동',
     progressCount: 0,
-    startTime: '2022-07-10T20:00:00',
+    startTime: '2022-07-14T19:00:00',
     successCount: 3,
   },
   {
@@ -149,7 +149,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '샤워',
     progressCount: 0,
-    startTime: '2022-07-11T10:00:00',
+    startTime: '2022-07-12T10:00:00',
     successCount: 3,
   },
   {
@@ -157,7 +157,7 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '취침',
     progressCount: 0,
-    startTime: '2022-07-11T12:00:00',
+    startTime: '2022-07-12T12:00:00',
     successCount: 3,
   },
   {
@@ -165,15 +165,15 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '화이팅',
     progressCount: 0,
-    startTime: '2022-07-11T08:00:00',
+    startTime: '2022-07-13T08:00:00',
     successCount: 3,
   },
   {
     cycleId: 6,
     challengeId: 2,
-    challengeName: '내일은 뭐 먹지?',
+    challengeName: '어제 오늘 내일은 뭐 먹지?',
     progressCount: 0,
-    startTime: '2022-07-11T17:00:00',
+    startTime: '2022-07-12T17:00:00',
     successCount: 3,
   },
   {
@@ -197,7 +197,52 @@ export const cycleData = [
     challengeId: 2,
     challengeName: '우린 멋져',
     progressCount: 0,
-    startTime: '2022-07-11T17:00:00',
+    startTime: '2022-07-13T18:00:00',
     successCount: 3,
+  },
+];
+
+export const mySuccessChallenges = [
+  {
+    challengeId: 1,
+    challengeName: '미라클 모닝',
+    successCount: 45,
+    bgColor: '#FED6D6',
+    emoji: '🌞',
+  },
+  {
+    challengeId: 2,
+    challengeName: '헬스장 가기',
+    successCount: 39,
+    bgColor: '#D6E1FE',
+    emoji: '💪',
+  },
+  {
+    challengeId: 3,
+    challengeName: '하루 독서 30분',
+    successCount: 33,
+    bgColor: '#D6FEDA',
+    emoji: '📚',
+  },
+  {
+    challengeId: 4,
+    challengeName: '공식문서 읽기',
+    successCount: 28,
+    bgColor: '#D6CCF3',
+    emoji: '📰',
+  },
+  {
+    challengeId: 5,
+    challengeName: '알고리즘 1문제 풀기',
+    successCount: 15,
+    bgColor: '#F6FCB8',
+    emoji: '🏫',
+  },
+  {
+    challengeId: 6,
+    challengeName: '만보 걷기',
+    successCount: 25,
+    bgColor: '#D6F7FE',
+    emoji: '💦',
   },
 ];

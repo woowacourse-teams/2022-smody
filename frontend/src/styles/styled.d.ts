@@ -19,5 +19,7 @@ declare module 'styled-components' {
     disabled: AvailablePickedColor;
     border: AvailablePickedColor;
     blur: AvailablePickedColor;
+    mainText: AvailablePickedColor;
+    backdrop: AvailablePickedColor;
   }
 }
