@@ -1,14 +1,8 @@
-import CuteCatWithSmody from 'assets/cute_cat_with_smody.png';
+import { useGetMyInfo } from 'apis';
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, Button } from 'components';
-
-const userData = {
-  nickname: '마르코',
-  picture: CuteCatWithSmody,
-  email: 'marco@gmail.com',
-};
 
 const myCycleData = {
   totalCount: 35,
@@ -17,9 +11,19 @@ const myCycleData = {
 
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
-  const { nickname, picture } = userData;
-  const { totalCount, successCount } = myCycleData;
+  const { isLoading, data } = useGetMyInfo();
+
+  if (isLoading || typeof data === 'undefined') {
+    return <div>Loading...</div>;
+  }
+
+  const {
+    data: { nickname, picture },
+  } = data;
   const profileImgAlt = { nickname } + ' 프로필 사진';
+
+  // TODO : 성공한 챌린지 GET API 연결
+  const { totalCount, successCount } = myCycleData;
 
   return (
     <Wrapper>
