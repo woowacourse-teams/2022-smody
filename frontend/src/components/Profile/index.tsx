@@ -1,8 +1,14 @@
 import { useGetMyInfo } from 'apis';
-import { useContext } from 'react';
+import { authApiClient } from 'apis/apiClient';
+import { useContext, MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, Button } from 'components';
+
+import { CLIENT_PATH } from 'constants/path';
 
 const myCycleData = {
   totalCount: 35,
@@ -11,6 +17,8 @@ const myCycleData = {
 
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const setIsLogin = useSetRecoilState(isLoginState);
   const { isLoading, data } = useGetMyInfo();
 
   if (isLoading || typeof data === 'undefined') {
@@ -24,6 +32,12 @@ export const Profile = () => {
 
   // TODO : 성공한 챌린지 GET API 연결
   const { totalCount, successCount } = myCycleData;
+
+  const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
+    authApiClient.deleteAuth();
+    setIsLogin(false);
+    navigate(CLIENT_PATH.CERT);
+  };
 
   return (
     <Wrapper>
@@ -58,7 +72,7 @@ export const Profile = () => {
       </MyProfileWrapper>
       <UserButtonWrapper>
         <EditButton>프로필 편집</EditButton>
-        <LogoutButton>로그아웃</LogoutButton>
+        <LogoutButton onClick={handleClickLogout}>로그아웃</LogoutButton>
       </UserButtonWrapper>
     </Wrapper>
   );
