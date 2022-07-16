@@ -1,10 +1,5 @@
 import { postSignUp, postLogin } from 'apis/authApi/api';
-import {
-  AuthProps,
-  LoginProps,
-  PostSignUpResponse,
-  PostLoginResponse,
-} from 'apis/authApi/type';
+import { AuthProps, PostSignUpResponse } from 'apis/authApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 
