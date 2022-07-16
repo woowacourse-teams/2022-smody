@@ -1,4 +1,4 @@
-import { useGetMyCyclesInProgress, usePostCycleProgress } from 'apis/cycleApi';
+import { useGetMyCyclesInProgress, usePostCycleProgress } from 'apis';
 import styled, { css } from 'styled-components';
 
 import { CertItem } from 'components';

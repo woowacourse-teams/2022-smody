@@ -1,5 +1,4 @@
 import { usePostLogin } from 'apis';
-import { authApiClient } from 'apis/apiClient';
 import EmailIcon from 'assets/email_icon.svg';
 import PasswordIcon from 'assets/pw_icon.svg';
 import { useContext, FormEventHandler } from 'react';

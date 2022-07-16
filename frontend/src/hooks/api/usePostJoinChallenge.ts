@@ -1,4 +1,4 @@
-import { usePostCycle } from 'apis/cycleApi';
+import { usePostCycle } from 'apis';
 import { useNavigate } from 'react-router-dom';
 
 import { TIMEZONE_OFFSET } from 'constants/domain';

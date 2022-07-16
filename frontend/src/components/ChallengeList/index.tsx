@@ -1,8 +1,8 @@
-import { ChallengeInfo } from './type';
-import { useGetAllChallenges } from 'apis/cycleApi';
-import styled, { css } from 'styled-components';
+import { useGetAllChallenges } from 'apis';
+import styled from 'styled-components';
 
 import { FlexBox, ChallengeItem } from 'components';
+import { ChallengeInfo } from 'components/ChallengeList/type';
 
 export const ChallengeList = () => {
   const { isLoading, data, refetch } = useGetAllChallenges({

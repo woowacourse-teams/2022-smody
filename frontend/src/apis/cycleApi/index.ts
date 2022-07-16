@@ -1,6 +1,7 @@
 import {
   postCycle,
   getMyCyclesInProgress,
+  getMyCyclesStat,
   postCycleProgress,
   getCycleById,
 } from 'apis/cycleApi/api';
@@ -8,6 +9,7 @@ import {
   PostCycleProps,
   PostCycleProgressProps,
   PostCycleProgressResponse,
+  GetMyCyclesStatResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Cycle } from 'commonType';
@@ -25,6 +27,16 @@ export const useGetMyCyclesInProgress = (
   useQuery<AxiosResponse<Cycle[]>, AxiosError>(
     'getMyCyclesInResponse',
     getMyCyclesInProgress,
+    options,
+  );
+
+// 3. 나의 사이클 통계 정보 조회(GET)
+export const useGetMyCyclesStat = (
+  options?: UseQueryOptions<AxiosResponse<GetMyCyclesStatResponse>, AxiosError>,
+) =>
+  useQuery<AxiosResponse<GetMyCyclesStatResponse>, AxiosError>(
+    'getMyCyclesStat',
+    getMyCyclesStat,
     options,
   );
 

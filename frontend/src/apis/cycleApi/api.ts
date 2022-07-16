@@ -3,6 +3,7 @@ import {
   PostCycleProps,
   PostCycleProgressProps,
   PostCycleProgressResponse,
+  GetMyCyclesStatResponse,
 } from 'apis/cycleApi/type';
 import { Cycle } from 'commonType';
 
@@ -14,6 +15,11 @@ export const postCycle = async ({ startTime, challengeId }: PostCycleProps) => {
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const getMyCyclesInProgress = async () => {
   return authApiClient.axios.get<Cycle[]>('/cycles/me?status=inProgress');
+};
+
+// 3. 나의 사이클 통계 정보 조회(GET)
+export const getMyCyclesStat = async () => {
+  return authApiClient.axios.get<GetMyCyclesStatResponse>('/cycles/me/stat');
 };
 
 // 4. 챌린지 사이클의 진척도 증가(POST)
