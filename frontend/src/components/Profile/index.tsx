@@ -1,25 +1,46 @@
-import CuteCatWithSmody from 'assets/cute_cat_with_smody.png';
-import { useContext } from 'react';
+import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
+import { authApiClient } from 'apis/apiClient';
+import { useContext, MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, Button } from 'components';
 
-const userData = {
-  nickname: '마르코',
-  picture: CuteCatWithSmody,
-  email: 'marco@gmail.com',
-};
-
-const myCycleData = {
-  totalCount: 35,
-  successCount: 5,
-};
+import { CLIENT_PATH } from 'constants/path';
 
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
-  const { nickname, picture } = userData;
-  const { totalCount, successCount } = myCycleData;
+  const navigate = useNavigate();
+  const setIsLogin = useSetRecoilState(isLoginState);
+  const { isLoading: isLoadingMyInfo, data: dataMyInfo } = useGetMyInfo();
+  const { isLoading: isLoadingMyCyclesStat, data: dataMyCyclesStat } =
+    useGetMyCyclesStat();
+
+  if (
+    isLoadingMyInfo ||
+    isLoadingMyCyclesStat ||
+    typeof dataMyInfo === 'undefined' ||
+    typeof dataMyCyclesStat === 'undefined'
+  ) {
+    return <div>Loading...</div>;
+  }
+
+  const {
+    data: { nickname, picture },
+  } = dataMyInfo;
   const profileImgAlt = { nickname } + ' 프로필 사진';
+
+  const {
+    data: { totalCount, successCount },
+  } = dataMyCyclesStat;
+
+  const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
+    authApiClient.deleteAuth();
+    setIsLogin(false);
+    navigate(CLIENT_PATH.CERT);
+  };
 
   return (
     <Wrapper>
@@ -54,7 +75,7 @@ export const Profile = () => {
       </MyProfileWrapper>
       <UserButtonWrapper>
         <EditButton>프로필 편집</EditButton>
-        <LogoutButton>로그아웃</LogoutButton>
+        <LogoutButton onClick={handleClickLogout}>로그아웃</LogoutButton>
       </UserButtonWrapper>
     </Wrapper>
   );

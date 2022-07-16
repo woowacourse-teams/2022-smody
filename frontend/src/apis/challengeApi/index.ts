@@ -1,66 +1,64 @@
 import {
-  postCycle,
-  getMyCyclesInProgress,
-  postCycleProgress,
-  getCycleById,
   getAllChallenges,
+  getMySuccessChallenges,
+  getChallengeById,
 } from 'apis/challengeApi/api';
 import {
-  PostCycleProps,
-  PostCycleProgressProps,
-  PostCycleProgressResponse,
   GetChallengeResponse,
+  GetChallengeByIdProps,
+  GetChallengeByIdResponse,
 } from 'apis/challengeApi/type';
+import { PAGE_SIZE } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
-import { Cycle } from 'commonType';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { Challenge } from 'commonType';
+import {
+  useQuery,
+  useInfiniteQuery,
+  UseQueryOptions,
+  UseInfiniteQueryOptions,
+} from 'react-query';
 
-// 1. 챌린지 사이클 생성(POST)
-export const usePostCycle = (
-  options?: UseMutationOptions<AxiosResponse, AxiosError, PostCycleProps>,
-) => useMutation<AxiosResponse, AxiosError, PostCycleProps>(postCycle, options);
-
-// 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
-export const useGetMyCyclesInProgress = (
-  options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError>,
-) =>
-  useQuery<AxiosResponse<Cycle[]>, AxiosError>(
-    'getMyCyclesInResponse',
-    getMyCyclesInProgress,
-    options,
-  );
-
-// 3. 챌린지 사이클의 진척도 증가(POST)
-export const usePostCycleProgress = (
-  options?: UseMutationOptions<
-    AxiosResponse<PostCycleProgressResponse>,
-    AxiosError,
-    PostCycleProgressProps
-  >,
-) =>
-  useMutation<
-    AxiosResponse<PostCycleProgressResponse>,
-    AxiosError,
-    PostCycleProgressProps
-  >(postCycleProgress, options);
-
-// 4. 모든 챌린지 조회(GET)
+// 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
-  options?: UseQueryOptions<AxiosResponse<GetChallengeResponse[]>, AxiosError>,
+  options?: UseInfiniteQueryOptions<AxiosResponse<GetChallengeResponse[]>, AxiosError>,
 ) =>
-  useQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError>(
+  useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError>(
     'getAllChallenges',
-    getAllChallenges,
-    options,
+    ({ pageParam = 0 }) => getAllChallenges(pageParam),
+    {
+      ...options,
+      getNextPageParam: (currentPage) => {
+        return currentPage.data.length < PAGE_SIZE.ALL_CHALLENGES
+          ? undefined
+          : currentPage.config.params.page + 1;
+      },
+    },
   );
 
-// 5. 아이디로 사이클 조회(GET)
-export const useGetCycleById = (
-  cycleId: PostCycleProgressProps,
-  options?: UseQueryOptions<AxiosResponse<Cycle>, AxiosError>,
+// 6. 나의 성공한 챌린지 조회(GET)
+export const useGetMySuccessChallenges = (
+  options?: UseInfiniteQueryOptions<AxiosResponse<Challenge[]>, AxiosError>,
 ) =>
-  useQuery<AxiosResponse<Cycle>, AxiosError>(
-    'getCycleById',
-    () => getCycleById(cycleId),
+  useInfiniteQuery<AxiosResponse<Challenge[]>, AxiosError>(
+    'getMySuccessChallenges',
+    ({ pageParam = 0 }) => getMySuccessChallenges(pageParam),
+    {
+      ...options,
+      getNextPageParam: (currentPage) => {
+        return currentPage.data.length < PAGE_SIZE.SUCCESS_CHALLENGES
+          ? undefined
+          : currentPage.config.params.page + 1;
+      },
+    },
+  );
+
+// 8. 챌린지 하나 상세 조회(GET)
+export const useGetChallengeById = (
+  { challengeId }: GetChallengeByIdProps,
+  options?: UseQueryOptions<AxiosResponse<GetChallengeByIdResponse>, AxiosError>,
+) =>
+  useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError>(
+    'getChallengeById',
+    () => getChallengeById({ challengeId }),
     options,
   );

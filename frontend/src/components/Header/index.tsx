@@ -1,4 +1,4 @@
-import { usePostLogin } from 'apis';
+import { useGetLinkGoogle } from 'apis';
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
@@ -22,19 +22,17 @@ export const Header = () => {
 
   const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
 
-  const { mutate } = usePostLogin({
-    onSuccess: (data) => {
-      window.location.href = data.data + '&redirect_uri=http://localhost:3000/home';
-    },
-    onError: () => {
-      alert('로그인 실패...');
-      throw new Error();
+  const { refetch: getLinkGoogle } = useGetLinkGoogle({
+    enabled: false,
+    onSuccess: ({ data: googleOAuthLoginLink }) => {
+      const redirectionUrl =
+        googleOAuthLoginLink + '&redirect_uri=http://localhost:3000/cert';
+      window.location.href = redirectionUrl;
     },
   });
 
   const handleLogin = () => {
-    console.log('로그인 버튼 눌림!!');
-    mutate();
+    getLinkGoogle();
   };
 
   return (

@@ -1,15 +1,13 @@
-import { Cycle } from 'commonType';
-
-export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
-
-export type PostCycleProgressProps = Pick<Cycle, 'cycleId'>;
-
-export interface PostCycleProgressResponse {
-  progressCount: number;
-}
+import { Challenge } from 'commonType';
 
 export interface GetChallengeResponse {
   challengeId: number;
   challengeName: string;
+  challengerCount: number;
+}
+
+export type GetChallengeByIdProps = Pick<Challenge, 'challengeId'>;
+
+export interface GetChallengeByIdResponse extends Omit<Challenge, 'successCount'> {
   challengerCount: number;
 }

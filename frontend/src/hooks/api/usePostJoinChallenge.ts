@@ -1,14 +1,16 @@
-import { usePostCycle } from 'apis/challengeApi';
+import { usePostCycle } from 'apis';
 import { useNavigate } from 'react-router-dom';
+
+import { PostJoinChallengeProps } from 'hooks/api/type';
 
 import { TIMEZONE_OFFSET } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
-const usePostJoinChallenge = (
-  challengeId: number,
+const usePostJoinChallenge = ({
+  challengeId,
   isNavigator = true,
-  handleSuccessFunction?: () => void,
-) => {
+  handleSuccessFunction,
+}: PostJoinChallengeProps) => {
   const navigate = useNavigate();
 
   const { mutate, isSuccess } = usePostCycle({

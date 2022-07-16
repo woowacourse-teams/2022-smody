@@ -1,37 +1,24 @@
-import { usePostLogin } from 'apis';
-import { authApiClient } from 'apis/apiClient';
+import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
 import { useContext, MouseEventHandler } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
-import { CLIENT_PATH } from 'constants/path';
-
 export const CertUnAuth = () => {
-  // const setNickname = useSetRecoilState(nicknameState);
-  const setIsLogin = useSetRecoilState(isLoginState);
-
   const themeContext = useContext(ThemeContext);
-  const navigate = useNavigate();
-  const { mutate } = usePostLogin({
-    onSuccess: () => {
-      setIsLogin(true);
-      const accessToken = 'temporary_access_token';
-      authApiClient.updateAuth(accessToken);
-      navigate(CLIENT_PATH.CERT);
-    },
-    onError: () => {
-      console.log('로그인 실패...');
-      throw new Error();
+
+  const { refetch: getLinkGoogle } = useGetLinkGoogle({
+    enabled: false,
+    onSuccess: ({ data: googleOAuthLoginLink }) => {
+      const redirectionUrl =
+        googleOAuthLoginLink + '&redirect_uri=http://localhost:3000/cert';
+      window.location.href = redirectionUrl;
     },
   });
 
   const handleClickLogin: MouseEventHandler<HTMLButtonElement> = () => {
-    mutate();
+    getLinkGoogle();
   };
 
   return (

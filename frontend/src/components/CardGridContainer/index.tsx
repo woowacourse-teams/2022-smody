@@ -1,12 +1,24 @@
-import { mySuccessChallenges } from 'mocks/data';
-import { useContext } from 'react';
+import { useGetMySuccessChallenges } from 'apis';
+import { Challenge } from 'commonType';
+import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { CardBox, Text } from 'components';
 
 export const CardGridContainer = () => {
-  // TODO react query로 가져오기
+  // TODO : 성공한 챌린지 GET API 연결
   const themeContext = useContext(ThemeContext);
+  const { isLoading, data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
+  console.log('data', data);
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading || typeof data === 'undefined') {
+    return <span>Loading...</span>;
+  }
 
   return (
     <div>
@@ -15,10 +27,22 @@ export const CardGridContainer = () => {
       </Text>
       <Line />
       <Grid>
-        {mySuccessChallenges.map((challenge) => (
-          <CardBox key={challenge.challengeId} {...challenge} />
-        ))}
+        {data.pages.map((page) => {
+          if (typeof page === 'undefined' || typeof page.data === 'undefined') {
+            return null;
+          }
+
+          page.data.map((challenge: Challenge) => (
+            <CardBox
+              key={challenge.challengeId}
+              {...challenge}
+              bgColor="rgb(254, 214, 214)"
+              emoji="🎈"
+            />
+          ));
+        })}
       </Grid>
+      <button onClick={loadMore}>다음페이지</button>
     </div>
   );
 };
