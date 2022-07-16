@@ -29,15 +29,6 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
-    // onSuccess: ({ data: { nickname, accessToken } }) => {
-    //   console.log(`반갑습니다, ${nickname}님!`);
-
-    //   setIsLogin(true);
-    //   setNickname(nickname);
-
-    //   authApiClient.updateAuth(accessToken);
-    //   navigate(CLIENT_PATH.CERT);
-    // },
     onError: () => {
       console.log('로그인 실패...');
       throw new Error();
@@ -48,7 +39,6 @@ export const LoginPage = () => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    // mutate({ email: email.value, password: password.value });
   };
 
   return (

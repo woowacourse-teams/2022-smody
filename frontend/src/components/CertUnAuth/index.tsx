@@ -1,15 +1,11 @@
 import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
 import { useContext, MouseEventHandler } from 'react';
-// import { useSetRecoilState } from 'recoil';
-// import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
 export const CertUnAuth = () => {
-  // const setIsLogin = useSetRecoilState(isLoginState);
-
   const themeContext = useContext(ThemeContext);
 
   const { refetch: getLinkGoogle } = useGetLinkGoogle({
