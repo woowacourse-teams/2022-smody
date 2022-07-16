@@ -1,0 +1,4 @@
+export const PAGE_SIZE = {
+  ALL_CHALLENGES: 10,
+  SUCCESS_CHALLENGES: 10,
+};
