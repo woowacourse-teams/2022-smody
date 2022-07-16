@@ -1,8 +1,9 @@
 // src/mocks/handlers.js
+import { API_PATH } from 'apis/constants';
 import { challengeData, cycleData } from 'mocks/data';
 import { rest } from 'msw';
 
-import { DEV_BASE_URL, API_PATH } from 'constants/path';
+import { DEV_BASE_URL } from 'constants/path';
 
 export const challenge = [
   //1. 챌린지 사이클 생성(POST)
