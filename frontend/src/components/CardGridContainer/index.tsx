@@ -5,7 +5,7 @@ import styled, { ThemeContext } from 'styled-components';
 import { CardBox, Text } from 'components';
 
 export const CardGridContainer = () => {
-  // TODO react query로 가져오기
+  // TODO : 성공한 챌린지 GET API 연결
   const themeContext = useContext(ThemeContext);
 
   return (

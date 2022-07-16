@@ -1,4 +1,4 @@
-import { useGetMyInfo } from 'apis';
+import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useContext, MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,28 +10,31 @@ import { FlexBox, Text, Button } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const myCycleData = {
-  totalCount: 35,
-  successCount: 5,
-};
-
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
   const navigate = useNavigate();
   const setIsLogin = useSetRecoilState(isLoginState);
-  const { isLoading, data } = useGetMyInfo();
+  const { isLoading: isLoadingMyInfo, data: dataMyInfo } = useGetMyInfo();
+  const { isLoading: isLoadingMyCyclesStat, data: dataMyCyclesStat } =
+    useGetMyCyclesStat();
 
-  if (isLoading || typeof data === 'undefined') {
+  if (
+    isLoadingMyInfo ||
+    isLoadingMyCyclesStat ||
+    typeof dataMyInfo === 'undefined' ||
+    typeof dataMyCyclesStat === 'undefined'
+  ) {
     return <div>Loading...</div>;
   }
 
   const {
     data: { nickname, picture },
-  } = data;
+  } = dataMyInfo;
   const profileImgAlt = { nickname } + ' 프로필 사진';
 
-  // TODO : 성공한 챌린지 GET API 연결
-  const { totalCount, successCount } = myCycleData;
+  const {
+    data: { totalCount, successCount },
+  } = dataMyCyclesStat;
 
   const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
     authApiClient.deleteAuth();
