@@ -14,16 +14,16 @@ export const ChallengeItem = ({
   challengeListRefetch,
 }: ChallengeItemProps) => {
   const themeContext = useContext(ThemeContext);
-  const { joinChallenge } = usePostJoinChallenge(
-    Number(challengeId),
-    false,
-    challengeListRefetch,
-  );
+  const { joinChallenge } = usePostJoinChallenge({
+    challengeId: Number(challengeId),
+    isNavigator: false,
+    handleSuccessFunction: challengeListRefetch,
+  });
 
   return (
     <Wrapper>
       <div>
-        <Link to={`/challenge/detail/${challengeId}`} state={{ challengeName }}>
+        <Link to={`/challenge/detail/${challengeId}`}>
           <ChallengeInfoWrapper>
             <ThumbnailWrapper size="small" bgColor="#FED6D6">
               🌞

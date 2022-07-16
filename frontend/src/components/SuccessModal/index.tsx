@@ -17,7 +17,7 @@ export const SuccessModal = ({
   challengeId,
 }: SuccessModalProps) => {
   const themeContext = useContext(ThemeContext);
-  const { joinChallenge } = usePostJoinChallenge(challengeId);
+  const { joinChallenge } = usePostJoinChallenge({ challengeId });
 
   const handleRetry = () => {
     handleCloseModal();

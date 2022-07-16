@@ -1,9 +1,22 @@
-import { getAllChallenges, getMySuccessChallenges } from 'apis/challengeApi/api';
-import { GetChallengeResponse } from 'apis/challengeApi/type';
+import {
+  getAllChallenges,
+  getMySuccessChallenges,
+  getChallengeById,
+} from 'apis/challengeApi/api';
+import {
+  GetChallengeResponse,
+  GetChallengeByIdProps,
+  GetChallengeByIdResponse,
+} from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Challenge } from 'commonType';
-import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
+import {
+  useQuery,
+  useInfiniteQuery,
+  UseQueryOptions,
+  UseInfiniteQueryOptions,
+} from 'react-query';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
@@ -37,4 +50,15 @@ export const useGetMySuccessChallenges = (
           : currentPage.config.params.page + 1;
       },
     },
+  );
+
+// 8. 챌린지 하나 상세 조회(GET)
+export const useGetChallengeById = (
+  { challengeId }: GetChallengeByIdProps,
+  options?: UseQueryOptions<AxiosResponse<GetChallengeByIdResponse>, AxiosError>,
+) =>
+  useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError>(
+    'getChallengeById',
+    () => getChallengeById({ challengeId }),
+    options,
   );

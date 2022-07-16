@@ -1,20 +1,16 @@
+import { useGetChallengeById } from 'apis';
 import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
-import {
-  ChallengeExplanationTextProps,
-  RouteChallengeDetailState,
-} from 'pages/ChallengeDetailPage/type';
+import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
 import { FlexBox, Text, FixedButton, ThumbnailWrapper } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-
-const challengerCount = 10;
 
 const makeCursorPointer = {
   cursor: 'pointer',
@@ -22,31 +18,41 @@ const makeCursorPointer = {
 
 export const ChallengeDetailPage = () => {
   const navigate = useNavigate();
-
-  //TODO: 후에 상세페이지 API 생성 후 제거
-  const location = useLocation();
-  const state = location.state as RouteChallengeDetailState;
-
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
 
-  if (typeof challengeId === 'undefined') {
-    return <p>존재하지 않는 챌린지입니다.</p>;
+  const { isLoading, data } = useGetChallengeById(
+    { challengeId: Number(challengeId) },
+    {
+      refetchOnWindowFocus: false,
+      onError: () => {
+        console.log('챌린지 단건 조회하기 실패...');
+      },
+    },
+  );
+
+  const { joinChallenge } = usePostJoinChallenge({
+    challengeId: Number(challengeId),
+    isNavigator: false,
+  });
+
+  if (isLoading || typeof data === 'undefined' || typeof data.data === 'undefined') {
+    return <p>로딩중...</p>;
   }
+
+  console.log(data);
+  const { challengeName, challengerCount } = data.data;
 
   const backToPreviousPage = () => {
     navigate(CLIENT_PATH.SEARCH);
   };
 
-  const { joinChallenge } = usePostJoinChallenge(Number(challengeId));
-
-  // TODO: 챌린지 상세 조회 API 만들어서 리팩토링하기
   return (
     <Wrapper>
       <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
         <MdArrowBackIosNew size={24} />
         <Text fontWeight="bold" size={24} color={themeContext.onBackground}>
-          {state.challengeName}
+          {challengeName}
         </Text>
         <div />
       </TitleWrapper>
