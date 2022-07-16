@@ -1,4 +1,4 @@
-import { useGetMyCyclesInProgress, usePostCycleProgress } from 'apis';
+import { useGetMyCyclesInProgress } from 'apis';
 import styled, { css } from 'styled-components';
 
 import { CertItem } from 'components';
@@ -11,20 +11,6 @@ export const CertAuth = () => {
     },
   });
 
-  const { mutate } = usePostCycleProgress({
-    onSuccess: () => {
-      console.log('사이클 진척도 추가 성공!');
-      refetch();
-    },
-    onError: (error) => {
-      console.log('사이클 진척도 추가 실패ㅠ_ㅠ');
-    },
-  });
-
-  const handleClickCertification = (cycleId: number) => {
-    mutate({ cycleId });
-  };
-
   if (isLoading || typeof data === 'undefined') {
     return <p>로딩중...</p>;
   }
@@ -32,11 +18,7 @@ export const CertAuth = () => {
   return (
     <Wrapper>
       {data.data.map((cycle) => (
-        <CertItem
-          key={cycle.cycleId}
-          handleClickCertification={handleClickCertification}
-          {...cycle}
-        />
+        <CertItem key={cycle.cycleId} refetch={refetch} {...cycle} />
       ))}
     </Wrapper>
   );

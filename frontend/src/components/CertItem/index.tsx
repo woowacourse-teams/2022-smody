@@ -1,3 +1,4 @@
+import { usePostCycleProgress } from 'apis';
 import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
@@ -6,7 +7,7 @@ import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'co
 import { CertItemProps } from 'components/CertItem/type';
 import { SuccessModal } from 'components/SuccessModal';
 
-const cycleUnit = 1;
+import { CYCLE_UNIT } from 'constants/domain';
 
 export const CertItem = ({
   cycleId,
@@ -15,25 +16,34 @@ export const CertItem = ({
   progressCount,
   startTime,
   successCount,
-  handleClickCertification,
+  refetch,
 }: CertItemProps) => {
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
   const certStartDate = addDays(new Date(startTime), progressCount);
-  const certEndDate = addDays(new Date(startTime), progressCount + cycleUnit);
+  const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);
 
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
+  const { mutate } = usePostCycleProgress({
+    onSuccess: () => {
+      setIsSuccessModalOpen(true);
+    },
+    onError: () => {
+      console.log('사이클 진척도 추가 실패ㅠ_ㅠ');
+    },
+  });
+
   const handleClick = () => {
-    handleClickCertification(cycleId);
-    setIsSuccessModalOpen(true);
+    mutate({ cycleId });
   };
 
   const handleCloseModal = () => {
     setIsSuccessModalOpen(false);
+    refetch();
   };
 
   return (
@@ -66,6 +76,7 @@ export const CertItem = ({
           challengeId={challengeId}
           challengeName={challengeName}
           successCount={successCount}
+          progressCount={progressCount + 1}
         />
       )}
     </Wrapper>
