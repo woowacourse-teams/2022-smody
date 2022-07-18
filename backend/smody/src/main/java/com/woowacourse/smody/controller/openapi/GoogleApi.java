@@ -17,17 +17,18 @@ public class GoogleApi {
 
     private static final String GOOGLE_LOGIN_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_REQUEST_URI = "https://oauth2.googleapis.com/token";
-    private static final String REDIRECT_URI = "http://localhost:3000/cert";
     private static final String GRANT_TYPE = "authorization_code";
 
+    @Value("${frontend.public-ip}")
+    private String frontendPublicIp;
     @Value("${oauth.google.client-id}")
-    private String CLIENT_ID;
+    private String clientId;
     @Value("${oauth.google.client-secret}")
-    private String CLIENT_SECRET;
+    private String clientSecret;
 
     public String generateLoginLink() {
         return GOOGLE_LOGIN_URL + "?"
-                + "client_id=" + CLIENT_ID + "&"
+                + "client_id=" + clientId + "&"
                 + "response_type=" + "code" + "&"
                 + "scope=" + "https://www.googleapis.com/auth/userinfo.profile"
                 + " https://www.googleapis.com/auth/userinfo.email";
@@ -36,7 +37,7 @@ public class GoogleApi {
     public LoginRequest requestToken(String authorizationCode) {
         validateAuthorizationCode(authorizationCode);
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
-                authorizationCode, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, GRANT_TYPE
+                authorizationCode, clientId, clientSecret, frontendPublicIp + "/cert", GRANT_TYPE
         );
         GoogleTokenResponse googleTokenResponse = new RestTemplate().postForObject(
                 GOOGLE_TOKEN_REQUEST_URI,
