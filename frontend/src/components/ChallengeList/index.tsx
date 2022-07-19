@@ -1,19 +1,32 @@
 import { useGetAllChallenges } from 'apis';
 import styled from 'styled-components';
 
+import useSnackBar from 'hooks/useSnackBar';
+
 import { FlexBox, ChallengeItem } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
 
 export const ChallengeList = () => {
+  const renderSnackBar = useSnackBar();
   const { isLoading, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
+    onSuccess: () => {
+      console.log('챌린지 목록 조회에 성공했습니다.');
+      renderSnackBar({ message: '챌린지 목록 조회에 성공했습니다.', status: 'SUCCESS' });
+    },
     onError: () => {
-      console.log('나의 모든 진행중인 챌린지 사이클 조회 실패...');
+      console.log('챌린지 목록 조회에 실패했습니다.');
+      renderSnackBar({ message: '챌린지 목록 조회에 실패했습니다.', status: 'ERROR' });
     },
   });
 
   const loadMore = () => {
     console.log('hasNextPage', hasNextPage);
+    renderSnackBar({
+      message: '챌린지 목록 조회에 성공했습니다.',
+      status: 'SUCCESS',
+    });
+
     if (hasNextPage) {
       fetchNextPage();
     }
