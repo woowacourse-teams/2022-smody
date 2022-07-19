@@ -55,7 +55,7 @@ public class GoogleApi {
     }
 
     private LoginRequest parseMemberInfo(final GoogleTokenResponse googleTokenResponse) {
-        byte[] tokenPayload = Base64.getDecoder()
+        byte[] tokenPayload = Base64.getUrlDecoder()
                 .decode(googleTokenResponse.getId_token().split("\\.")[1]);
         JSONObject jsonObject = new JSONObject(new String(tokenPayload));
         return new LoginRequest(jsonObject);
