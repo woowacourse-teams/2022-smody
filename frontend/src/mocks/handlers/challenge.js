@@ -1,8 +1,8 @@
 // src/mocks/handlers.js
-import { API_PATH } from 'apis/constants';
 import { challengeData, cycleData } from 'mocks/data';
 import { rest } from 'msw';
 
+import { API_PATH } from 'constants/path';
 import { DEV_BASE_URL } from 'constants/path';
 
 export const challenge = [
