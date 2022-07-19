@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final List<String> AUTH_REQUIRED_URL = List.of(
             "/cycles", "/cycles/me", "/cycles/*/progress", "/cycles/me/stat", "/challenges/me", "/members/me",
-            "/challenges/auth"
+            "/challenges/auth", "/challenges/*/auth"
     );
 
     private final AuthInterceptor authInterceptor;

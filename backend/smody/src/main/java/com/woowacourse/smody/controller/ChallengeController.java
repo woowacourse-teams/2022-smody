@@ -43,4 +43,10 @@ public class ChallengeController {
     public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@PathVariable Long id) {
         return ResponseEntity.ok(challengeService.findOneWithChallengerCount(LocalDateTime.now(), id));
     }
+
+    @GetMapping(value = "/{id}/auth")
+    public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                        @PathVariable Long id) {
+        return ResponseEntity.ok(challengeService.findOneWithChallengerCount(tokenPayload, LocalDateTime.now(), id));
+    }
 }

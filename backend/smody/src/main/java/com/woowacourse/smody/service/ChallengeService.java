@@ -96,16 +96,23 @@ public class ChallengeService {
                 .collect(toList());
     }
 
-    private Member searchMember(TokenPayload tokenPayload) {
-        return memberRepository.findById(tokenPayload.getId())
-                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
-    }
-
     public ChallengeResponse findOneWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
         Challenge challenge = searchChallenge(challengeId);
         int count = countByChallenge(inProgressCycles, challenge);
-        return new ChallengeResponse(challenge, count, false);
+        return new ChallengeResponse(challenge, count);
+    }
+
+    public ChallengeResponse findOneWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime, Long challengeId) {
+        List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
+        Challenge challenge = searchChallenge(challengeId);
+        int count = countByChallenge(inProgressCycles, challenge);
+        return new ChallengeResponse(challenge, count, matchMember(inProgressCycles, tokenPayload, challengeId));
+    }
+
+    private Member searchMember(TokenPayload tokenPayload) {
+        return memberRepository.findById(tokenPayload.getId())
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
     }
 
     private Challenge searchChallenge(Long challengeId) {

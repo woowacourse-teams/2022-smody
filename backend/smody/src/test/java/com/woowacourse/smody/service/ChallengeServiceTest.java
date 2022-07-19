@@ -272,7 +272,7 @@ class ChallengeServiceTest {
         }
     }
 
-    @DisplayName("하나의 챌린지를 상세 조회")
+    @DisplayName("비회원이 하나의 챌린지를 상세 조회")
     @Test
     void findOneWithChallengerCount() {
         // given
@@ -286,7 +286,28 @@ class ChallengeServiceTest {
         // then
         assertAll(
                 () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
-                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID)
+                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID),
+                () -> assertThat(challengeResponse.getIsInProgress()).isFalse()
+        );
+    }
+
+    @DisplayName("회원이 하나의 챌린지를 상세 조회")
+    @Test
+    void findOneWithChallengerCount_auth() {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
+
+        // when
+        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
+                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID),
+                () -> assertThat(challengeResponse.getIsInProgress()).isTrue()
         );
     }
 }

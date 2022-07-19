@@ -84,9 +84,9 @@ class ChallengeControllerTest extends ControllerTest {
                         objectMapper.writeValueAsString(successChallengeResponses)));
     }
 
-    @DisplayName("챌린지 하나를 조회할 때 200을 응답한다.")
+    @DisplayName("비회원이 챌린지 하나를 조회할 때 200을 응답한다.")
     @Test
-    void findOneWithChallengerCount() throws Exception {
+    void findOneWithChallengerCount_unAuthorized() throws Exception {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false);
@@ -95,6 +95,25 @@ class ChallengeControllerTest extends ControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/1"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)));
+    }
+
+    @DisplayName("회원이 챌린지 하나를 조회할 때 200을 응답한다.")
+    @Test
+    void findOneWithChallengerCount_authorized() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        ChallengeResponse challengeResponse =
+                new ChallengeResponse(1L, "스모디 방문하기", 3, true);
+        given(challengeService.findOneWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class), eq(1L)))
+                .willReturn(challengeResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/1/auth")
+                .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())
