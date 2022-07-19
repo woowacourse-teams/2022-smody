@@ -37,4 +37,4 @@
 
 ## UI 스토리북
 
-- https://62c67b97ff406488a4595ad0-xzdcazhswi.chromatic.com/
+- https://62c67b97ff406488a4595ad0-yussdwyrjw.chromatic.com/
