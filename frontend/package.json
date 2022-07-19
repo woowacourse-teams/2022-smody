@@ -1,8 +1,22 @@
 {
-  "name": "frontend",
+  "name": "Smody",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "contributors": [
+    {
+      "name": "마르코 wonsss",
+      "email": "bigdatajang@gmail.com"
+    },
+    {
+      "name": "우연 ronci",
+      "email": "jyj9647@naver.com"
+    },
+    {
+      "name": "빅터 woose28",
+      "email": "dldntmdsla@naver.com"
+    }
+  ],
   "scripts": {
     "start:prod": "NODE_ENV=production webpack serve --mode production",
     "start:dev": "webpack serve --mode development",
@@ -67,8 +81,5 @@
   },
   "msw": {
     "workerDirectory": "public"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "frontend@1.0.0",
-  "proxy": "http://localhost:8080"
+  }
 }
