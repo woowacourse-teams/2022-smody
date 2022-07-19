@@ -20,8 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/challenges/auth", "/challenges/*/auth"
     );
 
-    @Value("${frontend.public-ip}")
-    private String frontendPublicIp;
+    @Value("${frontend.origin}")
+    private String frontendOrigin;
 
     private final AuthInterceptor authInterceptor;
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
@@ -40,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(frontendPublicIp)
+                .allowedOrigins(frontendOrigin)
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
     }
 }
