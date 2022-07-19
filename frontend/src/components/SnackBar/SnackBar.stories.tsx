@@ -1,3 +1,5 @@
+import { SnackBarProps } from './type';
+
 import { SnackBar } from 'components/SnackBar';
 
 const snackBarRoot = document.createElement('div');
@@ -9,7 +11,7 @@ export default {
   component: SnackBar,
 };
 
-export const SuccessSnackBar = () => <SnackBar />;
+export const SuccessSnackBar = ({ ...args }: SnackBarProps) => <SnackBar {...args} />;
 
 SuccessSnackBar.args = {
   message: '성공하셨습니다!',
@@ -18,7 +20,7 @@ SuccessSnackBar.args = {
   linkTo: '/',
 };
 
-export const ErrorSnackBar = () => <SnackBar />;
+export const ErrorSnackBar = ({ ...args }: SnackBarProps) => <SnackBar {...args} />;
 
 ErrorSnackBar.args = {
   message: '실패하였습니다!',

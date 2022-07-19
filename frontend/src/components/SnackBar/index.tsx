@@ -1,29 +1,25 @@
 import ReactDOM from 'react-dom';
-import { useRecoilValue } from 'recoil';
-import { snackBarState } from 'recoil/auth/atoms';
 import styled, { css } from 'styled-components';
 
 import { Text, LinkText, FlexBox } from 'components';
+import { SnackBarProps } from 'components/SnackBar/type';
 
-export const SnackBar = () => {
-  const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
-
+export const SnackBar = ({ status, message, linkText, linkTo }: SnackBarProps) => {
   return (
     <>
-      {isVisible &&
-        ReactDOM.createPortal(
-          <SnackBarElement status={status}>
-            <Wrapper>
-              <Text size={12}>{message}</Text>
-              {linkTo && (
-                <LinkText to={linkTo} fontWeight="bold" size={12}>
-                  {linkText}
-                </LinkText>
-              )}
-            </Wrapper>
-          </SnackBarElement>,
-          document.getElementById('snackbar-root') as HTMLElement,
-        )}
+      {ReactDOM.createPortal(
+        <SnackBarElement status={status}>
+          <Wrapper>
+            <Text size={12}>{message}</Text>
+            {linkTo && (
+              <LinkText to={linkTo} fontWeight="bold" size={12}>
+                {linkText}
+              </LinkText>
+            )}
+          </Wrapper>
+        </SnackBarElement>,
+        document.getElementById('snackbar-root') as HTMLElement,
+      )}
     </>
   );
 };
