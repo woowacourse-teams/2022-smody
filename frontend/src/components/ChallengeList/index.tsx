@@ -29,7 +29,6 @@ export const ChallengeList = () => {
         if (typeof page === 'undefined' || typeof page.data === 'undefined') {
           return [];
         }
-
         return page.data.map((challengeInfo: ChallengeInfo) => (
           <li key={challengeInfo.challengeId}>
             <ChallengeItem {...challengeInfo} challengeListRefetch={refetch} />

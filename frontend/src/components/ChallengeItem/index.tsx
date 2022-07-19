@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
@@ -7,10 +7,13 @@ import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
+import { CLIENT_PATH } from 'constants/path';
+
 export const ChallengeItem = ({
   challengeId,
   challengeName,
   challengerCount,
+  isInProgress,
   challengeListRefetch,
 }: ChallengeItemProps) => {
   const themeContext = useContext(ThemeContext);
@@ -20,10 +23,17 @@ export const ChallengeItem = ({
     handleSuccessFunction: challengeListRefetch,
   });
 
+  const navigate = useNavigate();
+  const handleClickProgressButton = () => {
+    isInProgress
+      ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
+      : joinChallenge();
+  };
+
   return (
     <Wrapper>
       <div>
-        <Link to={`/challenge/detail/${challengeId}`}>
+        <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
           <ChallengeInfoWrapper>
             <ThumbnailWrapper size="small" bgColor="#FED6D6">
               🌞
@@ -39,8 +49,8 @@ export const ChallengeItem = ({
           </ChallengeInfoWrapper>
         </Link>
       </div>
-      <Button onClick={joinChallenge} size="small" isActive={false}>
-        도전
+      <Button onClick={handleClickProgressButton} size="small" isActive={isInProgress}>
+        {isInProgress ? '도전중' : '도전'}
       </Button>
     </Wrapper>
   );
