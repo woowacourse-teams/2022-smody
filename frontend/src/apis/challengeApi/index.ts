@@ -1,7 +1,9 @@
 import {
   getAllChallenges,
+  getAllChallengesAuth,
   getMySuccessChallenges,
   getChallengeById,
+  getChallengeByIdAuth,
 } from 'apis/challengeApi/api';
 import {
   GetChallengeResponse,
@@ -17,6 +19,8 @@ import {
   UseQueryOptions,
   UseInfiniteQueryOptions,
 } from 'react-query';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
@@ -24,7 +28,9 @@ export const useGetAllChallenges = (
 ) =>
   useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError>(
     'getAllChallenges',
-    ({ pageParam = 0 }) => getAllChallenges(pageParam),
+    useRecoilValue(isLoginState)
+      ? ({ pageParam = 0 }) => getAllChallengesAuth(pageParam)
+      : ({ pageParam = 0 }) => getAllChallenges(pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {
@@ -59,6 +65,8 @@ export const useGetChallengeById = (
 ) =>
   useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError>(
     'getChallengeById',
-    () => getChallengeById({ challengeId }),
+    useRecoilValue(isLoginState)
+      ? () => getChallengeByIdAuth({ challengeId })
+      : () => getChallengeById({ challengeId }),
     options,
   );
