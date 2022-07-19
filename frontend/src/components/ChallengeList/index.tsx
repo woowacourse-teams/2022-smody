@@ -6,30 +6,34 @@ import useSnackBar from 'hooks/useSnackBar';
 import { FlexBox, ChallengeItem } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
 
+import { CLIENT_PATH } from 'constants/path';
+
 export const ChallengeList = () => {
   const renderSnackBar = useSnackBar();
   const { isLoading, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onSuccess: () => {
       console.log('챌린지 목록 조회에 성공했습니다.');
-      renderSnackBar({ message: '챌린지 목록 조회에 성공했습니다.', status: 'SUCCESS' });
     },
     onError: () => {
       console.log('챌린지 목록 조회에 실패했습니다.');
-      renderSnackBar({ message: '챌린지 목록 조회에 실패했습니다.', status: 'ERROR' });
     },
   });
 
   const loadMore = () => {
     console.log('hasNextPage', hasNextPage);
-    renderSnackBar({
-      message: '챌린지 목록 조회에 성공했습니다.',
-      status: 'SUCCESS',
-    });
 
     if (hasNextPage) {
       fetchNextPage();
     }
+
+    // 스낵바 사용 예시
+    renderSnackBar({
+      message: '챌린지 목록 조회에 성공했습니다.',
+      status: 'SUCCESS',
+      linkText: '더보기',
+      linkTo: CLIENT_PATH.CERT,
+    });
   };
 
   if (isLoading || typeof data === 'undefined') {
