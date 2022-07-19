@@ -1,5 +1,4 @@
 import { SnackBar } from 'components/SnackBar';
-import { SnackBarProps } from 'components/SnackBar/type';
 
 const snackBarRoot = document.createElement('div');
 snackBarRoot.setAttribute('id', 'snackbar-root');
@@ -10,16 +9,20 @@ export default {
   component: SnackBar,
 };
 
-export const SuccessSnackBar = (args: SnackBarProps) => <SnackBar {...args} />;
+export const SuccessSnackBar = () => <SnackBar />;
 
 SuccessSnackBar.args = {
   message: '성공하셨습니다!',
   status: 'SUCCESS',
+  linkText: '메인으로',
+  linkTo: '/',
 };
 
-export const ErrorSnackBar = (args: SnackBarProps) => <SnackBar {...args} />;
+export const ErrorSnackBar = () => <SnackBar />;
 
 ErrorSnackBar.args = {
   message: '실패하였습니다!',
   status: 'ERROR',
+  linkText: '메인으로',
+  linkTo: '/',
 };

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { snackBarState } from 'recoil/auth/atoms';
 
@@ -5,13 +6,30 @@ import { SnackBarProps } from 'components/SnackBar/type';
 
 const useSnackBar = () => {
   const setSnackBar = useSetRecoilState(snackBarState);
-  const renderSnackbar = ({ message, status }: SnackBarProps) => {
-    setSnackBar({ isVisible: true, message, status });
+  let timeoutId: NodeJS.Timeout | null | number;
 
-    setTimeout(() => setSnackBar((prev) => ({ ...prev, isVisible: false })));
-  };
+  const renderSnackBar = useCallback(
+    ({ status, message, linkText, linkTo }: SnackBarProps) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        setSnackBar((prev) => {
+          return { ...prev, isVisible: false };
+        });
+      }
 
-  return renderSnackbar;
+      timeoutId = setTimeout(() => {
+        setSnackBar((prev) => {
+          return { ...prev, isVisible: false };
+        });
+      }, 3000);
+
+      setSnackBar({ isVisible: true, status, message, linkText, linkTo });
+    },
+    [setSnackBar],
+  );
+
+  return renderSnackBar;
 };
 
 export default useSnackBar;

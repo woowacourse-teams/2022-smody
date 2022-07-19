@@ -1,77 +1,155 @@
 import ReactDOM from 'react-dom';
+import { useRecoilValue } from 'recoil';
+import { snackBarState } from 'recoil/auth/atoms';
 import styled, { css } from 'styled-components';
 
-import { SnackBarProps } from 'components/SnackBar/type';
+import { Text, LinkText, FlexBox } from 'components';
 
-export const SnackBar = ({ message, status }: SnackBarProps) => {
+export const SnackBar = () => {
+  const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
+
   return (
     <>
-      {ReactDOM.createPortal(
-        <SnackbarElement status={status}>{message}</SnackbarElement>,
-        document.getElementById('snackbar-root') as HTMLElement,
-      )}
+      {isVisible &&
+        ReactDOM.createPortal(
+          <SnackBarElement status={status}>
+            <Wrapper>
+              <Text size={12}>{message}</Text>
+              {linkTo && (
+                <LinkText to={linkTo} fontWeight="bold" size={12}>
+                  {linkText}
+                </LinkText>
+              )}
+            </Wrapper>
+          </SnackBarElement>,
+          document.getElementById('snackbar-root') as HTMLElement,
+        )}
     </>
   );
 };
 
-const SnackbarElement = styled.div<{ status: string }>`
+const Wrapper = styled(FlexBox).attrs({
+  direction: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})``;
+
+const SnackBarElement = styled.div<{ status: string }>`
   ${({ theme, status }) => css`
-    min-width: 250px;
+    width: 95%;
+    max-width: 900px;
     margin: 0;
     text-align: center;
     padding: 1rem;
-    position: fixed;
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     bottom: 4.8rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 5px;
     color: ${status === 'SUCCESS' ? theme.onSuccess : theme.onError};
     background-color: ${status === 'SUCCESS' ? theme.success : theme.error};
 
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    -webkit-animation: fade 0.5s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fade 0.5s; /* Firefox < 16 */
+    -ms-animation: fade 0.5s; /* Internet Explorer */
+    -o-animation: fade 0.5s; /* Opera < 12.1 */
+    animation: fade 0.5s;
 
-    @-webkit-keyframes fadein {
+    @keyframes fade {
       from {
-        bottom: 0;
         opacity: 0;
       }
       to {
-        bottom: 4.8rem;
         opacity: 1;
       }
     }
 
-    @keyframes fadein {
+    /* Firefox < 16 */
+    @-moz-keyframes fade {
       from {
-        bottom: 0;
         opacity: 0;
       }
       to {
-        bottom: 4.8rem;
         opacity: 1;
       }
     }
 
-    @-webkit-keyframes fadeout {
+    /* Safari, Chrome and Opera > 12.1 */
+    @-webkit-keyframes fade {
       from {
-        bottom: 4.8rem;
-        opacity: 1;
+        opacity: 0;
       }
       to {
-        bottom: 0;
+        opacity: 1;
+      }
+    }
+
+    /* Internet Explorer */
+    @-ms-keyframes fade {
+      from {
         opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Opera < 12.1 */
+    @-o-keyframes fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
       }
     }
 
     @keyframes fadeout {
       from {
-        bottom: 4.8rem;
         opacity: 1;
       }
       to {
-        bottom: 0;
+        opacity: 0;
+      }
+    }
+
+    /* Firefox < 16 */
+    @-moz-keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Safari, Chrome and Opera > 12.1 */
+    @-webkit-keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Internet Explorer */
+    @-ms-keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Opera < 12.1 */
+    @-o-keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
         opacity: 0;
       }
     }
