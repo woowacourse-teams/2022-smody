@@ -19,25 +19,26 @@ public class GoogleApi {
     private static final String GOOGLE_TOKEN_REQUEST_URI = "https://oauth2.googleapis.com/token";
     private static final String GRANT_TYPE = "authorization_code";
 
-    @Value("${frontend.public-ip}")
-    private String frontendPublicIp;
     @Value("${oauth.google.client-id}")
     private String clientId;
     @Value("${oauth.google.client-secret}")
     private String clientSecret;
+    @Value("${oauth.redirect-uri}")
+    private String redirectUri;
 
     public String generateLoginLink() {
         return GOOGLE_LOGIN_URL + "?"
                 + "client_id=" + clientId + "&"
                 + "response_type=" + "code" + "&"
                 + "scope=" + "https://www.googleapis.com/auth/userinfo.profile"
-                + " https://www.googleapis.com/auth/userinfo.email";
+                + " https://www.googleapis.com/auth/userinfo.email" + "&"
+                + "redirect_uri=" + redirectUri;
     }
 
     public LoginRequest requestToken(String authorizationCode) {
         validateAuthorizationCode(authorizationCode);
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
-                authorizationCode, clientId, clientSecret, frontendPublicIp + "/cert", GRANT_TYPE
+                authorizationCode, clientId, clientSecret, redirectUri, GRANT_TYPE
         );
         GoogleTokenResponse googleTokenResponse = new RestTemplate().postForObject(
                 GOOGLE_TOKEN_REQUEST_URI,
