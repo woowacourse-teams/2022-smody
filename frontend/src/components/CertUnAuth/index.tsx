@@ -10,9 +10,7 @@ export const CertUnAuth = () => {
 
   const { refetch: getLinkGoogle } = useGetLinkGoogle({
     enabled: false,
-    onSuccess: ({ data: googleOAuthLoginLink }) => {
-      const redirectionUrl =
-        googleOAuthLoginLink + '&redirect_uri=http://localhost:3000/cert';
+    onSuccess: ({ data: redirectionUrl }) => {
       window.location.href = redirectionUrl;
     },
   });
