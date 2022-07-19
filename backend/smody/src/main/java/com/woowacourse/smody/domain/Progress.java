@@ -2,11 +2,8 @@ package com.woowacourse.smody.domain;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

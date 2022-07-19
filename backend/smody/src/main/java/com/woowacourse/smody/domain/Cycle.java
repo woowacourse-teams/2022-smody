@@ -53,6 +53,8 @@ public class Cycle {
     }
 
     public void increaseProgress(LocalDateTime progressTime) {
+        System.out.println("$$$$$$$$$startTime = " + startTime);
+        System.out.println("$$$$$$$$$progressTime = " + progressTime);
         progress = progress.increase(startTime, progressTime);
     }
 
