@@ -19,13 +19,13 @@ import org.springframework.test.web.servlet.ResultActions;
 
 class ChallengeControllerTest extends ControllerTest {
 
-    @DisplayName("모든 챌린지를 조회할 때 200을 응답한다.")
+    @DisplayName("비회원이 모든 챌린지를 조회할 때 200을 응답한다.")
     @Test
-    void findAllWithChallengerCount() throws Exception {
+    void findAllWithChallengerCount_unAuthorized() throws Exception {
         // given
         List<ChallengeResponse> challengeResponses = List.of(
-                new ChallengeResponse(1L, "스모디 방문하기", 3),
-                new ChallengeResponse(2L, "미라클 모닝", 5)
+                new ChallengeResponse(1L, "스모디 방문하기", 3, false),
+                new ChallengeResponse(2L, "미라클 모닝", 5, false)
         );
 
         given(challengeService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
@@ -33,6 +33,28 @@ class ChallengeControllerTest extends ControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)));
+    }
+
+    @DisplayName("회원이 모든 챌린지를 조회할 때 200을 응답한다.")
+    @Test
+    void findAllWithChallengerCount_authorized() throws Exception {
+        // given
+        List<ChallengeResponse> challengeResponses = List.of(
+                new ChallengeResponse(1L, "스모디 방문하기", 3, true),
+                new ChallengeResponse(2L, "미라클 모닝", 5, false)
+        );
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        given(challengeService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)))
+                .willReturn(challengeResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/auth")
+                        .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())
@@ -62,17 +84,36 @@ class ChallengeControllerTest extends ControllerTest {
                         objectMapper.writeValueAsString(successChallengeResponses)));
     }
 
-    @DisplayName("챌린지 하나를 조회할 때 200을 응답한다.")
+    @DisplayName("비회원이 챌린지 하나를 조회할 때 200을 응답한다.")
     @Test
-    void findOneWithChallengerCount() throws Exception {
+    void findOneWithChallengerCount_unAuthorized() throws Exception {
         // given
         ChallengeResponse challengeResponse =
-                new ChallengeResponse(1L, "스모디 방문하기", 3);
+                new ChallengeResponse(1L, "스모디 방문하기", 3, false);
         given(challengeService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/1"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)));
+    }
+
+    @DisplayName("회원이 챌린지 하나를 조회할 때 200을 응답한다.")
+    @Test
+    void findOneWithChallengerCount_authorized() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        ChallengeResponse challengeResponse =
+                new ChallengeResponse(1L, "스모디 방문하기", 3, true);
+        given(challengeService.findOneWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class), eq(1L)))
+                .willReturn(challengeResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/1/auth")
+                .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())

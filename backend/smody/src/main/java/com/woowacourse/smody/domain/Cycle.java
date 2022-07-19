@@ -57,15 +57,11 @@ public class Cycle {
     }
 
     public boolean matchMember(Long memberId) {
-        return member.matchId(memberId);
+        return member.getId().equals(memberId);
     }
 
     public boolean isInProgress(LocalDateTime now) {
         return progress.isInProgress(startTime, now);
-    }
-
-    public boolean matchChallenge(Long challengeId) {
-        return challenge.matchId(challengeId);
     }
 
     public boolean isSuccess() {

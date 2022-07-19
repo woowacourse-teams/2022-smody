@@ -16,7 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private static final List<String> AUTH_REQUIRED_URL = List.of(
-            "/cycles", "/cycles/me", "/cycles/*/progress", "/cycles/me/stat", "/challenges/me", "/members/me"
+            "/cycles", "/cycles/me", "/cycles/*/progress", "/cycles/me/stat", "/challenges/me", "/members/me",
+            "/challenges/auth", "/challenges/*/auth"
     );
 
     @Value("${frontend.public-ip}")

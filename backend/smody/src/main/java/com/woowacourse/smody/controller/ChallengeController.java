@@ -27,6 +27,12 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeService.findAllWithChallengerCount(LocalDateTime.now(), pageable));
     }
 
+    @GetMapping("/auth")
+    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                                      Pageable pageable) {
+        return ResponseEntity.ok(challengeService.findAllWithChallengerCount(tokenPayload, LocalDateTime.now(), pageable));
+    }
+
     @GetMapping(value = "/me")
     public ResponseEntity<List<SuccessChallengeResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  Pageable pageable) {
@@ -36,5 +42,11 @@ public class ChallengeController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@PathVariable Long id) {
         return ResponseEntity.ok(challengeService.findOneWithChallengerCount(LocalDateTime.now(), id));
+    }
+
+    @GetMapping(value = "/{id}/auth")
+    public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                        @PathVariable Long id) {
+        return ResponseEntity.ok(challengeService.findOneWithChallengerCount(tokenPayload, LocalDateTime.now(), id));
     }
 }

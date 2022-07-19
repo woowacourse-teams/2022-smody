@@ -204,9 +204,75 @@ class ChallengeServiceTest {
             // then
             assertThat(challengeResponses).isEmpty();
         }
+
+        @DisplayName("정렬하면서 회원인 경우")
+        @Test
+        void findAllWithChallengerCount_sortAuth() {
+            // when
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(0, 10));
+
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                            .containsExactly(true, true, false, false, false)
+            );
+        }
+
+        @DisplayName("정렬 후 0페이지의 2개만 조회하면서 회원인 경우")
+        @Test
+        void findAllWithChallengerCount_pageFullSizeAuth() {
+            // when
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(0, 2));
+
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeId))
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                            .containsExactly(2, 1),
+                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                            .containsExactly(true, true)
+            );
+        }
+
+        @DisplayName("정렬 후 1페이지의 1개만 조회하면서 회원인 경우")
+        @Test
+        void findAllWithChallengerCount_pagePartialSizeAuth() {
+            // when
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(1, 2));
+
+            // then
+            assertAll(
+                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                            .containsExactly(0, 0),
+                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                            .containsExactly(false, false)
+            );
+        }
+
+        @DisplayName("정렬 후 최대 페이지를 초과한 페이지 조회하면서 회원인 경우")
+        @Test
+        void findAllWithChallengerCount_pageOverMaxPageAuth() {
+            // when
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(3, 2));
+
+            // then
+            assertThat(challengeResponses).isEmpty();
+        }
     }
 
-    @DisplayName("하나의 챌린지를 상세 조회")
+    @DisplayName("비회원이 하나의 챌린지를 상세 조회")
     @Test
     void findOneWithChallengerCount() {
         // given
@@ -220,7 +286,28 @@ class ChallengeServiceTest {
         // then
         assertAll(
                 () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
-                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID)
+                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID),
+                () -> assertThat(challengeResponse.getIsInProgress()).isFalse()
+        );
+    }
+
+    @DisplayName("회원이 하나의 챌린지를 상세 조회")
+    @Test
+    void findOneWithChallengerCount_auth() {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
+
+        // when
+        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(challengeResponse.getChallengerCount()).isEqualTo(2),
+                () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID),
+                () -> assertThat(challengeResponse.getIsInProgress()).isTrue()
         );
     }
 }
