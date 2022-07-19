@@ -35,11 +35,15 @@ public class ChallengeService {
 
     public List<ChallengeResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable) {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
-        List<ChallengeResponse> responses = challengeRepository.findAll()
-                .stream()
-                .map(challenge -> new ChallengeResponse(challenge, countByChallenge(inProgressCycles, challenge)))
-                .sorted((response1, response2) ->
-                        Integer.compare(response2.getChallengerCount(), response1.getChallengerCount()))
+        List<ChallengeResponse> responses = getResponsesOrderByCount(inProgressCycles);
+        return PagingUtil.page(responses, pageable);
+    }
+
+    public List<ChallengeResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+                                                              Pageable pageable) {
+        List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
+        List<ChallengeResponse> responses = getResponsesOrderByCount(inProgressCycles).stream()
+                .map(response -> response.changeInProgress(matchMember(inProgressCycles, tokenPayload, response.getChallengeId())))
                 .collect(toList());
         return PagingUtil.page(responses, pageable);
     }
@@ -49,6 +53,20 @@ public class ChallengeService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
+    }
+
+    private List<ChallengeResponse> getResponsesOrderByCount(List<Cycle> inProgressCycles) {
+        return challengeRepository.findAll()
+                .stream()
+                .map(challenge -> new ChallengeResponse(challenge, countByChallenge(inProgressCycles, challenge)))
+                .sorted((response1, response2) ->
+                        Integer.compare(response2.getChallengerCount(), response1.getChallengerCount()))
+                .collect(toList());
+    }
+
+    private boolean matchMember(List<Cycle> cycles, TokenPayload tokenPayload, Long challengeId) {
+        return cycles.stream()
+                .anyMatch(cycle -> cycle.matchChallenge(challengeId) && cycle.matchMember(tokenPayload.getId()));
     }
 
     private int countByChallenge(List<Cycle> cycles, Challenge challenge) {
@@ -87,7 +105,7 @@ public class ChallengeService {
         List<Cycle> inProgressCycles = searchInProgressCycles(searchTime);
         Challenge challenge = searchChallenge(challengeId);
         int count = countByChallenge(inProgressCycles, challenge);
-        return new ChallengeResponse(challenge, count);
+        return new ChallengeResponse(challenge, count, false);
     }
 
     private Challenge searchChallenge(Long challengeId) {

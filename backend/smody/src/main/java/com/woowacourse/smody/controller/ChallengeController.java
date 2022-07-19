@@ -27,6 +27,12 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeService.findAllWithChallengerCount(LocalDateTime.now(), pageable));
     }
 
+    @GetMapping("/auth")
+    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                                      Pageable pageable) {
+        return ResponseEntity.ok(challengeService.findAllWithChallengerCount(tokenPayload, LocalDateTime.now(), pageable));
+    }
+
     @GetMapping(value = "/me")
     public ResponseEntity<List<SuccessChallengeResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  Pageable pageable) {
