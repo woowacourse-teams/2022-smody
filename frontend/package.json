@@ -48,6 +48,7 @@
     "@yarnpkg/pnpify": "^4.0.0-rc.10",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.7.0",
+    "dotenv": "^16.0.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
