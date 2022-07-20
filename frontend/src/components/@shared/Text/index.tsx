@@ -14,6 +14,7 @@ export const Text = styled.p<TextProps>`
 
 const fontSizeMapper: Record<FontSizeType, number> = {
   10: 0.625,
+  11: 0.6875,
   12: 0.75,
   14: 0.875,
   16: 1,
