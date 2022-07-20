@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CycleRequest {
 
-    private LocalDateTime startTime;
+    private LocalDateTime startTime = LocalDateTime.now();
     private Long challengeId;
 }
