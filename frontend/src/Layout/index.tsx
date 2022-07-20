@@ -1,8 +1,6 @@
 import { WrapperProps } from 'Layout/type';
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { snackBarState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
@@ -26,7 +24,6 @@ export const Layout = () => {
 
   const bgColor = getPathMatchColor([CLIENT_PATH.CERT]);
   const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
-  const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
   return (
     <>
       <Header />
@@ -34,10 +31,7 @@ export const Layout = () => {
         <Outlet />
       </Wrapper>
       <Navbar />
-
-      {isVisible && (
-        <SnackBar status={status} message={message} linkText={linkText} linkTo={linkTo} />
-      )}
+      <SnackBar />
     </>
   );
 };

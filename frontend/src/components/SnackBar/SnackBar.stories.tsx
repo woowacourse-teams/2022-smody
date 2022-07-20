@@ -1,4 +1,6 @@
 import { SnackBarProps } from './type';
+import { useSetRecoilState } from 'recoil';
+import { snackBarState } from 'recoil/snackbar/atoms';
 
 import { SnackBar } from 'components/SnackBar';
 
@@ -9,22 +11,27 @@ document.body.append(snackBarRoot);
 export default {
   title: 'Components/SnackBar',
   component: SnackBar,
+  argTypes: {
+    status: {
+      options: ['SUCCESS', 'ERROR'],
+      control: { type: 'select' },
+    },
+  },
 };
 
-export const SuccessSnackBar = ({ ...args }: SnackBarProps) => <SnackBar {...args} />;
+export const DefaultSnackBar = (args: SnackBarProps & { isVisible: boolean }) => {
+  const setSnackBar = useSetRecoilState(snackBarState);
+  setSnackBar({
+    ...args,
+  });
 
-SuccessSnackBar.args = {
-  message: '성공하셨습니다!',
+  return <SnackBar />;
+};
+
+DefaultSnackBar.args = {
+  isVisible: true,
   status: 'SUCCESS',
-  linkText: '메인으로',
-  linkTo: '/',
-};
-
-export const ErrorSnackBar = ({ ...args }: SnackBarProps) => <SnackBar {...args} />;
-
-ErrorSnackBar.args = {
-  message: '실패하였습니다!',
-  status: 'ERROR',
-  linkText: '메인으로',
+  message: '성공했어요',
+  linkText: '더보기',
   linkTo: '/',
 };

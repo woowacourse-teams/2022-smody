@@ -1,18 +1,34 @@
+import { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import styled, { css } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { snackBarState } from 'recoil/snackbar/atoms';
+import styled, { css, ThemeContext } from 'styled-components';
 
 import { Text, LinkText, FlexBox } from 'components';
-import { SnackBarProps } from 'components/SnackBar/type';
 
-export const SnackBar = ({ status, message, linkText, linkTo }: SnackBarProps) => {
+export const SnackBar = () => {
+  const themeContext = useContext(ThemeContext);
+  const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
+
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <>
       {ReactDOM.createPortal(
         <SnackBarElement status={status}>
           <Wrapper>
-            <Text size={12}>{message}</Text>
+            <Text color={themeContext.onPrimary} size={12}>
+              {message}
+            </Text>
             {linkTo && (
-              <LinkText to={linkTo} fontWeight="bold" size={12}>
+              <LinkText
+                color={themeContext.onPrimary}
+                to={linkTo}
+                fontWeight="bold"
+                size={12}
+              >
                 {linkText}
               </LinkText>
             )}
@@ -37,7 +53,7 @@ const SnackBarElement = styled.div<{ status: string }>`
     margin: 0;
     text-align: center;
     padding: 1rem;
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translateX(-50%);
     bottom: 4.8rem;

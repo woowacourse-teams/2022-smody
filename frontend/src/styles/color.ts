@@ -11,7 +11,7 @@ const COLOR = {
   BLACK: '#000000',
   WHITE: '#ffffff',
 
-  RED: '#da1b1b',
+  RED: '#FF7878',
   GREEN: '#2E7D32',
   BLUE: '#0D47A1',
 
