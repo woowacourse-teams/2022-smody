@@ -32,7 +32,7 @@ export const CardGridContainer = () => {
             return null;
           }
 
-          page.data.map((challenge: Challenge) => (
+          return page.data.map((challenge: Challenge) => (
             <CardBox
               key={challenge.challengeId}
               {...challenge}

@@ -8,8 +8,8 @@ import {
 import { Cycle } from 'commonType';
 
 // 1. 챌린지 사이클 생성(POST)
-export const postCycle = async ({ startTime, challengeId }: PostCycleProps) => {
-  return authApiClient.axios.post('/cycles', { startTime, challengeId });
+export const postCycle = async ({ challengeId }: PostCycleProps) => {
+  return authApiClient.axios.post('/cycles', { challengeId });
 };
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)

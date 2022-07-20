@@ -1,6 +1,6 @@
 import { Cycle } from 'commonType';
 
-export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
+export type PostCycleProps = Pick<Cycle, 'challengeId'>;
 
 export type PostCycleProgressProps = Pick<Cycle, 'cycleId'>;
 
