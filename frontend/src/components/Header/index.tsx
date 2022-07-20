@@ -37,7 +37,7 @@ export const Header = () => {
     <Wrapper bgColor={bgColor}>
       <Logo width="100" color={themeContext.primary} />
       {isLogin ? (
-        <FaBell size={20} color={themeContext.primary} />
+        <FaBell size={23} color={themeContext.primary} />
       ) : (
         <Button size="small" onClick={handleLogin}>
           로그인
@@ -60,17 +60,17 @@ const Wrapper = styled(FlexBox).attrs({
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
-      padding: 1.5rem 10rem 1rem;
+      padding: 1rem 10rem;
     }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
     @media all and (min-width: 768px) and (max-width: 1023px) {
-      padding: 1.5rem 7rem 1rem;
+      padding: 1rem 7rem;
     }
 
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
     @media all and (max-width: 767px) {
-      padding: 1.5rem 1.25rem 1rem;
+      padding: 1rem 1.25rem;
     }
   `}
 `;
