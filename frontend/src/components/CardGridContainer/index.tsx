@@ -11,7 +11,7 @@ export const CardGridContainer = () => {
   // TODO : 성공한 챌린지 GET API 연결
   const themeContext = useContext(ThemeContext);
   const { isLoading, data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
-  console.log('data', data);
+
   const loadMore = () => {
     if (hasNextPage) {
       fetchNextPage();

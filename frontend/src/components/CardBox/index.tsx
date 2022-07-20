@@ -12,7 +12,6 @@ export const CardBox = ({
   bgColor,
   emoji,
 }: CardBoxProps) => {
-  console.log(challengeId);
   return (
     <Wrapper bgColor={bgColor}>
       <TitleWrapper size={14} color={COLOR.BLACK} fontWeight="bold">

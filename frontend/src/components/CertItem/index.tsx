@@ -3,11 +3,14 @@ import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 
+import useSnackBar from 'hooks/useSnackBar';
+
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CYCLE_UNIT } from 'constants/domain';
+import { CLIENT_PATH } from 'constants/path';
 
 export const CertItem = ({
   cycleId,
@@ -18,6 +21,8 @@ export const CertItem = ({
   successCount,
   refetch,
 }: CertItemProps) => {
+  const renderSnackBar = useSnackBar();
+
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
@@ -33,7 +38,12 @@ export const CertItem = ({
       setIsSuccessModalOpen(true);
     },
     onError: () => {
-      console.log('사이클 진척도 추가 실패ㅠ_ㅠ');
+      renderSnackBar({
+        message: '챌린지 인증에 실패했습니다.',
+        status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
+      });
     },
   });
 

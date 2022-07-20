@@ -9,6 +9,7 @@ import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 
 import useInput from 'hooks/useInput';
+import useSnackBar from 'hooks/useSnackBar';
 
 import { RouteLoginState } from 'pages/LoginPage/type';
 
@@ -17,6 +18,7 @@ import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 export const LoginPage = () => {
+  const renderSnackBar = useSnackBar();
   const setNickname = useSetRecoilState(nicknameState);
   const setIsLogin = useSetRecoilState(isLoginState);
   const themeContext = useContext(ThemeContext);
@@ -30,8 +32,12 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
     onError: () => {
-      console.log('로그인 실패...');
-      throw new Error();
+      renderSnackBar({
+        message: '로그인 시 에러가 발생했습니다',
+        status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
+      });
     },
   });
 

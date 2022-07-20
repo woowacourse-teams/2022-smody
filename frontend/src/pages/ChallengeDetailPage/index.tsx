@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
@@ -17,6 +18,7 @@ const makeCursorPointer = {
 };
 
 export const ChallengeDetailPage = () => {
+  const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
@@ -26,21 +28,24 @@ export const ChallengeDetailPage = () => {
     {
       refetchOnWindowFocus: false,
       onError: () => {
-        console.log('챌린지 단건 조회하기 실패...');
+        renderSnackBar({
+          message: '챌린지 조회 시 에러가 발생했습니다.',
+          status: 'ERROR',
+          linkText: '문의하기',
+          linkTo: CLIENT_PATH.VOC,
+        });
       },
     },
   );
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
-    isNavigator: false,
   });
 
   if (isLoading || typeof data === 'undefined' || typeof data.data === 'undefined') {
     return <p>로딩중...</p>;
   }
 
-  console.log(data);
   const { challengeName, challengerCount } = data.data;
 
   const backToPreviousPage = () => {
