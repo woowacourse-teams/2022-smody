@@ -25,12 +25,7 @@ const usePostJoinChallenge = ({
   });
 
   const joinChallenge = () => {
-    const date = new Date();
-    date.setHours(date.getHours() + TIMEZONE_OFFSET);
-
-    const [startTime, _] = date.toISOString().split('.');
-
-    mutate({ startTime, challengeId });
+    mutate({ challengeId });
   };
 
   return { joinChallenge, isSuccess };
