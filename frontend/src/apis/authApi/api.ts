@@ -1,10 +1,5 @@
 import { apiClient } from 'apis/apiClient';
-import {
-  AuthProps,
-  PostSignUpResponse,
-  LoginProps,
-  PostLoginResponse,
-} from 'apis/authApi/type';
+import { AuthProps, PostSignUpResponse } from 'apis/authApi/type';
 
 export const postSignUp = async ({ email, password, nickname }: AuthProps) => {
   return apiClient.axios.post<PostSignUpResponse>('/members', {

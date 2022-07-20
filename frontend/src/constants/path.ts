@@ -15,6 +15,7 @@ export const CLIENT_PATH = {
   PROFILE: '/profile',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
+  VOC: '/voc',
   NOT_FOUND: '/not_found',
   WILD_CARD: '*',
 };

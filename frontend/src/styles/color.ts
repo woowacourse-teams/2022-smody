@@ -11,8 +11,9 @@ const COLOR = {
   BLACK: '#000000',
   WHITE: '#ffffff',
 
-  RED: '#da1b1b',
+  RED: '#FF7878',
   GREEN: '#2E7D32',
+  BLUE: '#0D47A1',
 
   OPAQUE_BLACK: 'rgba(0, 0, 0, 0.4)',
 } as const;

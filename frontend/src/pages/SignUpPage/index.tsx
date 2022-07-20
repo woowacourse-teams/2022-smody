@@ -14,12 +14,15 @@ import {
 } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
+import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const SignUpPage = () => {
+  const renderSnackBar = useSnackBar();
+
   const themeContext = useContext(ThemeContext);
 
   const email = useInput('', validateEmail);
@@ -35,7 +38,6 @@ export const SignUpPage = () => {
   const navigate = useNavigate();
   const { mutate } = usePostSignUp({
     onSuccess: ({ data: { email } }) => {
-      console.log('회원가입 성공!!');
       navigate(CLIENT_PATH.LOGIN, {
         state: {
           email,
@@ -43,7 +45,12 @@ export const SignUpPage = () => {
       });
     },
     onError: () => {
-      console.log('회원가입 실패...');
+      renderSnackBar({
+        message: '회원가입 시 에러가 발생했습니다.',
+        status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
+      });
     },
   });
 

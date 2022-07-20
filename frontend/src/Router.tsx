@@ -13,6 +13,7 @@ import {
   NotFoundPage,
   CertPage,
   ProfilePage,
+  VocPage,
 } from 'pages';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -58,6 +59,7 @@ const Router = () => {
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
             element={<ChallengeDetailPage />}
           />
+          <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={CLIENT_PATH.WILD_CARD} element={<NotFoundPage />} />
         </Route>

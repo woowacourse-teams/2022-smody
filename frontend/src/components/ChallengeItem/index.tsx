@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import useSnackBar from 'hooks/useSnackBar';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
@@ -17,10 +18,11 @@ export const ChallengeItem = ({
   challengeListRefetch,
 }: ChallengeItemProps) => {
   const themeContext = useContext(ThemeContext);
+
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
-    isNavigator: false,
-    handleSuccessFunction: challengeListRefetch,
+    challengeName,
+    challengeListRefetch,
   });
 
   const navigate = useNavigate();

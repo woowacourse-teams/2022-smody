@@ -15,7 +15,7 @@ export const lightTheme: DefaultTheme = {
   surface: COLOR.WHITE,
   onSurface: COLOR.LIGHT_BLACK,
 
-  success: COLOR.GREEN,
+  success: COLOR.PURPLE,
   onSuccess: COLOR.WHITE,
 
   error: COLOR.RED,

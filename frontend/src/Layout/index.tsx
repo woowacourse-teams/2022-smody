@@ -5,7 +5,7 @@ import styled, { ThemeContext, css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
 
-import { FlexBox, Header, Navbar } from 'components';
+import { FlexBox, Header, Navbar, SnackBar } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -24,7 +24,6 @@ export const Layout = () => {
 
   const bgColor = getPathMatchColor([CLIENT_PATH.CERT]);
   const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
-
   return (
     <>
       <Header />
@@ -32,6 +31,7 @@ export const Layout = () => {
         <Outlet />
       </Wrapper>
       <Navbar />
+      <SnackBar />
     </>
   );
 };
