@@ -34,7 +34,7 @@ export const challenge = [
   }),
   // 5. 모든 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(challengeData));
+    return res(ctx.delay(3000), ctx.status(200), ctx.json(challengeData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
