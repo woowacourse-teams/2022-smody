@@ -1,7 +1,9 @@
 import { useGetMyCyclesInProgress } from 'apis';
 import styled, { css } from 'styled-components';
 
-import { CertItem } from 'components';
+import { EmptyContent, CertItem } from 'components';
+
+import { CLIENT_PATH } from 'constants/path';
 
 export const CertAuth = () => {
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
@@ -13,6 +15,17 @@ export const CertAuth = () => {
 
   if (isLoading || typeof data === 'undefined') {
     return <p>로딩중...</p>;
+  }
+
+  if (data.data.length === 0) {
+    return (
+      <EmptyContent
+        title="도전 중인 챌린지가 없습니다 :)"
+        description="새로운 챌린지에 도전해보아요!!"
+        linkText="검색 페이지로 이동하기"
+        linkTo={CLIENT_PATH.SEARCH}
+      />
+    );
   }
 
   return (

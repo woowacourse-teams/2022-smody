@@ -3,7 +3,9 @@ import { Challenge } from 'commonType';
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { CardBox, Text } from 'components';
+import { CardBox, Text, EmptyContent } from 'components';
+
+import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   // TODO : 성공한 챌린지 GET API 연결
@@ -18,6 +20,17 @@ export const CardGridContainer = () => {
 
   if (isLoading || typeof data === 'undefined') {
     return <span>Loading...</span>;
+  }
+
+  if (data.pages[0].data.length === 0) {
+    return (
+      <EmptyContent
+        title="아직 성공한 챌린지가 없습니다 :)"
+        description="첫 챌린지를 힘내서 해보아요💪💪"
+        linkText="인증 페이지로 이동하기"
+        linkTo={CLIENT_PATH.CERT}
+      />
+    );
   }
 
   return (
