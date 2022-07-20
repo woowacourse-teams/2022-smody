@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import { validateAccessToken } from 'utils/validator';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 import useSnackBar from 'hooks/useSnackBar';
@@ -27,13 +28,15 @@ export const ChallengeDetailPage = () => {
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
-      onError: () => {
+      onError: (error) => {
         renderSnackBar({
           message: '챌린지 조회 시 에러가 발생했습니다.',
           status: 'ERROR',
           linkText: '문의하기',
           linkTo: CLIENT_PATH.VOC,
         });
+
+        validateAccessToken(error);
       },
     },
   );
