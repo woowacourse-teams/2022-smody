@@ -20,7 +20,7 @@ import {
   UseInfiniteQueryOptions,
 } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import { isLoginState } from 'recoil/auth/selectors';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (

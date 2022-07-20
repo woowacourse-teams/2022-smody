@@ -4,7 +4,7 @@ import PasswordIcon from 'assets/pw_icon.svg';
 import { useContext, FormEventHandler } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { isLoginState, nicknameState } from 'recoil/auth/atoms';
+import { nicknameState } from 'recoil/auth/atoms';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 
@@ -20,7 +20,6 @@ import { CLIENT_PATH } from 'constants/path';
 export const LoginPage = () => {
   const renderSnackBar = useSnackBar();
   const setNickname = useSetRecoilState(nicknameState);
-  const setIsLogin = useSetRecoilState(isLoginState);
   const themeContext = useContext(ThemeContext);
   const location = useLocation();
   const state = location.state as RouteLoginState;
