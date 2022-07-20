@@ -37,7 +37,7 @@ export const Navbar = () => {
           <li>
             <NavLink as={Link} to={CLIENT_PATH.CERT} fill={certColor}>
               <Plus />
-              <Text size={14} color={certColor}>
+              <Text size={11} color={certColor}>
                 인증
               </Text>
             </NavLink>
@@ -45,7 +45,7 @@ export const Navbar = () => {
           <li>
             <NavLink as={Link} to={CLIENT_PATH.SEARCH} fill={searchColor}>
               <Search />
-              <Text size={14} color={searchColor}>
+              <Text size={11} color={searchColor}>
                 검색
               </Text>
             </NavLink>
@@ -53,7 +53,7 @@ export const Navbar = () => {
           <li>
             <NavLink as={Link} to={CLIENT_PATH.FEED} fill={feedColor}>
               <Feed />
-              <Text size={14} color={feedColor}>
+              <Text size={11} color={feedColor}>
                 피드
               </Text>
             </NavLink>
@@ -61,7 +61,7 @@ export const Navbar = () => {
           <li>
             <NavLink as={Link} to={CLIENT_PATH.PROFILE} fill={profileColor}>
               <Profile />
-              <Text size={14} color={profileColor}>
+              <Text size={11} color={profileColor}>
                 프로필
               </Text>
             </NavLink>
@@ -78,7 +78,7 @@ const Footer = styled.footer`
     left: 0;
     bottom: 0;
     right: 0;
-    height: 4.5rem;
+    height: 3.625rem;
     background-color: ${theme.background};
     border-top: 1px solid ${theme.border};
   `}
@@ -90,7 +90,7 @@ const NavItemsContainer = styled(FlexBox).attrs({
 })`
   width: 100%;
   height: 100%;
-  margin-top: 1rem;
+  margin: 1rem 0;
   overflow-y: hidden;
 `;
 

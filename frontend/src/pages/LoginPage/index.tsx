@@ -43,7 +43,7 @@ export const LoginPage = () => {
 
   return (
     <Wrapper>
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+      <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         로그인
       </Text>
       <Form as="form" onSubmit={onSubmit}>

@@ -9,9 +9,7 @@ export const challenge = [
   //1. 챌린지 사이클 생성(POST)
   rest.post(`${BASE_URL}${API_PATH.CYCLE}`, (req, res, ctx) => {
     const { challengeId } = req.body;
-    return res(
-      ctx.status(201),
-    );
+    return res(ctx.status(201));
   }),
   // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
   rest.get(`${BASE_URL}/cycles/me`, (req, res, ctx) => {

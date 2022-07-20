@@ -54,7 +54,7 @@ export const SignUpPage = () => {
 
   return (
     <Wrapper>
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+      <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         회원가입
       </Text>
       <Form as="form" onSubmit={handleSubmitSignUp}>

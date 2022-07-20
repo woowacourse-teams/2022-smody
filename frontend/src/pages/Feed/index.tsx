@@ -1,7 +1,16 @@
+import { EmptyContent } from 'components';
+
+import { CLIENT_PATH } from 'constants/path';
+
 export const Feed = () => {
   return (
     <>
-      <p>안녕하세요. SMODY 입니다.</p>
+      <EmptyContent
+        title="아직 올라온 피드가 없습니다 :)"
+        description="피드를 올려주세요!!"
+        linkText="인증 페이지로 이동하기"
+        linkTo={CLIENT_PATH.CERT}
+      />
     </>
   );
 };

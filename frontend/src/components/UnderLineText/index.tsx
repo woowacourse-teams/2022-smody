@@ -32,6 +32,7 @@ export const UnderLineText = styled.p<UnderLineTextProps>`
 
 const fontSizeMapper: Record<FontSizeType, number> = {
   10: 0.625,
+  11: 0.6875,
   12: 0.75,
   14: 0.875,
   16: 1,
