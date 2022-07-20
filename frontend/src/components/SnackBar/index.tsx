@@ -48,6 +48,7 @@ const Wrapper = styled(FlexBox).attrs({
 
 const SnackBarElement = styled.div<{ status: string }>`
   ${({ theme, status }) => css`
+    z-index: 3;
     width: 95%;
     max-width: 900px;
     margin: 0;

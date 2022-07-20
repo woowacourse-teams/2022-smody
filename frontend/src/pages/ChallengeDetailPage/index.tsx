@@ -74,7 +74,7 @@ export const ChallengeDetailPage = () => {
           🎁
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FixedButton size="large" onClick={joinChallenge}>
+      <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>
         도전하기
       </FixedButton>
     </Wrapper>
