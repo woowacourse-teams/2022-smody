@@ -30,7 +30,7 @@ export const ChallengeList = () => {
     // 스낵바 사용 예시
     renderSnackBar({
       message: '챌린지 목록 조회에 성공했습니다.',
-      status: 'SUCCESS',
+      status: 'ERROR',
       linkText: '더보기',
       linkTo: CLIENT_PATH.CERT,
     });

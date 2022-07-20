@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { snackBarState } from 'recoil/auth/atoms';
+import { snackBarState } from 'recoil/snackbar/atoms';
 
 import { SnackBarProps } from 'components/SnackBar/type';
 
