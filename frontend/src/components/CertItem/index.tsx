@@ -49,7 +49,7 @@ export const CertItem = ({
   return (
     <Wrapper>
       <TitleWrapper>
-        <TitleText size={24} fontWeight="bold" color={themeContext.onBackground}>
+        <TitleText size={20} fontWeight="bold" color={themeContext.onBackground}>
           {challengeName}
         </TitleText>
         <CheckCircles progressCount={progressCount} />

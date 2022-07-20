@@ -22,14 +22,14 @@ export const CertUnAuth = () => {
   return (
     <Wrapper>
       <ColumnWrapper>
-        <Text color={themeContext.onBackground} size={24} fontWeight="bold">
+        <Text color={themeContext.onBackground} size={20} fontWeight="bold">
           작심삼일에 지쳤을 때
         </Text>
         <RowWrapper>
-          <Text color={themeContext.primary} size={24} fontWeight="bold">
+          <Text color={themeContext.primary} size={20} fontWeight="bold">
             Three More Days
           </Text>
-          <Text color={themeContext.onBackground} size={24} fontWeight="bold">
+          <Text color={themeContext.onBackground} size={20} fontWeight="bold">
             ,&nbsp;
           </Text>
           <Text color={themeContext.onBackground} size={32} fontWeight="bold">
@@ -39,14 +39,14 @@ export const CertUnAuth = () => {
       </ColumnWrapper>
       <ColumnWrapper>
         <RowWrapper>
-          <Text color={themeContext.primary} size={24} fontWeight="bold">
+          <Text color={themeContext.primary} size={20} fontWeight="bold">
             3일
           </Text>
-          <Text color={themeContext.mainText} size={24} fontWeight="bold">
+          <Text color={themeContext.mainText} size={20} fontWeight="bold">
             간 진행할,
           </Text>
         </RowWrapper>
-        <Text color={themeContext.mainText} size={24} fontWeight="bold">
+        <Text color={themeContext.mainText} size={20} fontWeight="bold">
           여러 챌린지를 확인해보세요
         </Text>
       </ColumnWrapper>

@@ -47,7 +47,7 @@ export const Profile = () => {
       <MyProfileWrapper>
         <ProfileImg src={picture} alt={profileImgAlt} />
         <ProfileDataWrapper>
-          <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+          <Text size={20} color={themeContext.onBackground} fontWeight="bold">
             {nickname}
           </Text>
           <Text size={16} color={themeContext.onBackground}>

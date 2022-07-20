@@ -50,8 +50,8 @@ export const ChallengeDetailPage = () => {
   return (
     <Wrapper>
       <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
-        <MdArrowBackIosNew size={24} />
-        <Text fontWeight="bold" size={24} color={themeContext.onBackground}>
+        <MdArrowBackIosNew size={20} />
+        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
           {challengeName}
         </Text>
         <div />

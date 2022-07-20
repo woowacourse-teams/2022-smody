@@ -35,7 +35,7 @@ export const CardGridContainer = () => {
 
   return (
     <div>
-      <Text fontWeight="bold" size={24} color={themeContext.onBackground}>
+      <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
         성공한 챌린지
       </Text>
       <Line />

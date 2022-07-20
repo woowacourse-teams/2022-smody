@@ -47,15 +47,15 @@ export const SuccessModal = ({
         <Text color={themeContext.onSurface} size={70} fontWeight="normal">
           🌞
         </Text>
-        <Text color={themeContext.onSurface} size={24} fontWeight="bold">
+        <Text color={themeContext.onSurface} size={20} fontWeight="bold">
           {challengeName}
         </Text>
-        <Text color={themeContext.primary} size={24} fontWeight="bold">
+        <Text color={themeContext.primary} size={20} fontWeight="bold">
           {progressCount === CYCLE_SUCCESS_CRITERIA
             ? '🎉 챌린지 성공 🎉'
             : '오늘의 인증 완료'}
         </Text>
-        <Text color={themeContext.blur} size={24} fontWeight="bold">
+        <Text color={themeContext.blur} size={20} fontWeight="bold">
           {getMessageByProgressCount(progressCount)}
         </Text>
         {progressCount === CYCLE_SUCCESS_CRITERIA ? (
