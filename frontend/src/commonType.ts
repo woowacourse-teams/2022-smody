@@ -8,6 +8,11 @@ export type ValidatorFunction = (
   optionalValue?: string,
 ) => ValidatorReturns;
 
+export interface ErrorResponse {
+  code: number;
+  message: string;
+}
+
 export type MappedKeyToUnion<T> = T extends { [key: string]: infer K } ? K : never;
 
 // 챌린지 단건 조회 응답 타입
