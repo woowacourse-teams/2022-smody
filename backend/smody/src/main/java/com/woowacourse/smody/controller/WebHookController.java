@@ -23,6 +23,6 @@ public class WebHookController {
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "이게 된다고? 진짜? 레알?";
+        return "이게 된다고? 진짜? 레알? 이거 맞음????";
     }
 }
