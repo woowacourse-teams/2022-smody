@@ -1,50 +1,69 @@
 import { useGetAllChallenges } from 'apis';
+import { useRef, RefObject, useMemo } from 'react';
 import styled from 'styled-components';
 
+import useIntersect from 'hooks/useIntersect';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, ChallengeItem } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
+import Loading from 'components/LoadingSpinner';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeList = () => {
-  const renderSnackBar = useSnackBar();
-  const { isLoading, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
-    refetchOnWindowFocus: false,
-    onError: () => {
-      renderSnackBar({
-        message: '챌린지 목록 조회 시 에러가 발생했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-    },
-  });
+  const { isLoading, isFetching, data, refetch, hasNextPage, fetchNextPage } =
+    useGetAllChallenges({
+      refetchOnWindowFocus: false,
+      onError: () => {
+        renderSnackBar({
+          message: '챌린지 목록 조회 시 에러가 발생했습니다.',
+          status: 'ERROR',
+          linkText: '문의하기',
+          linkTo: CLIENT_PATH.VOC,
+        });
+      },
+    });
 
-  const loadMore = () => {
+  const rootRef = useRef() as RefObject<HTMLUListElement>;
+
+  const options = useMemo(() => ({ root: rootRef.current, threshold: 0.5 }), []);
+  const targetRef = useIntersect<HTMLLIElement>((entry, observer) => {
     if (hasNextPage) {
       fetchNextPage();
     }
-  };
+    observer.unobserve(entry.target);
+  }, options);
+  const renderSnackBar = useSnackBar();
 
-  if (isLoading || typeof data === 'undefined') {
-    return <p>로딩중...</p>;
+  if (typeof data === 'undefined') {
+    console.log('isLoading', isLoading);
+    return <Loading />;
   }
 
+  console.log('현재 data.pages 길이: ', data.pages);
   return (
-    <Wrapper as="ul">
-      {data.pages.map((page) => {
+    <Wrapper as="ul" ref={rootRef}>
+      {data.pages.map((page, pageIndex) => {
         if (typeof page === 'undefined' || typeof page.data === 'undefined') {
           return [];
         }
-        return page.data.map((challengeInfo: ChallengeInfo) => (
-          <li key={challengeInfo.challengeId}>
+
+        return page.data.map((challengeInfo: ChallengeInfo, challengeIndex: number) => (
+          <li
+            key={challengeInfo.challengeId}
+            ref={
+              pageIndex === data.pages.length - 1 &&
+              challengeIndex === page.data.length - 1
+                ? targetRef
+                : undefined
+            }
+          >
             <ChallengeItem {...challengeInfo} challengeListRefetch={refetch} />
           </li>
         ));
       })}
-      <button onClick={loadMore}>다음페이지</button>
+      {isFetching && <Loading />}
     </Wrapper>
   );
 };
