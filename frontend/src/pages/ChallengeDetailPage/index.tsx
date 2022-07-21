@@ -71,7 +71,8 @@ export const ChallengeDetailPage = () => {
             현재 {challengerCount}명이 함께 도전 중이에요
           </Text>
           <ChallengeExplanationText color={themeContext.onBackground}>
-            건강을 위해 하루에 만보씩 걷고 걷기 앱을 캡처하여 인증해주세요
+            &quot;{challengeName}&quot; 챌린지를 {challengerCount}명의 사람들과 지금 바로
+            함께하세요!
           </ChallengeExplanationText>
         </ChallengeTextWrapper>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
