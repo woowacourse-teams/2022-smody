@@ -2,7 +2,7 @@ import { Layout } from 'Layout';
 import { useEffect } from 'react';
 import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/selectors';
+import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   Feed,

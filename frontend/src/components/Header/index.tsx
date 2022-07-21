@@ -2,7 +2,7 @@ import { useGetLinkGoogle } from 'apis';
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/selectors';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';

@@ -2,7 +2,7 @@ import { useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/selectors';
+import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
