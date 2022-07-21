@@ -27,12 +27,11 @@ public class WebHookController {
             }
             return ResponseEntity.ok().build();
         }
-
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "노훕아 어딧니, 되야함, 마지막 테스트, 노훕아 있니?";
+        return "노훕아 어딧니, 되야함, 마지막 테스트, 노훕아 있니?, 예스";
     }
 }
