@@ -12,18 +12,17 @@ import Loading from 'components/LoadingSpinner';
 import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeList = () => {
-  const { isLoading, isFetching, data, refetch, hasNextPage, fetchNextPage } =
-    useGetAllChallenges({
-      refetchOnWindowFocus: false,
-      onError: () => {
-        renderSnackBar({
-          message: '챌린지 목록 조회 시 에러가 발생했습니다.',
-          status: 'ERROR',
-          linkText: '문의하기',
-          linkTo: CLIENT_PATH.VOC,
-        });
-      },
-    });
+  const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
+    refetchOnWindowFocus: false,
+    onError: () => {
+      renderSnackBar({
+        message: '챌린지 목록 조회 시 에러가 발생했습니다.',
+        status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
+      });
+    },
+  });
 
   const rootRef = useRef() as RefObject<HTMLUListElement>;
 
