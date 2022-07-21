@@ -16,14 +16,16 @@ export const CertAuth = () => {
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
     onError: (error) => {
+      if (checkLogout(error)) {
+        return;
+      }
+
       renderSnackBar({
         message: '진행중인 챌린지 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      checkLogout(error);
     },
   });
 
@@ -54,9 +56,24 @@ export const CertAuth = () => {
 const Wrapper = styled.div`
   ${({ theme }) => css`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(370px, max-content));
+    /* grid-template-columns: repeat(auto-fit, minmax(370px, max-content)); */
     grid-gap: 16px;
     justify-content: center;
     background-color: ${theme.secondary};
+
+    /* grid-template-columns: repeat(4, 1fr); */
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    @media all and (min-width: 880px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media all and (min-width: 1320px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media all and (min-width: 1760px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   `}
 `;

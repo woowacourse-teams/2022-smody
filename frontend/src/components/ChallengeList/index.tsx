@@ -16,16 +16,17 @@ export const ChallengeList = () => {
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onError: (error) => {
+      if (checkLogout(error)) {
+        refetch();
+        return;
+      }
+
       renderSnackBar({
         message: '챌린지 목록 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      if (checkLogout(error)) {
-        refetch();
-      }
     },
   });
 
