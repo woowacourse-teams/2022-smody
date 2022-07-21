@@ -6,9 +6,8 @@ import useIntersect from 'hooks/useIntersect';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
-import { FlexBox, ChallengeItem } from 'components';
+import { FlexBox, ChallengeItem, LoadingSpinner } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
-import Loading from 'components/LoadingSpinner';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -42,7 +41,7 @@ export const ChallengeList = () => {
   const renderSnackBar = useSnackBar();
 
   if (typeof data === 'undefined') {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -66,7 +65,7 @@ export const ChallengeList = () => {
           </li>
         ));
       })}
-      {isFetching && <Loading />}
+      {isFetching && <LoadingSpinner />}
     </Wrapper>
   );
 };

@@ -8,7 +8,7 @@ import styled, { ThemeContext } from 'styled-components';
 
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 
-import { FlexBox, Text, Button } from 'components';
+import { FlexBox, Text, Button, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -32,7 +32,7 @@ export const Profile = () => {
     typeof dataMyInfo === 'undefined' ||
     typeof dataMyCyclesStat === 'undefined'
   ) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   const {
