@@ -2,7 +2,9 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // 1
 }
+
 group = 'com.woowacourse'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -10,10 +12,13 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
 }
+
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -35,7 +40,33 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // 5
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // 6
 }
+
+ext {
+    snippetsDir = file('build/generated-snippets') // 2
+}
+
 test {
+    outputs.dir snippetsDir // 3
     useJUnitPlatform()
+}
+
+asciidoctor { // 4
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+task copyDocument(type: Copy) { // 7
+    dependsOn asciidoctor
+
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn copyDocument // 8
 }
