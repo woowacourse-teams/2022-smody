@@ -1,6 +1,7 @@
 import { Layout } from 'Layout';
+import { useEffect } from 'react';
 import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/selectors';
 
 import {
@@ -30,7 +31,19 @@ const UnAuthOnly = ({ isLogin }: CheckAuthProps) => {
 };
 
 const Router = () => {
-  const isLogin = useRecoilValue(isLoginState);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken && !isLogin) {
+      setIsLogin(true);
+    }
+
+    if (!accessToken && isLogin) {
+      setIsLogin(false);
+    }
+  });
 
   return (
     <BrowserRouter>
