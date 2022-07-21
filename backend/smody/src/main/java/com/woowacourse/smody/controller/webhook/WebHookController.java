@@ -31,6 +31,6 @@ public class WebHookController {
 
     @GetMapping("isReal")
     public String isReal() {
-        return "자체 푸쉬!!!! pr~~~~merge";
+        return "자체 푸쉬!!!! pr~~~~merge, 미워도 다시한번 ";
     }
 }
