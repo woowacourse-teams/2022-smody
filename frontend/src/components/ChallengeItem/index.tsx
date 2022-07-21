@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
-import useSnackBar from 'hooks/useSnackBar';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
@@ -21,7 +20,6 @@ export const ChallengeItem = ({
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
-    challengeName,
     challengeListRefetch,
   });
 
@@ -29,7 +27,7 @@ export const ChallengeItem = ({
   const handleClickProgressButton = () => {
     isInProgress
       ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
-      : joinChallenge();
+      : joinChallenge(challengeName);
   };
 
   return (

@@ -37,7 +37,7 @@ export const SuccessModal = ({
   const { joinChallenge } = usePostJoinChallenge({ challengeId });
 
   const handleRetry = () => {
-    joinChallenge();
+    joinChallenge(challengeName);
     handleCloseModal();
   };
 
