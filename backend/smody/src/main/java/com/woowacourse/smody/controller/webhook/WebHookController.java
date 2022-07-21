@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/web-hook")
 public class WebHookController {
 
+    public static final String GITHUB_HOOK_ID = "369627662";
+    public static final String DEPLOY_BRANCH = "CD";
+
+
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
                                        @RequestBody GitHubHookRequest gitHubHookRequest) {
-        if (gitHubHookId.equals("369627662") && gitHubHookRequest.parseBranch().equals("CD")) {
+        if (gitHubHookId.equals(GITHUB_HOOK_ID) && gitHubHookRequest.parseBranch().equals(DEPLOY_BRANCH)) {
             try {
                 Runtime.getRuntime().exec("/home/ubuntu/spring-deploy.sh");
             } catch (Exception e) {
@@ -29,6 +33,6 @@ public class WebHookController {
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "노훕아 어딧니, 되야함, 마지막 테스트";
+        return "노훕아 어딧니, 되야함, 마지막 테스트, 노훕아 있니?";
     }
 }
