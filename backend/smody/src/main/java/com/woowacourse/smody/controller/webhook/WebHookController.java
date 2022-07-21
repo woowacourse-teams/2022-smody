@@ -15,6 +15,9 @@ public class WebHookController {
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
                                        @RequestBody GitHubHookRequest gitHubHookRequest) {
+        System.out.println("###" + gitHubHookId.equals("369627662"));
+        System.out.println("###" + gitHubHookRequest.parseBranch().equals("CD"));
+
         if (gitHubHookId.equals("369627662") && gitHubHookRequest.parseBranch().equals("CD")) {
             try {
                 Runtime.getRuntime().exec("/home/ubuntu/spring-deploy.sh");
@@ -29,6 +32,6 @@ public class WebHookController {
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "노훕아 어딧니";
+        return "노훕아 어딧니, 푸시";
     }
 }
