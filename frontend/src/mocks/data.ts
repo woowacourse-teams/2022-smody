@@ -160,7 +160,7 @@ const [startTime, _] = date.toISOString().split('.');
 export const cycleData = [
   {
     cycleId: 1,
-    challengeId: 2,
+    challengeId: 1,
     challengeName: '미라클 모닝',
     progressCount: 0,
     startTime,
@@ -176,7 +176,7 @@ export const cycleData = [
   },
   {
     cycleId: 3,
-    challengeId: 2,
+    challengeId: 3,
     challengeName: '샤워',
     progressCount: 0,
     startTime,
@@ -184,7 +184,7 @@ export const cycleData = [
   },
   {
     cycleId: 4,
-    challengeId: 2,
+    challengeId: 4,
     challengeName: '취침',
     progressCount: 0,
     startTime,
@@ -192,7 +192,7 @@ export const cycleData = [
   },
   {
     cycleId: 5,
-    challengeId: 2,
+    challengeId: 5,
     challengeName: '화이팅',
     progressCount: 0,
     startTime,
@@ -200,7 +200,7 @@ export const cycleData = [
   },
   {
     cycleId: 6,
-    challengeId: 2,
+    challengeId: 6,
     challengeName: '어제 오늘 내일은 뭐 먹지?',
     progressCount: 0,
     startTime,
@@ -208,7 +208,7 @@ export const cycleData = [
   },
   {
     cycleId: 7,
-    challengeId: 2,
+    challengeId: 7,
     challengeName: '마르코 화이팅',
     progressCount: 0,
     startTime,
@@ -216,7 +216,7 @@ export const cycleData = [
   },
   {
     cycleId: 8,
-    challengeId: 2,
+    challengeId: 8,
     challengeName: '우연 화이팅',
     progressCount: 0,
     startTime,
@@ -224,58 +224,13 @@ export const cycleData = [
   },
   {
     cycleId: 9,
-    challengeId: 2,
+    challengeId: 9,
     challengeName: '우린 멋져',
     progressCount: 0,
     startTime,
     successCount: 3,
   },
 ];
-
-// export const mySuccessChallengeData = [
-//   {
-//     challengeId: 1,
-//     challengeName: '미라클 모닝',
-//     successCount: 45,
-//     bgColor: '#FED6D6',
-//     emoji: '🌞',
-//   },
-//   {
-//     challengeId: 2,
-//     challengeName: '헬스장 가기',
-//     successCount: 39,
-//     bgColor: '#D6E1FE',
-//     emoji: '💪',
-//   },
-//   {
-//     challengeId: 3,
-//     challengeName: '하루 독서 30분',
-//     successCount: 33,
-//     bgColor: '#D6FEDA',
-//     emoji: '📚',
-//   },
-//   {
-//     challengeId: 4,
-//     challengeName: '공식문서 읽기',
-//     successCount: 28,
-//     bgColor: '#D6CCF3',
-//     emoji: '📰',
-//   },
-//   {
-//     challengeId: 5,
-//     challengeName: '알고리즘 1문제 풀기',
-//     successCount: 15,
-//     bgColor: '#F6FCB8',
-//     emoji: '🏫',
-//   },
-//   {
-//     challengeId: 6,
-//     challengeName: '만보 걷기',
-//     successCount: 25,
-//     bgColor: '#D6F7FE',
-//     emoji: '💦',
-//   },
-// ];
 
 export const mySuccessChallengeData = [
   {

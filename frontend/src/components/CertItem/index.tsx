@@ -2,6 +2,7 @@ import { usePostCycleProgress } from 'apis';
 import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
+import { getEmoji } from 'utils/emoji';
 
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
@@ -73,7 +74,7 @@ export const CertItem = ({
         </Text>
       </RowWrapper>
       <ThumbnailWrapper size="large" bgColor="transparent">
-        🌞
+        <p>{getEmoji(Number(challengeId))}</p>
       </ThumbnailWrapper>
       <RowWrapper>
         <Timer certEndDate={certEndDate} />
