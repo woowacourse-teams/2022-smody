@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
@@ -35,8 +36,8 @@ export const ChallengeItem = ({
       <div>
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
           <ChallengeInfoWrapper>
-            <ThumbnailWrapper size="small" bgColor="#FED6D6">
-              🌞
+            <ThumbnailWrapper size="small" bgColor="#E6D1F2">
+              {getEmoji(Number(challengeId))}
             </ThumbnailWrapper>
             <ChallengeNameWrapper>
               <Text color={themeContext.onSurface} size={16}>

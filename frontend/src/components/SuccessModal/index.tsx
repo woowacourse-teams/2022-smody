@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
@@ -45,7 +46,7 @@ export const SuccessModal = ({
     <ModalOverlay handleCloseModal={handleCloseModal}>
       <Wrapper>
         <Text color={themeContext.onSurface} size={70} fontWeight="normal">
-          🌞
+          {getEmoji(Number(challengeId))}
         </Text>
         <Text color={themeContext.onSurface} size={20} fontWeight="bold">
           {challengeName}

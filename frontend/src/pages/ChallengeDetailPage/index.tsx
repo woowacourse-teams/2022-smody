@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
@@ -10,7 +11,7 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
-import { FlexBox, Text, FixedButton, ThumbnailWrapper } from 'components';
+import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -47,7 +48,7 @@ export const ChallengeDetailPage = () => {
   });
 
   if (isLoading || typeof data === 'undefined' || typeof data.data === 'undefined') {
-    return <p>로딩중...</p>;
+    return <LoadingSpinner />;
   }
 
   const { challengeName, challengerCount } = data.data;
@@ -76,7 +77,7 @@ export const ChallengeDetailPage = () => {
           </ChallengeExplanationText>
         </ChallengeTextWrapper>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          🎁
+          {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>
