@@ -1,19 +1,19 @@
 package com.woowacourse.smody.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.woowacourse.smody.dto.LoginRequest;
-import com.woowacourse.smody.dto.LoginResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import com.woowacourse.smody.dto.LoginRequest;
+import com.woowacourse.smody.dto.LoginResponse;
 
 class OauthControllerTest extends ControllerTest {
 
@@ -33,13 +33,8 @@ class OauthControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(loginResponse)))
-            .andDo(document("login-google",
-                preprocessRequest(modifyUris()
-                    .scheme("http")
-                    .host("www.smody.co.kr")
-                    .removePort(), prettyPrint()),
+            .andDo(document("login-google", HOST_INFO,
                 preprocessResponse(prettyPrint()),
-
                 responseFields(fieldWithPath("accessToken").type(JsonFieldType.STRING).description("엑세스 토큰"))
             ));
     }

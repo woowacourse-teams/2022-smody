@@ -1,5 +1,7 @@
 package com.woowacourse.smody.controller;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest({
@@ -24,6 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class})
 @AutoConfigureRestDocs
 public class ControllerTest {
+
+    protected static final OperationRequestPreprocessor HOST_INFO = preprocessRequest(modifyUris()
+        .scheme("http")
+        .host("www.smody.co.kr")
+        .removePort(), prettyPrint());
 
     @Autowired
     protected MockMvc mockMvc;

@@ -48,11 +48,7 @@ public class CycleControllerTest extends ControllerTest {
 		// then
 		result.andExpect(status().isCreated())
 			.andExpect(header().string("Location", "/cycles/" + cycleId))
-			.andDo(document("create-cycle",
-				preprocessRequest(modifyUris()
-					.scheme("http")
-					.host("www.smody.co.kr")
-					.removePort(), prettyPrint()),
+			.andDo(document("create-cycle", HOST_INFO,
 				preprocessResponse(prettyPrint()),
 
 				requestFields(
@@ -92,13 +88,8 @@ public class CycleControllerTest extends ControllerTest {
 		// then
 		result.andExpect(status().isOk())
 			.andExpect(content().json(objectMapper.writeValueAsString(response)))
-			.andDo(document("progress-cycle",
-				preprocessRequest(modifyUris()
-					.scheme("http")
-					.host("www.smody.co.kr")
-					.removePort(), prettyPrint()),
+			.andDo(document("progress-cycle", HOST_INFO,
 				preprocessResponse(prettyPrint()),
-
 				responseFields(
 					fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도")
 				)));
@@ -157,13 +148,8 @@ public class CycleControllerTest extends ControllerTest {
 		// then
 		result.andExpect(status().isOk())
 			.andExpect(content().json(objectMapper.writeValueAsString(cycleResponses)))
-			.andDo(document("get-inProgress-cycle-mine",
-				preprocessRequest(modifyUris()
-					.scheme("http")
-					.host("www.smody.co.kr")
-					.removePort(), prettyPrint()),
+			.andDo(document("get-inProgress-cycle-mine", HOST_INFO,
 				preprocessResponse(prettyPrint()),
-
 				responseFields(
 					fieldWithPath("[].cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
 					fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("챌린지 Id"),
@@ -190,13 +176,8 @@ public class CycleControllerTest extends ControllerTest {
 		// then
 		result.andExpect(status().isOk())
 			.andExpect(content().json(objectMapper.writeValueAsString(cycleResponse)))
-			.andDo(document("get-cycle",
-				preprocessRequest(modifyUris()
-					.scheme("http")
-					.host("www.smody.co.kr")
-					.removePort(), prettyPrint()),
+			.andDo(document("get-cycle", HOST_INFO,
 				preprocessResponse(prettyPrint()),
-
 				responseFields(
 					fieldWithPath("cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
 					fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("챌린지 Id"),
@@ -240,10 +221,7 @@ public class CycleControllerTest extends ControllerTest {
 			.andExpect(content().json(
 				objectMapper.writeValueAsString(statResponse)))
 			.andDo(document("get-cycle-stat",
-				preprocessRequest(modifyUris()
-					.scheme("http")
-					.host("www.smody.co.kr")
-					.removePort(), prettyPrint()),
+				HOST_INFO,
 				preprocessResponse(prettyPrint()),
 
 				responseFields(
