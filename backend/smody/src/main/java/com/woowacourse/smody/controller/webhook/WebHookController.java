@@ -33,6 +33,6 @@ public class WebHookController {
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "이게 된다고? 진짜? 레알? 이거맞음???? 우석아 안녕, 나 이거 우리집에서 푸쉬함 ㅎ, 이제 우리 웹훅아니면 배포 안됨";
+        return "다시 테스트";
     }
 }
