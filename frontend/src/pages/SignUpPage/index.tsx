@@ -15,6 +15,7 @@ import {
 } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, AuthInput, Button, LinkText } from 'components';
@@ -23,6 +24,7 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const SignUpPage = () => {
   const renderSnackBar = useSnackBar();
+  const checkLogout = useManageAccessToken();
 
   const themeContext = useContext(ThemeContext);
 
@@ -53,7 +55,7 @@ export const SignUpPage = () => {
         linkTo: CLIENT_PATH.VOC,
       });
 
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
 

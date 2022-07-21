@@ -7,9 +7,9 @@ import { useSetRecoilState } from 'recoil';
 import { nicknameState } from 'recoil/auth/atoms';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
-import { validateAccessToken } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { RouteLoginState } from 'pages/LoginPage/type';
@@ -28,6 +28,7 @@ export const LoginPage = () => {
 
   const email = useInput(signUpEmail);
   const password = useInput('');
+  const checkLogout = useManageAccessToken();
 
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
@@ -39,7 +40,7 @@ export const LoginPage = () => {
         linkTo: CLIENT_PATH.VOC,
       });
 
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
 

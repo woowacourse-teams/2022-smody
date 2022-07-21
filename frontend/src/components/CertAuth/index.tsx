@@ -1,7 +1,7 @@
 import { useGetMyCyclesInProgress } from 'apis';
 import styled, { css } from 'styled-components';
-import { validateAccessToken } from 'utils/validator';
 
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { EmptyContent, CertItem } from 'components';
@@ -10,6 +10,8 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const CertAuth = () => {
   const renderSnackBar = useSnackBar();
+
+  const checkLogout = useManageAccessToken();
 
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
@@ -21,7 +23,7 @@ export const CertAuth = () => {
         linkTo: CLIENT_PATH.VOC,
       });
 
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
 

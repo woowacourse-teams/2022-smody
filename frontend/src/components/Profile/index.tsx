@@ -2,8 +2,11 @@ import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useContext, MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
-import { validateAccessToken } from 'utils/validator';
+
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 
 import { FlexBox, Text, Button } from 'components';
 
@@ -11,10 +14,13 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
+  const checkLogout = useManageAccessToken();
+
+  const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
   const { isLoading: isLoadingMyInfo, data: dataMyInfo } = useGetMyInfo({
     onError: (error) => {
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
   const { isLoading: isLoadingMyCyclesStat, data: dataMyCyclesStat } =
@@ -40,6 +46,7 @@ export const Profile = () => {
 
   const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
     authApiClient.deleteAuth();
+    setIsLogin(false);
     navigate(CLIENT_PATH.CERT);
   };
 

@@ -1,6 +1,4 @@
-import { authApiClient } from 'apis/apiClient';
-import { AxiosError } from 'axios';
-import { ErrorResponse, ValidatorFunction } from 'commonType';
+import { ValidatorFunction } from 'commonType';
 
 type checkFormatFunction = (value: string, optionalValue?: string) => boolean;
 
@@ -59,15 +57,4 @@ export const validateNickname: ValidatorFunction = (nickname: string) => {
   }
 
   return { isValidated: true, message: '사용 가능한 닉네임입니다.' };
-};
-
-export const validateAccessToken = (error: AxiosError<ErrorResponse>) => {
-  if (typeof error.response === 'undefined') {
-    return;
-  }
-
-  const { code, message } = error.response.data;
-  if (code === 2002) {
-    authApiClient.deleteAuth();
-  }
 };
