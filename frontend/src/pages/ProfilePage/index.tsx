@@ -6,7 +6,9 @@ export const ProfilePage = () => {
   return (
     <Wrapper>
       <Profile />
-      <CardGridContainer />
+      <CardsWrapper>
+        <CardGridContainer />
+      </CardsWrapper>
     </Wrapper>
   );
 };
@@ -31,4 +33,8 @@ const Wrapper = styled(FlexBox).attrs({
   @media all and (max-width: 767px) {
     flex-direction: column;
   }
+`;
+
+const CardsWrapper = styled.div`
+  min-width: 390px;
 `;

@@ -1,23 +1,14 @@
-import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
-import { useContext, MouseEventHandler } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import { useContext } from 'react';
+import styled, { ThemeContext, keyframes } from 'styled-components';
+
+import { useGoogleLogin } from 'hooks/useGoogleLogin';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
 export const CertUnAuth = () => {
   const themeContext = useContext(ThemeContext);
-
-  const { refetch: getLinkGoogle } = useGetLinkGoogle({
-    enabled: false,
-    onSuccess: ({ data: redirectionUrl }) => {
-      window.location.href = redirectionUrl;
-    },
-  });
-
-  const handleClickLogin: MouseEventHandler<HTMLButtonElement> = () => {
-    getLinkGoogle();
-  };
+  const getLinkGoogle = useGoogleLogin();
 
   return (
     <Wrapper>
@@ -51,10 +42,21 @@ export const CertUnAuth = () => {
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      <FixedButton onClick={handleClickLogin}>구글로 시작하기</FixedButton>
+      <FixedButton onClick={getLinkGoogle}>구글로 시작하기</FixedButton>
     </Wrapper>
   );
 };
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+`;
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
@@ -69,7 +71,9 @@ const ColumnWrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
   alignItems: 'center',
   gap: '0.5rem',
-})``;
+})`
+  animation: 0.5s ease-in-out 0s 1 normal forwards running ${fadeIn};
+`;
 
 const RowWrapper = styled(FlexBox).attrs({
   flexDirection: 'row',
@@ -82,4 +86,5 @@ const ServiceExample = styled.img`
   width: 17.438rem;
   max-width: 350px;
   aspect-ratio: 0.56;
+  animation: 0.5s ease-in-out 0s 1 normal forwards running ${fadeIn};
 `;

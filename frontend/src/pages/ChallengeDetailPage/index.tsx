@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
@@ -10,7 +11,7 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
-import { FlexBox, Text, FixedButton, ThumbnailWrapper } from 'components';
+import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -30,14 +31,16 @@ export const ChallengeDetailPage = () => {
     {
       refetchOnWindowFocus: false,
       onError: (error) => {
+        if (checkLogout(error)) {
+          return;
+        }
+
         renderSnackBar({
           message: '챌린지 조회 시 에러가 발생했습니다.',
           status: 'ERROR',
           linkText: '문의하기',
           linkTo: CLIENT_PATH.VOC,
         });
-
-        checkLogout(error);
       },
     },
   );
@@ -47,7 +50,7 @@ export const ChallengeDetailPage = () => {
   });
 
   if (isLoading || typeof data === 'undefined' || typeof data.data === 'undefined') {
-    return <p>로딩중...</p>;
+    return <LoadingSpinner />;
   }
 
   const { challengeName, challengerCount } = data.data;
@@ -71,11 +74,12 @@ export const ChallengeDetailPage = () => {
             현재 {challengerCount}명이 함께 도전 중이에요
           </Text>
           <ChallengeExplanationText color={themeContext.onBackground}>
-            건강을 위해 하루에 만보씩 걷고 걷기 앱을 캡처하여 인증해주세요
+            &quot;{challengeName}&quot; 챌린지를 {challengerCount}명의 사람들과 지금 바로
+            함께하세요!
           </ChallengeExplanationText>
         </ChallengeTextWrapper>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          🎁
+          {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>

@@ -6,9 +6,8 @@ import useIntersect from 'hooks/useIntersect';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
-import { FlexBox, ChallengeItem } from 'components';
+import { FlexBox, ChallengeItem, LoadingSpinner } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
-import Loading from 'components/LoadingSpinner';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -17,16 +16,17 @@ export const ChallengeList = () => {
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onError: (error) => {
+      if (checkLogout(error)) {
+        refetch();
+        return;
+      }
+
       renderSnackBar({
         message: '챌린지 목록 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      if (checkLogout(error)) {
-        refetch();
-      }
     },
   });
 
@@ -42,7 +42,7 @@ export const ChallengeList = () => {
   const renderSnackBar = useSnackBar();
 
   if (typeof data === 'undefined') {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -66,7 +66,7 @@ export const ChallengeList = () => {
           </li>
         ));
       })}
-      {isFetching && <Loading />}
+      {isFetching && <LoadingSpinner />}
     </Wrapper>
   );
 };

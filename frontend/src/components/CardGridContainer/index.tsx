@@ -2,8 +2,9 @@ import { useGetMySuccessChallenges } from 'apis';
 import { Challenge } from 'commonType';
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { getEmoji } from 'utils/emoji';
 
-import { CardBox, Text, EmptyContent } from 'components';
+import { CardBox, Text, EmptyContent, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -19,7 +20,7 @@ export const CardGridContainer = () => {
   };
 
   if (isLoading || typeof data === 'undefined') {
-    return <span>Loading...</span>;
+    return <LoadingSpinner />;
   }
 
   if (data.pages[0].data.length === 0) {
@@ -49,13 +50,12 @@ export const CardGridContainer = () => {
             <CardBox
               key={challenge.challengeId}
               {...challenge}
-              bgColor="rgb(254, 214, 214)"
-              emoji="🎈"
+              bgColor="#E6D1F2"
+              emoji={getEmoji(challenge.challengeId)}
             />
           ));
         })}
       </Grid>
-      <button onClick={loadMore}>다음페이지</button>
     </div>
   );
 };

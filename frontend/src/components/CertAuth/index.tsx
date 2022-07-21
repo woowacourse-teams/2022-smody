@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
-import { EmptyContent, CertItem } from 'components';
+import { EmptyContent, CertItem, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -16,19 +16,21 @@ export const CertAuth = () => {
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
     onError: (error) => {
+      if (checkLogout(error)) {
+        return;
+      }
+
       renderSnackBar({
         message: '진행중인 챌린지 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      checkLogout(error);
     },
   });
 
   if (isLoading || typeof data === 'undefined') {
-    return <p>로딩중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (data.data.length === 0) {
@@ -54,9 +56,24 @@ export const CertAuth = () => {
 const Wrapper = styled.div`
   ${({ theme }) => css`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(370px, max-content));
     grid-gap: 16px;
     justify-content: center;
     background-color: ${theme.secondary};
+
+    @media all and (min-width: 1761px) {
+      grid-template-columns: repeat(4, minmax(370px, max-content));
+    }
+
+    @media all and (min-width: 1321px) and (max-width: 1760px) {
+      grid-template-columns: repeat(3, minmax(370px, max-content));
+    }
+
+    @media all and (min-width: 881px) and (max-width: 1320px) {
+      grid-template-columns: repeat(2, minmax(370px, max-content));
+    }
+
+    @media all and (max-width: 880px) {
+      grid-template-columns: repeat(1, minmax(370px, max-content));
+    }
   `}
 `;
