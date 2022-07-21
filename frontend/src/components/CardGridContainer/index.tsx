@@ -3,7 +3,7 @@ import { Challenge } from 'commonType';
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { CardBox, Text, EmptyContent } from 'components';
+import { CardBox, Text, EmptyContent, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -19,7 +19,7 @@ export const CardGridContainer = () => {
   };
 
   if (isLoading || typeof data === 'undefined') {
-    return <span>Loading...</span>;
+    return <LoadingSpinner />;
   }
 
   if (data.pages[0].data.length === 0) {

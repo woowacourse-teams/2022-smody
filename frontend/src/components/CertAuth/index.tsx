@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
-import { EmptyContent, CertItem } from 'components';
+import { EmptyContent, CertItem, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -28,7 +28,7 @@ export const CertAuth = () => {
   });
 
   if (isLoading || typeof data === 'undefined') {
-    return <p>로딩중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (data.data.length === 0) {
