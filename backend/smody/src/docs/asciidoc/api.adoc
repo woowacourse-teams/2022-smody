@@ -1,0 +1,33 @@
+= Smody API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+= 챌린지
+== 모든 챌린지 조회 (비회원/회원)
+=== Request
+include::{snippets}/get-all-challenges/http-request.adoc[]
+include::{snippets}/get-all-challenges-auth/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-challenges/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-challenges/response-fields.adoc[]
+
+== 나의 성공한 챌린지 조회
+=== Request
+include::{snippets}/get-my-success-challenges/http-request.adoc[]
+=== Response
+include::{snippets}/get-my-success-challenges/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-my-success-challenges/response-fields.adoc[]
+
+== 챌린지 하나 상세 조회 (회원/비회원)
+=== Request
+include::{snippets}/get-challenge/http-request.adoc[]
+include::{snippets}/get-challenge-auth/http-request.adoc[]
+=== Response
+include::{snippets}/get-challenge/http-response.adoc[]
+include::{snippets}/get-challenge/response-fields.adoc[]

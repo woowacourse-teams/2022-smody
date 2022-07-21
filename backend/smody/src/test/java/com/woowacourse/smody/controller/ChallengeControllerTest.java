@@ -3,6 +3,9 @@ package com.woowacourse.smody.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,6 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 class ChallengeControllerTest extends ControllerTest {
@@ -32,11 +36,24 @@ class ChallengeControllerTest extends ControllerTest {
                 .willReturn(challengeResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges"));
+        ResultActions result = mockMvc.perform(get("/challenges?page=0&size=10"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)));
+            .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)))
+            .andDo(document("get-all-challenges",
+                preprocessRequest(modifyUris()
+                    .scheme("http")
+                    .host("www.smody.co.kr")
+                    .removePort(),prettyPrint()),
+
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                    fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
+                    fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
+                    fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                )));
     }
 
     @DisplayName("회원이 모든 챌린지를 조회할 때 200을 응답한다.")
@@ -53,12 +70,25 @@ class ChallengeControllerTest extends ControllerTest {
                 .willReturn(challengeResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/auth")
+        ResultActions result = mockMvc.perform(get("/challenges/auth?page=0&size=10")
                         .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)));
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)))
+            .andDo(document("get-all-challenges-auth",
+                preprocessRequest(modifyUris()
+                    .scheme("http")
+                    .host("www.smody.co.kr")
+                    .removePort(),prettyPrint()),
+
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                    fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
+                    fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
+                    fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                )));
     }
 
     @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회 시 200을 응답한다.")
@@ -75,13 +105,25 @@ class ChallengeControllerTest extends ControllerTest {
                 .willReturn(successChallengeResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/me")
+        ResultActions result = mockMvc.perform(get("/challenges/me?page=0&size=10")
                 .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(
-                        objectMapper.writeValueAsString(successChallengeResponses)));
+                        objectMapper.writeValueAsString(successChallengeResponses)))
+            .andDo(document("get-my-success-challenges",
+                preprocessRequest(modifyUris()
+                    .scheme("http")
+                    .host("www.smody.co.kr")
+                    .removePort(),prettyPrint()),
+
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                    fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
+                    fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟 수")
+                )));
     }
 
     @DisplayName("비회원이 챌린지 하나를 조회할 때 200을 응답한다.")
@@ -98,7 +140,20 @@ class ChallengeControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)));
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)))
+            .andDo(document("get-challenge",
+                preprocessRequest(modifyUris()
+                    .scheme("http")
+                    .host("www.smody.co.kr")
+                    .removePort(),prettyPrint()),
+
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                    fieldWithPath("challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
+                    fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
+                    fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                )));
     }
 
     @DisplayName("회원이 챌린지 하나를 조회할 때 200을 응답한다.")
@@ -117,6 +172,19 @@ class ChallengeControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)));
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponse)))
+            .andDo(document("get-challenge-auth",
+                preprocessRequest(modifyUris()
+                    .scheme("http")
+                    .host("www.smody.co.kr")
+                    .removePort(),prettyPrint()),
+
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                    fieldWithPath("challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
+                    fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
+                    fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                )));
     }
 }
