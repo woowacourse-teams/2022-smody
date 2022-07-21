@@ -15,10 +15,7 @@ public class WebHookController {
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
                                        @RequestBody GitHubHookRequest gitHubHookRequest) {
-        System.out.println("#### gitHubHookId = " + gitHubHookId);
-        System.out.println("#### gitHubHookRequest = " + gitHubHookRequest.getRef());
-
-        if (!gitHubHookId.equals("369627662") || !gitHubHookRequest.getRef().equals("CD")) {
+        if (!gitHubHookId.equals("369627662") || !gitHubHookRequest.parseBranch().equals("CD")) {
             return ResponseEntity.noContent().build();
         }
 
@@ -33,6 +30,6 @@ public class WebHookController {
 
     @GetMapping("/isReal")
     public String isReal() {
-        return "다시 테스트";
+        return "다시 테스트, 이거 나오면 성공";
     }
 }
