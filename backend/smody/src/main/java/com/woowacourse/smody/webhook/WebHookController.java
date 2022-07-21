@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebHookController {
 
     public static final String GITHUB_HOOK_ID = "369627662";
-    public static final String DEPLOY_BRANCH = "develop";
+    public static final String DEPLOY_BRANCH = "main";
 
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
