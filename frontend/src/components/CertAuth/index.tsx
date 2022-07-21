@@ -56,24 +56,24 @@ export const CertAuth = () => {
 const Wrapper = styled.div`
   ${({ theme }) => css`
     display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(370px, max-content)); */
     grid-gap: 16px;
     justify-content: center;
     background-color: ${theme.secondary};
 
-    /* grid-template-columns: repeat(4, 1fr); */
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-
-    @media all and (min-width: 880px) {
-      grid-template-columns: repeat(1, 1fr);
+    @media all and (min-width: 1761px) {
+      grid-template-columns: repeat(4, minmax(370px, max-content));
     }
 
-    @media all and (min-width: 1320px) {
-      grid-template-columns: repeat(2, 1fr);
+    @media all and (min-width: 1321px) and (max-width: 1760px) {
+      grid-template-columns: repeat(3, minmax(370px, max-content));
     }
 
-    @media all and (min-width: 1760px) {
-      grid-template-columns: repeat(3, 1fr);
+    @media all and (min-width: 881px) and (max-width: 1320px) {
+      grid-template-columns: repeat(2, minmax(370px, max-content));
+    }
+
+    @media all and (max-width: 880px) {
+      grid-template-columns: repeat(1, minmax(370px, max-content));
     }
   `}
 `;
