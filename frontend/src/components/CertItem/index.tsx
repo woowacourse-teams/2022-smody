@@ -40,14 +40,16 @@ export const CertItem = ({
       setIsSuccessModalOpen(true);
     },
     onError: (error) => {
+      if (checkLogout(error)) {
+        return;
+      }
+
       renderSnackBar({
         message: '챌린지 인증에 실패했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      checkLogout(error);
     },
   });
 

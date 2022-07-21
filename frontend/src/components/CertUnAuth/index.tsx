@@ -1,23 +1,14 @@
-import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
-import { useContext, MouseEventHandler } from 'react';
+import { useContext } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
+
+import { useGoogleLogin } from 'hooks/useGoogleLogin';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
 export const CertUnAuth = () => {
   const themeContext = useContext(ThemeContext);
-
-  const { refetch: getLinkGoogle } = useGetLinkGoogle({
-    enabled: false,
-    onSuccess: ({ data: redirectionUrl }) => {
-      window.location.href = redirectionUrl;
-    },
-  });
-
-  const handleClickLogin: MouseEventHandler<HTMLButtonElement> = () => {
-    getLinkGoogle();
-  };
+  const getLinkGoogle = useGoogleLogin();
 
   return (
     <Wrapper>
@@ -51,7 +42,7 @@ export const CertUnAuth = () => {
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      <FixedButton onClick={handleClickLogin}>구글로 시작하기</FixedButton>
+      <FixedButton onClick={getLinkGoogle}>구글로 시작하기</FixedButton>
     </Wrapper>
   );
 };

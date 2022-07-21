@@ -1,10 +1,10 @@
-import { useGetLinkGoogle } from 'apis';
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
+import { useGoogleLogin } from 'hooks/useGoogleLogin';
 import useMatchPath from 'hooks/useMatchPath';
 
 import { Logo, FlexBox, Button } from 'components';
@@ -19,19 +19,9 @@ export const Header = () => {
     themeContext.secondary,
     themeContext.background,
   );
+  const getLinkGoogle = useGoogleLogin();
 
   const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
-
-  const { refetch: getLinkGoogle } = useGetLinkGoogle({
-    enabled: false,
-    onSuccess: ({ data: redirectionUrl }) => {
-      window.location.href = redirectionUrl;
-    },
-  });
-
-  const handleLogin = () => {
-    getLinkGoogle();
-  };
 
   return (
     <Wrapper bgColor={bgColor}>
@@ -39,7 +29,7 @@ export const Header = () => {
       {isLogin ? (
         <FaBell size={23} color={themeContext.primary} />
       ) : (
-        <Button size="small" onClick={handleLogin}>
+        <Button size="small" onClick={getLinkGoogle}>
           로그인
         </Button>
       )}

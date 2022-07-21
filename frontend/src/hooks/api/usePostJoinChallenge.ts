@@ -28,14 +28,16 @@ const usePostJoinChallenge = ({
       });
     },
     onError: (error) => {
+      if (checkLogout(error)) {
+        return;
+      }
+
       renderSnackBar({
         message: `${challengeNameRef.current} 챌린지 참여 시 에러가 발생했습니다`,
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
-
-      checkLogout(error);
     },
   });
 
