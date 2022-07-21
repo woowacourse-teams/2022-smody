@@ -1,7 +1,6 @@
 package com.woowacourse.smody.controller.webhook;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,7 +14,6 @@ public class WebHookController {
     public static final String GITHUB_HOOK_ID = "369627662";
     public static final String DEPLOY_BRANCH = "CD";
 
-
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
                                        @RequestBody GitHubHookRequest gitHubHookRequest) {
@@ -28,10 +26,5 @@ public class WebHookController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/isReal")
-    public String isReal() {
-        return "노훕아 어딧니, 되야함, 마지막 테스트, 노훕아 있니?, 예스";
     }
 }
