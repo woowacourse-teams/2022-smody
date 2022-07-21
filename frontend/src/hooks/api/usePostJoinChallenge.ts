@@ -1,5 +1,6 @@
 import { usePostCycle } from 'apis';
 import { useRef } from 'react';
+import { validateAccessToken } from 'utils/validator';
 
 import { PostJoinChallengeProps } from 'hooks/api/type';
 import useSnackBar from 'hooks/useSnackBar';
@@ -25,13 +26,15 @@ const usePostJoinChallenge = ({
         linkTo: CLIENT_PATH.CERT,
       });
     },
-    onError: () => {
+    onError: (error) => {
       renderSnackBar({
         message: `${challengeNameRef.current} 챌린지 참여 시 에러가 발생했습니다`,
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
+
+      validateAccessToken(error);
     },
   });
 

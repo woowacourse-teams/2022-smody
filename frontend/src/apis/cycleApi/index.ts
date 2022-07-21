@@ -12,19 +12,23 @@ import {
   GetMyCyclesStatResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { Cycle } from 'commonType';
+import { Cycle, ErrorResponse } from 'commonType';
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
 
 // 1. 챌린지 사이클 생성(POST)
 export const usePostCycle = (
-  options?: UseMutationOptions<AxiosResponse, AxiosError, PostCycleProps>,
-) => useMutation<AxiosResponse, AxiosError, PostCycleProps>(postCycle, options);
+  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, PostCycleProps>,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostCycleProps>(
+    postCycle,
+    options,
+  );
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const useGetMyCyclesInProgress = (
-  options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError>,
+  options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>,
 ) =>
-  useQuery<AxiosResponse<Cycle[]>, AxiosError>(
+  useQuery<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>(
     'getMyCyclesInResponse',
     getMyCyclesInProgress,
     options,
@@ -32,9 +36,12 @@ export const useGetMyCyclesInProgress = (
 
 // 3. 나의 사이클 통계 정보 조회(GET)
 export const useGetMyCyclesStat = (
-  options?: UseQueryOptions<AxiosResponse<GetMyCyclesStatResponse>, AxiosError>,
+  options?: UseQueryOptions<
+    AxiosResponse<GetMyCyclesStatResponse>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useQuery<AxiosResponse<GetMyCyclesStatResponse>, AxiosError>(
+  useQuery<AxiosResponse<GetMyCyclesStatResponse>, AxiosError<ErrorResponse>>(
     'getMyCyclesStat',
     getMyCyclesStat,
     options,
@@ -44,22 +51,22 @@ export const useGetMyCyclesStat = (
 export const usePostCycleProgress = (
   options?: UseMutationOptions<
     AxiosResponse<PostCycleProgressResponse>,
-    AxiosError,
+    AxiosError<ErrorResponse>,
     PostCycleProgressProps
   >,
 ) =>
   useMutation<
     AxiosResponse<PostCycleProgressResponse>,
-    AxiosError,
+    AxiosError<ErrorResponse>,
     PostCycleProgressProps
   >(postCycleProgress, options);
 
 // 7. 아이디로 사이클 조회(GET)
 export const useGetCycleById = (
   cycleId: PostCycleProgressProps,
-  options?: UseQueryOptions<AxiosResponse<Cycle>, AxiosError>,
+  options?: UseQueryOptions<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>,
 ) =>
-  useQuery<AxiosResponse<Cycle>, AxiosError>(
+  useQuery<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>(
     'getCycleById',
     () => getCycleById(cycleId),
     options,

@@ -1,6 +1,7 @@
 import { useGetAllChallenges } from 'apis';
 import { useRef, RefObject, useMemo } from 'react';
 import styled from 'styled-components';
+import { validateAccessToken } from 'utils/validator';
 
 import useIntersect from 'hooks/useIntersect';
 import useSnackBar from 'hooks/useSnackBar';
@@ -14,13 +15,15 @@ import { CLIENT_PATH } from 'constants/path';
 export const ChallengeList = () => {
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
-    onError: () => {
+    onError: (error) => {
       renderSnackBar({
         message: '챌린지 목록 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
+
+      validateAccessToken(error);
     },
   });
 

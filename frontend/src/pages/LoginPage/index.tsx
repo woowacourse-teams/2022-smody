@@ -4,9 +4,10 @@ import PasswordIcon from 'assets/pw_icon.svg';
 import { useContext, FormEventHandler } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { isLoginState, nicknameState } from 'recoil/auth/atoms';
+import { nicknameState } from 'recoil/auth/atoms';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
+import { validateAccessToken } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
@@ -20,7 +21,6 @@ import { CLIENT_PATH } from 'constants/path';
 export const LoginPage = () => {
   const renderSnackBar = useSnackBar();
   const setNickname = useSetRecoilState(nicknameState);
-  const setIsLogin = useSetRecoilState(isLoginState);
   const themeContext = useContext(ThemeContext);
   const location = useLocation();
   const state = location.state as RouteLoginState;
@@ -31,13 +31,15 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
   const { mutate } = usePostLogin({
-    onError: () => {
+    onError: (error) => {
       renderSnackBar({
         message: '로그인 시 에러가 발생했습니다',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
+
+      validateAccessToken(error);
     },
   });
 

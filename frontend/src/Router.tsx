@@ -1,8 +1,7 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
 import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/selectors';
 
 import {
   Feed,
@@ -18,35 +17,30 @@ import {
 
 import { CLIENT_PATH } from 'constants/path';
 
-const AuthOnly = () => {
-  const accessToken = localStorage.getItem('accessToken');
-  return accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.CERT} />;
+interface CheckAuthProps {
+  isLogin: boolean;
+}
+
+const AuthOnly = ({ isLogin }: CheckAuthProps) => {
+  return isLogin ? <Outlet /> : <Navigate to={CLIENT_PATH.CERT} />;
 };
 
-const UnAuthOnly = () => {
-  const accessToken = localStorage.getItem('accessToken');
-  return !accessToken ? <Outlet /> : <Navigate to={CLIENT_PATH.PROFILE} />;
+const UnAuthOnly = ({ isLogin }: CheckAuthProps) => {
+  return !isLogin ? <Outlet /> : <Navigate to={CLIENT_PATH.PROFILE} />;
 };
 
 const Router = () => {
-  const setIsLogin = useSetRecoilState(isLoginState);
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken) {
-      setIsLogin(true);
-    }
-  }, []);
+  const isLogin = useRecoilValue(isLoginState);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route element={<AuthOnly />}>
+          <Route element={<AuthOnly isLogin={isLogin} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
           </Route>
 
-          <Route element={<UnAuthOnly />}>
+          <Route element={<UnAuthOnly isLogin={isLogin} />}>
             <Route path={CLIENT_PATH.LOGIN} element={<LoginPage />} />
             <Route path={CLIENT_PATH.SIGN_UP} element={<SignUpPage />} />
           </Route>

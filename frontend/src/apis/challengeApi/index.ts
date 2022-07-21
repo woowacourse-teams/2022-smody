@@ -12,7 +12,7 @@ import {
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
-import { Challenge } from 'commonType';
+import { Challenge, ErrorResponse } from 'commonType';
 import {
   useQuery,
   useInfiniteQuery,
@@ -20,13 +20,16 @@ import {
   UseInfiniteQueryOptions,
 } from 'react-query';
 import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import { isLoginState } from 'recoil/auth/selectors';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
-  options?: UseInfiniteQueryOptions<AxiosResponse<GetChallengeResponse[]>, AxiosError>,
+  options?: UseInfiniteQueryOptions<
+    AxiosResponse<GetChallengeResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError>(
+  useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
     'getAllChallenges',
     useRecoilValue(isLoginState)
       ? ({ pageParam = 0 }) => getAllChallengesAuth(pageParam)
@@ -43,9 +46,12 @@ export const useGetAllChallenges = (
 
 // 6. 나의 성공한 챌린지 조회(GET)
 export const useGetMySuccessChallenges = (
-  options?: UseInfiniteQueryOptions<AxiosResponse<Challenge[]>, AxiosError>,
+  options?: UseInfiniteQueryOptions<
+    AxiosResponse<Challenge[]>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useInfiniteQuery<AxiosResponse<Challenge[]>, AxiosError>(
+  useInfiniteQuery<AxiosResponse<Challenge[]>, AxiosError<ErrorResponse>>(
     'getMySuccessChallenges',
     ({ pageParam = 0 }) => getMySuccessChallenges(pageParam),
     {
@@ -61,9 +67,12 @@ export const useGetMySuccessChallenges = (
 // 8. 챌린지 하나 상세 조회(GET)
 export const useGetChallengeById = (
   { challengeId }: GetChallengeByIdProps,
-  options?: UseQueryOptions<AxiosResponse<GetChallengeByIdResponse>, AxiosError>,
+  options?: UseQueryOptions<
+    AxiosResponse<GetChallengeByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError>(
+  useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError<ErrorResponse>>(
     'getChallengeById',
     useRecoilValue(isLoginState)
       ? () => getChallengeByIdAuth({ challengeId })

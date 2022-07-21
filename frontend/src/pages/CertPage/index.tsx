@@ -1,8 +1,8 @@
 import { useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/selectors';
 import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
@@ -11,15 +11,13 @@ import { CertAuth, CertUnAuth } from 'components';
 
 export const CertPage = () => {
   const renderSnackBar = useSnackBar();
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  const isLogin = useRecoilValue(isLoginState);
 
   const googleCode = getUrlParameter('code');
 
   const { refetch: getTokenGoogle } = useGetTokenGoogle(googleCode, {
     enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
-      setIsLogin(true);
-
       authApiClient.updateAuth(accessToken);
 
       renderSnackBar({

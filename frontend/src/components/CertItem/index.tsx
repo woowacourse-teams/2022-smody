@@ -2,6 +2,7 @@ import { usePostCycleProgress } from 'apis';
 import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
+import { validateAccessToken } from 'utils/validator';
 
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -37,13 +38,15 @@ export const CertItem = ({
     onSuccess: () => {
       setIsSuccessModalOpen(true);
     },
-    onError: () => {
+    onError: (error) => {
       renderSnackBar({
         message: '챌린지 인증에 실패했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
+
+      validateAccessToken(error);
     },
   });
 

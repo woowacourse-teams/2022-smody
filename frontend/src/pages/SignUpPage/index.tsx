@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import styled from 'styled-components';
 import {
+  validateAccessToken,
   validateEmail,
   validateNickname,
   validatePassword,
@@ -44,13 +45,15 @@ export const SignUpPage = () => {
         },
       });
     },
-    onError: () => {
+    onError: (error) => {
       renderSnackBar({
         message: '회원가입 시 에러가 발생했습니다.',
         status: 'ERROR',
         linkText: '문의하기',
         linkTo: CLIENT_PATH.VOC,
       });
+
+      validateAccessToken(error);
     },
   });
 
