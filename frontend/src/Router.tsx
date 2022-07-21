@@ -6,7 +6,6 @@ import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   Feed,
-  SignUpPage,
   LoginPage,
   SearchPage,
   ChallengeDetailPage,
@@ -55,7 +54,6 @@ const Router = () => {
 
           <Route element={<UnAuthOnly isLogin={isLogin} />}>
             <Route path={CLIENT_PATH.LOGIN} element={<LoginPage />} />
-            <Route path={CLIENT_PATH.SIGN_UP} element={<SignUpPage />} />
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<Navigate to={CLIENT_PATH.CERT} />} />
