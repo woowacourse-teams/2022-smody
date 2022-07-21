@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
-import { validateAccessToken } from 'utils/validator';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
@@ -20,6 +20,7 @@ const makeCursorPointer = {
 
 export const ChallengeDetailPage = () => {
   const renderSnackBar = useSnackBar();
+  const checkLogout = useManageAccessToken();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
@@ -36,7 +37,7 @@ export const ChallengeDetailPage = () => {
           linkTo: CLIENT_PATH.VOC,
         });
 
-        validateAccessToken(error);
+        checkLogout(error);
       },
     },
   );

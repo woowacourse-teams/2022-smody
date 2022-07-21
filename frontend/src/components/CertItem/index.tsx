@@ -2,8 +2,8 @@ import { usePostCycleProgress } from 'apis';
 import { useContext, useState } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
-import { validateAccessToken } from 'utils/validator';
 
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
@@ -23,7 +23,7 @@ export const CertItem = ({
   refetch,
 }: CertItemProps) => {
   const renderSnackBar = useSnackBar();
-
+  const checkLogout = useManageAccessToken();
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
@@ -46,7 +46,7 @@ export const CertItem = ({
         linkTo: CLIENT_PATH.VOC,
       });
 
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
 

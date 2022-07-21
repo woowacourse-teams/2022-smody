@@ -1,8 +1,8 @@
 import { useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/selectors';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
@@ -11,7 +11,7 @@ import { CertAuth, CertUnAuth } from 'components';
 
 export const CertPage = () => {
   const renderSnackBar = useSnackBar();
-  const isLogin = useRecoilValue(isLoginState);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const googleCode = getUrlParameter('code');
 
@@ -19,6 +19,7 @@ export const CertPage = () => {
     enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
+      setIsLogin(true);
 
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',

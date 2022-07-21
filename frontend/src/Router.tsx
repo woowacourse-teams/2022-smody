@@ -1,11 +1,11 @@
 import { Layout } from 'Layout';
+import { useEffect } from 'react';
 import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/selectors';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   Feed,
-  SignUpPage,
   LoginPage,
   SearchPage,
   ChallengeDetailPage,
@@ -30,7 +30,19 @@ const UnAuthOnly = ({ isLogin }: CheckAuthProps) => {
 };
 
 const Router = () => {
-  const isLogin = useRecoilValue(isLoginState);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken && !isLogin) {
+      setIsLogin(true);
+    }
+
+    if (!accessToken && isLogin) {
+      setIsLogin(false);
+    }
+  });
 
   return (
     <BrowserRouter>
@@ -42,7 +54,6 @@ const Router = () => {
 
           <Route element={<UnAuthOnly isLogin={isLogin} />}>
             <Route path={CLIENT_PATH.LOGIN} element={<LoginPage />} />
-            <Route path={CLIENT_PATH.SIGN_UP} element={<SignUpPage />} />
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<Navigate to={CLIENT_PATH.CERT} />} />

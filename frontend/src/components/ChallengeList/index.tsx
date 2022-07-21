@@ -1,9 +1,9 @@
 import { useGetAllChallenges } from 'apis';
 import { useRef, RefObject, useMemo } from 'react';
 import styled from 'styled-components';
-import { validateAccessToken } from 'utils/validator';
 
 import useIntersect from 'hooks/useIntersect';
+import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, ChallengeItem } from 'components';
@@ -13,6 +13,7 @@ import Loading from 'components/LoadingSpinner';
 import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeList = () => {
+  const checkLogout = useManageAccessToken();
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onError: (error) => {
@@ -23,7 +24,7 @@ export const ChallengeList = () => {
         linkTo: CLIENT_PATH.VOC,
       });
 
-      validateAccessToken(error);
+      checkLogout(error);
     },
   });
 
