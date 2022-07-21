@@ -3,7 +3,7 @@
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 4
+:toclevels: 1
 :sectlinks:
 
 = 챌린지
@@ -72,3 +72,20 @@ include::{snippets}/get-cycle-stat/http-request.adoc[]
 include::{snippets}/get-cycle-stat/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-cycle-stat/response-fields.adoc[]
+
+= 회원
+== 내 정보 조회
+=== Request
+include::{snippets}/get-my-info/http-request.adoc[]
+=== Response
+include::{snippets}/get-my-info/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-my-info/response-fields.adoc[]
+
+== 로그인
+=== Request
+include::{snippets}/login-google/http-request.adoc[]
+=== Response
+include::{snippets}/login-google/http-response.adoc[]
+=== Response 필드
+include::{snippets}/login-google/response-fields.adoc[]
