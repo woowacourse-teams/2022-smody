@@ -31,3 +31,44 @@ include::{snippets}/get-challenge-auth/http-request.adoc[]
 === Response
 include::{snippets}/get-challenge/http-response.adoc[]
 include::{snippets}/get-challenge/response-fields.adoc[]
+
+= 사이클
+== 챌린지 사이클 생성
+=== Request
+include::{snippets}/create-cycle/http-request.adoc[]
+=== Request 필드
+include::{snippets}/create-cycle/request-fields.adoc[]
+=== Response
+include::{snippets}/create-cycle/http-response.adoc[]
+
+== 사이클 진척도 증가
+=== Request
+include::{snippets}/progress-cycle/http-request.adoc[]
+=== Response
+include::{snippets}/progress-cycle/http-response.adoc[]
+=== Response 필드
+include::{snippets}/progress-cycle/response-fields.adoc[]
+
+== 나의 모든 진행 중인 사이클 조회
+=== Request
+include::{snippets}/get-inProgress-cycle-mine/http-request.adoc[]
+=== Response
+include::{snippets}/get-inProgress-cycle-mine/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-inProgress-cycle-mine/response-fields.adoc[]
+
+== 사이클 하나 조회
+=== Request
+include::{snippets}/get-cycle/http-request.adoc[]
+=== Response
+include::{snippets}/get-cycle/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-cycle/response-fields.adoc[]
+
+== 사이클 통계 정보 조회
+=== Request
+include::{snippets}/get-cycle-stat/http-request.adoc[]
+=== Response
+include::{snippets}/get-cycle-stat/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-cycle-stat/response-fields.adoc[]
