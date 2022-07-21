@@ -15,6 +15,10 @@ public class WebHookController {
     @PostMapping("/deploy")
     public ResponseEntity<Void> deploy(@RequestHeader(value = "X-GitHub-Hook-ID") String gitHubHookId,
                                        @RequestBody GitHubHookRequest gitHubHookRequest) {
+        System.out.println("### gitHubHookId = " + gitHubHookId);
+        System.out.println("### gitHubHookRequest = " + gitHubHookRequest.getRef());
+        System.out.println("### gitHubHookRequest = " + gitHubHookRequest.parseBranch());
+
         if (!gitHubHookId.equals("369627662") || !gitHubHookRequest.parseBranch().equals("CD")) {
             return ResponseEntity.noContent().build();
         }
