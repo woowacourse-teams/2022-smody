@@ -1,55 +1,17 @@
-import { useGetAllChallenges } from 'apis';
-import { useRef, RefObject, useMemo } from 'react';
+import { useChallengeList } from './useChallengeList';
 import styled from 'styled-components';
-
-import useIntersect from 'hooks/useIntersect';
-import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, ChallengeItem } from 'components';
 import { ChallengeInfo } from 'components/ChallengeList/type';
 import Loading from 'components/LoadingSpinner';
 
-import { CLIENT_PATH } from 'constants/path';
-
 export const ChallengeList = () => {
-  const { isLoading, isFetching, data, refetch, hasNextPage, fetchNextPage } =
-    useGetAllChallenges({
-      refetchOnWindowFocus: false,
-      onError: () => {
-        renderSnackBar({
-          message: '챌린지 목록 조회 시 에러가 발생했습니다.',
-          status: 'ERROR',
-          linkText: '문의하기',
-          linkTo: CLIENT_PATH.VOC,
-        });
-      },
-    });
+  const { isFetching, data, refetch, rootRef, targetRef } = useChallengeList();
 
-  const rootRef = useRef() as RefObject<HTMLUListElement>;
-
-  const options = useMemo(() => ({ root: rootRef.current, threshold: 0.5 }), []);
-  const targetRef = useIntersect<HTMLLIElement>((entry, observer) => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-    observer.unobserve(entry.target);
-  }, options);
-  const renderSnackBar = useSnackBar();
-
-  if (typeof data === 'undefined') {
-    console.log('isLoading', isLoading);
-    return <Loading />;
-  }
-
-  console.log('현재 data.pages 길이: ', data.pages);
   return (
     <Wrapper as="ul" ref={rootRef}>
-      {data.pages.map((page, pageIndex) => {
-        if (typeof page === 'undefined' || typeof page.data === 'undefined') {
-          return [];
-        }
-
-        return page.data.map((challengeInfo: ChallengeInfo, challengeIndex: number) => (
+      {data?.pages.map((page, pageIndex) =>
+        page?.data?.map((challengeInfo: ChallengeInfo, challengeIndex: number) => (
           <li
             key={challengeInfo.challengeId}
             ref={
@@ -61,8 +23,8 @@ export const ChallengeList = () => {
           >
             <ChallengeItem {...challengeInfo} challengeListRefetch={refetch} />
           </li>
-        ));
-      })}
+        )),
+      )}
       {isFetching && <Loading />}
     </Wrapper>
   );

@@ -40,7 +40,7 @@ const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',
 })<WrapperProps>`
   ${({ bgColor, horizontalPadding }) => css`
-    min-height: calc(100vh);
+    min-height: calc(100vh - 119px);
     background-color: ${bgColor};
 
     /* PC (해상도 1024px)*/

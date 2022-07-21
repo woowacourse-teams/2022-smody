@@ -1,37 +1,46 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, RefObject } from 'react';
 
 type IntersectHandler = (
   entry: IntersectionObserverEntry,
   observer: IntersectionObserver,
 ) => void;
 
-const useIntersect = <T extends HTMLElement>(
+const useIntersect = <T extends HTMLElement, U extends HTMLElement>(
   onIntersect: IntersectHandler,
   options?: IntersectionObserverInit,
 ) => {
-  const ref = useRef<T>(null);
+  const rootRef = useRef<T>(null) as RefObject<T>;
+  const targetRef = useRef<U>(null);
+
+  const defaultOptions = {
+    root: rootRef.current,
+    threshold: 0.5,
+    ...options,
+  };
+
   const callback = useCallback(
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       entries.forEach((entry) => {
         console.log(entry);
-        if (entry.isIntersecting) onIntersect(entry, observer);
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          onIntersect(entry, observer);
+        }
       });
     },
     [onIntersect],
   );
 
   useEffect(() => {
-    console.log('여기서 끝날듯!!, ', ref);
-    if (!ref.current) return;
+    if (!targetRef.current) return;
 
-    console.log('여기까지 오나?');
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(ref.current);
+    const observer = new IntersectionObserver(callback, defaultOptions);
+    observer.observe(targetRef.current);
 
     return () => observer.disconnect();
   }, [callback]);
 
-  return ref;
+  return { targetRef, rootRef };
 };
 
 export default useIntersect;
