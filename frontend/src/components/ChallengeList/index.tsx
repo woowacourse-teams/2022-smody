@@ -37,11 +37,9 @@ export const ChallengeList = () => {
   const renderSnackBar = useSnackBar();
 
   if (typeof data === 'undefined') {
-    console.log('isLoading', isLoading);
     return <Loading />;
   }
 
-  console.log('현재 data.pages 길이: ', data.pages);
   return (
     <Wrapper as="ul" ref={rootRef}>
       {data.pages.map((page, pageIndex) => {

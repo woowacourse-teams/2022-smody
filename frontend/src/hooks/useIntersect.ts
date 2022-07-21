@@ -13,7 +13,6 @@ const useIntersect = <T extends HTMLElement>(
   const callback = useCallback(
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       entries.forEach((entry) => {
-        console.log(entry);
         if (entry.isIntersecting) onIntersect(entry, observer);
       });
     },
@@ -21,10 +20,8 @@ const useIntersect = <T extends HTMLElement>(
   );
 
   useEffect(() => {
-    console.log('여기서 끝날듯!!, ', ref);
     if (!ref.current) return;
 
-    console.log('여기까지 오나?');
     const observer = new IntersectionObserver(callback, options);
     observer.observe(ref.current);
 
