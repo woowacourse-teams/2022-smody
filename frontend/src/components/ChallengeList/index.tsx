@@ -24,7 +24,9 @@ export const ChallengeList = () => {
         linkTo: CLIENT_PATH.VOC,
       });
 
-      checkLogout(error);
+      if (checkLogout(error)) {
+        refetch();
+      }
     },
   });
 

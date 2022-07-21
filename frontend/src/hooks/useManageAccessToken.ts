@@ -8,14 +8,16 @@ export const useManageAccessToken = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
   const checkLogout = (error: AxiosError<ErrorResponse>) => {
     if (typeof error.response === 'undefined') {
-      return;
+      return false;
     }
 
     const { code, message } = error.response.data;
     if (code === 2002) {
       authApiClient.deleteAuth();
       setIsLogin(false);
+      return true;
     }
+    return false;
   };
 
   return checkLogout;
