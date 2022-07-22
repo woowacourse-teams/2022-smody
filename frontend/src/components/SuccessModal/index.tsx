@@ -35,11 +35,13 @@ export const SuccessModal = ({
   progressCount,
 }: SuccessModalProps) => {
   const themeContext = useContext(ThemeContext);
-  const { joinChallenge } = usePostJoinChallenge({ challengeId });
+  const { joinChallenge } = usePostJoinChallenge({
+    challengeId,
+    successCallback: handleCloseModal,
+  });
 
   const handleRetry = () => {
     joinChallenge(challengeName);
-    handleCloseModal();
   };
 
   return (

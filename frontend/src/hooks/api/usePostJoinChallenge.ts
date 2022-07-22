@@ -9,7 +9,7 @@ import { CLIENT_PATH } from 'constants/path';
 
 const usePostJoinChallenge = ({
   challengeId,
-  challengeListRefetch,
+  successCallback,
 }: PostJoinChallengeProps) => {
   const challengeNameRef = useRef('');
 
@@ -18,7 +18,7 @@ const usePostJoinChallenge = ({
 
   const { mutate, isSuccess } = usePostCycle({
     onSuccess: () => {
-      challengeListRefetch && challengeListRefetch();
+      successCallback && successCallback();
 
       renderSnackBar({
         message: `${challengeNameRef.current} 챌린지에 성공적으로 참여하였습니다`,

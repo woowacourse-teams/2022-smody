@@ -21,7 +21,7 @@ export const ChallengeItem = ({
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
-    challengeListRefetch,
+    successCallback: challengeListRefetch,
   });
 
   const navigate = useNavigate();
