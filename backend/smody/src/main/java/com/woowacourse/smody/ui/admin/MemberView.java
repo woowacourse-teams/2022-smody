@@ -16,11 +16,11 @@ import com.woowacourse.smody.repository.MemberRepository;
 @Route("/admin/member")
 public class MemberView extends VerticalLayout {
 
-    private final MemberRepository repository;
+    private final MemberRepository memberRepository;
     private final String resourceName = "멤버";
 
-    public MemberView(MemberRepository repository) {
-        this.repository = repository;
+    public MemberView(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
         add(
                 new MenuView(),
                 new H3("모든 " + resourceName),
@@ -35,8 +35,8 @@ public class MemberView extends VerticalLayout {
 
     private Grid<Member> createMembersGrid() {
         Grid<Member> membersGrid = new Grid<>();
-        membersGrid.setItems(repository.findAll());
-        membersGrid.addColumn(Member::getId).setHeader("id");
+        membersGrid.setItems(memberRepository.findAll());
+        membersGrid.addColumn(Member::getId).setHeader("member_id");
         membersGrid.addColumn(Member::getEmail).setHeader("email");
         membersGrid.addColumn(Member::getNickname).setHeader("nickname");
         membersGrid.addColumn(Member::getPicture).setHeader("picture");
@@ -44,21 +44,22 @@ public class MemberView extends VerticalLayout {
     }
 
     private HorizontalLayout createSaveLayout() {
-        HorizontalLayout save = new HorizontalLayout();
+        HorizontalLayout saveLayout = new HorizontalLayout();
         HorizontalLayout saveForm = new HorizontalLayout();
         TextField emailField = createTextField("email");
         TextField nicknameField = createTextField("nickname");
         TextField pictureField = createTextField("picture");
         saveForm.add(emailField, nicknameField, pictureField);
-        save.add(saveForm, createSaveButton(emailField, nicknameField, pictureField));
-        return save;
+        saveLayout.add(saveForm, createSaveButton(emailField, nicknameField, pictureField));
+        return saveLayout;
     }
 
     private Button createSaveButton(TextField emailField, TextField nicknameField, TextField pictureField) {
         Button saveButton = new Button("생성");
-        Member member = new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue());
         saveButton.addClickListener(event -> {
-                    repository.save(member);
+                    memberRepository.save(
+                            new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue())
+                    );
                     UI.getCurrent().getPage().reload();
                 }
         );
@@ -66,21 +67,21 @@ public class MemberView extends VerticalLayout {
     }
 
     private HorizontalLayout createDeleteLayout() {
-        HorizontalLayout delete = new HorizontalLayout();
+        HorizontalLayout deleteLayOut = new HorizontalLayout();
         TextField deleteTextField = createTextField("삭제할 id");
         Button deleteButton = new Button("삭제");
         deleteButton.addClickListener(event -> {
-                    repository.deleteById(Long.parseLong(deleteTextField.getValue()));
+                    memberRepository.deleteById(Long.parseLong(deleteTextField.getValue()));
                     UI.getCurrent().getPage().reload();
                 }
         );
-        delete.add(deleteTextField, deleteButton);
-        return delete;
+        deleteLayOut.add(deleteTextField, deleteButton);
+        return deleteLayOut;
     }
 
-    private TextField createTextField(final String email) {
+    private TextField createTextField(final String value) {
         TextField emailField = new TextField();
-        emailField.setPlaceholder(email);
+        emailField.setPlaceholder(value);
         return emailField;
     }
 

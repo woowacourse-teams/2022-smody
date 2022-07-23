@@ -30,7 +30,9 @@ public class MenuView extends AppLayout {
         Tabs tabs = new Tabs();
         tabs.getStyle().set("margin", "auto");
         tabs.add(
-                createTab(VaadinIcon.DATABASE, "member", MemberView.class)
+                createTab(VaadinIcon.USER, "member", MemberView.class),
+                createTab(VaadinIcon.DATABASE, "challenge", ChallengeView.class),
+                createTab(VaadinIcon.SWORD, "cycle", CycleView.class)
         );
         return tabs;
     }

@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 public class IndexView extends VerticalLayout {
 
     public IndexView() {
-        TextField passwordTextField = createPassowordTextField();
+        TextField passwordTextField = createPasswordTextField();
         Button adminLoginButton = createButton(passwordTextField);
         add(
                 new H2("SMODY Admin"),
@@ -29,7 +29,7 @@ public class IndexView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
     }
 
-    private TextField createPassowordTextField() {
+    private TextField createPasswordTextField() {
         TextField passwordTextField = new TextField("관리자 비밀번호");
         passwordTextField.setPlaceholder("password");
         return passwordTextField;
