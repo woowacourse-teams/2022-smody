@@ -79,8 +79,9 @@ public class CycleService {
         }
     }
 
-    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload, LocalDateTime searchTime,
-        Pageable pageable) {
+    public List<CycleResponse> findAllInProgressOfMine(TokenPayload tokenPayload,
+                                                       LocalDateTime searchTime,
+                                                       Pageable pageable) {
         Member member = searchMember(tokenPayload);
         List<Cycle> inProgressCycles = searchInProgressCycleByMember(searchTime, member);
         inProgressCycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(searchTime)));

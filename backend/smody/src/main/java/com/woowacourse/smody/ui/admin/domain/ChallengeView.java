@@ -1,20 +1,22 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.domain;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.repository.ChallengeRepository;
+import com.woowacourse.smody.ui.admin.MenuLayout;
 
 @PageTitle("challenge")
-@Route("/admin/challenge")
-public class ChallengeView extends VerticalLayout {
+@Route(value = "/admin/challenge", layout = MenuLayout.class)
+public class ChallengeView extends DomainView {
 
     private final ChallengeRepository challengeRepository;
     private final String resourceName = "챌린지";
@@ -22,15 +24,15 @@ public class ChallengeView extends VerticalLayout {
     public ChallengeView(ChallengeRepository challengeRepository) {
         this.challengeRepository = challengeRepository;
         add(
-                new MenuView(),
                 new H3("모든 " + resourceName),
                 createChallengesGrid(),
                 new H3(resourceName + " 생성"),
                 createSaveLayout(),
                 new H3(resourceName + " 삭제"),
-                createDeleteLayout()
+                createDeleteLayout(challengeRepository),
+                createFooterLayout()
         );
-        arrangeComponent();
+        arrangeComponents();
     }
 
     private Grid<Challenge> createChallengesGrid() {
@@ -52,38 +54,20 @@ public class ChallengeView extends VerticalLayout {
 
     private Button createSaveButton(TextField nameField) {
         Button saveButton = new Button("생성");
-        saveButton.addClickListener(event -> {
-                    challengeRepository.save(
-                            new Challenge(nameField.getValue())
-                    );
-                    UI.getCurrent().getPage().reload();
-                }
+        saveButton.addClickListener(event ->
+                saveChallenge(nameField)
         );
         return saveButton;
     }
 
-    private HorizontalLayout createDeleteLayout() {
-        HorizontalLayout deleteLayout = new HorizontalLayout();
-        TextField deleteTextField = createTextField("삭제할 id");
-        Button deleteButton = new Button("삭제");
-        deleteButton.addClickListener(event -> {
-                    challengeRepository.deleteById(Long.parseLong(deleteTextField.getValue()));
-                    UI.getCurrent().getPage().reload();
-                }
-        );
-        deleteLayout.add(deleteTextField, deleteButton);
-        return deleteLayout;
-    }
-
-    private TextField createTextField(final String value) {
-        TextField emailField = new TextField();
-        emailField.setPlaceholder(value);
-        return emailField;
-    }
-
-    private void arrangeComponent() {
-        setMargin(true);
-        setPadding(true);
-        setSpacing(true);
+    private void saveChallenge(TextField nameField) {
+        try {
+            challengeRepository.save(
+                    new Challenge(nameField.getValue())
+            );
+            UI.getCurrent().getPage().reload();
+        } catch (Exception exception) {
+            Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);
+        }
     }
 }

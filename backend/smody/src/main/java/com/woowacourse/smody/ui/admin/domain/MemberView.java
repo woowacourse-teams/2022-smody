@@ -1,20 +1,22 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.domain;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.repository.MemberRepository;
+import com.woowacourse.smody.ui.admin.MenuLayout;
 
 @PageTitle("member")
-@Route("/admin/member")
-public class MemberView extends VerticalLayout {
+@Route(value = "/admin/member", layout = MenuLayout.class)
+public class MemberView extends DomainView {
 
     private final MemberRepository memberRepository;
     private final String resourceName = "멤버";
@@ -22,18 +24,18 @@ public class MemberView extends VerticalLayout {
     public MemberView(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
         add(
-                new MenuView(),
                 new H3("모든 " + resourceName),
-                createMembersGrid(),
+                createMembersLayout(),
                 new H3(resourceName + " 생성"),
                 createSaveLayout(),
                 new H3(resourceName + " 삭제"),
-                createDeleteLayout()
+                createDeleteLayout(memberRepository),
+                createFooterLayout()
         );
-        arrangeComponent();
+        arrangeComponents();
     }
 
-    private Grid<Member> createMembersGrid() {
+    private Grid<Member> createMembersLayout() {
         Grid<Member> membersGrid = new Grid<>();
         membersGrid.setItems(memberRepository.findAll());
         membersGrid.addColumn(Member::getId).setHeader("member_id");
@@ -56,38 +58,20 @@ public class MemberView extends VerticalLayout {
 
     private Button createSaveButton(TextField emailField, TextField nicknameField, TextField pictureField) {
         Button saveButton = new Button("생성");
-        saveButton.addClickListener(event -> {
-                    memberRepository.save(
-                            new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue())
-                    );
-                    UI.getCurrent().getPage().reload();
-                }
+        saveButton.addClickListener(event ->
+                saveMember(emailField, nicknameField, pictureField)
         );
         return saveButton;
     }
 
-    private HorizontalLayout createDeleteLayout() {
-        HorizontalLayout deleteLayOut = new HorizontalLayout();
-        TextField deleteTextField = createTextField("삭제할 id");
-        Button deleteButton = new Button("삭제");
-        deleteButton.addClickListener(event -> {
-                    memberRepository.deleteById(Long.parseLong(deleteTextField.getValue()));
-                    UI.getCurrent().getPage().reload();
-                }
-        );
-        deleteLayOut.add(deleteTextField, deleteButton);
-        return deleteLayOut;
-    }
-
-    private TextField createTextField(final String value) {
-        TextField emailField = new TextField();
-        emailField.setPlaceholder(value);
-        return emailField;
-    }
-
-    private void arrangeComponent() {
-        setMargin(true);
-        setPadding(true);
-        setSpacing(true);
+    private void saveMember(final TextField emailField, final TextField nicknameField, final TextField pictureField) {
+        try {
+            memberRepository.save(
+                    new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue())
+            );
+            UI.getCurrent().getPage().reload();
+        } catch (Exception exception) {
+            Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);
+        }
     }
 }
