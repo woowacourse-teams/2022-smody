@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -38,7 +39,7 @@ public class CycleView extends DomainView {
         this.challengeRepository = challengeRepository;
         add(
                 new H3("모든 " + resourceName),
-                createChallengesGrid(),
+                createCyclesLayout(),
                 new H3(resourceName + " 생성"),
                 createSaveLayout(),
                 new H3(resourceName + " 삭제"),
@@ -48,7 +49,7 @@ public class CycleView extends DomainView {
         arrangeComponents();
     }
 
-    private Grid<Cycle> createChallengesGrid() {
+    private Grid<Cycle> createCyclesLayout() {
         Grid<Cycle> challengeGrid = new Grid<>();
         challengeGrid.setItems(cycleRepository.findAll());
         challengeGrid.addColumn(Cycle::getId).setHeader("cycle_id");
@@ -64,32 +65,46 @@ public class CycleView extends DomainView {
         HorizontalLayout saveForm = new HorizontalLayout();
         TextField memberIdField = createTextField("member_id");
         TextField challengeIdField = createTextField("challenge_id");
-        TextField progressField = createTextField("progress");
+        Select<String> progressSelects = createProgressSelects();
         DateTimePicker startTime = createDateTimePicker();
-        saveForm.add(memberIdField, challengeIdField, progressField, startTime);
-        saveLayout.add(saveForm, createSaveButton(memberIdField, challengeIdField, progressField, startTime));
+        saveForm.add(memberIdField, challengeIdField, progressSelects, startTime);
+        saveLayout.add(saveForm, createSaveButton(memberIdField, challengeIdField, progressSelects, startTime));
         return saveLayout;
+    }
+
+    private Select<String> createProgressSelects() {
+        Select<String> progressSelects = new Select<>();
+        progressSelects.setPlaceholder("progress");
+        progressSelects.setItems("NOTHING", "FIRST", "SECOND", "SUCCESS");
+        return progressSelects;
+    }
+
+    private DateTimePicker createDateTimePicker() {
+        DateTimePicker startTime = new DateTimePicker();
+        startTime.setDatePlaceholder("사이클 시작 날짜");
+        startTime.setTimePlaceholder("사이클 시작 시간");
+        return startTime;
     }
 
     private Button createSaveButton(TextField memberIdField,
                                     TextField challengeIdField,
-                                    TextField progressField,
+                                    Select<String> progressSelects,
                                     DateTimePicker startTimeField) {
         Button saveButton = new Button("생성");
         saveButton.addClickListener(event ->
-                saveCycle(memberIdField, challengeIdField, progressField, startTimeField)
+                saveCycle(memberIdField, challengeIdField, progressSelects, startTimeField)
         );
         return saveButton;
     }
 
-    private void saveCycle(final TextField memberIdField,
-                           final TextField challengeIdField,
-                           final TextField progressField,
-                           final DateTimePicker startTimeField) {
+    private void saveCycle(TextField memberIdField,
+                           TextField challengeIdField,
+                           Select<String> progressSelects,
+                           DateTimePicker startTimeField) {
         try {
             Member member = memberRepository.findById(Long.parseLong(memberIdField.getValue())).get();
             Challenge challenge = challengeRepository.findById(Long.parseLong(challengeIdField.getValue())).get();
-            Progress progress = Progress.valueOf(progressField.getValue().toUpperCase());
+            Progress progress = Progress.valueOf(progressSelects.getValue());
             LocalDateTime startTime = startTimeField.getValue();
             cycleRepository.save(
                     new Cycle(member, challenge, progress, startTime)
@@ -98,12 +113,5 @@ public class CycleView extends DomainView {
         } catch (Exception exception) {
             Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);
         }
-    }
-
-    private DateTimePicker createDateTimePicker() {
-        DateTimePicker startTime = new DateTimePicker();
-        startTime.setDatePlaceholder("사이클 시작 날짜");
-        startTime.setTimePlaceholder("사이클 시작 시간");
-        return startTime;
     }
 }

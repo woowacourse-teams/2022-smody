@@ -64,7 +64,7 @@ public class MemberView extends DomainView {
         return saveButton;
     }
 
-    private void saveMember(final TextField emailField, final TextField nicknameField, final TextField pictureField) {
+    private void saveMember(TextField emailField, TextField nicknameField, TextField pictureField) {
         try {
             memberRepository.save(
                     new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue())

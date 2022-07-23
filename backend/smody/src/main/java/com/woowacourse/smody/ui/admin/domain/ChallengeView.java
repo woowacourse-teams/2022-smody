@@ -25,7 +25,7 @@ public class ChallengeView extends DomainView {
         this.challengeRepository = challengeRepository;
         add(
                 new H3("모든 " + resourceName),
-                createChallengesGrid(),
+                createChallengesLayout(),
                 new H3(resourceName + " 생성"),
                 createSaveLayout(),
                 new H3(resourceName + " 삭제"),
@@ -35,7 +35,7 @@ public class ChallengeView extends DomainView {
         arrangeComponents();
     }
 
-    private Grid<Challenge> createChallengesGrid() {
+    private Grid<Challenge> createChallengesLayout() {
         Grid<Challenge> challengeGrid = new Grid<>();
         challengeGrid.setItems(challengeRepository.findAll());
         challengeGrid.addColumn(Challenge::getId).setHeader("challenge_id");
