@@ -13,10 +13,12 @@ public class MemberResponse {
     private String email;
     private String nickname;
     private String picture;
+    private String introduction;
 
     public MemberResponse(Member member) {
         this.email = member.getEmail();
         this.nickname = member.getNickname();
         this.picture = member.getPicture();
+        this.introduction = member.getIntroduction();
     }
 }

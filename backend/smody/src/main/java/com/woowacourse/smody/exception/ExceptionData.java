@@ -7,13 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ExceptionData {
 
-    DUPLICATED_EMAIL(1001, "이미 존재하는 이메일입니다.", 400),
-    DUPLICATED_NICKNAME(1002, "이미 존재하는 닉네임입니다.", 400),
-    INVALID_EMAIL(1003, "유효하지 않은 이메일입니다.", 400),
-    INVALID_NICKNAME(1004, "유효하지 않은 닉네임입니다.", 400),
-    INVALID_PASSWORD(1005, "유효하지 않은 비밀번호입니다.", 400),
+    INVALID_INTRODUCTION_LENGTH(1001, "소개글 길이는 30 자 이내입니다.", 400),
 
-    INVALID_LOGIN(2001, "이메일 혹은 비밀번호가 일치하지 않습니다.", 401),
     INVALID_TOKEN(2002, "유효하지 않은 토큰입니다.", 403),
     UNAUTHORIZED_MEMBER(2003, "인가되지 않은 회원입니다.", 403),
     INVALID_AUTHORIZATION_CODE(2004, "OAuth 인증 코드가 올바르지 않습니다.", 403),

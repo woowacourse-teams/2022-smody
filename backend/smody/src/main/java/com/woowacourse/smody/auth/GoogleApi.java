@@ -1,4 +1,4 @@
-package com.woowacourse.smody.controller.openapi;
+package com.woowacourse.smody.auth;
 
 import com.woowacourse.smody.dto.GoogleTokenRequest;
 import com.woowacourse.smody.dto.GoogleTokenResponse;

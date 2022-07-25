@@ -1,6 +1,6 @@
 package com.woowacourse.smody.controller;
 
-import com.woowacourse.smody.controller.openapi.GoogleApi;
+import com.woowacourse.smody.auth.GoogleApi;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.service.OauthService;

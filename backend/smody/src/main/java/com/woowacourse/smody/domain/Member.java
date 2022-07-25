@@ -1,5 +1,7 @@
 package com.woowacourse.smody.domain;
 
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,24 +19,52 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Member {
 
+    private static final String DEFAULT_INTRODUCTION = "스모디로 작심삼일 시작!";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
     private String picture;
 
-    public Member(final String email, final String nickname, final String picture) {
+    @Column(length = 30)
+    private String introduction;
+
+    public Member(String email, String nickname, String picture, String introduction) {
+        validateIntroduction(introduction);
         this.email = email;
         this.nickname = nickname;
         this.picture = picture;
+        this.introduction = introduction;
     }
 
-    public boolean matchId(Long id) {
-        return this.id.equals(id);
+    public Member(String email, String nickname, String picture) {
+        this(email, nickname, picture, DEFAULT_INTRODUCTION);
+    }
+
+    private void validateIntroduction(String introduction) {
+        if (introduction.length() > 30) {
+            throw new BusinessException(ExceptionData.INVALID_INTRODUCTION_LENGTH);
+        }
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void updateIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

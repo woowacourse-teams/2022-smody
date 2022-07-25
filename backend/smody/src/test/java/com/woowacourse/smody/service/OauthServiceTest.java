@@ -2,6 +2,7 @@ package com.woowacourse.smody.service;
 
 import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.auth.JwtTokenProvider;
@@ -43,20 +44,28 @@ public class OauthServiceTest {
         TokenPayload payload = jwtTokenProvider.getPayload(loginResponse.getAccessToken());
 
         // then
-        assertThat(payload.getId()).isEqualTo(member.getId());
+        assertAll(
+                () -> assertThat(payload.getId()).isEqualTo(member.getId()),
+                () -> assertThat(loginResponse.getIsNewMember()).isFalse()
+        );
     }
 
     @DisplayName("등록되지 않은 회원이면 회원가입 후 로그인에 성공한다.")
     @Test
     void login_enroll() {
-        // given
-        Member member = fixture.회원_조회(조조그린_ID);
-
         // when
-        LoginResponse loginResponse = oauthService.login(new LoginRequest(member));
+        String email = "alpha@naver.com";
+        LoginResponse loginResponse = oauthService.login(
+                new LoginRequest(email, "손수건", "사진")
+        );
         TokenPayload payload = jwtTokenProvider.getPayload(loginResponse.getAccessToken());
 
         // then
-        assertThat(payload.getId()).isEqualTo(memberRepository.findByEmail(member.getEmail()).get().getId());
+        assertAll(
+                () -> assertThat(payload.getId())
+                        .isEqualTo(memberRepository.findByEmail(email).get().getId()),
+                () -> assertThat(loginResponse.getIsNewMember())
+                        .isTrue()
+        );
     }
 }

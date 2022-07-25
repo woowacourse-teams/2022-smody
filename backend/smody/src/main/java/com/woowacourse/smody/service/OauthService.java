@@ -20,11 +20,11 @@ public class OauthService {
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        Member member = memberRepository.findByEmail(loginRequest.getEmail())
-                .orElseGet(() -> memberRepository.save(
-                        new Member(loginRequest.getEmail(), loginRequest.getName(), loginRequest.getPicture())
-                ));
-        return new LoginResponse(createToken(member));
+        return memberRepository.findByEmail(loginRequest.getEmail())
+                .map(member -> new LoginResponse(createToken(member), false))
+                .orElseGet(() -> new LoginResponse(
+                        createToken(memberRepository.save(loginRequest.toMember())), true)
+                );
     }
 
     private String createToken(Member member) {
