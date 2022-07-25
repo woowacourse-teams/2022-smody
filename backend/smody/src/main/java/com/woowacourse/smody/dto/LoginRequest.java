@@ -26,4 +26,8 @@ public class LoginRequest {
         this.name = member.getNickname();
         this.picture = member.getPicture();
     }
+
+    public Member toMember() {
+        return new Member(email, name, picture);
+    }
 }

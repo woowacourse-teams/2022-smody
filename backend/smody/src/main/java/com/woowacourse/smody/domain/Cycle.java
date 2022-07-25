@@ -38,8 +38,10 @@ public class Cycle {
     private Challenge challenge;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Progress progress;
 
+    @Column(nullable = false)
     private LocalDateTime startTime;
 
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
