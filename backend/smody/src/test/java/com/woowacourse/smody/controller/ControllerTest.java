@@ -5,7 +5,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
-import com.woowacourse.smody.controller.openapi.GoogleApi;
+import com.woowacourse.smody.auth.GoogleApi;
 import com.woowacourse.smody.service.ChallengeService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.MemberService;
