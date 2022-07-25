@@ -7,6 +7,7 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,12 @@ public class MemberController {
     public ResponseEntity<Void> updateMyInfo(@LoginMember TokenPayload tokenPayload,
                                              @RequestBody MemberUpdateRequest updateRequest) {
         memberService.updateMyInfo(tokenPayload, updateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> withdraw(@LoginMember TokenPayload tokenPayload) {
+        memberService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();
     }
 }

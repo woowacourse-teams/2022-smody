@@ -8,6 +8,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -74,5 +75,22 @@ public class MemberControllerTest extends ControllerTest {
                                 fieldWithPath("picture").type(JsonFieldType.STRING).description("사진"),
                                 fieldWithPath("introduction").type(JsonFieldType.STRING).description("소개글")
                         )));
+    }
+
+    @DisplayName("회원을 탈퇴한다.")
+    @Test
+    void withdraw() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/members/me")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isNoContent())
+                .andDo(document("withdraw", HOST_INFO,
+                        preprocessResponse(prettyPrint())
+                ));
     }
 }
