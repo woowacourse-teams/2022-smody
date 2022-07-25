@@ -55,4 +55,16 @@ public class Member {
             throw new BusinessException(ExceptionData.INVALID_INTRODUCTION_LENGTH);
         }
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void updateIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 }

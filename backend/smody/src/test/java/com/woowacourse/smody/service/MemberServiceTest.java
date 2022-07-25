@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
+import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -50,5 +51,24 @@ public class MemberServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
+    }
+
+    @DisplayName("자신의 회원 정보를 수정한다.")
+    @Test
+    void updateMyInfo() {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린", "이상해씨");
+
+        // when
+        memberService.updateMyInfo(tokenPayload, updateRequest);
+
+        // then
+        Member findMember = fixture.회원_조회(조조그린_ID);
+        assertAll(
+                () -> assertThat(findMember.getNickname()).isEqualTo(updateRequest.getNickname()),
+                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction()),
+                () -> assertThat(findMember.getPicture()).isEqualTo(updateRequest.getPicture())
+        );
     }
 }
