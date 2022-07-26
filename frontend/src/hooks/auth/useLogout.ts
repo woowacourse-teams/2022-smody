@@ -6,12 +6,12 @@ import { isLoginState } from 'recoil/auth/atoms';
 
 import useSnackBar from 'hooks/useSnackBar';
 
-export const useManageAccessToken = () => {
+const useLogout = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
 
   const renderSnackBar = useSnackBar();
 
-  const checkLogout = (error: AxiosError<ErrorResponse>) => {
+  const logoutByError = (error: AxiosError<ErrorResponse>) => {
     if (typeof error.response === 'undefined') {
       return false;
     }
@@ -30,5 +30,7 @@ export const useManageAccessToken = () => {
     return false;
   };
 
-  return checkLogout;
+  return logoutByError;
 };
+
+export default useLogout;

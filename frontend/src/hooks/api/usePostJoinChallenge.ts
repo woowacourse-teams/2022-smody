@@ -2,7 +2,7 @@ import { usePostCycle } from 'apis';
 import { useRef } from 'react';
 
 import { PostJoinChallengeProps } from 'hooks/api/type';
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
+import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -14,7 +14,7 @@ const usePostJoinChallenge = ({
   const challengeNameRef = useRef('');
 
   const renderSnackBar = useSnackBar();
-  const checkLogout = useManageAccessToken();
+  const logoutByError = useLogout();
 
   const { mutate, isSuccess } = usePostCycle({
     onSuccess: () => {
@@ -28,7 +28,7 @@ const usePostJoinChallenge = ({
       });
     },
     onError: (error) => {
-      if (checkLogout(error)) {
+      if (logoutByError(error)) {
         return;
       }
 

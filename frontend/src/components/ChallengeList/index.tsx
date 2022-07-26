@@ -2,8 +2,8 @@ import { useGetAllChallenges } from 'apis';
 import { useRef, RefObject, useMemo } from 'react';
 import styled from 'styled-components';
 
+import useLogout from 'hooks/auth/useLogout';
 import useIntersect from 'hooks/useIntersect';
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, ChallengeItem, LoadingSpinner } from 'components';
@@ -12,11 +12,11 @@ import { ChallengeInfo } from 'components/ChallengeList/type';
 import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeList = () => {
-  const checkLogout = useManageAccessToken();
+  const logoutByError = useLogout();
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onError: (error) => {
-      if (checkLogout(error)) {
+      if (logoutByError(error)) {
         refetch();
         return;
       }

@@ -6,7 +6,7 @@ import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
+import useLogout from 'hooks/auth/useLogout';
 
 import { FlexBox, Text, Button, LoadingSpinner } from 'components';
 
@@ -14,13 +14,13 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Profile = () => {
   const themeContext = useContext(ThemeContext);
-  const checkLogout = useManageAccessToken();
+  const logoutByError = useLogout();
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
   const { isLoading: isLoadingMyInfo, data: dataMyInfo } = useGetMyInfo({
     onError: (error) => {
-      checkLogout(error);
+      logoutByError(error);
     },
   });
   const { isLoading: isLoadingMyCyclesStat, data: dataMyCyclesStat } =
