@@ -1,3 +1,4 @@
+import { useGetMyInfo, usePatchMyInfo } from 'apis';
 import { useContext, FormEventHandler } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -5,20 +6,57 @@ import styled, { ThemeContext } from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
+import useSnackBar from 'hooks/useSnackBar';
 
-import { FlexBox, Text, Button, Input } from 'components';
+import { FlexBox, Text, Button, Input, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const ProfileEditPage = () => {
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
+  const renderSnackBar = useSnackBar();
 
-  const email = useInput('테스트 이메일');
-  const nickname = useInput('테스트 닉네임', validateNickname);
-  const introduction = useInput('테스트 소개', validateIntroduction);
+  const {
+    isFetching: isFetchingGetMyInfo,
+    data: dataMyInfo,
+    refetch,
+  } = useGetMyInfo({
+    refetchOnWindowFocus: false,
+    onError: () => {
+      renderSnackBar({
+        message: '나의 정보 조회 시 에러가 발생했습니다.',
+        status: 'ERROR',
+      });
+
+      // TODO: Error 페이지 렌더링 필요
+    },
+  });
+
+  const { isLoading: isLoadingPatchMyInfo, mutate } = usePatchMyInfo({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: () => {
+      renderSnackBar({
+        message: '나의 정보 수정 시 에러가 발생했습니다.',
+        status: 'ERROR',
+      });
+    },
+  });
+
+  const email = useInput(dataMyInfo && dataMyInfo.data.email);
+  const nickname = useInput(dataMyInfo && dataMyInfo.data.nickname, validateNickname);
+  const introduction = useInput(
+    dataMyInfo && dataMyInfo.data.introduction,
+    validateIntroduction,
+  );
 
   const isAllValidated = nickname.isValidated && introduction.isValidated;
+
+  if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
+    return <LoadingSpinner />;
+  }
 
   const backToPreviousPage = () => {
     navigate(CLIENT_PATH.PROFILE);
@@ -26,10 +64,24 @@ export const ProfileEditPage = () => {
 
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+
+    if (
+      typeof nickname.value === 'undefined' ||
+      typeof introduction.value === 'undefined' ||
+      typeof email.value === 'undefined'
+    ) {
+      return;
+    }
+
+    mutate({
+      nickname: nickname.value,
+      introduction: introduction.value,
+      email: email.value,
+    });
   };
 
-  const picture = 'https://emoji-copy.com/wp-content/uploads/1f64a.png';
-  const profileImgAlt = '프로필 이미지';
+  const { picture } = dataMyInfo.data;
+  const profileImgAlt = `${nickname.value}님의 프로필 사진`;
 
   return (
     <Wrapper>

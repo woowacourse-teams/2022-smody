@@ -1,8 +1,12 @@
-import { getLinkGoogle, getMyInfo, getTokenGoogle } from 'apis/oAuthApi/api';
-import { GetMyInfoResponse, GetTokenGoogleResponse } from 'apis/oAuthApi/type';
+import { getLinkGoogle, getMyInfo, getTokenGoogle, patchMyInfo } from 'apis/oAuthApi/api';
+import {
+  GetMyInfoResponse,
+  GetTokenGoogleResponse,
+  PatchMyInfoProps,
+} from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, UseQueryOptions, UseMutationOptions } from 'react-query';
 
 export const useGetLinkGoogle = (
   options?: UseQueryOptions<AxiosResponse<string>, AxiosError<ErrorResponse>>,
@@ -32,5 +36,18 @@ export const useGetMyInfo = (
   useQuery<AxiosResponse<GetMyInfoResponse>, AxiosError<ErrorResponse>>(
     'getMyInfo',
     getMyInfo,
+    options,
+  );
+
+export const usePatchMyInfo = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PatchMyInfoProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoProps>(
+    'patchMyInfo',
+    patchMyInfo,
     options,
   );

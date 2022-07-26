@@ -36,7 +36,7 @@ export const Profile = () => {
   }
 
   const {
-    data: { nickname, picture },
+    data: { nickname, introduction, picture },
   } = dataMyInfo;
   const profileImgAlt = { nickname } + ' 프로필 사진';
 
@@ -63,7 +63,7 @@ export const Profile = () => {
             {nickname}
           </Text>
           <Text size={16} color={themeContext.onBackground}>
-            안녕하세요 {nickname}입니다
+            {introduction}
           </Text>
           <CycleWrapper>
             <CycleCountWrapper>

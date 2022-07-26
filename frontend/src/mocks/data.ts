@@ -254,3 +254,10 @@ export const mySuccessChallengeData = [
     successCount: 100,
   },
 ];
+
+export const userData = {
+  nickname: '빅터짱짱맨',
+  introduction: '나는 빅터다.',
+  picture: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+  email: 'victor@gmail.com',
+};
