@@ -13,10 +13,10 @@ const useLogout = () => {
 
   const logoutByError = (error: AxiosError<ErrorResponse>) => {
     if (typeof error.response === 'undefined') {
-      return false;
+      return;
     }
 
-    const { code, message } = error.response.data;
+    const { code } = error.response.data;
     if (code === 2002) {
       authApiClient.deleteAuth();
       setIsLogin(false);
@@ -25,9 +25,7 @@ const useLogout = () => {
         message: '로그인이 필요한 서비스입니다',
         status: 'ERROR',
       });
-      return true;
     }
-    return false;
   };
 
   return logoutByError;

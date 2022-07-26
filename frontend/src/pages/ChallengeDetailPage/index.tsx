@@ -6,7 +6,6 @@ import styled, { ThemeContext } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
-import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
@@ -21,7 +20,6 @@ const makeCursorPointer = {
 
 export const ChallengeDetailPage = () => {
   const renderSnackBar = useSnackBar();
-  const logoutByError = useLogout();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
@@ -31,10 +29,6 @@ export const ChallengeDetailPage = () => {
     {
       refetchOnWindowFocus: false,
       onError: (error) => {
-        if (logoutByError(error)) {
-          return;
-        }
-
         renderSnackBar({
           message: '챌린지 조회 시 에러가 발생했습니다.',
           status: 'ERROR',
