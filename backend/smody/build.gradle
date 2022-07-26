@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.asciidoctor.jvm.convert' version '3.3.2' // 1
+    id 'com.vaadin' version '23.1.2'
 }
 
 group = 'com.woowacourse'
@@ -43,10 +44,20 @@ dependencies {
 
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // 5
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // 6
+
+    implementation 'com.vaadin:vaadin-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:23.1.2"
+    }
 }
 
 ext {
     snippetsDir = file('build/generated-snippets') // 2
+    set('vaadinVersion', "23.1.2")
 }
 
 test {

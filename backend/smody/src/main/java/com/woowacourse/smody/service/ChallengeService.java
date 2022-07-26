@@ -39,7 +39,8 @@ public class ChallengeService {
         return PagingUtil.page(responses, pageable);
     }
 
-    public List<ChallengeResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+    public List<ChallengeResponse> findAllWithChallengerCount(TokenPayload tokenPayload,
+                                                              LocalDateTime searchTime,
                                                               Pageable pageable) {
         Map<Challenge, List<Cycle>> inProgressCycles = searchInProgressCycles(searchTime);
         List<ChallengeResponse> responses = getResponsesOrderByCount(inProgressCycles).stream()
@@ -66,7 +67,8 @@ public class ChallengeService {
                 .collect(toList());
     }
 
-    private boolean matchMember(Map<Challenge, List<Cycle>> inProgressCycles, TokenPayload tokenPayload,
+    private boolean matchMember(Map<Challenge, List<Cycle>> inProgressCycles,
+                                TokenPayload tokenPayload,
                                 Long challengeId) {
         Challenge challenge = searchChallenge(challengeId);
         return inProgressCycles.getOrDefault(challenge, List.of()).stream()
@@ -101,7 +103,8 @@ public class ChallengeService {
         return new ChallengeResponse(challenge, count);
     }
 
-    public ChallengeResponse findOneWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+    public ChallengeResponse findOneWithChallengerCount(TokenPayload tokenPayload,
+                                                        LocalDateTime searchTime,
                                                         Long challengeId) {
         Map<Challenge, List<Cycle>> inProgressCycles = searchInProgressCycles(searchTime);
         Challenge challenge = searchChallenge(challengeId);
