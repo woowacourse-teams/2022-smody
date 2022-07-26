@@ -13,9 +13,11 @@ import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.repository.MemberRepository;
 import com.woowacourse.smody.ui.admin.MenuLayout;
+import javax.annotation.security.PermitAll;
 
 @PageTitle("member")
 @Route(value = "/admin/member", layout = MenuLayout.class)
+@PermitAll
 public class MemberView extends DomainView {
 
     private final MemberRepository memberRepository;

@@ -21,9 +21,11 @@ import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import java.time.LocalDateTime;
+import javax.annotation.security.PermitAll;
 
 @PageTitle("cycle")
 @Route(value = "/admin/cycle", layout = MenuLayout.class)
+@PermitAll
 public class CycleView extends DomainView {
 
     private final CycleRepository cycleRepository;

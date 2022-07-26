@@ -13,12 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 class OauthControllerTest extends ControllerTest {
 
+    @DisplayName("구글 로그인에 성공하면 200을 응답한다.")
     @Test
     void loginGoogle() throws Exception {
         // given
