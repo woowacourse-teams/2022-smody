@@ -12,14 +12,14 @@ export const CertPage = () => {
 
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
-    onError: (error) => {
-      renderSnackBar({
-        message: '진행중인 챌린지 조회 시 에러가 발생했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-    },
+    // onError: () => {
+    // renderSnackBar({
+    //   message: '진행중인 챌린지 조회 시 에러가 발생했습니다.',
+    //   status: 'ERROR',
+    //   linkText: '문의하기',
+    //   linkTo: CLIENT_PATH.VOC,
+    // });
+    // },
   });
 
   if (isLoading || typeof data === 'undefined') {

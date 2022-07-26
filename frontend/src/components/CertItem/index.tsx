@@ -37,14 +37,14 @@ export const CertItem = ({
     onSuccess: () => {
       setIsSuccessModalOpen(true);
     },
-    onError: (error) => {
-      renderSnackBar({
-        message: '챌린지 인증에 실패했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-    },
+    // onError: () => {
+    // renderSnackBar({
+    //   message: '챌린지 인증에 실패했습니다.',
+    //   status: 'ERROR',
+    //   linkText: '문의하기',
+    //   linkTo: CLIENT_PATH.VOC,
+    // });
+    // },
   });
 
   const handleClick = () => {

@@ -28,14 +28,14 @@ export const ChallengeDetailPage = () => {
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
-      onError: (error) => {
-        renderSnackBar({
-          message: '챌린지 조회 시 에러가 발생했습니다.',
-          status: 'ERROR',
-          linkText: '문의하기',
-          linkTo: CLIENT_PATH.VOC,
-        });
-      },
+      // onError: () => {
+      // renderSnackBar({
+      //   message: '챌린지 조회 시 에러가 발생했습니다.',
+      //   status: 'ERROR',
+      //   linkText: '문의하기',
+      //   linkTo: CLIENT_PATH.VOC,
+      // });
+      // },
     },
   );
 
