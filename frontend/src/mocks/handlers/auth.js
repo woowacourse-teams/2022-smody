@@ -7,7 +7,7 @@ export const auth = [
   // 1. 내 정보 조회(GET)
   rest.get(`${BASE_URL}/members/me`, (req, res, ctx) => {
     if (req.headers.headers.authorization === 'Bearer null') {
-      return res(ctx.status(403));
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
     return res(ctx.status(200), ctx.json(userData));
   }),

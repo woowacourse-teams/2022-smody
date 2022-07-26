@@ -27,30 +27,29 @@ export const ProfileEditPage = () => {
     refetch,
   } = useGetMyInfo({
     refetchOnWindowFocus: false,
-    onError: () => {
-      renderSnackBar({
-        message: '나의 정보 조회 시 에러가 발생했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-
-      // TODO: Error 페이지 렌더링 필요
-    },
+    // onError: () => {
+    // renderSnackBar({
+    //   message: '나의 정보 조회 시 에러가 발생했습니다.',
+    //   status: 'ERROR',
+    //   linkText: '문의하기',
+    //   linkTo: CLIENT_PATH.VOC,
+    // });
+    // TODO: Error 페이지 렌더링 필요
+    // },
   });
 
   const { isLoading: isLoadingPatchMyInfo, mutate: editMyInfo } = usePatchMyInfo({
     onSuccess: () => {
       refetch();
     },
-    onError: () => {
-      renderSnackBar({
-        message: '나의 정보 수정 시 에러가 발생했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-    },
+    // onError: () => {
+    // renderSnackBar({
+    //   message: '나의 정보 수정 시 에러가 발생했습니다.',
+    //   status: 'ERROR',
+    //   linkText: '문의하기',
+    //   linkTo: CLIENT_PATH.VOC,
+    // });
+    // },
   });
 
   const { isLoading: isLoadingDeleteMyInfo, mutate: deleteMyInfo } = useDeleteMyInfo({
@@ -66,14 +65,14 @@ export const ProfileEditPage = () => {
 
       navigate(CLIENT_PATH.HOME);
     },
-    onError: () => {
-      renderSnackBar({
-        message: '회원 정보 삭제 시 에러가 발생했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
-    },
+    // onError: () => {
+    // renderSnackBar({
+    //   message: '회원 정보 삭제 시 에러가 발생했습니다.',
+    //   status: 'ERROR',
+    //   linkText: '문의하기',
+    //   linkTo: CLIENT_PATH.VOC,
+    // });
+    // },
   });
 
   const email = useInput(dataMyInfo && dataMyInfo.data.email);
