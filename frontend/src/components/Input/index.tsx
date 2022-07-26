@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { InputProps, InputContainerProps } from 'components/AuthInput/type';
+import { InputProps, InputContainerProps } from 'components/Input/type';
 import { ValidationMessage } from 'components/ValidationMessage';
-import { VisibilityIcon } from 'components/VisibilityIcon';
 
-export const AuthInput = ({
-  icon,
+export const Input = ({
   type,
   label,
   placeholder,
@@ -14,30 +12,24 @@ export const AuthInput = ({
   onChange,
   isValidated,
   message,
+  disabled,
 }: InputProps) => {
   const [isFocus, setIsFocus] = useState(false);
-  const [isShowPassword, setIsShowPassword] = useState(false);
-  const newType = type !== 'password' ? type : isShowPassword ? 'text' : 'password';
-
-  const handleClickVisibilityIcon = () => {
-    setIsShowPassword((prev) => !prev);
-  };
 
   return (
     <Wrapper>
       <Label htmlFor={label}>{label}</Label>
       <InputWrapper isFocus={isFocus} isValidated={isValidated}>
-        {icon}
         <InputElement
           id={label}
-          type={newType}
+          type={type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
+          disabled={disabled}
         />
-        <VisibilityIcon type={type} onClick={handleClickVisibilityIcon} />
       </InputWrapper>
       <ValidationMessage isValidated={isValidated} value={value} message={message} />
     </Wrapper>
@@ -54,13 +46,18 @@ const Wrapper = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 1rem;
+  ${({ theme }) => css`
+    font-size: 1rem;
+    color: ${theme.disabled};
+  `}
 `;
 
 const InputWrapper = styled.div<InputContainerProps>`
   ${({ theme, isFocus, isValidated }) => css`
     display: flex;
     border: 1px solid ${theme.border};
+    background-color: ${theme.border};
+
     ${isFocus &&
     css`
       border-color: ${typeof isValidated === 'undefined'
@@ -69,17 +66,23 @@ const InputWrapper = styled.div<InputContainerProps>`
         ? theme.success
         : theme.error};
     `};
-    border-radius: 7px;
+    border-radius: 20px;
     padding: 1rem;
     margin-top: 0.5rem;
   `}
 `;
 
 const InputElement = styled.input`
-  border: none;
-  width: 100%;
-  margin-left: 0.5rem;
-  background-color: transparent;
-  outline: none;
-  font-size: 1rem;
+  ${({ theme }) => css`
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    margin-left: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+
+    &:disabled {
+      color: ${theme.disabled};
+    }
+  `}
 `;

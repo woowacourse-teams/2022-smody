@@ -44,6 +44,10 @@ export const Profile = () => {
     data: { totalCount, successCount },
   } = dataMyCyclesStat;
 
+  const handleClickEdit: MouseEventHandler<HTMLButtonElement> = () => {
+    navigate(CLIENT_PATH.PROFILE_EDIT);
+  };
+
   const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
     authApiClient.deleteAuth();
     setIsLogin(false);
@@ -82,7 +86,7 @@ export const Profile = () => {
         </ProfileDataWrapper>
       </MyProfileWrapper>
       <UserButtonWrapper>
-        <EditButton>프로필 편집</EditButton>
+        <EditButton onClick={handleClickEdit}>프로필 편집</EditButton>
         <LogoutButton onClick={handleClickLogout}>로그아웃</LogoutButton>
       </UserButtonWrapper>
     </Wrapper>

@@ -13,6 +13,7 @@ export const CLIENT_PATH = {
   SEARCH: '/search',
   FEED: '/feed',
   PROFILE: '/profile',
+  PROFILE_EDIT: '/profile/edit',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   VOC: '/voc',
