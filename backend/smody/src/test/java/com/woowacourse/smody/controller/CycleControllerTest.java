@@ -1,18 +1,23 @@
 package com.woowacourse.smody.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
@@ -22,15 +27,6 @@ import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
 
 public class CycleControllerTest extends ControllerTest {
 
@@ -141,7 +137,7 @@ public class CycleControllerTest extends ControllerTest {
 			new CycleResponse(1L, 1L, "미라클 모닝", 2, now, 3),
 			new CycleResponse(2L, 2L, "오늘의 운동", 1, now, 3)
 		);
-		given(cycleService.findAllInProgressOfMine(
+		given(cycleQueryService.findInProgressOfMine(
 			any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
 		)).willReturn(cycleResponses);
 
@@ -171,7 +167,7 @@ public class CycleControllerTest extends ControllerTest {
 		long cycleId = 1L;
 		CycleResponse cycleResponse = new CycleResponse(
 			cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3);
-		given(cycleService.findById(cycleId))
+		given(cycleQueryService.findById(cycleId))
 			.willReturn(cycleResponse);
 
 		// when
@@ -197,7 +193,7 @@ public class CycleControllerTest extends ControllerTest {
 	void findById_404() throws Exception {
 		// given
 		long cycleId = 1L;
-		given(cycleService.findById(cycleId))
+		given(cycleQueryService.findById(cycleId))
 			.willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
 
 		// when
@@ -213,7 +209,7 @@ public class CycleControllerTest extends ControllerTest {
 		// given
 		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 		StatResponse statResponse = new StatResponse(35, 5);
-		given(cycleService.searchStat(any(TokenPayload.class)))
+		given(cycleQueryService.searchStat(any(TokenPayload.class)))
 			.willReturn(statResponse);
 
 		// when

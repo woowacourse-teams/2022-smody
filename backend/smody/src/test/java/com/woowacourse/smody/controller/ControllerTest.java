@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.GoogleApi;
 import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
+import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
+import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.MemberService;
 import com.woowacourse.smody.service.OauthService;
@@ -54,6 +56,12 @@ public class ControllerTest {
 
     @MockBean
     protected ChallengeService challengeService;
+
+    @MockBean
+    protected ChallengeQueryService challengeQueryService;
+
+    @MockBean
+    protected CycleQueryService cycleQueryService;
 
     @MockBean
     protected GoogleApi googleApi;
