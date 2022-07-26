@@ -15,19 +15,21 @@ import {
   VocPage,
 } from 'pages';
 
-import { PrivateOutlet, PublicOutlet } from 'components';
+import { PrivateOutlet, LandingNavigation } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 const Router = () => {
   const { isLogin, isLoading } = useAuth();
+
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route element={<PublicOutlet isLogin={isLogin} isLoading={isLoading} />}>
-            <Route index element={<LandingPage />} />
-          </Route>
+          <Route
+            index
+            element={<LandingNavigation isLogin={isLogin} isLoading={isLoading} />}
+          />
 
           <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />

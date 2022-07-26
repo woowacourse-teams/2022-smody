@@ -51,7 +51,7 @@ export const Profile = () => {
   const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
     authApiClient.deleteAuth();
     setIsLogin(false);
-    navigate(CLIENT_PATH.CERT);
+    navigate(CLIENT_PATH.HOME);
   };
 
   return (

@@ -1,45 +1,14 @@
-import { useGetTokenGoogle } from 'apis';
-import { authApiClient } from 'apis/apiClient';
 import ServiceExampleImage from 'assets/service_example.png';
 import { useContext } from 'react';
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, keyframes } from 'styled-components';
-import { getUrlParameter } from 'utils';
 
 import { useGoogleLogin } from 'hooks/useGoogleLogin';
-import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
 export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
-  const renderSnackBar = useSnackBar();
-  const setIsLogin = useSetRecoilState(isLoginState);
 
-  const googleCode = getUrlParameter('code');
-
-  const { refetch: getTokenGoogle } = useGetTokenGoogle(googleCode, {
-    enabled: false,
-    onSuccess: ({ data: { accessToken } }) => {
-      authApiClient.updateAuth(accessToken);
-      setIsLogin(true);
-
-      renderSnackBar({
-        message: '환영합니다 🎉 오늘 도전도 화이팅!',
-        status: 'SUCCESS',
-      });
-    },
-  });
-
-  useEffect(() => {
-    if (googleCode.length === 0) {
-      return;
-    }
-
-    getTokenGoogle();
-  });
   const getLinkGoogle = useGoogleLogin();
 
   return (

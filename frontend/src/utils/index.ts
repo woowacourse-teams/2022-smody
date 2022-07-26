@@ -20,3 +20,8 @@ export const getUrlParameter = (name: string) => {
   const results = regex.exec(window.location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
+
+export const getWindowSize = () => {
+  const { innerWidth, innerHeight } = window;
+  return { innerWidth, innerHeight };
+};

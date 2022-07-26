@@ -1,10 +1,10 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { LoadingSpinner } from 'components/LoadingSpinner';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const PublicOutlet = ({
+export const LandingNavigation = ({
   isLogin,
   isLoading,
 }: {
@@ -13,5 +13,9 @@ export const PublicOutlet = ({
 }) => {
   if (isLoading) return <LoadingSpinner />;
 
-  return isLogin ? <Navigate to={CLIENT_PATH.CERT} /> : <Outlet />;
+  return isLogin ? (
+    <Navigate to={CLIENT_PATH.CERT} />
+  ) : (
+    <Navigate to={CLIENT_PATH.HOME} />
+  );
 };
