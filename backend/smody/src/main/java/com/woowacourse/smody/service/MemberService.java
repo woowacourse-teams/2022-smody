@@ -33,6 +33,7 @@ public class MemberService {
         member.updateIntroduction(updateRequest.getIntroduction());
     }
 
+    @Transactional
     public void withdraw(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
         cycleRepository.deleteByMember(member);
