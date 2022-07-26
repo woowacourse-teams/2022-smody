@@ -8,7 +8,6 @@ import { FlexBox, Text, FixedButton } from 'components';
 
 export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
-
   const getLinkGoogle = useGoogleLogin();
 
   return (

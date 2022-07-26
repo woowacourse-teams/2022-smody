@@ -21,7 +21,6 @@ import { CLIENT_PATH } from 'constants/path';
 
 const Router = () => {
   const { isLogin, isLoading } = useAuth();
-
   return (
     <BrowserRouter>
       <Routes>
