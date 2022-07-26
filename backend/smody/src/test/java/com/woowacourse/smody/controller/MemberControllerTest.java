@@ -58,7 +58,7 @@ public class MemberControllerTest extends ControllerTest {
     void updateMyInfo() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        MemberUpdateRequest request = new MemberUpdateRequest("손수건", "안녕하세요", "사진");
+        MemberUpdateRequest request = new MemberUpdateRequest("alpha", "Hello", "picture");
 
         // when
         ResultActions result = mockMvc.perform(patch("/members/me")

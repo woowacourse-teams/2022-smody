@@ -97,3 +97,9 @@ include::{snippets}/login-google/http-request.adoc[]
 include::{snippets}/login-google/http-response.adoc[]
 === Response 필드
 include::{snippets}/login-google/response-fields.adoc[]
+
+== 회원 탈퇴
+=== Request
+include::{snippets}/withdraw/http-request.adoc[]
+=== Response
+include::{snippets}/withdraw/http-response.adoc[]
