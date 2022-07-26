@@ -5,16 +5,16 @@ import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
+import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 const useAuth = () => {
   const renderSnackBar = useSnackBar();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-  const checkLogout = useManageAccessToken();
-  const googleCode = getUrlParameter('code');
+  const logoutByError = useLogout();
+  const googleAuthCode = getUrlParameter('code');
 
-  const { refetch: getTokenGoogle } = useGetTokenGoogle(googleCode, {
+  const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
     refetchOnWindowFocus: false,
     enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
@@ -29,20 +29,21 @@ const useAuth = () => {
   });
 
   const { isLoading } = useGetMyInfo({
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     onSuccess: () => {
       setIsLogin(true);
     },
     onError: (error) => {
-      checkLogout(error);
+      logoutByError(error);
     },
   });
 
   useEffect(() => {
-    if (googleCode.length === 0) {
+    if (googleAuthCode.length === 0) {
       return;
     }
-
     getTokenGoogle();
   }, []);
 

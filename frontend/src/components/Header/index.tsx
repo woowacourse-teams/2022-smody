@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
-import { useGoogleLogin } from 'hooks/useGoogleLogin';
+import useLoginLink from 'hooks/auth/useLoginLink';
 
 import { Logo, FlexBox, Button } from 'components';
 import { HeaderProps } from 'components/Header/type';
@@ -13,7 +13,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
   const isLogin = useRecoilValue(isLoginState);
   const themeContext = useContext(ThemeContext);
 
-  const getLinkGoogle = useGoogleLogin();
+  const redirectGoogleLoginLink = useLoginLink();
 
   return (
     <Wrapper bgColor={bgColor}>
@@ -21,7 +21,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
       {isLogin ? (
         <FaBell size={23} color={themeContext.primary} />
       ) : (
-        <Button size="small" onClick={getLinkGoogle}>
+        <Button size="small" onClick={redirectGoogleLoginLink}>
           로그인
         </Button>
       )}

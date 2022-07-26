@@ -1,7 +1,7 @@
 import { useGetMyCyclesInProgress } from 'apis';
 import styled, { css } from 'styled-components';
 
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
+import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { EmptyContent, CertItem, LoadingSpinner } from 'components';
@@ -11,12 +11,12 @@ import { CLIENT_PATH } from 'constants/path';
 export const CertPage = () => {
   const renderSnackBar = useSnackBar();
 
-  const checkLogout = useManageAccessToken();
+  const logoutByError = useLogout();
 
   const { isLoading, data, refetch } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
     onError: (error) => {
-      if (checkLogout(error)) {
+      if (logoutByError(error)) {
         return;
       }
 

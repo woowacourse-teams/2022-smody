@@ -4,7 +4,7 @@ import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
 
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
+import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
@@ -24,7 +24,7 @@ export const CertItem = ({
   refetch,
 }: CertItemProps) => {
   const renderSnackBar = useSnackBar();
-  const checkLogout = useManageAccessToken();
+  const logoutByError = useLogout();
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
@@ -40,7 +40,7 @@ export const CertItem = ({
       setIsSuccessModalOpen(true);
     },
     onError: (error) => {
-      if (checkLogout(error)) {
+      if (logoutByError(error)) {
         return;
       }
 

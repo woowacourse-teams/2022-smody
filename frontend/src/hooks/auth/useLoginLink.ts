@@ -4,9 +4,9 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const useGoogleLogin = () => {
+const useLoginLink = () => {
   const renderSnackBar = useSnackBar();
-  const { refetch: getLinkGoogle } = useGetLinkGoogle({
+  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle({
     enabled: false,
     onSuccess: ({ data: redirectionUrl }) => {
       window.location.href = redirectionUrl;
@@ -21,5 +21,7 @@ export const useGoogleLogin = () => {
     },
   });
 
-  return () => getLinkGoogle();
+  return () => redirectGoogleLoginLink();
 };
+
+export default useLoginLink;
