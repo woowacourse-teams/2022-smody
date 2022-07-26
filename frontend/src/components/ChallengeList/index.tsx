@@ -2,7 +2,6 @@ import { useGetAllChallenges } from 'apis';
 import { useRef, RefObject, useMemo } from 'react';
 import styled from 'styled-components';
 
-import useLogout from 'hooks/auth/useLogout';
 import useIntersect from 'hooks/useIntersect';
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -12,15 +11,9 @@ import { ChallengeInfo } from 'components/ChallengeList/type';
 import { CLIENT_PATH } from 'constants/path';
 
 export const ChallengeList = () => {
-  const logoutByError = useLogout();
   const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
     onError: (error) => {
-      if (logoutByError(error)) {
-        refetch();
-        return;
-      }
-
       renderSnackBar({
         message: '챌린지 목록 조회 시 에러가 발생했습니다.',
         status: 'ERROR',

@@ -2,7 +2,6 @@ import { usePostCycle } from 'apis';
 import { useRef } from 'react';
 
 import { PostJoinChallengeProps } from 'hooks/api/type';
-import useLogout from 'hooks/auth/useLogout';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -14,7 +13,6 @@ const usePostJoinChallenge = ({
   const challengeNameRef = useRef('');
 
   const renderSnackBar = useSnackBar();
-  const logoutByError = useLogout();
 
   const { mutate, isSuccess } = usePostCycle({
     onSuccess: () => {
@@ -28,10 +26,6 @@ const usePostJoinChallenge = ({
       });
     },
     onError: (error) => {
-      if (logoutByError(error)) {
-        return;
-      }
-
       renderSnackBar({
         message: `${challengeNameRef.current} 챌린지 참여 시 에러가 발생했습니다`,
         status: 'ERROR',

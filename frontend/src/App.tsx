@@ -1,18 +1,24 @@
 import Router from 'Router';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { generateQueryClient } from 'queryClient';
+import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
+import useLogout from 'hooks/auth/useLogout';
+
 import GlobalStyle from 'styles/GlobalStyle';
 import { lightTheme } from 'styles/theme';
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1 } } });
-
 const App = () => {
+  const logoutByError = useLogout();
+  const queryErrorHandler = (error: any): void => {
+    logoutByError(error);
+  };
+
   return (
     <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={generateQueryClient(queryErrorHandler)}>
         <ThemeProvider theme={lightTheme}>
           <GlobalStyle />
           <Router />
