@@ -1,7 +1,10 @@
-import { useGetMyInfo, usePatchMyInfo } from 'apis';
-import { useContext, FormEventHandler } from 'react';
+import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
+import { authApiClient } from 'apis/apiClient';
+import { useContext, FormEventHandler, MouseEventHandler } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
@@ -16,6 +19,7 @@ export const ProfileEditPage = () => {
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
+  const setIsLogin = useSetRecoilState(isLoginState);
 
   const {
     isFetching: isFetchingGetMyInfo,
@@ -27,13 +31,15 @@ export const ProfileEditPage = () => {
       renderSnackBar({
         message: '나의 정보 조회 시 에러가 발생했습니다.',
         status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
       });
 
       // TODO: Error 페이지 렌더링 필요
     },
   });
 
-  const { isLoading: isLoadingPatchMyInfo, mutate } = usePatchMyInfo({
+  const { isLoading: isLoadingPatchMyInfo, mutate: editMyInfo } = usePatchMyInfo({
     onSuccess: () => {
       refetch();
     },
@@ -41,6 +47,31 @@ export const ProfileEditPage = () => {
       renderSnackBar({
         message: '나의 정보 수정 시 에러가 발생했습니다.',
         status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
+      });
+    },
+  });
+
+  const { isLoading: isLoadingDeleteMyInfo, mutate: deleteMyInfo } = useDeleteMyInfo({
+    onSuccess: () => {
+      renderSnackBar({
+        message:
+          '회원 정보를 성공적으로 삭제했습니다. 그동안 스모디를 이용해 주셔서 감사합니다.',
+        status: 'SUCCESS',
+      });
+
+      authApiClient.deleteAuth();
+      setIsLogin(false);
+
+      navigate(CLIENT_PATH.HOME);
+    },
+    onError: () => {
+      renderSnackBar({
+        message: '회원 정보 삭제 시 에러가 발생했습니다.',
+        status: 'ERROR',
+        linkText: '문의하기',
+        linkTo: CLIENT_PATH.VOC,
       });
     },
   });
@@ -54,7 +85,12 @@ export const ProfileEditPage = () => {
 
   const isAllValidated = nickname.isValidated && introduction.isValidated;
 
-  if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
+  if (
+    isFetchingGetMyInfo ||
+    isLoadingPatchMyInfo ||
+    isLoadingDeleteMyInfo ||
+    typeof dataMyInfo === 'undefined'
+  ) {
     return <LoadingSpinner />;
   }
 
@@ -73,11 +109,15 @@ export const ProfileEditPage = () => {
       return;
     }
 
-    mutate({
+    editMyInfo({
       nickname: nickname.value,
       introduction: introduction.value,
       email: email.value,
     });
+  };
+
+  const handleClickUserDelete: MouseEventHandler<HTMLButtonElement> = () => {
+    deleteMyInfo();
   };
 
   const { picture } = dataMyInfo.data;
@@ -116,6 +156,7 @@ export const ProfileEditPage = () => {
       </ProfileEditForm>
       <Button
         style={{ backgroundColor: themeContext.error, color: themeContext.onError }}
+        onClick={handleClickUserDelete}
         size="small"
       >
         회원 탈퇴

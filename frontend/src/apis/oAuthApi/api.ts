@@ -28,3 +28,8 @@ export const getMyInfo = async () => {
 export const patchMyInfo = async (updatedUserInfo: PatchMyInfoProps) => {
   return authApiClient.axios.patch('/members/me', updatedUserInfo);
 };
+
+// 4. 회원 탈퇴(DELETE)
+export const deleteMyInfo = async () => {
+  return authApiClient.axios.delete('/members/me');
+};

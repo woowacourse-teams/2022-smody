@@ -1,4 +1,10 @@
-import { getLinkGoogle, getMyInfo, getTokenGoogle, patchMyInfo } from 'apis/oAuthApi/api';
+import {
+  getLinkGoogle,
+  getMyInfo,
+  getTokenGoogle,
+  patchMyInfo,
+  deleteMyInfo,
+} from 'apis/oAuthApi/api';
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
@@ -49,5 +55,14 @@ export const usePatchMyInfo = (
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoProps>(
     'patchMyInfo',
     patchMyInfo,
+    options,
+  );
+
+export const useDeleteMyInfo = (
+  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>>,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>>(
+    'deleteMyInfo',
+    deleteMyInfo,
     options,
   );

@@ -21,4 +21,9 @@ export const auth = [
 
     return res(ctx.status(204), ctx.delay(1000));
   }),
+
+  // 4. 회원 탈퇴(DELETE)
+  rest.delete(`${BASE_URL}/members/me`, (req, res, ctx) => {
+    return res(ctx.status(204), ctx.delay(1000));
+  }),
 ];
