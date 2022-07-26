@@ -3,7 +3,7 @@
 <configuration>
     <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
     <property name="LOG_PATTERN"
-              value="[%d{yyyy-MM-dd HH:mm:ss}] %thread %highlight(%-5level) [%C.%M:%L] %n >>> %msg%n%n"/>
+              value="[%d{yyyy-MM-dd HH:mm:ss}] %thread %-5level [%C.%M:%L] %n >>> %msg%n%n"/>
 
     <springProfile name="!prod">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -19,12 +19,12 @@
 
     <springProfile name="prod">
         <appender name="FILE-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>./log/today-${BY_DATE}.log</file>
+            <file>./backend/smody/log/today-${BY_DATE}.log</file>
             <encoder>
                 <pattern>${LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern> ./log/backup/history-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern> ./backend/smody/log/backup/history-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>100MB</maxFileSize>
                 <maxHistory>5</maxHistory>
                 <totalSizeCap>500MB</totalSizeCap>
