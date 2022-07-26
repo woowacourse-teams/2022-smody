@@ -6,7 +6,7 @@ export const API_PATH = {
 };
 
 export const CLIENT_PATH = {
-  HOME: '/',
+  HOME: '/home',
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',

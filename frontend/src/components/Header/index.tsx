@@ -5,23 +5,15 @@ import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
 import { useGoogleLogin } from 'hooks/useGoogleLogin';
-import useMatchPath from 'hooks/useMatchPath';
 
 import { Logo, FlexBox, Button } from 'components';
-import { WrapperProps } from 'components/Header/type';
+import { HeaderProps } from 'components/Header/type';
 
-import { CLIENT_PATH } from 'constants/path';
-
-export const Header = () => {
+export const Header = ({ bgColor }: HeaderProps) => {
   const isLogin = useRecoilValue(isLoginState);
   const themeContext = useContext(ThemeContext);
-  const getPathMatchResult = useMatchPath(
-    themeContext.secondary,
-    themeContext.background,
-  );
-  const getLinkGoogle = useGoogleLogin();
 
-  const bgColor = getPathMatchResult([CLIENT_PATH.CERT]);
+  const getLinkGoogle = useGoogleLogin();
 
   return (
     <Wrapper bgColor={bgColor}>
@@ -40,7 +32,7 @@ export const Header = () => {
 const Wrapper = styled(FlexBox).attrs({
   justifyContent: 'space-between',
   alignItems: 'center',
-})<WrapperProps>`
+})<HeaderProps>`
   ${({ bgColor }) => css`
     position: sticky;
     top: 0;
