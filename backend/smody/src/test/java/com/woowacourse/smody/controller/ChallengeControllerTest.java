@@ -1,27 +1,25 @@
 package com.woowacourse.smody.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 
 class ChallengeControllerTest extends ControllerTest {
 
@@ -34,7 +32,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeResponse(2L, "미라클 모닝", 5, false)
         );
 
-        given(challengeService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
+        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
                 .willReturn(challengeResponses);
 
         // when
@@ -64,7 +62,7 @@ class ChallengeControllerTest extends ControllerTest {
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
-        given(challengeService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
+        given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
                 any(Pageable.class)))
                 .willReturn(challengeResponses);
 
@@ -96,7 +94,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new SuccessChallengeResponse(2L, "미라클 모닝", 1)
         );
 
-        given(challengeService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
+        given(challengeQueryService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
                 .willReturn(successChallengeResponses);
 
         // when
@@ -123,7 +121,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false);
-        given(challengeService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+        given(challengeQueryService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
@@ -149,8 +147,9 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true);
-        given(challengeService.findOneWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class), eq(1L)))
-                .willReturn(challengeResponse);
+        given(challengeQueryService.findOneWithChallengerCount(
+            any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
+        ).willReturn(challengeResponse);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/1/auth")

@@ -1,23 +1,12 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.ResourceFixture.토닉_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,12 +16,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
+
 @SpringBootTest
 @Transactional
 class ChallengeServiceTest {
 
     @Autowired
-    private ChallengeService challengeService;
+    private ChallengeQueryService challengeQueryService;
 
     @Autowired
     private ResourceFixture fixture;
@@ -67,7 +62,7 @@ class ChallengeServiceTest {
         @Test
         void searchSuccessOfMine() {
             // when
-            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
                     tokenPayload, PageRequest.of(0, 10));
 
             // then
@@ -86,7 +81,7 @@ class ChallengeServiceTest {
         @Test
         void searchSuccessOfMine_pageFullSize() {
             // when
-            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
                     tokenPayload, PageRequest.of(0, 3));
 
             // then
@@ -105,7 +100,7 @@ class ChallengeServiceTest {
         @Test
         void searchSuccessOfMine_pagePartialSize() {
             // when
-            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
                     tokenPayload, PageRequest.of(1, 3));
 
             // then
@@ -124,7 +119,7 @@ class ChallengeServiceTest {
         @Test
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
-            List<SuccessChallengeResponse> responses = challengeService.searchSuccessOfMine(
+            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
                     tokenPayload, PageRequest.of(2, 3));
 
             // then
@@ -151,7 +146,7 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_sort() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(0, 10));
 
             // then
@@ -166,7 +161,7 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageFullSize() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(0, 2));
 
             // then
@@ -183,7 +178,7 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pagePartialSize() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(1, 2));
 
             // then
@@ -198,7 +193,7 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageOverMaxPage() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(3, 2));
 
             // then
@@ -210,7 +205,7 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(0, 10));
 
             // then
@@ -226,7 +221,7 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageFullSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(0, 2));
 
             // then
@@ -246,7 +241,7 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pagePartialSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(1, 2));
 
             // then
@@ -264,7 +259,7 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageOverMaxPageAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeService.findAllWithChallengerCount(
+            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(3, 2));
 
             // then
@@ -281,7 +276,7 @@ class ChallengeServiceTest {
         fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(now, 미라클_모닝_ID);
+        ChallengeResponse challengeResponse = challengeQueryService.findOneWithChallengerCount(now, 미라클_모닝_ID);
 
         // then
         assertAll(
@@ -301,7 +296,8 @@ class ChallengeServiceTest {
         fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeService.findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
+        ChallengeResponse challengeResponse = challengeQueryService
+            .findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
 
         // then
         assertAll(

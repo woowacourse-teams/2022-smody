@@ -2,6 +2,7 @@ package com.woowacourse.smody.ui.admin;
 
 
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 @Configuration
 public class AdminSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
+
+    @Value("${admin.id}")
+    private String adminId;
+    @Value("${admin.password}")
+    private String adminPassword;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -25,6 +31,6 @@ public class AdminSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("smody").password("{noop}smody18!").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser(adminId).password("{noop}" + adminPassword).roles("ADMIN");
     }
 }

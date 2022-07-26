@@ -7,6 +7,7 @@ import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CycleController {
 
     private final CycleService cycleService;
+    private final CycleQueryService cycleQueryService;
 
     @PostMapping
     public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
@@ -46,16 +48,16 @@ public class CycleController {
     @GetMapping(value = "/me")
     public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
                                                                        Pageable pageable) {
-        return ResponseEntity.ok(cycleService.findAllInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
+        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
     }
 
     @GetMapping("/{cycleId}")
     public ResponseEntity<CycleResponse> findById(@PathVariable Long cycleId) {
-        return ResponseEntity.ok(cycleService.findById(cycleId));
+        return ResponseEntity.ok(cycleQueryService.findById(cycleId));
     }
 
     @GetMapping("/me/stat")
     public ResponseEntity<StatResponse> searchStat(@LoginMember TokenPayload tokenPayload) {
-        return ResponseEntity.ok(cycleService.searchStat(tokenPayload));
+        return ResponseEntity.ok(cycleQueryService.searchStat(tokenPayload));
     }
 }

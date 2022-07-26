@@ -43,6 +43,9 @@ public class CycleServiceTest {
     private CycleService cycleService;
 
     @Autowired
+    private CycleQueryService cycleQueryService;
+
+    @Autowired
     private ResourceFixture fixture;
 
     private final LocalDateTime now = LocalDateTime.now();
@@ -56,7 +59,7 @@ public class CycleServiceTest {
                 new TokenPayload(조조그린_ID),
                 new CycleRequest(now, 스모디_방문하기_ID)
         );
-        CycleResponse cycleResponse = cycleService.findById(cycleId);
+        CycleResponse cycleResponse = cycleQueryService.findById(cycleId);
 
         // then
         assertAll(
@@ -85,7 +88,7 @@ public class CycleServiceTest {
     @Test
     void create_alreadySuccessChallenge() {
         // given
-        Cycle 성공한_사이클 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(2L));
+        Cycle success = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(2L));
         fixture.사이클_생성_SECOND(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
 
         // when
@@ -93,11 +96,11 @@ public class CycleServiceTest {
                 new TokenPayload(조조그린_ID),
                 new CycleRequest(now, 스모디_방문하기_ID)
         );
-        CycleResponse cycleResponse = cycleService.findById(cycleId);
+        CycleResponse cycleResponse = cycleQueryService.findById(cycleId);
 
         // then
         assertAll(
-                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(성공한_사이클.getStartTime().plusDays(3L)),
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(success.getStartTime().plusDays(3L)),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
         );
     }
@@ -216,7 +219,7 @@ public class CycleServiceTest {
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
         // when
-        List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+        List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
                 tokenPayload, now, PageRequest.of(0, 10));
 
         // then
@@ -246,7 +249,7 @@ public class CycleServiceTest {
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(12L));
 
         // when
-        CycleResponse cycleResponse = cycleService.findById(inProgress.getId());
+        CycleResponse cycleResponse = cycleQueryService.findById(inProgress.getId());
 
         // then
         assertAll(
@@ -301,7 +304,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_sort() {
             // when
-            List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 10));
 
             // then
@@ -315,7 +318,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingFullSize() {
             // when
-            List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 3));
 
             // then
@@ -328,7 +331,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingPartialSize() {
             // when
-            List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(1, 3));
 
             // then
@@ -341,7 +344,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingOverMaxPage() {
             // when
-            List<CycleResponse> actual = cycleService.findAllInProgressOfMine(
+            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(2, 3));
 
             // then
@@ -352,7 +355,7 @@ public class CycleServiceTest {
         @Test
         void searchStat() {
             // when
-            StatResponse response = cycleService.searchStat(tokenPayload);
+            StatResponse response = cycleQueryService.searchStat(tokenPayload);
 
             // then
             assertAll(

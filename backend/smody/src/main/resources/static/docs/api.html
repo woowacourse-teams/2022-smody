@@ -467,6 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_내_정보_조회">내 정보 조회</a></li>
 <li><a href="#_내_정보_수정">내 정보 수정</a></li>
 <li><a href="#_로그인">로그인</a></li>
+<li><a href="#_회원_탈퇴">회원 탈퇴</a></li>
 </ul>
 </li>
 </ul>
@@ -488,7 +489,7 @@ Host: www.smody.co.kr</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/auth?page=0&amp;size=10 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQzLCJleHAiOjE2NTkwOTAzNDN9.RTiz81RWiHPsFBMkHsLooFThQ48K1Xhe1TFCk3rOHlg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -567,7 +568,7 @@ Content-Length: 240
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/me?page=0&amp;size=10 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQzLCJleHAiOjE2NTkwOTAzNDN9.RTiz81RWiHPsFBMkHsLooFThQ48K1Xhe1TFCk3rOHlg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -645,7 +646,7 @@ Host: www.smody.co.kr</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/1/auth HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQzLCJleHAiOjE2NTkwOTAzNDN9.RTiz81RWiHPsFBMkHsLooFThQ48K1Xhe1TFCk3rOHlg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -718,7 +719,7 @@ Content-Length: 120
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /cycles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
 Content-Length: 23
 Host: www.smody.co.kr
 
@@ -774,7 +775,7 @@ Location: /cycles/1</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /cycles/1/progress HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -830,7 +831,7 @@ Content-Length: 25
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me?page=0&amp;size=5 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -851,14 +852,14 @@ Content-Length: 348
   "challengeId" : 1,
   "challengeName" : "미라클 모닝",
   "progressCount" : 2,
-  "startTime" : "2022-07-25T21:32:37.257501",
+  "startTime" : "2022-07-26T19:25:44.017827",
   "successCount" : 3
 }, {
   "cycleId" : 2,
   "challengeId" : 2,
   "challengeName" : "오늘의 운동",
   "progressCount" : 1,
-  "startTime" : "2022-07-25T21:32:37.257501",
+  "startTime" : "2022-07-26T19:25:44.017827",
   "successCount" : 3
 } ]</code></pre>
 </div>
@@ -943,7 +944,7 @@ Content-Length: 171
   "challengeId" : 1,
   "challengeName" : "미라클 모닝",
   "progressCount" : 2,
-  "startTime" : "2022-07-25T21:32:37.488194",
+  "startTime" : "2022-07-26T19:25:44.180233",
   "successCount" : 3
 }</code></pre>
 </div>
@@ -1008,7 +1009,7 @@ Content-Length: 171
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me/stat HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1071,7 +1072,7 @@ Content-Length: 45
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1146,14 +1147,14 @@ Content-Length: 123
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /members/me HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4NzUyMzU3LCJleHAiOjE2NTkwMTE1NTd9.G5aWIWZpU1UVbcMsnSV3ptWy909gB2LNYntM5t_inqY
-Content-Length: 92
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
+Content-Length: 79
 Host: www.smody.co.kr
 
 {
-  "nickname" : "손수건",
-  "introduction" : "안녕하세요",
-  "picture" : "사진"
+  "nickname" : "alpha",
+  "introduction" : "Hello",
+  "picture" : "picture"
 }</code></pre>
 </div>
 </div>
@@ -1266,11 +1267,37 @@ Content-Length: 64
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_회원_탈퇴"><a class="link" href="#_회원_탈퇴">회원 탈퇴</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_request_12"><a class="link" href="#_request_12">Request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /members/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjU4ODMxMTQ0LCJleHAiOjE2NTkwOTAzNDR9.OuwMyZVqoG9W8p1wLP-TmDd8jMXZSHdAxyrbzODBPE0
+Host: www.smody.co.kr</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_12"><a class="link" href="#_response_12">Response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-25 20:48:08 +0900
+Last updated 2022-07-26 19:10:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -21,25 +21,26 @@ public class MemberService {
     private final CycleRepository cycleRepository;
 
     public MemberResponse searchMyInfo(TokenPayload tokenPayload) {
-        Member member = searchMember(tokenPayload);
+        Member member = search(tokenPayload);
         return new MemberResponse(member);
     }
 
     @Transactional
     public void updateMyInfo(TokenPayload tokenPayload, MemberUpdateRequest updateRequest) {
-        Member member = searchMember(tokenPayload);
+        Member member = search(tokenPayload);
         member.updateNickname(updateRequest.getNickname());
         member.updatePicture(updateRequest.getPicture());
         member.updateIntroduction(updateRequest.getIntroduction());
     }
 
+    @Transactional
     public void withdraw(TokenPayload tokenPayload) {
-        Member member = searchMember(tokenPayload);
+        Member member = search(tokenPayload);
         cycleRepository.deleteByMember(member);
         memberRepository.delete(member);
     }
 
-    private Member searchMember(TokenPayload tokenPayload) {
+    public Member search(TokenPayload tokenPayload) {
         return memberRepository.findById(tokenPayload.getId())
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_MEMBER));
     }
