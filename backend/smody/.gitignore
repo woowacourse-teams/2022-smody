@@ -39,3 +39,5 @@ out/
 application.properties
 
 node_modules
+
+log
