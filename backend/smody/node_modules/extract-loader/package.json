@@ -1,0 +1,66 @@
+{
+  "name": "extract-loader",
+  "version": "5.1.0",
+  "description": "webpack loader to extract HTML and CSS from the bundle",
+  "main": "lib/extractLoader.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "cross-env NODE_ENV=test nyc mocha -R spec",
+    "posttest": "eslint src test",
+    "release": "standard-version",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peerigon/extract-loader.git"
+  },
+  "keywords": [
+    "webpack",
+    "loader",
+    "extract",
+    "html",
+    "css"
+  ],
+  "author": "peerigon <developers@peerigon.com>",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/peerigon/extract-loader/issues"
+  },
+  "homepage": "https://github.com/peerigon/extract-loader#readme",
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^5.0.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.0",
+    "chai-fs": "^2.0.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.4.0",
+    "eslint-config-peerigon": "^15.0.2",
+    "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
+    "rimraf": "^2.6.2",
+    "standard-version": "^4.4.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.1",
+    "webpack-command": "^0.4.1"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-runtime": "^6.26.0",
+    "btoa": "^1.2.1",
+    "loader-utils": "^1.1.0",
+    "resolve": "^1.8.1"
+  },
+  "files": [
+    "lib"
+  ]
+}
