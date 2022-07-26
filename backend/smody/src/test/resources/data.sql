@@ -12,8 +12,3 @@ insert into challenge (name) values ('미라클 모닝');
 insert into challenge (name) values ('오늘의 운동');
 insert into challenge (name) values ('알고리즘 풀기');
 insert into challenge (name) values ('JPA 공부');
-
--- insert into cycle (member_id, challenge_id, progress, start_time) values (1, 1, 'SUCCESS', '2022-07-01T00:00:00');
--- insert into cycle (member_id, challenge_id, progress, start_time) values (1, 2, 'SUCCESS', '2022-07-01T00:00:00');
--- insert into cycle (member_id, challenge_id, progress, start_time) values (1, 3, 'SUCCESS', '2022-07-01T00:00:00');
--- insert into cycle (member_id, challenge_id, progress, start_time) values (1, 4, 'SECOND', '2022-07-22T00:00:00');
