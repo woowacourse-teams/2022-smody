@@ -5,7 +5,6 @@ import com.woowacourse.smody.dto.ChallengeResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.ChallengeQueryService;
-import com.woowacourse.smody.service.ChallengeService;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +29,15 @@ public class ChallengeController {
 
     @GetMapping("/auth")
     public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                                      Pageable pageable) {
+                                                                              Pageable pageable) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
-            tokenPayload, LocalDateTime.now(), pageable)
+                tokenPayload, LocalDateTime.now(), pageable)
         );
     }
 
     @GetMapping(value = "/me")
     public ResponseEntity<List<SuccessChallengeResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
-                                                                                 Pageable pageable) {
+                                                                              Pageable pageable) {
         return ResponseEntity.ok(challengeQueryService.searchSuccessOfMine(tokenPayload, pageable));
     }
 
@@ -51,7 +50,7 @@ public class ChallengeController {
     public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@LoginMember TokenPayload tokenPayload,
                                                                         @PathVariable Long id) {
         return ResponseEntity.ok(challengeQueryService.findOneWithChallengerCount(
-        	tokenPayload, LocalDateTime.now(), id)
-		);
+                tokenPayload, LocalDateTime.now(), id)
+        );
     }
 }
