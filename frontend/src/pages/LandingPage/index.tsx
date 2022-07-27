@@ -1,6 +1,8 @@
 import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
 import { useContext } from 'react';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
@@ -8,6 +10,7 @@ import { FlexBox, Text, FixedButton, Logo } from 'components';
 export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
+  const isLogin = useRecoilValue(isLoginState);
 
   return (
     <Wrapper>
@@ -39,7 +42,11 @@ export const LandingPage = () => {
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      <FixedButton onClick={() => redirectGoogleLoginLink()}>구글로 시작하기</FixedButton>
+      {!isLogin && (
+        <FixedButton onClick={() => redirectGoogleLoginLink()}>
+          구글로 시작하기
+        </FixedButton>
+      )}
     </Wrapper>
   );
 };
