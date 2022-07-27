@@ -28,7 +28,6 @@ public class LogView extends VerticalLayout {
     private final VerticalLayout logLayout = new VerticalLayout();
 
     public LogView() {
-
         printTodayLog();
         Select<String> historySelect = createHistorySelect();
         HorizontalLayout historySelectLayout = new HorizontalLayout(historySelect, createHistoryButton(historySelect));
@@ -41,7 +40,6 @@ public class LogView extends VerticalLayout {
     }
 
     private void printTodayLog() {
-
         try {
             String todayLogName = new File(LOG_FILE_PATH).list()[0];
             File todayLog = new File(LOG_FILE_PATH + todayLogName);
@@ -58,7 +56,7 @@ public class LogView extends VerticalLayout {
             historySelect.setItems(histories);
             historySelect.setPlaceholder("이전 로그 기록");
         } catch (Exception exception) {
-            log.info("[로그 파일 예외 발생] 아직 이전 로그가 존지하지 않습니다.");
+            log.info("[로그 파일 예외 발생] 아직 History 로그가 존재하지 않습니다.");
         }
         return historySelect;
     }
@@ -78,7 +76,7 @@ public class LogView extends VerticalLayout {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(todayLog));
             bufferedReader.lines().forEach(line -> logLayout.add(new Span(line)));
         } catch (FileNotFoundException e) {
-            log.info("[로그 파일 예외 발생] 읽을 로그 파일이 없습니다.");
+            log.warn("[로그 파일 예외 발생] 읽을 로그 파일이 없습니다.");
         }
     }
 
