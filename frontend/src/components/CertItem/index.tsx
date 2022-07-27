@@ -4,7 +4,6 @@ import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
 
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
@@ -24,7 +23,6 @@ export const CertItem = ({
   refetch,
 }: CertItemProps) => {
   const renderSnackBar = useSnackBar();
-  const checkLogout = useManageAccessToken();
   const themeContext = useContext(ThemeContext);
 
   const nowDate = new Date();
@@ -38,18 +36,6 @@ export const CertItem = ({
   const { mutate } = usePostCycleProgress({
     onSuccess: () => {
       setIsSuccessModalOpen(true);
-    },
-    onError: (error) => {
-      if (checkLogout(error)) {
-        return;
-      }
-
-      renderSnackBar({
-        message: '챌린지 인증에 실패했습니다.',
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
-      });
     },
   });
 

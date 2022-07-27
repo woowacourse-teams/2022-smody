@@ -6,7 +6,6 @@ import { CardBoxProps, WrapperProps } from 'components/CardBox/type';
 import COLOR from 'styles/color';
 
 export const CardBox = ({
-  challengeId,
   challengeName,
   successCount,
   bgColor,
@@ -20,7 +19,7 @@ export const CardBox = ({
       <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
         {emoji}
       </EmojiWrapper>
-      <TextWrapper size={10} color={COLOR.DARK_GRAY} fontWeight="bold">
+      <TextWrapper size={10} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         챌린지 {successCount}회({successCount * 3}일) 성공
       </TextWrapper>
     </Wrapper>

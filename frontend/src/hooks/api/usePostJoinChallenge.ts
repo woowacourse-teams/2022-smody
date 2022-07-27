@@ -2,7 +2,6 @@ import { usePostCycle } from 'apis';
 import { useRef } from 'react';
 
 import { PostJoinChallengeProps } from 'hooks/api/type';
-import { useManageAccessToken } from 'hooks/useManageAccessToken';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -14,7 +13,6 @@ const usePostJoinChallenge = ({
   const challengeNameRef = useRef('');
 
   const renderSnackBar = useSnackBar();
-  const checkLogout = useManageAccessToken();
 
   const { mutate, isSuccess } = usePostCycle({
     onSuccess: () => {
@@ -25,18 +23,6 @@ const usePostJoinChallenge = ({
         status: 'SUCCESS',
         linkText: '인증하러 가기',
         linkTo: CLIENT_PATH.CERT,
-      });
-    },
-    onError: (error) => {
-      if (checkLogout(error)) {
-        return;
-      }
-
-      renderSnackBar({
-        message: `${challengeNameRef.current} 챌린지 참여 시 에러가 발생했습니다`,
-        status: 'ERROR',
-        linkText: '문의하기',
-        linkTo: CLIENT_PATH.VOC,
       });
     },
   });

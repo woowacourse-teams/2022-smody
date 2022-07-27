@@ -1,25 +1,25 @@
 import Router from 'Router';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { generateQueryClient } from 'queryClient';
+import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
+
+import useQueryErrorHandler from 'hooks/useQueryErrorHandler';
 
 import GlobalStyle from 'styles/GlobalStyle';
 import { lightTheme } from 'styles/theme';
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1 } } });
-
 const App = () => {
+  const queryErrorHandler = useQueryErrorHandler();
+
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={lightTheme}>
-          <GlobalStyle />
-          <Router />
-          <ReactQueryDevtools initialIsOpen={true} />
-        </ThemeProvider>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <QueryClientProvider client={generateQueryClient(queryErrorHandler)}>
+      <ThemeProvider theme={lightTheme}>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 

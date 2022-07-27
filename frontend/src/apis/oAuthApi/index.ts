@@ -20,7 +20,13 @@ export const useGetLinkGoogle = (
   useQuery<AxiosResponse<string>, AxiosError<ErrorResponse>>(
     'getLinkGoogle',
     getLinkGoogle,
-    options,
+    {
+      ...options,
+      enabled: false,
+      onSuccess: ({ data: redirectionUrl }) => {
+        window.location.href = redirectionUrl;
+      },
+    },
   );
 
 export const useGetTokenGoogle = (

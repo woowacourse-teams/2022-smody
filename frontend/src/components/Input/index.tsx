@@ -82,7 +82,7 @@ const InputElement = styled.input`
     font-size: 1rem;
 
     &:disabled {
-      color: ${theme.disabled};
+      color: ${theme.disabledInput};
     }
   `}
 `;

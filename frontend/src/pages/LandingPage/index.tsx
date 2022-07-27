@@ -1,15 +1,13 @@
+import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
 import { useContext } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
-
-import { useGoogleLogin } from 'hooks/useGoogleLogin';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
 export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
-
-  const getLinkGoogle = useGoogleLogin();
+  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
 
   return (
     <Wrapper>
@@ -43,7 +41,7 @@ export const LandingPage = () => {
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      <FixedButton onClick={getLinkGoogle}>구글로 시작하기</FixedButton>
+      <FixedButton onClick={() => redirectGoogleLoginLink()}>구글로 시작하기</FixedButton>
     </Wrapper>
   );
 };

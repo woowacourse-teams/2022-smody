@@ -22,8 +22,9 @@ export const lightTheme: DefaultTheme = {
   onError: COLOR.WHITE,
 
   disabled: COLOR.GRAY,
+  disabledInput: COLOR.DARKER_GRAY,
   border: COLOR.LIGHT_GRAY,
-  blur: COLOR.DARK_GRAY,
+  blur: COLOR.DARKEST_GRAY,
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
