@@ -4,14 +4,11 @@ import styled, { css, ThemeContext } from 'styled-components';
 import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
 
-import useSnackBar from 'hooks/useSnackBar';
-
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CYCLE_UNIT } from 'constants/domain';
-import { CLIENT_PATH } from 'constants/path';
 
 export const CertItem = ({
   cycleId,
@@ -22,9 +19,7 @@ export const CertItem = ({
   successCount,
   refetch,
 }: CertItemProps) => {
-  const renderSnackBar = useSnackBar();
   const themeContext = useContext(ThemeContext);
-
   const nowDate = new Date();
   const certStartDate = addDays(new Date(startTime), progressCount);
   const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);

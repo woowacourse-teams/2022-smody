@@ -1,12 +1,15 @@
 import { useGetLinkGoogle } from 'apis';
 import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
 import { Logo, FlexBox, Button } from 'components';
 import { HeaderProps } from 'components/Header/type';
+
+import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const isLogin = useRecoilValue(isLoginState);
@@ -16,7 +19,9 @@ export const Header = ({ bgColor }: HeaderProps) => {
 
   return (
     <Wrapper bgColor={bgColor}>
-      <Logo width="100" color={themeContext.primary} />
+      <Link to={CLIENT_PATH.HOME}>
+        <Logo isAnimated={false} width="100" color={themeContext.primary} />
+      </Link>
       {isLogin ? (
         <FaBell size={23} color={themeContext.primary} />
       ) : (
