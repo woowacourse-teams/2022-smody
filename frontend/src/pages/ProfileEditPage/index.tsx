@@ -21,11 +21,7 @@ export const ProfileEditPage = () => {
   const renderSnackBar = useSnackBar();
   const setIsLogin = useSetRecoilState(isLoginState);
 
-  const {
-    isFetching: isFetchingGetMyInfo,
-    data: dataMyInfo,
-    refetch,
-  } = useGetMyInfo({
+  const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
     onError: () => {
       renderSnackBar({
@@ -41,7 +37,12 @@ export const ProfileEditPage = () => {
 
   const { isLoading: isLoadingPatchMyInfo, mutate: editMyInfo } = usePatchMyInfo({
     onSuccess: () => {
-      refetch();
+      renderSnackBar({
+        message: '프로필 수정이 완료됐습니다.',
+        status: 'SUCCESS',
+      });
+
+      navigate(CLIENT_PATH.PROFILE);
     },
     onError: () => {
       renderSnackBar({
