@@ -103,8 +103,7 @@ export const ProfileEditPage = () => {
 
     if (
       typeof nickname.value === 'undefined' ||
-      typeof introduction.value === 'undefined' ||
-      typeof email.value === 'undefined'
+      typeof introduction.value === 'undefined'
     ) {
       return;
     }
@@ -112,7 +111,7 @@ export const ProfileEditPage = () => {
     editMyInfo({
       nickname: nickname.value,
       introduction: introduction.value,
-      email: email.value,
+      picture: dataMyInfo.data.picture,
     });
   };
 
