@@ -18,6 +18,9 @@ const useAuth = () => {
     onSuccess: () => {
       setIsLogin(true);
     },
+    onError: () => {
+      return null;
+    },
   });
 
   const googleAuthCode = getUrlParameter('code');
