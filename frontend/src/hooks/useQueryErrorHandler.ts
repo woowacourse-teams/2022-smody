@@ -19,17 +19,17 @@ const useQueryErrorHandler = () => {
     }
 
     const { code } = error.response.data;
-    console.log(error);
 
     const message = ERROR_MESSAGE[code];
-    console.log(message);
+
     renderSnackBar({
-      message,
+      message: message ?? '알 수 없는 오류가 발생했습니다',
       status: 'ERROR',
       linkText: '문의하기',
       linkTo: CLIENT_PATH.VOC,
     });
 
+    // 로그아웃 처리
     if (code === 2002) {
       authApiClient.deleteAuth();
       setIsLogin(false);
