@@ -32,11 +32,15 @@ export const challenge = [
     cycleData[cycleId - 1].progressCount++;
     return res(ctx.status(200), ctx.json({ progressCount: 2 }));
   }),
-  // 5. 모든 챌린지 조회(GET)
+  // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(challengeData));
 
     // return res(ctx.delay(1000), ctx.status(200), ctx.json(challengeData));
+  }),
+  // 5. 모든 챌린지 조회(GET) - 회원
+  rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
+    return res(ctx.delay(1000), ctx.status(200), ctx.json(challengeData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
@@ -46,5 +50,46 @@ export const challenge = [
   // 7. 아이디로 사이클 조회(GET)
   rest.post(`${BASE_URL}${API_PATH.CYCLES_ID}`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(cycleData[0]));
+  }),
+  // 8. 챌린지 하나 상세 조회(GET) - 비회원
+  rest.get(`${BASE_URL}/challenges/:challengeId`, (req, res, ctx) => {
+    const { challengeId } = req.params;
+
+    if (Number.isNaN(challengeId) || challengeId > challengeData.length) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    return res(
+      ctx.delay(1000),
+      ctx.status(200),
+      ctx.json(challengeData[challengeId - 1]),
+    );
+  }),
+
+  // 8. 챌린지 하나 상세 조회(GET) - 회원
+  rest.get(`${BASE_URL}/challenges/:challengeId/auth`, (req, res, ctx) => {
+    const { challengeId } = req.params;
+
+    if (Number.isNaN(challengeId) || challengeId > challengeData.length) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    return res(
+      ctx.delay(1000),
+      ctx.status(200),
+      ctx.json(challengeData[challengeId - 1]),
+    );
   }),
 ];
