@@ -6,8 +6,9 @@ import { useGoogleLogin } from 'hooks/useGoogleLogin';
 
 import { FlexBox, Text, FixedButton } from 'components';
 
-export const CertUnAuth = () => {
+export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
+
   const getLinkGoogle = useGoogleLogin();
 
   return (

@@ -36,7 +36,7 @@ export const Profile = () => {
   }
 
   const {
-    data: { nickname, picture },
+    data: { nickname, introduction, picture },
   } = dataMyInfo;
   const profileImgAlt = { nickname } + ' 프로필 사진';
 
@@ -44,10 +44,14 @@ export const Profile = () => {
     data: { totalCount, successCount },
   } = dataMyCyclesStat;
 
+  const handleClickEdit: MouseEventHandler<HTMLButtonElement> = () => {
+    navigate(CLIENT_PATH.PROFILE_EDIT);
+  };
+
   const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
     authApiClient.deleteAuth();
     setIsLogin(false);
-    navigate(CLIENT_PATH.CERT);
+    navigate(CLIENT_PATH.HOME);
   };
 
   return (
@@ -59,7 +63,7 @@ export const Profile = () => {
             {nickname}
           </Text>
           <Text size={16} color={themeContext.onBackground}>
-            안녕하세요 {nickname}입니다
+            {introduction}
           </Text>
           <CycleWrapper>
             <CycleCountWrapper>
@@ -82,7 +86,7 @@ export const Profile = () => {
         </ProfileDataWrapper>
       </MyProfileWrapper>
       <UserButtonWrapper>
-        <EditButton>프로필 편집</EditButton>
+        <EditButton onClick={handleClickEdit}>프로필 편집</EditButton>
         <LogoutButton onClick={handleClickLogout}>로그아웃</LogoutButton>
       </UserButtonWrapper>
     </Wrapper>

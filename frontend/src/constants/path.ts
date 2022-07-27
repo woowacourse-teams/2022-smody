@@ -6,13 +6,14 @@ export const API_PATH = {
 };
 
 export const CLIENT_PATH = {
-  HOME: '/',
+  HOME: '/home',
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',
   SEARCH: '/search',
   FEED: '/feed',
   PROFILE: '/profile',
+  PROFILE_EDIT: '/profile/edit',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   VOC: '/voc',

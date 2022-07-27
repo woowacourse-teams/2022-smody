@@ -22,11 +22,12 @@ export const Layout = () => {
     OTHER_PATH_PADDING,
   );
 
-  const bgColor = getPathMatchColor([CLIENT_PATH.CERT]);
+  const bgColor = getPathMatchColor([CLIENT_PATH.CERT, CLIENT_PATH.HOME]);
   const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
+
   return (
     <>
-      <Header />
+      <Header bgColor={bgColor} />
       <Wrapper bgColor={bgColor} horizontalPadding={horizontalPadding}>
         <Outlet />
       </Wrapper>

@@ -1,5 +1,5 @@
 export interface ValidationMessageProps {
-  value: string;
+  value: string | undefined;
   isValidated?: boolean;
   message: string;
 }

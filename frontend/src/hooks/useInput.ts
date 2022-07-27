@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { ChangeEvent } from 'react';
 
 const useInput = (
-  initialValue: string,
+  initialValue: string | undefined,
   validator?: ValidatorFunction,
   optionalValue?: string,
 ) => {
@@ -12,7 +12,7 @@ const useInput = (
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (typeof validator === 'undefined') {
+    if (typeof validator === 'undefined' || value === undefined) {
       return;
     }
 
@@ -23,6 +23,10 @@ const useInput = (
     setIsValidated(newIsValidated);
     setMessage(newMessage);
   }, [value, optionalValue]);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {

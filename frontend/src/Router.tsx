@@ -1,63 +1,43 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
-import { Navigate, Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import useAuth from 'hooks/useAuth';
 
 import {
   Feed,
-  LoginPage,
   SearchPage,
   ChallengeDetailPage,
   NotFoundPage,
   CertPage,
+  LandingPage,
   ProfilePage,
+  ProfileEditPage,
   VocPage,
 } from 'pages';
 
+import { PrivateOutlet, LandingNavigation } from 'components';
+
 import { CLIENT_PATH } from 'constants/path';
 
-interface CheckAuthProps {
-  isLogin: boolean;
-}
-
-const AuthOnly = ({ isLogin }: CheckAuthProps) => {
-  return isLogin ? <Outlet /> : <Navigate to={CLIENT_PATH.CERT} />;
-};
-
-const UnAuthOnly = ({ isLogin }: CheckAuthProps) => {
-  return !isLogin ? <Outlet /> : <Navigate to={CLIENT_PATH.PROFILE} />;
-};
-
 const Router = () => {
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken && !isLogin) {
-      setIsLogin(true);
-    }
-
-    if (!accessToken && isLogin) {
-      setIsLogin(false);
-    }
-  });
+  const { isLogin, isLoading } = useAuth();
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route element={<AuthOnly isLogin={isLogin} />}>
+          <Route
+            index
+            element={<LandingNavigation isLogin={isLogin} isLoading={isLoading} />}
+          />
+
+          <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
+            <Route path={CLIENT_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />
+            <Route path={CLIENT_PATH.CERT} element={<CertPage />} />
           </Route>
 
-          <Route element={<UnAuthOnly isLogin={isLogin} />}>
-            <Route path={CLIENT_PATH.LOGIN} element={<LoginPage />} />
-          </Route>
-
-          <Route path={CLIENT_PATH.HOME} element={<Navigate to={CLIENT_PATH.CERT} />} />
-          <Route path={CLIENT_PATH.CERT} element={<CertPage />} />
+          <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
           <Route path={CLIENT_PATH.FEED} element={<Feed />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
           <Route

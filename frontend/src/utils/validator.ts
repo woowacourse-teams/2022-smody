@@ -17,11 +17,17 @@ const checkPasswordFormat: checkFormatFunction = (password) => {
   return !passwordRule.test(password);
 };
 
-const checkNicknameFormat: checkFormatFunction = (nickname) =>
-  nickname.length < 2 || nickname.length > 10;
+const checkNicknameFormat: checkFormatFunction = (nickname) => {
+  const noSpaceRule = /\s/g;
+
+  return noSpaceRule.test(nickname) || nickname.length < 1 || nickname.length > 10;
+};
 
 const checkSamePassword: checkFormatFunction = (password, passwordCheck) =>
   password !== passwordCheck;
+
+const checkIntroductionFormat: checkFormatFunction = (introduction) =>
+  introduction.length > 30;
 
 export const validateEmail: ValidatorFunction = (email) => {
   if (checkEmailFormat(email)) {
@@ -53,8 +59,16 @@ export const validateSamePassword: ValidatorFunction = (password, passwordCheck)
 
 export const validateNickname: ValidatorFunction = (nickname: string) => {
   if (checkNicknameFormat(nickname)) {
-    return { isValidated: false, message: '2~10자로 공백 없이 입력해주세요.' };
+    return { isValidated: false, message: '1~10자로 공백 없이 입력해주세요.' };
   }
 
   return { isValidated: true, message: '사용 가능한 닉네임입니다.' };
+};
+
+export const validateIntroduction: ValidatorFunction = (introduction: string) => {
+  if (checkIntroductionFormat(introduction)) {
+    return { isValidated: false, message: '30자 이내로 입력해 주세요.' };
+  }
+
+  return { isValidated: true, message: '올바른 입력입니다.' };
 };
