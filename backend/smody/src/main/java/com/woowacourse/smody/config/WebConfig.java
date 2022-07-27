@@ -2,6 +2,7 @@ package com.woowacourse.smody.config;
 
 import com.woowacourse.smody.auth.AuthInterceptor;
 import com.woowacourse.smody.auth.LoginMemberArgumentResolver;
+import com.woowacourse.smody.logging.LogInterceptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
     private String frontendOrigin;
 
     private final AuthInterceptor authInterceptor;
+    private final LogInterceptor logInterceptor;
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
 
     @Override
@@ -33,7 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(logInterceptor)
+                .order(0)
+                .addPathPatterns("/**");
         registry.addInterceptor(authInterceptor)
+                .order(1)
                 .addPathPatterns(AUTH_REQUIRED_URL);
     }
 
