@@ -16,7 +16,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
 
   return (
     <Wrapper bgColor={bgColor}>
-      <Logo width="100" color={themeContext.primary} />
+      <Logo isAnimated={false} width="100" color={themeContext.primary} />
       {isLogin ? (
         <FaBell size={23} color={themeContext.primary} />
       ) : (

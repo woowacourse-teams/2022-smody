@@ -3,7 +3,7 @@ import ServiceExampleImage from 'assets/service_example.png';
 import { useContext } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 
-import { FlexBox, Text, FixedButton } from 'components';
+import { FlexBox, Text, FixedButton, Logo } from 'components';
 
 export const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
@@ -22,9 +22,7 @@ export const LandingPage = () => {
           <Text color={themeContext.onBackground} size={20} fontWeight="bold">
             ,&nbsp;
           </Text>
-          <Text color={themeContext.onBackground} size={32} fontWeight="bold">
-            Smody
-          </Text>
+          <Logo isAnimated={true} width="100" color={themeContext.primary} />
         </RowWrapper>
       </ColumnWrapper>
       <ColumnWrapper>

@@ -69,6 +69,7 @@
     "eslint-plugin-react": "latest",
     "eslint-plugin-storybook": "^0.5.13",
     "file-loader": "^6.2.0",
+    "framer-motion": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
     "msw": "^0.43.0",
     "prettier": "2.7.1",
