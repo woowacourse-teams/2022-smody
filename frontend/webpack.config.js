@@ -70,6 +70,7 @@ module.exports = {
       'process.env.BASE_URL': JSON.stringify(
         isProd ? process.env.PROD_BASE_URL : process.env.DEV_BASE_URL,
       ),
+      'process.env.CLIENT_ID': isProd ? undefined : JSON.stringify(process.env.CLIENT_ID),
     }),
   ],
 };

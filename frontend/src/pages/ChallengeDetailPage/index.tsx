@@ -6,7 +6,6 @@ import styled, { ThemeContext } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
-import useSnackBar from 'hooks/useSnackBar';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
@@ -19,12 +18,11 @@ const makeCursorPointer = {
 };
 
 export const ChallengeDetailPage = () => {
-  const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
 
-  const { isLoading, data } = useGetChallengeById(
+  const { isFetching, data } = useGetChallengeById(
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
@@ -35,7 +33,7 @@ export const ChallengeDetailPage = () => {
     challengeId: Number(challengeId),
   });
 
-  if (isLoading || typeof data === 'undefined' || typeof data.data === 'undefined') {
+  if (isFetching || typeof data === 'undefined' || typeof data.data === 'undefined') {
     return <LoadingSpinner />;
   }
 

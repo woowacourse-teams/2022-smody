@@ -261,3 +261,5 @@ export const userData = {
   picture: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
   email: 'victor@gmail.com',
 };
+
+export const accessTokenData = 'testAccessToken';
