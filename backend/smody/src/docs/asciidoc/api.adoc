@@ -1,0 +1,105 @@
+= Smody API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 1
+:sectlinks:
+
+= 챌린지
+== 모든 챌린지 조회 (비회원/회원)
+=== Request
+include::{snippets}/get-all-challenges/http-request.adoc[]
+include::{snippets}/get-all-challenges-auth/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-challenges/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-challenges/response-fields.adoc[]
+
+== 나의 성공한 챌린지 조회
+=== Request
+include::{snippets}/get-my-success-challenges/http-request.adoc[]
+=== Response
+include::{snippets}/get-my-success-challenges/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-my-success-challenges/response-fields.adoc[]
+
+== 챌린지 하나 상세 조회 (회원/비회원)
+=== Request
+include::{snippets}/get-challenge/http-request.adoc[]
+include::{snippets}/get-challenge-auth/http-request.adoc[]
+=== Response
+include::{snippets}/get-challenge/http-response.adoc[]
+include::{snippets}/get-challenge/response-fields.adoc[]
+
+= 사이클
+== 챌린지 사이클 생성
+=== Request
+include::{snippets}/create-cycle/http-request.adoc[]
+=== Request 필드
+include::{snippets}/create-cycle/request-fields.adoc[]
+=== Response
+include::{snippets}/create-cycle/http-response.adoc[]
+
+== 사이클 진척도 증가
+=== Request
+include::{snippets}/progress-cycle/http-request.adoc[]
+=== Response
+include::{snippets}/progress-cycle/http-response.adoc[]
+=== Response 필드
+include::{snippets}/progress-cycle/response-fields.adoc[]
+
+== 나의 모든 진행 중인 사이클 조회
+=== Request
+include::{snippets}/get-inProgress-cycle-mine/http-request.adoc[]
+=== Response
+include::{snippets}/get-inProgress-cycle-mine/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-inProgress-cycle-mine/response-fields.adoc[]
+
+== 사이클 하나 조회
+=== Request
+include::{snippets}/get-cycle/http-request.adoc[]
+=== Response
+include::{snippets}/get-cycle/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-cycle/response-fields.adoc[]
+
+== 사이클 통계 정보 조회
+=== Request
+include::{snippets}/get-cycle-stat/http-request.adoc[]
+=== Response
+include::{snippets}/get-cycle-stat/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-cycle-stat/response-fields.adoc[]
+
+= 회원
+== 내 정보 조회
+=== Request
+include::{snippets}/get-my-info/http-request.adoc[]
+=== Response
+include::{snippets}/get-my-info/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-my-info/response-fields.adoc[]
+
+== 내 정보 수정
+=== request
+include::{snippets}/update-my-info/http-request.adoc[]
+=== request 필드
+include::{snippets}/update-my-info/request-fields.adoc[]
+=== response
+include::{snippets}/update-my-info/http-response.adoc[]
+
+== 로그인
+=== Request
+include::{snippets}/login-google/http-request.adoc[]
+=== Response
+include::{snippets}/login-google/http-response.adoc[]
+=== Response 필드
+include::{snippets}/login-google/response-fields.adoc[]
+
+== 회원 탈퇴
+=== Request
+include::{snippets}/withdraw/http-request.adoc[]
+=== Response
+include::{snippets}/withdraw/http-response.adoc[]
