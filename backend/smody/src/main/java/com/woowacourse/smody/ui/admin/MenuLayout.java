@@ -11,7 +11,6 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.woowacourse.smody.ui.admin.domain.ChallengeView;
 import com.woowacourse.smody.ui.admin.domain.CycleView;
-import com.woowacourse.smody.ui.admin.domain.LogView;
 import com.woowacourse.smody.ui.admin.domain.MemberView;
 
 public class MenuLayout extends AppLayout {

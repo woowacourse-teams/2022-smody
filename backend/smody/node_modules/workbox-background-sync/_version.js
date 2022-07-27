@@ -1,6 +1,0 @@
-"use strict";
-// @ts-ignore
-try {
-    self['workbox:background-sync:6.4.2'] && _();
-}
-catch (e) { }
