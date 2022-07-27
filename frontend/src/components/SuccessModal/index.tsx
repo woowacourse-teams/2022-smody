@@ -5,12 +5,7 @@ import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
 
-import { Button } from 'components/@shared/Button';
-import { FlexBox } from 'components/@shared/FlexBox';
-import ModalOverlay from 'components/@shared/ModalOverlay';
-import { Text } from 'components/@shared/Text';
-
-import { CheckCircles } from 'components/CheckCircles';
+import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';

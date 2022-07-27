@@ -1,6 +1,7 @@
 export * from 'components/@shared/Text';
 export * from 'components/@shared/FlexBox';
 export * from 'components/@shared/Button';
+export * from 'components/@shared/ModalOverlay';
 export * from 'components/Input';
 export * from 'components/LinkText';
 export * from 'components/Logo';

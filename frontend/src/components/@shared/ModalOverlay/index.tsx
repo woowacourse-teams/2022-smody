@@ -2,7 +2,7 @@ import { ModalOverlayProps } from './type';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 
-export default function ModalOverlay({ children, handleCloseModal }: ModalOverlayProps) {
+export const ModalOverlay = ({ children, handleCloseModal }: ModalOverlayProps) => {
   return (
     <>
       {ReactDOM.createPortal(
@@ -15,7 +15,7 @@ export default function ModalOverlay({ children, handleCloseModal }: ModalOverla
       )}
     </>
   );
-}
+};
 
 const Modal = styled.div`
   ${({ theme }) => css`
