@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { useReward } from 'react-rewards';
 import styled, { ThemeContext } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -35,58 +36,78 @@ export const SuccessModal = ({
   progressCount,
 }: SuccessModalProps) => {
   const themeContext = useContext(ThemeContext);
+  const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
+  const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
+    emoji: [getEmoji(Number(challengeId))],
+  });
+
   const { joinChallenge } = usePostJoinChallenge({
     challengeId,
     successCallback: handleCloseModal,
   });
 
+  const handleRest = () => {
+    handleCloseModal();
+  };
+
   const handleRetry = () => {
     joinChallenge(challengeName);
   };
 
-  return (
-    <ModalOverlay handleCloseModal={handleCloseModal}>
-      <Wrapper>
-        <Text color={themeContext.onSurface} size={70} fontWeight="normal">
-          {getEmoji(Number(challengeId))}
-        </Text>
-        <Text color={themeContext.onSurface} size={20} fontWeight="bold">
-          {challengeName}
-        </Text>
-        <Text color={themeContext.primary} size={20} fontWeight="bold">
-          {progressCount === CYCLE_SUCCESS_CRITERIA
-            ? '🎉 챌린지 성공 🎉'
-            : '오늘의 인증 완료'}
-        </Text>
-        <Text color={themeContext.blur} size={20} fontWeight="bold">
-          {getMessageByProgressCount(progressCount)}
-        </Text>
-        {progressCount === CYCLE_SUCCESS_CRITERIA ? (
-          <Text color={themeContext.disabled} size={16} fontWeight="normal">
-            해당 챌린지를 총 {successCount}회 성공하셨어요.
-          </Text>
-        ) : (
-          <CheckCircles progressCount={progressCount} />
-        )}
+  const isChallengeComplete = progressCount === CYCLE_SUCCESS_CRITERIA;
 
-        <ButtonWrapper>
-          {progressCount === CYCLE_SUCCESS_CRITERIA ? (
-            <>
-              <Button onClick={handleCloseModal} size="medium" isActive={false}>
-                쉴래요
-              </Button>
-              <Button onClick={handleRetry} size="medium" isActive={true}>
-                재도전
-              </Button>
-            </>
+  useEffect(() => {
+    if (isChallengeComplete) {
+      confettiReward();
+      emojiReward();
+    }
+  }, []);
+
+  return (
+    <>
+      <ModalOverlay handleCloseModal={handleCloseModal}>
+        <Wrapper>
+          <Text color={themeContext.onSurface} size={70} fontWeight="normal">
+            {getEmoji(Number(challengeId))}
+            <span id="confettiRewardId" />
+            <span id="emojiRewardId" />
+          </Text>
+          <Text color={themeContext.onSurface} size={20} fontWeight="bold">
+            {challengeName}
+          </Text>
+          <Text color={themeContext.primary} size={20} fontWeight="bold">
+            {isChallengeComplete ? '🎉 챌린지 성공 🎉' : '오늘의 인증 완료'}
+          </Text>
+          <Text color={themeContext.blur} size={20} fontWeight="bold">
+            {getMessageByProgressCount(progressCount)}
+          </Text>
+          {isChallengeComplete ? (
+            <Text color={themeContext.disabled} size={16} fontWeight="normal">
+              해당 챌린지를 총 {successCount}회 성공하셨어요.
+            </Text>
           ) : (
-            <Button onClick={handleCloseModal} size="medium" isActive={false}>
-              확인
-            </Button>
+            <CheckCircles progressCount={progressCount} />
           )}
-        </ButtonWrapper>
-      </Wrapper>
-    </ModalOverlay>
+
+          <ButtonWrapper>
+            {isChallengeComplete ? (
+              <>
+                <Button onClick={handleRest} size="medium" isActive={false}>
+                  쉴래요
+                </Button>
+                <Button onClick={handleRetry} size="medium" isActive={true}>
+                  재도전
+                </Button>
+              </>
+            ) : (
+              <Button onClick={handleCloseModal} size="medium" isActive={false}>
+                확인
+              </Button>
+            )}
+          </ButtonWrapper>
+        </Wrapper>
+      </ModalOverlay>
+    </>
   );
 };
 
