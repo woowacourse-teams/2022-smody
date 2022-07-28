@@ -32,18 +32,18 @@ public class Member {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
-    private String picture;
-
     @Column(length = 30)
     private String introduction;
 
-    public Member(String email, String nickname, String picture, String introduction) {
+    @Column(nullable = false)
+    private String picture;
+
+    public Member(String email, String nickname, String introduction, String picture) {
         validateIntroduction(introduction);
         this.email = email;
         this.nickname = nickname;
-        this.picture = picture;
         this.introduction = introduction;
+        this.picture = picture;
     }
 
     public Member(String email, String nickname, String picture) {
