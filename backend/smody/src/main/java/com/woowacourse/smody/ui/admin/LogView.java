@@ -24,14 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogView extends VerticalLayout {
 
-	private static final String LOG_FILE_PATH = "./backend/smody/log/";
-	private static final String BACKUP_LOG_FILE_PATH = "./backend/smody/log/backup/";
-	private static final String MESSAGE_LINE_PREFIX = ">>>";
+	private static final String LOG_FILE_PATH = "./log/";
 
 	private final VerticalLayout logLayout = new VerticalLayout();
 
 	public LogView() {
-		printTodayLog();
 		Select<String> historySelect = createHistorySelect();
 		add(
 			logLayout,
@@ -41,20 +38,10 @@ public class LogView extends VerticalLayout {
 		historySelect.scrollIntoView();
 	}
 
-	private void printTodayLog() {
-		try {
-			String todayLogName = new File(LOG_FILE_PATH).list()[0];
-			File todayLog = new File(LOG_FILE_PATH + todayLogName);
-			convertFileToComponent(todayLog);
-		} catch (Exception exception) {
-			log.info("[로그 파일 예외 발생] 아직 오늘의 로그가 생성되지 않았습니다.");
-		}
-	}
-
 	private Select<String> createHistorySelect() {
 		Select<String> historySelect = new Select<>();
 		try {
-			String[] histories = new File(BACKUP_LOG_FILE_PATH).list();
+			String[] histories = new File(LOG_FILE_PATH).list();
 			historySelect.setItems(histories);
 			historySelect.setPlaceholder("이전 로그 기록");
 		} catch (Exception ignored) {
@@ -66,7 +53,7 @@ public class LogView extends VerticalLayout {
 		Button historyButton = new Button("선택");
 		historyButton.addClickListener(event -> {
 			logLayout.removeAll();
-			convertFileToComponent(new File(BACKUP_LOG_FILE_PATH + historySelect.getValue()));
+			convertFileToComponent(new File(LOG_FILE_PATH + historySelect.getValue()));
 			historySelect.scrollIntoView();
 		});
 		return historyButton;
@@ -83,14 +70,12 @@ public class LogView extends VerticalLayout {
 
 	private void makeSpan(String line) {
 		Span span = new Span();
-
+		span.add(line);
 		for (LogLevel level : LogLevel.values()) {
 			if (line.contains(level.getText())) {
+				span.removeAll();
 				level.setColor(line, span);
 			}
-		}
-		if (line.contains(MESSAGE_LINE_PREFIX)) {
-			span.add(line);
 		}
 		logLayout.add(span);
 	}
