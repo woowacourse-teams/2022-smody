@@ -21,12 +21,12 @@
 
     <springProfile name="prod">
         <appender name="FILE-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>./backend/smody/log/today-${BY_DATE}.log</file>
+            <file>./log/today-${BY_DATE}.log</file>
             <encoder>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern> ./backend/smody/log/backup/history-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern> ./log/history-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>100MB</maxFileSize>
                 <maxHistory>5</maxHistory>
                 <totalSizeCap>500MB</totalSizeCap>

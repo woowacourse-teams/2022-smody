@@ -11,7 +11,6 @@ public enum LogLevel {
 	INFO("INFO", "lime"),
 	WARN("WARN", "yellow"),
 	ERROR("ERROR", "red"),
-	EXCEPTION("Exception", "red")
 	;
 
 	private final String text;
@@ -31,7 +30,5 @@ public enum LogLevel {
 		span.add(info);
 
 		span.add(split[1]);
-
-		span.getStyle().set("font-weight", "bold");
 	}
 }
