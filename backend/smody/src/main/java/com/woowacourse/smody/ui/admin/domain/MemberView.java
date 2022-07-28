@@ -43,6 +43,7 @@ public class MemberView extends DomainView {
         membersGrid.addColumn(Member::getId).setHeader("member_id");
         membersGrid.addColumn(Member::getEmail).setHeader("email");
         membersGrid.addColumn(Member::getNickname).setHeader("nickname");
+        membersGrid.addColumn(Member::getIntroduction).setHeader("introduction");
         membersGrid.addColumn(Member::getPicture).setHeader("picture");
         return membersGrid;
     }
@@ -52,24 +53,34 @@ public class MemberView extends DomainView {
         HorizontalLayout saveForm = new HorizontalLayout();
         TextField emailField = createTextField("email");
         TextField nicknameField = createTextField("nickname");
+        TextField introductionField = createTextField("introduction");
         TextField pictureField = createTextField("picture");
-        saveForm.add(emailField, nicknameField, pictureField);
-        saveLayout.add(saveForm, createSaveButton(emailField, nicknameField, pictureField));
+        saveForm.add(emailField, nicknameField, introductionField, pictureField);
+        saveLayout.add(saveForm, createSaveButton(emailField, nicknameField, introductionField, pictureField));
         return saveLayout;
     }
 
-    private Button createSaveButton(TextField emailField, TextField nicknameField, TextField pictureField) {
+    private Button createSaveButton(TextField emailField, TextField nicknameField, TextField introductionField,
+                                    TextField pictureField) {
         Button saveButton = new Button("생성");
         saveButton.addClickListener(event ->
-                saveMember(emailField, nicknameField, pictureField)
+                saveMember(emailField, nicknameField, introductionField, pictureField)
         );
         return saveButton;
     }
 
-    private void saveMember(TextField emailField, TextField nicknameField, TextField pictureField) {
+    private void saveMember(TextField emailField,
+                            TextField nicknameField,
+                            TextField introductionField,
+                            TextField pictureField) {
         try {
             memberRepository.save(
-                    new Member(emailField.getValue(), nicknameField.getValue(), pictureField.getValue())
+                    new Member(
+                            emailField.getValue(),
+                            nicknameField.getValue(),
+                            introductionField.getValue(),
+                            pictureField.getValue()
+                    )
             );
             UI.getCurrent().getPage().reload();
         } catch (Exception exception) {
