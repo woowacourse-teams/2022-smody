@@ -1,11 +1,11 @@
 import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import {
-  useState,
   useContext,
   FormEventHandler,
   MouseEventHandler,
   ChangeEventHandler,
+  useState,
 } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -106,6 +106,7 @@ export const ProfileEditPage = () => {
   };
 
   const { email: existingEmail, picture } = dataMyInfo.data;
+  // const { picture } = dataMyInfo.data;
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
   console.log('image.previewUrl', image.previewUrl.length);
   return (
