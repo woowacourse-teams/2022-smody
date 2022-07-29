@@ -15,6 +15,7 @@ import {
   ProfileEditPage,
   VocPage,
 } from 'pages';
+import { Test } from 'pages/Test';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
 
@@ -31,6 +32,7 @@ const Router = () => {
             index
             element={<LandingNavigation isLogin={isLogin} isLoading={isLoading} />}
           />
+          <Route path="/test" element={<Test />} />
 
           <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
