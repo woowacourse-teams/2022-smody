@@ -1,6 +1,11 @@
 import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
-import { useContext, FormEventHandler, MouseEventHandler } from 'react';
+import {
+  useContext,
+  FormEventHandler,
+  MouseEventHandler,
+  ChangeEventHandler,
+} from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
@@ -8,6 +13,7 @@ import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
+import { useImageInput } from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -16,10 +22,23 @@ import { FlexBox, Text, Button, Input, LoadingSpinner } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 export const ProfileEditPage = () => {
+  const {
+    image,
+    setImage,
+    handleImageInputChange,
+    sendImageToServer,
+    imageInputRef,
+    handleImageInputButtonClick,
+  } = useImageInput();
+
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
   const setIsLogin = useSetRecoilState(isLoginState);
+
+  const handleImageChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    handleImageInputChange(event);
+  };
 
   const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
@@ -73,8 +92,10 @@ export const ProfileEditPage = () => {
     navigate(CLIENT_PATH.PROFILE);
   };
 
-  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    await sendImageToServer();
 
     if (
       typeof nickname.value === 'undefined' ||
@@ -96,7 +117,7 @@ export const ProfileEditPage = () => {
 
   const { picture } = dataMyInfo.data;
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
-
+  console.log('image.previewUrl', image.previewUrl.length);
   return (
     <Wrapper>
       <TitleWrapper onClick={backToPreviousPage}>
@@ -106,9 +127,17 @@ export const ProfileEditPage = () => {
         </Text>
         <div />
       </TitleWrapper>
-      <ProfileImg src={picture} alt={profileImgAlt} />
-      <Button size="medium" isActive={false}>
-        이미지 업로드
+      <ProfileImg src={image.previewUrl || picture} alt={profileImgAlt} />
+      <input
+        name="image"
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handleImageChange}
+        ref={imageInputRef}
+      />
+      <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
+        이미지 선택
       </Button>
       <ProfileEditForm onSubmit={handleClickProfileEdit}>
         <Input disabled={true} type="email" label="이메일" placeholder="" {...email} />
