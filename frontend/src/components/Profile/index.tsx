@@ -55,6 +55,7 @@ export const Profile = () => {
           <Text size={20} color={themeContext.onBackground} fontWeight="bold">
             {nickname}
           </Text>
+          {/* TODO: 프로필 편집 텍스트 width 제한. 이를 통해 자기 소개가 길어졌을 때 하단 프로필 편집, 로그아웃 버튼의 UI가 변경되는 문제 해결할 수 있음! */}
           <Text size={16} color={themeContext.onBackground}>
             {introduction}
           </Text>

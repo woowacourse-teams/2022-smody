@@ -1,17 +1,21 @@
-import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
-import { authApiClient } from 'apis/apiClient';
-import { useContext, FormEventHandler, MouseEventHandler } from 'react';
+import { useGetMyInfo, usePatchMyInfo } from 'apis';
+import { useState, useContext, FormEventHandler, MouseEventHandler } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import styled, { ThemeContext } from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 
-import { FlexBox, Text, Button, Input, LoadingSpinner } from 'components';
+import {
+  FlexBox,
+  Text,
+  Button,
+  Input,
+  LoadingSpinner,
+  UserWithdrawalModal,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -19,7 +23,7 @@ export const ProfileEditPage = () => {
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
-  const setIsLogin = useSetRecoilState(isLoginState);
+  const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
 
   const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
@@ -36,21 +40,6 @@ export const ProfileEditPage = () => {
     },
   });
 
-  const { isLoading: isLoadingDeleteMyInfo, mutate: deleteMyInfo } = useDeleteMyInfo({
-    onSuccess: () => {
-      renderSnackBar({
-        message:
-          '회원 정보를 성공적으로 삭제했습니다. 그동안 스모디를 이용해 주셔서 감사합니다.',
-        status: 'SUCCESS',
-      });
-
-      authApiClient.deleteAuth();
-      setIsLogin(false);
-
-      navigate(CLIENT_PATH.HOME);
-    },
-  });
-
   const email = useInput(dataMyInfo && dataMyInfo.data.email);
   const nickname = useInput(dataMyInfo && dataMyInfo.data.nickname, validateNickname);
   const introduction = useInput(
@@ -60,12 +49,7 @@ export const ProfileEditPage = () => {
 
   const isAllValidated = nickname.isValidated && introduction.isValidated;
 
-  if (
-    isFetchingGetMyInfo ||
-    isLoadingPatchMyInfo ||
-    isLoadingDeleteMyInfo ||
-    typeof dataMyInfo === 'undefined'
-  ) {
+  if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
     return <LoadingSpinner />;
   }
 
@@ -90,11 +74,15 @@ export const ProfileEditPage = () => {
     });
   };
 
-  const handleClickUserDelete: MouseEventHandler<HTMLButtonElement> = () => {
-    deleteMyInfo();
+  const handleClickUserWithdrawal: MouseEventHandler<HTMLButtonElement> = () => {
+    setIsOpenUserWithdrawalModal(true);
   };
 
-  const { picture } = dataMyInfo.data;
+  const handleCloseUserWithdrawalModal = () => {
+    setIsOpenUserWithdrawalModal(false);
+  };
+
+  const { email: existingEmail, picture } = dataMyInfo.data;
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
 
   return (
@@ -130,11 +118,17 @@ export const ProfileEditPage = () => {
       </ProfileEditForm>
       <Button
         style={{ backgroundColor: themeContext.error, color: themeContext.onError }}
-        onClick={handleClickUserDelete}
+        onClick={handleClickUserWithdrawal}
         size="small"
       >
         회원 탈퇴
       </Button>
+      {isOpenUserWithdrawalModal && (
+        <UserWithdrawalModal
+          email={existingEmail}
+          handleCloseModal={handleCloseUserWithdrawalModal}
+        />
+      )}
     </Wrapper>
   );
 };
