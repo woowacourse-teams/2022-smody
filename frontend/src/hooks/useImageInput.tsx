@@ -1,5 +1,3 @@
-import { usePostProfileImage } from 'apis';
-import { authApiClient } from 'apis/apiClient';
 import imageCompression from 'browser-image-compression';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
@@ -20,8 +18,6 @@ export const useImageInput = () => {
       URL.revokeObjectURL(image.previewUrl);
     };
   }, []);
-
-  const { mutate: postProfileImage } = usePostProfileImage();
 
   const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -56,7 +52,10 @@ export const useImageInput = () => {
     return false;
   }
 
-  const sendImageToServer = async (fileName: string) => {
+  const sendImageToServer = async (
+    fileName: string,
+    postImage: (formData: FormData) => void,
+  ) => {
     console.log(image.imageFile);
     if (isEmptyObj(image.imageFile)) {
       return;
@@ -78,7 +77,7 @@ export const useImageInput = () => {
       const dataURL = reader.result;
       const formData = makeFormData(dataURL as string, fileName);
 
-      postProfileImage(formData);
+      postImage(formData);
     };
   };
 
@@ -104,7 +103,7 @@ export const useImageInput = () => {
   };
 
   return {
-    image,
+    previewImageUrl: image.previewUrl,
     sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,

@@ -1,3 +1,4 @@
+import { usePostProfileImage } from 'apis';
 import styled from 'styled-components';
 
 import { useImageInput } from 'hooks/useImageInput';
@@ -5,20 +6,25 @@ import { useImageInput } from 'hooks/useImageInput';
 import { Button } from 'components';
 
 export const Test = () => {
-  const { image, sendImageToServer, handleImageInputButtonClick, renderImageInput } =
-    useImageInput();
+  const {
+    previewImageUrl,
+    sendImageToServer,
+    handleImageInputButtonClick,
+    renderImageInput,
+  } = useImageInput();
+  const { mutate: postProfileImage } = usePostProfileImage();
 
   return (
     <>
       <ProfileImg
-        src={image.previewUrl || 'https://www.w3schools.com/howto/img_avatar.png'}
+        src={previewImageUrl || 'https://www.w3schools.com/howto/img_avatar.png'}
       />
       {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
         이미지 선택
       </Button>
       <Button
-        onClick={() => sendImageToServer('test-image')}
+        onClick={() => sendImageToServer('test-image', postProfileImage)}
         size="large"
         isActive={false}
       >

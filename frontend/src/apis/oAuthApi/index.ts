@@ -77,9 +77,5 @@ export const useDeleteMyInfo = (
 export const usePostProfileImage = (
   options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, FormData>,
 ) => {
-  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, FormData>(
-    'postProfileImage',
-    postProfileImage,
-    options,
-  );
+  return useMutation('postProfileImage', postProfileImage, options);
 };

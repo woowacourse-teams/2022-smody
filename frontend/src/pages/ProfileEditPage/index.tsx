@@ -1,4 +1,4 @@
-import { useGetMyInfo, usePatchMyInfo } from 'apis';
+import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
 import { useContext, FormEventHandler, MouseEventHandler, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -21,8 +21,13 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 export const ProfileEditPage = () => {
-  const { image, sendImageToServer, handleImageInputButtonClick, renderImageInput } =
-    useImageInput();
+  const { mutate: postProfileImage } = usePostProfileImage();
+  const {
+    previewImageUrl,
+    sendImageToServer,
+    handleImageInputButtonClick,
+    renderImageInput,
+  } = useImageInput();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
@@ -63,7 +68,7 @@ export const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    await sendImageToServer('profile-image');
+    await sendImageToServer('profile-image', postProfileImage);
 
     if (
       typeof nickname.value === 'undefined' ||
@@ -100,7 +105,7 @@ export const ProfileEditPage = () => {
         </Text>
         <div />
       </TitleWrapper>
-      <ProfileImg src={image.previewUrl || picture} alt={profileImgAlt} />
+      <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
       {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
         이미지 선택
