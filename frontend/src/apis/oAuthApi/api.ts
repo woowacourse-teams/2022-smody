@@ -33,3 +33,10 @@ export const patchMyInfo = async (updatedUserInfo: PatchMyInfoProps) => {
 export const deleteMyInfo = async () => {
   return authApiClient.axios.delete('/members/me');
 };
+
+// 프로필 이미지 업로드(POST)
+export const postProfileImage = async (formData: FormData) => {
+  return authApiClient.axios.post('/members/me/profile-image', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};

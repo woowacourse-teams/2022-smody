@@ -32,6 +32,8 @@ const Router = () => {
             index
             element={<LandingNavigation isLogin={isLogin} isLoading={isLoading} />}
           />
+
+          {/* 프로필 이미지 업로드 테스트용 라우터 */}
           <Route path="/test" element={<Test />} />
 
           <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>

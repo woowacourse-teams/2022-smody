@@ -1,42 +1,27 @@
-import React, { ChangeEventHandler } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
 import { useImageInput } from 'hooks/useImageInput';
 
-import {
-  FlexBox,
-  Text,
-  Button,
-  Input,
-  LoadingSpinner,
-  UserWithdrawalModal,
-} from 'components';
+import { Button } from 'components';
 
 export const Test = () => {
-  const {
-    image,
-    setImage,
-    handleImageInputChange,
-    sendImageToServer,
-    imageInputRef,
-    handleImageInputButtonClick,
-  } = useImageInput();
+  const { image, sendImageToServer, handleImageInputButtonClick, renderImageInput } =
+    useImageInput();
 
   return (
     <>
-      <ProfileImg src={image.previewUrl} />
-      <input
-        name="image"
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handleImageInputChange}
-        ref={imageInputRef}
+      <ProfileImg
+        src={image.previewUrl || 'https://www.w3schools.com/howto/img_avatar.png'}
       />
+      {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
         이미지 선택
       </Button>
-      <Button onClick={sendImageToServer} size="large" isActive={false}>
+      <Button
+        onClick={() => sendImageToServer('test-image')}
+        size="large"
+        isActive={false}
+      >
         서버 전송
       </Button>
     </>

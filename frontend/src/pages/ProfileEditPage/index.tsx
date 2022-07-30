@@ -1,12 +1,5 @@
-import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
-import { authApiClient } from 'apis/apiClient';
-import {
-  useContext,
-  FormEventHandler,
-  MouseEventHandler,
-  ChangeEventHandler,
-  useState,
-} from 'react';
+import { useGetMyInfo, usePatchMyInfo } from 'apis';
+import { useContext, FormEventHandler, MouseEventHandler, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
@@ -28,23 +21,12 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 export const ProfileEditPage = () => {
-  const {
-    image,
-    setImage,
-    handleImageInputChange,
-    sendImageToServer,
-    imageInputRef,
-    handleImageInputButtonClick,
-  } = useImageInput();
-
+  const { image, sendImageToServer, handleImageInputButtonClick, renderImageInput } =
+    useImageInput();
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
   const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
-
-  const handleImageChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    handleImageInputChange(event);
-  };
 
   const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
@@ -81,7 +63,7 @@ export const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    await sendImageToServer();
+    await sendImageToServer('profile-image');
 
     if (
       typeof nickname.value === 'undefined' ||
@@ -106,9 +88,9 @@ export const ProfileEditPage = () => {
   };
 
   const { email: existingEmail, picture } = dataMyInfo.data;
-  // const { picture } = dataMyInfo.data;
+
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
-  console.log('image.previewUrl', image.previewUrl.length);
+
   return (
     <Wrapper>
       <TitleWrapper onClick={backToPreviousPage}>
@@ -119,14 +101,7 @@ export const ProfileEditPage = () => {
         <div />
       </TitleWrapper>
       <ProfileImg src={image.previewUrl || picture} alt={profileImgAlt} />
-      <input
-        name="image"
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handleImageChange}
-        ref={imageInputRef}
-      />
+      {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
         이미지 선택
       </Button>
