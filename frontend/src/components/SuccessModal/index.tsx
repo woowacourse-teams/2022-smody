@@ -73,7 +73,7 @@ export const SuccessModal = ({
           <Text color={themeContext.primary} size={20} fontWeight="bold">
             {isChallengeComplete ? '🎉 챌린지 성공 🎉' : '오늘의 인증 완료'}
           </Text>
-          <Text color={themeContext.blur} size={20} fontWeight="bold">
+          <Text color={themeContext.onSurface} size={20} fontWeight="bold">
             {getMessageByProgressCount(progressCount)}
           </Text>
           {isChallengeComplete ? (
