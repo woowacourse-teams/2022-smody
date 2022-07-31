@@ -55,8 +55,8 @@ const Label = styled.label`
 const InputWrapper = styled.div<InputContainerProps>`
   ${({ theme, isFocus, isValidated }) => css`
     display: flex;
-    border: 1px solid ${theme.border};
-    background-color: ${theme.border};
+    border: 1px solid ${theme.input};
+    background-color: ${theme.input};
 
     ${isFocus &&
     css`
@@ -80,6 +80,7 @@ const InputElement = styled.input`
     margin-left: 0.5rem;
     outline: none;
     font-size: 1rem;
+    color: ${theme.onInput};
 
     &:disabled {
       color: ${theme.disabledInput};
