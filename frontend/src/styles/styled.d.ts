@@ -22,5 +22,7 @@ declare module 'styled-components' {
     blur: AvailablePickedColor;
     mainText: AvailablePickedColor;
     backdrop: AvailablePickedColor;
+    input: AvailablePickedColor;
+    onInput: AvailablePickedColor;
   }
 }

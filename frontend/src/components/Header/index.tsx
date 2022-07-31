@@ -3,15 +3,19 @@ import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
+import { isDarkState } from 'recoil/darkMode/atoms';
 import styled, { ThemeContext, css } from 'styled-components';
 
-import { Logo, FlexBox, Button } from 'components';
+import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
+  const [isDark, setIsDark] = useRecoilState(isDarkState);
+
   const isLogin = useRecoilValue(isLoginState);
   const themeContext = useContext(ThemeContext);
 
@@ -22,13 +26,16 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
       </Link>
-      {isLogin ? (
-        <FaBell size={23} color={themeContext.primary} />
-      ) : (
-        <Button size="small" onClick={() => redirectGoogleLoginLink()}>
-          로그인
-        </Button>
-      )}
+      <RightWrapper>
+        <ToggleButton checked={isDark} handleChange={() => setIsDark((prev) => !prev)} />
+        {isLogin ? (
+          <FaBell size={23} color={themeContext.primary} />
+        ) : (
+          <Button size="small" onClick={() => redirectGoogleLoginLink()}>
+            로그인
+          </Button>
+        )}
+      </RightWrapper>
     </Wrapper>
   );
 };
@@ -60,3 +67,5 @@ const Wrapper = styled(FlexBox).attrs({
     }
   `}
 `;
+
+const RightWrapper = styled(FlexBox).attrs({})``;
