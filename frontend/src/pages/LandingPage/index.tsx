@@ -31,13 +31,13 @@ export const LandingPage = () => {
       <ColumnWrapper>
         <RowWrapper>
           <Text color={themeContext.primary} size={20} fontWeight="bold">
-            3일
+            3
           </Text>
-          <Text color={themeContext.mainText} size={20} fontWeight="bold">
-            간 진행할,
+          <Text color={themeContext.onBackground} size={20} fontWeight="bold">
+            일간 진행할,
           </Text>
         </RowWrapper>
-        <Text color={themeContext.mainText} size={20} fontWeight="bold">
+        <Text color={themeContext.onBackground} size={20} fontWeight="bold">
           여러 챌린지를 확인해보세요
         </Text>
       </ColumnWrapper>

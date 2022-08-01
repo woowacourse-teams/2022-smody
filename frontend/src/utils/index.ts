@@ -20,3 +20,14 @@ export const getUrlParameter = (name: string) => {
   const results = regex.exec(window.location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
+
+export const detectDarkMode = () => {
+  const localTheme = localStorage.getItem('isDark');
+
+  if (localTheme === null) {
+    const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return browserTheme;
+  }
+
+  return localTheme === 'true';
+};

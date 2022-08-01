@@ -26,3 +26,4 @@ export * from 'components/LoadingSpinner';
 export * from 'components/PrivateOutlet';
 export * from 'components/LandingNavigation';
 export * from 'components/UserWithdrawalModal';
+export * from 'components/ToggleButton';
