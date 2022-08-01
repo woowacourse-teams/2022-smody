@@ -1,5 +1,4 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import useAuth from 'hooks/auth/useAuth';

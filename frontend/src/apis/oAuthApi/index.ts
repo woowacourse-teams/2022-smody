@@ -4,6 +4,7 @@ import {
   getTokenGoogle,
   patchMyInfo,
   deleteMyInfo,
+  postProfileImage,
 } from 'apis/oAuthApi/api';
 import {
   GetMyInfoResponse,
@@ -72,3 +73,9 @@ export const useDeleteMyInfo = (
     deleteMyInfo,
     options,
   );
+
+export const usePostProfileImage = (
+  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, FormData>,
+) => {
+  return useMutation('postProfileImage', postProfileImage, options);
+};

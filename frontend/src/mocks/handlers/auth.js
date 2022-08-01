@@ -49,4 +49,9 @@ export const auth = [
   rest.delete(`${BASE_URL}/members/me`, (req, res, ctx) => {
     return res(ctx.status(204), ctx.delay(1000));
   }),
+
+  // 프로필 이미지 업로드(POST)
+  rest.post(`${BASE_URL}/members/me/profile-image`, (req, res, ctx) => {
+    return res(ctx.status(201));
+  }),
 ];

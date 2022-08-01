@@ -1,10 +1,11 @@
-import { useGetMyInfo, usePatchMyInfo } from 'apis';
-import { useState, useContext, FormEventHandler, MouseEventHandler } from 'react';
+import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
+import { useContext, FormEventHandler, MouseEventHandler, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
+import { useImageInput } from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -20,6 +21,13 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 export const ProfileEditPage = () => {
+  const { mutate: postProfileImage } = usePostProfileImage();
+  const {
+    previewImageUrl,
+    sendImageToServer,
+    handleImageInputButtonClick,
+    renderImageInput,
+  } = useImageInput('profileImage');
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
@@ -57,8 +65,10 @@ export const ProfileEditPage = () => {
     navigate(CLIENT_PATH.PROFILE);
   };
 
-  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    await sendImageToServer(postProfileImage);
 
     if (
       typeof nickname.value === 'undefined' ||
@@ -83,6 +93,7 @@ export const ProfileEditPage = () => {
   };
 
   const { email: existingEmail, picture } = dataMyInfo.data;
+
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
 
   return (
@@ -94,9 +105,10 @@ export const ProfileEditPage = () => {
         </Text>
         <div />
       </TitleWrapper>
-      <ProfileImg src={picture} alt={profileImgAlt} />
-      <Button size="medium" isActive={false}>
-        이미지 업로드
+      <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
+      {renderImageInput()}
+      <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
+        이미지 선택
       </Button>
       <ProfileEditForm onSubmit={handleClickProfileEdit}>
         <Input disabled={true} type="email" label="이메일" placeholder="" {...email} />
