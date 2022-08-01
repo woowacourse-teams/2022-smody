@@ -95,7 +95,7 @@ export const SuccessModal = ({
                 </Button>
               </>
             ) : (
-              <Button onClick={handleCloseModal} size="medium" isActive={false}>
+              <Button onClick={handleCloseModal} size="medium" isActive={true}>
                 확인
               </Button>
             )}

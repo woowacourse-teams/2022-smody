@@ -41,10 +41,10 @@ export const darkTheme: DefaultTheme = {
   onSecondary: COLOR.DARK_PURPLE,
 
   background: COLOR.BLACK,
-  onBackground: COLOR.WHITE,
+  onBackground: COLOR.DARKER_WHITE,
 
   surface: COLOR.LIGHT_BLACK,
-  onSurface: COLOR.WHITE,
+  onSurface: COLOR.DARKER_WHITE,
 
   success: COLOR.PURPLE,
   onSuccess: COLOR.WHITE,
@@ -53,7 +53,7 @@ export const darkTheme: DefaultTheme = {
   onError: COLOR.WHITE,
 
   input: COLOR.LIGHT_BLACK,
-  onInput: COLOR.WHITE,
+  onInput: COLOR.DARKER_WHITE,
 
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
