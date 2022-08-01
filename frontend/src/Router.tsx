@@ -1,5 +1,4 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import useAuth from 'hooks/auth/useAuth';
@@ -15,7 +14,6 @@ import {
   ProfileEditPage,
   VocPage,
 } from 'pages';
-import { Test } from 'pages/Test';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
 
@@ -32,9 +30,6 @@ const Router = () => {
             index
             element={<LandingNavigation isLogin={isLogin} isLoading={isLoading} />}
           />
-
-          {/* 프로필 이미지 업로드 테스트용 라우터 */}
-          <Route path="/test" element={<Test />} />
 
           <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
