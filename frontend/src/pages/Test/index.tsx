@@ -11,7 +11,7 @@ export const Test = () => {
     sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
-  } = useImageInput();
+  } = useImageInput('profileImage');
   const { mutate: postProfileImage } = usePostProfileImage();
 
   return (
@@ -24,7 +24,7 @@ export const Test = () => {
         이미지 선택
       </Button>
       <Button
-        onClick={() => sendImageToServer('test-image', postProfileImage)}
+        onClick={() => sendImageToServer(postProfileImage)}
         size="large"
         isActive={false}
       >

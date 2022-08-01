@@ -52,7 +52,6 @@ export const auth = [
 
   // 프로필 이미지 업로드(POST)
   rest.post(`${BASE_URL}/members/me/profile-image`, (req, res, ctx) => {
-    console.dir('@@@프로필 이미지 post 성공', JSON.stringify(req.body));
     return res(ctx.status(201));
   }),
 ];

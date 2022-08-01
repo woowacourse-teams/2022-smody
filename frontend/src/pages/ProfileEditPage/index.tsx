@@ -27,7 +27,7 @@ export const ProfileEditPage = () => {
     sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
-  } = useImageInput();
+  } = useImageInput('profileImage');
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const renderSnackBar = useSnackBar();
@@ -68,7 +68,7 @@ export const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    await sendImageToServer('profile-image', postProfileImage);
+    await sendImageToServer(postProfileImage);
 
     if (
       typeof nickname.value === 'undefined' ||
