@@ -29,7 +29,7 @@ export const useGetMyCyclesInProgress = (
   options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>,
 ) =>
   useQuery<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>(
-    'getMyCyclesInResponse',
+    'getMyCyclesInProgress',
     getMyCyclesInProgress,
     options,
   );
