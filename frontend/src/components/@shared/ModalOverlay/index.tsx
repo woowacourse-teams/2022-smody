@@ -2,6 +2,8 @@ import { ModalOverlayProps } from './type';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 
+import { Z_INDEX } from 'constants/css';
+
 export const ModalOverlay = ({ children, handleCloseModal }: ModalOverlayProps) => {
   return (
     <>
@@ -30,6 +32,7 @@ const Modal = styled.div`
     transform: translateX(-50%) translateY(-50%);
     display: flex;
     justify-content: center;
+    z-index: ${Z_INDEX.MODAL};
   `}
 `;
 
@@ -41,5 +44,6 @@ const Backdrop = styled.div`
     width: 100%;
     height: 100vh;
     background-color: ${theme.backdrop};
+    z-index: ${Z_INDEX.MODAL};
   `}
 `;
