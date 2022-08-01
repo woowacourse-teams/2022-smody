@@ -29,7 +29,6 @@ public class MemberService {
     public void updateMyInfo(TokenPayload tokenPayload, MemberUpdateRequest updateRequest) {
         Member member = search(tokenPayload);
         member.updateNickname(updateRequest.getNickname());
-        member.updatePicture(updateRequest.getPicture());
         member.updateIntroduction(updateRequest.getIntroduction());
     }
 

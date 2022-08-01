@@ -70,7 +70,7 @@ public class MemberServiceTest {
     void updateMyInfo() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린", "이상해씨");
+        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린");
 
         // when
         memberService.updateMyInfo(tokenPayload, updateRequest);
@@ -79,8 +79,7 @@ public class MemberServiceTest {
         Member findMember = fixture.회원_조회(조조그린_ID);
         assertAll(
                 () -> assertThat(findMember.getNickname()).isEqualTo(updateRequest.getNickname()),
-                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction()),
-                () -> assertThat(findMember.getPicture()).isEqualTo(updateRequest.getPicture())
+                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction())
         );
     }
 

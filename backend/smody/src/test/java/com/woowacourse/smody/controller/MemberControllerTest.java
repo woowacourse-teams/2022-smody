@@ -58,7 +58,7 @@ public class MemberControllerTest extends ControllerTest {
     void updateMyInfo() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        MemberUpdateRequest request = new MemberUpdateRequest("alpha", "Hello", "picture");
+        MemberUpdateRequest request = new MemberUpdateRequest("alpha", "Hello");
 
         // when
         ResultActions result = mockMvc.perform(patch("/members/me")
@@ -72,7 +72,6 @@ public class MemberControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("picture").type(JsonFieldType.STRING).description("사진"),
                                 fieldWithPath("introduction").type(JsonFieldType.STRING).description("소개글")
                         )));
     }
