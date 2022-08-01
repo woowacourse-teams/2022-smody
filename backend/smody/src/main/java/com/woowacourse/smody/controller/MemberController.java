@@ -1,5 +1,7 @@
 package com.woowacourse.smody.controller;
 
+import java.io.File;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,7 @@ public class MemberController {
     @PostMapping("/me/profile-image")
     public ResponseEntity<Void> updateMyProfileImage(@LoginMember TokenPayload tokenPayload,
         @RequestPart MultipartFile profileImage) {
-
+        memberService.updateProfileImage(tokenPayload, profileImage);
         return ResponseEntity.noContent().build();
     }
 
