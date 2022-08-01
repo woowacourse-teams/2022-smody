@@ -2,7 +2,7 @@ import { EmptyContent } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const Feed = () => {
+const Feed = () => {
   return (
     <>
       <EmptyContent
@@ -14,3 +14,5 @@ export const Feed = () => {
     </>
   );
 };
+
+export default Feed;
