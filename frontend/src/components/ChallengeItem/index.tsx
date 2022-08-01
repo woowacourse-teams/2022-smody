@@ -50,7 +50,7 @@ export const ChallengeItem = ({
           </ChallengeInfoWrapper>
         </Link>
       </div>
-      <Button onClick={handleClickProgressButton} size="small" isActive={isInProgress}>
+      <Button onClick={handleClickProgressButton} size="small" isActive={!isInProgress}>
         {isInProgress ? '도전중' : '도전'}
       </Button>
     </Wrapper>

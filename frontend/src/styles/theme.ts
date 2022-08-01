@@ -13,7 +13,7 @@ export const lightTheme: DefaultTheme = {
   onBackground: COLOR.BLACK,
 
   surface: COLOR.WHITE,
-  onSurface: COLOR.LIGHT_BLACK,
+  onSurface: COLOR.LIGHTEST_BLACK,
 
   success: COLOR.PURPLE,
   onSuccess: COLOR.WHITE,
@@ -37,13 +37,13 @@ export const darkTheme: DefaultTheme = {
   primary: COLOR.PURPLE,
   onPrimary: COLOR.WHITE,
 
-  secondary: COLOR.BLACK,
+  secondary: COLOR.LIGHTER_BLACK,
   onSecondary: COLOR.DARK_PURPLE,
 
   background: COLOR.BLACK,
   onBackground: COLOR.DARKER_WHITE,
 
-  surface: COLOR.LIGHT_BLACK,
+  surface: COLOR.LIGHTEST_BLACK,
   onSurface: COLOR.DARKER_WHITE,
 
   success: COLOR.PURPLE,
@@ -52,12 +52,12 @@ export const darkTheme: DefaultTheme = {
   error: COLOR.RED,
   onError: COLOR.WHITE,
 
-  input: COLOR.LIGHT_BLACK,
+  input: COLOR.LIGHTEST_BLACK,
   onInput: COLOR.DARKER_WHITE,
 
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
-  border: COLOR.LIGHT_BLACK,
+  border: COLOR.LIGHTEST_BLACK,
   blur: COLOR.LIGHT_GRAY,
   mainText: COLOR.GRAY,
 

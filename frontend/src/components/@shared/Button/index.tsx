@@ -27,8 +27,8 @@ export const Button = styled.button<ButtonProps>`
           color: ${theme.onPrimary};
         `
       : css`
-          background-color: ${theme.disabled};
-          color: ${theme.onSuccess};
+          background-color: ${theme.secondary};
+          color: ${theme.onSecondary};
         `}
 
     font-size: ${SIZES[size].fontSize};
