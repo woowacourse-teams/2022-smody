@@ -22,5 +22,12 @@ export const getUrlParameter = (name: string) => {
 };
 
 export const detectDarkMode = () => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const localTheme = localStorage.getItem('isDark');
+
+  if (localTheme === null) {
+    const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return browserTheme;
+  }
+
+  return localTheme === 'true';
 };

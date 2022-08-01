@@ -21,13 +21,18 @@ export const Header = ({ bgColor }: HeaderProps) => {
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
 
+  const handleDarkToggle = () => {
+    localStorage.setItem('isDark', JSON.stringify(!isDark));
+    setIsDark((prev) => !prev);
+  };
+
   return (
     <Wrapper bgColor={bgColor}>
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
       </Link>
       <RightWrapper>
-        <ToggleButton checked={isDark} handleChange={() => setIsDark((prev) => !prev)} />
+        <ToggleButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
           <FaBell size={23} color={themeContext.primary} />
         ) : (
