@@ -13,6 +13,7 @@ import {
   ProfilePage,
   ProfileEditPage,
   VocPage,
+  CycleDetailPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -40,6 +41,7 @@ const Router = () => {
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
           <Route path={CLIENT_PATH.FEED} element={<Feed />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
+          <Route path={CLIENT_PATH.CYCLE_DETAIL_ID} element={<CycleDetailPage />} />
           <Route
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
             element={<ChallengeDetailPage />}
