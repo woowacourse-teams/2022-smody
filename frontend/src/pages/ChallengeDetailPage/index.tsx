@@ -42,13 +42,12 @@ const ChallengeDetailPage = () => {
 
   return (
     <Wrapper>
-      <TitleWrapper
-        style={makeCursorPointer}
-        flexDirection="row"
-        justifyContent="space-between"
-        onClick={backToPreviousPage}
-      >
-        <MdArrowBackIosNew size={20} />
+      <TitleWrapper flexDirection="row" justifyContent="space-between">
+        <MdArrowBackIosNew
+          size={20}
+          style={makeCursorPointer}
+          onClick={backToPreviousPage}
+        />
         <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
           {challengeName}
         </Text>
