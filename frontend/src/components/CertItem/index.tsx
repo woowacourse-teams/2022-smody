@@ -18,7 +18,6 @@ export const CertItem = ({
   progressCount,
   startTime,
   successCount,
-  refetch,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
   const navigate = useNavigate();
@@ -29,7 +28,9 @@ export const CertItem = ({
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
   const handleClick = () => {
-    navigate(CLIENT_PATH.CERT_FORM, { state: { cycleId } });
+    navigate(CLIENT_PATH.CERT_FORM, {
+      state: { cycleId, challengeId, challengeName, progressCount },
+    });
   };
 
   return (
