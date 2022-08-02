@@ -232,6 +232,79 @@ export const cycleData = [
   },
 ];
 
+export const cycleByIdData = [
+  {
+    cycleId: 1,
+    challengeId: 2,
+    challengeName: '미라클 모닝',
+    progressCount: 3,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 3,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명3.',
+      },
+    ],
+  },
+  {
+    cycleId: 2,
+    challengeId: 3,
+    challengeName: '운동',
+    progressCount: 2,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 5,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+    ],
+  },
+  {
+    cycleId: 4,
+    challengeId: 4,
+    challengeName: '공부',
+    progressCount: 3,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 3,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명3.',
+      },
+    ],
+  },
+];
+
 export const mySuccessChallengeData = [
   {
     challengeId: 1,

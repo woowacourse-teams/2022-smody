@@ -24,9 +24,10 @@ const ProfileEditPage = () => {
   const { mutate: postProfileImage } = usePostProfileImage();
   const {
     previewImageUrl,
-    sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
+    isImageLoading,
+    formData,
   } = useImageInput('profileImage');
   const navigate = useNavigate();
   const themeContext = useThemeContext();
@@ -55,7 +56,8 @@ const ProfileEditPage = () => {
     validateIntroduction,
   );
 
-  const isAllValidated = nickname.isValidated && introduction.isValidated;
+  const isAllValidated =
+    nickname.isValidated && introduction.isValidated && !isImageLoading;
 
   if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
     return <LoadingSpinner />;
@@ -64,7 +66,9 @@ const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    await sendImageToServer(postProfileImage);
+    // const formData = (await makeFormData()) as FormData;
+    postProfileImage({ formData: formData });
+    console.log('@@@', formData.get('profileImage'));
 
     if (
       typeof nickname.value === 'undefined' ||

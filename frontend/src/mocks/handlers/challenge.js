@@ -4,6 +4,7 @@ import {
   cycleData,
   cycleDetailData,
   cycleNonDetailData,
+  cycleByIdData,
   mySuccessChallengeData,
 } from 'mocks/data';
 import { rest } from 'msw';
@@ -54,8 +55,10 @@ export const challenge = [
   rest.post(`${BASE_URL}/cycles/:cycleId/progress`, (req, res, ctx) => {
     const { cycleId } = req.params;
     cycleData[cycleId - 1].progressCount++;
+
     return res(ctx.status(200), ctx.json({ progressCount: 2 }));
   }),
+
   // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(challengeData));

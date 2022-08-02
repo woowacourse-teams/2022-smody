@@ -1,5 +1,4 @@
-import { usePostCycleProgress } from 'apis';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { addDays } from 'utils';
@@ -9,7 +8,6 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
-import { SuccessModal } from 'components/SuccessModal';
 
 import { CYCLE_UNIT } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
@@ -33,14 +31,6 @@ export const CertItem = ({
 
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
 
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
-  const { mutate } = usePostCycleProgress({
-    onSuccess: () => {
-      setIsSuccessModalOpen(true);
-    },
-  });
-
   const handleClickWrapper = (e: MouseEvent) => {
     if (e.target instanceof HTMLButtonElement) {
       return;
@@ -50,12 +40,7 @@ export const CertItem = ({
   };
 
   const handleClickButton = () => {
-    mutate({ cycleId });
-  };
-
-  const handleCloseModal = () => {
-    setIsSuccessModalOpen(false);
-    refetch();
+    navigate(CLIENT_PATH.CERT_FORM, { state: { cycleId } });
   };
 
   return (
@@ -87,15 +72,6 @@ export const CertItem = ({
           {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
         </Button>
       </RowWrapper>
-      {isSuccessModalOpen && (
-        <SuccessModal
-          handleCloseModal={handleCloseModal}
-          challengeId={challengeId}
-          challengeName={challengeName}
-          successCount={successCount}
-          progressCount={progressCount + 1}
-        />
-      )}
     </Wrapper>
   );
 };

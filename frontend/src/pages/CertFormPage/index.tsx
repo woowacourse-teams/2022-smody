@@ -1,6 +1,8 @@
 import { CertImageWrapperProps } from './type';
+import { usePostCycleProgress } from 'apis';
 import Plus from 'assets/plus.svg';
 import { useState, FormEventHandler } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -9,15 +11,26 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, CheckCircles, Title, ThumbnailWrapper, Button } from 'components';
 
+interface locationState {
+  cycleId: number;
+}
+
 const CertFormPage = () => {
   const themeContext = useThemeContext();
-  const [comment, setComment] = useState('');
+  const [description, setDescription] = useState('');
   const {
     previewImageUrl,
-    sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
+    isImageLoading,
+    formData,
   } = useImageInput('progressImage');
+  const { mutate: postCycleProgress } = usePostCycleProgress();
+
+  const location = useLocation();
+
+  const { cycleId } = location.state as locationState;
+
   const CHALLENGE_ID = 3;
   const CHALLENGE_NAME = '하루에 만보 걷기';
   const PROGRESS_COUNT = 2;
@@ -25,7 +38,12 @@ const CertFormPage = () => {
   const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    // sendImageToServer();
+    formData.append('description', description);
+    console.log(formData.get('description'));
+    console.log(formData.get('progressImage'));
+
+    postCycleProgress({ cycleId, formData });
+    // sendImageToServer(() => postCycleProgress({ cycleId, formData }));
   };
 
   return (
@@ -84,10 +102,10 @@ const CertFormPage = () => {
             rows={5}
             maxLength={254}
             onChange={(event) => {
-              setComment(event.target.value);
+              setDescription(event.target.value);
             }}
           >
-            {comment}
+            {description}
           </TextArea>
           <TextLength
             as="span"
@@ -95,10 +113,12 @@ const CertFormPage = () => {
             color={themeContext.mainText}
             style={{ marginLeft: 'auto' }}
           >
-            {comment.length}/255
+            {description.length}/255
           </TextLength>
         </Section>
-        <Button size="large">인증하기</Button>
+        <Button size="large" disabled={isImageLoading}>
+          인증하기
+        </Button>
       </form>
     </FlexBox>
   );

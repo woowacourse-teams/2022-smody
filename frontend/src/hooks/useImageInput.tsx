@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState, useMemo } from 'react';
 
 const compressionOptions = {
   maxSizeMB: 0.2,
@@ -8,6 +8,8 @@ const compressionOptions = {
 };
 
 const useImageInput = (imageName: string) => {
+  const [formData, setFormData] = useState(new FormData());
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const handleImageInputButtonClick = () => {
     imageInputRef?.current?.click();
@@ -18,15 +20,60 @@ const useImageInput = (imageName: string) => {
     previewUrl: '',
   });
 
+  const reader = useMemo(() => new FileReader(), []);
+
+  const encodeFormData = (dataURL: string): FormData => {
+    // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
+    const byteString = atob(dataURL.split(',')[1]);
+
+    // Blob를 구성하기 위한 준비
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ia], {
+      type: 'image/jpeg',
+    });
+    const file = new File([blob], `${imageName}.jpg`);
+
+    const formData = new FormData();
+    formData.append(imageName, file);
+
+    return formData;
+  };
+
+  const handleReaderLoadend = async () => {
+    console.log('hihihi');
+    const dataURL = reader.result;
+
+    if (typeof dataURL !== 'string') {
+      return;
+    }
+
+    const encodedData = encodeFormData(dataURL);
+    setFormData(encodedData);
+    setIsImageLoading(false);
+    console.log('@@@@', dataURL);
+  };
+
   useEffect(() => {
+    // const reader = new FileReader();
+    // reader.readAsDataURL(compressedFile);
+    reader.addEventListener('loadend', handleReaderLoadend);
+
     // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
     return () => {
       URL.revokeObjectURL(image.previewUrl);
+      reader.removeEventListener('loadend', handleReaderLoadend);
     };
   }, []);
 
-  const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+
+    setIsImageLoading(true);
+
     const file = event.currentTarget.files?.[0];
 
     if (!file) {
@@ -40,6 +87,10 @@ const useImageInput = (imageName: string) => {
       imageFile: file,
       previewUrl,
     }));
+
+    const compressedFile = await imageCompression(file, compressionOptions);
+
+    reader.readAsDataURL(compressedFile);
   };
 
   const renderImageInput = () => (
@@ -61,59 +112,12 @@ const useImageInput = (imageName: string) => {
     return false;
   };
 
-  const sendImageToServer = async (postImage: (formData: FormData) => void) => {
-    console.log(image.imageFile);
-    if (isEmptyObj(image.imageFile)) {
-      return;
-    }
-
-    const compressedFile = await imageCompression(
-      image.imageFile as File,
-      compressionOptions,
-    );
-
-    // FileReader 는 File 혹은 Blob 객체를 이용하여, 파일의 내용을 읽을 수 있게 해주는 Web API
-    const reader = new FileReader();
-    reader.readAsDataURL(compressedFile);
-    reader.onloadend = async () => {
-      // 변환 완료!
-      const dataURL = reader.result;
-
-      if (typeof dataURL !== 'string') {
-        return;
-      }
-
-      const formData = makeFormData(dataURL);
-
-      postImage(formData);
-    };
-  };
-
-  const makeFormData = (dataURL: string): FormData => {
-    // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
-    const byteString = atob(dataURL.split(',')[1]);
-
-    // Blob를 구성하기 위한 준비
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ia], {
-      type: 'image/jpeg',
-    });
-    const file = new File([blob], `${imageName}.jpg`);
-
-    const formData = new FormData();
-    formData.append(imageName, file);
-    return formData;
-  };
-
   return {
     previewImageUrl: image.previewUrl,
-    sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
+    isImageLoading,
+    formData,
   };
 };
 
