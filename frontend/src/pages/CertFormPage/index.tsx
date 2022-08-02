@@ -13,7 +13,8 @@ import {
   CertFormPageLocationState,
 } from 'pages/CertFormPage/type';
 
-import { FlexBox, Text, CheckCircles, Title, ThumbnailWrapper, Button } from 'components';
+import { FlexBox, Text, Button, CheckCircles, Title, ThumbnailWrapper } from 'components';
+import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -22,6 +23,8 @@ const FORM_DATA_IMAGE_NAME = 'progressImage';
 const CertFormPage = () => {
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
+
   const {
     previewImageUrl,
     handleImageInputButtonClick,
@@ -35,14 +38,18 @@ const CertFormPage = () => {
     [isImageLoading, formData],
   );
 
-  const { mutate: postCycleProgress } = usePostCycleProgress();
+  const { mutate: postCycleProgress } = usePostCycleProgress({
+    onSuccess: () => {
+      setIsSuccessModalOpen(true);
+    },
+  });
   const location = useLocation();
 
   if (location.state === null) {
     return <Navigate to={CLIENT_PATH.NOT_FOUND} />;
   }
 
-  const { cycleId, challengeId, challengeName, progressCount } =
+  const { cycleId, challengeId, challengeName, successCount, progressCount } =
     location.state as CertFormPageLocationState;
 
   const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
@@ -51,6 +58,10 @@ const CertFormPage = () => {
     formData.append('description', description);
 
     postCycleProgress({ cycleId, formData });
+  };
+
+  const handleCloseModal = () => {
+    setIsSuccessModalOpen(false);
   };
 
   return (
@@ -126,6 +137,15 @@ const CertFormPage = () => {
           인증하기
         </Button>
       </form>
+      {isSuccessModalOpen && (
+        <SuccessModal
+          handleCloseModal={handleCloseModal}
+          challengeId={challengeId}
+          challengeName={challengeName}
+          successCount={successCount}
+          progressCount={progressCount + 1}
+        />
+      )}
     </FlexBox>
   );
 };

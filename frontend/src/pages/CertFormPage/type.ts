@@ -5,4 +5,7 @@ export interface CertImageWrapperProps {
 }
 
 export interface CertFormPageLocationState
-  extends Pick<Cycle, 'cycleId' | 'progressCount' | 'challengeId' | 'challengeName'> {}
+  extends Pick<
+    Cycle,
+    'cycleId' | 'challengeId' | 'challengeName' | 'successCount' | 'progressCount'
+  > {}

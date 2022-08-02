@@ -1,3 +1,4 @@
+import Close from 'assets/close.svg';
 import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
 import styled from 'styled-components';
@@ -42,7 +43,9 @@ export const SuccessModal = ({
     successCallback: handleCloseModal,
   });
 
-  const handleRest = () => {
+  const handleCheckCertification = () => {
+    // TODO: 챌린지 상세보기 페이지로 이동
+    console.log('가자 챌린지 상세보기 페이지로!!');
     handleCloseModal();
   };
 
@@ -62,12 +65,15 @@ export const SuccessModal = ({
   return (
     <>
       <ModalOverlay handleCloseModal={handleCloseModal}>
-        <FlexBox
+        <Wrapper
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
           gap="1rem"
         >
+          <CloseWrapper onClick={handleCloseModal}>
+            <Close />
+          </CloseWrapper>
           <Text color={themeContext.onSurface} size={70} fontWeight="normal">
             {getEmoji(Number(challengeId))}
             <span id="confettiRewardId" />
@@ -93,21 +99,35 @@ export const SuccessModal = ({
           <FlexBox alignItems="center" gap="1rem">
             {isChallengeComplete ? (
               <>
-                <Button onClick={handleRest} size="medium" isActive={false}>
-                  쉴래요
+                <Button onClick={handleCheckCertification} size="medium" isActive={false}>
+                  기록 확인
                 </Button>
                 <Button onClick={handleRetry} size="medium" isActive={true}>
                   재도전
                 </Button>
               </>
             ) : (
-              <Button autoFocus onClick={handleCloseModal} size="medium" isActive={true}>
-                확인
+              <Button
+                autoFocus
+                onClick={handleCheckCertification}
+                size="medium"
+                isActive={false}
+              >
+                기록 확인
               </Button>
             )}
           </FlexBox>
-        </FlexBox>
+        </Wrapper>
       </ModalOverlay>
     </>
   );
 };
+
+const Wrapper = styled(FlexBox)`
+  width: 100%;
+  padding: 1rem 1.25rem 1.438rem;
+`;
+
+const CloseWrapper = styled.div`
+  align-self: flex-end;
+`;
