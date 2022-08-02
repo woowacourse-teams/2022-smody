@@ -10,17 +10,59 @@ const compressionOptions = {
 const useImageInput = (imageName: string) => {
   const [formData, setFormData] = useState(new FormData());
   const [isImageLoading, setIsImageLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const reader = useMemo(() => new FileReader(), []);
+
+  useEffect(() => {
+    reader.addEventListener('loadend', handleReaderLoadend);
+
+    // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
+    return () => {
+      URL.revokeObjectURL(previewUrl);
+      reader.removeEventListener('loadend', handleReaderLoadend);
+    };
+  }, []);
+
+  const handleReaderLoadend = async () => {
+    console.log('hihihi');
+    const dataURL = reader.result;
+
+    if (typeof dataURL !== 'string') {
+      return;
+    }
+
+    const encodedData = encodeFormData(dataURL);
+    setFormData(encodedData);
+    setIsImageLoading(false);
+    console.log('@@@@', dataURL);
+  };
+
   const handleImageInputButtonClick = () => {
     imageInputRef?.current?.click();
   };
 
-  const [image, setImage] = useState({
-    imageFile: {},
-    previewUrl: '',
-  });
+  const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
 
-  const reader = useMemo(() => new FileReader(), []);
+    const file = event.currentTarget.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setIsImageLoading(true);
+
+    URL.revokeObjectURL(previewUrl);
+    const newPreviewUrl = URL.createObjectURL(file);
+
+    setPreviewUrl(newPreviewUrl);
+
+    const compressedFile = await imageCompression(file, compressionOptions);
+
+    reader.readAsDataURL(compressedFile);
+  };
 
   const encodeFormData = (dataURL: string): FormData => {
     // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
@@ -43,56 +85,6 @@ const useImageInput = (imageName: string) => {
     return formData;
   };
 
-  const handleReaderLoadend = async () => {
-    console.log('hihihi');
-    const dataURL = reader.result;
-
-    if (typeof dataURL !== 'string') {
-      return;
-    }
-
-    const encodedData = encodeFormData(dataURL);
-    setFormData(encodedData);
-    setIsImageLoading(false);
-    console.log('@@@@', dataURL);
-  };
-
-  useEffect(() => {
-    // const reader = new FileReader();
-    // reader.readAsDataURL(compressedFile);
-    reader.addEventListener('loadend', handleReaderLoadend);
-
-    // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
-    return () => {
-      URL.revokeObjectURL(image.previewUrl);
-      reader.removeEventListener('loadend', handleReaderLoadend);
-    };
-  }, []);
-
-  const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
-    setIsImageLoading(true);
-
-    const file = event.currentTarget.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    URL.revokeObjectURL(image.previewUrl);
-    const previewUrl = URL.createObjectURL(file);
-
-    setImage(() => ({
-      imageFile: file,
-      previewUrl,
-    }));
-
-    const compressedFile = await imageCompression(file, compressionOptions);
-
-    reader.readAsDataURL(compressedFile);
-  };
-
   const renderImageInput = () => (
     <input
       name={imageName}
@@ -104,16 +96,8 @@ const useImageInput = (imageName: string) => {
     />
   );
 
-  const isEmptyObj = (obj: object) => {
-    if (obj.constructor === Object && Object.keys(obj).length === 0) {
-      return true;
-    }
-
-    return false;
-  };
-
   return {
-    previewImageUrl: image.previewUrl,
+    previewImageUrl: previewUrl,
     handleImageInputButtonClick,
     renderImageInput,
     isImageLoading,
