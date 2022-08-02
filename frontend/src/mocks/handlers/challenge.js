@@ -1,5 +1,11 @@
 // src/mocks/handlers.js
-import { challengeData, cycleData, mySuccessChallengeData } from 'mocks/data';
+import {
+  challengeData,
+  cycleData,
+  cycleDetailData,
+  cycleNonDetailData,
+  mySuccessChallengeData,
+} from 'mocks/data';
 import { rest } from 'msw';
 
 import { API_PATH } from 'constants/path';
@@ -26,6 +32,24 @@ export const challenge = [
       }),
     );
   }),
+
+  // 7. 아이디로 사이클 조회(GET)
+  rest.get(`${BASE_URL}/cycles/:cycleId`, (req, res, ctx) => {
+    const { cycleId } = req.params;
+    console.log(cycleId);
+    if (Number.isNaN(cycleId)) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 사이클입니다.',
+        }),
+      );
+    }
+    return res(ctx.status(200), ctx.json(cycleDetailData));
+    // return res(ctx.status(200), ctx.json(cycleNonDetailData));
+  }),
+
   // 4. 챌린지 사이클의 진척도 증가(POST)
   rest.post(`${BASE_URL}/cycles/:cycleId/progress`, (req, res, ctx) => {
     const { cycleId } = req.params;
@@ -46,10 +70,6 @@ export const challenge = [
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mySuccessChallengeData));
     // return res(ctx.status(200), ctx.json([]));
-  }),
-  // 7. 아이디로 사이클 조회(GET)
-  rest.post(`${BASE_URL}${API_PATH.CYCLES_ID}`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(cycleData[0]));
   }),
   // 8. 챌린지 하나 상세 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges/:challengeId`, (req, res, ctx) => {
