@@ -3,7 +3,7 @@ import { useReward } from 'react-rewards';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
@@ -96,7 +96,7 @@ export const SuccessModal = ({
                 </Button>
               </>
             ) : (
-              <Button onClick={handleCloseModal} size="medium" isActive={true}>
+              <Button autoFocus onClick={handleCloseModal} size="medium" isActive={true}>
                 확인
               </Button>
             )}

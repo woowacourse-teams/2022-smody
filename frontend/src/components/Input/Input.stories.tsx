@@ -1,10 +1,4 @@
-import { n } from 'msw/lib/glossary-58eca5a8';
-import {
-  validateEmail,
-  validateIntroduction,
-  validateNickname,
-  validatePassword,
-} from 'utils/validator';
+import { validateIntroduction, validateNickname } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
 

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
