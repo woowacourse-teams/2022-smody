@@ -103,12 +103,11 @@ const CertFormPage = () => {
             cols={50}
             rows={5}
             maxLength={254}
+            value={description}
             onChange={(event) => {
               setDescription(event.target.value);
             }}
-          >
-            {description}
-          </TextArea>
+          />
           <TextLength
             as="span"
             size={12}
