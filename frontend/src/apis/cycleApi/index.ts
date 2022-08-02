@@ -1,3 +1,4 @@
+import { queryKeys } from 'apis/constants';
 import {
   postCycle,
   getMyCyclesInProgress,
@@ -29,7 +30,7 @@ export const useGetMyCyclesInProgress = (
   options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>,
 ) =>
   useQuery<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>(
-    'getMyCyclesInProgress',
+    queryKeys.getMyCyclesInProgress,
     getMyCyclesInProgress,
     options,
   );
@@ -42,7 +43,7 @@ export const useGetMyCyclesStat = (
   >,
 ) =>
   useQuery<AxiosResponse<GetMyCyclesStatResponse>, AxiosError<ErrorResponse>>(
-    'getMyCyclesStat',
+    queryKeys.getMyCyclesStat,
     getMyCyclesStat,
     options,
   );
@@ -67,7 +68,7 @@ export const useGetCycleById = (
   options?: UseQueryOptions<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>,
 ) =>
   useQuery<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>(
-    'getCycleById',
+    queryKeys.getCycleById,
     () => getCycleById(cycleId),
     options,
   );
