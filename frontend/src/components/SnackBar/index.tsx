@@ -1,13 +1,14 @@
-import { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { useRecoilValue } from 'recoil';
 import { snackBarState } from 'recoil/snackbar/atoms';
-import styled, { css, ThemeContext } from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, LinkText, FlexBox } from 'components';
 
 export const SnackBar = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
 
   if (!isVisible) {

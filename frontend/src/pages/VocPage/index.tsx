@@ -1,10 +1,11 @@
-import { useContext } from 'react';
-import styled, { css, ThemeContext } from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, Button } from 'components';
 
 const VocPage = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const handleLink = (url: string) => {
     window.open(url, '_blank');
   };

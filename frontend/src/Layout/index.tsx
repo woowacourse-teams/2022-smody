@@ -1,9 +1,10 @@
 import { WrapperProps } from 'Layout/type';
-import { Suspense, useContext } from 'react';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import styled, { ThemeContext, css } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Header, LoadingSpinner, Navbar, SnackBar } from 'components';
 
@@ -13,7 +14,7 @@ const PROFILE_PATH_PADDING = { pc: '0', tablet: '0', mobile: '0' };
 const OTHER_PATH_PADDING = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
 
 export const Layout = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const getPathMatchColor = useMatchPath(themeContext.secondary, themeContext.background);
 

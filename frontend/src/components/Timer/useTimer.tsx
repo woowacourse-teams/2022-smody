@@ -1,5 +1,6 @@
-import { useContext, useState, useEffect } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useState, useEffect } from 'react';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { TIME_UPDATE_MS_PERIOD } from 'constants/domain';
 
@@ -8,7 +9,7 @@ const inHours = 3600;
 const inDays = 86400;
 
 export const useTimer = (certEndDate: Date) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const getTimerInfo = () => {
     const endTime = certEndDate.getTime();

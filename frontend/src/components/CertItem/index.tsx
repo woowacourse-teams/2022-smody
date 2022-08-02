@@ -1,8 +1,10 @@
 import { usePostCycleProgress } from 'apis';
-import { useContext, useState } from 'react';
-import styled, { css, ThemeContext } from 'styled-components';
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
 import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
@@ -19,7 +21,8 @@ export const CertItem = ({
   successCount,
   refetch,
 }: CertItemProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
+
   const nowDate = new Date();
   const certStartDate = addDays(new Date(startTime), progressCount);
   const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);
