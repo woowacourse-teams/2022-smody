@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';

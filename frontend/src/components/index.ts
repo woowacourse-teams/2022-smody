@@ -14,7 +14,6 @@ export * from 'components/CertItem';
 export * from 'components/CheckCircles';
 export * from 'components/Timer';
 export * from 'components/UnderLineText';
-export * from 'components/ErrorBoundary';
 export * from 'components/ThumbnailWrapper';
 export * from 'components/FixedButton';
 export * from 'components/Profile';

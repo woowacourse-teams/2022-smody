@@ -1,7 +1,7 @@
 import { Layout } from 'Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import useAuth from 'hooks/auth/useAuth';
+import useAuth from 'hooks/useAuth';
 
 import {
   Feed,

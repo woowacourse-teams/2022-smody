@@ -1,10 +1,14 @@
 import { usePostCycle } from 'apis';
+import { Challenge } from 'commonType';
 import { useRef } from 'react';
 
-import { PostJoinChallengeProps } from 'hooks/api/type';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
+
+interface PostJoinChallengeProps extends Pick<Challenge, 'challengeId'> {
+  successCallback?: () => void;
+}
 
 const usePostJoinChallenge = ({
   challengeId,
