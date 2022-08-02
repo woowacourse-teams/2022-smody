@@ -1,19 +1,21 @@
-import { CertImageWrapperProps } from './type';
 import { usePostCycleProgress } from 'apis';
 import Plus from 'assets/plus.svg';
 import { useState, FormEventHandler } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import useImageInput from 'hooks/useImageInput';
 import useThemeContext from 'hooks/useThemeContext';
 
+import {
+  CertImageWrapperProps,
+  CertFormPageLocationState,
+} from 'pages/CertFormPage/type';
+
 import { FlexBox, Text, CheckCircles, Title, ThumbnailWrapper, Button } from 'components';
 
-interface locationState {
-  cycleId: number;
-}
+import { CLIENT_PATH } from 'constants/path';
 
 const CertFormPage = () => {
   const themeContext = useThemeContext();
@@ -29,11 +31,12 @@ const CertFormPage = () => {
 
   const location = useLocation();
 
-  const { cycleId } = location.state as locationState;
+  if (location.state === null) {
+    return <Navigate to={CLIENT_PATH.NOT_FOUND} />;
+  }
 
-  const CHALLENGE_ID = 3;
-  const CHALLENGE_NAME = '하루에 만보 걷기';
-  const PROGRESS_COUNT = 2;
+  const { cycleId, challengeId, challengeName, progressCount } =
+    location.state as CertFormPageLocationState;
 
   const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -43,7 +46,6 @@ const CertFormPage = () => {
     console.log(formData.get('progressImage'));
 
     postCycleProgress({ cycleId, formData });
-    // sendImageToServer(() => postCycleProgress({ cycleId, formData }));
   };
 
   return (
@@ -57,13 +59,13 @@ const CertFormPage = () => {
             color={themeContext.primary}
             style={{ marginBottom: '0.8rem' }}
           >
-            {CHALLENGE_NAME}
+            {challengeName}
           </Text>
-          <CheckCircles progressCount={PROGRESS_COUNT} />
+          <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {getEmoji(Number(CHALLENGE_ID))}
+          {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
