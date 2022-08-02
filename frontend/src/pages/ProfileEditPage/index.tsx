@@ -1,6 +1,5 @@
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
 import { FormEventHandler, MouseEventHandler, useState } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
@@ -12,11 +11,11 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import {
   FlexBox,
-  Text,
   Button,
   Input,
   LoadingSpinner,
   UserWithdrawalModal,
+  Title,
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -62,10 +61,6 @@ const ProfileEditPage = () => {
     return <LoadingSpinner />;
   }
 
-  const backToPreviousPage = () => {
-    navigate(CLIENT_PATH.PROFILE);
-  };
-
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
@@ -99,17 +94,7 @@ const ProfileEditPage = () => {
 
   return (
     <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
-      <TitleWrapper
-        flexDirection="row"
-        justifyContent="space-between"
-        onClick={backToPreviousPage}
-      >
-        <MdArrowBackIosNew size={20} />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          프로필 편집
-        </Text>
-        <div />
-      </TitleWrapper>
+      <Title text="프로필 수정" linkTo={CLIENT_PATH.PROFILE} />
       <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
       {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
@@ -168,11 +153,6 @@ const Wrapper = styled(FlexBox)`
   @media all and (max-width: 767px) {
     padding: 1rem 1.25rem;
   }
-`;
-
-const TitleWrapper = styled(FlexBox)`
-  width: 100%;
-  margin-bottom: 2rem;
 `;
 
 const ProfileImg = styled.img`
