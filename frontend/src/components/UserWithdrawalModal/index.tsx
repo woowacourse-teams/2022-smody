@@ -49,14 +49,14 @@ export const UserWithdrawalModal = ({
 
   return (
     <ModalOverlay handleCloseModal={handleCloseModal}>
-      <Wrapper>
+      <Wrapper flexDirection="column" alignItems="center" gap="1.5rem">
         <Text color={themeContext.primary} size={20} fontWeight="bold">
           정말로 떠나시겠습니까?
         </Text>
         <Text color={themeContext.onBackground} size={16}>
           회원 탈퇴는 취소할 수 없으며 현재까지 도전한 정보는 사라집니다.
         </Text>
-        <RowWrapper>
+        <FlexBox alignItems="center" flexWrap="wrap">
           <Text color={themeContext.onBackground} size={16}>
             탈퇴를 원하신다면 입력창에&nbsp;
           </Text>
@@ -66,7 +66,7 @@ export const UserWithdrawalModal = ({
           <Text color={themeContext.onBackground} size={16}>
             을 입력하고 제출해주세요.
           </Text>
-        </RowWrapper>
+        </FlexBox>
         <Input
           type="text"
           placeholder="삭제를 원하신다면 이메일을 입력해주세요."
@@ -84,18 +84,8 @@ export const UserWithdrawalModal = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '1.5rem',
-})`
+const Wrapper = styled(FlexBox)`
   width: 100%;
-`;
-
-const RowWrapper = styled(FlexBox).attrs({
-  aliItems: 'center',
-})`
-  flex-wrap: wrap;
 `;
 
 const WithdrawalButton = styled(Button)`

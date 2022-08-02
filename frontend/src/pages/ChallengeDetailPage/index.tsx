@@ -45,15 +45,24 @@ const ChallengeDetailPage = () => {
 
   return (
     <Wrapper>
-      <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
+      <TitleWrapper
+        style={makeCursorPointer}
+        flexDirection="row"
+        justifyContent="space-between"
+        onClick={backToPreviousPage}
+      >
         <MdArrowBackIosNew size={20} />
         <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
           {challengeName}
         </Text>
         <div />
       </TitleWrapper>
-      <ChallengeDetailWrapper>
-        <ChallengeTextWrapper>
+      <ChallengeDetailWrapper
+        flexDirection="row"
+        justifyContent="space-between"
+        gap="1rem"
+      >
+        <FlexBox flexDirection="column" gap="1rem">
           <Text size={16} color={themeContext.primary}>
             현재 {challengerCount}명이 함께 도전 중이에요
           </Text>
@@ -61,7 +70,7 @@ const ChallengeDetailPage = () => {
             &quot;{challengeName}&quot; 챌린지를 {challengerCount}명의 사람들과 지금 바로
             함께하세요!
           </ChallengeExplanationText>
-        </ChallengeTextWrapper>
+        </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
           {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
@@ -79,25 +88,13 @@ const Wrapper = styled.div`
   margin: 0 1.25rem;
 `;
 
-const TitleWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-})`
+const TitleWrapper = styled(FlexBox)`
   margin-bottom: 2rem;
 `;
 
-const ChallengeDetailWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  gap: '1rem',
-})`
+const ChallengeDetailWrapper = styled(FlexBox)`
   line-height: 1rem;
 `;
-
-const ChallengeTextWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '1rem',
-})``;
 
 const ChallengeExplanationText = styled(Text).attrs<ChallengeExplanationTextProps>(
   ({ color }) => ({

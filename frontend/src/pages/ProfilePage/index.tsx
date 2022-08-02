@@ -4,7 +4,12 @@ import { Profile, CardGridContainer, FlexBox } from 'components';
 
 const ProfilePage = () => {
   return (
-    <Wrapper>
+    <Wrapper
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      gap="3rem"
+    >
       <Profile />
       <CardsWrapper>
         <CardGridContainer />
@@ -15,12 +20,7 @@ const ProfilePage = () => {
 
 export default ProfilePage;
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '3rem',
-})`
+const Wrapper = styled(FlexBox)`
   margin: 0 auto;
   align-self: center;
 

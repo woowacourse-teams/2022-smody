@@ -12,7 +12,12 @@ export const CardBox = ({
   emoji,
 }: CardBoxProps) => {
   return (
-    <Wrapper bgColor={bgColor}>
+    <Wrapper
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      bgColor={bgColor}
+    >
       <TitleWrapper size={14} color={COLOR.BLACK} fontWeight="bold">
         {challengeName}
       </TitleWrapper>
@@ -26,11 +31,7 @@ export const CardBox = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-})`
+const Wrapper = styled(FlexBox)`
   ${({ bgColor }: WrapperProps) => css`
     background-color: ${bgColor};
     border: 0;

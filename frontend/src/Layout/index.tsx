@@ -29,7 +29,11 @@ export const Layout = () => {
   return (
     <>
       <Header bgColor={bgColor} />
-      <Wrapper bgColor={bgColor} horizontalPadding={horizontalPadding}>
+      <Wrapper
+        flexDirection="column"
+        bgColor={bgColor}
+        horizontalPadding={horizontalPadding}
+      >
         <Suspense fallback={<LoadingSpinner />}>
           <Outlet />
         </Suspense>
@@ -40,9 +44,7 @@ export const Layout = () => {
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-})<WrapperProps>`
+const Wrapper = styled(FlexBox)<WrapperProps>`
   ${({ bgColor, horizontalPadding }) => css`
     min-height: calc(100vh - 119px);
     background-color: ${bgColor};

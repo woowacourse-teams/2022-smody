@@ -14,7 +14,12 @@ export const EmptyContent = ({
   const themeContext = useThemeContext();
 
   return (
-    <Wrapper>
+    <Wrapper
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap="1rem"
+    >
       <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         {title}
       </Text>
@@ -28,12 +33,7 @@ export const EmptyContent = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '1rem',
-})`
+const Wrapper = styled(FlexBox)`
   flex-grow: 1;
   height: 100%;
 `;

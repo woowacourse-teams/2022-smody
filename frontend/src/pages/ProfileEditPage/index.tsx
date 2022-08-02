@@ -98,8 +98,12 @@ const ProfileEditPage = () => {
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
 
   return (
-    <Wrapper>
-      <TitleWrapper onClick={backToPreviousPage}>
+    <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
+      <TitleWrapper
+        flexDirection="row"
+        justifyContent="space-between"
+        onClick={backToPreviousPage}
+      >
         <MdArrowBackIosNew size={20} />
         <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
           프로필 편집
@@ -148,11 +152,7 @@ const ProfileEditPage = () => {
 
 export default ProfileEditPage;
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-})`
+const Wrapper = styled(FlexBox)`
   padding: 3rem;
   /* PC (해상도 1024px)*/
   @media all and (min-width: 1024px) {
@@ -170,10 +170,7 @@ const Wrapper = styled(FlexBox).attrs({
   }
 `;
 
-const TitleWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-})`
+const TitleWrapper = styled(FlexBox)`
   width: 100%;
   margin-bottom: 2rem;
 `;

@@ -12,17 +12,13 @@ export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
   const themeContext = useThemeContext();
 
   return (
-    <Wrapper>
+    <FlexBox gap="1rem">
       {totalCheck.map((_, index) => {
         if (index < progressCount) {
           return <BsCheckCircleFill key={index} color={themeContext.primary} size={27} />;
         }
         return <BsFillCircleFill key={index} color={themeContext.secondary} size={27} />;
       })}
-    </Wrapper>
+    </FlexBox>
   );
 };
-
-const Wrapper = styled(FlexBox).attrs({
-  gap: '1rem',
-})``;

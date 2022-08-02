@@ -19,7 +19,7 @@ export const SnackBar = () => {
     <>
       {ReactDOM.createPortal(
         <SnackBarElement status={status}>
-          <Wrapper>
+          <FlexBox flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text color={themeContext.onPrimary} size={12}>
               {message}
             </Text>
@@ -33,19 +33,13 @@ export const SnackBar = () => {
                 {linkText}
               </LinkText>
             )}
-          </Wrapper>
+          </FlexBox>
         </SnackBarElement>,
         document.getElementById('snackbar-root') as HTMLElement,
       )}
     </>
   );
 };
-
-const Wrapper = styled(FlexBox).attrs({
-  direction: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-})``;
 
 const SnackBarElement = styled.div<{ status: string }>`
   ${({ theme, status }) => css`
