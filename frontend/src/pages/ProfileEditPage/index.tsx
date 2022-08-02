@@ -20,15 +20,18 @@ import {
 
 import { CLIENT_PATH } from 'constants/path';
 
+const FORM_DATA_IMAGE_NAME = 'profileImage';
+
 const ProfileEditPage = () => {
   const { mutate: postProfileImage } = usePostProfileImage();
   const {
     previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,
+    hasImageFormData,
     isImageLoading,
     formData,
-  } = useImageInput('profileImage');
+  } = useImageInput(FORM_DATA_IMAGE_NAME);
   const navigate = useNavigate();
   const themeContext = useThemeContext();
   const renderSnackBar = useSnackBar();
@@ -66,9 +69,9 @@ const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    // const formData = (await makeFormData()) as FormData;
-    postProfileImage({ formData: formData });
-    console.log('@@@', formData.get('profileImage'));
+    if (hasImageFormData()) {
+      postProfileImage({ formData: formData });
+    }
 
     if (
       typeof nickname.value === 'undefined' ||
