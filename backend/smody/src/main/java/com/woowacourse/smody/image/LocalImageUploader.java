@@ -2,7 +2,7 @@ package com.woowacourse.smody.image;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.util.ImageUploader;
+import com.woowacourse.smody.util.FilePathBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;

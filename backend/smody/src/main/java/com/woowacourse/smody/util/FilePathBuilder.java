@@ -1,4 +1,4 @@
-package com.woowacourse.smody.image;
+package com.woowacourse.smody.util;
 
 import java.io.File;
 
