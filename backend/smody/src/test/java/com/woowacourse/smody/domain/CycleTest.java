@@ -23,7 +23,7 @@ public class CycleTest {
     private static final Member member = new Member(EMAIL, NICKNAME, PICTURE);
     private static final Challenge challenge = new Challenge("미라클 모닝");
 
-    private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0,0, 0);
+    private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
     @ParameterizedTest

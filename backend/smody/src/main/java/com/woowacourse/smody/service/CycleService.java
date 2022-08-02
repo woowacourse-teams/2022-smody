@@ -1,13 +1,6 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
@@ -20,8 +13,12 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.CycleRepository;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -72,26 +69,26 @@ public class CycleService {
 
     public int countSuccess(Cycle cycle) {
         return cycleRepository.countSuccess(cycle.getMember(), cycle.getChallenge())
-            .intValue();
+                .intValue();
     }
 
     public Cycle search(Long cycleId) {
         return cycleRepository.findById(cycleId)
-            .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 
     public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member) {
         return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
-            .stream()
-            .filter(cycle -> cycle.isInProgress(searchTime))
-            .collect(toList());
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
     }
 
     public List<Cycle> searchInProgress(LocalDateTime searchTime) {
         return cycleRepository.findAllByStartTimeIsAfter(searchTime.minusDays(Cycle.DAYS))
-            .stream()
-            .filter(cycle -> cycle.isInProgress(searchTime))
-            .collect(toList());
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
     }
 
     public List<Cycle> findSuccessLatestByMember(Member member) {

@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class ControllerTest {
 
     protected static final OperationRequestPreprocessor HOST_INFO = preprocessRequest(modifyUris()
-            .scheme("http")
+            .scheme("https")
             .host("www.smody.co.kr")
             .removePort(), prettyPrint()
     );
