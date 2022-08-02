@@ -28,11 +28,11 @@ export const Header = ({ bgColor }: HeaderProps) => {
   };
 
   return (
-    <Wrapper bgColor={bgColor}>
+    <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
       </Link>
-      <RightWrapper>
+      <FlexBox>
         <ToggleButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
           <FaBell size={23} color={themeContext.primary} />
@@ -41,15 +41,12 @@ export const Header = ({ bgColor }: HeaderProps) => {
             로그인
           </Button>
         )}
-      </RightWrapper>
+      </FlexBox>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})<HeaderProps>`
+const Wrapper = styled(FlexBox)<HeaderProps>`
   ${({ bgColor }) => css`
     position: sticky;
     top: 0;
@@ -73,5 +70,3 @@ const Wrapper = styled(FlexBox).attrs({
     }
   `}
 `;
-
-const RightWrapper = styled(FlexBox).attrs({})``;

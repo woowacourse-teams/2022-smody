@@ -27,7 +27,7 @@ export const ChallengeList = () => {
   }
 
   return (
-    <Wrapper as="ul" ref={rootRef}>
+    <FlexBox as="ul" ref={rootRef} flexDirection="column" gap="27px">
       {data.pages.map((page, pageIndex) => {
         if (typeof page === 'undefined' || typeof page.data === 'undefined') {
           return [];
@@ -48,11 +48,6 @@ export const ChallengeList = () => {
         ));
       })}
       {isFetching && <LoadingSpinner />}
-    </Wrapper>
+    </FlexBox>
   );
 };
-
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '27px',
-})``;

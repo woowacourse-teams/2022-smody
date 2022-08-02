@@ -47,14 +47,14 @@ export const CertItem = ({
   };
 
   return (
-    <Wrapper>
-      <TitleWrapper>
+    <Wrapper flexDirection="column" gap="1rem">
+      <TitleWrapper justifyContent="space-between">
         <TitleText size={20} fontWeight="bold" color={themeContext.onBackground}>
           {challengeName}
         </TitleText>
         <CheckCircles progressCount={progressCount} />
       </TitleWrapper>
-      <RowWrapper>
+      <RowWrapper justifyContent="center" gap="1.5rem">
         <Text color={themeContext.onSurface} size={16}>
           해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
@@ -62,10 +62,10 @@ export const CertItem = ({
       <ThumbnailWrapper size="large" bgColor="transparent">
         <p>{getEmoji(Number(challengeId))}</p>
       </ThumbnailWrapper>
-      <RowWrapper>
+      <RowWrapper justifyContent="center" gap="1.5rem">
         <Timer certEndDate={certEndDate} />
       </RowWrapper>
-      <RowWrapper>
+      <RowWrapper justifyContent="center" gap="1.5rem">
         <Button disabled={!isCertPossible} onClick={handleClick} size="large">
           {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
         </Button>
@@ -83,10 +83,7 @@ export const CertItem = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '1rem',
-})`
+const Wrapper = styled(FlexBox)`
   ${({ theme }) => css`
     padding: 29px 35px;
     border: 1px solid ${theme.border};
@@ -99,16 +96,11 @@ const Wrapper = styled(FlexBox).attrs({
   `}
 `;
 
-const RowWrapper = styled(FlexBox).attrs({
-  justifyContent: 'center',
-  gap: '1.5rem',
-})`
+const RowWrapper = styled(FlexBox)`
   width: 100%;
 `;
 
-const TitleWrapper = styled(FlexBox).attrs({
-  justifyContent: 'space-between',
-})`
+const TitleWrapper = styled(FlexBox)`
   width: 96%;
 `;
 

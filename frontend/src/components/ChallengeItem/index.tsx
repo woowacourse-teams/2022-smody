@@ -32,22 +32,22 @@ export const ChallengeItem = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper justifyContent="space-between" alignItems="center">
       <div>
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
-          <ChallengeInfoWrapper>
+          <FlexBox gap="17px" alignItems="center">
             <ThumbnailWrapper size="small" bgColor="#E6D1F2">
               {getEmoji(Number(challengeId))}
             </ThumbnailWrapper>
-            <ChallengeNameWrapper>
+            <FlexBox>
               <Text color={themeContext.onSurface} size={16}>
                 {challengeName}
               </Text>
               <Text color={themeContext.mainText} size={12}>
                 {challengerCount}명 도전중
               </Text>
-            </ChallengeNameWrapper>
-          </ChallengeInfoWrapper>
+            </FlexBox>
+          </FlexBox>
         </Link>
       </div>
       <Button onClick={handleClickProgressButton} size="small" isActive={!isInProgress}>
@@ -57,10 +57,7 @@ export const ChallengeItem = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})`
+const Wrapper = styled(FlexBox)`
   div {
     flex-grow: 1;
   }
@@ -69,13 +66,3 @@ const Wrapper = styled(FlexBox).attrs({
     flex-grow: 0;
   }
 `;
-
-const ChallengeInfoWrapper = styled(FlexBox).attrs({
-  gap: '17px',
-  alignItems: 'center',
-})``;
-
-const ChallengeNameWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '3px',
-})``;

@@ -44,10 +44,10 @@ export const Profile = () => {
   };
 
   return (
-    <Wrapper>
-      <MyProfileWrapper>
+    <Wrapper flexDirection="column" justifyContent="center" gap="2.12rem">
+      <FlexBox justifyContent="center" gap="2rem">
         <ProfileImg src={picture} alt={profileImgAlt} />
-        <ProfileDataWrapper>
+        <FlexBox flexDirection="column" gap="0.4rem">
           <Text size={20} color={themeContext.onBackground} fontWeight="bold">
             {nickname}
           </Text>
@@ -55,71 +55,44 @@ export const Profile = () => {
           <Text size={16} color={themeContext.onBackground}>
             {introduction}
           </Text>
-          <CycleWrapper>
-            <CycleCountWrapper>
+          <FlexBox gap="2.625rem">
+            <FlexBox gap="0.4rem">
               <Text size={16} color={themeContext.onBackground}>
                 성공
               </Text>
               <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
                 {successCount}
               </Text>
-            </CycleCountWrapper>
-            <CycleCountWrapper>
+            </FlexBox>
+            <FlexBox gap="0.4rem">
               <Text size={16} color={themeContext.onBackground}>
                 전체
               </Text>
               <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
                 {totalCount}
               </Text>
-            </CycleCountWrapper>
-          </CycleWrapper>
-        </ProfileDataWrapper>
-      </MyProfileWrapper>
-      <UserButtonWrapper>
+            </FlexBox>
+          </FlexBox>
+        </FlexBox>
+      </FlexBox>
+      <FlexBox gap="0.56rem" justifyContent="center">
         <EditButton onClick={handleClickEdit}>프로필 편집</EditButton>
         <LogoutButton onClick={handleClickLogout}>로그아웃</LogoutButton>
-      </UserButtonWrapper>
+      </FlexBox>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'center',
-  gap: '2.12rem',
-})`
+const Wrapper = styled(FlexBox)`
   width: 100%;
   margin: 1rem 2.375rem 0;
 `;
-
-const MyProfileWrapper = styled(FlexBox).attrs({
-  justifyContent: 'center',
-  gap: '2rem',
-})``;
 
 const ProfileImg = styled.img`
   width: 5.18rem;
   height: 5.18rem;
   border-radius: 50%;
 `;
-
-const ProfileDataWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '0.4rem',
-})``;
-
-const CycleWrapper = styled(FlexBox).attrs({
-  gap: '2.625rem',
-})``;
-
-const CycleCountWrapper = styled(FlexBox).attrs({
-  gap: '0.4rem',
-})``;
-
-const UserButtonWrapper = styled(FlexBox).attrs({
-  gap: '0.56rem',
-  justifyContent: 'center',
-})``;
 
 const EditButton = styled(Button).attrs({
   size: 'small',

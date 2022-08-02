@@ -32,9 +32,16 @@ export const Navbar = () => {
   return (
     <Footer>
       <nav>
-        <NavItemsContainer as="ul">
+        <NavItemsContainer justifyContent="space-around" alignItems="center" as="ul">
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.CERT} fill={certColor}>
+            <NavLink
+              flexDirection="column"
+              alignItems="center"
+              gap="6px"
+              as={Link}
+              to={CLIENT_PATH.CERT}
+              fill={certColor}
+            >
               <Plus />
               <Text size={11} color={certColor}>
                 인증
@@ -42,7 +49,14 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.SEARCH} fill={searchColor}>
+            <NavLink
+              flexDirection="column"
+              alignItems="center"
+              gap="6px"
+              as={Link}
+              to={CLIENT_PATH.SEARCH}
+              fill={searchColor}
+            >
               <Search />
               <Text size={11} color={searchColor}>
                 검색
@@ -50,7 +64,14 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.FEED} fill={feedColor}>
+            <NavLink
+              flexDirection="column"
+              alignItems="center"
+              gap="6px"
+              as={Link}
+              to={CLIENT_PATH.FEED}
+              fill={feedColor}
+            >
               <Feed />
               <Text size={11} color={feedColor}>
                 피드
@@ -58,7 +79,14 @@ export const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink as={Link} to={CLIENT_PATH.PROFILE} fill={profileColor}>
+            <NavLink
+              flexDirection="column"
+              alignItems="center"
+              gap="6px"
+              as={Link}
+              to={CLIENT_PATH.PROFILE}
+              fill={profileColor}
+            >
               <Profile />
               <Text size={11} color={profileColor}>
                 프로필
@@ -83,21 +111,14 @@ const Footer = styled.footer`
   `}
 `;
 
-const NavItemsContainer = styled(FlexBox).attrs({
-  justifyContent: 'space-around',
-  alignItems: 'center',
-})`
+const NavItemsContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
   margin: 1rem 0;
   overflow-y: hidden;
 `;
 
-const NavLink = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '6px',
-})`
+const NavLink = styled(FlexBox)`
   ${({ fill }: NavLinkProps) => css`
     cursor: pointer;
 

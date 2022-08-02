@@ -11,7 +11,7 @@ const VocPage = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper flexDirection="column" gap="1rem">
       <Text color={themeContext.primary} size={24} fontWeight="bold">
         Smody 소개
       </Text>
@@ -207,16 +207,11 @@ const VocPage = () => {
 
 export default VocPage;
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '1rem',
-})`
-  ${({ theme }) => css`
-    margin: auto;
-    border-radius: 20px;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    min-width: 366px;
-  `}
+const Wrapper = styled(FlexBox)`
+  margin: auto;
+  border-radius: 20px;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  min-width: 366px;
 `;

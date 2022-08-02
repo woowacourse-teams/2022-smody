@@ -62,7 +62,12 @@ export const SuccessModal = ({
   return (
     <>
       <ModalOverlay handleCloseModal={handleCloseModal}>
-        <Wrapper>
+        <FlexBox
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          gap="1rem"
+        >
           <Text color={themeContext.onSurface} size={70} fontWeight="normal">
             {getEmoji(Number(challengeId))}
             <span id="confettiRewardId" />
@@ -85,7 +90,7 @@ export const SuccessModal = ({
             <CheckCircles progressCount={progressCount} />
           )}
 
-          <ButtonWrapper>
+          <FlexBox alignItems="center" gap="1rem">
             {isChallengeComplete ? (
               <>
                 <Button onClick={handleRest} size="medium" isActive={false}>
@@ -100,21 +105,9 @@ export const SuccessModal = ({
                 확인
               </Button>
             )}
-          </ButtonWrapper>
-        </Wrapper>
+          </FlexBox>
+        </FlexBox>
       </ModalOverlay>
     </>
   );
 };
-
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '1rem',
-})``;
-
-const ButtonWrapper = styled(FlexBox).attrs({
-  alignItems: 'center',
-  gap: '1rem',
-})``;
