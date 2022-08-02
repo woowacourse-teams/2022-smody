@@ -36,7 +36,7 @@ export const challenge = [
   // 7. 아이디로 사이클 조회(GET)
   rest.get(`${BASE_URL}/cycles/:cycleId`, (req, res, ctx) => {
     const { cycleId } = req.params;
-    console.log(cycleId);
+
     if (Number.isNaN(cycleId)) {
       return res(
         ctx.status(404),
