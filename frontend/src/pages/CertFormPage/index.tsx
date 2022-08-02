@@ -1,6 +1,6 @@
 import { usePostCycleProgress } from 'apis';
 import Plus from 'assets/plus.svg';
-import { useState, FormEventHandler } from 'react';
+import { useState, useMemo, FormEventHandler } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
@@ -17,6 +17,8 @@ import { FlexBox, Text, CheckCircles, Title, ThumbnailWrapper, Button } from 'co
 
 import { CLIENT_PATH } from 'constants/path';
 
+const FORM_DATA_IMAGE_NAME = 'progressImage';
+
 const CertFormPage = () => {
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
@@ -24,11 +26,16 @@ const CertFormPage = () => {
     previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,
+    hasImageFormData,
     isImageLoading,
     formData,
-  } = useImageInput('progressImage');
-  const { mutate: postCycleProgress } = usePostCycleProgress();
+  } = useImageInput(FORM_DATA_IMAGE_NAME);
+  const isButtonDisabled = useMemo(
+    () => isImageLoading || !hasImageFormData(),
+    [isImageLoading, formData],
+  );
 
+  const { mutate: postCycleProgress } = usePostCycleProgress();
   const location = useLocation();
 
   if (location.state === null) {
@@ -42,8 +49,6 @@ const CertFormPage = () => {
     event.preventDefault();
 
     formData.append('description', description);
-    console.log(formData.get('description'));
-    console.log(formData.get('progressImage'));
 
     postCycleProgress({ cycleId, formData });
   };
@@ -117,7 +122,7 @@ const CertFormPage = () => {
             {description.length}/255
           </TextLength>
         </Section>
-        <Button size="large" disabled={isImageLoading}>
+        <Button size="large" disabled={isButtonDisabled}>
           인증하기
         </Button>
       </form>
@@ -147,7 +152,7 @@ const CertImageWrapper = styled(FlexBox)<CertImageWrapperProps>`
       height: 2rem;
     }
 
-    & svg path {
+    & path {
       fill: ${theme.primary};
       stroke: none;
     }
@@ -159,7 +164,7 @@ const CertImageWrapper = styled(FlexBox)<CertImageWrapperProps>`
       }
 
       & path {
-        fill: ${isSelectImage && theme.surface};
+        fill: ${isSelectImage && theme.primary};
       }
     }
   `}

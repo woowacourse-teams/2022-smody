@@ -26,7 +26,6 @@ const useImageInput = (imageName: string) => {
   }, []);
 
   const handleReaderLoadend = async () => {
-    console.log('hihihi');
     const dataURL = reader.result;
 
     if (typeof dataURL !== 'string') {
@@ -36,7 +35,6 @@ const useImageInput = (imageName: string) => {
     const encodedData = encodeFormData(dataURL);
     setFormData(encodedData);
     setIsImageLoading(false);
-    console.log('@@@@', dataURL);
   };
 
   const handleImageInputButtonClick = () => {
@@ -85,6 +83,10 @@ const useImageInput = (imageName: string) => {
     return formData;
   };
 
+  const hasImageFormData = () => {
+    return formData.get(imageName) !== null;
+  };
+
   const renderImageInput = () => (
     <input
       name={imageName}
@@ -100,6 +102,7 @@ const useImageInput = (imageName: string) => {
     previewImageUrl: previewUrl,
     handleImageInputButtonClick,
     renderImageInput,
+    hasImageFormData,
     isImageLoading,
     formData,
   };
