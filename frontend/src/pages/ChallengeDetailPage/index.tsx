@@ -1,6 +1,5 @@
 import { useGetChallengeById } from 'apis';
-import { MdArrowBackIosNew } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -9,16 +8,18 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
-import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
+import {
+  FlexBox,
+  Text,
+  FixedButton,
+  ThumbnailWrapper,
+  LoadingSpinner,
+  Title,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const makeCursorPointer = {
-  cursor: 'pointer',
-};
-
 const ChallengeDetailPage = () => {
-  const navigate = useNavigate();
   const themeContext = useThemeContext();
   const { challengeId } = useParams();
 
@@ -39,24 +40,9 @@ const ChallengeDetailPage = () => {
 
   const { challengeName, challengerCount } = data.data;
 
-  const backToPreviousPage = () => {
-    navigate(CLIENT_PATH.SEARCH);
-  };
-
   return (
     <Wrapper>
-      <TitleWrapper
-        style={makeCursorPointer}
-        flexDirection="row"
-        justifyContent="space-between"
-        onClick={backToPreviousPage}
-      >
-        <MdArrowBackIosNew size={20} />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          {challengeName}
-        </Text>
-        <div />
-      </TitleWrapper>
+      <Title text={challengeName} linkTo={CLIENT_PATH.SEARCH} />
       <ChallengeDetailWrapper
         flexDirection="row"
         justifyContent="space-between"
@@ -86,10 +72,6 @@ export default ChallengeDetailPage;
 
 const Wrapper = styled.div`
   margin: 0 1.25rem;
-`;
-
-const TitleWrapper = styled(FlexBox)`
-  margin-bottom: 2rem;
 `;
 
 const ChallengeDetailWrapper = styled(FlexBox)`
