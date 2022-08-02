@@ -20,7 +20,7 @@ import {
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const ProfileEditPage = () => {
+const ProfileEditPage = () => {
   const { mutate: postProfileImage } = usePostProfileImage();
   const {
     previewImageUrl,
@@ -144,6 +144,8 @@ export const ProfileEditPage = () => {
     </Wrapper>
   );
 };
+
+export default ProfileEditPage;
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',

@@ -1,11 +1,11 @@
 import { WrapperProps } from 'Layout/type';
-import { useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled, { ThemeContext, css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
 
-import { FlexBox, Header, Navbar, SnackBar } from 'components';
+import { FlexBox, Header, LoadingSpinner, Navbar, SnackBar } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -29,7 +29,9 @@ export const Layout = () => {
     <>
       <Header bgColor={bgColor} />
       <Wrapper bgColor={bgColor} horizontalPadding={horizontalPadding}>
-        <Outlet />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
       </Wrapper>
       <Navbar />
       <SnackBar />

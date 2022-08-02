@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { Profile, CardGridContainer, FlexBox } from 'components';
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   return (
     <Wrapper>
       <Profile />
@@ -12,6 +12,8 @@ export const ProfilePage = () => {
     </Wrapper>
   );
 };
+
+export default ProfilePage;
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',

@@ -15,16 +15,10 @@ export const Profile = () => {
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
-  const { isLoading: isLoadingMyInfo, data: dataMyInfo } = useGetMyInfo();
-  const { isLoading: isLoadingMyCyclesStat, data: dataMyCyclesStat } =
-    useGetMyCyclesStat();
+  const { data: dataMyInfo } = useGetMyInfo();
+  const { data: dataMyCyclesStat } = useGetMyCyclesStat();
 
-  if (
-    isLoadingMyInfo ||
-    isLoadingMyCyclesStat ||
-    typeof dataMyInfo === 'undefined' ||
-    typeof dataMyCyclesStat === 'undefined'
-  ) {
+  if (typeof dataMyInfo === 'undefined' || typeof dataMyCyclesStat === 'undefined') {
     return <LoadingSpinner />;
   }
 

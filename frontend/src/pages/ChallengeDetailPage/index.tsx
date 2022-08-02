@@ -17,7 +17,7 @@ const makeCursorPointer = {
   cursor: 'pointer',
 };
 
-export const ChallengeDetailPage = () => {
+const ChallengeDetailPage = () => {
   const navigate = useNavigate();
   const themeContext = useContext(ThemeContext);
   const { challengeId } = useParams();
@@ -72,6 +72,8 @@ export const ChallengeDetailPage = () => {
     </Wrapper>
   );
 };
+
+export default ChallengeDetailPage;
 
 const Wrapper = styled.div`
   margin: 0 1.25rem;

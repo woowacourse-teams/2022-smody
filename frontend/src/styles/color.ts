@@ -8,7 +8,9 @@ const COLOR = {
   DARKER_GRAY: '#7c8184',
   DARKEST_GRAY: '#505962',
 
-  LIGHT_BLACK: '#333A44',
+  LIGHTEST_BLACK: '#333A44',
+  LIGHTER_BLACK: '#161b22',
+
   BLACK: '#0d1117',
   WHITE: '#ffffff',
   DARKER_WHITE: '#c9d1d9',

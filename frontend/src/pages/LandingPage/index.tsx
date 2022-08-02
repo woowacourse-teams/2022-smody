@@ -7,7 +7,7 @@ import styled, { ThemeContext, keyframes } from 'styled-components';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
 
-export const LandingPage = () => {
+const LandingPage = () => {
   const themeContext = useContext(ThemeContext);
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
   const isLogin = useRecoilValue(isLoginState);
@@ -50,6 +50,8 @@ export const LandingPage = () => {
     </Wrapper>
   );
 };
+
+export default LandingPage;
 
 const fadeIn = keyframes`
   0% {

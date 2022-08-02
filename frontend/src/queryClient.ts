@@ -8,6 +8,7 @@ export const generateQueryClient = (
       queries: {
         retry: 0,
         onError: queryErrorHandler,
+        suspense: true,
       },
       mutations: {
         onError: queryErrorHandler,

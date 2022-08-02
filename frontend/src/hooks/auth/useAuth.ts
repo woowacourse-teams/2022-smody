@@ -15,6 +15,7 @@ const useAuth = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    suspense: false,
     onSuccess: () => {
       setIsLogin(true);
     },

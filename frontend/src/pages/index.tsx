@@ -1,9 +1,11 @@
-export { NotFoundPage } from 'pages/NotFoundPage';
-export { Feed } from 'pages/Feed';
-export { SearchPage } from 'pages/SearchPage';
-export { ProfilePage } from 'pages/ProfilePage';
-export { ProfileEditPage } from 'pages/ProfileEditPage';
-export { ChallengeDetailPage } from 'pages/ChallengeDetailPage';
-export { CertPage } from 'pages/CertPage';
-export { VocPage } from 'pages/VocPage';
-export { LandingPage } from 'pages/LandingPage';
+import { lazy } from 'react';
+
+export const NotFoundPage = lazy(() => import('pages/NotFoundPage'));
+export const Feed = lazy(() => import('pages/Feed'));
+export const SearchPage = lazy(() => import('pages/SearchPage'));
+export const ProfilePage = lazy(() => import('pages/ProfilePage'));
+export const ProfileEditPage = lazy(() => import('pages/ProfileEditPage'));
+export const ChallengeDetailPage = lazy(() => import('pages/ChallengeDetailPage'));
+export const CertPage = lazy(() => import('pages/CertPage'));
+export const VocPage = lazy(() => import('pages/VocPage'));
+export const LandingPage = lazy(() => import('pages/LandingPage'));

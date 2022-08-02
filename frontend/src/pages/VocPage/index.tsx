@@ -3,7 +3,7 @@ import styled, { css, ThemeContext } from 'styled-components';
 
 import { FlexBox, Text, Button } from 'components';
 
-export const VocPage = () => {
+const VocPage = () => {
   const themeContext = useContext(ThemeContext);
   const handleLink = (url: string) => {
     window.open(url, '_blank');
@@ -37,6 +37,8 @@ export const VocPage = () => {
     </Wrapper>
   );
 };
+
+export default VocPage;
 
 const Wrapper = styled(FlexBox).attrs({
   flexDirection: 'column',

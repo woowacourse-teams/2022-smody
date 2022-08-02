@@ -1,5 +1,7 @@
 import { ChallengeList } from 'components';
 
-export const SearchPage = () => {
+const SearchPage = () => {
   return <ChallengeList />;
 };
+
+export default SearchPage;

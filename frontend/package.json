@@ -18,9 +18,9 @@
     }
   ],
   "scripts": {
-    "start:prod": "NODE_ENV=production webpack serve --mode production",
+    "start:prod": "cross-env NODE_ENV=production webpack serve --mode production",
     "start:dev": "webpack serve --mode development",
-    "build:prod": "NODE_ENV=production webpack --mode production",
+    "build:prod": "cross-env NODE_ENV=production webpack --mode production",
     "build:dev": "webpack --mode development",
     "pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "storybook": "start-storybook -p 6006",
@@ -63,6 +63,7 @@
     "@yarnpkg/pnpify": "^4.0.0-rc.10",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.7.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
