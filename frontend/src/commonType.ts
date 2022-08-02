@@ -36,6 +36,12 @@ export interface Cycle extends Challenge {
   startTime: string;
 }
 
+export interface CycleDetail {
+  progressImage: string;
+  progressTime: string;
+  description: string;
+}
+
 // TODO : type.ts 전체 리팩토링 필요
 export interface UserChallenge extends Challenge {
   successCount: number;
