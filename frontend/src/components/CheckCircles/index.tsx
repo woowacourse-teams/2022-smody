@@ -1,7 +1,7 @@
-import { useContext } from 'react';
 import { BsCheckCircleFill, BsFillCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import { ThemeContext } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox } from 'components';
 import { CheckCirclesProps } from 'components/CheckCircles/type';
@@ -9,7 +9,7 @@ import { CheckCirclesProps } from 'components/CheckCircles/type';
 const totalCheck = [...Array(3)];
 
 export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   return (
     <Wrapper>

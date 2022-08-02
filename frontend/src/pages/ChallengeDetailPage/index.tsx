@@ -1,11 +1,11 @@
 import { useGetChallengeById } from 'apis';
-import { useContext } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
@@ -19,7 +19,7 @@ const makeCursorPointer = {
 
 const ChallengeDetailPage = () => {
   const navigate = useNavigate();
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const { challengeId } = useParams();
 
   const { isFetching, data } = useGetChallengeById(

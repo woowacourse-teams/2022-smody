@@ -1,17 +1,19 @@
 import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
-import { useContext, MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, Button, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const Profile = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();

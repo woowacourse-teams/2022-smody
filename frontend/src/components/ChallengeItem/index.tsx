@@ -1,9 +1,9 @@
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
@@ -17,7 +17,7 @@ export const ChallengeItem = ({
   isInProgress,
   challengeListRefetch,
 }: ChallengeItemProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),

@@ -1,12 +1,13 @@
 import { useGetLinkGoogle } from 'apis';
-import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { isDarkState } from 'recoil/darkMode/atoms';
-import styled, { ThemeContext, css } from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
@@ -17,7 +18,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
   const [isDark, setIsDark] = useRecoilState(isDarkState);
 
   const isLogin = useRecoilValue(isLoginState);
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
 

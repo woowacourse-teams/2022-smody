@@ -1,13 +1,14 @@
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
-import { useContext, FormEventHandler, MouseEventHandler, useState } from 'react';
+import { FormEventHandler, MouseEventHandler, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
 import { useImageInput } from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
+import useThemeContext from 'hooks/useThemeContext';
 
 import {
   FlexBox,
@@ -29,7 +30,7 @@ const ProfileEditPage = () => {
     renderImageInput,
   } = useImageInput('profileImage');
   const navigate = useNavigate();
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const renderSnackBar = useSnackBar();
   const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
 

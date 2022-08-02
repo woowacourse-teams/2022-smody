@@ -2,12 +2,11 @@ import Feed from 'assets/feed.svg';
 import Plus from 'assets/plus.svg';
 import Profile from 'assets/profile.svg';
 import Search from 'assets/search.svg';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { ThemeContext } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox } from 'components';
 import { NavLinkProps } from 'components/Navbar/type';
@@ -15,7 +14,7 @@ import { NavLinkProps } from 'components/Navbar/type';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
 
   const certColor = getPathMatchResult([CLIENT_PATH.CERT]);

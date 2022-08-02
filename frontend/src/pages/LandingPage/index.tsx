@@ -1,14 +1,15 @@
 import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
-import { useContext } from 'react';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import styled, { ThemeContext, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
 
 const LandingPage = () => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
   const isLogin = useRecoilValue(isLoginState);
 

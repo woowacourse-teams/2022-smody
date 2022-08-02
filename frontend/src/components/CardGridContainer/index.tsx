@@ -1,16 +1,17 @@
 import { useGetMySuccessChallenges } from 'apis';
 import { Challenge } from 'commonType';
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import { CardBox, Text, EmptyContent, LoadingSpinner } from 'components';
+import useThemeContext from 'hooks/useThemeContext';
+
+import { CardBox, Text, EmptyContent } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   // TODO : 성공한 챌린지 GET API 연결
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const { data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
 
   const loadMore = () => {

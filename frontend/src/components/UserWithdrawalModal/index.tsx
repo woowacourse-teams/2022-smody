@@ -1,13 +1,14 @@
 import { useDeleteMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
-import { useContext, MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import styled, { ThemeContext, css } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Button, FlexBox, ModalOverlay, Text, Input } from 'components';
 import { UserWithdrawalModalProps } from 'components/UserWithdrawalModal/type';
@@ -18,7 +19,7 @@ export const UserWithdrawalModal = ({
   email,
   handleCloseModal,
 }: UserWithdrawalModalProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
   const emailInput = useInput('');

@@ -1,9 +1,10 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
@@ -30,7 +31,7 @@ export const SuccessModal = ({
   challengeId,
   progressCount,
 }: SuccessModalProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: [getEmoji(Number(challengeId))],
