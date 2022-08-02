@@ -12,10 +12,7 @@ import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-
-const makeCursorPointer = {
-  cursor: 'pointer',
-};
+import { makeCursorPointer } from 'constants/style';
 
 const ChallengeDetailPage = () => {
   const navigate = useNavigate();
