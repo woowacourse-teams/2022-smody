@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
-import { useImageInput } from 'hooks/useImageInput';
+import useImageInput from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 import useThemeContext from 'hooks/useThemeContext';

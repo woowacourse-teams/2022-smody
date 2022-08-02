@@ -9,3 +9,4 @@ export const ChallengeDetailPage = lazy(() => import('pages/ChallengeDetailPage'
 export const CertPage = lazy(() => import('pages/CertPage'));
 export const VocPage = lazy(() => import('pages/VocPage'));
 export const LandingPage = lazy(() => import('pages/LandingPage'));
+export const CertFormPage = lazy(() => import('pages/CertFormPage'));

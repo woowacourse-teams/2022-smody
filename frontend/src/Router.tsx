@@ -13,6 +13,7 @@ import {
   ProfilePage,
   ProfileEditPage,
   VocPage,
+  CertFormPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -44,6 +45,7 @@ const Router = () => {
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
             element={<ChallengeDetailPage />}
           />
+          <Route path={CLIENT_PATH.CERT_FORM} element={<CertFormPage />} />
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={CLIENT_PATH.WILD_CARD} element={<NotFoundPage />} />
