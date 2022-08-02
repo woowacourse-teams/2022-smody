@@ -22,7 +22,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @Transactional
@@ -101,5 +103,22 @@ public class MemberServiceTest {
                 .isInstanceOf(BusinessException.class);
         assertThat(cycleRepository.findAll())
                 .hasSize(0);
+    }
+
+    @DisplayName("회원을 프로필 이미지를 수정한다.")
+    @Test
+    void updateProfileImage() {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile profileImage = new MockMultipartFile(
+                "profileImage", "profile.jpg", "image/jpg", "image".getBytes()
+        );
+        String originalPicture = fixture.회원_조회(조조그린_ID).getPicture();
+
+        // when
+        memberService.updateProfileImage(tokenPayload, profileImage);
+
+        // then
+        assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isNotEqualTo(originalPicture);
     }
 }

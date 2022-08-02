@@ -1,7 +1,11 @@
 package com.woowacourse.smody.controller;
 
-import java.io.File;
-
+import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.dto.MemberResponse;
+import com.woowacourse.smody.dto.MemberUpdateRequest;
+import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.woowacourse.smody.auth.LoginMember;
-import com.woowacourse.smody.dto.MemberResponse;
-import com.woowacourse.smody.dto.MemberUpdateRequest;
-import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.service.MemberService;
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/members")
@@ -43,7 +39,7 @@ public class MemberController {
 
     @PostMapping("/me/profile-image")
     public ResponseEntity<Void> updateMyProfileImage(@LoginMember TokenPayload tokenPayload,
-        @RequestPart MultipartFile profileImage) {
+                                                     @RequestPart MultipartFile profileImage) {
         memberService.updateProfileImage(tokenPayload, profileImage);
         return ResponseEntity.noContent().build();
     }
