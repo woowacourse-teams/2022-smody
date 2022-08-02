@@ -4,46 +4,64 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
+
 @Component
 public class LocalImageUploader implements ImageUploader {
 
-	private static final String ABSOLUTE_LOCAL_PATH = Paths.get("").toAbsolutePath() + "/images";
+	private static final String IMAGE_FOLDER_NAME = "images";
+	private static final String ABSOLUTE_LOCAL_PATH = Paths.get("").toAbsolutePath().toString();
 
-	@Value("${image.origin}")
-	private String imageOrigin;
+	private final String imageOrigin;
 
-	@PostConstruct
-	public void initSpace() {
-		File folder = new File(ABSOLUTE_LOCAL_PATH);
-		folder.mkdir();
+	public LocalImageUploader(@Value("${image.origin}") String imageOrigin) {
+		this.imageOrigin = imageOrigin;
+		FilePathBuilder.root(ABSOLUTE_LOCAL_PATH)
+			.addPath(IMAGE_FOLDER_NAME)
+			.mkdir();
 	}
 
 	@Override
-	public String upload(MultipartFile image, String path, String fileName) {
-		if (image.isEmpty()) {
-			// todo
-		}
-		String fullPath = ABSOLUTE_LOCAL_PATH + path;
-		File folder = new File(fullPath);
-		if (!folder.exists()) {
-			folder.mkdir();
-		}
-
-		String fileExtension = image.getOriginalFilename()
-			.split(".")[1];
-		String imageUrl = fullPath + "/" + fileName + "." + fileExtension;
+	public String upload(MultipartFile image, String folderName, String fileName) {
+		String uploadFullPath = FilePathBuilder.root(ABSOLUTE_LOCAL_PATH)
+			.addPath(IMAGE_FOLDER_NAME)
+			.addPath(folderName)
+			.mkdir()
+			.setFileName(fileName)
+			.setExtension(extractExtension(image))
+			.build();
 
 		try {
-			image.transferTo(new File(imageUrl));
+			image.transferTo(new File(uploadFullPath));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new BusinessException(ExceptionData.IMAGE_UPLOAD_ERROR);
 		}
-		return imageOrigin + "/" + imageUrl;
+
+		return FilePathBuilder.root(imageOrigin)
+			.addPath(IMAGE_FOLDER_NAME)
+			.addPath(folderName)
+			.setFileName(fileName)
+			.setExtension(extractExtension(image))
+			.build();
+	}
+
+	@Override
+	public boolean remove(String imageUrl) {
+		String localFullPath = imageUrl.replace(imageOrigin, ABSOLUTE_LOCAL_PATH);
+		File file = new File(localFullPath);
+		if (file.exists()) {
+			return file.delete();
+		}
+		return false;
+	}
+
+	private String extractExtension(MultipartFile image) {
+		return image.getOriginalFilename()
+			.split("\\.")[1];
 	}
 }

@@ -1,5 +1,7 @@
 package com.woowacourse.smody.service;
 
+import java.util.UUID;
+
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
@@ -50,11 +52,16 @@ public class MemberService {
     @Transactional
     public void updateProfileImage(TokenPayload tokenPayload, MultipartFile profileImage) {
         Member member = search(tokenPayload);
-        String imageUrl = imageUploader.upload(profileImage, generatePath(member), "profile");
-        member.updatePicture(imageUrl);
+
+        String imageUrl = member.getPicture();
+        imageUploader.remove(imageUrl);
+
+        String fileName = UUID.randomUUID().toString();
+        String newImageUrl = imageUploader.upload(profileImage, generateFolderName(member), fileName);
+        member.updatePicture(newImageUrl);
     }
 
-    private String generatePath(Member member) {
-        return "/member_" + member.getId();
+    private String generateFolderName(Member member) {
+        return "member_" + member.getId();
     }
 }
