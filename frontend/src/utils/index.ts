@@ -31,3 +31,7 @@ export const detectDarkMode = () => {
 
   return localTheme === 'true';
 };
+
+export const parseTimeToShowUsers = (time: string) => {
+  return time.slice(0, -3).replace('T', ' ');
+};

@@ -1,15 +1,12 @@
 import { CycleImgProps } from './type';
 import { CycleDetail } from 'commonType';
 import styled, { css } from 'styled-components';
+import { parseTimeToShowUsers } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 import { Text } from 'components/@shared/Text';
-
-const parsingTime = (time: string) => {
-  return time.slice(0, -3).replace('T', ' ');
-};
 
 export const CycleDetailItem = ({
   progressImage,
@@ -18,7 +15,7 @@ export const CycleDetailItem = ({
 }: CycleDetail) => {
   const themeContext = useThemeContext();
 
-  const parseTime = parsingTime(progressTime);
+  const parseTime = parseTimeToShowUsers(progressTime);
 
   return (
     <CycleDetailWrapper>
