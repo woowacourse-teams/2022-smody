@@ -7,7 +7,7 @@ const compressionOptions = {
   useWebWorker: true,
 };
 
-export const useImageInput = (imageName: string) => {
+const useImageInput = (imageName: string) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const handleImageInputButtonClick = () => {
     imageInputRef?.current?.click();
@@ -116,3 +116,5 @@ export const useImageInput = (imageName: string) => {
     renderImageInput,
   };
 };
+
+export default useImageInput;
