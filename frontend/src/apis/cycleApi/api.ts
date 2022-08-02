@@ -3,7 +3,9 @@ import {
   PostCycleProps,
   PostCycleProgressProps,
   PostCycleProgressResponse,
+  GetCycleByIdProps,
   GetMyCyclesStatResponse,
+  GetCycleByIdResponse,
 } from 'apis/cycleApi/type';
 import { Cycle } from 'commonType';
 
@@ -23,13 +25,20 @@ export const getMyCyclesStat = async () => {
 };
 
 // 4. 챌린지 사이클의 진척도 증가(POST)
-export const postCycleProgress = async ({ cycleId }: PostCycleProgressProps) => {
+export const postCycleProgress = async ({
+  cycleId,
+  formData,
+}: PostCycleProgressProps) => {
   return authApiClient.axios.post<PostCycleProgressResponse>(
     `/cycles/${cycleId}/progress`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
   );
 };
 
 // 7. 아이디로 사이클 조회(GET)
-export const getCycleById = async ({ cycleId }: PostCycleProgressProps) => {
-  return apiClient.axios.get<Cycle>(`/cycles/${cycleId}`);
+export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
+  return apiClient.axios.get<GetCycleByIdResponse>(`/cycles/${cycleId}`);
 };

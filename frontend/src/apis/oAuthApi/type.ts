@@ -7,3 +7,7 @@ export interface GetTokenGoogleResponse {
 export type GetMyInfoResponse = User;
 
 export type PatchMyInfoProps = Pick<User, 'nickname' | 'introduction' | 'picture'>;
+
+export interface PostProfileImageProps {
+  formData: FormData;
+}

@@ -11,6 +11,7 @@ import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
   PatchMyInfoProps,
+  PostProfileImageProps,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -76,7 +77,15 @@ export const useDeleteMyInfo = (
   );
 
 export const usePostProfileImage = (
-  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, FormData>,
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostProfileImageProps
+  >,
 ) => {
-  return useMutation(mutationKeys.postProfileImage, postProfileImage, options);
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageProps>(
+    mutationKeys.postProfileImage,
+    postProfileImage,
+    options,
+  );
 };
