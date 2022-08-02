@@ -19,9 +19,8 @@ export const ModalOverlay = ({ children, handleCloseModal }: ModalOverlayProps) 
 
 const Modal = styled.div`
   ${({ theme }) => css`
-    height: 347px;
+    min-height: 347px;
     width: 366px;
-    padding: 25px;
     margin: 0;
     background-color: ${theme.surface};
     border-radius: 20px;

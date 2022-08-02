@@ -29,7 +29,7 @@ export const CertItem = ({
 
   const handleClick = () => {
     navigate(CLIENT_PATH.CERT_FORM, {
-      state: { cycleId, challengeId, challengeName, progressCount },
+      state: { cycleId, challengeId, challengeName, progressCount, successCount },
     });
   };
 
