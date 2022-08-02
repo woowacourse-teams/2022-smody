@@ -1,4 +1,4 @@
-package com.woowacourse.smody.util;
+package com.woowacourse.smody.image;
 
 import org.springframework.web.multipart.MultipartFile;
 

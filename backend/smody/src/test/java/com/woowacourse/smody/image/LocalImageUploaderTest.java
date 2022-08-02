@@ -2,7 +2,6 @@ package com.woowacourse.smody.image;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.smody.util.ImageUploader;
 import java.io.File;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.AfterEach;

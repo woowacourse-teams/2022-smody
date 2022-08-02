@@ -6,6 +6,8 @@ import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
@@ -14,14 +16,17 @@ import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.ImageUploader;
 import com.woowacourse.smody.repository.CycleRepository;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +36,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberServiceTest {
 
     @Autowired
+    @InjectMocks
     private MemberService memberService;
+
+    @MockBean
+    private ImageUploader imageUploader;
 
     @Autowired
     private CycleRepository cycleRepository;
@@ -113,12 +122,16 @@ public class MemberServiceTest {
         MultipartFile profileImage = new MockMultipartFile(
                 "profileImage", "profile.jpg", "image/jpg", "image".getBytes()
         );
-        String originalPicture = fixture.회원_조회(조조그린_ID).getPicture();
+
+        String expected = "https://www.abc.com/profile.jpg";
+
+        given(imageUploader.upload(any(), any(), any()))
+                .willReturn(expected);
 
         // when
         memberService.updateProfileImage(tokenPayload, profileImage);
 
         // then
-        assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isNotEqualTo(originalPicture);
+        assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
     }
 }
