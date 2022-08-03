@@ -18,7 +18,12 @@ export const CardBox = ({
       justifyContent="center"
       bgColor={bgColor}
     >
-      <TitleWrapper size={14} color={COLOR.BLACK} fontWeight="bold">
+      <TitleWrapper
+        aria-label="성공한 챌린지 이름"
+        size={14}
+        color={COLOR.BLACK}
+        fontWeight="bold"
+      >
         {challengeName}
       </TitleWrapper>
       <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
