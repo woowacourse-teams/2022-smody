@@ -62,12 +62,10 @@ export const challenge = [
   // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(challengeData));
-
-    // return res(ctx.delay(1000), ctx.status(200), ctx.json(challengeData));
   }),
   // 5. 모든 챌린지 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
-    return res(ctx.delay(1000), ctx.status(200), ctx.json(challengeData));
+    return res(ctx.status(200), ctx.json(challengeData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
@@ -88,11 +86,7 @@ export const challenge = [
       );
     }
 
-    return res(
-      ctx.delay(1000),
-      ctx.status(200),
-      ctx.json(challengeData[challengeId - 1]),
-    );
+    return res(ctx.status(200), ctx.json(challengeData[challengeId - 1]));
   }),
 
   // 8. 챌린지 하나 상세 조회(GET) - 회원
@@ -109,10 +103,6 @@ export const challenge = [
       );
     }
 
-    return res(
-      ctx.delay(1000),
-      ctx.status(200),
-      ctx.json(challengeData[challengeId - 1]),
-    );
+    return res(ctx.status(200), ctx.json(challengeData[challengeId - 1]));
   }),
 ];

@@ -42,12 +42,12 @@ export const auth = [
     userData.nickname = nickname;
     userData.introduction = introduction;
 
-    return res(ctx.status(204), ctx.delay(1000));
+    return res(ctx.status(204));
   }),
 
   // 4. 회원 탈퇴(DELETE)
   rest.delete(`${BASE_URL}/members/me`, (req, res, ctx) => {
-    return res(ctx.status(204), ctx.delay(1000));
+    return res(ctx.status(204));
   }),
 
   // 프로필 이미지 업로드(POST)

@@ -333,10 +333,10 @@ export const mySuccessChallengeData = [
 ];
 
 export const userData = {
-  nickname: '빅터짱짱맨',
-  introduction: '나는 빅터다.',
+  nickname: '테스트 닉네임',
+  introduction: '테스트 자기소개',
   picture: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
-  email: 'victor@gmail.com',
+  email: 'test@gmail.com',
 };
 
 export const accessTokenData = 'testAccessToken';
