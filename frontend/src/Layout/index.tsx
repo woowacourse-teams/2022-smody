@@ -23,7 +23,11 @@ export const Layout = () => {
     OTHER_PATH_PADDING,
   );
 
-  const bgColor = getPathMatchColor([CLIENT_PATH.CERT, CLIENT_PATH.HOME]);
+  const bgColor = getPathMatchColor([
+    CLIENT_PATH.CERT,
+    CLIENT_PATH.HOME,
+    CLIENT_PATH.CYCLE_DETAIL,
+  ]);
   const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
 
   return (

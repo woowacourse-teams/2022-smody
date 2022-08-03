@@ -263,3 +263,42 @@ export const userData = {
 };
 
 export const accessTokenData = 'testAccessToken';
+
+export const cycleDetailData = {
+  cycleId: 1,
+  challengeId: 2,
+  challengeName: '미라클 모닝',
+  progressCount: 2,
+  startTime: '2022-07-01T17:00:00',
+  successCount: 3,
+  cycleDetails: [
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-01T17:00:00',
+      description: '알찼다.',
+    },
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-02T17:00:00',
+      description: '알찼다.',
+    },
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-03T17:00:00',
+      description: '알찼다.',
+    },
+  ],
+};
+
+export const cycleNonDetailData = {
+  cycleId: 1,
+  challengeId: 2,
+  challengeName: '미라클 모닝',
+  progressCount: 2,
+  startTime: '2022-07-01T17:00:00',
+  successCount: 3,
+  cycleDetails: [],
+};

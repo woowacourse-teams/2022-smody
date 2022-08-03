@@ -1,6 +1,5 @@
 import { useGetAllChallenges } from 'apis';
 import { useRef, RefObject, useMemo } from 'react';
-import styled from 'styled-components';
 
 import useIntersect from 'hooks/useIntersect';
 

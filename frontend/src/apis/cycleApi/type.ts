@@ -1,4 +1,4 @@
-import { Cycle } from 'commonType';
+import { Cycle, CycleDetail } from 'commonType';
 
 export type PostCycleProps = Pick<Cycle, 'challengeId'>;
 
@@ -11,4 +11,8 @@ export interface PostCycleProgressResponse {
 export interface GetMyCyclesStatResponse {
   totalCount: number;
   successCount: number;
+}
+
+export interface GetCycleByIdResponse extends Cycle {
+  cycleDetails: CycleDetail[];
 }

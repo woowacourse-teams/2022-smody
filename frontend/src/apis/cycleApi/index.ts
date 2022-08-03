@@ -11,6 +11,7 @@ import {
   PostCycleProgressProps,
   PostCycleProgressResponse,
   GetMyCyclesStatResponse,
+  GetCycleByIdResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Cycle, ErrorResponse } from 'commonType';
@@ -64,11 +65,14 @@ export const usePostCycleProgress = (
 
 // 7. 아이디로 사이클 조회(GET)
 export const useGetCycleById = (
-  cycleId: PostCycleProgressProps,
-  options?: UseQueryOptions<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>,
+  { cycleId }: PostCycleProgressProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetCycleByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useQuery<AxiosResponse<Cycle>, AxiosError<ErrorResponse>>(
+  useQuery<AxiosResponse<GetCycleByIdResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getCycleById,
-    () => getCycleById(cycleId),
+    () => getCycleById({ cycleId }),
     options,
   );

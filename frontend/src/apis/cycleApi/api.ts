@@ -4,6 +4,7 @@ import {
   PostCycleProgressProps,
   PostCycleProgressResponse,
   GetMyCyclesStatResponse,
+  GetCycleByIdResponse,
 } from 'apis/cycleApi/type';
 import { Cycle } from 'commonType';
 
@@ -31,5 +32,5 @@ export const postCycleProgress = async ({ cycleId }: PostCycleProgressProps) => 
 
 // 7. 아이디로 사이클 조회(GET)
 export const getCycleById = async ({ cycleId }: PostCycleProgressProps) => {
-  return apiClient.axios.get<Cycle>(`/cycles/${cycleId}`);
+  return apiClient.axios.get<GetCycleByIdResponse>(`/cycles/${cycleId}`);
 };
