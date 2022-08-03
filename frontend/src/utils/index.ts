@@ -1,17 +1,9 @@
 type addDaysFunction = (date: Date, days: number) => Date;
-type parseTimeFunction = (date: Date) => string;
 
 export const addDays: addDaysFunction = (date, days) => {
   const newDate = date;
   newDate.setDate(date.getDate() + days);
   return newDate;
-};
-
-export const parseTime: parseTimeFunction = (date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}.${month}.${day}`;
 };
 
 export const getUrlParameter = (name: string) => {
@@ -32,6 +24,14 @@ export const detectDarkMode = () => {
   return localTheme === 'true';
 };
 
-export const parseTimeToShowUsers = (time: string) => {
-  return time.slice(0, -3).replace('T', ' ');
+export const parseTime = (dateString: string) => {
+  const parsedDate = new Date(Date.parse(dateString));
+  const year = String(parsedDate.getFullYear());
+  const month = String(parsedDate.getMonth() + 1);
+  const date = String(parsedDate.getDate());
+  const hours = String(parsedDate.getHours()).padStart(2, '0');
+  const minutes = String(parsedDate.getMinutes()).padStart(2, '0');
+  const seconds = String(parsedDate.getSeconds()).padStart(2, '0');
+
+  return { year, month, date, hours, minutes, seconds };
 };

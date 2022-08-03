@@ -2,6 +2,7 @@ import { useGetCycleById } from 'apis';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { parseTime } from 'utils';
 import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -35,7 +36,8 @@ const CycleDetailPage = () => {
     return <LoadingSpinner />;
   }
 
-  const { challengeId, challengeName, cycleDetails } = data.data;
+  const { challengeId, challengeName, startTime, cycleDetails } = data.data;
+  const { year, month, date } = parseTime(startTime);
 
   return (
     <Wrapper>
@@ -61,7 +63,7 @@ const CycleDetailPage = () => {
             {challengeName}
           </Text>
           <Text color={themeContext.onBackground}>
-            {challengeName}에 3일간 도전해보세요!
+            {year}년 {month}월 {date}부터 작심삼일 극복 도전
           </Text>
         </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">

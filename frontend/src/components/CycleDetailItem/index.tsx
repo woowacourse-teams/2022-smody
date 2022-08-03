@@ -1,7 +1,7 @@
 import { CycleImgProps } from './type';
 import { CycleDetail } from 'commonType';
 import styled, { css } from 'styled-components';
-import { parseTimeToShowUsers } from 'utils';
+import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -15,7 +15,7 @@ export const CycleDetailItem = ({
 }: CycleDetail) => {
   const themeContext = useThemeContext();
 
-  const parseTime = parseTimeToShowUsers(progressTime);
+  const { year, month, date, hours, minutes } = parseTime(progressTime);
 
   return (
     <CycleDetailWrapper>
@@ -24,7 +24,7 @@ export const CycleDetailItem = ({
         <DetailContents>
           <FlexBox flexDirection="column" gap="1rem">
             <Text size={14} color={themeContext.mainText}>
-              {parseTime}
+              {year}년 {month}월 {date}일 {hours}:{minutes}
             </Text>
             <Text color={themeContext.onSurface}>{description}</Text>
           </FlexBox>
