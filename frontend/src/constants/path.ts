@@ -10,6 +10,7 @@ export const CLIENT_PATH = {
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',
+  CERT_FORM: '/cert/form',
   SEARCH: '/search',
   FEED: '/feed',
   PROFILE: '/profile',

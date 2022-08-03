@@ -1,34 +1,37 @@
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
 import { FormEventHandler, MouseEventHandler, useState } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
-import { useImageInput } from 'hooks/useImageInput';
+import useImageInput from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 import useThemeContext from 'hooks/useThemeContext';
 
 import {
   FlexBox,
-  Text,
   Button,
   Input,
   LoadingSpinner,
   UserWithdrawalModal,
+  Title,
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
+
+const FORM_DATA_IMAGE_NAME = 'profileImage';
 
 const ProfileEditPage = () => {
   const { mutate: postProfileImage } = usePostProfileImage();
   const {
     previewImageUrl,
-    sendImageToServer,
     handleImageInputButtonClick,
     renderImageInput,
-  } = useImageInput('profileImage');
+    hasImageFormData,
+    isImageLoading,
+    formData,
+  } = useImageInput(FORM_DATA_IMAGE_NAME);
   const navigate = useNavigate();
   const themeContext = useThemeContext();
   const renderSnackBar = useSnackBar();
@@ -56,20 +59,19 @@ const ProfileEditPage = () => {
     validateIntroduction,
   );
 
-  const isAllValidated = nickname.isValidated && introduction.isValidated;
+  const isAllValidated =
+    nickname.isValidated && introduction.isValidated && !isImageLoading;
 
   if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
     return <LoadingSpinner />;
   }
 
-  const backToPreviousPage = () => {
-    navigate(CLIENT_PATH.PROFILE);
-  };
-
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    await sendImageToServer(postProfileImage);
+    if (hasImageFormData) {
+      postProfileImage({ formData });
+    }
 
     if (
       typeof nickname.value === 'undefined' ||
@@ -99,17 +101,7 @@ const ProfileEditPage = () => {
 
   return (
     <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
-      <TitleWrapper
-        flexDirection="row"
-        justifyContent="space-between"
-        onClick={backToPreviousPage}
-      >
-        <MdArrowBackIosNew size={20} />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          프로필 편집
-        </Text>
-        <div />
-      </TitleWrapper>
+      <Title text="프로필 수정" linkTo={CLIENT_PATH.PROFILE} />
       <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
       {renderImageInput()}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
@@ -168,11 +160,6 @@ const Wrapper = styled(FlexBox)`
   @media all and (max-width: 767px) {
     padding: 1rem 1.25rem;
   }
-`;
-
-const TitleWrapper = styled(FlexBox)`
-  width: 100%;
-  margin-bottom: 2rem;
 `;
 
 const ProfileImg = styled.img`

@@ -26,24 +26,24 @@ export const Button = styled.button<ButtonProps>`
       ? css`
           background-color: ${theme.primary};
           color: ${theme.onPrimary};
+          &:hover {
+            filter: brightness(1.2);
+          }
         `
       : css`
           background-color: ${theme.secondary};
           color: ${theme.onSecondary};
+          &:hover {
+            filter: brightness(0.9);
+          }
         `}
 
     font-size: ${SIZES[size].fontSize};
 
-    &:hover,
-    &:focus {
-      filter: brightness(1.2);
-    }
-
     &:disabled {
       background-color: ${theme.disabled};
       cursor: default;
-      &:hover,
-      &:focus {
+      &:hover {
         filter: brightness(1);
       }
     }

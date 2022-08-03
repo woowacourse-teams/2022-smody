@@ -6,7 +6,7 @@ import { EmptyContent, CertItem } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 const CertPage = () => {
-  const { data, refetch } = useGetMyCyclesInProgress({
+  const { data } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
   });
 
@@ -24,7 +24,7 @@ const CertPage = () => {
   return (
     <Wrapper>
       {data?.data.map((cycle) => (
-        <CertItem key={cycle.cycleId} refetch={refetch} {...cycle} />
+        <CertItem key={cycle.cycleId} {...cycle} />
       ))}
     </Wrapper>
   );

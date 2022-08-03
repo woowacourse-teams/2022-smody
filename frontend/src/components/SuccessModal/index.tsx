@@ -1,5 +1,7 @@
+import Close from 'assets/close.svg';
 import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -10,6 +12,7 @@ import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
+import { CLIENT_PATH } from 'constants/path';
 
 const getMessageByProgressCount = (progressCount: number) => {
   switch (progressCount) {
@@ -26,12 +29,14 @@ const getMessageByProgressCount = (progressCount: number) => {
 };
 export const SuccessModal = ({
   handleCloseModal,
+  cycleId,
   challengeName,
   successCount,
   challengeId,
   progressCount,
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
+  const navigate = useNavigate();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: [getEmoji(Number(challengeId))],
@@ -42,8 +47,15 @@ export const SuccessModal = ({
     successCallback: handleCloseModal,
   });
 
-  const handleRest = () => {
+  const handleCheckCertification = () => {
+    // TODO: 챌린지 상세보기 페이지로 이동
     handleCloseModal();
+    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
+  };
+
+  const handleClickClose = () => {
+    handleCloseModal();
+    navigate(CLIENT_PATH.CERT);
   };
 
   const handleRetry = () => {
@@ -61,13 +73,16 @@ export const SuccessModal = ({
 
   return (
     <>
-      <ModalOverlay handleCloseModal={handleCloseModal}>
-        <FlexBox
+      <ModalOverlay handleCloseModal={handleClickClose}>
+        <Wrapper
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
           gap="1rem"
         >
+          <CloseWrapper onClick={handleClickClose}>
+            <Close />
+          </CloseWrapper>
           <Text color={themeContext.onSurface} size={70} fontWeight="normal">
             {getEmoji(Number(challengeId))}
             <span id="confettiRewardId" />
@@ -93,21 +108,36 @@ export const SuccessModal = ({
           <FlexBox alignItems="center" gap="1rem">
             {isChallengeComplete ? (
               <>
-                <Button onClick={handleRest} size="medium" isActive={false}>
-                  쉴래요
+                <Button onClick={handleCheckCertification} size="medium" isActive={false}>
+                  기록 확인
                 </Button>
                 <Button onClick={handleRetry} size="medium" isActive={true}>
                   재도전
                 </Button>
               </>
             ) : (
-              <Button autoFocus onClick={handleCloseModal} size="medium" isActive={true}>
-                확인
+              <Button
+                autoFocus
+                onClick={handleCheckCertification}
+                size="medium"
+                isActive={false}
+              >
+                기록 확인
               </Button>
             )}
           </FlexBox>
-        </FlexBox>
+        </Wrapper>
       </ModalOverlay>
     </>
   );
 };
+
+const Wrapper = styled(FlexBox)`
+  width: 100%;
+  padding: 1rem 1.25rem 1.438rem;
+`;
+
+const CloseWrapper = styled.div`
+  align-self: flex-end;
+  cursor: pointer;
+`;
