@@ -14,7 +14,7 @@ import {
   FlexBox,
 } from 'components';
 
-import { makeCursorPointer } from 'constants/style';
+import { cursorPointer } from 'constants/style';
 
 const CycleDetailPage = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const CycleDetailPage = () => {
         <MdArrowBackIosNew
           size={20}
           onClick={backToPreviousPage}
-          style={makeCursorPointer}
+          style={{ ...cursorPointer }}
         />
         <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
           인증기록 보기
@@ -52,13 +52,18 @@ const CycleDetailPage = () => {
       </TitleWrapper>
       <ChallengeDetailWrapper
         flexDirection="row"
-        justifyContent="space-between"
+        justifyContent="space-evenly"
         alignItems="center"
         gap="1rem"
       >
-        <Text size={20} fontWeight="bold" color={themeContext.primary}>
-          {challengeName}
-        </Text>
+        <FlexBox flexDirection="column" alignItems="center" gap="1rem">
+          <Text size={20} fontWeight="bold" color={themeContext.primary}>
+            {challengeName}
+          </Text>
+          <Text color={themeContext.onBackground}>
+            {challengeName}에 3일간 도전해보세요!
+          </Text>
+        </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
           {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>

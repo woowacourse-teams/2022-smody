@@ -1,3 +1,3 @@
-export const makeCursorPointer = {
+export const cursorPointer = {
   cursor: 'pointer',
 };

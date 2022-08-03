@@ -12,7 +12,7 @@ import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-import { makeCursorPointer } from 'constants/style';
+import { cursorPointer } from 'constants/style';
 
 const ChallengeDetailPage = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const ChallengeDetailPage = () => {
       <TitleWrapper flexDirection="row" justifyContent="space-between">
         <MdArrowBackIosNew
           size={20}
-          style={makeCursorPointer}
+          style={{ ...cursorPointer }}
           onClick={backToPreviousPage}
         />
         <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
