@@ -7,7 +7,8 @@ export interface FlexBoxProps {
     | 'space-between'
     | 'space-around'
     | 'initial'
-    | 'inherit';
+    | 'inherit'
+    | 'space-evenly';
   flexWrap?: 'wrap' | 'nowrap' | 'wrap-reverse';
   alignItems?:
     | 'stretch'
