@@ -26,4 +26,11 @@ describe('프로필 페이지 테스트', () => {
     const successCount = await waitFor(() => screen.getByLabelText('성공한 챌린지 횟수'));
     await waitFor(() => expect(successCount).toHaveTextContent('5'));
   });
+
+  test('[useGetMySuccessChallenges] query 응답에 따라 성공한 챌린지 목록이 렌더링되는지 확인한다.', async () => {
+    const successChallenge = await waitFor(
+      () => screen.getAllByLabelText('성공한 챌린지 이름')[0],
+    );
+    await waitFor(() => expect(successChallenge).toHaveTextContent('미라클 모닝'));
+  });
 });
