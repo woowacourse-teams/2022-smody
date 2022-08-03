@@ -16,7 +16,15 @@ import {
   CertFormPageLocationState,
 } from 'pages/CertFormPage/type';
 
-import { FlexBox, Text, Button, CheckCircles, Title, ThumbnailWrapper } from 'components';
+import {
+  FlexBox,
+  Text,
+  Button,
+  CheckCircles,
+  Title,
+  ThumbnailWrapper,
+  LoadingSpinner,
+} from 'components';
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -42,7 +50,7 @@ const CertFormPage = () => {
     [isImageLoading, formData],
   );
 
-  const { mutate: postCycleProgress } = usePostCycleProgress({
+  const { mutate: postCycleProgress, isLoading } = usePostCycleProgress({
     onSuccess: () => {
       setIsSuccessModalOpen(true);
     },
@@ -68,6 +76,10 @@ const CertFormPage = () => {
   const handleCloseModal = () => {
     setIsSuccessModalOpen(false);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <FlexBox flexDirection="column" alignItems="center">
