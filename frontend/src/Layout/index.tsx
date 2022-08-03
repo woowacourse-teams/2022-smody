@@ -53,19 +53,25 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     min-height: calc(100vh - 119px);
     background-color: ${bgColor};
 
+    padding-top: 1rem;
+    padding-bottom: 4.625rem; // 3.625rem(=NavBar height) + 1rem
+
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
-      padding: 1rem ${horizontalPadding.pc};
+      padding-left: ${horizontalPadding.pc};
+      padding-right: ${horizontalPadding.pc};
     }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
     @media all and (min-width: 768px) and (max-width: 1023px) {
-      padding: 1rem ${horizontalPadding.tablet};
+      padding-left: ${horizontalPadding.tablet};
+      padding-right: ${horizontalPadding.tablet};
     }
 
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
     @media all and (max-width: 767px) {
-      padding: 1rem ${horizontalPadding.mobile};
+      padding-left: ${horizontalPadding.mobile};
+      padding-right: ${horizontalPadding.mobile};
     }
   `}
 `;

@@ -12,6 +12,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
 
+import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
@@ -53,6 +54,7 @@ const Wrapper = styled(FlexBox)<HeaderProps>`
     left: 0;
     right: 0;
     background-color: ${bgColor};
+    z-index: ${Z_INDEX.HEADER};
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
