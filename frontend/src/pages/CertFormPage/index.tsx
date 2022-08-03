@@ -2,6 +2,8 @@ import { usePostCycleProgress } from 'apis';
 import Plus from 'assets/plus.svg';
 import { useState, useMemo, FormEventHandler } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isDarkState } from 'recoil/darkMode/atoms';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -10,6 +12,7 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import {
   CertImageWrapperProps,
+  TextAreaProps,
   CertFormPageLocationState,
 } from 'pages/CertFormPage/type';
 
@@ -21,6 +24,7 @@ import { CLIENT_PATH } from 'constants/path';
 const FORM_DATA_IMAGE_NAME = 'progressImage';
 
 const CertFormPage = () => {
+  const isDark = useRecoilValue(isDarkState);
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -129,6 +133,7 @@ const CertFormPage = () => {
             onChange={(event) => {
               setDescription(event.target.value);
             }}
+            isDark={isDark}
           />
           <TextLength
             as="span"
@@ -206,8 +211,8 @@ const CertImage = styled.img`
 
 const Section = styled(FlexBox)``;
 
-const TextArea = styled.textarea`
-  ${({ theme }) => css`
+const TextArea = styled.textarea<TextAreaProps>`
+  ${({ theme, isDark }) => css`
     border-radius: 20px;
     padding: 1rem;
     width: 26rem;
@@ -216,6 +221,8 @@ const TextArea = styled.textarea`
     font-size: 1rem;
     font-weight: normal;
     font-family: 'Source Sans Pro', sans-serif;
+    background-color: ${isDark ? theme.input : theme.background};
+    color: ${theme.onInput};
 
     &:focus {
       outline: ${theme.primary} 2px solid;
