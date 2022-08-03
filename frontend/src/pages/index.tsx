@@ -1,13 +1,11 @@
-import { lazy } from 'react';
-
-export const NotFoundPage = lazy(() => import('pages/NotFoundPage'));
-export const Feed = lazy(() => import('pages/Feed'));
-export const SearchPage = lazy(() => import('pages/SearchPage'));
-export const ProfilePage = lazy(() => import('pages/ProfilePage'));
-export const ProfileEditPage = lazy(() => import('pages/ProfileEditPage'));
-export const ChallengeDetailPage = lazy(() => import('pages/ChallengeDetailPage'));
-export const CertPage = lazy(() => import('pages/CertPage'));
-export const VocPage = lazy(() => import('pages/VocPage'));
-export const LandingPage = lazy(() => import('pages/LandingPage'));
-export const CycleDetailPage = lazy(() => import('pages/CycleDetailPage'));
-export const CertFormPage = lazy(() => import('pages/CertFormPage'));
+export { default as NotFoundPage } from 'pages/NotFoundPage';
+export { default as Feed } from 'pages/Feed';
+export { default as SearchPage } from 'pages/SearchPage';
+export { default as ProfilePage } from 'pages/ProfilePage';
+export { default as ProfileEditPage } from 'pages/ProfileEditPage';
+export { default as ChallengeDetailPage } from 'pages/ChallengeDetailPage';
+export { default as CertPage } from 'pages/CertPage';
+export { default as VocPage } from 'pages/VocPage';
+export { default as LandingPage } from 'pages/LandingPage';
+export { default as CycleDetailPage } from 'pages/CycleDetailPage';
+export { default as CertFormPage } from 'pages/CertFormPage';
