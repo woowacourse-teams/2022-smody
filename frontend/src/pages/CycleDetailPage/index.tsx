@@ -63,7 +63,7 @@ const CycleDetailPage = () => {
             {challengeName}
           </Text>
           <Text color={themeContext.onBackground}>
-            {year}년 {month}월 {date}부터 작심삼일 극복 도전
+            {year}년 {month}월 {date}일부터 작심삼일 극복 도전
           </Text>
         </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
