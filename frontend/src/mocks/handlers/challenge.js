@@ -3,9 +3,8 @@ import {
   challengeData,
   cycleData,
   cycleDetailData,
-  cycleNonDetailData,
-  cycleByIdData,
   mySuccessChallengeData,
+  accessTokenData,
 } from 'mocks/data';
 import { rest } from 'msw';
 
@@ -66,6 +65,20 @@ export const challenge = [
   }),
   // 5. 모든 챌린지 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
+    const { authorization } = req.headers.headers;
+
+    const accessToken = authorization.split(' ')[1];
+
+    if (accessToken !== accessTokenData) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          code: 2002,
+          message: '유효하지 않은 토큰입니다.',
+        }),
+      );
+    }
+
     return res(ctx.delay(1000), ctx.status(200), ctx.json(challengeData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
@@ -97,6 +110,9 @@ export const challenge = [
   // 8. 챌린지 하나 상세 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/:challengeId/auth`, (req, res, ctx) => {
     const { challengeId } = req.params;
+    const { authorization } = req.headers.headers;
+
+    const accessToken = authorization.split(' ')[1];
 
     if (Number.isNaN(challengeId) || challengeId > challengeData.length) {
       return res(
@@ -104,6 +120,16 @@ export const challenge = [
         ctx.json({
           code: 4002,
           message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    if (accessToken !== accessTokenData) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          code: 2002,
+          message: '유효하지 않은 토큰입니다.',
         }),
       );
     }
