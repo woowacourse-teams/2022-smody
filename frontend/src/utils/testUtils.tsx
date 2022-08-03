@@ -1,18 +1,14 @@
-// test-utils/index.tsx
-
-/* eslint-disable no-console */
 import { generateQueryClient } from 'queryClient';
 import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
+import { MemoryRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import { render, RenderResult } from '@testing-library/react';
 
-import GlobalStyle from 'styles/GlobalStyle';
 import { darkTheme } from 'styles/theme';
 
-// suppress errors written to console
 setLogger({
   log: console.log,
   warn: console.warn,
@@ -28,7 +24,7 @@ const generateTestQueryClient = () => {
   return client;
 };
 
-export function renderWithQueryClient(
+export function renderWithProviders(
   ui: ReactElement,
   client?: QueryClient,
 ): RenderResult {
@@ -36,7 +32,9 @@ export function renderWithQueryClient(
   return render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={darkTheme}>{ui}</ThemeProvider>
+        <MemoryRouter>
+          <ThemeProvider theme={darkTheme}>{ui}</ThemeProvider>
+        </MemoryRouter>
       </QueryClientProvider>
     </RecoilRoot>,
   );

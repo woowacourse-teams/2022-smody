@@ -1,3 +1,4 @@
+import MockIntersectionObserver from '__test__/MockIntersectionObserver';
 import { server } from 'mocks/server';
 
 import '@testing-library/jest-dom';
@@ -21,11 +22,10 @@ Object.defineProperty(window, 'matchMedia', {
 
 beforeAll(() => {
   server.listen();
+  window.IntersectionObserver = MockIntersectionObserver;
 });
 
 afterAll(() => {
-  console.error = originalError;
-
   server.close();
   jest.resetAllMocks();
 });
