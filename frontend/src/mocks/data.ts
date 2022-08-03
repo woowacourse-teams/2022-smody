@@ -157,13 +157,17 @@ date.setHours(date.getHours() + 9);
 
 const [startTime, _] = date.toISOString().split('.');
 
+const twoDaysAgo = new Date();
+twoDaysAgo.setHours(twoDaysAgo.getHours() + 9 - 48);
+const [twoDaysAgoStartTime, __] = twoDaysAgo.toISOString().split('.');
+
 export const cycleData = [
   {
     cycleId: 1,
     challengeId: 1,
     challengeName: '미라클 모닝',
-    progressCount: 0,
-    startTime,
+    progressCount: 2,
+    startTime: twoDaysAgoStartTime,
     successCount: 3,
   },
   {

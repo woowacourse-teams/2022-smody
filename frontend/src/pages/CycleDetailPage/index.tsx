@@ -1,6 +1,5 @@
 import { useGetCycleById } from 'apis';
-import { MdArrowBackIosNew } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 import { getEmoji } from 'utils/emoji';
@@ -13,12 +12,12 @@ import {
   ThumbnailWrapper,
   CycleDetailList,
   FlexBox,
+  Title,
 } from 'components';
 
-import { cursorPointer } from 'constants/style';
+import { CLIENT_PATH } from 'constants/path';
 
 const CycleDetailPage = () => {
-  const navigate = useNavigate();
   const { cycleId } = useParams();
   const themeContext = useThemeContext();
   const { data } = useGetCycleById(
@@ -28,10 +27,6 @@ const CycleDetailPage = () => {
     },
   );
 
-  const backToPreviousPage = () => {
-    navigate(-1);
-  };
-
   if (typeof data === 'undefined') {
     return <LoadingSpinner />;
   }
@@ -40,18 +35,8 @@ const CycleDetailPage = () => {
   const { year, month, date } = parseTime(startTime);
 
   return (
-    <Wrapper>
-      <TitleWrapper flexDirection="row" justifyContent="space-between">
-        <MdArrowBackIosNew
-          size={20}
-          onClick={backToPreviousPage}
-          style={{ ...cursorPointer }}
-        />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          인증기록 보기
-        </Text>
-        <div />
-      </TitleWrapper>
+    <div>
+      <Title text="인증기록 보기" linkTo={CLIENT_PATH.CERT} />
       <ChallengeDetailWrapper
         flexDirection="row"
         justifyContent="space-evenly"
@@ -71,19 +56,11 @@ const CycleDetailPage = () => {
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <CycleDetailList cycleDetails={cycleDetails} />
-    </Wrapper>
+    </div>
   );
 };
 
 export default CycleDetailPage;
-
-const Wrapper = styled.div`
-  margin: 0 1.25rem;
-`;
-
-const TitleWrapper = styled(FlexBox)`
-  margin-bottom: 2rem;
-`;
 
 const ChallengeDetailWrapper = styled(FlexBox)`
   line-height: 1rem;

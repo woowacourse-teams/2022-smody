@@ -17,7 +17,7 @@ export const Navbar = () => {
   const themeContext = useThemeContext();
   const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
 
-  const certColor = getPathMatchResult([CLIENT_PATH.CERT]);
+  const certColor = getPathMatchResult([CLIENT_PATH.CERT, CLIENT_PATH.CYCLE_DETAIL]);
   const searchColor = getPathMatchResult([
     CLIENT_PATH.SEARCH,
     CLIENT_PATH.CHALLENGE_DETAIL,

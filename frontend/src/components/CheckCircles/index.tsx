@@ -17,7 +17,14 @@ export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
         if (index < progressCount) {
           return <BsCheckCircleFill key={index} color={themeContext.primary} size={27} />;
         }
-        return <BsFillCircleFill key={index} color={themeContext.secondary} size={27} />;
+        return (
+          <BsFillCircleFill
+            style={{ border: `1px solid ${themeContext.surface}`, borderRadius: '50%' }}
+            key={index}
+            color={themeContext.secondary}
+            size={27}
+          />
+        );
       })}
     </FlexBox>
   );

@@ -23,7 +23,7 @@ const FORM_DATA_IMAGE_NAME = 'progressImage';
 const CertFormPage = () => {
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const {
     previewImageUrl,
@@ -34,7 +34,7 @@ const CertFormPage = () => {
     formData,
   } = useImageInput(FORM_DATA_IMAGE_NAME);
   const isButtonDisabled = useMemo(
-    () => isImageLoading || !hasImageFormData(),
+    () => isImageLoading || !hasImageFormData,
     [isImageLoading, formData],
   );
 
@@ -43,6 +43,7 @@ const CertFormPage = () => {
       setIsSuccessModalOpen(true);
     },
   });
+
   const location = useLocation();
 
   if (location.state === null) {
@@ -66,9 +67,14 @@ const CertFormPage = () => {
 
   return (
     <FlexBox flexDirection="column" alignItems="center">
-      <Title text="인증하기" />
-      <CertInfoWrapper justifyContent="space-between">
-        <FlexBox flexDirection="column">
+      <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
+      <CertInfoWrapper
+        flexDirection="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+        gap="1rem"
+      >
+        <FlexBox flexDirection="column" alignItems="center">
           <Text
             size={20}
             fontWeight="bold"
@@ -140,6 +146,7 @@ const CertFormPage = () => {
       {isSuccessModalOpen && (
         <SuccessModal
           handleCloseModal={handleCloseModal}
+          cycleId={cycleId}
           challengeId={challengeId}
           challengeName={challengeName}
           successCount={successCount}

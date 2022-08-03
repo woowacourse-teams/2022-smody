@@ -1,6 +1,7 @@
 import Close from 'assets/close.svg';
 import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -11,6 +12,7 @@ import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
+import { CLIENT_PATH } from 'constants/path';
 
 const getMessageByProgressCount = (progressCount: number) => {
   switch (progressCount) {
@@ -27,12 +29,14 @@ const getMessageByProgressCount = (progressCount: number) => {
 };
 export const SuccessModal = ({
   handleCloseModal,
+  cycleId,
   challengeName,
   successCount,
   challengeId,
   progressCount,
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
+  const navigate = useNavigate();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: [getEmoji(Number(challengeId))],
@@ -45,8 +49,13 @@ export const SuccessModal = ({
 
   const handleCheckCertification = () => {
     // TODO: 챌린지 상세보기 페이지로 이동
-    console.log('가자 챌린지 상세보기 페이지로!!');
     handleCloseModal();
+    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
+  };
+
+  const handleClickClose = () => {
+    handleCloseModal();
+    navigate(CLIENT_PATH.CERT);
   };
 
   const handleRetry = () => {
@@ -64,14 +73,14 @@ export const SuccessModal = ({
 
   return (
     <>
-      <ModalOverlay handleCloseModal={handleCloseModal}>
+      <ModalOverlay handleCloseModal={handleClickClose}>
         <Wrapper
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
           gap="1rem"
         >
-          <CloseWrapper onClick={handleCloseModal}>
+          <CloseWrapper onClick={handleClickClose}>
             <Close />
           </CloseWrapper>
           <Text color={themeContext.onSurface} size={70} fontWeight="normal">
@@ -130,4 +139,5 @@ const Wrapper = styled(FlexBox)`
 
 const CloseWrapper = styled.div`
   align-self: flex-end;
+  cursor: pointer;
 `;

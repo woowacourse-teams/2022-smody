@@ -69,8 +69,8 @@ const ProfileEditPage = () => {
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
-    if (hasImageFormData()) {
-      postProfileImage({ formData: formData });
+    if (hasImageFormData) {
+      postProfileImage({ formData });
     }
 
     if (

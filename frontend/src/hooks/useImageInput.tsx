@@ -10,17 +10,19 @@ const compressionOptions = {
 const useImageInput = (imageName: string) => {
   const [formData, setFormData] = useState(new FormData());
   const [isImageLoading, setIsImageLoading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewImageUrl, setPreviewImageUrl] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const reader = useMemo(() => new FileReader(), []);
+
+  const hasImageFormData = formData.get(imageName) !== null;
 
   useEffect(() => {
     reader.addEventListener('loadend', handleReaderLoadend);
 
     // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
     return () => {
-      URL.revokeObjectURL(previewUrl);
+      // URL.revokeObjectURL(previewImageUrl);
       reader.removeEventListener('loadend', handleReaderLoadend);
     };
   }, []);
@@ -52,13 +54,18 @@ const useImageInput = (imageName: string) => {
 
     setIsImageLoading(true);
 
-    URL.revokeObjectURL(previewUrl);
-    const newPreviewUrl = URL.createObjectURL(file);
+    // 기존 preview 이미지 url 폐기
+    URL.revokeObjectURL(previewImageUrl);
 
-    setPreviewUrl(newPreviewUrl);
+    // preview 이미지 url 생성
+    const newPreviewImageUrl = URL.createObjectURL(file);
 
+    setPreviewImageUrl(newPreviewImageUrl);
+
+    // 이미지 압축
     const compressedFile = await imageCompression(file, compressionOptions);
 
+    // reader readAsDataURL완료되면 loadend 이벤트 발생
     reader.readAsDataURL(compressedFile);
   };
 
@@ -72,19 +79,13 @@ const useImageInput = (imageName: string) => {
     for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([ia], {
-      type: 'image/jpeg',
-    });
-    const file = new File([blob], `${imageName}.jpg`);
+    const blob = new Blob([ia]);
+    const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
 
     const formData = new FormData();
     formData.append(imageName, file);
 
     return formData;
-  };
-
-  const hasImageFormData = () => {
-    return formData.get(imageName) !== null;
   };
 
   const renderImageInput = () => (
@@ -99,7 +100,7 @@ const useImageInput = (imageName: string) => {
   );
 
   return {
-    previewImageUrl: previewUrl,
+    previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,
     hasImageFormData,
