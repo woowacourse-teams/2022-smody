@@ -1,4 +1,5 @@
-import { generateQueryClient } from 'queryClient';
+import { server } from '../mocks/server';
+import { generateQueryClient } from '../queryClient';
 import React, { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
 
