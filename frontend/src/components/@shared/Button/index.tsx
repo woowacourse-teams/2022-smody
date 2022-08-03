@@ -19,6 +19,7 @@ export const Button = styled.button<ButtonProps>`
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition: 0.3s;
 
     border-radius: 7px;
     ${isActive
@@ -33,9 +34,18 @@ export const Button = styled.button<ButtonProps>`
 
     font-size: ${SIZES[size].fontSize};
 
+    &:hover,
+    &:focus {
+      filter: brightness(1.2);
+    }
+
     &:disabled {
       background-color: ${theme.disabled};
       cursor: default;
+      &:hover,
+      &:focus {
+        filter: brightness(1);
+      }
     }
   `}
 `;
