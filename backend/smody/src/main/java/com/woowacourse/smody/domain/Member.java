@@ -47,7 +47,7 @@ public class Member {
     }
 
     public Member(String email, String nickname, String picture) {
-        this(email, nickname, picture, DEFAULT_INTRODUCTION);
+        this(email, nickname, DEFAULT_INTRODUCTION, picture);
     }
 
     private void validateIntroduction(String introduction) {
