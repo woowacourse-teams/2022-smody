@@ -1,5 +1,5 @@
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
-import { FormEventHandler, MouseEventHandler, useState } from 'react';
+import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
@@ -23,7 +23,26 @@ import { CLIENT_PATH } from 'constants/path';
 const FORM_DATA_IMAGE_NAME = 'profileImage';
 
 const ProfileEditPage = () => {
-  const { mutate: postProfileImage } = usePostProfileImage();
+  const {
+    mutate: postProfileImage,
+    isSuccess: isSuccessPostImage,
+    isLoading: isLoadingPostImage,
+  } = usePostProfileImage({
+    onError: () => {
+      setIsClickable(true);
+    },
+  });
+
+  const {
+    isLoading: isLoadingPatchMyInfo,
+    mutate: editMyInfo,
+    isSuccess: isSuccessPatchInfo,
+  } = usePatchMyInfo({
+    onError: () => {
+      setIsClickable(true);
+    },
+  });
+
   const {
     previewImageUrl,
     handleImageInputButtonClick,
@@ -36,21 +55,29 @@ const ProfileEditPage = () => {
   const themeContext = useThemeContext();
   const renderSnackBar = useSnackBar();
   const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
-
+  const [isClickable, setIsClickable] = useState(true);
   const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
   });
 
-  const { isLoading: isLoadingPatchMyInfo, mutate: editMyInfo } = usePatchMyInfo({
-    onSuccess: () => {
+  useEffect(() => {
+    if (hasImageFormData && isSuccessPostImage && isSuccessPatchInfo) {
+      navigate(CLIENT_PATH.PROFILE);
       renderSnackBar({
         message: '프로필 수정이 완료됐습니다.',
         status: 'SUCCESS',
       });
+      return;
+    }
 
+    if (!hasImageFormData && isSuccessPatchInfo) {
       navigate(CLIENT_PATH.PROFILE);
-    },
-  });
+      renderSnackBar({
+        message: '프로필 수정이 완료됐습니다.',
+        status: 'SUCCESS',
+      });
+    }
+  }, [hasImageFormData, isSuccessPostImage, isSuccessPatchInfo]);
 
   const email = useInput(dataMyInfo && dataMyInfo.data.email);
   const nickname = useInput(dataMyInfo && dataMyInfo.data.nickname, validateNickname);
@@ -60,14 +87,21 @@ const ProfileEditPage = () => {
   );
 
   const isAllValidated =
-    nickname.isValidated && introduction.isValidated && !isImageLoading;
+    nickname.isValidated && introduction.isValidated && !isImageLoading && isClickable;
 
-  if (isFetchingGetMyInfo || isLoadingPatchMyInfo || typeof dataMyInfo === 'undefined') {
+  if (
+    isFetchingGetMyInfo ||
+    isLoadingPatchMyInfo ||
+    isLoadingPostImage ||
+    typeof dataMyInfo === 'undefined'
+  ) {
     return <LoadingSpinner />;
   }
 
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    setIsClickable(false);
 
     if (hasImageFormData) {
       postProfileImage({ formData });
@@ -77,6 +111,7 @@ const ProfileEditPage = () => {
       typeof nickname.value === 'undefined' ||
       typeof introduction.value === 'undefined'
     ) {
+      setIsClickable(true);
       return;
     }
 
