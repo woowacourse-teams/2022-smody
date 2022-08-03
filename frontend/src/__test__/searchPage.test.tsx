@@ -1,7 +1,3 @@
-import App from 'App';
-import { MemoryRouter } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import { renderWithProviders } from 'utils/testUtils';
 
 import { screen, waitFor } from '@testing-library/react';

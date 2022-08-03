@@ -52,7 +52,12 @@ export const CertItem = ({
       style={{ ...cursorPointer }}
     >
       <TitleWrapper justifyContent="space-between">
-        <TitleText size={20} fontWeight="bold" color={themeContext.onBackground}>
+        <TitleText
+          aria-label="진행중인 챌린지 이름"
+          size={20}
+          fontWeight="bold"
+          color={themeContext.onBackground}
+        >
           {challengeName}
         </TitleText>
         <CheckCircles progressCount={progressCount} />
