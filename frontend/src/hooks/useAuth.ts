@@ -38,6 +38,7 @@ const useAuth = () => {
       queryClient.invalidateQueries(queryKeys.getMyInfo);
 
       setIsLogin(true);
+      removeQueryParams();
 
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',
@@ -52,6 +53,10 @@ const useAuth = () => {
     }
     getTokenGoogle();
   }, []);
+
+  const removeQueryParams = () => {
+    window.location.href = window.location.href.split('?')[0];
+  };
 
   return { isLogin, isLoading };
 };
