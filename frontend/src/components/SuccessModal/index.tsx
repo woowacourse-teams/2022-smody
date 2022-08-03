@@ -42,9 +42,14 @@ export const SuccessModal = ({
     emoji: [getEmoji(Number(challengeId))],
   });
 
+  const postJoinChallengeSuccessCallback = () => {
+    navigate(CLIENT_PATH.CERT);
+    handleCloseModal();
+  };
+
   const { joinChallenge } = usePostJoinChallenge({
     challengeId,
-    successCallback: handleCloseModal,
+    successCallback: postJoinChallengeSuccessCallback,
   });
 
   const handleCheckCertification = () => {
