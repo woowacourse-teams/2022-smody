@@ -12,6 +12,8 @@ import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.ImageUploader;
+import com.woowacourse.smody.image.ImgBBImageUploader;
 import com.woowacourse.smody.repository.CycleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +30,8 @@ public class CycleService {
     private final CycleRepository cycleRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
+
+    private final ImageUploader imageUploader;
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
@@ -58,6 +62,8 @@ public class CycleService {
         Cycle cycle = search(progressRequest.getCycleId());
         validateAuthorizedMember(tokenPayload, cycle);
         cycle.increaseProgress(progressRequest.getProgressTime());
+        // path와 fileName은 가짜임. 바꿔줘야 함
+        String imageUrl = imageUploader.upload(progressRequest.getProgressImage(), "path", "myProgress.jpg");
         return new ProgressResponse(cycle.getProgress());
     }
 

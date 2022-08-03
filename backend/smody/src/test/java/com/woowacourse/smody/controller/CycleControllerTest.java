@@ -8,8 +8,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -84,9 +85,13 @@ public class CycleControllerTest extends ControllerTest {
         ProgressResponse response = new ProgressResponse(2);
         given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willReturn(response);
+        MockMultipartFile file = new MockMultipartFile(
+                "progressImage", "test-progress-image.jpg", "image/jpg", "image".getBytes());
 
         // when
-        ResultActions result = mockMvc.perform(post("/cycles/1/progress")
+        ResultActions result = mockMvc.perform(multipart("/cycles/1/progress")
+                .file(file)
+                .param("description", "인증 완료")
                 .header("Authorization", "Bearer " + token));
 
         // then
@@ -94,6 +99,12 @@ public class CycleControllerTest extends ControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(response)))
                 .andDo(document("progress-cycle", HOST_INFO,
                         preprocessResponse(prettyPrint()),
+                        requestParts(
+                                partWithName("progressImage").description("인증 사진")
+                        ),
+                        requestParameters(
+                                parameterWithName("description").description("인증 설명")
+                        ),
                         responseFields(
                                 fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도")
                         )));

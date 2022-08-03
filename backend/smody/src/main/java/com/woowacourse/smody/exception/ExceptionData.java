@@ -22,6 +22,10 @@ public enum ExceptionData {
     NOT_FOUND_CHALLENGE(4002, "존재하지 않는 챌린지입니다.", 404),
     NOT_FOUND_CYCLE(4003, "존재하지 않는 사이클입니다.", 404),
 
+    EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다", 400),
+
+    INVALID_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
+
     AUTHORIZATION_SERVER_ERROR(9001, "인가 관련 서버 내부의 오류입니다.", 500),
     IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500);
 

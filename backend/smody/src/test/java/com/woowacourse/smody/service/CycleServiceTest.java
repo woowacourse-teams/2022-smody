@@ -22,25 +22,37 @@ import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.woowacourse.smody.image.ImageUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @Transactional
 public class CycleServiceTest {
 
     @Autowired
+    @InjectMocks
     private CycleService cycleService;
+
+    @MockBean
+    private ImageUploader imageUploader;
 
     @Autowired
     private CycleQueryService cycleQueryService;
@@ -118,12 +130,19 @@ public class CycleServiceTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
-                LocalDateTime.of(2022, 1, 1, 0, 0));
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        Cycle cycle = fixture.사이클_생성(
+                조조그린_ID,
+                스모디_방문하기_ID,
+                progress,
+                LocalDateTime.of(2022, 1, 1, 0, 0)
+        );
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
 
         // when
-        ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload,
-                new ProgressRequest(cycle.getId(), progressTime));
+        ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, request);
 
         // then
         assertThat(progressResponse.getProgressCount()).isEqualTo(expected);
@@ -142,12 +161,16 @@ public class CycleServiceTest {
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
+        ProgressRequest request = new ProgressRequest(cycle.getId(), invalidTime, imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), invalidTime)))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -162,13 +185,17 @@ public class CycleServiceTest {
     void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
-        cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), progressTime));
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
+        cycleService.increaseProgress(tokenPayload, request);
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), invalidTime)))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -179,10 +206,14 @@ public class CycleServiceTest {
     void increaseProgress_notExistCycle() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        ProgressRequest request = new ProgressRequest(1L, LocalDateTime.now(), imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(1L, LocalDateTime.now())))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CYCLE);
@@ -194,10 +225,14 @@ public class CycleServiceTest {
         // given
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        ProgressRequest request = new ProgressRequest(cycle.getId(), now.plusSeconds(1), imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), now.plusSeconds(1))))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);

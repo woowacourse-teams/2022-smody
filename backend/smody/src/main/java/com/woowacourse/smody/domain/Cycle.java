@@ -3,16 +3,10 @@ package com.woowacourse.smody.domain;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +30,9 @@ public class Cycle {
     @JoinColumn(name = "challenge_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Challenge challenge;
+
+    @OneToMany(mappedBy = "cycle")
+    private List<CycleDetail> cycleDetails = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

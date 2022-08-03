@@ -1,6 +1,8 @@
 package com.woowacourse.smody.image;
 
 import com.woowacourse.smody.dto.ImageUrlResponse;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ public class ImgBBImageUploader implements ImageUploader {
 
     @Override
     public String upload(MultipartFile image, String path, String fileName) {
+        validateEmptyImage(image);
         String requestUri = "https://api.imgbb.com/1/upload?key=" + ImgBB_KEY;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("image", image.getResource());
@@ -31,6 +34,12 @@ public class ImgBBImageUploader implements ImageUploader {
                 httpEntity, ImageUrlResponse.class).getBody();
 
         return response.getData().getUrl();
+    }
+
+    private void validateEmptyImage(MultipartFile image) {
+        if (image.isEmpty()) {
+            throw new BusinessException(ExceptionData.EMPTY_IMAGE);
+        }
     }
 
     @Override
