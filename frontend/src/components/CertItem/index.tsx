@@ -42,9 +42,10 @@ export const CertItem = ({
   });
 
   const handleClickWrapper = (e: MouseEvent) => {
-    if (e.currentTarget !== e.target) {
+    if (e.target instanceof HTMLButtonElement) {
       return;
     }
+
     navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
   };
 
