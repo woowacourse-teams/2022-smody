@@ -1,6 +1,8 @@
 import { useGetMyInfo, useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
+import { queryKeys } from 'apis/constants';
 import { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
@@ -20,10 +22,12 @@ const useAuth = () => {
       setIsLogin(true);
     },
     onError: () => {
+      // error swallow
       return null;
     },
   });
 
+  const queryClient = useQueryClient();
   const googleAuthCode = getUrlParameter('code');
 
   const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
@@ -31,6 +35,8 @@ const useAuth = () => {
     enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
+      queryClient.invalidateQueries(queryKeys.getMyInfo);
+
       setIsLogin(true);
 
       renderSnackBar({
