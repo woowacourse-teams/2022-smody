@@ -102,7 +102,7 @@ export const Navbar = () => {
 
 const Footer = styled.footer`
   ${({ theme }) => css`
-    position: sticky;
+    position: fixed;
     left: 0;
     bottom: 0;
     right: 0;
