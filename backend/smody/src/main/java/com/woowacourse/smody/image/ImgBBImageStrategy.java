@@ -15,12 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Primary
-public class ImgBBImageUploader implements ImageUploader {
+public class ImgBBImageStrategy implements ImageStrategy {
 
     private static final String ImgBB_KEY = "085936a4cafeb33b7d1a80073e9a1f91";
 
     @Override
-    public String upload(MultipartFile image, String path, String fileName) {
+    public String extractUrl(MultipartFile image) {
         validateEmptyImage(image);
         String requestUri = "https://api.imgbb.com/1/upload?key=" + ImgBB_KEY;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -40,10 +40,5 @@ public class ImgBBImageUploader implements ImageUploader {
         if (image.isEmpty()) {
             throw new BusinessException(ExceptionData.EMPTY_IMAGE);
         }
-    }
-
-    @Override
-    public boolean remove(String imageUrl) {
-        return false;
     }
 }

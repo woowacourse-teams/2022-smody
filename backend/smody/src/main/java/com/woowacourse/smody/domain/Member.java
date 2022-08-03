@@ -60,8 +60,8 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public void updatePicture(String picture) {
-        this.picture = picture;
+    public void updatePicture(Image picture) {
+        this.picture = picture.getUrl();
     }
 
     public void updateIntroduction(String introduction) {

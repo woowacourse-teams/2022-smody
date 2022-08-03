@@ -26,8 +26,4 @@ public class CycleResponse {
         this.startTime = cycle.getStartTime();
         this.successCount = successCount;
     }
-
-    public CycleResponse(Cycle cycle) {
-        this(cycle, null);
-    }
 }

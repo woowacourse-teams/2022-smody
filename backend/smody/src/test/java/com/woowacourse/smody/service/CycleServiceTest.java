@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
@@ -22,18 +23,16 @@ import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-
+import com.woowacourse.smody.image.ImageStrategy;
+import com.woowacourse.smody.image.ImgBBImageStrategy;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.woowacourse.smody.image.ImageUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +51,7 @@ public class CycleServiceTest {
     private CycleService cycleService;
 
     @MockBean
-    private ImageUploader imageUploader;
+    private ImageStrategy imageStrategy;
 
     @Autowired
     private CycleQueryService cycleQueryService;
@@ -302,9 +301,12 @@ public class CycleServiceTest {
     void progress_future_time() {
         // given
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
+        Image progressImage = new Image(
+                new MockMultipartFile("progressImage", "image".getBytes()), new ImgBBImageStrategy()
+        );
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now))
+        assertThatThrownBy(() -> cycle.increaseProgress(now, progressImage, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
