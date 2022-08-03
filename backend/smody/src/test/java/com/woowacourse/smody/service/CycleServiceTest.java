@@ -15,18 +15,15 @@ import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.image.ImgBBImageStrategy;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -253,21 +250,21 @@ public class CycleServiceTest {
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
         // when
-        List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+        List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                 tokenPayload, now, PageRequest.of(0, 10));
 
         // then
         assertAll(
                 () -> assertThat(actual)
-                        .map(CycleResponse::getCycleId)
+                        .map(InProgressCycleResponse::getCycleId)
                         .containsAll(List.of(inProgress1.getId(), inProgress2.getId(), future.getId())),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(1L))
-                        .map(CycleResponse::getSuccessCount)
+                        .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(1, 1),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(2L))
-                        .map(CycleResponse::getSuccessCount)
+                        .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(2)
         );
     }
@@ -277,6 +274,13 @@ public class CycleServiceTest {
     void findById() {
         // given
         Cycle inProgress = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        Image progressImage = new Image(
+                new MockMultipartFile("progressImage", "image".getBytes()),
+                image -> "fakeUrl"
+        );
+        inProgress.increaseProgress(now.plusSeconds(1L), progressImage, "인증 완료");
+        inProgress.increaseProgress(now.plusDays(1L).plusSeconds(1L), progressImage, "인증 완료");
+
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SECOND(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(9L));
@@ -292,7 +296,10 @@ public class CycleServiceTest {
                 () -> assertThat(cycleResponse.getChallengeName()).isEqualTo(inProgress.getChallenge().getName()),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(inProgress.getProgress().getCount()),
                 () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
-                () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2)
+                () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2),
+                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime()).isEqualTo(now.plusSeconds(1L)),
+                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime()).isEqualTo(now.plusDays(1L).plusSeconds(1L))
+
         );
     }
 
@@ -341,12 +348,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_sort() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 10));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId(),
                             proceed2.getId(), proceed1.getId());
         }
@@ -355,12 +362,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingFullSize() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 3));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId());
         }
 
@@ -368,12 +375,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingPartialSize() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(1, 3));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(proceed2.getId(), proceed1.getId());
         }
 
@@ -381,7 +388,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingOverMaxPage() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(2, 3));
 
             // then

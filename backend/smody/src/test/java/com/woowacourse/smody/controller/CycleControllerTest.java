@@ -19,12 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -153,13 +148,12 @@ public class CycleControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         LocalDateTime now = LocalDateTime.now();
-        List<CycleResponse> cycleResponses = List.of(
-                new CycleResponse(1L, 1L, "미라클 모닝", 2, now, 3),
-                new CycleResponse(2L, 2L, "오늘의 운동", 1, now, 3)
-        );
+        List<InProgressCycleResponse> inProgressCycleResponses = List.of(
+                new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3),
+                new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3));
         given(cycleQueryService.findInProgressOfMine(
                 any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
-        )).willReturn(cycleResponses);
+        )).willReturn(inProgressCycleResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/cycles/me?page=0&size=5")
@@ -167,7 +161,7 @@ public class CycleControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(cycleResponses)))
+                .andExpect(content().json(objectMapper.writeValueAsString(inProgressCycleResponses)))
                 .andDo(document("get-inProgress-cycle-mine", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -186,7 +180,9 @@ public class CycleControllerTest extends ControllerTest {
         // given
         long cycleId = 1L;
         CycleResponse cycleResponse = new CycleResponse(
-                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3);
+                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3,
+                List.of(new CycleDetailResponse(LocalDateTime.now(), "image1", "인증 내용1"),
+                        new CycleDetailResponse(LocalDateTime.now(), "image2", "인증 내용2")));
         given(cycleQueryService.findById(cycleId))
                 .willReturn(cycleResponse);
 
@@ -204,7 +200,10 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
                                 fieldWithPath("startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
-                                fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수")
+                                fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
+                                fieldWithPath("cycleDetails[].progressTime").type(JsonFieldType.STRING).description("인증 시간"),
+                                fieldWithPath("cycleDetails[].progressImage").type(JsonFieldType.STRING).description("인증 사진"),
+                                fieldWithPath("cycleDetails[].description").type(JsonFieldType.STRING).description("인증 설명")
                         )));
     }
 

@@ -3,8 +3,10 @@ package com.woowacourse.smody.domain;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,7 +65,9 @@ public class Cycle {
 
     public void increaseProgress(LocalDateTime progressTime, Image progressImage, String description) {
         this.progress = progress.increase(startTime, progressTime);
-        this.cycleDetails.add(new CycleDetail(this, progressTime, progressImage.getUrl(), description));
+        if (this.cycleDetails.size() <= 2) {
+            this.cycleDetails.add(new CycleDetail(this, progressTime, progressImage.getUrl(), description));
+        }
     }
 
     public boolean matchMember(Long memberId) {
@@ -84,5 +88,12 @@ public class Cycle {
 
     public long calculateEndTime(LocalDateTime searchTime) {
         return this.progress.calculateEndTime(this.startTime, searchTime);
+    }
+
+    public List<CycleDetail> getCycleDetails() {
+        return cycleDetails.stream()
+                .sorted((detail1, detail2) ->
+                        (int) ChronoUnit.MILLIS.between(detail2.getProgressTime(), detail1.getProgressTime()))
+                .collect(Collectors.toList());
     }
 }
