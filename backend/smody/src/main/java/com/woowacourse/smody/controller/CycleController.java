@@ -1,12 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import java.net.URI;
@@ -16,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,15 +35,15 @@ public class CycleController {
 
     @PostMapping("/{cycleId}/progress")
     public ResponseEntity<ProgressResponse> increase(@LoginMember TokenPayload tokenPayload,
-                                                     @PathVariable Long cycleId) {
-        ProgressRequest progressRequest = new ProgressRequest(cycleId, LocalDateTime.now());
+                                                     @ModelAttribute ProgressRequest progressRequest) {
+        progressRequest.setProgressTime(LocalDateTime.now());
         ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, progressRequest);
         return ResponseEntity.ok(progressResponse);
     }
 
     @GetMapping(value = "/me")
-    public ResponseEntity<List<CycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
-                                                                       Pageable pageable) {
+    public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
+                                                                                 Pageable pageable) {
         return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
     }
 

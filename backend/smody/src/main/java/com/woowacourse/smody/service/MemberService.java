@@ -1,15 +1,15 @@
 package com.woowacourse.smody.service;
 
+import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.ImageUploader;
+import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final CycleRepository cycleRepository;
-    private final ImageUploader imageUploader;
+    private final ImageStrategy imageStrategy;
 
     public MemberResponse searchMyInfo(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
@@ -51,16 +51,6 @@ public class MemberService {
     @Transactional
     public void updateProfileImage(TokenPayload tokenPayload, MultipartFile profileImage) {
         Member member = search(tokenPayload);
-
-        String imageUrl = member.getPicture();
-        imageUploader.remove(imageUrl);
-
-        String fileName = UUID.randomUUID().toString();
-        String newImageUrl = imageUploader.upload(profileImage, generateFolderName(member), fileName);
-        member.updatePicture(newImageUrl);
-    }
-
-    private String generateFolderName(Member member) {
-        return "member_" + member.getId();
+        member.updatePicture(new Image(profileImage, imageStrategy));
     }
 }

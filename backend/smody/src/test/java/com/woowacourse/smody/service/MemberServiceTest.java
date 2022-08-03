@@ -10,13 +10,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.ImageUploader;
+import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
@@ -40,7 +42,7 @@ public class MemberServiceTest {
     private MemberService memberService;
 
     @MockBean
-    private ImageUploader imageUploader;
+    private ImageStrategy imageStrategy;
 
     @Autowired
     private CycleRepository cycleRepository;
@@ -50,6 +52,15 @@ public class MemberServiceTest {
 
     @PersistenceContext
     EntityManager em;
+
+    private final Image progressImage = new Image(new MockMultipartFile("progressImage", "image".getBytes()),
+            new ImageStrategy() {
+                @Override
+                public String extractUrl(final MultipartFile image) {
+                    return "fakeUrl";
+                }
+            }
+    );
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
     @Test
@@ -99,8 +110,9 @@ public class MemberServiceTest {
     void withdraw() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, LocalDateTime.now());
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
+        cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
 
         // when
         memberService.withdraw(tokenPayload);
@@ -108,10 +120,14 @@ public class MemberServiceTest {
         em.clear();
 
         // then
-        assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
-                .isInstanceOf(BusinessException.class);
-        assertThat(cycleRepository.findAll())
-                .hasSize(0);
+        assertAll(
+                () -> assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
+                        .isInstanceOf(BusinessException.class),
+                () -> assertThat(cycleRepository.findAll())
+                        .hasSize(0),
+                () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList())
+                        .hasSize(0)
+        );
     }
 
     @DisplayName("회원을 프로필 이미지를 수정한다.")
@@ -122,10 +138,8 @@ public class MemberServiceTest {
         MultipartFile profileImage = new MockMultipartFile(
                 "profileImage", "profile.jpg", "image/jpg", "image".getBytes()
         );
-
         String expected = "https://www.abc.com/profile.jpg";
-
-        given(imageUploader.upload(any(), any(), any()))
+        given(imageStrategy.extractUrl(any()))
                 .willReturn(expected);
 
         // when

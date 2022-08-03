@@ -47,7 +47,7 @@ public class Member {
     }
 
     public Member(String email, String nickname, String picture) {
-        this(email, nickname, picture, DEFAULT_INTRODUCTION);
+        this(email, nickname, DEFAULT_INTRODUCTION, picture);
     }
 
     private void validateIntroduction(String introduction) {
@@ -60,8 +60,8 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public void updatePicture(String picture) {
-        this.picture = picture;
+    public void updatePicture(Image picture) {
+        this.picture = picture.getUrl();
     }
 
     public void updateIntroduction(String introduction) {

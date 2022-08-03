@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.mock.web.MockMultipartFile;
 
 public class CycleTest {
 
@@ -24,6 +25,10 @@ public class CycleTest {
     private static final Challenge challenge = new Challenge("미라클 모닝");
 
     private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
+
+    private final Image progressImage = new Image(
+            new MockMultipartFile("progressImage", "image".getBytes()), image -> "fakeUrl"
+    );
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
     @ParameterizedTest
@@ -40,7 +45,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when
-        cycle.increaseProgress(progressTime);
+        cycle.increaseProgress(progressTime, progressImage, "인증 완료");
 
         // then
         assertThat(cycle.getProgress()).isEqualTo(expected);
@@ -61,7 +66,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime))
+        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, progressImage, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -77,10 +82,10 @@ public class CycleTest {
         // given
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
-        cycle.increaseProgress(progressTime);
+        cycle.increaseProgress(progressTime, progressImage, "인증 완료");
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime))
+        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, progressImage, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -93,7 +98,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, Progress.SUCCESS, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now))
+        assertThatThrownBy(() -> cycle.increaseProgress(now, progressImage, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);
