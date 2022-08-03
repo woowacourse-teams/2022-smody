@@ -1,5 +1,6 @@
 import { usePostCycleProgress } from 'apis';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
@@ -11,6 +12,8 @@ import { CertItemProps } from 'components/CertItem/type';
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CYCLE_UNIT } from 'constants/domain';
+import { CLIENT_PATH } from 'constants/path';
+import { cursorPointer } from 'constants/style';
 
 export const CertItem = ({
   cycleId,
@@ -22,6 +25,7 @@ export const CertItem = ({
   refetch,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
+  const navigate = useNavigate();
 
   const nowDate = new Date();
   const certStartDate = addDays(new Date(startTime), progressCount);
@@ -37,7 +41,14 @@ export const CertItem = ({
     },
   });
 
-  const handleClick = () => {
+  const handleClickWrapper = (e: MouseEvent) => {
+    if (e.currentTarget !== e.target) {
+      return;
+    }
+    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
+  };
+
+  const handleClickButton = () => {
     mutate({ cycleId });
   };
 
@@ -47,7 +58,12 @@ export const CertItem = ({
   };
 
   return (
-    <Wrapper flexDirection="column" gap="1rem">
+    <Wrapper
+      flexDirection="column"
+      gap="1rem"
+      onClick={(e) => handleClickWrapper(e)}
+      style={{ ...cursorPointer }}
+    >
       <TitleWrapper justifyContent="space-between">
         <TitleText size={20} fontWeight="bold" color={themeContext.onBackground}>
           {challengeName}
@@ -66,7 +82,7 @@ export const CertItem = ({
         <Timer certEndDate={certEndDate} />
       </RowWrapper>
       <RowWrapper justifyContent="center" gap="1.5rem">
-        <Button disabled={!isCertPossible} onClick={handleClick} size="large">
+        <Button disabled={!isCertPossible} onClick={handleClickButton} size="large">
           {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
         </Button>
       </RowWrapper>
