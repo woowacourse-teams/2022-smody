@@ -7,7 +7,7 @@ export interface GetChallengeResponse {
   isInProgress: boolean;
 }
 
-export type GetChallengeByIdProps = Pick<Challenge, 'challengeId'>;
+export interface GetChallengeByIdProps extends Pick<Challenge, 'challengeId'> {}
 
 export interface GetChallengeByIdResponse
   extends Pick<
