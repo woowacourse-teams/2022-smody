@@ -1,5 +1,6 @@
-import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
+import { useGetMyCyclesStat } from 'apis/cycleApi';
+import { useGetMyInfo } from 'apis/oAuthApi';
 import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
@@ -48,7 +49,12 @@ export const Profile = () => {
       <FlexBox justifyContent="center" gap="2rem">
         <ProfileImg src={picture} alt={profileImgAlt} />
         <FlexBox flexDirection="column" gap="0.4rem">
-          <Text size={20} color={themeContext.onBackground} fontWeight="bold">
+          <Text
+            data-testid="nickname"
+            size={20}
+            color={themeContext.onBackground}
+            fontWeight="bold"
+          >
             {nickname}
           </Text>
           {/* TODO: 프로필 편집 텍스트 width 제한. 이를 통해 자기 소개가 길어졌을 때 하단 프로필 편집, 로그아웃 버튼의 UI가 변경되는 문제 해결할 수 있음! */}
