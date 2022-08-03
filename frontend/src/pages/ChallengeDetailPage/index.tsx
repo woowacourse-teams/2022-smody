@@ -38,7 +38,7 @@ const ChallengeDetailPage = () => {
     return <LoadingSpinner />;
   }
 
-  const { challengeName, challengerCount } = data.data;
+  const { challengeName, challengerCount, isInProgress } = data.data;
 
   return (
     <Wrapper>
@@ -61,7 +61,11 @@ const ChallengeDetailPage = () => {
           {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>
+      <FixedButton
+        size="large"
+        onClick={() => joinChallenge(challengeName)}
+        disabled={isInProgress}
+      >
         도전하기
       </FixedButton>
     </Wrapper>
