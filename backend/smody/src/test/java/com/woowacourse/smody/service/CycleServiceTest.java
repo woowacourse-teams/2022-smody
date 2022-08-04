@@ -419,43 +419,9 @@ public class CycleServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(response.getTotalCount()).isEqualTo(8),
+                    () -> assertThat(response.getTotalCount()).isEqualTo(7),
                     () -> assertThat(response.getSuccessCount()).isEqualTo(1)
             );
         }
-    }
-
-    @Test
-    @DisplayName("인증하기(멀티 스레드) 테스트")
-    void increaseProgress_multiThreadTest() throws InterruptedException {
-        // given
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        LocalDateTime testingTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-        Cycle cycle = cycleService.search(1L);
-        MultipartFile file = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "인증 사진".getBytes()
-        );
-        ProgressRequest progressRequest = new ProgressRequest(cycle.getId(), testingTime.plusSeconds(1L), file, "인증 내용");
-
-        int numberOfExecute = 20;
-        ExecutorService service = Executors.newFixedThreadPool(numberOfExecute);
-        CountDownLatch latch = new CountDownLatch(numberOfExecute);
-
-        // when
-        for (int i = 0; i < numberOfExecute; i++) {
-            service.execute(() -> {
-                try {
-                    cycleService.increaseProgress(tokenPayload, progressRequest);
-                }
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                latch.countDown();
-            });
-        }
-        latch.await();
-
-        // then
-        assertThat(cycle.getCycleDetails().size()).isEqualTo(1);
     }
 }
