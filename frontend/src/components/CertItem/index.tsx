@@ -39,8 +39,15 @@ export const CertItem = ({
   };
 
   const handleClickButton = () => {
-    navigate(CLIENT_PATH.CERT_FORM, {
-      state: { cycleId, challengeId, challengeName, progressCount, successCount },
+    navigate(CLIENT_PATH.CERT, {
+      state: {
+        isInCertFormPage: true,
+        cycleId,
+        challengeId,
+        challengeName,
+        progressCount,
+        successCount,
+      },
     });
   };
 

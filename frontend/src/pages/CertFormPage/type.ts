@@ -8,8 +8,7 @@ export interface TextAreaProps {
   isDark: boolean;
 }
 
-export interface CertFormPageLocationState
-  extends Pick<
-    Cycle,
-    'cycleId' | 'challengeId' | 'challengeName' | 'successCount' | 'progressCount'
-  > {}
+export type CertFormPageLocationState = Pick<
+  Cycle,
+  'cycleId' | 'challengeId' | 'challengeName' | 'successCount' | 'progressCount'
+>;
