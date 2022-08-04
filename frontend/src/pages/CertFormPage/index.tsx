@@ -19,11 +19,10 @@ import {
 import {
   FlexBox,
   Text,
-  Button,
   CheckCircles,
   Title,
   ThumbnailWrapper,
-  LoadingSpinner,
+  LoadingButton,
 } from 'components';
 import { SuccessModal } from 'components/SuccessModal';
 
@@ -50,7 +49,11 @@ const CertFormPage = () => {
     [isImageLoading, formData],
   );
 
-  const { mutate: postCycleProgress, isLoading } = usePostCycleProgress({
+  const {
+    mutate: postCycleProgress,
+    isLoading: isLoadingPost,
+    isSuccess: isSuccessPost,
+  } = usePostCycleProgress({
     onSuccess: () => {
       setIsSuccessModalOpen(true);
     },
@@ -77,13 +80,10 @@ const CertFormPage = () => {
     setIsSuccessModalOpen(false);
   };
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <FlexBox flexDirection="column" alignItems="center">
       <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
+
       <CertInfoWrapper
         flexDirection="row"
         justifyContent="space-evenly"
@@ -156,9 +156,14 @@ const CertFormPage = () => {
             {description.length}/255
           </TextLength>
         </Section>
-        <Button size="large" disabled={isButtonDisabled}>
-          인증하기
-        </Button>
+        <LoadingButton
+          isDisabled={isButtonDisabled}
+          isLoading={isLoadingPost}
+          isSuccess={isSuccessPost}
+          defaultText="인증하기"
+          loadingText="업로드 중"
+          successText="인증완료"
+        />
       </form>
       {isSuccessModalOpen && (
         <SuccessModal

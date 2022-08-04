@@ -52,6 +52,6 @@ export const auth = [
 
   // 프로필 이미지 업로드(POST)
   rest.post(`${BASE_URL}/members/me/profile-image`, (req, res, ctx) => {
-    return res(ctx.status(201));
+    return res(ctx.delay(5000), ctx.status(201));
   }),
 ];

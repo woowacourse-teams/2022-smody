@@ -13,9 +13,9 @@ import {
   FlexBox,
   Button,
   Input,
-  LoadingSpinner,
   UserWithdrawalModal,
   Title,
+  LoadingButton,
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -56,7 +56,7 @@ const ProfileEditPage = () => {
   const renderSnackBar = useSnackBar();
   const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
   const [isClickable, setIsClickable] = useState(true);
-  const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
+  const { data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
   });
 
@@ -89,13 +89,8 @@ const ProfileEditPage = () => {
   const isAllValidated =
     nickname.isValidated && introduction.isValidated && !isImageLoading && isClickable;
 
-  if (
-    isFetchingGetMyInfo ||
-    isLoadingPatchMyInfo ||
-    isLoadingPostImage ||
-    typeof dataMyInfo === 'undefined'
-  ) {
-    return <LoadingSpinner />;
+  if (typeof dataMyInfo === 'undefined') {
+    return null;
   }
 
   const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
@@ -156,9 +151,14 @@ const ProfileEditPage = () => {
           placeholder="간단한 자기 소개를 입력해주세요."
           {...introduction}
         />
-        <Button size="large" disabled={!isAllValidated}>
-          프로필 편집 완료
-        </Button>
+        <LoadingButton
+          isDisabled={!isAllValidated}
+          isLoading={isLoadingPostImage || isLoadingPatchMyInfo}
+          isSuccess={isSuccessPostImage && isSuccessPatchInfo}
+          defaultText="프로필 편집 완료"
+          loadingText="업로드 중"
+          successText="수정 완료"
+        />
       </ProfileEditForm>
       <Button
         style={{ backgroundColor: themeContext.error, color: themeContext.onError }}
