@@ -1,4 +1,6 @@
 import { useGetChallengeById } from 'apis';
+import { queryKeys } from 'apis/constants';
+import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
@@ -8,22 +10,16 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
-import {
-  FlexBox,
-  Text,
-  FixedButton,
-  ThumbnailWrapper,
-  LoadingSpinner,
-  Title,
-} from 'components';
+import { FlexBox, Text, FixedButton, ThumbnailWrapper, Title } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 const ChallengeDetailPage = () => {
   const themeContext = useThemeContext();
+  const queryClient = useQueryClient();
   const { challengeId } = useParams();
 
-  const { isFetching, data } = useGetChallengeById(
+  const { data } = useGetChallengeById(
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
@@ -32,13 +28,16 @@ const ChallengeDetailPage = () => {
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
+    successCallback: () => {
+      queryClient.invalidateQueries(queryKeys.getChallengeById);
+    },
   });
 
-  if (isFetching || typeof data === 'undefined' || typeof data.data === 'undefined') {
-    return <LoadingSpinner />;
+  if (typeof data === 'undefined' || typeof data.data === 'undefined') {
+    return null;
   }
 
-  const { challengeName, challengerCount } = data.data;
+  const { challengeName, challengerCount, isInProgress } = data.data;
 
   return (
     <Wrapper>
@@ -61,7 +60,11 @@ const ChallengeDetailPage = () => {
           {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>
+      <FixedButton
+        size="large"
+        onClick={() => joinChallenge(challengeName)}
+        disabled={isInProgress}
+      >
         도전하기
       </FixedButton>
     </Wrapper>

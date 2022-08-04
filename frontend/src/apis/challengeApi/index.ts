@@ -77,4 +77,3 @@ export const useGetChallengeById = (
       : () => getChallengeById({ challengeId }),
     options,
   );
-``;
