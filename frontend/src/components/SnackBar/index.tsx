@@ -7,6 +7,8 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, LinkText, FlexBox } from 'components';
 
+import { Z_INDEX } from 'constants/css';
+
 export const SnackBar = () => {
   const themeContext = useThemeContext();
   const { isVisible, status, message, linkText, linkTo } = useRecoilValue(snackBarState);
@@ -43,7 +45,7 @@ export const SnackBar = () => {
 
 const SnackBarElement = styled.div<{ status: string }>`
   ${({ theme, status }) => css`
-    z-index: 3;
+    z-index: ${Z_INDEX.SNACKBAR};
     width: 95%;
     max-width: 900px;
     margin: 0;

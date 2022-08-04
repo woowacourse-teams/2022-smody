@@ -11,6 +11,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { Text, FlexBox } from 'components';
 import { NavLinkProps } from 'components/Navbar/type';
 
+import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
@@ -101,13 +102,14 @@ export const Navbar = () => {
 
 const Footer = styled.footer`
   ${({ theme }) => css`
-    position: sticky;
-    left: 0;
+    position: fixed;
     bottom: 0;
+    left: 0;
     right: 0;
     height: 3.625rem;
     background-color: ${theme.background};
     border-top: 1px solid ${theme.border};
+    z-index: ${Z_INDEX.NAVBAR};
   `}
 `;
 

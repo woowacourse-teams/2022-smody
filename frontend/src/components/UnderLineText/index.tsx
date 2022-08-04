@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 
 import { UnderLineTextProps } from 'components/UnderLineText/type';
 
+import { Z_INDEX } from 'constants/css';
+
 import { FontSizeType } from 'styles/type';
 
 export const UnderLineText = styled.p<UnderLineTextProps>`
@@ -13,7 +15,7 @@ export const UnderLineText = styled.p<UnderLineTextProps>`
     padding: 0 2px;
     color: ${fontColor};
     font-size: ${fontSizeMapper[fontSize ?? 16]}rem;
-    z-index: 0;
+    z-index: ${Z_INDEX.UNDER_TEXT};
 
     &::after {
       content: '';
@@ -25,7 +27,7 @@ export const UnderLineText = styled.p<UnderLineTextProps>`
       height: ${fontSizeMapper[fontSize ?? 16] * 0.4}rem;
       background-color: ${underLineColor};
       opacity: 0.5;
-      z-index: -1;
+      z-index: ${Z_INDEX.UNDER_LINE};
     }
   `}
 `;
