@@ -15,8 +15,7 @@ import { BASE_URL } from 'constants/path';
 export const challenge = [
   //1. 챌린지 사이클 생성(POST)
   rest.post(`${BASE_URL}${API_PATH.CYCLE}`, (req, res, ctx) => {
-    const { challengeId } = req.body;
-    return res(ctx.status(403), ctx.json({ code: 3003 }));
+    return res(ctx.json(201));
   }),
   // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
   rest.get(`${BASE_URL}/cycles/me`, (req, res, ctx) => {
@@ -56,7 +55,7 @@ export const challenge = [
     const { cycleId } = req.params;
     cycleData[cycleId - 1].progressCount++;
 
-    return res(ctx.status(200), ctx.json({ progressCount: 2 }));
+    return res(ctx.delay(3000), ctx.status(200), ctx.json({ progressCount: 2 }));
   }),
 
   // 5. 모든 챌린지 조회(GET) - 비회원
