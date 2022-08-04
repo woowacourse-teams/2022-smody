@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +61,7 @@ public class CycleService {
 
     @Transactional
     public ProgressResponse increaseProgress(TokenPayload tokenPayload, ProgressRequest progressRequest) {
-        Cycle cycle = search(progressRequest.getCycleId());
+        Cycle cycle = searchWithLock(progressRequest.getCycleId());
         validateAuthorizedMember(tokenPayload, cycle);
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
@@ -79,6 +81,11 @@ public class CycleService {
 
     public Cycle search(Long cycleId) {
         return cycleRepository.findById(cycleId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+    }
+
+    public Cycle searchWithLock(Long cycleId) {
+        return cycleRepository.findByIdWithLock(cycleId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 

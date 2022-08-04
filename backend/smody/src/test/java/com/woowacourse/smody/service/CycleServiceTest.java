@@ -10,11 +10,11 @@ import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.*;
 
 import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.domain.*;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -23,6 +23,10 @@ import com.woowacourse.smody.image.ImgBBImageStrategy;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,14 +34,20 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @SpringBootTest
 @Transactional
@@ -57,6 +67,12 @@ public class CycleServiceTest {
     private ResourceFixture fixture;
 
     private final LocalDateTime now = LocalDateTime.now();
+
+    @BeforeEach
+    void init() {
+        given(imageStrategy.extractUrl(any()))
+                .willReturn("fakeUrl");
+    }
 
 
     @DisplayName("사이클을 생성한다.")
@@ -205,7 +221,7 @@ public class CycleServiceTest {
         MultipartFile imageFile = new MockMultipartFile(
                 "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
         );
-        ProgressRequest request = new ProgressRequest(1L, LocalDateTime.now(), imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(1000L, LocalDateTime.now(), imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
@@ -403,9 +419,43 @@ public class CycleServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(response.getTotalCount()).isEqualTo(7),
+                    () -> assertThat(response.getTotalCount()).isEqualTo(8),
                     () -> assertThat(response.getSuccessCount()).isEqualTo(1)
             );
         }
+    }
+
+    @Test
+    @DisplayName("인증하기(멀티 스레드) 테스트")
+    void increaseProgress_multiThreadTest() throws InterruptedException {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        LocalDateTime testingTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
+        Cycle cycle = cycleService.search(1L);
+        MultipartFile file = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "인증 사진".getBytes()
+        );
+        ProgressRequest progressRequest = new ProgressRequest(cycle.getId(), testingTime.plusSeconds(1L), file, "인증 내용");
+
+        int numberOfExecute = 20;
+        ExecutorService service = Executors.newFixedThreadPool(numberOfExecute);
+        CountDownLatch latch = new CountDownLatch(numberOfExecute);
+
+        // when
+        for (int i = 0; i < numberOfExecute; i++) {
+            service.execute(() -> {
+                try {
+                    cycleService.increaseProgress(tokenPayload, progressRequest);
+                }
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                latch.countDown();
+            });
+        }
+        latch.await();
+
+        // then
+        assertThat(cycle.getCycleDetails().size()).isEqualTo(1);
     }
 }

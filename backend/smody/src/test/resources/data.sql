@@ -21,3 +21,6 @@ insert into challenge (name)
 values ('알고리즘 풀기');
 insert into challenge (name)
 values ('JPA 공부');
+
+insert into cycle (challenge_id, member_id, progress, start_time)
+values (1, 1, 'NOTHING', '2022-01-01 00:00:00');
