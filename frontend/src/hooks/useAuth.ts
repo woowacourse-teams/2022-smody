@@ -9,6 +9,10 @@ import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
 
+const removeQueryParams = () => {
+  window.location.href = window.location.href.split('?')[0];
+};
+
 const useAuth = () => {
   const renderSnackBar = useSnackBar();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
@@ -38,6 +42,7 @@ const useAuth = () => {
       queryClient.invalidateQueries(queryKeys.getMyInfo);
 
       setIsLogin(true);
+      removeQueryParams();
 
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',
