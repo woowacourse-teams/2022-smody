@@ -59,14 +59,17 @@ public class ChallengeQueryService {
     }
 
     private Map<Challenge, List<Cycle>> groupByChallenge(List<Cycle> cycles) {
-        return cycles.stream().collect(groupingBy(Cycle::getChallenge));
+        return cycles.stream()
+            .collect(groupingBy(Cycle::getChallenge));
     }
 
     private List<ChallengeResponse> getResponsesOrderByCount(Map<Challenge, List<Cycle>> inProgressCycles) {
-        return challengeService.searchAll().stream().map(challenge -> new ChallengeResponse(challenge,
-                        inProgressCycles.getOrDefault(challenge, List.of()).size()))
+        return challengeService.searchAll().stream().map(challenge ->
+                new ChallengeResponse(
+                    challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))
                 .sorted((response1, response2) -> Integer.compare(response2.getChallengerCount(),
-                        response1.getChallengerCount())).collect(toList());
+                        response1.getChallengerCount()))
+            .collect(toList());
     }
 
     private boolean matchMember(Map<Challenge, List<Cycle>> inProgressCycles,
@@ -86,11 +89,16 @@ public class ChallengeQueryService {
 
         List<Challenge> pagedChallenges = PagingUtil.page(extractChallenges(cycles), pageable);
         return pagedChallenges.stream()
-                .map(challenge -> new SuccessChallengeResponse(challenge.getId(), challenge.getName(),
-                        groupedSize.get(challenge).intValue())).collect(toList());
+                .map(challenge -> new SuccessChallengeResponse(
+                    challenge.getId(), challenge.getName(),
+                    groupedSize.get(challenge).intValue()
+                )).collect(toList());
     }
 
     private List<Challenge> extractChallenges(List<Cycle> cycles) {
-        return cycles.stream().map(Cycle::getChallenge).distinct().collect(toList());
+        return cycles.stream()
+            .map(Cycle::getChallenge)
+            .distinct()
+            .collect(toList());
     }
 }
