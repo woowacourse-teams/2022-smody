@@ -67,7 +67,10 @@ const CertFormPage = () => {
   const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    formData.append('description', description);
+    formData.append(
+      'description',
+      description || `${challengeName}챌린지 ${progressCount + 1}번째 완료`,
+    );
 
     postCycleProgress({ cycleId, formData });
   };
