@@ -36,7 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-**/src/main/resources/application.yml
-application.properties
+**/src/main/resources/application.properties
 
 node_modules
