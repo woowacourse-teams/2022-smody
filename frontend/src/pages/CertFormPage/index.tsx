@@ -69,7 +69,7 @@ const CertFormPage = () => {
 
     formData.append(
       'description',
-      description || `${challengeName}챌린지 ${progressCount + 1}번째 완료`,
+      description.trim() || `${challengeName}챌린지 ${progressCount + 1}번째 완료`,
     );
 
     postCycleProgress({ cycleId, formData });
