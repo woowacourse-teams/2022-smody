@@ -1,8 +1,7 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
-import useAuth from 'hooks/auth/useAuth';
+import useAuth from 'hooks/useAuth';
 
 import {
   Feed,
@@ -14,11 +13,32 @@ import {
   ProfilePage,
   ProfileEditPage,
   VocPage,
+  CycleDetailPage,
+  CertFormPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
+
+interface LocationState {
+  isInCertFormPage: boolean;
+  cycleId?: number;
+  challengeId?: number;
+  challengeName?: string;
+  progressCount?: number;
+  successCount?: number;
+}
+
+const CertFlowPage = () => {
+  const { state } = useLocation();
+  const locationState = state as LocationState;
+  if (state === null || locationState.isInCertFormPage === false) {
+    return <CertPage />;
+  }
+
+  return <CertFormPage />;
+};
 
 const Router = () => {
   const { isLogin, isLoading } = useAuth();
@@ -35,12 +55,13 @@ const Router = () => {
           <Route element={<PrivateOutlet isLogin={isLogin} isLoading={isLoading} />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
             <Route path={CLIENT_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />
-            <Route path={CLIENT_PATH.CERT} element={<CertPage />} />
+            <Route path={CLIENT_PATH.CERT} element={<CertFlowPage />} />
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
           <Route path={CLIENT_PATH.FEED} element={<Feed />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
+          <Route path={CLIENT_PATH.CYCLE_DETAIL_ID} element={<CycleDetailPage />} />
           <Route
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
             element={<ChallengeDetailPage />}

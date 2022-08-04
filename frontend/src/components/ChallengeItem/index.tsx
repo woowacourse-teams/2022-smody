@@ -1,9 +1,9 @@
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
@@ -17,7 +17,7 @@ export const ChallengeItem = ({
   isInProgress,
   challengeListRefetch,
 }: ChallengeItemProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
@@ -32,35 +32,32 @@ export const ChallengeItem = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper justifyContent="space-between" alignItems="center">
       <div>
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
-          <ChallengeInfoWrapper>
+          <FlexBox gap="17px" alignItems="center">
             <ThumbnailWrapper size="small" bgColor="#E6D1F2">
               {getEmoji(Number(challengeId))}
             </ThumbnailWrapper>
-            <ChallengeNameWrapper>
-              <Text color={themeContext.onSurface} size={16}>
+            <FlexBox flexDirection="column" gap="0.5rem">
+              <Text aria-label="challenge-name" color={themeContext.onSurface} size={16}>
                 {challengeName}
               </Text>
               <Text color={themeContext.mainText} size={12}>
                 {challengerCount}명 도전중
               </Text>
-            </ChallengeNameWrapper>
-          </ChallengeInfoWrapper>
+            </FlexBox>
+          </FlexBox>
         </Link>
       </div>
-      <Button onClick={handleClickProgressButton} size="small" isActive={isInProgress}>
+      <Button onClick={handleClickProgressButton} size="small" isActive={!isInProgress}>
         {isInProgress ? '도전중' : '도전'}
       </Button>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})`
+const Wrapper = styled(FlexBox)`
   div {
     flex-grow: 1;
   }
@@ -69,13 +66,3 @@ const Wrapper = styled(FlexBox).attrs({
     flex-grow: 0;
   }
 `;
-
-const ChallengeInfoWrapper = styled(FlexBox).attrs({
-  gap: '17px',
-  alignItems: 'center',
-})``;
-
-const ChallengeNameWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '3px',
-})``;

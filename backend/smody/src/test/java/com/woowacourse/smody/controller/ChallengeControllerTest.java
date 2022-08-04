@@ -1,25 +1,27 @@
 package com.woowacourse.smody.controller;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 
 class ChallengeControllerTest extends ControllerTest {
 
@@ -148,7 +150,7 @@ class ChallengeControllerTest extends ControllerTest {
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true);
         given(challengeQueryService.findOneWithChallengerCount(
-            any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
+                any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
 
         // when

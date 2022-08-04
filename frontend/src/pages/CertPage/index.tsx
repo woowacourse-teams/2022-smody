@@ -1,24 +1,16 @@
 import { useGetMyCyclesInProgress } from 'apis';
 import styled, { css } from 'styled-components';
 
-import useSnackBar from 'hooks/useSnackBar';
-
-import { EmptyContent, CertItem, LoadingSpinner } from 'components';
+import { EmptyContent, CertItem } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const CertPage = () => {
-  const renderSnackBar = useSnackBar();
-
-  const { isLoading, data, refetch } = useGetMyCyclesInProgress({
+const CertPage = () => {
+  const { data } = useGetMyCyclesInProgress({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading || typeof data === 'undefined') {
-    return <LoadingSpinner />;
-  }
-
-  if (data.data.length === 0) {
+  if (data?.data.length === 0) {
     return (
       <EmptyContent
         title="도전 중인 챌린지가 없습니다 :)"
@@ -31,12 +23,14 @@ export const CertPage = () => {
 
   return (
     <Wrapper>
-      {data.data.map((cycle) => (
-        <CertItem key={cycle.cycleId} refetch={refetch} {...cycle} />
+      {data?.data.map((cycle) => (
+        <CertItem key={cycle.cycleId} {...cycle} />
       ))}
     </Wrapper>
   );
 };
+
+export default CertPage;
 
 const Wrapper = styled.div`
   ${({ theme }) => css`

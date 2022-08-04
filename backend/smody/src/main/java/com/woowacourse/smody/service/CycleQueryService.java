@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.InProgressCycleResponse;
 import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.util.PagingUtil;
@@ -29,15 +30,15 @@ public class CycleQueryService {
         return new CycleResponse(cycle, cycleService.countSuccess(cycle));
     }
 
-    public List<CycleResponse> findInProgressOfMine(TokenPayload tokenPayload,
-                                                    LocalDateTime searchTime,
-                                                    Pageable pageable) {
+    public List<InProgressCycleResponse> findInProgressOfMine(TokenPayload tokenPayload,
+                                                              LocalDateTime searchTime,
+                                                              Pageable pageable) {
         Member member = memberService.search(tokenPayload);
         List<Cycle> inProgressCycles = cycleService.searchInProgressByMember(searchTime, member);
         inProgressCycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(searchTime)));
         List<Cycle> pagedCycles = PagingUtil.page(inProgressCycles, pageable);
         return pagedCycles.stream()
-                .map(cycle -> new CycleResponse(cycle, cycleService.countSuccess(cycle)))
+                .map(cycle -> new InProgressCycleResponse(cycle, cycleService.countSuccess(cycle)))
                 .collect(toList());
     }
 

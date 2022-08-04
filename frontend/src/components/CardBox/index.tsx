@@ -12,8 +12,18 @@ export const CardBox = ({
   emoji,
 }: CardBoxProps) => {
   return (
-    <Wrapper bgColor={bgColor}>
-      <TitleWrapper size={14} color={COLOR.BLACK} fontWeight="bold">
+    <Wrapper
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      bgColor={bgColor}
+    >
+      <TitleWrapper
+        aria-label="성공한 챌린지 이름"
+        size={14}
+        color={COLOR.BLACK}
+        fontWeight="bold"
+      >
         {challengeName}
       </TitleWrapper>
       <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
@@ -26,11 +36,7 @@ export const CardBox = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-})`
+const Wrapper = styled(FlexBox)`
   ${({ bgColor }: WrapperProps) => css`
     background-color: ${bgColor};
     border: 0;

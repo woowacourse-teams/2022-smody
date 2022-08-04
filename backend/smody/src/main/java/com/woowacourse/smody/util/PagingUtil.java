@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
-public class PagingUtil <T> {
+public class PagingUtil<T> {
 
     public static <T> List<T> page(List<T> collection, Pageable pageable) {
         int pageNumber = pageable.getPageNumber();

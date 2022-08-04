@@ -1,28 +1,25 @@
 import { useGetChallengeById } from 'apis';
-import { useContext } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
+import { queryKeys } from 'apis/constants';
+import { useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
 
-import { FlexBox, Text, FixedButton, ThumbnailWrapper, LoadingSpinner } from 'components';
+import { FlexBox, Text, FixedButton, ThumbnailWrapper, Title } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const makeCursorPointer = {
-  cursor: 'pointer',
-};
-
-export const ChallengeDetailPage = () => {
-  const navigate = useNavigate();
-  const themeContext = useContext(ThemeContext);
+const ChallengeDetailPage = () => {
+  const themeContext = useThemeContext();
+  const queryClient = useQueryClient();
   const { challengeId } = useParams();
 
-  const { isFetching, data } = useGetChallengeById(
+  const { data } = useGetChallengeById(
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
@@ -31,29 +28,26 @@ export const ChallengeDetailPage = () => {
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
+    successCallback: () => {
+      queryClient.invalidateQueries(queryKeys.getChallengeById);
+    },
   });
 
-  if (isFetching || typeof data === 'undefined' || typeof data.data === 'undefined') {
-    return <LoadingSpinner />;
+  if (typeof data === 'undefined' || typeof data.data === 'undefined') {
+    return null;
   }
 
-  const { challengeName, challengerCount } = data.data;
-
-  const backToPreviousPage = () => {
-    navigate(CLIENT_PATH.SEARCH);
-  };
+  const { challengeName, challengerCount, isInProgress } = data.data;
 
   return (
     <Wrapper>
-      <TitleWrapper style={makeCursorPointer} onClick={backToPreviousPage}>
-        <MdArrowBackIosNew size={20} />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          {challengeName}
-        </Text>
-        <div />
-      </TitleWrapper>
-      <ChallengeDetailWrapper>
-        <ChallengeTextWrapper>
+      <Title text={challengeName} linkTo={CLIENT_PATH.SEARCH} />
+      <ChallengeDetailWrapper
+        flexDirection="row"
+        justifyContent="space-between"
+        gap="1rem"
+      >
+        <FlexBox flexDirection="column" gap="1rem">
           <Text size={16} color={themeContext.primary}>
             현재 {challengerCount}명이 함께 도전 중이에요
           </Text>
@@ -61,41 +55,31 @@ export const ChallengeDetailPage = () => {
             &quot;{challengeName}&quot; 챌린지를 {challengerCount}명의 사람들과 지금 바로
             함께하세요!
           </ChallengeExplanationText>
-        </ChallengeTextWrapper>
+        </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
           {getEmoji(Number(challengeId))}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FixedButton size="large" onClick={() => joinChallenge(challengeName)}>
-        도전하기
+      <FixedButton
+        size="large"
+        onClick={() => joinChallenge(challengeName)}
+        disabled={isInProgress}
+      >
+        {isInProgress ? '도전중' : '도전하기'}
       </FixedButton>
     </Wrapper>
   );
 };
 
+export default ChallengeDetailPage;
+
 const Wrapper = styled.div`
   margin: 0 1.25rem;
 `;
 
-const TitleWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-})`
-  margin-bottom: 2rem;
-`;
-
-const ChallengeDetailWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  gap: '1rem',
-})`
+const ChallengeDetailWrapper = styled(FlexBox)`
   line-height: 1rem;
 `;
-
-const ChallengeTextWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  gap: '1rem',
-})``;
 
 const ChallengeExplanationText = styled(Text).attrs<ChallengeExplanationTextProps>(
   ({ color }) => ({

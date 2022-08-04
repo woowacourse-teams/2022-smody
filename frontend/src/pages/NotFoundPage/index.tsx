@@ -2,7 +2,7 @@ import { EmptyContent } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const NotFoundPage = () => {
+const NotFoundPage = () => {
   return (
     <div>
       <EmptyContent
@@ -14,3 +14,5 @@ export const NotFoundPage = () => {
     </div>
   );
 };
+
+export default NotFoundPage;

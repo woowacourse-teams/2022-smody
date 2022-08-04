@@ -1,5 +1,6 @@
-import { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, LinkText } from 'components';
 import { EmptyContentProps } from 'components/EmptyContent/type';
@@ -10,10 +11,15 @@ export const EmptyContent = ({
   linkText,
   linkTo,
 }: EmptyContentProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   return (
-    <Wrapper>
+    <Wrapper
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap="1rem"
+    >
       <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         {title}
       </Text>
@@ -27,12 +33,7 @@ export const EmptyContent = ({
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '1rem',
-})`
+const Wrapper = styled(FlexBox)`
   flex-grow: 1;
   height: 100%;
 `;

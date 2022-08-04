@@ -1,55 +1,83 @@
-import { useDeleteMyInfo, useGetMyInfo, usePatchMyInfo } from 'apis';
-import { authApiClient } from 'apis/apiClient';
-import { useContext, FormEventHandler, MouseEventHandler } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
+import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
+import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
 
+import useImageInput from 'hooks/useImageInput';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
+import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, Button, Input, LoadingSpinner } from 'components';
+import {
+  FlexBox,
+  Button,
+  Input,
+  UserWithdrawalModal,
+  Title,
+  LoadingButton,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const ProfileEditPage = () => {
-  const navigate = useNavigate();
-  const themeContext = useContext(ThemeContext);
-  const renderSnackBar = useSnackBar();
-  const setIsLogin = useSetRecoilState(isLoginState);
+const FORM_DATA_IMAGE_NAME = 'profileImage';
 
-  const { isFetching: isFetchingGetMyInfo, data: dataMyInfo } = useGetMyInfo({
+const ProfileEditPage = () => {
+  const {
+    mutate: postProfileImage,
+    isSuccess: isSuccessPostImage,
+    isLoading: isLoadingPostImage,
+  } = usePostProfileImage({
+    onError: () => {
+      setIsClickable(true);
+    },
+  });
+
+  const {
+    isLoading: isLoadingPatchMyInfo,
+    mutate: editMyInfo,
+    isSuccess: isSuccessPatchInfo,
+  } = usePatchMyInfo({
+    onError: () => {
+      setIsClickable(true);
+    },
+  });
+
+  const {
+    previewImageUrl,
+    handleImageInputButtonClick,
+    renderImageInput,
+    hasImageFormData,
+    isImageLoading,
+    formData,
+  } = useImageInput(FORM_DATA_IMAGE_NAME);
+  const navigate = useNavigate();
+  const themeContext = useThemeContext();
+  const renderSnackBar = useSnackBar();
+  const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
+  const [isClickable, setIsClickable] = useState(true);
+  const { data: dataMyInfo } = useGetMyInfo({
     refetchOnWindowFocus: false,
   });
 
-  const { isLoading: isLoadingPatchMyInfo, mutate: editMyInfo } = usePatchMyInfo({
-    onSuccess: () => {
+  useEffect(() => {
+    if (hasImageFormData && isSuccessPostImage && isSuccessPatchInfo) {
+      navigate(CLIENT_PATH.PROFILE);
       renderSnackBar({
         message: '프로필 수정이 완료됐습니다.',
         status: 'SUCCESS',
       });
+      return;
+    }
 
+    if (!hasImageFormData && isSuccessPatchInfo) {
       navigate(CLIENT_PATH.PROFILE);
-    },
-  });
-
-  const { isLoading: isLoadingDeleteMyInfo, mutate: deleteMyInfo } = useDeleteMyInfo({
-    onSuccess: () => {
       renderSnackBar({
-        message:
-          '회원 정보를 성공적으로 삭제했습니다. 그동안 스모디를 이용해 주셔서 감사합니다.',
+        message: '프로필 수정이 완료됐습니다.',
         status: 'SUCCESS',
       });
-
-      authApiClient.deleteAuth();
-      setIsLogin(false);
-
-      navigate(CLIENT_PATH.HOME);
-    },
-  });
+    }
+  }, [hasImageFormData, isSuccessPostImage, isSuccessPatchInfo]);
 
   const email = useInput(dataMyInfo && dataMyInfo.data.email);
   const nickname = useInput(dataMyInfo && dataMyInfo.data.nickname, validateNickname);
@@ -58,28 +86,27 @@ export const ProfileEditPage = () => {
     validateIntroduction,
   );
 
-  const isAllValidated = nickname.isValidated && introduction.isValidated;
+  const isAllValidated =
+    nickname.isValidated && introduction.isValidated && !isImageLoading && isClickable;
 
-  if (
-    isFetchingGetMyInfo ||
-    isLoadingPatchMyInfo ||
-    isLoadingDeleteMyInfo ||
-    typeof dataMyInfo === 'undefined'
-  ) {
-    return <LoadingSpinner />;
+  if (typeof dataMyInfo === 'undefined') {
+    return null;
   }
 
-  const backToPreviousPage = () => {
-    navigate(CLIENT_PATH.PROFILE);
-  };
-
-  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleClickProfileEdit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+
+    setIsClickable(false);
+
+    if (hasImageFormData) {
+      postProfileImage({ formData });
+    }
 
     if (
       typeof nickname.value === 'undefined' ||
       typeof introduction.value === 'undefined'
     ) {
+      setIsClickable(true);
       return;
     }
 
@@ -90,25 +117,25 @@ export const ProfileEditPage = () => {
     });
   };
 
-  const handleClickUserDelete: MouseEventHandler<HTMLButtonElement> = () => {
-    deleteMyInfo();
+  const handleClickUserWithdrawal: MouseEventHandler<HTMLButtonElement> = () => {
+    setIsOpenUserWithdrawalModal(true);
   };
 
-  const { picture } = dataMyInfo.data;
+  const handleCloseUserWithdrawalModal = () => {
+    setIsOpenUserWithdrawalModal(false);
+  };
+
+  const { email: existingEmail, picture } = dataMyInfo.data;
+
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
 
   return (
-    <Wrapper>
-      <TitleWrapper onClick={backToPreviousPage}>
-        <MdArrowBackIosNew size={20} />
-        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-          프로필 편집
-        </Text>
-        <div />
-      </TitleWrapper>
-      <ProfileImg src={picture} alt={profileImgAlt} />
-      <Button size="medium" isActive={false}>
-        이미지 업로드
+    <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
+      <Title text="프로필 수정" linkTo={CLIENT_PATH.PROFILE} />
+      <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
+      {renderImageInput()}
+      <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
+        이미지 선택
       </Button>
       <ProfileEditForm onSubmit={handleClickProfileEdit}>
         <Input disabled={true} type="email" label="이메일" placeholder="" {...email} />
@@ -124,26 +151,35 @@ export const ProfileEditPage = () => {
           placeholder="간단한 자기 소개를 입력해주세요."
           {...introduction}
         />
-        <Button size="large" disabled={!isAllValidated}>
-          프로필 편집 완료
-        </Button>
+        <LoadingButton
+          isDisabled={!isAllValidated}
+          isLoading={isLoadingPostImage || isLoadingPatchMyInfo}
+          isSuccess={isSuccessPostImage && isSuccessPatchInfo}
+          defaultText="프로필 편집 완료"
+          loadingText="업로드 중"
+          successText="수정 완료"
+        />
       </ProfileEditForm>
       <Button
         style={{ backgroundColor: themeContext.error, color: themeContext.onError }}
-        onClick={handleClickUserDelete}
+        onClick={handleClickUserWithdrawal}
         size="small"
       >
         회원 탈퇴
       </Button>
+      {isOpenUserWithdrawalModal && (
+        <UserWithdrawalModal
+          email={existingEmail}
+          handleCloseModal={handleCloseUserWithdrawalModal}
+        />
+      )}
     </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-})`
+export default ProfileEditPage;
+
+const Wrapper = styled(FlexBox)`
   padding: 3rem;
   /* PC (해상도 1024px)*/
   @media all and (min-width: 1024px) {
@@ -159,14 +195,6 @@ const Wrapper = styled(FlexBox).attrs({
   @media all and (max-width: 767px) {
     padding: 1rem 1.25rem;
   }
-`;
-
-const TitleWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-})`
-  width: 100%;
-  margin-bottom: 2rem;
 `;
 
 const ProfileImg = styled.img`

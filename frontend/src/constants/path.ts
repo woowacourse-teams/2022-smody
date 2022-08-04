@@ -1,4 +1,4 @@
-export const BASE_URL = process.env.BASE_URL;
+export const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3000';
 
 export const API_PATH = {
   CYCLE: '/cycles',
@@ -14,6 +14,8 @@ export const CLIENT_PATH = {
   FEED: '/feed',
   PROFILE: '/profile',
   PROFILE_EDIT: '/profile/edit',
+  CYCLE_DETAIL: '/cycle/detail',
+  CYCLE_DETAIL_ID: '/cycle/detail/:cycleId',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   VOC: '/voc',

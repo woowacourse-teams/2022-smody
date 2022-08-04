@@ -1,14 +1,17 @@
+import { mutationKeys, queryKeys } from 'apis/constants';
 import {
   getLinkGoogle,
   getMyInfo,
   getTokenGoogle,
   patchMyInfo,
   deleteMyInfo,
+  postProfileImage,
 } from 'apis/oAuthApi/api';
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
   PatchMyInfoProps,
+  PostProfileImageProps,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -18,7 +21,7 @@ export const useGetLinkGoogle = (
   options?: UseQueryOptions<AxiosResponse<string>, AxiosError<ErrorResponse>>,
 ) =>
   useQuery<AxiosResponse<string>, AxiosError<ErrorResponse>>(
-    'getLinkGoogle',
+    queryKeys.getLinkGoogle,
     getLinkGoogle,
     {
       ...options,
@@ -37,7 +40,7 @@ export const useGetTokenGoogle = (
   >,
 ) =>
   useQuery<AxiosResponse<GetTokenGoogleResponse>, AxiosError<ErrorResponse>>(
-    'getTokenGoogle',
+    queryKeys.getTokenGoogle,
     () => getTokenGoogle(code),
     options,
   );
@@ -46,7 +49,7 @@ export const useGetMyInfo = (
   options?: UseQueryOptions<AxiosResponse<GetMyInfoResponse>, AxiosError<ErrorResponse>>,
 ) =>
   useQuery<AxiosResponse<GetMyInfoResponse>, AxiosError<ErrorResponse>>(
-    'getMyInfo',
+    queryKeys.getMyInfo,
     getMyInfo,
     options,
   );
@@ -59,7 +62,7 @@ export const usePatchMyInfo = (
   >,
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoProps>(
-    'patchMyInfo',
+    mutationKeys.patchMyInfo,
     patchMyInfo,
     options,
   );
@@ -68,7 +71,21 @@ export const useDeleteMyInfo = (
   options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>>,
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>>(
-    'deleteMyInfo',
+    mutationKeys.deleteMyInfo,
     deleteMyInfo,
     options,
   );
+
+export const usePostProfileImage = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostProfileImageProps
+  >,
+) => {
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageProps>(
+    mutationKeys.postProfileImage,
+    postProfileImage,
+    options,
+  );
+};

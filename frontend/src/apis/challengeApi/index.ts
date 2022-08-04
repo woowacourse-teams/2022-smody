@@ -10,7 +10,7 @@ import {
   GetChallengeByIdProps,
   GetChallengeByIdResponse,
 } from 'apis/challengeApi/type';
-import { PAGE_SIZE } from 'apis/constants';
+import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Challenge, ErrorResponse } from 'commonType';
 import {
@@ -28,7 +28,7 @@ export const useGetAllChallenges = (
   >,
 ) =>
   useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
-    'getAllChallenges',
+    queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
       ? ({ pageParam = 0 }) => getAllChallengesAuth(pageParam)
       : ({ pageParam = 0 }) => getAllChallenges(pageParam),
@@ -50,7 +50,7 @@ export const useGetMySuccessChallenges = (
   >,
 ) =>
   useInfiniteQuery<AxiosResponse<Challenge[]>, AxiosError<ErrorResponse>>(
-    'getMySuccessChallenges',
+    queryKeys.getMySuccessChallenges,
     ({ pageParam = 0 }) => getMySuccessChallenges(pageParam),
     {
       ...options,
@@ -71,10 +71,9 @@ export const useGetChallengeById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError<ErrorResponse>>(
-    'getChallengeById',
+    queryKeys.getChallengeById,
     localStorage.getItem('accessToken')
       ? () => getChallengeByIdAuth({ challengeId })
       : () => getChallengeById({ challengeId }),
     options,
   );
-``;

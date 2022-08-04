@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class DomainView extends VerticalLayout {
 
-    protected HorizontalLayout createDeleteLayout(JpaRepository repository) {
+    protected <T> HorizontalLayout createDeleteLayout(JpaRepository<T, Long> repository) {
         HorizontalLayout deleteLayout = new HorizontalLayout();
         TextField deleteTextField = createTextField("삭제할 id");
         Button deleteButton = new Button("삭제");
@@ -26,7 +26,7 @@ public abstract class DomainView extends VerticalLayout {
         return deleteLayout;
     }
 
-    protected void deleteResourceById(JpaRepository repository, TextField deleteTextField) {
+    protected <T> void deleteResourceById(JpaRepository<T, Long> repository, TextField deleteTextField) {
         try {
             repository.deleteById(Long.parseLong(deleteTextField.getValue()));
             UI.getCurrent().getPage().reload();

@@ -32,22 +32,22 @@ public class Member {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
-    private String picture;
-
     @Column(length = 30)
     private String introduction;
 
-    public Member(String email, String nickname, String picture, String introduction) {
+    @Column(nullable = false)
+    private String picture;
+
+    public Member(String email, String nickname, String introduction, String picture) {
         validateIntroduction(introduction);
         this.email = email;
         this.nickname = nickname;
-        this.picture = picture;
         this.introduction = introduction;
+        this.picture = picture;
     }
 
     public Member(String email, String nickname, String picture) {
-        this(email, nickname, picture, DEFAULT_INTRODUCTION);
+        this(email, nickname, DEFAULT_INTRODUCTION, picture);
     }
 
     private void validateIntroduction(String introduction) {
@@ -60,8 +60,8 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public void updatePicture(String picture) {
-        this.picture = picture;
+    public void updatePicture(Image picture) {
+        this.picture = picture.getUrl();
     }
 
     public void updateIntroduction(String introduction) {

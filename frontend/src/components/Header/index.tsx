@@ -1,48 +1,60 @@
 import { useGetLinkGoogle } from 'apis';
-import { useContext } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import styled, { ThemeContext, css } from 'styled-components';
+import { isDarkState } from 'recoil/darkMode/atoms';
+import styled, { css } from 'styled-components';
 
-import { Logo, FlexBox, Button } from 'components';
+import useThemeContext from 'hooks/useThemeContext';
+
+import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
 
+import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
+  const [isDark, setIsDark] = useRecoilState(isDarkState);
+
   const isLogin = useRecoilValue(isLoginState);
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
 
+  const handleDarkToggle = () => {
+    localStorage.setItem('isDark', JSON.stringify(!isDark));
+    setIsDark((prev) => !prev);
+  };
+
   return (
-    <Wrapper bgColor={bgColor}>
+    <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
       </Link>
-      {isLogin ? (
-        <FaBell size={23} color={themeContext.primary} />
-      ) : (
-        <Button size="small" onClick={() => redirectGoogleLoginLink()}>
-          로그인
-        </Button>
-      )}
+      <FlexBox>
+        <ToggleButton checked={isDark} handleChange={handleDarkToggle} />
+        {isLogin ? (
+          <FaBell size={23} color={themeContext.primary} />
+        ) : (
+          <Button size="small" onClick={() => redirectGoogleLoginLink()}>
+            로그인
+          </Button>
+        )}
+      </FlexBox>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})<HeaderProps>`
+const Wrapper = styled(FlexBox)<HeaderProps>`
   ${({ bgColor }) => css`
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
     background-color: ${bgColor};
+    z-index: ${Z_INDEX.HEADER};
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {

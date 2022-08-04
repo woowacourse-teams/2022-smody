@@ -3,6 +3,7 @@ import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
   PatchMyInfoProps,
+  PostProfileImageProps,
 } from 'apis/oAuthApi/type';
 
 // 구글 링크 조회(GET)
@@ -32,4 +33,11 @@ export const patchMyInfo = async (updatedUserInfo: PatchMyInfoProps) => {
 // 4. 회원 탈퇴(DELETE)
 export const deleteMyInfo = async () => {
   return authApiClient.axios.delete('/members/me');
+};
+
+// 프로필 이미지 업로드(POST)
+export const postProfileImage = async ({ formData }: PostProfileImageProps) => {
+  return authApiClient.axios.post('/members/me/profile-image', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 };

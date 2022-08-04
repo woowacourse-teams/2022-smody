@@ -27,7 +27,7 @@ export interface Challenge {
   challengeId: number;
   challengeName: string;
   successCount: number; // UserChallenge로 내릴 것
-  // challengerCount: number;  // 살릴 것
+  challengerCount: number; // 살릴 것
 }
 // 사이클 단건 조회 응답 타입
 export interface Cycle extends Challenge {
@@ -36,9 +36,16 @@ export interface Cycle extends Challenge {
   startTime: string;
 }
 
+export interface CycleDetail {
+  progressImage: string;
+  progressTime: string;
+  description: string;
+}
+
 // TODO : type.ts 전체 리팩토링 필요
 export interface UserChallenge extends Challenge {
   successCount: number;
+  isInProgress: boolean;
 }
 
 export interface UserStat {

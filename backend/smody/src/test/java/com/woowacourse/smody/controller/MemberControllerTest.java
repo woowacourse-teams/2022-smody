@@ -8,8 +8,11 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,6 +23,7 @@ import com.woowacourse.smody.dto.TokenPayload;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -58,7 +62,7 @@ public class MemberControllerTest extends ControllerTest {
     void updateMyInfo() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        MemberUpdateRequest request = new MemberUpdateRequest("alpha", "Hello", "picture");
+        MemberUpdateRequest request = new MemberUpdateRequest("alpha", "Hello");
 
         // when
         ResultActions result = mockMvc.perform(patch("/members/me")
@@ -72,8 +76,30 @@ public class MemberControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("picture").type(JsonFieldType.STRING).description("사진"),
                                 fieldWithPath("introduction").type(JsonFieldType.STRING).description("소개글")
+                        )));
+    }
+
+    @DisplayName("회원의 프로필 이미지를 수정한다.")
+    @Test
+    void updateMyProfileImage() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        MockMultipartFile file = new MockMultipartFile(
+                "profileImage", "test-profile-image.jpg", "image/jpg", "image".getBytes());
+
+        // when
+        ResultActions result = mockMvc.perform(multipart("/members/me/profile-image")
+                .file(file)
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isNoContent())
+                .andDo(document("update-profile-image", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        requestParts(
+                                partWithName("profileImage").description("프로필 이미지")
                         )));
     }
 

@@ -19,16 +19,23 @@ export const Button = styled.button<ButtonProps>`
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition: 0.3s;
 
     border-radius: 7px;
     ${isActive
       ? css`
           background-color: ${theme.primary};
           color: ${theme.onPrimary};
+          &:hover {
+            filter: brightness(1.2);
+          }
         `
       : css`
           background-color: ${theme.secondary};
           color: ${theme.onSecondary};
+          &:hover {
+            filter: brightness(0.9);
+          }
         `}
 
     font-size: ${SIZES[size].fontSize};
@@ -36,6 +43,9 @@ export const Button = styled.button<ButtonProps>`
     &:disabled {
       background-color: ${theme.disabled};
       cursor: default;
+      &:hover {
+        filter: brightness(1);
+      }
     }
   `}
 `;

@@ -1,11 +1,17 @@
 import { useGetMyInfo, useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
+import { queryKeys } from 'apis/constants';
 import { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
+
+const removeQueryParams = () => {
+  window.location.href = window.location.href.split('?')[0];
+};
 
 const useAuth = () => {
   const renderSnackBar = useSnackBar();
@@ -15,14 +21,17 @@ const useAuth = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    suspense: false,
     onSuccess: () => {
       setIsLogin(true);
     },
     onError: () => {
+      // error swallow
       return null;
     },
   });
 
+  const queryClient = useQueryClient();
   const googleAuthCode = getUrlParameter('code');
 
   const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
@@ -30,7 +39,10 @@ const useAuth = () => {
     enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
+      queryClient.invalidateQueries(queryKeys.getMyInfo);
+
       setIsLogin(true);
+      removeQueryParams();
 
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',

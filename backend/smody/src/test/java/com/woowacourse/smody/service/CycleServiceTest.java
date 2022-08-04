@@ -10,18 +10,24 @@ import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.InProgressCycleResponse;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.ImageStrategy;
+import com.woowacourse.smody.image.ImgBBImageStrategy;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,17 +36,25 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @Transactional
 public class CycleServiceTest {
 
     @Autowired
+    @InjectMocks
     private CycleService cycleService;
+
+    @MockBean
+    private ImageStrategy imageStrategy;
 
     @Autowired
     private CycleQueryService cycleQueryService;
@@ -49,6 +63,12 @@ public class CycleServiceTest {
     private ResourceFixture fixture;
 
     private final LocalDateTime now = LocalDateTime.now();
+
+    @BeforeEach
+    void init() {
+        given(imageStrategy.extractUrl(any()))
+                .willReturn("fakeUrl");
+    }
 
 
     @DisplayName("사이클을 생성한다.")
@@ -118,12 +138,19 @@ public class CycleServiceTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
-                LocalDateTime.of(2022, 1, 1, 0, 0));
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        Cycle cycle = fixture.사이클_생성(
+                조조그린_ID,
+                스모디_방문하기_ID,
+                progress,
+                LocalDateTime.of(2022, 1, 1, 0, 0)
+        );
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
 
         // when
-        ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload,
-                new ProgressRequest(cycle.getId(), progressTime));
+        ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, request);
 
         // then
         assertThat(progressResponse.getProgressCount()).isEqualTo(expected);
@@ -142,12 +169,16 @@ public class CycleServiceTest {
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
+        ProgressRequest request = new ProgressRequest(cycle.getId(), invalidTime, imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), invalidTime)))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -162,13 +193,17 @@ public class CycleServiceTest {
     void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
-        cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), progressTime));
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
+        cycleService.increaseProgress(tokenPayload, request);
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), invalidTime)))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -179,10 +214,14 @@ public class CycleServiceTest {
     void increaseProgress_notExistCycle() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        ProgressRequest request = new ProgressRequest(1000L, LocalDateTime.now(), imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(1L, LocalDateTime.now())))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CYCLE);
@@ -194,10 +233,14 @@ public class CycleServiceTest {
         // given
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        ProgressRequest request = new ProgressRequest(cycle.getId(), now.plusSeconds(1), imageFile, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
-                cycleService.increaseProgress(tokenPayload, new ProgressRequest(cycle.getId(), now.plusSeconds(1))))
+                cycleService.increaseProgress(tokenPayload, request))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
@@ -219,21 +262,21 @@ public class CycleServiceTest {
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
         // when
-        List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+        List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                 tokenPayload, now, PageRequest.of(0, 10));
 
         // then
         assertAll(
                 () -> assertThat(actual)
-                        .map(CycleResponse::getCycleId)
+                        .map(InProgressCycleResponse::getCycleId)
                         .containsAll(List.of(inProgress1.getId(), inProgress2.getId(), future.getId())),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(1L))
-                        .map(CycleResponse::getSuccessCount)
+                        .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(1, 1),
                 () -> assertThat(actual)
                         .filteredOn(response -> response.getChallengeId().equals(2L))
-                        .map(CycleResponse::getSuccessCount)
+                        .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(2)
         );
     }
@@ -243,6 +286,13 @@ public class CycleServiceTest {
     void findById() {
         // given
         Cycle inProgress = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        Image progressImage = new Image(
+                new MockMultipartFile("progressImage", "image".getBytes()),
+                image -> "fakeUrl"
+        );
+        inProgress.increaseProgress(now.plusSeconds(1L), progressImage, "인증 완료");
+        inProgress.increaseProgress(now.plusDays(1L).plusSeconds(1L), progressImage, "인증 완료");
+
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SECOND(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(9L));
@@ -258,7 +308,12 @@ public class CycleServiceTest {
                 () -> assertThat(cycleResponse.getChallengeName()).isEqualTo(inProgress.getChallenge().getName()),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(inProgress.getProgress().getCount()),
                 () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
-                () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2)
+                () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2),
+                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime()).isEqualTo(
+                        now.plusSeconds(1L)),
+                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime()).isEqualTo(
+                        now.plusDays(1L).plusSeconds(1L))
+
         );
     }
 
@@ -267,9 +322,12 @@ public class CycleServiceTest {
     void progress_future_time() {
         // given
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
+        Image progressImage = new Image(
+                new MockMultipartFile("progressImage", "image".getBytes()), new ImgBBImageStrategy()
+        );
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now))
+        assertThatThrownBy(() -> cycle.increaseProgress(now, progressImage, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -304,12 +362,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_sort() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 10));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId(),
                             proceed2.getId(), proceed1.getId());
         }
@@ -318,12 +376,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingFullSize() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(0, 3));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(inProgress1.getId(), inProgress2.getId(), inProgress3.getId());
         }
 
@@ -331,12 +389,12 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingPartialSize() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(1, 3));
 
             // then
             assertThat(actual)
-                    .map(CycleResponse::getCycleId)
+                    .map(InProgressCycleResponse::getCycleId)
                     .containsExactly(proceed2.getId(), proceed1.getId());
         }
 
@@ -344,7 +402,7 @@ public class CycleServiceTest {
         @Test
         void findAllInProgress_pagingOverMaxPage() {
             // when
-            List<CycleResponse> actual = cycleQueryService.findInProgressOfMine(
+            List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
                     tokenPayload, now, PageRequest.of(2, 3));
 
             // then

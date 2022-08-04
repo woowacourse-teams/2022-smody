@@ -1,17 +1,18 @@
 import { useGetMySuccessChallenges } from 'apis';
 import { Challenge } from 'commonType';
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import { CardBox, Text, EmptyContent, LoadingSpinner } from 'components';
+import useThemeContext from 'hooks/useThemeContext';
+
+import { CardBox, Text, EmptyContent } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   // TODO : 성공한 챌린지 GET API 연결
-  const themeContext = useContext(ThemeContext);
-  const { isLoading, data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
+  const themeContext = useThemeContext();
+  const { data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -19,11 +20,7 @@ export const CardGridContainer = () => {
     }
   };
 
-  if (isLoading || typeof data === 'undefined') {
-    return <LoadingSpinner />;
-  }
-
-  if (data.pages[0].data.length === 0) {
+  if (data?.pages[0].data.length === 0) {
     return (
       <EmptyContent
         title="아직 성공한 챌린지가 없습니다 :)"
@@ -41,12 +38,8 @@ export const CardGridContainer = () => {
       </Text>
       <Line />
       <Grid>
-        {data.pages.map((page) => {
-          if (typeof page === 'undefined' || typeof page.data === 'undefined') {
-            return null;
-          }
-
-          return page.data.map((challenge: Challenge) => (
+        {data?.pages.map((page) => {
+          return page?.data?.map((challenge: Challenge) => (
             <CardBox
               key={challenge.challengeId}
               {...challenge}

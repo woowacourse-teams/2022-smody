@@ -6,30 +6,43 @@ import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @Transactional
 public class MemberServiceTest {
 
     @Autowired
+    @InjectMocks
     private MemberService memberService;
+
+    @MockBean
+    private ImageStrategy imageStrategy;
 
     @Autowired
     private CycleRepository cycleRepository;
@@ -39,6 +52,15 @@ public class MemberServiceTest {
 
     @PersistenceContext
     EntityManager em;
+
+    private final Image progressImage = new Image(new MockMultipartFile("progressImage", "image".getBytes()),
+            new ImageStrategy() {
+                @Override
+                public String extractUrl(final MultipartFile image) {
+                    return "fakeUrl";
+                }
+            }
+    );
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
     @Test
@@ -70,7 +92,7 @@ public class MemberServiceTest {
     void updateMyInfo() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린", "이상해씨");
+        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린");
 
         // when
         memberService.updateMyInfo(tokenPayload, updateRequest);
@@ -79,8 +101,7 @@ public class MemberServiceTest {
         Member findMember = fixture.회원_조회(조조그린_ID);
         assertAll(
                 () -> assertThat(findMember.getNickname()).isEqualTo(updateRequest.getNickname()),
-                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction()),
-                () -> assertThat(findMember.getPicture()).isEqualTo(updateRequest.getPicture())
+                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction())
         );
     }
 
@@ -89,8 +110,9 @@ public class MemberServiceTest {
     void withdraw() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, LocalDateTime.now());
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
+        cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
 
         // when
         memberService.withdraw(tokenPayload);
@@ -98,9 +120,32 @@ public class MemberServiceTest {
         em.clear();
 
         // then
-        assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
-                .isInstanceOf(BusinessException.class);
-        assertThat(cycleRepository.findAll())
-                .hasSize(0);
+        assertAll(
+                () -> assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
+                        .isInstanceOf(BusinessException.class),
+                () -> assertThat(cycleRepository.findAll())
+                        .hasSize(0),
+                () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList())
+                        .hasSize(0)
+        );
+    }
+
+    @DisplayName("회원을 프로필 이미지를 수정한다.")
+    @Test
+    void updateProfileImage() {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile profileImage = new MockMultipartFile(
+                "profileImage", "profile.jpg", "image/jpg", "image".getBytes()
+        );
+        String expected = "https://www.abc.com/profile.jpg";
+        given(imageStrategy.extractUrl(any()))
+                .willReturn(expected);
+
+        // when
+        memberService.updateProfileImage(tokenPayload, profileImage);
+
+        // then
+        assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
     }
 }

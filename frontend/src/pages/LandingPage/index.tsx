@@ -1,21 +1,30 @@
 import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
-import { useContext } from 'react';
-import styled, { ThemeContext, keyframes } from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
+import styled, { keyframes } from 'styled-components';
+
+import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
 
-export const LandingPage = () => {
-  const themeContext = useContext(ThemeContext);
+const LandingPage = () => {
+  const themeContext = useThemeContext();
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
+  const isLogin = useRecoilValue(isLoginState);
 
   return (
-    <Wrapper>
-      <ColumnWrapper>
+    <Wrapper
+      flexDirection="column"
+      justifyContent="space-between"
+      alignItems="center"
+      gap="1rem"
+    >
+      <ColumnWrapper flexDirection="column" alignItems="center" gap="0.5rem">
         <Text color={themeContext.onBackground} size={20} fontWeight="bold">
           작심삼일에 지쳤을 때
         </Text>
-        <RowWrapper>
+        <FlexBox flexDirection="row" flexWrap="wrap" alignItems="flex-end">
           <Text color={themeContext.primary} size={20} fontWeight="bold">
             Three More Days
           </Text>
@@ -23,26 +32,32 @@ export const LandingPage = () => {
             ,&nbsp;
           </Text>
           <Logo isAnimated={true} width="100" color={themeContext.primary} />
-        </RowWrapper>
+        </FlexBox>
       </ColumnWrapper>
-      <ColumnWrapper>
-        <RowWrapper>
+      <ColumnWrapper flexDirection="column" alignItems="center" gap="0.5rem">
+        <FlexBox flexDirection="row" flexWrap="wrap" alignItems="flex-end">
           <Text color={themeContext.primary} size={20} fontWeight="bold">
-            3일
+            3
           </Text>
-          <Text color={themeContext.mainText} size={20} fontWeight="bold">
-            간 진행할,
+          <Text color={themeContext.onBackground} size={20} fontWeight="bold">
+            일간 진행할,
           </Text>
-        </RowWrapper>
-        <Text color={themeContext.mainText} size={20} fontWeight="bold">
+        </FlexBox>
+        <Text color={themeContext.onBackground} size={20} fontWeight="bold">
           여러 챌린지를 확인해보세요
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      <FixedButton onClick={() => redirectGoogleLoginLink()}>구글로 시작하기</FixedButton>
+      {!isLogin && (
+        <FixedButton onClick={() => redirectGoogleLoginLink()}>
+          구글로 시작하기
+        </FixedButton>
+      )}
     </Wrapper>
   );
 };
+
+export default LandingPage;
 
 const fadeIn = keyframes`
   0% {
@@ -55,28 +70,13 @@ const fadeIn = keyframes`
   }
 `;
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  gap: '1rem',
-})`
+const Wrapper = styled(FlexBox)`
   padding-top: 5rem;
 `;
 
-const ColumnWrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '0.5rem',
-})`
+const ColumnWrapper = styled(FlexBox)`
   animation: 0.5s ease-in-out 0s 1 normal forwards running ${fadeIn};
 `;
-
-const RowWrapper = styled(FlexBox).attrs({
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  alignItems: 'flex-end',
-})``;
 
 const ServiceExample = styled.img`
   margin-top: 3rem;

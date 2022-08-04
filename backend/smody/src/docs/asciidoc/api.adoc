@@ -44,6 +44,9 @@ include::{snippets}/create-cycle/http-response.adoc[]
 == 사이클 진척도 증가
 === Request
 include::{snippets}/progress-cycle/http-request.adoc[]
+=== Request 필드
+include::{snippets}/progress-cycle/request-parameters.adoc[]
+include::{snippets}/progress-cycle/request-parts.adoc[]
 === Response
 include::{snippets}/progress-cycle/http-response.adoc[]
 === Response 필드
@@ -83,12 +86,20 @@ include::{snippets}/get-my-info/http-response.adoc[]
 include::{snippets}/get-my-info/response-fields.adoc[]
 
 == 내 정보 수정
-=== request
+=== Request
 include::{snippets}/update-my-info/http-request.adoc[]
-=== request 필드
+=== Request 필드
 include::{snippets}/update-my-info/request-fields.adoc[]
-=== response
+=== Response
 include::{snippets}/update-my-info/http-response.adoc[]
+
+== 프로필 이미지 수정
+=== request
+include::{snippets}/update-profile-image/http-request.adoc[]
+=== request 필드
+include::{snippets}/update-profile-image/request-parts.adoc[]
+=== response
+include::{snippets}/update-profile-image/http-response.adoc[]
 
 == 로그인
 === Request

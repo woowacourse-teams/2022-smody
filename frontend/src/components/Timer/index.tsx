@@ -8,17 +8,13 @@ export const Timer = ({ certEndDate }: TimerProps) => {
   const { message, messageColor, time, timeColor } = useTimer(certEndDate);
 
   return (
-    <Wrapper>
+    <FlexBox gap="4px">
       <Text color={messageColor} size={16}>
         {message}
       </Text>
       <Text color={timeColor} fontWeight="bold" size={16}>
         {time}
       </Text>
-    </Wrapper>
+    </FlexBox>
   );
 };
-
-const Wrapper = styled(FlexBox).attrs({
-  gap: '4px',
-})``;

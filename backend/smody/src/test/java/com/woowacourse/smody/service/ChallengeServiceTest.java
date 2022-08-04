@@ -1,12 +1,23 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
+import static com.woowacourse.smody.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.ResourceFixture.토닉_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,12 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 
 @SpringBootTest
 @Transactional
@@ -297,7 +302,7 @@ class ChallengeServiceTest {
 
         // when
         ChallengeResponse challengeResponse = challengeQueryService
-            .findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
+                .findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
 
         // then
         assertAll(

@@ -1,19 +1,18 @@
-import { useContext, useEffect } from 'react';
+import Close from 'assets/close.svg';
+import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
-import styled, { ThemeContext } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/api/usePostJoinChallenge';
+import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
+import useThemeContext from 'hooks/useThemeContext';
 
-import { Button } from 'components/@shared/Button';
-import { FlexBox } from 'components/@shared/FlexBox';
-import ModalOverlay from 'components/@shared/ModalOverlay';
-import { Text } from 'components/@shared/Text';
-
-import { CheckCircles } from 'components/CheckCircles';
+import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
+import { CLIENT_PATH } from 'constants/path';
 
 const getMessageByProgressCount = (progressCount: number) => {
   switch (progressCount) {
@@ -30,24 +29,38 @@ const getMessageByProgressCount = (progressCount: number) => {
 };
 export const SuccessModal = ({
   handleCloseModal,
+  cycleId,
   challengeName,
   successCount,
   challengeId,
   progressCount,
 }: SuccessModalProps) => {
-  const themeContext = useContext(ThemeContext);
+  const themeContext = useThemeContext();
+  const navigate = useNavigate();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: [getEmoji(Number(challengeId))],
   });
 
+  const postJoinChallengeSuccessCallback = () => {
+    navigate(CLIENT_PATH.CERT);
+    handleCloseModal();
+  };
+
   const { joinChallenge } = usePostJoinChallenge({
     challengeId,
-    successCallback: handleCloseModal,
+    successCallback: postJoinChallengeSuccessCallback,
   });
 
-  const handleRest = () => {
+  const handleCheckCertification = () => {
+    // TODO: 챌린지 상세보기 페이지로 이동
     handleCloseModal();
+    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
+  };
+
+  const handleClickClose = () => {
+    handleCloseModal();
+    navigate(CLIENT_PATH.CERT);
   };
 
   const handleRetry = () => {
@@ -57,16 +70,22 @@ export const SuccessModal = ({
   const isChallengeComplete = progressCount === CYCLE_SUCCESS_CRITERIA;
 
   useEffect(() => {
-    if (isChallengeComplete) {
-      confettiReward();
-      emojiReward();
-    }
+    confettiReward();
+    emojiReward();
   }, []);
 
   return (
     <>
-      <ModalOverlay handleCloseModal={handleCloseModal}>
-        <Wrapper>
+      <ModalOverlay handleCloseModal={handleClickClose}>
+        <Wrapper
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          gap="1rem"
+        >
+          <CloseWrapper onClick={handleClickClose}>
+            <Close />
+          </CloseWrapper>
           <Text color={themeContext.onSurface} size={70} fontWeight="normal">
             {getEmoji(Number(challengeId))}
             <span id="confettiRewardId" />
@@ -78,7 +97,7 @@ export const SuccessModal = ({
           <Text color={themeContext.primary} size={20} fontWeight="bold">
             {isChallengeComplete ? '🎉 챌린지 성공 🎉' : '오늘의 인증 완료'}
           </Text>
-          <Text color={themeContext.blur} size={20} fontWeight="bold">
+          <Text color={themeContext.onSurface} size={20} fontWeight="bold">
             {getMessageByProgressCount(progressCount)}
           </Text>
           {isChallengeComplete ? (
@@ -89,36 +108,39 @@ export const SuccessModal = ({
             <CheckCircles progressCount={progressCount} />
           )}
 
-          <ButtonWrapper>
+          <FlexBox alignItems="center" gap="1rem">
             {isChallengeComplete ? (
               <>
-                <Button onClick={handleRest} size="medium" isActive={false}>
-                  쉴래요
+                <Button onClick={handleCheckCertification} size="medium" isActive={false}>
+                  기록 확인
                 </Button>
                 <Button onClick={handleRetry} size="medium" isActive={true}>
                   재도전
                 </Button>
               </>
             ) : (
-              <Button onClick={handleCloseModal} size="medium" isActive={false}>
-                확인
+              <Button
+                autoFocus
+                onClick={handleCheckCertification}
+                size="medium"
+                isActive={false}
+              >
+                기록 확인
               </Button>
             )}
-          </ButtonWrapper>
+          </FlexBox>
         </Wrapper>
       </ModalOverlay>
     </>
   );
 };
 
-const Wrapper = styled(FlexBox).attrs({
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '1rem',
-})``;
+const Wrapper = styled(FlexBox)`
+  width: 100%;
+  padding: 1rem 1.25rem 1.438rem;
+`;
 
-const ButtonWrapper = styled(FlexBox).attrs({
-  alignItems: 'center',
-  gap: '1rem',
-})``;
+const CloseWrapper = styled.div`
+  align-self: flex-end;
+  cursor: pointer;
+`;

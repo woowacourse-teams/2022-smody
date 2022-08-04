@@ -3,152 +3,152 @@ export const challengeData = [
     challengeId: 1,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: true,
   },
   {
     challengeId: 2,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 3,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 4,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 5,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 6,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 7,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 8,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 9,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 10,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 11,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 12,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 13,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 14,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 15,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 16,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 17,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 18,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 19,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
 
   {
     challengeId: 20,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 21,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 22,
     challengeName: '미라클 모닝',
     challengerCount: 35,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 23,
     challengeName: '1일 1시간 공부',
     challengerCount: 60,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 24,
     challengeName: '책읽기',
     challengerCount: 13,
-    inProgress: false,
+    isInProgress: false,
   },
   {
     challengeId: 25,
     challengeName: '일찍 잠자기',
     challengerCount: 80,
-    inProgress: false,
+    isInProgress: false,
   },
 ];
 
@@ -157,13 +157,17 @@ date.setHours(date.getHours() + 9);
 
 const [startTime, _] = date.toISOString().split('.');
 
+const twoDaysAgo = new Date();
+twoDaysAgo.setHours(twoDaysAgo.getHours() + 9 - 48);
+const [twoDaysAgoStartTime, __] = twoDaysAgo.toISOString().split('.');
+
 export const cycleData = [
   {
     cycleId: 1,
     challengeId: 1,
     challengeName: '미라클 모닝',
-    progressCount: 0,
-    startTime,
+    progressCount: 2,
+    startTime: twoDaysAgoStartTime,
     successCount: 3,
   },
   {
@@ -232,6 +236,79 @@ export const cycleData = [
   },
 ];
 
+export const cycleByIdData = [
+  {
+    cycleId: 1,
+    challengeId: 2,
+    challengeName: '미라클 모닝',
+    progressCount: 3,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 3,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명3.',
+      },
+    ],
+  },
+  {
+    cycleId: 2,
+    challengeId: 3,
+    challengeName: '운동',
+    progressCount: 2,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 5,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+    ],
+  },
+  {
+    cycleId: 4,
+    challengeId: 4,
+    challengeName: '공부',
+    progressCount: 3,
+    startTime: '2022-07-01T17:00:00',
+    successCount: 3,
+    cycleDetails: [
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명1.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명2.',
+      },
+      {
+        progressImage: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
+        progressTime: '2022-07-01T17:00:00',
+        description: '설명3.',
+      },
+    ],
+  },
+];
+
 export const mySuccessChallengeData = [
   {
     challengeId: 1,
@@ -256,10 +333,49 @@ export const mySuccessChallengeData = [
 ];
 
 export const userData = {
-  nickname: '빅터짱짱맨',
-  introduction: '나는 빅터다.',
+  nickname: '테스트 닉네임',
+  introduction: '테스트 자기소개',
   picture: 'https://emoji-copy.com/wp-content/uploads/1f64a.png',
-  email: 'victor@gmail.com',
+  email: 'test@gmail.com',
 };
 
 export const accessTokenData = 'testAccessToken';
+
+export const cycleDetailData = {
+  cycleId: 1,
+  challengeId: 2,
+  challengeName: '미라클 모닝',
+  progressCount: 2,
+  startTime: '2022-07-01T17:00:00',
+  successCount: 3,
+  cycleDetails: [
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-01T17:00:00',
+      description: '알찼다.',
+    },
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-02T17:00:00',
+      description: '알찼다.',
+    },
+    {
+      progressImage:
+        'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
+      progressTime: '2022-07-03T17:00:00',
+      description: '알찼다.',
+    },
+  ],
+};
+
+export const cycleNonDetailData = {
+  cycleId: 1,
+  challengeId: 2,
+  challengeName: '미라클 모닝',
+  progressCount: 2,
+  startTime: '2022-07-01T17:00:00',
+  successCount: 3,
+  cycleDetails: [],
+};
