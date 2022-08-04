@@ -11,43 +11,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.*;
-import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Image;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.InProgressCycleResponse;
+import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.ProgressResponse;
+import com.woowacourse.smody.dto.StatResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.image.ImgBBImageStrategy;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @SpringBootTest
 @Transactional
@@ -313,8 +309,10 @@ public class CycleServiceTest {
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(inProgress.getProgress().getCount()),
                 () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
                 () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2),
-                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime()).isEqualTo(now.plusSeconds(1L)),
-                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime()).isEqualTo(now.plusDays(1L).plusSeconds(1L))
+                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime()).isEqualTo(
+                        now.plusSeconds(1L)),
+                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime()).isEqualTo(
+                        now.plusDays(1L).plusSeconds(1L))
 
         );
     }

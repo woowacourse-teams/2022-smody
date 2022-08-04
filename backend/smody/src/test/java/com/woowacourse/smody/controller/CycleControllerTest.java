@@ -19,7 +19,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.dto.CycleDetailResponse;
+import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.CycleResponse;
+import com.woowacourse.smody.dto.InProgressCycleResponse;
+import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.ProgressResponse;
+import com.woowacourse.smody.dto.StatResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -201,9 +208,12 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
                                 fieldWithPath("startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
                                 fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
-                                fieldWithPath("cycleDetails[].progressTime").type(JsonFieldType.STRING).description("인증 시간"),
-                                fieldWithPath("cycleDetails[].progressImage").type(JsonFieldType.STRING).description("인증 사진"),
-                                fieldWithPath("cycleDetails[].description").type(JsonFieldType.STRING).description("인증 설명")
+                                fieldWithPath("cycleDetails[].progressTime").type(JsonFieldType.STRING)
+                                        .description("인증 시간"),
+                                fieldWithPath("cycleDetails[].progressImage").type(JsonFieldType.STRING)
+                                        .description("인증 사진"),
+                                fieldWithPath("cycleDetails[].description").type(JsonFieldType.STRING)
+                                        .description("인증 설명")
                         )));
     }
 
