@@ -65,7 +65,7 @@ const ChallengeDetailPage = () => {
         onClick={() => joinChallenge(challengeName)}
         disabled={isInProgress}
       >
-        도전하기
+        {isInProgress ? '도전중' : '도전하기'}
       </FixedButton>
     </Wrapper>
   );
