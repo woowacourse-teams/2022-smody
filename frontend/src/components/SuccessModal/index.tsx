@@ -11,6 +11,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
+import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
 const getMessageByProgressCount = (progressCount: number) => {
@@ -66,7 +67,7 @@ export const SuccessModal = ({
     joinChallenge(challengeName);
   };
 
-  const isChallengeComplete = progressCount === REWARD_CRITERIA;
+  const isChallengeComplete = progressCount === CYCLE_SUCCESS_CRITERIA;
 
   useEffect(() => {
     confettiReward();

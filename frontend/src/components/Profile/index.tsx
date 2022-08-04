@@ -46,13 +46,18 @@ export const Profile = () => {
   return (
     <Wrapper flexDirection="column" justifyContent="center" gap="2.12rem">
       <FlexBox justifyContent="center" gap="2rem">
-        <ProfileImg src={picture} alt={profileImgAlt} />
+        <ProfileImg aria-label="프로필 이미지" src={picture} alt={profileImgAlt} />
         <FlexBox flexDirection="column" gap="0.4rem">
-          <Text size={20} color={themeContext.onBackground} fontWeight="bold">
+          <Text
+            aria-label="닉네임"
+            size={20}
+            color={themeContext.onBackground}
+            fontWeight="bold"
+          >
             {nickname}
           </Text>
           {/* TODO: 프로필 편집 텍스트 width 제한. 이를 통해 자기 소개가 길어졌을 때 하단 프로필 편집, 로그아웃 버튼의 UI가 변경되는 문제 해결할 수 있음! */}
-          <Text size={16} color={themeContext.onBackground}>
+          <Text aria-label="자기소개" size={16} color={themeContext.onBackground}>
             {introduction}
           </Text>
           <FlexBox gap="2.625rem">
@@ -60,7 +65,12 @@ export const Profile = () => {
               <Text size={16} color={themeContext.onBackground}>
                 성공
               </Text>
-              <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
+              <Text
+                aria-label="성공한 챌린지 횟수"
+                size={16}
+                fontWeight="bold"
+                color={themeContext.onBackground}
+              >
                 {successCount}
               </Text>
             </FlexBox>
@@ -68,7 +78,12 @@ export const Profile = () => {
               <Text size={16} color={themeContext.onBackground}>
                 전체
               </Text>
-              <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
+              <Text
+                aria-label="시도한 챌린지 횟수"
+                size={16}
+                fontWeight="bold"
+                color={themeContext.onBackground}
+              >
                 {totalCount}
               </Text>
             </FlexBox>
