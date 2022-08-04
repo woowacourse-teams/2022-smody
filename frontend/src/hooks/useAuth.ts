@@ -9,6 +9,10 @@ import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
 
+const removeQueryParams = () => {
+  window.location.href = window.location.href.split('?')[0];
+};
+
 const useAuth = () => {
   const renderSnackBar = useSnackBar();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
@@ -53,10 +57,6 @@ const useAuth = () => {
     }
     getTokenGoogle();
   }, []);
-
-  const removeQueryParams = () => {
-    window.location.href = window.location.href.split('?')[0];
-  };
 
   return { isLogin, isLoading };
 };
