@@ -61,10 +61,6 @@ const CertFormPage = () => {
 
   const location = useLocation();
 
-  if (location.state === null) {
-    return <Navigate to={CLIENT_PATH.NOT_FOUND} />;
-  }
-
   const { cycleId, challengeId, challengeName, successCount, progressCount } =
     location.state as CertFormPageLocationState;
 
