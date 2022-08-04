@@ -6,7 +6,7 @@
     <property name="CONSOLE_LOG_PATTERN"
               value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) %boldWhite([%C.%M:%yellow(%L)]) %n >>> - %msg%n%n"/>
 
-    <springProfile name="!prod">
+    <springProfile name="local">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>${CONSOLE_LOG_PATTERN}</pattern>
@@ -18,7 +18,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="prod">
+    <springProfile name="prod, dev">
         <appender name="FILE-LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>./log/today.log</file>
             <encoder>
