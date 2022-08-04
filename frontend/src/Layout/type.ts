@@ -5,7 +5,7 @@ export interface horizontalPadding {
   tablet: string;
   mobile: string;
 }
-export interface WrapperProps {
+export interface OutletWrapperProps {
   bgColor: AvailablePickedColor;
   horizontalPadding: horizontalPadding;
 }

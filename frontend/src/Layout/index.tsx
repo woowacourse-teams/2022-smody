@@ -1,4 +1,4 @@
-import { WrapperProps } from 'Layout/type';
+import { OutletWrapperProps } from 'Layout/type';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled, { css } from 'styled-components';
@@ -31,9 +31,9 @@ export const Layout = () => {
   const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
 
   return (
-    <>
+    <Wrapper>
       <Header bgColor={bgColor} />
-      <Wrapper
+      <OutletWrapper
         flexDirection="column"
         bgColor={bgColor}
         horizontalPadding={horizontalPadding}
@@ -41,37 +41,35 @@ export const Layout = () => {
         <Suspense fallback={<LoadingSpinner />}>
           <Outlet />
         </Suspense>
-      </Wrapper>
+      </OutletWrapper>
       <Navbar />
       <SnackBar />
-    </>
+    </Wrapper>
   );
 };
 
-const Wrapper = styled(FlexBox)<WrapperProps>`
+const Wrapper = styled.div`
+  min-width: 400px;
+`;
+
+const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`
   ${({ bgColor, horizontalPadding }) => css`
     min-height: calc(100vh - 119px);
     background-color: ${bgColor};
 
-    padding-top: 1rem;
-    padding-bottom: 4.625rem; // 3.625rem(=NavBar height) + 1rem
-
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
-      padding-left: ${horizontalPadding.pc};
-      padding-right: ${horizontalPadding.pc};
+      padding: 1rem ${horizontalPadding.pc} 4.625rem;
     }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
     @media all and (min-width: 768px) and (max-width: 1023px) {
-      padding-left: ${horizontalPadding.tablet};
-      padding-right: ${horizontalPadding.tablet};
+      padding: 1rem ${horizontalPadding.tablet} 4.625rem;
     }
 
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
     @media all and (max-width: 767px) {
-      padding-left: ${horizontalPadding.mobile};
-      padding-right: ${horizontalPadding.mobile};
+      padding: 1rem ${horizontalPadding.mobile} 4.625rem;
     }
   `}
 `;
