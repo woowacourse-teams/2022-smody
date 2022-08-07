@@ -4,11 +4,33 @@ import { useRef, RefObject, useMemo } from 'react';
 import useIntersect from 'hooks/useIntersect';
 
 export const useSearchPage = () => {
-  const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
+  const {
+    isFetching,
+    data,
+    refetch: challengeListRefetch,
+    hasNextPage,
+    fetchNextPage,
+  } = useGetAllChallenges({
     refetchOnWindowFocus: false,
   });
 
-  const rootRef = useRef() as RefObject<HTMLUListElement>;
+  const challengeListData = useMemo(() => {
+    if (typeof data === 'undefined') {
+      return null;
+    }
+
+    return data.pages
+      .map((page) => {
+        if (typeof page === 'undefined' || typeof page.data === 'undefined') {
+          return [];
+        }
+
+        return page.data;
+      })
+      .flat();
+  }, [data]);
+
+  const rootRef = useRef() as RefObject<HTMLDivElement>;
 
   const options = useMemo(() => ({ root: rootRef.current, threshold: 0.5 }), []);
 
@@ -24,6 +46,7 @@ export const useSearchPage = () => {
     targetRef,
     isFetching,
     data,
-    refetch,
+    challengeListData,
+    challengeListRefetch,
   };
 };

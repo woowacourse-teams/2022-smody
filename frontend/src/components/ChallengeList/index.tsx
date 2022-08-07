@@ -1,52 +1,25 @@
-import { useGetAllChallenges } from 'apis';
-import { useRef, RefObject, useMemo } from 'react';
-
-import useIntersect from 'hooks/useIntersect';
-
 import { FlexBox, ChallengeItem, LoadingSpinner } from 'components';
-import { ChallengeInfo } from 'components/ChallengeList/type';
+import { ChallengeListProps } from 'components/ChallengeList/type';
 
-export const ChallengeList = () => {
-  const { isFetching, data, refetch, hasNextPage, fetchNextPage } = useGetAllChallenges({
-    refetchOnWindowFocus: false,
-  });
-
-  const rootRef = useRef() as RefObject<HTMLUListElement>;
-
-  const options = useMemo(() => ({ root: rootRef.current, threshold: 0.5 }), []);
-  const targetRef = useIntersect<HTMLLIElement>((entry, observer) => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-    observer.unobserve(entry.target);
-  }, options);
-
-  if (typeof data === 'undefined') {
+export const ChallengeList = ({
+  targetRef,
+  challengeListData,
+  challengeListRefetch,
+}: ChallengeListProps) => {
+  if (challengeListData === null) {
     return <LoadingSpinner />;
   }
 
   return (
-    <FlexBox as="ul" ref={rootRef} flexDirection="column" gap="27px">
-      {data.pages.map((page, pageIndex) => {
-        if (typeof page === 'undefined' || typeof page.data === 'undefined') {
-          return [];
-        }
-
-        return page.data.map((challengeInfo: ChallengeInfo, challengeIndex: number) => (
-          <li
-            key={challengeInfo.challengeId}
-            ref={
-              pageIndex === data.pages.length - 1 &&
-              challengeIndex === page.data.length - 1
-                ? targetRef
-                : undefined
-            }
-          >
-            <ChallengeItem {...challengeInfo} challengeListRefetch={refetch} />
-          </li>
-        ));
-      })}
-      {isFetching && <LoadingSpinner />}
+    <FlexBox as="ul" flexDirection="column" gap="27px">
+      {challengeListData.map((challengeInfo, challengeIndex) => (
+        <li
+          key={challengeInfo.challengeId}
+          ref={challengeIndex === challengeListData.length - 1 ? targetRef : undefined}
+        >
+          <ChallengeItem {...challengeInfo} challengeListRefetch={challengeListRefetch} />
+        </li>
+      ))}
     </FlexBox>
   );
 };

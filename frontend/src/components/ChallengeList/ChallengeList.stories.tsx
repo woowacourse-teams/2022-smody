@@ -1,8 +1,18 @@
+import { challengeData } from 'mocks/data';
+
 import { ChallengeList } from 'components';
+import { ChallengeListProps } from 'components/ChallengeList/type';
 
 export default {
   title: 'Components/ChallengeList',
   component: ChallengeList,
 };
 
-export const DefaultChallengeList = () => <ChallengeList />;
+export const DefaultChallengeList = (args: ChallengeListProps) => (
+  <ChallengeList {...args} />
+);
+
+DefaultChallengeList.args = {
+  challengeListData: challengeData,
+  challengeListRefetch: () => {},
+};
