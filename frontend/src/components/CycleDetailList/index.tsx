@@ -21,9 +21,9 @@ export const CycleDetailList = ({ cycleDetails }: CycleDetailListProps) => {
 
   return (
     <FlexBox alignItems="center" flexDirection="column" gap="2rem">
-      {cycleDetails.map((cycleDetail) => {
-        return <CycleDetailItem key={cycleDetail.progressTime} {...cycleDetail} />;
-      })}
+      {cycleDetails.map((cycleDetail) => (
+        <CycleDetailItem key={cycleDetail.progressTime} {...cycleDetail} />
+      ))}
     </FlexBox>
   );
 };
