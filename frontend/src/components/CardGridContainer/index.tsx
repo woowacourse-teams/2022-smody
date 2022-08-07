@@ -1,4 +1,4 @@
-import { useGetMySuccessChallenges } from 'apis';
+import useCardGridContainer from './useCardGridContainer';
 import { Challenge } from 'commonType';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
@@ -10,15 +10,8 @@ import { CardBox, Text, EmptyContent } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
-  // TODO : 성공한 챌린지 GET API 연결
   const themeContext = useThemeContext();
-  const { data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
-
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
+  const { data, loadMore } = useCardGridContainer();
 
   if (data?.pages[0].data.length === 0) {
     return (
@@ -38,16 +31,16 @@ export const CardGridContainer = () => {
       </Text>
       <Line />
       <Grid>
-        {data?.pages.map((page) => {
-          return page?.data?.map((challenge: Challenge) => (
+        {data?.pages.map((page) =>
+          page?.data?.map((challenge: Challenge) => (
             <CardBox
               key={challenge.challengeId}
               {...challenge}
               bgColor="#E6D1F2"
               emoji={getEmoji(challenge.challengeId)}
             />
-          ));
-        })}
+          )),
+        )}
       </Grid>
     </div>
   );
