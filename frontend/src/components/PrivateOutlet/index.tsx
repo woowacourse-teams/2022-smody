@@ -3,16 +3,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { LoadingSpinner } from 'components/LoadingSpinner';
+import { PrivateOutletProps } from 'components/PrivateOutlet/type';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const PrivateOutlet = ({
-  isLogin,
-  isLoading,
-}: {
-  isLogin: boolean;
-  isLoading: boolean;
-}) => {
+export const PrivateOutlet = ({ isLogin, isLoading }: PrivateOutletProps) => {
   const renderSnackBar = useSnackBar();
 
   if (isLoading) return <LoadingSpinner />;
