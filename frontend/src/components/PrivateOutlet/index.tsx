@@ -17,7 +17,9 @@ export const PrivateOutlet = ({ isLogin, isLoading }: PrivateOutletProps) => {
       message: '로그인이 필요한 페이지입니다.',
       status: 'ERROR',
     });
+
+    return <Navigate to={CLIENT_PATH.HOME} />;
   }
 
-  return isLogin ? <Outlet /> : <Navigate to={CLIENT_PATH.HOME} />;
+  return <Outlet />;
 };
