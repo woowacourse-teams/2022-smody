@@ -1,5 +1,4 @@
-import { useGetCycleById } from 'apis';
-import { useParams } from 'react-router-dom';
+import useCycleDetailPage from './useCycleDetailPage';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 import { getEmoji } from 'utils/emoji';
@@ -18,14 +17,8 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 const CycleDetailPage = () => {
-  const { cycleId } = useParams();
   const themeContext = useThemeContext();
-  const { data } = useGetCycleById(
-    { cycleId: Number(cycleId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const data = useCycleDetailPage();
 
   if (typeof data === 'undefined') {
     return <LoadingSpinner />;
