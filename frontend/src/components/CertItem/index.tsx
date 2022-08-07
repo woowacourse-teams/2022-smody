@@ -1,7 +1,7 @@
+import useCertItem from './useCertItem';
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { addDays } from 'utils';
 import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -9,7 +9,6 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
-import { CYCLE_UNIT } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 import { cursorPointer } from 'constants/style';
 
@@ -21,14 +20,9 @@ export const CertItem = ({
   startTime,
   successCount,
 }: CertItemProps) => {
-  const themeContext = useThemeContext();
   const navigate = useNavigate();
-
-  const nowDate = new Date();
-  const certStartDate = addDays(new Date(startTime), progressCount);
-  const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);
-
-  const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
+  const themeContext = useThemeContext();
+  const { certEndDate, isCertPossible } = useCertItem({ startTime, progressCount });
 
   const handleClickWrapper = (e: MouseEvent) => {
     if (e.target instanceof HTMLButtonElement) {
