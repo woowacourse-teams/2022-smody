@@ -5,3 +5,8 @@ export interface ChallengeItemProps {
   isInProgress: boolean;
   challengeListRefetch: () => void;
 }
+
+export type useChallengeItemProps = Pick<
+  ChallengeItemProps,
+  'challengeId' | 'challengeListRefetch'
+>;

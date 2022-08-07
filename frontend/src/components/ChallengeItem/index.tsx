@@ -1,8 +1,8 @@
+import useChallengeItem from './useChallengeItem';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
@@ -17,14 +17,10 @@ export const ChallengeItem = ({
   isInProgress,
   challengeListRefetch,
 }: ChallengeItemProps) => {
-  const themeContext = useThemeContext();
-
-  const { joinChallenge } = usePostJoinChallenge({
-    challengeId: Number(challengeId),
-    successCallback: challengeListRefetch,
-  });
-
   const navigate = useNavigate();
+  const themeContext = useThemeContext();
+  const joinChallenge = useChallengeItem({ challengeId, challengeListRefetch });
+
   const handleClickProgressButton = () => {
     isInProgress
       ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
