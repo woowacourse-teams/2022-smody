@@ -4,3 +4,8 @@ export interface ChallengeItemProps {
   challengerCount: number;
   isInProgress: boolean;
 }
+
+export type useChallengeItemProps = Pick<
+  ChallengeItemProps,
+  'challengeId' | 'challengeListRefetch'
+>;
