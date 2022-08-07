@@ -1,32 +1,17 @@
-import { useGetLinkGoogle } from 'apis';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { useRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
-import { isDarkState } from 'recoil/darkMode/atoms';
 import styled, { css } from 'styled-components';
-
-import useThemeContext from 'hooks/useThemeContext';
 
 import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
+import { useHeader } from 'components/Header/useHeader';
 
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
-  const [isDark, setIsDark] = useRecoilState(isDarkState);
-
-  const isLogin = useRecoilValue(isLoginState);
-  const themeContext = useThemeContext();
-
-  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
-
-  const handleDarkToggle = () => {
-    localStorage.setItem('isDark', JSON.stringify(!isDark));
-    setIsDark((prev) => !prev);
-  };
+  const { themeContext, isDark, isLogin, handleDarkToggle, handleLoginButton } =
+    useHeader();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
@@ -38,7 +23,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
         {isLogin ? (
           <FaBell size={23} color={themeContext.primary} />
         ) : (
-          <Button size="small" onClick={() => redirectGoogleLoginLink()}>
+          <Button size="small" onClick={handleLoginButton}>
             로그인
           </Button>
         )}
