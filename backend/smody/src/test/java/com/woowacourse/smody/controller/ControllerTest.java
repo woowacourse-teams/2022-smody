@@ -30,7 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
         CycleController.class,
         ChallengeController.class,
         OauthController.class,
-    	PushSubscriptionController.class
+        CommentController.class,
+        PushSubscriptionController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
 @AutoConfigureRestDocs
