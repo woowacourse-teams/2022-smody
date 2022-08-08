@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
         ChallengeController.class,
         OauthController.class,
         CommentController.class,
+        FeedController.class
         PushSubscriptionController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
@@ -66,6 +67,9 @@ public class ControllerTest {
 
     @MockBean
     protected CycleQueryService cycleQueryService;
+
+    @MockBean
+    protected FeedQueryService feedQueryService;
 
     @MockBean
     protected GoogleApi googleApi;

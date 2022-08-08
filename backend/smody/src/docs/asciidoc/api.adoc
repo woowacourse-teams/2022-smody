@@ -99,6 +99,24 @@ include::{snippets}/get-cycle-stat/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-cycle-stat/response-fields.adoc[]
 
+= 피드
+== 모든 피드 조회
+=== Request
+include::{snippets}/get-all-feeds/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-feeds/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-feeds/response-fields.adoc[]
+
+= 댓글
+== 댓글 생성
+=== Request
+include::{snippets}/create-comment/http-request.adoc[]
+=== Request 필드
+include::{snippets}/create-comment/request-fields.adoc[]
+=== Response
+include::{snippets}/create-comment/http-response.adoc[]
+
 = 회원
 == 내 정보 조회
 === Request
