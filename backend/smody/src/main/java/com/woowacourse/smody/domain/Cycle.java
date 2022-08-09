@@ -70,6 +70,13 @@ public class Cycle {
         }
     }
 
+    public void increaseProgress(CycleDetail cycleDetail) {
+        this.progress = progress.increase(startTime, cycleDetail.getProgressTime());
+        if (this.cycleDetails.size() <= 2) {
+            this.cycleDetails.add(cycleDetail);
+        }
+    }
+
     public boolean matchMember(Long memberId) {
         return member.getId().equals(memberId);
     }

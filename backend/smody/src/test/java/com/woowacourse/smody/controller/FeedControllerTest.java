@@ -1,5 +1,6 @@
 package com.woowacourse.smody.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -32,7 +33,7 @@ public class FeedControllerTest extends ControllerTest {
                         "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
                         "미라클 모닝", 4)
         );
-        BDDMockito.given(feedQueryService.searchAll()).willReturn(feedResponses);
+        BDDMockito.given(feedQueryService.searchAll(any(), any())).willReturn(feedResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds?size=10&lastCycleDetailId=2"));
