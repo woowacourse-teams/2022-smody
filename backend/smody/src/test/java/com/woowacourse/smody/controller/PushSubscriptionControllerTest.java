@@ -13,19 +13,19 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.woowacourse.smody.dto.SubscriptionRequestDto;
+import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.dto.UnSubscriptionRequestDto;
-import com.woowacourse.smody.dto.VapidPublicKeyResponseDto;
+import com.woowacourse.smody.dto.UnSubscriptionRequest;
+import com.woowacourse.smody.dto.VapidPublicKeyResponse;
 
-class WebPushControllerTest extends ControllerTest {
+class PushSubscriptionControllerTest extends ControllerTest {
 
 	@DisplayName("Vapid 공개키를 조회할 때 200을 응답한다.")
 	@Test
 	void getPublicKey() throws Exception {
 		// given
 		String publicKey = "BNzzfdcBcThU27FcGve6F3GF6He2Fro82ZMuOLga9fukatLMlaKB6GdO-82loi6W4iGdPQZAp_4HLgST8z5of_E";
-		given(webPushService.getPublicKey())
+		given(pushSubscriptionService.getPublicKey())
 			.willReturn(publicKey);
 
 		// when
@@ -33,7 +33,7 @@ class WebPushControllerTest extends ControllerTest {
 
 		// then
 		result.andExpect(status().isOk())
-			.andExpect(content().json(objectMapper.writeValueAsString(new VapidPublicKeyResponseDto(publicKey))))
+			.andExpect(content().json(objectMapper.writeValueAsString(new VapidPublicKeyResponse(publicKey))))
 			.andDo(document("get-vapid-public-key", HOST_INFO,
 				preprocessResponse(prettyPrint()),
 				responseFields(
@@ -46,7 +46,7 @@ class WebPushControllerTest extends ControllerTest {
 	void subscribe() throws Exception {
 		// given
 		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-		SubscriptionRequestDto subscriptionRequestDto = new SubscriptionRequestDto(
+		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
 			"endpoint-link", "p256dh", "auth"
 		);
 
@@ -54,7 +54,7 @@ class WebPushControllerTest extends ControllerTest {
 		ResultActions result = mockMvc.perform(post("/web-push/subscribe")
 			.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(subscriptionRequestDto)));
+			.content(objectMapper.writeValueAsString(subscriptionRequest)));
 
 		// then
 		result.andExpect(status().isOk())
@@ -72,13 +72,13 @@ class WebPushControllerTest extends ControllerTest {
 	void unSubscribe() throws Exception {
 		// given
 		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-		UnSubscriptionRequestDto unSubscriptionRequestDto = new UnSubscriptionRequestDto("endpoint-link");
+		UnSubscriptionRequest unSubscriptionRequest = new UnSubscriptionRequest("endpoint-link");
 
 		// when
 		ResultActions result = mockMvc.perform(post("/web-push/unsubscribe")
 			.header("Authorization", "Bearer " + token)
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(unSubscriptionRequestDto)));
+			.content(objectMapper.writeValueAsString(unSubscriptionRequest)));
 
 		// then
 		result.andExpect(status().isNoContent())

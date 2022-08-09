@@ -26,8 +26,11 @@ public enum ExceptionData {
 
     INVALID_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
 
+    WEB_PUSH_ERROR(7001, "웹 푸시 라이브러리 관련 예외입니다.", 400),
+
     AUTHORIZATION_SERVER_ERROR(9001, "인가 관련 서버 내부의 오류입니다.", 500),
     IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500);
+
 
 
     private final int code;

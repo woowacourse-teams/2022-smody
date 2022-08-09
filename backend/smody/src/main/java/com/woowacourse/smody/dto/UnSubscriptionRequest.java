@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class VapidPublicKeyResponseDto {
+public class UnSubscriptionRequest {
 
-	private String publicKey;
+	private String endpoint;
 }
