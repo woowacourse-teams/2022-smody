@@ -1,20 +1,9 @@
-import { usePostCycleProgress } from 'apis';
+import useCertFormPage from './useCertFormPage';
 import Plus from 'assets/plus.svg';
-import { useState, useMemo, FormEventHandler } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { isDarkState } from 'recoil/darkMode/atoms';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import useImageInput from 'hooks/useImageInput';
-import useThemeContext from 'hooks/useThemeContext';
-
-import {
-  CertImageWrapperProps,
-  TextAreaProps,
-  CertFormPageLocationState,
-} from 'pages/CertFormPage/type';
+import { CertImageWrapperProps, TextAreaProps } from 'pages/CertFormPage/type';
 
 import {
   FlexBox,
@@ -28,56 +17,27 @@ import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const FORM_DATA_IMAGE_NAME = 'progressImage';
-
 const CertFormPage = () => {
-  const isDark = useRecoilValue(isDarkState);
-  const themeContext = useThemeContext();
-  const [description, setDescription] = useState('');
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
   const {
+    themeContext,
+    isDark,
+    cycleId,
+    challengeId,
+    challengeName,
+    successCount,
+    progressCount,
+    isButtonDisabled,
+    isLoadingPost,
+    isSuccessPost,
+    isSuccessModalOpen,
+    description,
     previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,
-    hasImageFormData,
-    isImageLoading,
-    formData,
-  } = useImageInput(FORM_DATA_IMAGE_NAME);
-  const isButtonDisabled = useMemo(
-    () => isImageLoading || !hasImageFormData,
-    [isImageLoading, formData],
-  );
-
-  const {
-    mutate: postCycleProgress,
-    isLoading: isLoadingPost,
-    isSuccess: isSuccessPost,
-  } = usePostCycleProgress({
-    onSuccess: () => {
-      setIsSuccessModalOpen(true);
-    },
-  });
-
-  const location = useLocation();
-
-  const { cycleId, challengeId, challengeName, successCount, progressCount } =
-    location.state as CertFormPageLocationState;
-
-  const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-
-    formData.append(
-      'description',
-      description.trim() || `${challengeName}챌린지 ${progressCount + 1}번째 완료`,
-    );
-
-    postCycleProgress({ cycleId, formData });
-  };
-
-  const handleCloseModal = () => {
-    setIsSuccessModalOpen(false);
-  };
+    handleSubmitCert,
+    handleCloseModal,
+    handleChangeDescription,
+  } = useCertFormPage();
 
   return (
     <FlexBox flexDirection="column" alignItems="center">
@@ -141,9 +101,7 @@ const CertFormPage = () => {
             rows={5}
             maxLength={254}
             value={description}
-            onChange={(event) => {
-              setDescription(event.target.value);
-            }}
+            onChange={handleChangeDescription}
             isDark={isDark}
           />
           <TextLength

@@ -1,4 +1,4 @@
-import { useGetMyCyclesInProgress } from 'apis';
+import useCertPage from './useCertPage';
 import styled, { css } from 'styled-components';
 
 import { EmptyContent, CertItem } from 'components';
@@ -6,11 +6,9 @@ import { EmptyContent, CertItem } from 'components';
 import { CLIENT_PATH } from 'constants/path';
 
 const CertPage = () => {
-  const { data } = useGetMyCyclesInProgress({
-    refetchOnWindowFocus: false,
-  });
+  const { cycles } = useCertPage();
 
-  if (data?.data.length === 0) {
+  if (typeof cycles === 'undefined') {
     return (
       <EmptyContent
         title="도전 중인 챌린지가 없습니다 :)"
@@ -23,7 +21,7 @@ const CertPage = () => {
 
   return (
     <Wrapper>
-      {data?.data.map((cycle) => (
+      {cycles.map((cycle) => (
         <CertItem key={cycle.cycleId} {...cycle} />
       ))}
     </Wrapper>
