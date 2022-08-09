@@ -41,5 +41,6 @@
       "purpose": "any"
     }
   ],
-  "shortcuts": []
+  "shortcuts": [],
+  "gcm_sender_id": "671293991399"
 }
