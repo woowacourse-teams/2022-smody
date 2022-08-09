@@ -1,6 +1,5 @@
 import useCertItem from './useCertItem';
 import styled, { css } from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -16,6 +15,7 @@ export const CertItem = ({
   progressCount,
   startTime,
   successCount,
+  emoji,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
   const { certEndDate, isCertPossible, handleClickWrapper, handleClickButton } =
@@ -26,6 +26,7 @@ export const CertItem = ({
       progressCount,
       startTime,
       successCount,
+      emoji,
     });
 
   return (
@@ -52,7 +53,7 @@ export const CertItem = ({
         </Text>
       </RowWrapper>
       <ThumbnailWrapper size="large" bgColor="transparent">
-        <p>{getEmoji(Number(challengeId))}</p>
+        {emoji}
       </ThumbnailWrapper>
       <RowWrapper justifyContent="center" gap="1.5rem">
         <Timer certEndDate={certEndDate} />

@@ -1,7 +1,6 @@
 import useSuccessModal from './useSuccessModal';
 import Close from 'assets/close.svg';
 import styled from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -15,6 +14,7 @@ export const SuccessModal = ({
   successCount,
   challengeId,
   progressCount,
+  emoji,
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
   const {
@@ -29,6 +29,7 @@ export const SuccessModal = ({
     challengeName,
     challengeId,
     progressCount,
+    emoji,
   });
 
   return (
@@ -43,7 +44,7 @@ export const SuccessModal = ({
           <Close />
         </CloseWrapper>
         <Text color={themeContext.onSurface} size={70} fontWeight="normal">
-          {getEmoji(Number(challengeId))}
+          {emoji}
           <span id="confettiRewardId" />
           <span id="emojiRewardId" />
         </Text>
