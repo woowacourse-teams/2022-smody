@@ -1,5 +1,5 @@
 export { default as NotFoundPage } from 'pages/NotFoundPage';
-export { default as Feed } from 'pages/Feed';
+export { default as FeedPage } from 'pages/FeedPage';
 export { default as SearchPage } from 'pages/SearchPage';
 export { default as ProfilePage } from 'pages/ProfilePage';
 export { default as ProfileEditPage } from 'pages/ProfileEditPage';
