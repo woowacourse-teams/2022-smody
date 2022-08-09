@@ -1,14 +1,29 @@
 import { useSearchPage } from 'pages/SearchPage/useSearchPage';
 
-import { FlexBox, LoadingSpinner, ChallengeList } from 'components';
+import { LoadingSpinner, ChallengeItem, FlexBox, InfiniteScroll } from 'components';
 
 const SearchPage = () => {
-  const { rootRef, targetRef, isFetching, challengeListData } = useSearchPage();
+  const { isFetching, challengeInfiniteData, hasNextPage, fetchNextPage } =
+    useSearchPage();
 
   return (
-    <FlexBox ref={rootRef} flexDirection="column">
-      <ChallengeList targetRef={targetRef} challengeListData={challengeListData} />
-      {isFetching && <LoadingSpinner />}
+    <FlexBox flexDirection="column">
+      <InfiniteScroll
+        loadMore={fetchNextPage}
+        hasMore={hasNextPage}
+        isFetching={isFetching}
+        loader={<LoadingSpinner />}
+      >
+        <FlexBox as="ul" flexDirection="column" gap="27px">
+          {challengeInfiniteData?.pages.map((page) =>
+            page?.data.map((challengeInfo) => (
+              <li key={challengeInfo.challengeId}>
+                <ChallengeItem {...challengeInfo} />
+              </li>
+            )),
+          )}
+        </FlexBox>
+      </InfiniteScroll>
     </FlexBox>
   );
 };
