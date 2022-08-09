@@ -385,7 +385,7 @@ class ChallengeServiceTest {
         Long challengeId = challengeService.create(challengeRequest);
 
         // when then
-        assertThat(challengeId).isNotNull();
+        assertThat(challengeService.search(challengeId)).isNotNull();
     }
 
     @DisplayName("중복된 챌린지 이름으로 생성하는 경우 예외 발생")
