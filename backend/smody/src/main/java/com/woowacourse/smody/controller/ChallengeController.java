@@ -1,10 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengesResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.ChallengeQueryService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,5 +50,10 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeQueryService.findOneWithChallengerCount(
                 tokenPayload, LocalDateTime.now(), id)
         );
+    }
+
+    @GetMapping(value = "/{id}/challengers")
+    public ResponseEntity<List<ChallengersResponse>> findAllChallengers(@PathVariable Long id) {
+        return ResponseEntity.ok(challengeQueryService.findAllChallengers(id));
     }
 }

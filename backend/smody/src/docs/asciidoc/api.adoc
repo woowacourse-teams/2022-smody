@@ -32,6 +32,13 @@ include::{snippets}/get-challenge-auth/http-request.adoc[]
 include::{snippets}/get-challenge/http-response.adoc[]
 include::{snippets}/get-challenge/response-fields.adoc[]
 
+== 챌린지 참가자 목록 조회
+=== Request
+include::{snippets}/get-challengers/http-request.adoc[]
+=== Response
+include::{snippets}/get-challengers/http-response.adoc[]
+include::{snippets}/get-challengers/response-fields.adoc[]
+
 = 사이클
 == 챌린지 사이클 생성
 === Request

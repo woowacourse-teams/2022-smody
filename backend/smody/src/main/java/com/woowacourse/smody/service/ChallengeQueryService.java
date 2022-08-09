@@ -6,10 +6,8 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengesResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -101,6 +99,20 @@ public class ChallengeQueryService {
         return cycles.stream()
                 .map(Cycle::getChallenge)
                 .distinct()
+                .collect(toList());
+    }
+
+    public List<ChallengersResponse> findAllChallengers(Long challengeId) {
+        Challenge challenge = challengeService.search(challengeId);
+        List<Cycle> inProgressCycle = cycleService.searchInProgress(LocalDateTime.now())
+                .stream()
+                .filter(cycle -> cycle.matchChallenge(challenge.getId()))
+                .collect(toList());
+        return inProgressCycle.stream()
+                .map(cycle -> new ChallengersResponse(
+                        cycle.getMember().getId(), cycle.getMember().getNickname(),
+                        cycle.getProgress().getCount(), cycle.getMember().getPicture(),
+                        cycle.getMember().getIntroduction()))
                 .collect(toList());
     }
 }

@@ -9,16 +9,19 @@ import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static com.woowacourse.smody.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengesResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -311,5 +314,66 @@ class ChallengeServiceTest {
                 () -> assertThat(challengeResponse.getChallengeId()).isEqualTo(미라클_모닝_ID),
                 () -> assertThat(challengeResponse.getIsInProgress()).isTrue()
         );
+    }
+
+    @DisplayName("챌린지의 참여자를 조회")
+    @Test
+    void findAllChallenger() {
+        // given
+        Member member1 = fixture.회원_조회(조조그린_ID);
+        Member member2 = fixture.회원_조회(더즈_ID);
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
+
+        // when
+        List<ChallengersResponse> challengersResponse = challengeQueryService
+                .findAllChallengers(미라클_모닝_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(challengersResponse.size()).isEqualTo(2),
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getMemberId))
+                        .containsExactly(member1.getId(), member2.getId()),
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getNickName))
+                        .containsExactly(member1.getNickname(), member2.getNickname()),
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getProgressCount))
+                        .containsExactly(0, 1),
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getPicture))
+                        .containsExactly(member1.getPicture(), member2.getPicture()),
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getIntroduction))
+                        .containsExactly(member1.getIntroduction(), member2.getIntroduction())
+        );
+    }
+
+    @DisplayName("아무도 진행하지 않는 챌린지의 참여자를 조회할 때")
+    @Test
+    void findAllChallenger_noInprogress() {
+        // given
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
+
+        // when
+        List<ChallengersResponse> challengersResponse = challengeQueryService
+                .findAllChallengers(알고리즘_풀기_ID);
+
+        // then
+        assertThat(challengersResponse).isEmpty();
+    }
+
+    @DisplayName("존재하지 않는 챌린지의 참여자를 조회할 때")
+    @Test
+    void findAllChallenger_notExists() {
+        // given
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+        fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
+        fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
+
+        // when then
+        assertThatThrownBy(() -> challengeQueryService.findAllChallengers(100L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
     }
 }
