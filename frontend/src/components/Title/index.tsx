@@ -1,5 +1,5 @@
+import useTitle from './useTitle';
 import { MdArrowBackIosNew } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -9,15 +9,7 @@ import { TitleProps } from 'components/Title/type';
 
 export const Title = ({ text, linkTo }: TitleProps) => {
   const themeContext = useThemeContext();
-  const navigate = useNavigate();
-  const backToPreviousPage = () => {
-    if (linkTo) {
-      navigate(linkTo);
-      return;
-    }
-
-    navigate(-1);
-  };
+  const { backToPreviousPage } = useTitle({ linkTo });
 
   return (
     <TitleWrapper flexDirection="row" justifyContent="center">

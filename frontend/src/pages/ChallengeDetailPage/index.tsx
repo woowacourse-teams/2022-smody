@@ -1,11 +1,6 @@
-import { useGetChallengeById } from 'apis';
-import { queryKeys } from 'apis/constants';
-import { useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
+import useChallengeDetailPage from './useChallengeDetailPage';
 import styled from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { ChallengeExplanationTextProps } from 'pages/ChallengeDetailPage/type';
@@ -16,28 +11,13 @@ import { CLIENT_PATH } from 'constants/path';
 
 const ChallengeDetailPage = () => {
   const themeContext = useThemeContext();
-  const queryClient = useQueryClient();
-  const { challengeId } = useParams();
+  const { challengeData, joinChallenge } = useChallengeDetailPage();
 
-  const { data } = useGetChallengeById(
-    { challengeId: Number(challengeId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  const { joinChallenge } = usePostJoinChallenge({
-    challengeId: Number(challengeId),
-    successCallback: () => {
-      queryClient.invalidateQueries(queryKeys.getChallengeById);
-    },
-  });
-
-  if (typeof data === 'undefined' || typeof data.data === 'undefined') {
+  if (typeof challengeData?.data === 'undefined') {
     return null;
   }
 
-  const { challengeName, challengerCount, isInProgress } = data.data;
+  const { challengeName, challengerCount, isInProgress, emoji } = challengeData.data;
 
   return (
     <Wrapper>
@@ -57,7 +37,7 @@ const ChallengeDetailPage = () => {
           </ChallengeExplanationText>
         </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {getEmoji(Number(challengeId))}
+          {emoji}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <FixedButton

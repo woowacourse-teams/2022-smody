@@ -1,52 +1,29 @@
-import { useGetMyCyclesStat, useGetMyInfo } from 'apis';
-import { authApiClient } from 'apis/apiClient';
-import { MouseEventHandler } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
+import useProfile from './useProfile';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, Button, LoadingSpinner } from 'components';
-
-import { CLIENT_PATH } from 'constants/path';
+import { FlexBox, Text, Button } from 'components';
 
 export const Profile = () => {
   const themeContext = useThemeContext();
+  const { myInfo, myCyclesStat, handleClickEdit, handleClickLogout } = useProfile();
 
-  const setIsLogin = useSetRecoilState(isLoginState);
-  const navigate = useNavigate();
-  const { data: dataMyInfo } = useGetMyInfo();
-  const { data: dataMyCyclesStat } = useGetMyCyclesStat();
-
-  if (typeof dataMyInfo === 'undefined' || typeof dataMyCyclesStat === 'undefined') {
-    return <LoadingSpinner />;
+  if (typeof myInfo === 'undefined' || typeof myCyclesStat === 'undefined') {
+    return null;
   }
 
-  const {
-    data: { nickname, introduction, picture },
-  } = dataMyInfo;
-  const profileImgAlt = { nickname } + ' 프로필 사진';
-
-  const {
-    data: { totalCount, successCount },
-  } = dataMyCyclesStat;
-
-  const handleClickEdit: MouseEventHandler<HTMLButtonElement> = () => {
-    navigate(CLIENT_PATH.PROFILE_EDIT);
-  };
-
-  const handleClickLogout: MouseEventHandler<HTMLButtonElement> = () => {
-    authApiClient.deleteAuth();
-    setIsLogin(false);
-    navigate(CLIENT_PATH.HOME);
-  };
+  const { picture, nickname, introduction } = myInfo.data;
+  const { totalCount, successCount } = myCyclesStat.data;
 
   return (
     <Wrapper flexDirection="column" justifyContent="center" gap="2.12rem">
       <FlexBox justifyContent="center" gap="2rem">
-        <ProfileImg aria-label="프로필 이미지" src={picture} alt={profileImgAlt} />
+        <ProfileImg
+          aria-label="프로필 이미지"
+          src={picture}
+          alt={`${nickname} 프로필 사진`}
+        />
         <FlexBox flexDirection="column" gap="0.4rem">
           <Text
             aria-label="닉네임"
@@ -56,7 +33,6 @@ export const Profile = () => {
           >
             {nickname}
           </Text>
-          {/* TODO: 프로필 편집 텍스트 width 제한. 이를 통해 자기 소개가 길어졌을 때 하단 프로필 편집, 로그아웃 버튼의 UI가 변경되는 문제 해결할 수 있음! */}
           <Text aria-label="자기소개" size={16} color={themeContext.onBackground}>
             {introduction}
           </Text>
@@ -101,6 +77,21 @@ export const Profile = () => {
 const Wrapper = styled(FlexBox)`
   width: 100%;
   margin: 1rem 2.375rem 0;
+
+  /* PC (해상도 1024px)*/
+  /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
+  @media all and (min-width: 768px) {
+    align-self: flex-start;
+    position: sticky;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
+  @media all and (max-width: 767px) {
+    position: relative;
+  }
 `;
 
 const ProfileImg = styled.img`

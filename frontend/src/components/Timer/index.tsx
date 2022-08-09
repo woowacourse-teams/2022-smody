@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-
 import { FlexBox, Text } from 'components';
 import { TimerProps } from 'components/Timer/type';
 import { useTimer } from 'components/Timer/useTimer';

@@ -1,12 +1,14 @@
 import styled, { keyframes } from 'styled-components';
 
-const LoadingBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-`;
+import { FlexBox } from 'components/';
+
+export const LoadingSpinner = () => {
+  return (
+    <FlexBox flexDirection="column" justifyContent="center" alignItems="center">
+      <Spinner />
+    </FlexBox>
+  );
+};
 
 const spin = keyframes`
   to { -webkit-transform: rotate(360deg); }
@@ -21,11 +23,3 @@ const Spinner = styled.div`
   animation: ${spin} 1s ease-in-out infinite;
   -webkit-animation: ${spin} 1s ease-in-out infinite;
 `;
-
-export const LoadingSpinner = () => {
-  return (
-    <LoadingBox>
-      <Spinner />
-    </LoadingBox>
-  );
-};

@@ -5,30 +5,15 @@ import Search from 'assets/search.svg';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import useMatchPath from 'hooks/useMatchPath';
-import useThemeContext from 'hooks/useThemeContext';
-
 import { Text, FlexBox } from 'components';
 import { NavLinkProps } from 'components/Navbar/type';
+import { useNavBar } from 'components/Navbar/useNavBar';
 
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
-  const themeContext = useThemeContext();
-  const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
-
-  const certColor = getPathMatchResult([CLIENT_PATH.CERT, CLIENT_PATH.CYCLE_DETAIL]);
-  const searchColor = getPathMatchResult([
-    CLIENT_PATH.SEARCH,
-    CLIENT_PATH.CHALLENGE_DETAIL,
-  ]);
-  const feedColor = getPathMatchResult([CLIENT_PATH.FEED]);
-  const profileColor = getPathMatchResult([
-    CLIENT_PATH.LOGIN,
-    CLIENT_PATH.SIGN_UP,
-    CLIENT_PATH.PROFILE,
-  ]);
+  const { certColor, searchColor, feedColor, profileColor } = useNavBar();
 
   return (
     <Footer>

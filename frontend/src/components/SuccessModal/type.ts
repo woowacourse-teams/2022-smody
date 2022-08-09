@@ -6,4 +6,9 @@ export interface SuccessModalProps
     'cycleId' | 'challengeName' | 'successCount' | 'challengeId' | 'progressCount'
   > {
   handleCloseModal: () => void;
+  emoji: string;
+}
+
+export interface UseSuccessModalProps extends Omit<SuccessModalProps, 'successCount'> {
+  emoji: string;
 }

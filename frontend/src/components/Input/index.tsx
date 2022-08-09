@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { InputProps, InputContainerProps } from 'components/Input/type';
+import { useInput } from 'components/Input/useInput';
 import { ValidationMessage } from 'components/ValidationMessage';
 
 export const Input = ({
@@ -14,7 +14,7 @@ export const Input = ({
   message,
   disabled,
 }: InputProps) => {
-  const [isFocus, setIsFocus] = useState(false);
+  const { isFocus, handleFocus, handleBlur } = useInput();
 
   return (
     <Wrapper>
@@ -26,8 +26,8 @@ export const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           disabled={disabled}
         />
       </InputWrapper>

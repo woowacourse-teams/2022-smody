@@ -1,16 +1,11 @@
-import { MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useCertItem from './useCertItem';
 import styled, { css } from 'styled-components';
-import { addDays } from 'utils';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
-import { CYCLE_UNIT } from 'constants/domain';
-import { CLIENT_PATH } from 'constants/path';
 import { cursorPointer } from 'constants/style';
 
 export const CertItem = ({
@@ -20,42 +15,25 @@ export const CertItem = ({
   progressCount,
   startTime,
   successCount,
+  emoji,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
-  const navigate = useNavigate();
-
-  const nowDate = new Date();
-  const certStartDate = addDays(new Date(startTime), progressCount);
-  const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);
-
-  const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
-
-  const handleClickWrapper = (e: MouseEvent) => {
-    if (e.target instanceof HTMLButtonElement) {
-      return;
-    }
-
-    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
-  };
-
-  const handleClickButton = () => {
-    navigate(CLIENT_PATH.CERT, {
-      state: {
-        isInCertFormPage: true,
-        cycleId,
-        challengeId,
-        challengeName,
-        progressCount,
-        successCount,
-      },
+  const { certEndDate, isCertPossible, handleClickWrapper, handleClickButton } =
+    useCertItem({
+      cycleId,
+      challengeId,
+      challengeName,
+      progressCount,
+      startTime,
+      successCount,
+      emoji,
     });
-  };
 
   return (
     <Wrapper
       flexDirection="column"
       gap="1rem"
-      onClick={(e) => handleClickWrapper(e)}
+      onClick={handleClickWrapper}
       style={{ ...cursorPointer }}
     >
       <TitleWrapper justifyContent="space-between">
@@ -75,7 +53,7 @@ export const CertItem = ({
         </Text>
       </RowWrapper>
       <ThumbnailWrapper size="large" bgColor="transparent">
-        <p>{getEmoji(Number(challengeId))}</p>
+        {emoji}
       </ThumbnailWrapper>
       <RowWrapper justifyContent="center" gap="1.5rem">
         <Timer certEndDate={certEndDate} />

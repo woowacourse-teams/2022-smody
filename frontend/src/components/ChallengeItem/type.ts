@@ -3,5 +3,10 @@ export interface ChallengeItemProps {
   challengeName: string;
   challengerCount: number;
   isInProgress: boolean;
-  challengeListRefetch: () => void;
+  emoji: string;
 }
+
+export type useChallengeItemProps = Pick<
+  ChallengeItemProps,
+  'challengeId' | 'challengeName' | 'isInProgress'
+>;
