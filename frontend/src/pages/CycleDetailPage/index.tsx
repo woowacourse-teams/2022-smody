@@ -18,13 +18,13 @@ import { CLIENT_PATH } from 'constants/path';
 
 const CycleDetailPage = () => {
   const themeContext = useThemeContext();
-  const data = useCycleDetailPage();
+  const cycleDetailData = useCycleDetailPage();
 
-  if (typeof data === 'undefined') {
-    return <LoadingSpinner />;
+  if (typeof cycleDetailData === 'undefined') {
+    return null;
   }
 
-  const { challengeId, challengeName, startTime, cycleDetails } = data.data;
+  const { challengeId, challengeName, startTime, cycleDetails } = cycleDetailData.data;
   const { year, month, date } = parseTime(startTime);
 
   return (
