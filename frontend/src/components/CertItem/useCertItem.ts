@@ -13,6 +13,7 @@ const useCertItem = ({
   progressCount,
   startTime,
   successCount,
+  emoji,
 }: CertItemProps) => {
   const navigate = useNavigate();
   const nowDate = new Date();
@@ -38,6 +39,7 @@ const useCertItem = ({
         challengeName,
         progressCount,
         successCount,
+        emoji,
       },
     });
   };

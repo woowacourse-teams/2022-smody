@@ -5,12 +5,20 @@ export interface GetChallengeResponse {
   challengeName: string;
   challengerCount: number;
   isInProgress: boolean;
+  emoji: string;
 }
 
-export interface GetChallengeByIdProps extends Pick<Challenge, 'challengeId'> {}
+export interface GetMySuccessChallengesResponse extends Challenge {
+  emoji: string;
+}
+
+export type GetChallengeByIdProps = Pick<Challenge, 'challengeId'>;
 
 export interface GetChallengeByIdResponse
   extends Pick<
     UserChallenge,
     'challengeId' | 'challengeName' | 'challengerCount' | 'isInProgress'
-  > {}
+  > {
+  emoji: string;
+  description: string;
+}

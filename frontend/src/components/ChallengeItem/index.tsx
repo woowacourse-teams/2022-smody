@@ -1,7 +1,6 @@
 import useChallengeItem from './useChallengeItem';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -15,6 +14,7 @@ export const ChallengeItem = ({
   challengeName,
   challengerCount,
   isInProgress,
+  emoji,
 }: ChallengeItemProps) => {
   const themeContext = useThemeContext();
   const handleClickProgressButton = useChallengeItem({
@@ -29,7 +29,7 @@ export const ChallengeItem = ({
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
           <FlexBox gap="17px" alignItems="center">
             <ThumbnailWrapper size="small" bgColor="#E6D1F2">
-              {getEmoji(Number(challengeId))}
+              {emoji}
             </ThumbnailWrapper>
             <FlexBox flexDirection="column" gap="0.5rem">
               <Text aria-label="challenge-name" color={themeContext.onSurface} size={16}>

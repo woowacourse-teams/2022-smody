@@ -43,7 +43,7 @@ const useCertFormPage = () => {
 
   const { state } = useLocation();
 
-  const { cycleId, challengeId, challengeName, successCount, progressCount } =
+  const { cycleId, challengeId, challengeName, successCount, progressCount, emoji } =
     state as CertFormPageLocationState;
 
   const handleSubmitCert: FormEventHandler<HTMLFormElement> = (event) => {
@@ -73,6 +73,7 @@ const useCertFormPage = () => {
     challengeName,
     successCount,
     progressCount,
+    emoji,
     isButtonDisabled,
     isLoadingPost,
     isSuccessPost,

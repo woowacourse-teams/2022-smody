@@ -11,13 +11,13 @@ import { CLIENT_PATH } from 'constants/path';
 
 const ChallengeDetailPage = () => {
   const themeContext = useThemeContext();
-  const { data, joinChallenge, emoji } = useChallengeDetailPage();
+  const { challengeData, joinChallenge } = useChallengeDetailPage();
 
-  if (typeof data === 'undefined' || typeof data.data === 'undefined') {
+  if (typeof challengeData?.data === 'undefined') {
     return null;
   }
 
-  const { challengeName, challengerCount, isInProgress } = data.data;
+  const { challengeName, challengerCount, isInProgress, emoji } = challengeData.data;
 
   return (
     <Wrapper>
