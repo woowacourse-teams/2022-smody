@@ -145,6 +145,7 @@ export const challenge = [
       );
     }
 
+    // return res(ctx.status(200), ctx.json([]));
     return res(ctx.status(200), ctx.json(challengers));
   }),
 ];

@@ -1,9 +1,12 @@
 import useChallengeDetailPage from './useChallengeDetailPage';
 import styled from 'styled-components';
 
-import { FlexBox, FixedButton, ChallengerList, ChallengeDetail } from 'components';
+import useThemeContext from 'hooks/useThemeContext';
+
+import { FlexBox, FixedButton, ChallengerList, ChallengeDetail, Text } from 'components';
 
 const ChallengeDetailPage = () => {
+  const themeContext = useThemeContext();
   const { challengeData, joinChallenge } = useChallengeDetailPage();
 
   if (typeof challengeData?.data === 'undefined') {
@@ -15,7 +18,12 @@ const ChallengeDetailPage = () => {
   return (
     <Wrapper flexDirection="column" gap="2rem">
       <ChallengeDetail {...challengeData.data} />
-      <ChallengerList challengeId={challengeId} />
+      <FlexBox flexDirection="column" gap="30px">
+        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+          챌린지 도전자
+        </Text>
+        <ChallengerList challengeId={challengeId} />
+      </FlexBox>
       <FixedButton
         size="large"
         onClick={() => joinChallenge(challengeName)}

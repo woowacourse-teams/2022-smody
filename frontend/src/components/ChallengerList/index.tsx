@@ -1,26 +1,31 @@
 import { ChallengerListProps } from './type';
 import { useChallengerList } from './useChallengerList';
 
-import useThemeContext from 'hooks/useThemeContext';
-
-import { FlexBox, Text, Challenger } from 'components';
+import { FlexBox, Challenger, EmptyContent } from 'components';
 
 export const ChallengerList = ({ challengeId }: ChallengerListProps) => {
-  const themeContext = useThemeContext();
   const challengersData = useChallengerList({ challengeId });
 
+  if (typeof challengersData?.data === 'undefined') {
+    return null;
+  }
+
+  if (challengersData?.data.length === 0) {
+    return (
+      <EmptyContent
+        title="아직 이 챌린지의 도전자가 없습니다 :)"
+        description="첫 도전자가 되어보아요!!"
+      />
+    );
+  }
+
   return (
-    <FlexBox flexDirection="column" gap="30px">
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
-        챌린지 도전자
-      </Text>
-      <FlexBox as="ul" flexDirection="column" gap="27px">
-        {challengersData?.data.map((challenger) => (
-          <li key={challenger.memberId}>
-            <Challenger {...challenger} />
-          </li>
-        ))}
-      </FlexBox>
+    <FlexBox as="ul" flexDirection="column" gap="27px">
+      {challengersData?.data.map((challenger) => (
+        <li key={challenger.memberId}>
+          <Challenger {...challenger} />
+        </li>
+      ))}
     </FlexBox>
   );
 };

@@ -26,9 +26,11 @@ export const EmptyContent = ({
       <Text size={16} color={themeContext.onBackground}>
         {description}
       </Text>
-      <LinkText size={16} color={themeContext.primary} to={linkTo}>
-        {linkText}
-      </LinkText>
+      {linkText && linkTo && (
+        <LinkText size={16} color={themeContext.primary} to={linkTo}>
+          {linkText}
+        </LinkText>
+      )}
     </Wrapper>
   );
 };
