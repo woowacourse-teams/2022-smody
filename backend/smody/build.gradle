@@ -49,6 +49,9 @@ dependencies {
     implementation 'com.vaadin:vaadin-spring-boot-starter'
     implementation 'dev.mett.vaadin:tooltip:1.7.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation group: 'nl.martijndwars', name: 'web-push', version: '5.1.1'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.68'
 }
 
 dependencyManagement {
