@@ -1,22 +1,26 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.util.PagingUtil;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -114,5 +118,39 @@ public class ChallengeQueryService {
                         cycle.getProgress().getCount(), cycle.getMember().getPicture(),
                         cycle.getMember().getIntroduction()))
                 .collect(toList());
+    }
+
+    public List<ChallengesResponse> searchByName(String name) {
+        validateSearchingName(name);
+        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
+        Map<Challenge, Integer> matchedChallenges = inProgressCycles.keySet().stream()
+                .filter(challenge -> StringUtils.containsIgnoreCase(challenge.getName(), name))
+                .collect(toMap(Function.identity(), challenge -> inProgressCycles.get(challenge).size()));
+        return matchedChallenges.keySet().stream()
+                .map(challenge -> new ChallengesResponse(
+                        challenge.getId(), challenge.getName(), matchedChallenges.get(challenge),
+                        false, challenge.getEmoji()))
+                .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
+                .collect(toList());
+    }
+
+    public List<ChallengesResponse> searchByName(TokenPayload tokenPayload, String name) {
+        validateSearchingName(name);
+        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
+        Map<Challenge, Integer> matchedChallenges = inProgressCycles.keySet().stream()
+                .filter(challenge -> StringUtils.containsIgnoreCase(challenge.getName(), name))
+                .collect(toMap(Function.identity(), challenge -> inProgressCycles.get(challenge).size()));
+        return matchedChallenges.keySet().stream()
+                .map(challenge -> new ChallengesResponse(
+                        challenge.getId(), challenge.getName(), matchedChallenges.get(challenge),
+                        matchMember(inProgressCycles, tokenPayload, challenge.getId()), challenge.getEmoji()))
+                .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
+                .collect(toList());
+    }
+
+    private void validateSearchingName(String name) {
+        if (name == null || name.isEmpty() || name.isBlank()) {
+            throw new BusinessException(ExceptionData.INVALID_SEARCH_NAME);
+        }
     }
 }
