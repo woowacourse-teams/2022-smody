@@ -77,6 +77,21 @@ export const Profile = () => {
 const Wrapper = styled(FlexBox)`
   width: 100%;
   margin: 1rem 2.375rem 0;
+
+  /* PC (해상도 1024px)*/
+  /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
+  @media all and (min-width: 768px) {
+    align-self: flex-start;
+    position: sticky;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
+  @media all and (max-width: 767px) {
+    position: relative;
+  }
 `;
 
 const ProfileImg = styled.img`

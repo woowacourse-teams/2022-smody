@@ -5,15 +5,16 @@ import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { CardBox, Text, EmptyContent } from 'components';
+import { CardBox, Text, EmptyContent, LoadingSpinner, InfiniteScroll } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   const themeContext = useThemeContext();
-  const { data, loadMore } = useCardGridContainer();
+  const { successChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching } =
+    useCardGridContainer();
 
-  if (data?.pages[0].data.length === 0) {
+  if (successChallengeInfiniteData?.pages[0].data.length === 0) {
     return (
       <EmptyContent
         title="아직 성공한 챌린지가 없습니다 :)"
@@ -30,18 +31,25 @@ export const CardGridContainer = () => {
         성공한 챌린지
       </Text>
       <Line />
-      <Grid>
-        {data?.pages.map((page) =>
-          page?.data?.map((challenge: Challenge) => (
-            <CardBox
-              key={challenge.challengeId}
-              {...challenge}
-              bgColor="#E6D1F2"
-              emoji={getEmoji(challenge.challengeId)}
-            />
-          )),
-        )}
-      </Grid>
+      <InfiniteScroll
+        loadMore={fetchNextPage}
+        hasMore={hasNextPage}
+        isFetching={isFetching}
+        loader={<LoadingSpinner />}
+      >
+        <Grid>
+          {successChallengeInfiniteData?.pages.map((page) =>
+            page?.data?.map((challenge: Challenge) => (
+              <CardBox
+                key={challenge.challengeId}
+                {...challenge}
+                bgColor="#E6D1F2"
+                emoji={getEmoji(challenge.challengeId)}
+              />
+            )),
+          )}
+        </Grid>
+      </InfiniteScroll>
     </div>
   );
 };

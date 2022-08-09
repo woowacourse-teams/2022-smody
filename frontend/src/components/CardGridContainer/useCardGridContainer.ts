@@ -1,15 +1,16 @@
 import { useGetMySuccessChallenges } from 'apis';
 
 const useCardGridContainer = () => {
-  const { data, hasNextPage, fetchNextPage } = useGetMySuccessChallenges();
+  const {
+    data: successChallengeInfiniteData,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+  } = useGetMySuccessChallenges({
+    refetchOnWindowFocus: false,
+  });
 
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  return { data, loadMore };
+  return { successChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching };
 };
 
 export default useCardGridContainer;
