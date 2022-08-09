@@ -6,19 +6,28 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/feeds")
 @RequiredArgsConstructor
 public class FeedController {
 
     private final FeedQueryService feedQueryService;
 
-    @GetMapping("/feeds")
-    ResponseEntity<List<FeedResponse>> findAll(@RequestParam(defaultValue = "10")Integer size,
+    @GetMapping
+    ResponseEntity<List<FeedResponse>> findAll(@RequestParam(defaultValue = "10") Integer size,
                                                @RequestParam(defaultValue = "0") Long lastCycleDetailId) {
         List<FeedResponse> feedResponses = feedQueryService.searchAll(size, lastCycleDetailId);
         return ResponseEntity.ok(feedResponses);
+    }
+
+    @GetMapping("/{cycleDetailId}")
+    ResponseEntity<FeedResponse> findById(@PathVariable Long cycleDetailId) {
+        FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
+        return ResponseEntity.ok(feedResponse);
     }
 }

@@ -22,4 +22,8 @@ public class FeedQueryService {
                 .map(FeedResponse::new)
                 .collect(Collectors.toList());
     }
+
+    public FeedResponse searchById(Long cycleDetailId) {
+        return null;
+    }
 }

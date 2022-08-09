@@ -108,6 +108,13 @@ include::{snippets}/get-all-feeds/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-all-feeds/response-fields.adoc[]
 
+== 피드 하나 조회
+=== Request
+include::{snippets}/get-feed/http-request.adoc[]
+=== Response
+include::{snippets}/get-feed/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-feed/response-fields.adoc[]
 = 댓글
 == 댓글 생성
 === Request
