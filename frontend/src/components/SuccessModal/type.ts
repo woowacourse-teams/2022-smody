@@ -7,3 +7,5 @@ export interface SuccessModalProps
   > {
   handleCloseModal: () => void;
 }
+
+export type UseSuccessModalProps = Omit<SuccessModalProps, 'successCount'>;
