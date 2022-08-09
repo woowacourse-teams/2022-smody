@@ -39,6 +39,12 @@ include::{snippets}/get-challengers/http-request.adoc[]
 include::{snippets}/get-challengers/http-response.adoc[]
 include::{snippets}/get-challengers/response-fields.adoc[]
 
+== 챌린지 생성
+=== Request
+include::{snippets}/create-challenge/http-request.adoc[]
+=== Response
+include::{snippets}/create-challenge/http-response.adoc[]
+
 = 사이클
 == 챌린지 사이클 생성
 === Request
