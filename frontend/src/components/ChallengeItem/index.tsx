@@ -18,6 +18,7 @@ export const ChallengeItem = ({
   isInProgress,
 }: ChallengeItemProps) => {
   const navigate = useNavigate();
+  const navigate = useNavigate();
   const themeContext = useThemeContext();
   const queryClient = useQueryClient();
 
