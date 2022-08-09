@@ -45,6 +45,15 @@ include::{snippets}/create-challenge/http-request.adoc[]
 === Response
 include::{snippets}/create-challenge/http-response.adoc[]
 
+== 챌린지 검색 (비회원/회원)
+=== Request
+include::{snippets}/search-challenge/http-request.adoc[]
+include::{snippets}/search-challenge-auth/http-request.adoc[]
+=== Response
+include::{snippets}/search-challenge/http-response.adoc[]
+include::{snippets}/search-challenge-auth/http-response.adoc[]
+include::{snippets}/search-challenge/response-fields.adoc[]
+
 = 사이클
 == 챌린지 사이클 생성
 === Request

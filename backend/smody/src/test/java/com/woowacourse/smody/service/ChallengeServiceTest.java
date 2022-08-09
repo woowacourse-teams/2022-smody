@@ -1,13 +1,6 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.ResourceFixture.토닉_ID;
+import static com.woowacourse.smody.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -433,5 +426,85 @@ class ChallengeServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
+    }
+
+    @DisplayName("비회원이 챌린지를 이름 기준으로 검색하는 경우")
+    @Test
+    void searchByName_unAuthorized() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+
+        // when
+        List<ChallengesResponse> challengesResponse = challengeQueryService.searchByName("기");
+
+        // then
+        assertAll(
+                () -> assertThat(challengesResponse.size()).isEqualTo(2),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengeId))
+                        .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengerCount))
+                        .containsExactly(2, 1),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getIsInProgress))
+                        .containsExactly(false, false)
+        );
+    }
+
+    @DisplayName("비회원이 챌린지를 빈 이름 혹은 공백 문자로 검색하는 경우")
+    @ParameterizedTest
+    @ValueSource(strings = {" ", ""})
+    void searchByName_unAuthorizedWithNoName(String invalidSearchingName) {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+
+        // when then
+        assertThatThrownBy(() -> challengeQueryService.searchByName(invalidSearchingName))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
+    }
+
+    @DisplayName("회원이 챌린지를 이름 기준으로 검색하는 경우")
+    @Test
+    void searchByName_authorized() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when
+        List<ChallengesResponse> challengesResponse = challengeQueryService.searchByName(tokenPayload, "기");
+
+        // then
+        assertAll(
+                () -> assertThat(challengesResponse.size()).isEqualTo(2),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengeId))
+                        .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengerCount))
+                        .containsExactly(2, 1),
+                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getIsInProgress))
+                        .containsExactly(false, true)
+        );
+    }
+
+    @DisplayName("회원이 챌린지를 빈 이름 혹은 공백 문자로 검색하는 경우")
+    @ParameterizedTest
+    @ValueSource(strings = {" ", ""})
+    void searchByName_authorizedWithNoName(String invalidSearchingName) {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when then
+        assertThatThrownBy(() -> challengeQueryService.searchByName(tokenPayload, invalidSearchingName))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
     }
 }
