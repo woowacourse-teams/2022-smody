@@ -1,7 +1,6 @@
 import useCertFormPage from './useCertFormPage';
 import Plus from 'assets/plus.svg';
 import styled, { css } from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
 import { CertImageWrapperProps, TextAreaProps } from 'pages/CertFormPage/type';
 
@@ -26,6 +25,7 @@ const CertFormPage = () => {
     challengeName,
     successCount,
     progressCount,
+    emoji,
     isButtonDisabled,
     isLoadingPost,
     isSuccessPost,
@@ -62,7 +62,7 @@ const CertFormPage = () => {
         </FlexBox>
 
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {getEmoji(Number(challengeId))}
+          {emoji}
         </ThumbnailWrapper>
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
@@ -130,6 +130,7 @@ const CertFormPage = () => {
           challengeName={challengeName}
           successCount={successCount}
           progressCount={progressCount + 1}
+          emoji={emoji}
         />
       )}
     </FlexBox>

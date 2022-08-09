@@ -2,16 +2,14 @@ import { useGetChallengeById } from 'apis';
 import { queryKeys } from 'apis/constants';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 
 const useChallengeDetailPage = () => {
   const queryClient = useQueryClient();
   const { challengeId } = useParams();
-  const emoji = getEmoji(Number(challengeId));
 
-  const { data } = useGetChallengeById(
+  const { data: challengeData } = useGetChallengeById(
     { challengeId: Number(challengeId) },
     {
       refetchOnWindowFocus: false,
@@ -25,7 +23,7 @@ const useChallengeDetailPage = () => {
     },
   });
 
-  return { data, joinChallenge, emoji };
+  return { challengeData, joinChallenge };
 };
 
 export default useChallengeDetailPage;

@@ -1,7 +1,6 @@
 import useCardGridContainer from './useCardGridContainer';
 import { Challenge } from 'commonType';
 import styled from 'styled-components';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -39,13 +38,8 @@ export const CardGridContainer = () => {
       >
         <Grid>
           {successChallengeInfiniteData?.pages.map((page) =>
-            page?.data?.map((challenge: Challenge) => (
-              <CardBox
-                key={challenge.challengeId}
-                {...challenge}
-                bgColor="#E6D1F2"
-                emoji={getEmoji(challenge.challengeId)}
-              />
+            page?.data?.map((challenge) => (
+              <CardBox key={challenge.challengeId} {...challenge} bgColor="#E6D1F2" />
             )),
           )}
         </Grid>

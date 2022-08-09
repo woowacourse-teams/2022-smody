@@ -1,18 +1,10 @@
 import useCycleDetailPage from './useCycleDetailPage';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
-import { getEmoji } from 'utils/emoji';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import {
-  LoadingSpinner,
-  Text,
-  ThumbnailWrapper,
-  CycleDetailList,
-  FlexBox,
-  Title,
-} from 'components';
+import { Text, ThumbnailWrapper, CycleDetailList, FlexBox, Title } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -24,7 +16,7 @@ const CycleDetailPage = () => {
     return null;
   }
 
-  const { challengeId, challengeName, startTime, cycleDetails } = cycleDetailData.data;
+  const { challengeName, startTime, cycleDetails, emoji } = cycleDetailData.data;
   const { year, month, date } = parseTime(startTime);
 
   return (
@@ -45,7 +37,7 @@ const CycleDetailPage = () => {
           </Text>
         </FlexBox>
         <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {getEmoji(Number(challengeId))}
+          {emoji}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <CycleDetailList cycleDetails={cycleDetails} />

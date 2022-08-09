@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useReward } from 'react-rewards';
 import { useNavigate } from 'react-router-dom';
-import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 
@@ -30,11 +29,12 @@ const useSuccessModal = ({
   challengeName,
   challengeId,
   progressCount,
+  emoji,
 }: UseSuccessModalProps) => {
   const navigate = useNavigate();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
-    emoji: [getEmoji(Number(challengeId))],
+    emoji: [emoji],
   });
 
   const postJoinChallengeSuccessCallback = () => {
