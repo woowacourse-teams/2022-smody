@@ -115,6 +115,7 @@ const TestPage = () => {
           if (userSubscription) {
             // pushUnsubscribe();
             console.log('3-userSubscription', userSubscription);
+            pushSubscribe(); // 일단 테스트용 나중에 삭제
           } else {
             console.log('4-pushSubscribe');
             pushSubscribe();
