@@ -4,13 +4,7 @@ import { useRef, RefObject, useMemo } from 'react';
 import useIntersect from 'hooks/useIntersect';
 
 export const useSearchPage = () => {
-  const {
-    isFetching,
-    data,
-    refetch: challengeListRefetch,
-    hasNextPage,
-    fetchNextPage,
-  } = useGetAllChallenges({
+  const { isFetching, data, hasNextPage, fetchNextPage } = useGetAllChallenges({
     refetchOnWindowFocus: false,
   });
 
@@ -33,8 +27,6 @@ export const useSearchPage = () => {
     rootRef,
     targetRef,
     isFetching,
-    data,
     challengeListData,
-    challengeListRefetch,
   };
 };

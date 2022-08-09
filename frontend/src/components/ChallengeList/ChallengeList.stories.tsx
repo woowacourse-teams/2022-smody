@@ -14,5 +14,4 @@ export const DefaultChallengeList = (args: ChallengeListProps) => (
 
 DefaultChallengeList.args = {
   challengeListData: challengeData,
-  challengeListRefetch: () => {},
 };
