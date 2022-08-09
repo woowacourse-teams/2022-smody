@@ -1,5 +1,4 @@
-import { useGetCycleById } from 'apis';
-import { useParams } from 'react-router-dom';
+import useCycleDetailPage from './useCycleDetailPage';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 import { getEmoji } from 'utils/emoji';
@@ -18,20 +17,14 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 const CycleDetailPage = () => {
-  const { cycleId } = useParams();
   const themeContext = useThemeContext();
-  const { data } = useGetCycleById(
-    { cycleId: Number(cycleId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const cycleDetailData = useCycleDetailPage();
 
-  if (typeof data === 'undefined') {
-    return <LoadingSpinner />;
+  if (typeof cycleDetailData === 'undefined') {
+    return null;
   }
 
-  const { challengeId, challengeName, startTime, cycleDetails } = data.data;
+  const { challengeId, challengeName, startTime, cycleDetails } = cycleDetailData.data;
   const { year, month, date } = parseTime(startTime);
 
   return (
