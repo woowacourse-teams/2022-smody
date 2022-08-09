@@ -1,6 +1,4 @@
 import useCertItem from './useCertItem';
-import { MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
@@ -9,7 +7,6 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
-import { CLIENT_PATH } from 'constants/path';
 import { cursorPointer } from 'constants/style';
 
 export const CertItem = ({
@@ -20,36 +17,22 @@ export const CertItem = ({
   startTime,
   successCount,
 }: CertItemProps) => {
-  const navigate = useNavigate();
   const themeContext = useThemeContext();
-  const { certEndDate, isCertPossible } = useCertItem({ startTime, progressCount });
-
-  const handleClickWrapper = (e: MouseEvent) => {
-    if (e.target instanceof HTMLButtonElement) {
-      return;
-    }
-
-    navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${cycleId}`);
-  };
-
-  const handleClickButton = () => {
-    navigate(CLIENT_PATH.CERT, {
-      state: {
-        isInCertFormPage: true,
-        cycleId,
-        challengeId,
-        challengeName,
-        progressCount,
-        successCount,
-      },
+  const { certEndDate, isCertPossible, handleClickWrapper, handleClickButton } =
+    useCertItem({
+      cycleId,
+      challengeId,
+      challengeName,
+      progressCount,
+      startTime,
+      successCount,
     });
-  };
 
   return (
     <Wrapper
       flexDirection="column"
       gap="1rem"
-      onClick={(e) => handleClickWrapper(e)}
+      onClick={handleClickWrapper}
       style={{ ...cursorPointer }}
     >
       <TitleWrapper justifyContent="space-between">
