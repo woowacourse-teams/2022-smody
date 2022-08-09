@@ -23,7 +23,7 @@ const updateSubscription = (subscription: PushSubscription) => {
   // @ch10. 푸시 구독 정보 전송 기능 구현
 
   authApiClient.axios
-    .post('/web-push/subscribe', { subscription })
+    .post('/web-push/subscribe', subscription)
     .then((res) => {
       console.log('7-웹푸시 섭스크라이브', res);
     })
