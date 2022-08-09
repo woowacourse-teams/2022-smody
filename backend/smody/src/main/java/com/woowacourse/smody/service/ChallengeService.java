@@ -1,10 +1,14 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.dto.ChallengeRequest;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,5 +27,17 @@ public class ChallengeService {
 
     public List<Challenge> searchAll() {
         return challengeRepository.findAll();
+    }
+
+    public Long create(ChallengeRequest challengeRequest) {
+        validateDuplicatedName(challengeRequest.getChallengeName());
+        Challenge challenge = challengeRepository.save(new Challenge(challengeRequest));
+        return challenge.getId();
+    }
+
+    private void validateDuplicatedName(String name) {
+        if (challengeRepository.findByName(name).isPresent()) {
+            throw new BusinessException(ExceptionData.DUPLICATE_NAME);
+        }
     }
 }

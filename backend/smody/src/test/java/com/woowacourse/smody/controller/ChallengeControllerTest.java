@@ -6,19 +6,21 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.woowacourse.smody.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -201,6 +203,33 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("인증 횟수"),
                                 fieldWithPath("[].picture").type(JsonFieldType.STRING).description("프로필 사진"),
                                 fieldWithPath("[].introduction").type(JsonFieldType.STRING).description("자기 소개")
+                        )));
+    }
+
+    @DisplayName("챌린지를 생성할 때 201을 응답한다.")
+    @Test
+    void create_201() throws Exception {
+        // given
+        Long challengeId = 1L;
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 하기", "1일 1포스팅을 실천하는 챌린지입니다", "\\u212");
+        given(challengeService.create(any(ChallengeRequest.class))).willReturn(challengeId);
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        // when
+        ResultActions result = mockMvc.perform(post("/challenges")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token)
+                .content(objectMapper.writeValueAsString(challengeRequest)));
+
+        // then
+        result.andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/challenges/" + challengeId))
+                .andDo(document("create-challenge", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
+                                fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 }

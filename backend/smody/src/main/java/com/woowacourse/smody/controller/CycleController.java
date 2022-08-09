@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.InProgressCycleResponse;
@@ -33,6 +34,7 @@ public class CycleController {
     private final CycleQueryService cycleQueryService;
 
     @PostMapping
+    @RequiredLogin
     public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
                                        @RequestBody CycleRequest cycleRequest) {
         Long cycleId = cycleService.create(tokenPayload, cycleRequest);
@@ -40,6 +42,7 @@ public class CycleController {
     }
 
     @PostMapping("/{cycleId}/progress")
+    @RequiredLogin
     public ResponseEntity<ProgressResponse> increase(@LoginMember TokenPayload tokenPayload,
                                                      @ModelAttribute ProgressRequest progressRequest) {
         progressRequest.setProgressTime(LocalDateTime.now());
@@ -48,6 +51,7 @@ public class CycleController {
     }
 
     @GetMapping(value = "/me")
+    @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  Pageable pageable) {
         return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
@@ -59,6 +63,7 @@ public class CycleController {
     }
 
     @GetMapping("/me/stat")
+    @RequiredLogin
     public ResponseEntity<StatResponse> searchStat(@LoginMember TokenPayload tokenPayload) {
         return ResponseEntity.ok(cycleQueryService.searchStat(tokenPayload));
     }

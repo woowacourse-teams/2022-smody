@@ -7,7 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +21,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        RequiredLogin requiredLogin = handlerMethod.getMethodAnnotation(RequiredLogin.class);
+        if (Objects.isNull(requiredLogin)) {
             return true;
         }
         String token = jwtTokenExtractor.extract(request);

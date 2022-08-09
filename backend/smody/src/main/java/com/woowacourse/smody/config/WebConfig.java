@@ -16,11 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private static final List<String> AUTH_REQUIRED_URL = List.of(
-            "/cycles", "/cycles/me", "/cycles/*/progress", "/cycles/me/stat", "/challenges/me", "/members/me/**",
-            "/challenges/auth", "/challenges/*/auth"
-    );
-
     @Value("${frontend.origin}")
     private String frontendOrigin;
 
@@ -38,9 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(logInterceptor)
                 .order(0)
                 .addPathPatterns("/**");
-        registry.addInterceptor(authInterceptor)
-                .order(1)
-                .addPathPatterns(AUTH_REQUIRED_URL);
+        registry.addInterceptor(authInterceptor);
     }
 
     @Override
