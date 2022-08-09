@@ -3,5 +3,4 @@ export interface ChallengeItemProps {
   challengeName: string;
   challengerCount: number;
   isInProgress: boolean;
-  challengeListRefetch: () => void;
 }

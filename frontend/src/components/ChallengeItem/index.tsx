@@ -1,3 +1,5 @@
+import { queryKeys } from 'apis/constants';
+import { useQueryClient } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
@@ -15,13 +17,15 @@ export const ChallengeItem = ({
   challengeName,
   challengerCount,
   isInProgress,
-  challengeListRefetch,
 }: ChallengeItemProps) => {
   const themeContext = useThemeContext();
+  const queryClient = useQueryClient();
 
   const { joinChallenge } = usePostJoinChallenge({
     challengeId: Number(challengeId),
-    successCallback: challengeListRefetch,
+    successCallback: () => {
+      queryClient.invalidateQueries(queryKeys.getAllChallenges);
+    },
   });
 
   const navigate = useNavigate();
