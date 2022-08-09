@@ -12,10 +12,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengesResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -175,6 +173,34 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
                                 fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지 값")
+                        )));
+    }
+
+    @DisplayName("챌린지에 참가한 회원들을 조회할 때 200을 응답한다.")
+    @Test
+    void findAllChallengers() throws Exception {
+        // given
+        List<ChallengersResponse> challengersResponse = List.of(
+                new ChallengersResponse(1L, "조조그린", 1, "picture1.jpg", "조조그린입니다"),
+                new ChallengersResponse(2L, "알파", 0, "picture2.jpg", "알파입니다")
+        );
+        given(challengeQueryService.findAllChallengers(eq(1L))
+        ).willReturn(challengersResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/1/challengers"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengersResponse)))
+                .andDo(document("get-challengers", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("멤버 ID"),
+                                fieldWithPath("[].nickName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+                                fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("인증 횟수"),
+                                fieldWithPath("[].picture").type(JsonFieldType.STRING).description("프로필 사진"),
+                                fieldWithPath("[].introduction").type(JsonFieldType.STRING).description("자기 소개")
                         )));
     }
 }
