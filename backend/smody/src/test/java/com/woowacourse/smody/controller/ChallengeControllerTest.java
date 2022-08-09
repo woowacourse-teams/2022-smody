@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengesResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
@@ -29,20 +30,20 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void findAllWithChallengerCount_unAuthorized() throws Exception {
         // given
-        List<ChallengeResponse> challengeResponses = List.of(
-                new ChallengeResponse(1L, "스모디 방문하기", 3, false),
-                new ChallengeResponse(2L, "미라클 모닝", 5, false)
+        List<ChallengesResponse> challengesResponses = List.of(
+                new ChallengesResponse(1L, "스모디 방문하기", 3, false, "\\uf212"),
+                new ChallengesResponse(2L, "미라클 모닝", 5, false, "\\uf212")
         );
 
         given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
-                .willReturn(challengeResponses);
+                .willReturn(challengesResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges?page=0&size=10"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponses)))
                 .andDo(document("get-all-challenges", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -50,7 +51,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING)
                                         .description("Challenge 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
-                                fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                                fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
+                                fieldWithPath("[].emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 
@@ -58,15 +60,15 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void findAllWithChallengerCount_authorized() throws Exception {
         // given
-        List<ChallengeResponse> challengeResponses = List.of(
-                new ChallengeResponse(1L, "스모디 방문하기", 3, true),
-                new ChallengeResponse(2L, "미라클 모닝", 5, false)
+        List<ChallengesResponse> challengesResponses = List.of(
+                new ChallengesResponse(1L, "스모디 방문하기", 3, true, "\\uf212"),
+                new ChallengesResponse(2L, "미라클 모닝", 5, false, "\\uf212")
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
                 any(Pageable.class)))
-                .willReturn(challengeResponses);
+                .willReturn(challengesResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/auth?page=0&size=10")
@@ -74,7 +76,7 @@ class ChallengeControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengeResponses)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponses)))
                 .andDo(document("get-all-challenges-auth", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -82,7 +84,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING)
                                         .description("Challenge 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
-                                fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                                fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
+                                fieldWithPath("[].emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 
@@ -92,8 +95,8 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         List<SuccessChallengeResponse> successChallengeResponses = List.of(
-                new SuccessChallengeResponse(1L, "스모디 방문하기", 2),
-                new SuccessChallengeResponse(2L, "미라클 모닝", 1)
+                new SuccessChallengeResponse(1L, "스모디 방문하기", 2, "\\uf212"),
+                new SuccessChallengeResponse(2L, "미라클 모닝", 1, "\\uf212")
         );
 
         given(challengeQueryService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
@@ -113,7 +116,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING)
                                         .description("Challenge 이름"),
-                                fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟 수")
+                                fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
+                                fieldWithPath("[].emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 
@@ -122,7 +126,7 @@ class ChallengeControllerTest extends ControllerTest {
     void findOneWithChallengerCount_unAuthorized() throws Exception {
         // given
         ChallengeResponse challengeResponse =
-                new ChallengeResponse(1L, "스모디 방문하기", 3, false);
+                new ChallengeResponse(1L, "스모디 방문하기", 3, false, "스모디 방문하기 입니다","\\uf212");
         given(challengeQueryService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
@@ -138,7 +142,9 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
                                 fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
-                                fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                                fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
+                                fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 
@@ -148,7 +154,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
-                new ChallengeResponse(1L, "스모디 방문하기", 3, true);
+                new ChallengeResponse(1L, "스모디 방문하기", 3, true, "스모디 방문하기 입니다", "\\uf212");
         given(challengeQueryService.findOneWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
@@ -166,7 +172,9 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("Challenge 이름"),
                                 fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
-                                fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부")
+                                fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
+                                fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지 값")
                         )));
     }
 }

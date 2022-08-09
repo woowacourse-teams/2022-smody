@@ -7,6 +7,7 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengesResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.util.PagingUtil;
@@ -28,16 +29,16 @@ public class ChallengeQueryService {
     private final MemberService memberService;
     private final CycleService cycleService;
 
-    public List<ChallengeResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable) {
+    public List<ChallengesResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengeResponse> responses = getResponsesOrderByCount(inProgressCycles);
+        List<ChallengesResponse> responses = getResponsesOrderByCount(inProgressCycles);
         return PagingUtil.page(responses, pageable);
     }
 
-    public List<ChallengeResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+    public List<ChallengesResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                               Pageable pageable) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengeResponse> responses = getResponsesOrderByCount(inProgressCycles).stream()
+        List<ChallengesResponse> responses = getResponsesOrderByCount(inProgressCycles).stream()
                 .map(response -> response.changeInProgress(
                         matchMember(inProgressCycles, tokenPayload, response.getChallengeId()))).collect(toList());
         return PagingUtil.page(responses, pageable);
@@ -63,9 +64,9 @@ public class ChallengeQueryService {
                 .collect(groupingBy(Cycle::getChallenge));
     }
 
-    private List<ChallengeResponse> getResponsesOrderByCount(Map<Challenge, List<Cycle>> inProgressCycles) {
+    private List<ChallengesResponse> getResponsesOrderByCount(Map<Challenge, List<Cycle>> inProgressCycles) {
         return challengeService.searchAll().stream().map(challenge ->
-                        new ChallengeResponse(
+                        new ChallengesResponse(
                                 challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))
                 .sorted((response1, response2) -> Integer.compare(response2.getChallengerCount(),
                         response1.getChallengerCount()))
@@ -91,7 +92,8 @@ public class ChallengeQueryService {
         return pagedChallenges.stream()
                 .map(challenge -> new SuccessChallengeResponse(
                         challenge.getId(), challenge.getName(),
-                        groupedSize.get(challenge).intValue()
+                        groupedSize.get(challenge).intValue(),
+                        challenge.getEmoji()
                 )).collect(toList());
     }
 
