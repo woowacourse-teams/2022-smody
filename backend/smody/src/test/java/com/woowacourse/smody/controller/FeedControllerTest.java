@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.dto.FeedResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,11 @@ public class FeedControllerTest extends ControllerTest {
     void findAll() throws Exception {
         // given
         List<FeedResponse> feedResponses = List.of(
-                new FeedResponse(1L, 1L, "토닉.jpg", "토닉", "인증.jpg", "인증설명", "2022-08-08T10:00:00",
+                new FeedResponse(1L, 1L, "토닉.jpg", "토닉", "인증.jpg",
+                        "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
                         "미라클 모닝", 5),
-                new FeedResponse(2L, 2L, "빅터.jpg", "빅터", "인증.jpg", "인증설명", "2022-08-08T10:00:00",
+                new FeedResponse(2L, 2L, "빅터.jpg", "빅터", "인증.jpg",
+                        "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
                         "미라클 모닝", 4)
         );
         BDDMockito.given(feedQueryService.searchAll()).willReturn(feedResponses);
