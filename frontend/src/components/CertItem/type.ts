@@ -1,3 +1,3 @@
 import { Cycle } from 'commonType';
 
-export interface CertItemProps extends Cycle {}
+export type CertItemProps = Omit<Cycle, 'challengerCount'>;

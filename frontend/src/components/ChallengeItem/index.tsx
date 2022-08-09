@@ -1,10 +1,8 @@
-import { queryKeys } from 'apis/constants';
-import { useQueryClient } from 'react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import useChallengeItem from './useChallengeItem';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getEmoji } from 'utils/emoji';
 
-import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
@@ -19,21 +17,11 @@ export const ChallengeItem = ({
   isInProgress,
 }: ChallengeItemProps) => {
   const themeContext = useThemeContext();
-  const queryClient = useQueryClient();
-
-  const { joinChallenge } = usePostJoinChallenge({
-    challengeId: Number(challengeId),
-    successCallback: () => {
-      queryClient.invalidateQueries(queryKeys.getAllChallenges);
-    },
+  const handleClickProgressButton = useChallengeItem({
+    challengeId,
+    challengeName,
+    isInProgress,
   });
-
-  const navigate = useNavigate();
-  const handleClickProgressButton = () => {
-    isInProgress
-      ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
-      : joinChallenge(challengeName);
-  };
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center">
@@ -65,7 +53,6 @@ const Wrapper = styled(FlexBox)`
   div {
     flex-grow: 1;
   }
-
   ${Button} {
     flex-grow: 0;
   }
