@@ -14,6 +14,7 @@ import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.MemberService;
 import com.woowacourse.smody.service.OauthService;
+import com.woowacourse.smody.service.WebPushService;
 import com.woowacourse.smody.ui.admin.AdminSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -27,7 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
         MemberController.class,
         CycleController.class,
         ChallengeController.class,
-        OauthController.class
+        OauthController.class,
+    	WebPushController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
 @AutoConfigureRestDocs
@@ -68,4 +70,7 @@ public class ControllerTest {
 
     @MockBean
     protected OauthService oauthService;
+
+    @MockBean
+    protected WebPushService webPushService;
 }

@@ -114,3 +114,27 @@ include::{snippets}/login-google/response-fields.adoc[]
 include::{snippets}/withdraw/http-request.adoc[]
 === Response
 include::{snippets}/withdraw/http-response.adoc[]
+
+= 웹 푸시 알림
+
+== public key 조회
+=== Request
+include::{snippets}/get-vapid-public-key/http-request.adoc[]
+=== Response
+include::{snippets}/get-vapid-public-key/http-response.adoc[]
+
+== 알림 구독
+=== Request
+include::{snippets}/web-push-subscribe/http-request.adoc[]
+=== Request 필드
+include::{snippets}/web-push-subscribe/request-fields.adoc[]
+=== Response
+include::{snippets}/web-push-subscribe/http-response.adoc[]
+
+== 알림 구독 해제
+=== Request
+include::{snippets}/web-push-unsubscribe/http-request.adoc[]
+=== Request 필드
+include::{snippets}/web-push-unsubscribe/request-fields.adoc[]
+=== Response
+include::{snippets}/web-push-unsubscribe/http-response.adoc[]
