@@ -15,19 +15,7 @@ export const useSearchPage = () => {
   });
 
   const challengeListData = useMemo(() => {
-    if (typeof data === 'undefined') {
-      return null;
-    }
-
-    return data.pages
-      .map((page) => {
-        if (typeof page === 'undefined' || typeof page.data === 'undefined') {
-          return [];
-        }
-
-        return page.data;
-      })
-      .flat();
+    return data?.pages.map((page) => page?.data).flat();
   }, [data]);
 
   const rootRef = useRef() as RefObject<HTMLDivElement>;

@@ -6,6 +6,6 @@ export type ChallengeInfo = Omit<ChallengeItemProps, 'challengeListRefetch'>;
 
 export interface ChallengeListProps {
   targetRef?: RefObject<HTMLLIElement>;
-  challengeListData: ChallengeInfo[] | null;
+  challengeListData?: ChallengeInfo[];
   challengeListRefetch: () => void;
 }

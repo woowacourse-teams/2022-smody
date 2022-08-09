@@ -2,6 +2,8 @@ import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import useThemeContext from 'hooks/useThemeContext';
+
 import { Logo, FlexBox, Button, ToggleButton } from 'components';
 import { HeaderProps } from 'components/Header/type';
 import { useHeader } from 'components/Header/useHeader';
@@ -10,8 +12,8 @@ import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
-  const { themeContext, isDark, isLogin, handleDarkToggle, handleLoginButton } =
-    useHeader();
+  const themeContext = useThemeContext();
+  const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
