@@ -6,12 +6,15 @@ import static com.woowacourse.smody.ResourceFixture.알고리즘_풀기_ID;
 import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.dto.FeedResponse;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,6 +117,32 @@ public class FeedQueryServiceTest {
                         cycle4.getCycleDetails().get(2).getId()
                 )
         );
+    }
+
+    @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
+    @Test
+    void findById_notExistCycleDetail() {
+        assertThatThrownBy(() -> feedQueryService.searchById(1L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
+    }
+
+    @DisplayName("단건 조회")
+    @Test
+    void findById() {
+        // given
+        LocalDateTime today = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
+        makeSuccessCycle(cycle, today);
+        em.flush();
+
+        // when
+        Long cycleDetailId = cycle.getCycleDetails().get(0).getId();
+        FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
+
+        // then
+        assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId);
     }
 
     private void makeSuccessCycle(Cycle cycle, LocalDateTime today) {

@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.dto.FeedResponse;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -84,5 +86,19 @@ public class FeedControllerTest extends ControllerTest {
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("commentCount").type(JsonFieldType.NUMBER).description("댓글 수")
                         )));
+    }
+
+    @DisplayName("id로 피드를 조회할 수 없으면 404를 응답한다.")
+    @Test
+    void findById_404() throws Exception {
+        // given
+        BDDMockito.given(feedQueryService.searchById(1L))
+                .willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
+
+        // when
+        ResultActions result = mockMvc.perform(get("/feeds/1"));
+
+        // then
+        result.andExpect(status().isNotFound());
     }
 }

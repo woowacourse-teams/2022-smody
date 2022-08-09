@@ -2,6 +2,8 @@ package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.dto.FeedResponse;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.CycleDetailRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,8 @@ public class FeedQueryService {
     }
 
     public FeedResponse searchById(Long cycleDetailId) {
-        return null;
+        CycleDetail cycleDetail = cycleDetailRepository.findById(cycleDetailId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
+        return new FeedResponse(cycleDetail);
     }
 }
