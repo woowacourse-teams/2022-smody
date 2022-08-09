@@ -21,9 +21,15 @@ const urlB64ToUint8Array = (base64String: string) => {
 
 const updateSubscription = (subscription: PushSubscription) => {
   // @ch10. 푸시 구독 정보 전송 기능 구현
-  authApiClient.axios.post('/web-push/subscribe', { subscription }).catch((err) => {
-    console.error(err);
-  });
+
+  authApiClient.axios
+    .post('/web-push/subscribe', { subscription })
+    .then((res) => {
+      console.log('7-웹푸시 섭스크라이브', res);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 const TestPage = () => {
@@ -33,7 +39,7 @@ const TestPage = () => {
       // 푸시 기능 지원 여부에 따라 알림 구독 버튼 보이기/숨기기 처리
       navigator.serviceWorker.ready.then((registration) => {
         if (registration.pushManager) {
-          console.log('registration.pushManager', registration.pushManager);
+          console.log('0-1 registration.pushManager', registration.pushManager);
           pushSupport = true;
           // notificationControl.classList.remove('disabled');
 
@@ -41,7 +47,7 @@ const TestPage = () => {
           registration.pushManager.getSubscription().then((subscription) => {
             // 구독 정보 가져온 후 userSubscription 변수에 저장
             userSubscription = subscription!;
-            console.log('userSubscription', userSubscription);
+            console.log('0-2 userSubscription', userSubscription);
           });
         }
       });
@@ -54,7 +60,9 @@ const TestPage = () => {
       .get('/web-push/public-key')
       .then((response) => {
         // Uint8Array 타입으로 변환
-        const publicKey = urlB64ToUint8Array(response.data);
+        console.log(response.data.publicKey);
+        const publicKey = urlB64ToUint8Array(response.data.publicKey);
+        console.log('5-publicKey', publicKey);
 
         navigator.serviceWorker.ready.then((registration) => {
           // 구독 옵션
@@ -63,6 +71,8 @@ const TestPage = () => {
             applicationServerKey: publicKey,
           };
 
+          console.log('6-registration', registration);
+
           // 푸시 서비스 구독
           registration.pushManager
             .subscribe(option)
@@ -70,11 +80,11 @@ const TestPage = () => {
               // 애플리케이션 서버로 구독 정보 전달
               updateSubscription(subscription);
               userSubscription = subscription;
-              console.log('Push subscribed!', subscription);
+              console.log('8-Push subscribed!', userSubscription);
             })
             .catch((err) => {
               // userSubscription = null;
-              console.error('Push subscribe failed:', err);
+              console.error('9-Push subscribe failed:', err);
               alert('푸시 알림을 구독할 수 없습니다.');
             })
             .finally(() => {
@@ -91,12 +101,12 @@ const TestPage = () => {
     //  권한 확인 및 요청
     console.log('시작');
     if (!pushSupport) {
-      console.log('ㅇ');
+      console.log('1');
 
       return;
     } else {
       Notification.requestPermission().then((permission) => {
-        console.log('Push Permission:', permission);
+        console.log('2-Push Permission:', permission);
         // setIsSubscribed((prev) => !prev);
 
         if (Notification.permission !== 'granted') {
@@ -104,9 +114,9 @@ const TestPage = () => {
         } else {
           if (userSubscription) {
             // pushUnsubscribe();
-            console.log(userSubscription);
+            console.log('3-userSubscription', userSubscription);
           } else {
-            console.log('hi');
+            console.log('4-pushSubscribe');
             pushSubscribe();
           }
         }

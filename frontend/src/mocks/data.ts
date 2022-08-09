@@ -524,3 +524,9 @@ export const cycleNonDetailData = {
   successCount: 3,
   cycleDetails: [],
 };
+
+export const db = {
+  marco: {
+    subscription: {},
+  },
+};
