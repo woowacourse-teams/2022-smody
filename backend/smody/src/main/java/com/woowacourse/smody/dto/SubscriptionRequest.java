@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import nl.martijndwars.webpush.Subscription;
 
 @NoArgsConstructor
-public class SubscriptionRequestDto extends Subscription {
+public class SubscriptionRequest extends Subscription {
 
-	public SubscriptionRequestDto(String endpoint, String p256dh, String auth) {
+	public SubscriptionRequest(String endpoint, String p256dh, String auth) {
 		super(endpoint, new Keys(p256dh, auth));
 	}
 
