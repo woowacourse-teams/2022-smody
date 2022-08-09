@@ -6,8 +6,8 @@ import {
   GetCycleByIdProps,
   GetMyCyclesStatResponse,
   GetCycleByIdResponse,
+  GetMyCyclesInProgressResponse,
 } from 'apis/cycleApi/type';
-import { Cycle } from 'commonType';
 
 // 1. 챌린지 사이클 생성(POST)
 export const postCycle = async ({ challengeId }: PostCycleProps) => {
@@ -16,7 +16,7 @@ export const postCycle = async ({ challengeId }: PostCycleProps) => {
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const getMyCyclesInProgress = async () => {
-  return authApiClient.axios.get<Cycle[]>('/cycles/me');
+  return authApiClient.axios.get<GetMyCyclesInProgressResponse[]>('/cycles/me');
 };
 
 // 3. 나의 사이클 통계 정보 조회(GET)

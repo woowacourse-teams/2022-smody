@@ -9,6 +9,7 @@ import {
   GetChallengeResponse,
   GetChallengeByIdProps,
   GetChallengeByIdResponse,
+  GetMySuccessChallengesResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
@@ -45,11 +46,14 @@ export const useGetAllChallenges = (
 // 6. 나의 성공한 챌린지 조회(GET)
 export const useGetMySuccessChallenges = (
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<Challenge[]>,
+    AxiosResponse<GetMySuccessChallengesResponse[]>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<AxiosResponse<Challenge[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<
+    AxiosResponse<GetMySuccessChallengesResponse[]>,
+    AxiosError<ErrorResponse>
+  >(
     queryKeys.getMySuccessChallenges,
     ({ pageParam = 0 }) => getMySuccessChallenges(pageParam),
     {

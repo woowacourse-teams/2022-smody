@@ -13,9 +13,10 @@ import {
   GetMyCyclesStatResponse,
   GetCycleByIdResponse,
   GetCycleByIdProps,
+  GetMyCyclesInProgressResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { Cycle, ErrorResponse } from 'commonType';
+import { ErrorResponse } from 'commonType';
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
 
 // 1. 챌린지 사이클 생성(POST)
@@ -29,9 +30,12 @@ export const usePostCycle = (
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const useGetMyCyclesInProgress = (
-  options?: UseQueryOptions<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>,
+  options?: UseQueryOptions<
+    AxiosResponse<GetMyCyclesInProgressResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
 ) =>
-  useQuery<AxiosResponse<Cycle[]>, AxiosError<ErrorResponse>>(
+  useQuery<AxiosResponse<GetMyCyclesInProgressResponse[]>, AxiosError<ErrorResponse>>(
     queryKeys.getMyCyclesInProgress,
     getMyCyclesInProgress,
     options,
