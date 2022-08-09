@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, Button, LoadingSpinner } from 'components';
+import { FlexBox, Text, Button } from 'components';
 
 export const Profile = () => {
   const themeContext = useThemeContext();

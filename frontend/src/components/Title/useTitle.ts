@@ -1,7 +1,7 @@
-import { TitleProps } from './type';
+import { UseTitleProps } from './type';
 import { useNavigate } from 'react-router-dom';
 
-const useTitle = ({ linkTo }: Pick<TitleProps, 'linkTo'>) => {
+const useTitle = ({ linkTo }: UseTitleProps) => {
   const navigate = useNavigate();
   const backToPreviousPage = () => {
     if (linkTo) {

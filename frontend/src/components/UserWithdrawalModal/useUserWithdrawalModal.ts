@@ -1,4 +1,4 @@
-import { UserWithdrawalModalProps } from './type';
+import { UseUserWithdrawalModalProps } from './type';
 import { useDeleteMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { MouseEventHandler } from 'react';
@@ -11,7 +11,7 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const useUserWithdrawalModal = ({ email }: Pick<UserWithdrawalModalProps, 'email'>) => {
+const useUserWithdrawalModal = ({ email }: UseUserWithdrawalModalProps) => {
   const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
   const emailInput = useInput('');

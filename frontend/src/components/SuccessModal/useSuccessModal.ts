@@ -5,7 +5,7 @@ import { getEmoji } from 'utils/emoji';
 
 import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 
-import { SuccessModalProps } from 'components/SuccessModal/type';
+import { UseSuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
@@ -30,7 +30,7 @@ const useSuccessModal = ({
   challengeName,
   challengeId,
   progressCount,
-}: Omit<SuccessModalProps, 'successCount'>) => {
+}: UseSuccessModalProps) => {
   const navigate = useNavigate();
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
