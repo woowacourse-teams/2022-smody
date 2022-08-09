@@ -26,6 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +39,9 @@ class ChallengeServiceTest {
 
     @Autowired
     private ChallengeQueryService challengeQueryService;
+
+    @Autowired
+    private ChallengeService challengeService;
 
     @Autowired
     private ResourceFixture fixture;
@@ -375,5 +380,58 @@ class ChallengeServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
+    }
+
+    @DisplayName("챌린지를 생성하는 경우")
+    @Test
+    void create() {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", "\\u212");
+
+        // when
+        Long challengeId = challengeService.create(challengeRequest);
+
+        // when then
+        assertThat(challengeId).isNotNull();
+    }
+
+    @DisplayName("중복된 챌린지 이름으로 생성하는 경우 예외 발생")
+    @Test
+    void create_duplicatedName() {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", "\\u212");
+
+        // when
+        Long challengeId = challengeService.create(challengeRequest);
+
+        // when then
+        assertThat(challengeId).isNotNull();
+    }
+
+    @DisplayName("챌린지 소개 내용이 공백문자거나 빈 문자인 경우 예외 발생")
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", ""})
+    void create_empty(String invalidDescription) {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", invalidDescription, "\\u212");
+
+        // when then
+        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
+    }
+
+    @DisplayName("챌린지 소개 길이가 255자 초과인 경우 예외 발생")
+    @Test
+    void create_overVarcharSize() {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "a".repeat(256), "\\u212");
+
+        // when then
+        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
     }
 }

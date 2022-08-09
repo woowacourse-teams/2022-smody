@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -25,12 +26,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/me")
+    @RequiredLogin
     public ResponseEntity<MemberResponse> searchMyInfo(@LoginMember TokenPayload tokenPayload) {
         MemberResponse memberResponse = memberService.searchMyInfo(tokenPayload);
         return ResponseEntity.ok(memberResponse);
     }
 
     @PatchMapping("/me")
+    @RequiredLogin
     public ResponseEntity<Void> updateMyInfo(@LoginMember TokenPayload tokenPayload,
                                              @RequestBody MemberUpdateRequest updateRequest) {
         memberService.updateMyInfo(tokenPayload, updateRequest);
@@ -38,6 +41,7 @@ public class MemberController {
     }
 
     @PostMapping("/me/profile-image")
+    @RequiredLogin
     public ResponseEntity<Void> updateMyProfileImage(@LoginMember TokenPayload tokenPayload,
                                                      @RequestPart MultipartFile profileImage) {
         memberService.updateProfileImage(tokenPayload, profileImage);
@@ -45,6 +49,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/me")
+    @RequiredLogin
     public ResponseEntity<Void> withdraw(@LoginMember TokenPayload tokenPayload) {
         memberService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();

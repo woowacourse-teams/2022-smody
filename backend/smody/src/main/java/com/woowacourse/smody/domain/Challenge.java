@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.woowacourse.smody.dto.ChallengeRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import lombok.AccessLevel;
@@ -40,13 +41,20 @@ public class Challenge {
         this.name = name;
     }
 
+    public Challenge(ChallengeRequest challengeRequest) {
+        validateDescription(challengeRequest.getDescription());
+        this.name = challengeRequest.getChallengeName();
+        this.description = challengeRequest.getDescription();
+        this.emoji = challengeRequest.getEmoji();
+    }
+
     public boolean matchId(Long id) {
         return this.id.equals(id);
     }
 
     private void validateDescription(String description) {
         if (description.length() > 255 || description.isEmpty() || description.isBlank()) {
-            throw new BusinessException(ExceptionData.INVALID_DESCRIPTION);
+            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
         }
     }
 }
