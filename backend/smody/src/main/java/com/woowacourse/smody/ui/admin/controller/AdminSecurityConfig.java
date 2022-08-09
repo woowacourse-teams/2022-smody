@@ -28,7 +28,8 @@ public class AdminSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-                "/challenges/**", "/cycles/**", "/members/**", "/oauth/**", "/docs/**", "/images/**"
+                "/challenges/**", "/cycles/**", "/members/**", "/oauth/**", "/docs/**", "/images/**",
+            "/web-push/**"
         );
     }
 

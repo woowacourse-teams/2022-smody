@@ -64,7 +64,7 @@ public class WebPushService {
 		try {
 			pushService.send(new Notification(
 				pushSubscription.getEndpoint(),
-				getPublicKey(),
+				pushSubscription.getP256dh(),
 				pushSubscription.getAuth(),
 				objectMapper.writeValueAsString(pushContent)
 			));
