@@ -20,7 +20,7 @@
       "src": "image/android-chrome-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "image/android-chrome-512x512.png",
