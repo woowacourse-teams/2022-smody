@@ -11,4 +11,5 @@ public class SuccessChallengeResponse {
     private Long challengeId;
     private String challengeName;
     private Integer successCount;
+    private String emoji;
 }

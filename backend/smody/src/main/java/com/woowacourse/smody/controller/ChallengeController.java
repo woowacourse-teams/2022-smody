@@ -2,6 +2,7 @@ package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengesResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.ChallengeQueryService;
@@ -23,12 +24,12 @@ public class ChallengeController {
     private final ChallengeQueryService challengeQueryService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(Pageable pageable) {
+    public ResponseEntity<List<ChallengesResponse>> findAllWithChallengerCount(Pageable pageable) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable));
     }
 
     @GetMapping("/auth")
-    public ResponseEntity<List<ChallengeResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+    public ResponseEntity<List<ChallengesResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
                                                                               Pageable pageable) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
                 tokenPayload, LocalDateTime.now(), pageable)

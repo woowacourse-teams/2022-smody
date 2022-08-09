@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengesResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
@@ -151,13 +152,13 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_sort() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(0, 10));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(2, 1, 0, 0, 0)
             );
         }
@@ -166,15 +167,15 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageFullSize() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(0, 2));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(2, 1)
             );
         }
@@ -183,13 +184,13 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pagePartialSize() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(1, 2));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(0, 0)
             );
         }
@@ -198,7 +199,7 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageOverMaxPage() {
             // when
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     now, PageRequest.of(3, 2));
 
             // then
@@ -210,13 +211,13 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(0, 10));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
-                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
                             .containsExactly(true, true, false, false, false)
             );
         }
@@ -226,17 +227,17 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageFullSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(0, 2));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(2, 1),
-                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
                             .containsExactly(true, true)
             );
         }
@@ -246,15 +247,15 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pagePartialSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(1, 2));
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(0, 0),
-                    () -> assertThat(challengeResponses.stream().map(ChallengeResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
                             .containsExactly(false, false)
             );
         }
@@ -264,7 +265,7 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageOverMaxPageAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
                     tokenPayload, now, PageRequest.of(3, 2));
 
             // then

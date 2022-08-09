@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Challenge {
 
+    private static final String DEFAULT_INTRODUCTION = " 입니다";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "challenge_id")
@@ -25,11 +29,24 @@ public class Challenge {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String emoji;
+
+    @Column(nullable = false)
+    private String description;
+
     public Challenge(String name) {
+        validateDescription(name + DEFAULT_INTRODUCTION);
         this.name = name;
     }
 
     public boolean matchId(Long id) {
         return this.id.equals(id);
+    }
+
+    private void validateDescription(String description) {
+        if (description.length() > 255 || description.isEmpty() || description.isBlank()) {
+            throw new BusinessException(ExceptionData.INVALID_DESCRIPTION);
+        }
     }
 }

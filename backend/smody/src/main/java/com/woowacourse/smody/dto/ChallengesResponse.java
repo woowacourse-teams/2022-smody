@@ -8,29 +8,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ChallengeResponse {
+public class ChallengesResponse {
 
     private Long challengeId;
     private String challengeName;
     private Integer challengerCount;
     private Boolean isInProgress;
-    private String description;
     private String emoji;
 
-    public ChallengeResponse(Challenge challenge, Integer challengerCount, Boolean isInProgress) {
+    public ChallengesResponse(Challenge challenge, Integer challengerCount, Boolean isInProgress) {
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
         this.challengerCount = challengerCount;
         this.isInProgress = isInProgress;
         this.emoji = challenge.getEmoji();
-        this.description = challenge.getDescription();
     }
 
-    public ChallengeResponse(Challenge challenge, Integer challengerCount) {
+    public ChallengesResponse(Challenge challenge, Integer challengerCount) {
         this(challenge, challengerCount, false);
     }
 
-    public ChallengeResponse changeInProgress(Boolean inProgress) {
-        return new ChallengeResponse(challengeId, challengeName, challengerCount, inProgress, emoji, description);
+    public ChallengesResponse changeInProgress(Boolean inProgress) {
+        return new ChallengesResponse(challengeId, challengeName, challengerCount, inProgress, emoji);
     }
 }
