@@ -37,7 +37,6 @@ export const FeedItem = ({
           {nickname}
         </Text>
         <ChallengeName
-          // style={{ marginLeft: 'auto' }}
           size={20}
           color={themeContext.primary}
           fontWeight="bold"
