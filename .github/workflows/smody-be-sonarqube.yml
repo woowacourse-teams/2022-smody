@@ -1,42 +1,25 @@
-# workflow의 이름
 name: smody-be-sonarqube
 
-# PR 요청에 대해
 on:
   pull_request:
-    # 특정 브랜치만
     branches:
-      - develop # develop 브랜치에서 pr 이벤트가 일어났을 때 실행
-    # pr이 생성 되었을 때, 담당 유저가 등록되었을 때, PR에 코드가 머지되었을 때, 라벨이 달렸을 때 동작  
-    types: [opened]
+      - develop
+    types: [opened, synchronize]
 
-# job에 공통된 옵션을 준다
 defaults:
-  # build steps의 Run
   run:
-    # ./backend/smody 경로에서 실행
-    working-directory: ./backend/smody
+    working-directory: ./backend/smody/
 
-# 실행 해야할 job
 jobs:
-  # Job의 이름, 자유롭게 짓습니다.
-  ###### 본문 내용과 관련 없는 Job, 빌드 테스트
   build:
-    # ubuntu 환경에서 실행 (환경은 github이 제공)
     runs-on: ubuntu-latest
-    # 각 단계
     steps:
-      # 소스코드 체크아웃
       - name: Checkout source code
         uses: actions/checkout@v2
-        
-  ###### 아래부터 sonarqube와 관련있는 부분 시작
+
   analysis:
-    # ubuntu 환경에서 실행 (환경은 github이 제공)
     runs-on: ubuntu-latest
-    # 이 Job에서 사용할 환경변수
     env:
-      # KEY - VALUE
       SONARQUBE_PROJECT_KEY: smody 
       SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
       SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
@@ -44,9 +27,11 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+        
+      - name: gradlew permission change
+        run: sudo chmod 755 gradlew
 
-        # 위에서 설정했던 정적코드 전송 태스크 실행
-      - name: Sonaqube Analysis
+      - name: Sonaqube Analysis        
         run: ./gradlew test sonarqube
              -Dsonar.host.url=${{ env.SONARQUBE_URL }}
              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
@@ -56,7 +41,6 @@ jobs:
       - name: Comment Sonarqube URL
         uses: actions/github-script@v4
         with:
-          # 이슈에 코멘트를 달아주는 스크립트 실행
           script: |
             const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
             github.issues.createComment({
