@@ -44,9 +44,13 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+        
+        # 권한 변경
+      - name: gradlew permission change
+        run: sudo chmod 755 gradlew
 
         # 위에서 설정했던 정적코드 전송 태스크 실행
-      - name: Sonaqube Analysis
+      - name: Sonaqube Analysis        
         run: ./gradlew test sonarqube
              -Dsonar.host.url=${{ env.SONARQUBE_URL }}
              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
