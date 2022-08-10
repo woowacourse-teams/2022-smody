@@ -4,6 +4,8 @@ plugins {
     id 'java'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'com.vaadin' version '23.1.2'
+    id 'org.sonarqube' version '3.3'
+    id 'jacoco'
 }
 
 group = 'com.woowacourse'
@@ -28,6 +30,8 @@ dependencies {
 
     implementation 'org.json:json:20220320'
 
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -47,6 +51,8 @@ dependencies {
     implementation 'com.vaadin:vaadin-spring-boot-starter'
     implementation 'dev.mett.vaadin:tooltip:1.7.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 }
 
 dependencyManagement {
@@ -67,6 +73,32 @@ ext {
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.sources", "src"
+        property "sonar.language", "java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way"
+        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    }
 }
 
 asciidoctor {
