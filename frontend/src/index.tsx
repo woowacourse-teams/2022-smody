@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
   worker.start();
 }
 
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('serviceWorker.js').then((registration) => {
     // 등록완료
     console.log('서비스워커 등록 완료');
