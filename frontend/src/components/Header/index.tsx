@@ -57,7 +57,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <Dropdown button={<Bell count={4} />}>
+          <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
             {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
             <FlexBox
               justifyContent="center"
