@@ -6,6 +6,7 @@ import {
   GetChallengeByIdResponse,
   GetChallengersByIdProps,
   GetChallengersByIdResponse,
+  PostChallengeProps,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
@@ -53,4 +54,19 @@ export const getChallengersById = async ({ challengeId }: GetChallengersByIdProp
   return authApiClient.axios.get<GetChallengersByIdResponse[]>(
     `/challenges/${challengeId}/challengers`,
   );
+};
+
+// 10. 챌린지 생성
+export const postChallenge = async ({
+  challengeName,
+  description,
+  emoji,
+  color,
+}: PostChallengeProps) => {
+  return authApiClient.axios.post('/challenges', {
+    challengeName,
+    description,
+    emoji,
+    color,
+  });
 };
