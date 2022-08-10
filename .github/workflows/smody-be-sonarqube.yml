@@ -15,7 +15,7 @@ defaults:
   # build steps의 Run
   run:
     # ./backend/smody 경로에서 실행
-    working-directory: ./backend/smody
+    working-directory: ./backend/smody/
 
 # 실행 해야할 job
 jobs:
