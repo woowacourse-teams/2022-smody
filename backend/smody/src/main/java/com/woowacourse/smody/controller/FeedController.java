@@ -21,7 +21,7 @@ public class FeedController {
     @GetMapping
     ResponseEntity<List<FeedResponse>> findAll(@RequestParam(defaultValue = "10") Integer size,
                                                @RequestParam(defaultValue = "0") Long lastCycleDetailId) {
-        List<FeedResponse> feedResponses = feedQueryService.searchAll(size, lastCycleDetailId);
+        List<FeedResponse> feedResponses = feedQueryService.findAll(size, lastCycleDetailId);
         return ResponseEntity.ok(feedResponses);
     }
 

@@ -18,6 +18,7 @@ public class FeedResponse {
     private String progressImage;
     private String description;
     private LocalDateTime progressTime;
+    private Long challengeId;
     private String challengeName;
     private Integer commentCount;
 
@@ -29,6 +30,7 @@ public class FeedResponse {
         this.progressImage = cycleDetail.getProgressImage();
         this.description = cycleDetail.getDescription();
         this.progressTime = cycleDetail.getProgressTime();
+        this.challengeId = cycleDetail.getCycle().getChallenge().getId();
         this.challengeName = cycleDetail.getCycle().getChallenge().getName();
         this.commentCount = 0;
     }

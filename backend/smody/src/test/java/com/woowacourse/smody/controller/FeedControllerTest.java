@@ -30,12 +30,12 @@ public class FeedControllerTest extends ControllerTest {
         List<FeedResponse> feedResponses = List.of(
                 new FeedResponse(2L, 1L, "토닉.jpg", "토닉", "인증.jpg",
                         "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                        "미라클 모닝", 5),
+                        1L, "미라클 모닝", 5),
                 new FeedResponse(3L, 2L, "빅터.jpg", "빅터", "인증.jpg",
                         "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                        "미라클 모닝", 4)
+                        1L, "미라클 모닝", 4)
         );
-        BDDMockito.given(feedQueryService.searchAll(any(), any())).willReturn(feedResponses);
+        BDDMockito.given(feedQueryService.findAll(any(), any())).willReturn(feedResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds?size=10&lastCycleDetailId=2"));
@@ -53,6 +53,7 @@ public class FeedControllerTest extends ControllerTest {
                                 fieldWithPath("[].description").type(JsonFieldType.STRING).description("소개글"),
                                 fieldWithPath("[].progressImage").type(JsonFieldType.STRING).description("인증 사진"),
                                 fieldWithPath("[].progressTime").type(JsonFieldType.STRING).description("인증 시간"),
+                                fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("[].commentCount").type(JsonFieldType.NUMBER).description("댓글 수")
                         )));
@@ -64,7 +65,7 @@ public class FeedControllerTest extends ControllerTest {
         // given
         FeedResponse feedResponse = new FeedResponse(1L, 1L, "토닉.jpg", "토닉", "인증.jpg",
                 "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                "미라클 모닝", 5);
+                1L, "미라클 모닝", 5);
         BDDMockito.given(feedQueryService.searchById(1L)).willReturn(feedResponse);
 
         // when
@@ -83,6 +84,7 @@ public class FeedControllerTest extends ControllerTest {
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("소개글"),
                                 fieldWithPath("progressImage").type(JsonFieldType.STRING).description("인증 사진"),
                                 fieldWithPath("progressTime").type(JsonFieldType.STRING).description("인증 시간"),
+                                fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("commentCount").type(JsonFieldType.NUMBER).description("댓글 수")
                         )));
