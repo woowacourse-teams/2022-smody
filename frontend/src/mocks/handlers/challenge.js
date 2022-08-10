@@ -4,6 +4,7 @@ import {
   cycleDetailData,
   mySuccessChallengeData,
   accessTokenData,
+  challengers,
 } from 'mocks/data';
 import { rest } from 'msw';
 
@@ -129,5 +130,21 @@ export const challenge = [
     }
 
     return res(ctx.status(200), ctx.json(challengeData[challengeId - 1]));
+  }),
+
+  rest.get(`${BASE_URL}/challenges/:challengeId/challengers`, (req, res, ctx) => {
+    const { challengeId } = req.params;
+
+    if (Number.isNaN(challengeId) || challengeId > challengeData.length) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    return res(ctx.status(200), ctx.json(challengers));
   }),
 ];

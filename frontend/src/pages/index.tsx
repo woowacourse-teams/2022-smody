@@ -1,5 +1,5 @@
 export { default as NotFoundPage } from 'pages/NotFoundPage';
-export { default as Feed } from 'pages/Feed';
+export { default as FeedPage } from 'pages/FeedPage';
 export { default as SearchPage } from 'pages/SearchPage';
 export { default as ProfilePage } from 'pages/ProfilePage';
 export { default as ProfileEditPage } from 'pages/ProfileEditPage';
@@ -9,3 +9,4 @@ export { default as VocPage } from 'pages/VocPage';
 export { default as LandingPage } from 'pages/LandingPage';
 export { default as CycleDetailPage } from 'pages/CycleDetailPage';
 export { default as CertFormPage } from 'pages/CertFormPage';
+export { default as TestPage } from 'pages/TestPage';

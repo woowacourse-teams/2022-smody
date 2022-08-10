@@ -1,0 +1,51 @@
+name: smody-be-sonarqube
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [opened, synchronize]
+
+defaults:
+  run:
+    working-directory: ./backend/smody/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+  analysis:
+    runs-on: ubuntu-latest
+    env:
+      SONARQUBE_PROJECT_KEY: smody 
+      SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
+      SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        
+      - name: gradlew permission change
+        run: sudo chmod 755 gradlew
+
+      - name: Sonaqube Analysis        
+        run: ./gradlew test sonarqube
+             -Dsonar.host.url=${{ env.SONARQUBE_URL }}
+             -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
+             -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
+             -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
+
+      - name: Comment Sonarqube URL
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📊 ${ SONARQUBE_PROJECT_KEY }-${ PR_NUMBER } 분석 결과 확인하기 [링크](${SONARQUBE_URL})`
+            })

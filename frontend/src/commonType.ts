@@ -52,3 +52,12 @@ export interface UserStat {
   totalCount: number;
   successCount: number;
 }
+
+export interface Feed
+  extends Pick<User, 'picture' | 'nickname'>,
+    CycleDetail,
+    Pick<Challenge, 'challengeId' | 'challengeName'> {
+  cycleDetailId: number;
+  memberId: number;
+  commentCount: number;
+}

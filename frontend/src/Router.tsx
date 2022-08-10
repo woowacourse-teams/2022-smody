@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
 
 import {
-  Feed,
+  FeedPage,
   SearchPage,
   ChallengeDetailPage,
   NotFoundPage,
@@ -15,6 +15,7 @@ import {
   VocPage,
   CycleDetailPage,
   CertFormPage,
+  TestPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -60,7 +61,7 @@ const Router = () => {
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
-          <Route path={CLIENT_PATH.FEED} element={<Feed />} />
+          <Route path={CLIENT_PATH.FEED} element={<FeedPage />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
           <Route path={CLIENT_PATH.CYCLE_DETAIL_ID} element={<CycleDetailPage />} />
           <Route
@@ -68,6 +69,8 @@ const Router = () => {
             element={<ChallengeDetailPage />}
           />
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
+          <Route path="/test" element={<TestPage />} />
+
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={CLIENT_PATH.WILD_CARD} element={<NotFoundPage />} />
         </Route>

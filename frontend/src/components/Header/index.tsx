@@ -1,12 +1,12 @@
+import { HeaderProps } from './type';
+import { useHeader } from './useHeader';
 import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Logo, FlexBox, Button, ToggleButton } from 'components';
-import { HeaderProps } from 'components/Header/type';
-import { useHeader } from 'components/Header/useHeader';
+import { Logo, FlexBox, Button, DarkModeButton } from 'components';
 
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
@@ -20,8 +20,8 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
       </Link>
-      <FlexBox>
-        <ToggleButton checked={isDark} handleChange={handleDarkToggle} />
+      <FlexBox gap="1rem">
+        <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
           <FaBell size={23} color={themeContext.primary} />
         ) : (
