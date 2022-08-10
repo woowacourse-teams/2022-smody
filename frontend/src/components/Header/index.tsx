@@ -1,12 +1,11 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
-import { FaBell } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Logo, FlexBox, Button, DarkModeButton } from 'components';
+import { Logo, FlexBox, Button, DarkModeButton, Dropdown, Bell } from 'components';
 
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
@@ -23,7 +22,10 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <FaBell size={23} color={themeContext.primary} />
+          <Dropdown>
+            {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
+            <Bell count={4} />
+          </Dropdown>
         ) : (
           <Button size="small" onClick={handleLoginButton}>
             로그인
