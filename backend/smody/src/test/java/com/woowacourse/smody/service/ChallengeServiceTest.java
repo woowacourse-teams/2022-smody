@@ -159,6 +159,8 @@ class ChallengeServiceTest {
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(2, 1, 0, 0, 0)
             );
@@ -191,6 +193,8 @@ class ChallengeServiceTest {
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                            .containsExactly(오늘의_운동_ID, 알고리즘_풀기_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(0, 0)
             );
@@ -218,6 +222,8 @@ class ChallengeServiceTest {
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
                     () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
                             .containsExactly(true, true, false, false, false)
             );
@@ -256,6 +262,8 @@ class ChallengeServiceTest {
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
                             .containsExactly(0, 0),
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                            .containsExactly(오늘의_운동_ID, 알고리즘_풀기_ID),
                     () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
                             .containsExactly(false, false)
             );
