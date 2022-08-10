@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long>, DynamicChallengeRepository {
 
     Optional<Challenge> findByName(String name);
+
+    List<Challenge> findByNameContainingIgnoreCase(String name);
 }
