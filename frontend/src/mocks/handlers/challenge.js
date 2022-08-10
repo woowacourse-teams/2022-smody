@@ -148,4 +148,11 @@ export const challenge = [
     // return res(ctx.status(200), ctx.json([]));
     return res(ctx.status(200), ctx.json(challengers));
   }),
+
+  //10. 챌린지 생성(POST)
+  rest.post(`${BASE_URL}/challenges`, (req, res, ctx) => {
+    challengeData.push(req.body);
+    console.log(req.body);
+    return res(ctx.delay(1000), ctx.json(201));
+  }),
 ];
