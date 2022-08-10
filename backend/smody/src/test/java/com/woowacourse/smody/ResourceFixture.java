@@ -30,6 +30,7 @@ public class ResourceFixture {
     public static final Long 더즈_ID = 2L;
     public static final Long 토닉_ID = 3L;
     public static final Long 알파_ID = 4L;
+
     public static final Long 스모디_방문하기_ID = 1L;
     public static final Long 미라클_모닝_ID = 2L;
     public static final Long 오늘의_운동_ID = 3L;

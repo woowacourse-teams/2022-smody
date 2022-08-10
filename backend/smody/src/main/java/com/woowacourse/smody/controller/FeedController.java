@@ -20,14 +20,14 @@ public class FeedController {
     private final FeedQueryService feedQueryService;
 
     @GetMapping
-    ResponseEntity<List<FeedResponse>> findAll(Pageable pageable,
+    public ResponseEntity<List<FeedResponse>> findAll(Pageable pageable,
                                                @RequestParam(defaultValue = "0") Long lastCycleDetailId) {
         List<FeedResponse> feedResponses = feedQueryService.findAll(pageable, lastCycleDetailId);
         return ResponseEntity.ok(feedResponses);
     }
 
     @GetMapping("/{cycleDetailId}")
-    ResponseEntity<FeedResponse> findById(@PathVariable Long cycleDetailId) {
+    public ResponseEntity<FeedResponse> findById(@PathVariable Long cycleDetailId) {
         FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
         return ResponseEntity.ok(feedResponse);
     }
