@@ -38,23 +38,27 @@ public class Challenge {
 
     public Challenge(String name) {
         validateDescription(name + DEFAULT_INTRODUCTION);
+        validateName(name);
         this.name = name;
     }
 
     public Challenge(String name, String description, String emoji) {
         validateDescription(description);
+        validateName(name);
         this.name = name;
         this.description = description;
         this.emoji = emoji;
     }
 
-    public boolean matchId(Long id) {
-        return this.id.equals(id);
-    }
-
     private void validateDescription(String description) {
         if (description.length() > 255 || description.isEmpty() || description.isBlank()) {
             throw new BusinessException(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
+        }
+    }
+
+    private void validateName(String name) {
+        if (name.length() > 30 || name.isEmpty() || name.isBlank()) {
+            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
         }
     }
 }

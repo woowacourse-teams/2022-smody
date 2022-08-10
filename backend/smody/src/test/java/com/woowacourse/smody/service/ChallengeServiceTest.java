@@ -412,7 +412,7 @@ class ChallengeServiceTest {
     @DisplayName("챌린지 소개 내용이 공백문자거나 빈 문자인 경우 예외 발생")
     @ParameterizedTest
     @ValueSource(strings = {"   ", ""})
-    void create_empty(String invalidDescription) {
+    void create_emptyDesc(String invalidDescription) {
         // given
         ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", invalidDescription, "\\u212");
 
@@ -425,7 +425,7 @@ class ChallengeServiceTest {
 
     @DisplayName("챌린지 소개 길이가 255자 초과인 경우 예외 발생")
     @Test
-    void create_overVarcharSize() {
+    void create_overDescriptionSize() {
         // given
         ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "a".repeat(256), "\\u212");
 
@@ -434,6 +434,33 @@ class ChallengeServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
+    }
+
+    @DisplayName("챌린지 이름 내용이 공백문자거나 빈 문자인 경우 예외 발생")
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", ""})
+    void create_emptyName(String invalidName) {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest(invalidName, "1일 1포스팅 챌린지입니다", "\\u212");
+
+        // when then
+        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_CHALLENGE_NAME);
+    }
+
+    @DisplayName("챌린지 이름 길이가 30자 초과인 경우 예외 발생")
+    @Test
+    void create_overNameSize() {
+        // given
+        ChallengeRequest challengeRequest = new ChallengeRequest("a".repeat(31), "1일 1포스팅 챌린지입니다", "\\u212");
+
+        // when then
+        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_CHALLENGE_NAME);
     }
 
     @DisplayName("비회원이 챌린지를 이름 기준으로 검색하는 경우")
