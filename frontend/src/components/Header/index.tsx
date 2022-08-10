@@ -116,8 +116,3 @@ const Item = styled(Link)`
     }
   `}
 `;
-
-// const LoadingWrapper = styled.div`
-//   width: 2rem;
-//   height: 2rem;
-// `;

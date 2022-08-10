@@ -1,8 +1,28 @@
 import { DropdownProps } from './type';
 import { MouseEventHandler, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export const Dropdown = ({ button, children }: DropdownProps) => {
+const listData = [
+  {
+    text: '운동 챌린지를 성공하셨습니다',
+    linkTo: '/cert',
+  },
+  {
+    text: '빅터님이 댓글을 달았습니다',
+    linkTo: '/feed',
+  },
+  {
+    text: '더즈님이 댓글을 달았습니다',
+    linkTo: '/profile',
+  },
+  {
+    text: '미라클 모닝 인증 마감까지 2시간 남았습니다',
+    linkTo: '/search',
+  },
+];
+
+export const Dropdown = ({ children }: DropdownProps) => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const showDropdownMenu = () => {
     setDropdownToggled(true);
@@ -22,10 +42,16 @@ export const Dropdown = ({ button, children }: DropdownProps) => {
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
-      <div onClick={showDropdownMenu}>{button}</div>
+      <div onClick={showDropdownMenu}>{children}</div>
       {isDropdownToggled && (
         <DropdownMenu>
-          <List onClick={onSelectMenu}>{children}</List>
+          <List onClick={onSelectMenu}>
+            {listData.map(({ text, linkTo }) => (
+              <Item key={text}>
+                <Link to={linkTo}>{text}</Link>
+              </Item>
+            ))}
+          </List>
         </DropdownMenu>
       )}
     </Wrapper>
@@ -66,7 +92,7 @@ const DropdownMenu = styled.div`
     border-radius: 0.5rem;
     position: absolute;
     top: 2.3rem;
-    right: -0.2rem;
+    right: -0.4rem;
     z-index: 100;
 
     // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
@@ -92,4 +118,18 @@ const DropdownMenu = styled.div`
 
 const List = styled.ul`
   margin: 0.4rem 0;
+`;
+
+const Item = styled.li`
+  ${({ theme }) => css`
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.8rem;
+    width: 100%;
+    &:hover {
+      background-color: ${theme.primary};
+      color: ${theme.onPrimary};
+    }
+  `}
 `;
