@@ -43,7 +43,6 @@ const itemList = [
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
-  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
   console.log(pushStatus);
   return (
