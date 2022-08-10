@@ -30,3 +30,4 @@ export * from 'components/CycleDetailItem';
 export * from 'components/CycleDetailList';
 export * from 'components/Title';
 export * from 'components/LoadingButton';
+export * from 'components/InfiniteScroll';

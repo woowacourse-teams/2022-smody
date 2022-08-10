@@ -13,9 +13,9 @@ export const LoadingButton = ({
   loadingText,
   successText,
 }: LoadingButtonProps) => {
-  return (
-    <Element size="large" disabled={isDisabled || isLoading || isSuccess}>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <Element size="large" disabled={true}>
         <FlexBox
           flexDirection="row"
           gap="1rem"
@@ -25,11 +25,21 @@ export const LoadingButton = ({
           {loadingText}
           <LoadingDots />
         </FlexBox>
-      ) : isSuccess ? (
-        successText
-      ) : (
-        defaultText
-      )}
+      </Element>
+    );
+  }
+
+  if (isSuccess) {
+    return (
+      <Element size="large" disabled={true}>
+        {successText}
+      </Element>
+    );
+  }
+
+  return (
+    <Element size="large" disabled={isDisabled}>
+      {defaultText}
     </Element>
   );
 };

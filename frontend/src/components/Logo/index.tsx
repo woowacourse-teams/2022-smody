@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 import { LogoProps } from 'components/Logo/type';
 
+const svg = {
+  start: { pathLength: 0, fill: 'rgba(255, 255, 255, 0)' },
+  end: {
+    fill: '#7B61FF',
+    pathLength: 1,
+  },
+};
+
 export const Logo = ({ width, color, isAnimated }: LogoProps) => {
-  const svg = {
-    start: { pathLength: 0, fill: 'rgba(255, 255, 255, 0)' },
-    end: {
-      fill: '#7B61FF',
-      pathLength: 1,
-    },
-  };
   return (
     <Svg width={width} viewBox="0 0 156 44" xmlns="http://www.w3.org/2000/svg">
       {isAnimated ? (
