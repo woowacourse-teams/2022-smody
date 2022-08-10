@@ -3,26 +3,7 @@ import { MouseEventHandler, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-const listData = [
-  {
-    text: '운동 챌린지를 성공하셨습니다',
-    linkTo: '/cert',
-  },
-  {
-    text: '빅터님이 댓글을 달았습니다',
-    linkTo: '/feed',
-  },
-  {
-    text: '더즈님이 댓글을 달았습니다',
-    linkTo: '/profile',
-  },
-  {
-    text: '미라클 모닝 인증 마감까지 2시간 남았습니다',
-    linkTo: '/search',
-  },
-];
-
-export const Dropdown = ({ children }: DropdownProps) => {
+export const Dropdown = ({ children, itemList }: DropdownProps) => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const showDropdownMenu = () => {
     setDropdownToggled(true);
@@ -46,7 +27,7 @@ export const Dropdown = ({ children }: DropdownProps) => {
       {isDropdownToggled && (
         <DropdownMenu>
           <List onClick={onSelectMenu}>
-            {listData.map(({ text, linkTo }) => (
+            {itemList.map(({ text, linkTo }) => (
               <Item key={text}>
                 <Link to={linkTo}>{text}</Link>
               </Item>
