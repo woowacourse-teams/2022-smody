@@ -1,9 +1,8 @@
 import { DropdownProps } from './type';
 import { MouseEventHandler, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export const Dropdown = ({ children, itemList }: DropdownProps) => {
+export const Dropdown = ({ button, children }: DropdownProps) => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const showDropdownMenu = () => {
     setDropdownToggled(true);
@@ -23,16 +22,10 @@ export const Dropdown = ({ children, itemList }: DropdownProps) => {
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
-      <div onClick={showDropdownMenu}>{children}</div>
+      <div onClick={showDropdownMenu}>{button}</div>
       {isDropdownToggled && (
         <DropdownMenu>
-          <List onClick={onSelectMenu}>
-            {itemList.map(({ text, linkTo }) => (
-              <Item key={text}>
-                <Link to={linkTo}>{text}</Link>
-              </Item>
-            ))}
-          </List>
+          <List onClick={onSelectMenu}>{children}</List>
         </DropdownMenu>
       )}
     </Wrapper>
@@ -99,18 +92,4 @@ const DropdownMenu = styled.div`
 
 const List = styled.ul`
   margin: 0.4rem 0;
-`;
-
-const Item = styled.li`
-  ${({ theme }) => css`
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    padding: 0 0.8rem;
-    width: 100%;
-    &:hover {
-      background-color: ${theme.primary};
-      color: ${theme.onPrimary};
-    }
-  `}
 `;
