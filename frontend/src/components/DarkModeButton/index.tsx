@@ -4,8 +4,13 @@ import styled from 'styled-components';
 export const DarkModeButton = ({ checked, handleChange }: DarkModeButtonProps) => {
   return (
     <CheckBoxWrapper>
-      <CheckBox id="checkbox" type="checkbox" checked={checked} onChange={handleChange} />
-      <CheckBoxLabel htmlFor="checkbox" />
+      <CheckBox
+        id="darkModeCheckbox"
+        type="checkbox"
+        checked={checked}
+        onChange={handleChange}
+      />
+      <CheckBoxLabel htmlFor="darkModeCheckbox" />
     </CheckBoxWrapper>
   );
 };
