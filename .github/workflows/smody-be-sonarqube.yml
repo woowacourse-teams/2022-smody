@@ -8,7 +8,7 @@ on:
     branches:
       - develop # develop 브랜치에서 pr 이벤트가 일어났을 때 실행
     # pr이 생성 되었을 때, 담당 유저가 등록되었을 때, PR에 코드가 머지되었을 때, 라벨이 달렸을 때 동작  
-    types: [opened]
+    types: [opened, synchronize]
 
 # job에 공통된 옵션을 준다
 defaults:
