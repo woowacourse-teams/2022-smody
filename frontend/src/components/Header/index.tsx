@@ -53,13 +53,27 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
-            <SubscriptionButton
-              isSubscribed={isSubscribed}
-              subscribe={subscribe}
-              isLoadingSubscribe={isLoadingSubscribe}
-            />
-
+          <Dropdown button={<Bell count={4} />}>
+            {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
+            <FlexBox
+              justifyContent="center"
+              alignItems="center"
+              gap="1rem"
+              style={{ cursor: 'default' }}
+            >
+              <UnderLineText
+                fontSize={16}
+                fontColor={themeContext.onSurface}
+                fontWeight="bold"
+                underLineColor={themeContext.primary}
+              >
+                알림 구독
+              </UnderLineText>
+              <ToggleButton
+                checked={isSubscribed}
+                handleChange={handleSubscriptionButton}
+              />
+            </FlexBox>
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
                 {text}
