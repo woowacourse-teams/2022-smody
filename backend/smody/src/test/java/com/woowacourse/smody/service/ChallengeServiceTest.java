@@ -387,7 +387,7 @@ class ChallengeServiceTest {
     @Test
     void create() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
 
         // when
         Long challengeId = challengeService.create(challengeRequest);
@@ -400,7 +400,7 @@ class ChallengeServiceTest {
     @Test
     void create_duplicatedName() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
 
         // when
         Long challengeId = challengeService.create(challengeRequest);
@@ -414,7 +414,7 @@ class ChallengeServiceTest {
     @ValueSource(strings = {"   ", ""})
     void create_emptyDesc(String invalidDescription) {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", invalidDescription, "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", invalidDescription, 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -427,7 +427,7 @@ class ChallengeServiceTest {
     @Test
     void create_overDescriptionSize() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "a".repeat(256), "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "a".repeat(256), 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -441,7 +441,7 @@ class ChallengeServiceTest {
     @ValueSource(strings = {"   ", ""})
     void create_emptyName(String invalidName) {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(invalidName, "1일 1포스팅 챌린지입니다", "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest(invalidName, "1일 1포스팅 챌린지입니다", 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -454,7 +454,7 @@ class ChallengeServiceTest {
     @Test
     void create_overNameSize() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("a".repeat(31), "1일 1포스팅 챌린지입니다", "\\u212");
+        ChallengeRequest challengeRequest = new ChallengeRequest("a".repeat(31), "1일 1포스팅 챌린지입니다", 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))

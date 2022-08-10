@@ -11,13 +11,13 @@ insert into member (email, nickname, picture)
 values ('bcc101106@gmail.com', '알파',
         'https://lh3.googleusercontent.com/a/AItbvmmloBfQkCwgxHvdDFPtuqIkAbMKWjk_NHd7xXjq=s192-c-br100-rg-mo');
 
-insert into challenge (name, description, emoji)
-values ('스모디 방문하기', '스모디 방문하기 챌린지입니다.', '스모디 방문하기 이모지');
-insert into challenge (name, description, emoji)
-values ('미라클 모닝', '미라클 모닝 챌린지입니다.', '미라클 모닝 이모지');
-insert into challenge (name, description, emoji)
-values ('오늘의 운동', '오늘의 운동 챌린지입니다.', '오늘의 운동 이모지');
-insert into challenge (name, description, emoji)
-values ('알고리즘 풀기', '알고리즘 풀기 챌린지입니다.', '알고리즘 풀기 이모지');
-insert into challenge (name, description, emoji)
-values ('JPA 공부', 'JPA 공부 챌린지입니다.', 'JPA 공부 이모지');
+insert into challenge (name, description, emoji, color)
+values ('스모디 방문하기', '스모디 방문하기 챌린지입니다.', 0 , 1);
+insert into challenge (name, description, emoji, color)
+values ('미라클 모닝', '미라클 모닝 챌린지입니다.', 0 , 1);
+insert into challenge (name, description, emoji, color)
+values ('오늘의 운동', '오늘의 운동 챌린지입니다.', 0 , 1);
+insert into challenge (name, description, emoji, color)
+values ('알고리즘 풀기', '알고리즘 풀기 챌린지입니다.', 0 , 1);
+insert into challenge (name, description, emoji, color)
+values ('JPA 공부', 'JPA 공부 챌린지입니다.', 0 , 1);

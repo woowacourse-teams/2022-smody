@@ -42,6 +42,7 @@ include::{snippets}/get-challengers/response-fields.adoc[]
 == 챌린지 생성
 === Request
 include::{snippets}/create-challenge/http-request.adoc[]
+include::{snippets}/create-challenge/request-fields.adoc[]
 === Response
 include::{snippets}/create-challenge/http-response.adoc[]
 

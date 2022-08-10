@@ -29,9 +29,11 @@ public class Challenge {
 
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private Integer emoji;
 
     @Column(nullable = false)
-    private String emoji;
+    private Integer color;
 
     @Column(nullable = false)
     private String description;
@@ -42,12 +44,13 @@ public class Challenge {
         this.name = name;
     }
 
-    public Challenge(String name, String description, String emoji) {
+    public Challenge(String name, String description, Integer emoji, Integer color) {
         validateDescription(description);
         validateName(name);
         this.name = name;
         this.description = description;
         this.emoji = emoji;
+        this.color = color;
     }
 
     private void validateDescription(String description) {

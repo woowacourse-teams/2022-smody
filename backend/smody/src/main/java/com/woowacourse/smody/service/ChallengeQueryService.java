@@ -91,9 +91,7 @@ public class ChallengeQueryService {
         List<Challenge> pagedChallenges = PagingUtil.page(extractChallenges(cycles), pageable);
         return pagedChallenges.stream()
                 .map(challenge -> new SuccessChallengeResponse(
-                        challenge.getId(), challenge.getName(),
-                        groupedSize.get(challenge).intValue(),
-                        challenge.getEmoji()
+                        challenge, groupedSize.get(challenge).intValue()
                 )).collect(toList());
     }
 
@@ -112,9 +110,7 @@ public class ChallengeQueryService {
                 .collect(toList());
         return inProgressCycle.stream()
                 .map(cycle -> new ChallengersResponse(
-                        cycle.getMember().getId(), cycle.getMember().getNickname(),
-                        cycle.getProgress().getCount(), cycle.getMember().getPicture(),
-                        cycle.getMember().getIntroduction()))
+                        cycle.getMember(), cycle.getProgress().getCount()))
                 .collect(toList());
     }
 
@@ -131,8 +127,7 @@ public class ChallengeQueryService {
                 .forEach(challenge -> matchedChallenge.put(challenge, 0));
         return matchedChallenge.keySet().stream()
                 .map(challenge -> new ChallengesResponse(
-                        challenge.getId(), challenge.getName(), matchedChallenge.get(challenge),
-                        false, challenge.getEmoji()))
+                        challenge,  matchedChallenge.get(challenge), false))
                 .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
                 .collect(toList());
     }
@@ -150,8 +145,8 @@ public class ChallengeQueryService {
                 .forEach(challenge -> matchedChallenge.put(challenge, 0));
         return matchedChallenge.keySet().stream()
                 .map(challenge -> new ChallengesResponse(
-                        challenge.getId(), challenge.getName(), matchedChallenge.get(challenge),
-                        matchMember(inProgressChallenge, tokenPayload, challenge.getId()), challenge.getEmoji()))
+                        challenge, matchedChallenge.get(challenge),
+                        matchMember(inProgressChallenge, tokenPayload, challenge.getId())))
                 .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
                 .collect(toList());
     }
