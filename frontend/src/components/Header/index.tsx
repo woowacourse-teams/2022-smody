@@ -1,8 +1,10 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
+import LoadingDots from 'assets/loading_dots.svg';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import useSubscribe from 'hooks/useSubscribe';
 import useThemeContext from 'hooks/useThemeContext';
 
 import {
@@ -40,14 +42,8 @@ const itemList = [
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
-  const {
-    isDark,
-    isLogin,
-    handleDarkToggle,
-    handleLoginButton,
-    isSubscribed,
-    handleSubscriptionButton,
-  } = useHeader();
+  const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
+  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
@@ -60,10 +56,9 @@ export const Header = ({ bgColor }: HeaderProps) => {
           <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
             {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
             <FlexBox
-              justifyContent="center"
               alignItems="center"
               gap="1rem"
-              style={{ cursor: 'default' }}
+              style={{ cursor: 'default', padding: '0 1rem ' }}
             >
               <UnderLineText
                 fontSize={16}
@@ -71,13 +66,17 @@ export const Header = ({ bgColor }: HeaderProps) => {
                 fontWeight="bold"
                 underLineColor={themeContext.primary}
               >
-                알림 구독
+                알림 설정
               </UnderLineText>
-              <ToggleButton
-                checked={isSubscribed}
-                handleChange={handleSubscriptionButton}
-              />
+
+              <ToggleButton checked={isSubscribed} handleChange={subscribe} />
+              {isLoadingSubscribe && (
+                <LoadingWrapper>
+                  <LoadingDots />
+                </LoadingWrapper>
+              )}
             </FlexBox>
+
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
                 {text}
@@ -132,4 +131,9 @@ const Item = styled(Link)`
       color: ${theme.onPrimary};
     }
   `}
+`;
+
+const LoadingWrapper = styled.div`
+  width: 2rem;
+  height: 2rem;
 `;
