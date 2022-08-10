@@ -5,7 +5,16 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Logo, FlexBox, Button, DarkModeButton, Dropdown, Bell } from 'components';
+import {
+  Logo,
+  FlexBox,
+  Button,
+  DarkModeButton,
+  Dropdown,
+  Bell,
+  ToggleButton,
+  UnderLineText,
+} from 'components';
 
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
@@ -31,7 +40,14 @@ const itemList = [
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
-  const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
+  const {
+    isDark,
+    isLogin,
+    handleDarkToggle,
+    handleLoginButton,
+    isSubscribed,
+    handleSubscriptionButton,
+  } = useHeader();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
@@ -43,6 +59,25 @@ export const Header = ({ bgColor }: HeaderProps) => {
         {isLogin ? (
           <Dropdown button={<Bell count={4} />}>
             {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
+            <FlexBox
+              justifyContent="center"
+              alignItems="center"
+              gap="1rem"
+              style={{ cursor: 'default' }}
+            >
+              <UnderLineText
+                fontSize={16}
+                fontColor={themeContext.onSurface}
+                fontWeight="bold"
+                underLineColor={themeContext.primary}
+              >
+                알림 구독
+              </UnderLineText>
+              <ToggleButton
+                checked={isSubscribed}
+                handleChange={handleSubscriptionButton}
+              />
+            </FlexBox>
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
                 {text}
