@@ -38,8 +38,8 @@ jobs:
     env:
       # KEY - VALUE
       SONARQUBE_PROJECT_KEY: smody 
-      SONARQUBE_URL: ${{ sonarqube.URL }}
-      SONARQUBE_TOKEN : ${{ sonarqube.TOKEN }}
+      SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
+      SONARQUBE_TOKEN : ${{ secrets.SONARQUBE_TOKEN }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
       - name: Checkout source code
@@ -51,7 +51,7 @@ jobs:
              -Dsonar.host.url=${{ env.SONARQUBE_URL }}
              -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
              -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
-             -Dsonar.login=${{ secrets.SONARQUBE_ACCESS_TOKEN }}
+             -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
 
       - name: Comment Sonarqube URL
         uses: actions/github-script@v4
