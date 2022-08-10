@@ -14,7 +14,8 @@ public class ChallengesResponse {
     private String challengeName;
     private Integer challengerCount;
     private Boolean isInProgress;
-    private String emoji;
+    private Integer emoji;
+    private Integer color;
 
     public ChallengesResponse(Challenge challenge, Integer challengerCount, Boolean isInProgress) {
         this.challengeId = challenge.getId();
@@ -29,6 +30,6 @@ public class ChallengesResponse {
     }
 
     public ChallengesResponse changeInProgress(Boolean inProgress) {
-        return new ChallengesResponse(challengeId, challengeName, challengerCount, inProgress, emoji);
+        return new ChallengesResponse(challengeId, challengeName, challengerCount, inProgress, emoji, color);
     }
 }
