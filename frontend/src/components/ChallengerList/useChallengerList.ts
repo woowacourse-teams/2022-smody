@@ -3,7 +3,7 @@ import { useGetChallengersById } from 'apis';
 
 export const useChallengerList = ({ challengeId }: ChallengerListProps) => {
   const { data: challengersData } = useGetChallengersById(
-    { challengeId: Number(challengeId) },
+    { challengeId },
     {
       refetchOnWindowFocus: false,
     },
