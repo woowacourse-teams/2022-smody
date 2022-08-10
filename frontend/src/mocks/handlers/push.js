@@ -15,15 +15,31 @@ export const push = [
   }),
 
   // 구독 정보 저장(POST)
-
   rest.post(`${BASE_URL}/web-push/subscribe`, (req, res, ctx) => {
-    // if (req.headers.headers.authorization === 'Bearer null') {
-    //   return res(ctx.status(403), ctx.json({ code: 2002 }));
-    // }
+    if (req.headers.headers.authorization === 'Bearer null') {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+    const subscription = req.body;
 
-    const subscription = req.body.subscription;
+    db.find((user) => user.nickname === 'marco').subscription = subscription;
+    console.log('db', db);
+    return res(ctx.status(200), ctx.json(db));
+  }),
 
-    db.marco.subscription = subscription;
+  // 구독 정보 삭제(POST)
+  rest.post(`${BASE_URL}/web-push/unsubscribe`, (req, res, ctx) => {
+    if (req.headers.headers.authorization === 'Bearer null') {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+    console.log('@@@', req.body);
+    const endpoint = req.body;
+
+    db.forEach((user) => {
+      console.log('!', user);
+      if (user.subscription.endpoint === endpoint) {
+        user.subscription = null;
+      }
+    });
 
     return res(ctx.status(200), ctx.json(db));
   }),

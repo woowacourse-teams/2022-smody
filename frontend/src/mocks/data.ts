@@ -744,4 +744,7 @@ export const challengers = [
   },
 ];
 
-export const db = [];
+export const db = [
+  { nickname: 'marco', subscription: {} },
+  { nickname: 'does', subscription: { endpoint: 'test' } },
+];
