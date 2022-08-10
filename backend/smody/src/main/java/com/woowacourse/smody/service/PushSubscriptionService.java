@@ -1,14 +1,17 @@
 package com.woowacourse.smody.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.PushContent;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
+import com.woowacourse.smody.push.event.SubscriptionPushEvent;
+import com.woowacourse.smody.push.event.SubscriptionPushHandler;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,11 +22,7 @@ public class PushSubscriptionService {
 
 	private final PushSubscriptionRepository pushSubscriptionRepository;
 	private final MemberService memberService;
-	private final WebPushService webPushService;
-
-	public String getPublicKey() {
-		return webPushService.getPublicKey();
-	}
+	private final SubscriptionPushHandler subscriptionPushHandler;
 
 	@Transactional
 	public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
@@ -32,15 +31,16 @@ public class PushSubscriptionService {
 			.map(pushSubscription -> pushSubscription.updateMember(member))
 			.orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-		webPushService.sendNotification(subscription, PushContent.builder()
-			.title("구독 완료")
-			.message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
-			.build());
+		subscriptionPushHandler.onApplicationEvent(new SubscriptionPushEvent(this, subscription));
 	}
 
 	@Transactional
 	public void unSubscribe(TokenPayload tokenPayload, UnSubscriptionRequest unSubscription) {
 		memberService.search(tokenPayload);
 		pushSubscriptionRepository.deleteByEndpoint(unSubscription.getEndpoint());
+	}
+
+	public List<PushSubscription> searchByMember(Member member) {
+		return pushSubscriptionRepository.findByMember(member);
 	}
 }

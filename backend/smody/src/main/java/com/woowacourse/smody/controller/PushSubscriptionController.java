@@ -13,6 +13,7 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.dto.VapidPublicKeyResponse;
 import com.woowacourse.smody.service.PushSubscriptionService;
+import com.woowacourse.smody.service.WebPushService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class PushSubscriptionController {
 
 	private final PushSubscriptionService pushSubscriptionService;
+	private final WebPushService webPushService;
 
 	@GetMapping("/public-key")
 	public ResponseEntity<VapidPublicKeyResponse> sendPublicKey() {
-		return ResponseEntity.ok(new VapidPublicKeyResponse(pushSubscriptionService.getPublicKey()));
+		return ResponseEntity.ok(new VapidPublicKeyResponse(webPushService.getPublicKey()));
 	}
 
 	@PostMapping("/subscribe")

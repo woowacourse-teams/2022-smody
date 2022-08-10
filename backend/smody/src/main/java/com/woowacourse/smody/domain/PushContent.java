@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PushContent {
 
-	private String title;
 	private String message;
 }
