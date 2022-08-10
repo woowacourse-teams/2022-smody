@@ -41,11 +41,11 @@ public class Challenge {
         this.name = name;
     }
 
-    public Challenge(ChallengeRequest challengeRequest) {
-        validateDescription(challengeRequest.getDescription());
-        this.name = challengeRequest.getChallengeName();
-        this.description = challengeRequest.getDescription();
-        this.emoji = challengeRequest.getEmoji();
+    public Challenge(String name, String description, String emoji) {
+        validateDescription(description);
+        this.name = name;
+        this.description = description;
+        this.emoji = emoji;
     }
 
     public boolean matchId(Long id) {
