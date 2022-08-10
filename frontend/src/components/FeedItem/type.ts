@@ -1,7 +1,9 @@
-import { Challenge, CycleDetail } from 'commonType';
+import { Feed } from 'commonType';
 
-export interface FeedProps
-  extends Pick<Challenge, 'challengeId'>,
-    Pick<CycleDetail, 'progressTime'> {}
+export interface FeedItemProps extends Feed {
+  isClickable?: boolean;
+}
 
-export type UseFeedProps = Pick<FeedProps, 'challengeId' | 'progressTime'>;
+export type UseFeedProps = Pick<FeedItemProps, 'challengeId' | 'progressTime'>;
+
+export type WrapperProps = Pick<FeedItemProps, 'isClickable'>;

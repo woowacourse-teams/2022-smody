@@ -1,5 +1,5 @@
-import useFeed from './useFeed';
-import { Feed } from 'commonType';
+import { FeedItemProps, WrapperProps } from './type';
+import useFeedItem from './useFeedItem';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -17,28 +17,34 @@ export const FeedItem = ({
   challengeId,
   challengeName,
   commentCount,
-}: Feed) => {
+  isClickable = true,
+}: FeedItemProps) => {
   const themeContext = useThemeContext();
 
   const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
-    useFeed({ challengeId, progressTime });
+    useFeedItem({ challengeId, progressTime });
 
   return (
-    <Wrapper flexDirection="column" gap="0.625rem" onClick={handleClickFeed}>
+    <Wrapper
+      flexDirection="column"
+      gap="0.625rem"
+      onClick={handleClickFeed}
+      isClickable={isClickable}
+    >
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
         <Text style={{ marginLeft: '0.313rem' }} size={16} color={themeContext.mainText}>
           {nickname}
         </Text>
-        <Text
-          style={{ marginLeft: 'auto' }}
+        <ChallengeName
+          // style={{ marginLeft: 'auto' }}
           size={20}
           color={themeContext.primary}
           fontWeight="bold"
           onClick={handleClickChallengeName}
         >
           {challengeName}
-        </Text>
+        </ChallengeName>
       </FlexBox>
       <ProgressImg
         src={progressImage}
@@ -65,18 +71,26 @@ export const FeedItem = ({
   );
 };
 
-const Wrapper = styled(FlexBox)`
-  width: 100%;
-  max-width: 440px;
-  min-width: 366px;
-  padding: 20px 0;
-  cursor: pointer;
+const Wrapper = styled(FlexBox)<WrapperProps>`
+  ${({ isClickable }) => css`
+    width: 100%;
+    max-width: 440px;
+    min-width: 366px;
+    padding: 20px 0;
+    cursor: pointer;
+    pointer-events: ${isClickable ? 'auto' : 'none'};
+  `}
 `;
 
 const ProfileImg = styled.img`
   width: 2.563rem;
   height: 2.563rem;
   border-radius: 50%;
+`;
+
+const ChallengeName = styled(Text)`
+  margin-left: auto;
+  pointer-events: auto;
 `;
 
 const ProgressImg = styled.img`

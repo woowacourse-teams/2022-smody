@@ -5,7 +5,7 @@ import { parseTime } from 'utils';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const useFeed = ({ challengeId, progressTime }: UseFeedProps) => {
+const useFeedItem = ({ challengeId, progressTime }: UseFeedProps) => {
   const navigate = useNavigate();
   const { year, month, date, hours, minutes } = parseTime(progressTime);
 
@@ -29,4 +29,4 @@ const useFeed = ({ challengeId, progressTime }: UseFeedProps) => {
   };
 };
 
-export default useFeed;
+export default useFeedItem;
