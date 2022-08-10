@@ -32,7 +32,7 @@ public class CycleProgressPushHandler implements ApplicationListener<CycleProgre
 
 		long pushTime = cycle.getStartTime()
 			.plusDays(cycle.getInterval())
-			.minusHours(3L)
+			.minusHours(12L)
 			.atZone(ZoneId.systemDefault())
 			.toInstant()
 			.toEpochMilli();
