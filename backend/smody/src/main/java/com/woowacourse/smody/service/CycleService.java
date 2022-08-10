@@ -7,6 +7,8 @@ import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.domain.PushContent;
+import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
@@ -15,6 +17,8 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
+import com.woowacourse.smody.repository.PushSubscriptionRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +34,6 @@ public class CycleService {
     private final CycleRepository cycleRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
-
     private final ImageStrategy imageStrategy;
 
     @Transactional
@@ -44,6 +47,14 @@ public class CycleService {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
         Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
+
+        // List<PushSubscription> all = pushSubscriptionRepository.findAll();
+        // for (PushSubscription pushSubscription : all) {
+        //     webPushService.sendNotification(pushSubscription, PushContent.builder()
+        //         .title("챌린지 참가")
+        //         .message(challenge.getName() + "챌린지에 참여하셨습니다.")
+        //         .build());
+        // }
         return save.getId();
     }
 

@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.dto.VapidPublicKeyResponse;
+import com.woowacourse.smody.repository.MemberRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PushSubscriptionController {
 
 	private final PushSubscriptionService pushSubscriptionService;
+	private final MemberRepository memberRepository;
 
 	@GetMapping("/public-key")
 	public ResponseEntity<VapidPublicKeyResponse> sendPublicKey() {
@@ -29,9 +32,13 @@ public class PushSubscriptionController {
 	}
 
 	@PostMapping("/subscribe")
-	public ResponseEntity<Void> subscribe(@LoginMember TokenPayload tokenPayload,
+	public ResponseEntity<Void> subscribe(
 		@RequestBody SubscriptionRequest subscription) {
-		pushSubscriptionService.subscribe(tokenPayload, subscription);
+		memberRepository.findById(1L)
+				.orElseGet(() -> memberRepository.save(
+					new Member("ldk980130@gmail.com", "does", "hello", "picture")
+				));
+		pushSubscriptionService.subscribe(new TokenPayload(1L), subscription);
 		return ResponseEntity.ok().build();
 	}
 
