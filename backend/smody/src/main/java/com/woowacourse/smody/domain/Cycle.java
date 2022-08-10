@@ -98,6 +98,6 @@ public class Cycle {
     }
 
     public boolean matchChallenge(Long challengeId) {
-        return this.challenge.matchId(challengeId);
+        return this.challenge.getId().equals(challengeId);
     }
 }

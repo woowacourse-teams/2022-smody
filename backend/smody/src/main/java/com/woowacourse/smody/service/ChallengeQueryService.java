@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -122,13 +123,18 @@ public class ChallengeQueryService {
 
     public List<ChallengesResponse> searchByName(String name) {
         validateSearchingName(name);
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
-        Map<Challenge, Integer> matchedChallenges = inProgressCycles.keySet().stream()
-                .filter(challenge -> StringUtils.containsIgnoreCase(challenge.getName(), name))
-                .collect(toMap(Function.identity(), challenge -> inProgressCycles.get(challenge).size()));
-        return matchedChallenges.keySet().stream()
+        List<Challenge> challenges = challengeService.searchByNameContaining(name);
+        Map<Challenge, List<Cycle>> inProgressChallenge = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
+        Map<Challenge, Integer> matchedChallenge = new HashMap<>();
+        challenges.stream()
+                .filter(inProgressChallenge::containsKey)
+                .forEach(challenge -> matchedChallenge.put(challenge, inProgressChallenge.get(challenge).size()));
+        challenges.stream()
+                .filter(challenge -> !inProgressChallenge.containsKey(challenge))
+                .forEach(challenge -> matchedChallenge.put(challenge, 0));
+        return matchedChallenge.keySet().stream()
                 .map(challenge -> new ChallengesResponse(
-                        challenge.getId(), challenge.getName(), matchedChallenges.get(challenge),
+                        challenge.getId(), challenge.getName(), matchedChallenge.get(challenge),
                         false, challenge.getEmoji()))
                 .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
                 .collect(toList());
@@ -136,14 +142,19 @@ public class ChallengeQueryService {
 
     public List<ChallengesResponse> searchByName(TokenPayload tokenPayload, String name) {
         validateSearchingName(name);
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
-        Map<Challenge, Integer> matchedChallenges = inProgressCycles.keySet().stream()
-                .filter(challenge -> StringUtils.containsIgnoreCase(challenge.getName(), name))
-                .collect(toMap(Function.identity(), challenge -> inProgressCycles.get(challenge).size()));
-        return matchedChallenges.keySet().stream()
+        List<Challenge> challenges = challengeService.searchByNameContaining(name);
+        Map<Challenge, List<Cycle>> inProgressChallenge = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
+        Map<Challenge, Integer> matchedChallenge = new HashMap<>();
+        challenges.stream()
+                .filter(inProgressChallenge::containsKey)
+                .forEach(challenge -> matchedChallenge.put(challenge, inProgressChallenge.get(challenge).size()));
+        challenges.stream()
+                .filter(challenge -> !inProgressChallenge.containsKey(challenge))
+                .forEach(challenge -> matchedChallenge.put(challenge, 0));
+        return matchedChallenge.keySet().stream()
                 .map(challenge -> new ChallengesResponse(
-                        challenge.getId(), challenge.getName(), matchedChallenges.get(challenge),
-                        matchMember(inProgressCycles, tokenPayload, challenge.getId()), challenge.getEmoji()))
+                        challenge.getId(), challenge.getName(), matchedChallenge.get(challenge),
+                        matchMember(inProgressChallenge, tokenPayload, challenge.getId()), challenge.getEmoji()))
                 .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
                 .collect(toList());
     }

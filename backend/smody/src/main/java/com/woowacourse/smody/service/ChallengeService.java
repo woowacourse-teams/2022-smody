@@ -31,7 +31,8 @@ public class ChallengeService {
 
     public Long create(ChallengeRequest challengeRequest) {
         validateDuplicatedName(challengeRequest.getChallengeName());
-        Challenge challenge = challengeRepository.save(new Challenge(challengeRequest));
+        Challenge challenge = challengeRepository.save(new Challenge(
+                challengeRequest.getChallengeName(), challengeRequest.getDescription(), challengeRequest.getEmoji()));
         return challenge.getId();
     }
 
@@ -39,5 +40,9 @@ public class ChallengeService {
         if (challengeRepository.findByName(name).isPresent()) {
             throw new BusinessException(ExceptionData.DUPLICATE_NAME);
         }
+    }
+
+    public List<Challenge> searchByNameContaining(String name) {
+        return challengeRepository.findByNameContainingIgnoreCase(name);
     }
 }
