@@ -23,6 +23,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,7 @@ public class FeedQueryServiceTest {
     private ResourceFixture resourceFixture;
 
     @Autowired
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @DisplayName("0L로 id 값이 들어오면 가장 최신순으로 조회한다")
     @Test
@@ -49,7 +50,7 @@ public class FeedQueryServiceTest {
         makeSuccessCycle(cycle, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(10, 0L);
+        List<FeedResponse> feedResponses = feedQueryService.findAll(Pageable.ofSize(10), 0L);
 
         //then
         assertAll(
@@ -73,28 +74,27 @@ public class FeedQueryServiceTest {
         makeSuccessCycle(cycle2, today);
         makeSuccessCycle(cycle3, today);
         makeSuccessCycle(cycle4, today);
-        em.flush();
+        entityManager.flush();
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(
-                10, cycle1.getCycleDetails().get(2).getId()
+                Pageable.ofSize(10), cycle1.getCycleDetails().get(2).getId()
         );
-
         // then
         assertAll(
                 () -> assertThat(feedResponses).hasSize(10),
                 () -> assertThat(feedResponses.stream()
                         .map(FeedResponse::getCycleDetailId)
                         .collect(Collectors.toList())).containsExactly(
-                        cycle2.getCycleDetails().get(2).getId(),
-                        cycle3.getCycleDetails().get(2).getId(),
                         cycle4.getCycleDetails().get(2).getId(),
-                        cycle1.getCycleDetails().get(1).getId(),
-                        cycle2.getCycleDetails().get(1).getId(),
-                        cycle3.getCycleDetails().get(1).getId(),
+                        cycle3.getCycleDetails().get(2).getId(),
+                        cycle2.getCycleDetails().get(2).getId(),
                         cycle4.getCycleDetails().get(1).getId(),
-                        cycle1.getCycleDetails().get(0).getId(),
-                        cycle2.getCycleDetails().get(0).getId(),
-                        cycle3.getCycleDetails().get(0).getId()
+                        cycle3.getCycleDetails().get(1).getId(),
+                        cycle2.getCycleDetails().get(1).getId(),
+                        cycle1.getCycleDetails().get(1).getId(),
+                        cycle4.getCycleDetails().get(0).getId(),
+                        cycle3.getCycleDetails().get(0).getId(),
+                        cycle2.getCycleDetails().get(0).getId()
                 )
         );
     }
@@ -115,7 +115,7 @@ public class FeedQueryServiceTest {
         LocalDateTime today = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
         makeSuccessCycle(cycle, today);
-        em.flush();
+        entityManager.flush();
 
         // when
         Long cycleDetailId = cycle.getCycleDetails().get(0).getId();

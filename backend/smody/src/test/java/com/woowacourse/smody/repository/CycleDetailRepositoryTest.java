@@ -12,11 +12,13 @@ import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,9 @@ public class CycleDetailRepositoryTest {
 
     @Autowired
     private CycleDetailRepository cycleDetailRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private ResourceFixture fixture;
@@ -54,15 +59,15 @@ public class CycleDetailRepositoryTest {
         // given
         LocalDateTime today = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, today);
-        CycleDetail 인증1 = cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(1L),
+        cycleDetailRepository.save(new CycleDetail(cycle, today.minusDays(3).plusMinutes(1L),
                 "image.jpg", "인증1"));
-        cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(2L),
+        cycleDetailRepository.save(new CycleDetail(cycle, today.minusDays(2).plusMinutes(2L),
                 "image.jpg", "인증2"));
-        cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(3L),
+        cycleDetailRepository.save(new CycleDetail(cycle, today.minusDays(1).plusMinutes(3L),
                 "image.jpg", "인증3"));
 
         // when
-        List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(0L, 3);
+        List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(0L, today, Pageable.ofSize(3));
 
         // then
         assertThat(cycleDetails).hasSize(3);
@@ -86,9 +91,9 @@ public class CycleDetailRepositoryTest {
                 "image.jpg", "인증5"));
         cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(6L),
                 "image.jpg", "인증6"));
-
         // when
-        List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(인증5.getId(), 인증5.getProgressTime(), 3);
+        List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(인증5.getId(), 인증5.getProgressTime(),
+                Pageable.ofSize(3));
 
         // then
         assertAll(
