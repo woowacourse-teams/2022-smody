@@ -11,6 +11,7 @@ export const useNavBar = () => {
   const searchColor = getPathMatchResult([
     CLIENT_PATH.SEARCH,
     CLIENT_PATH.CHALLENGE_DETAIL,
+    CLIENT_PATH.CHALLENGE_CREATE,
   ]);
   const feedColor = getPathMatchResult([CLIENT_PATH.FEED]);
   const profileColor = getPathMatchResult([
