@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenExtractor {
 
-    public static String BEARER_TYPE = "Bearer";
+    private static final String BEARER_TYPE = "Bearer";
 
     public String extract(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
