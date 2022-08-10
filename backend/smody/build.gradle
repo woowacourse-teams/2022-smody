@@ -31,6 +31,8 @@ dependencies {
 
     implementation 'org.json:json:20220320'
 
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -95,6 +97,7 @@ sonarqube {
         property "sonar.profile", "Sonar way"
         property "sonar.java.binaries", "${buildDir}/classes"
         property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/resources/static/**, **/Q*.class, **/test/**"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     }
 }
