@@ -22,3 +22,13 @@ export interface GetChallengeByIdResponse
   emoji: string;
   description: string;
 }
+
+export type GetChallengersByIdProps = Pick<Challenge, 'challengeId'>;
+
+export interface GetChallengersByIdResponse {
+  memberId: number;
+  nickName: string;
+  progressCount: number;
+  picture: string;
+  introduction: string;
+}
