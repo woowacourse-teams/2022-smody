@@ -4,6 +4,8 @@ import {
   GetChallengeByIdProps,
   GetMySuccessChallengesResponse,
   GetChallengeByIdResponse,
+  GetChallengersByIdProps,
+  GetChallengersByIdResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
@@ -43,5 +45,12 @@ export const getChallengeById = async ({ challengeId }: GetChallengeByIdProps) =
 export const getChallengeByIdAuth = async ({ challengeId }: GetChallengeByIdProps) => {
   return authApiClient.axios.get<GetChallengeByIdResponse>(
     `/challenges/${challengeId}/auth`,
+  );
+};
+
+// 9. 챌린지 참가자 목록 조회
+export const getChallengersById = async ({ challengeId }: GetChallengersByIdProps) => {
+  return authApiClient.axios.get<GetChallengersByIdResponse[]>(
+    `/challenges/${challengeId}/challengers`,
   );
 };

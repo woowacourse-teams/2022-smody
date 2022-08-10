@@ -13,6 +13,7 @@ export const queryKeys = {
   getLinkGoogle: 'getLinkGoogle',
   getTokenGoogle: 'getTokenGoogle',
   getMyInfo: 'getMyInfo',
+  getChallengersById: 'getChallengersById',
 };
 
 export const mutationKeys = {

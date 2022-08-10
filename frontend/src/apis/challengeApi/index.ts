@@ -4,12 +4,15 @@ import {
   getMySuccessChallenges,
   getChallengeById,
   getChallengeByIdAuth,
+  getChallengersById,
 } from 'apis/challengeApi/api';
 import {
   GetChallengeResponse,
   GetChallengeByIdProps,
   GetChallengeByIdResponse,
   GetMySuccessChallengesResponse,
+  GetChallengersByIdResponse,
+  GetChallengersByIdProps,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
@@ -79,5 +82,19 @@ export const useGetChallengeById = (
     localStorage.getItem('accessToken')
       ? () => getChallengeByIdAuth({ challengeId })
       : () => getChallengeById({ challengeId }),
+    options,
+  );
+
+// 9. 챌린지 참가자 목록 조회
+export const useGetChallengersById = (
+  { challengeId }: GetChallengersByIdProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetChallengersByIdResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetChallengersByIdResponse[]>, AxiosError<ErrorResponse>>(
+    queryKeys.getChallengersById,
+    () => getChallengersById({ challengeId }),
     options,
   );
