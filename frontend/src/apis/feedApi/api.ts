@@ -6,7 +6,7 @@ import { GetAllFeedsResponse } from 'apis/feedApi/type';
 export const getAllFeeds = async (lastCycleDetailId: number) => {
   const params = { lastCycleDetailId, size: PAGE_SIZE.FEEDS };
 
-  return apiClient.axios.get<GetAllFeedsResponse>('feeds', {
+  return apiClient.axios.get<GetAllFeedsResponse>('/feeds', {
     params,
   });
 };
