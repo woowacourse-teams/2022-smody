@@ -10,6 +10,25 @@ import { Logo, FlexBox, Button, DarkModeButton, Dropdown, Bell } from 'component
 import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
+const itemList = [
+  {
+    text: '운동 챌린지를 성공하셨습니다',
+    linkTo: '/cert',
+  },
+  {
+    text: '빅터님이 댓글을 달았습니다',
+    linkTo: '/feed',
+  },
+  {
+    text: '더즈님이 댓글을 달았습니다',
+    linkTo: '/profile',
+  },
+  {
+    text: '미라클 모닝 인증 마감까지 2시간 남았습니다',
+    linkTo: '/search',
+  },
+];
+
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
@@ -22,7 +41,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <Dropdown>
+          <Dropdown itemList={itemList}>
             {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
             <Bell count={4} />
           </Dropdown>
