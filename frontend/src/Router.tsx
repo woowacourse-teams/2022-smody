@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
 
 import {
-  Feed,
+  FeedPage,
   SearchPage,
   ChallengeDetailPage,
   NotFoundPage,
@@ -61,7 +61,7 @@ const Router = () => {
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
-          <Route path={CLIENT_PATH.FEED} element={<Feed />} />
+          <Route path={CLIENT_PATH.FEED} element={<FeedPage />} />
           <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
           <Route path={CLIENT_PATH.CYCLE_DETAIL_ID} element={<CycleDetailPage />} />
           <Route
