@@ -66,7 +66,7 @@ const DropdownMenu = styled.div`
     border-radius: 0.5rem;
     position: absolute;
     top: 2.3rem;
-    right: -0.4rem;
+    right: -0.2rem;
     z-index: 100;
 
     // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
