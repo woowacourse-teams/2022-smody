@@ -5,7 +5,7 @@ import { useInput } from 'components/Input/useInput';
 import { ValidationMessage } from 'components/ValidationMessage';
 
 export const Input = ({
-  type,
+  type = 'text',
   label,
   placeholder,
   value,
@@ -13,6 +13,7 @@ export const Input = ({
   isValidated,
   message,
   disabled,
+  isTextArea = false,
 }: InputProps) => {
   const { isFocus, handleFocus, handleBlur } = useInput();
 
@@ -20,16 +21,28 @@ export const Input = ({
     <Wrapper>
       <Label htmlFor={label}>{label}</Label>
       <InputWrapper isFocus={isFocus} isValidated={isValidated}>
-        <InputElement
-          id={label}
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          disabled={disabled}
-        />
+        {isTextArea ? (
+          <TextAreaElement
+            id={label}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            disabled={disabled}
+          />
+        ) : (
+          <InputElement
+            id={label}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            disabled={disabled}
+          />
+        )}
       </InputWrapper>
       <ValidationMessage isValidated={isValidated} value={value} message={message} />
     </Wrapper>
@@ -81,6 +94,24 @@ const InputElement = styled.input`
     outline: none;
     font-size: 1rem;
     color: ${theme.onInput};
+
+    &:disabled {
+      color: ${theme.disabledInput};
+    }
+  `}
+`;
+
+const TextAreaElement = styled.textarea`
+  ${({ theme }) => css`
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 10rem;
+    margin-left: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    color: ${theme.onInput};
+    resize: none;
 
     &:disabled {
       color: ${theme.disabledInput};
