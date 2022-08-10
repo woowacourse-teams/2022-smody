@@ -15,7 +15,7 @@ import {
   VocPage,
   CycleDetailPage,
   CertFormPage,
-  TestPage,
+  ChallengeCreatePage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -58,6 +58,10 @@ const Router = () => {
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
             <Route path={CLIENT_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />
             <Route path={CLIENT_PATH.CERT} element={<CertFlowPage />} />
+            <Route
+              path={CLIENT_PATH.CHALLENGE_CREATE}
+              element={<ChallengeCreatePage />}
+            />
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
