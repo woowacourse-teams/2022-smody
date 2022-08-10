@@ -743,3 +743,5 @@ export const challengers = [
     introduction: '안녕하세요',
   },
 ];
+
+export const db = [];
