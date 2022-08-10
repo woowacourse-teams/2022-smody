@@ -34,3 +34,4 @@ export * from 'components/InfiniteScroll';
 export * from 'components/Challenger';
 export * from 'components/ChallengerList';
 export * from 'components/ChallengeDetail';
+export * from 'components/DarkModeButton';
