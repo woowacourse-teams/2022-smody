@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { InputProps, InputContainerProps } from 'components/Input/type';
+import { FlexBox } from 'components/@shared/FlexBox';
+
+import { InputProps, InputContainerProps, WordLengthProps } from 'components/Input/type';
 import { useInput } from 'components/Input/useInput';
 import { ValidationMessage } from 'components/ValidationMessage';
 
@@ -14,6 +16,8 @@ export const Input = ({
   message,
   disabled,
   isTextArea = false,
+  needWordLength,
+  maxLength,
 }: InputProps) => {
   const { isFocus, handleFocus, handleBlur } = useInput();
 
@@ -44,7 +48,14 @@ export const Input = ({
           />
         )}
       </InputWrapper>
-      <ValidationMessage isValidated={isValidated} value={value} message={message} />
+      <FlexBox justifyContent="space-between">
+        <div>
+          <ValidationMessage isValidated={isValidated} value={value} message={message} />
+        </div>
+        <WordLength isMargin={!!needWordLength}>
+          {needWordLength ? `${value?.length}/${maxLength}` : ''}
+        </WordLength>
+      </FlexBox>
     </Wrapper>
   );
 };
@@ -116,5 +127,14 @@ const TextAreaElement = styled.textarea`
     &:disabled {
       color: ${theme.disabledInput};
     }
+  `}
+`;
+
+const WordLength = styled.div<WordLengthProps>`
+  ${({ isMargin }) => css`
+    ${isMargin &&
+    css`
+      margin-top: 0.3rem;
+    `}
   `}
 `;
