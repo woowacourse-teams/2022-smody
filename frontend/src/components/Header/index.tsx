@@ -41,9 +41,13 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <Dropdown itemList={itemList}>
+          <Dropdown button={<Bell count={4} />}>
             {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
-            <Bell count={4} />
+            {itemList.map(({ text, linkTo }) => (
+              <Item key={text} to={linkTo}>
+                {text}
+              </Item>
+            ))}
           </Dropdown>
         ) : (
           <Button size="small" onClick={handleLoginButton}>
@@ -77,6 +81,20 @@ const Wrapper = styled(FlexBox)<HeaderProps>`
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
     @media all and (max-width: 767px) {
       padding: 1rem 1.25rem;
+    }
+  `}
+`;
+
+const Item = styled(Link)`
+  ${({ theme }) => css`
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.8rem;
+    width: 100%;
+    &:hover {
+      background-color: ${theme.primary};
+      color: ${theme.onPrimary};
     }
   `}
 `;
