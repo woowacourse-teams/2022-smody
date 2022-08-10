@@ -74,7 +74,4 @@ public class ControllerTest {
 
     @MockBean
     protected PushSubscriptionService pushSubscriptionService;
-
-    @MockBean
-    protected MemberRepository memberRepository;
 }
