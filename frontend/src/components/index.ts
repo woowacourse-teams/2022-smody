@@ -35,4 +35,4 @@ export * from 'components/Challenger';
 export * from 'components/ChallengerList';
 export * from 'components/ChallengeDetail';
 export * from 'components/DarkModeButton';
-export * from 'components/Feed';
+export * from 'components/FeedItem';

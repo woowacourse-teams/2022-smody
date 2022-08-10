@@ -1,22 +1,24 @@
 import useFeed from './useFeed';
+import { Feed } from 'commonType';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text } from 'components';
 
-export const Feed = () => {
+export const FeedItem = ({
+  cycleDetailId,
+  memberId,
+  picture,
+  nickname,
+  progressImage,
+  description,
+  progressTime,
+  challengeId,
+  challengeName,
+  commentCount,
+}: Feed) => {
   const themeContext = useThemeContext();
-  const picture = 'https://emoji-copy.com/wp-content/uploads/1f64a.png';
-  const nickname = '빅터';
-  const progressImage =
-    'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg';
-  const description =
-    '오늘도 만보 걸었다. 날씨가 선선해서 좋았다. 하지만 혼자 걸으니 외롭다. 누군가 같이 걸을 사람이 있으면 좋겠는데...';
-  const progressTime = '2022-08-08T10:00:00';
-  const challengeId = 1;
-  const challengeName = '하루 만보 걷기';
-  const commentCount = 4;
 
   const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
     useFeed({ challengeId, progressTime });
@@ -67,6 +69,7 @@ const Wrapper = styled(FlexBox)`
   width: 100%;
   max-width: 440px;
   min-width: 366px;
+  padding: 20px 0;
   cursor: pointer;
 `;
 
