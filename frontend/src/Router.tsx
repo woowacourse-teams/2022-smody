@@ -16,6 +16,7 @@ import {
   CycleDetailPage,
   CertFormPage,
   ChallengeCreatePage,
+  TestPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
