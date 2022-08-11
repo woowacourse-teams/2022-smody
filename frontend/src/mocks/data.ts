@@ -1150,4 +1150,7 @@ export const feedData = [
   },
 ];
 
-export const db = [];
+export const db = [
+  { nickname: 'marco', subscription: {} },
+  { nickname: 'does', subscription: { endpoint: 'test' } },
+];
