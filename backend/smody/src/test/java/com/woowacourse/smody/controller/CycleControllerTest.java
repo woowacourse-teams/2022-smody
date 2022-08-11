@@ -156,8 +156,8 @@ public class CycleControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         LocalDateTime now = LocalDateTime.now();
         List<InProgressCycleResponse> inProgressCycleResponses = List.of(
-                new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3),
-                new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3));
+                new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3, 0, 1),
+                new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3, 0, 1));
         given(cycleQueryService.findInProgressOfMine(
                 any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
         )).willReturn(inProgressCycleResponses);
@@ -177,7 +177,9 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
                                 fieldWithPath("[].startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
-                                fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟수")
+                                fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -187,7 +189,7 @@ public class CycleControllerTest extends ControllerTest {
         // given
         long cycleId = 1L;
         CycleResponse cycleResponse = new CycleResponse(
-                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3,
+                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3,"미라클 모닝입니다", 0, 1,
                 List.of(new CycleDetailResponse(LocalDateTime.now(), "image1", "인증 내용1"),
                         new CycleDetailResponse(LocalDateTime.now(), "image2", "인증 내용2")));
         given(cycleQueryService.findById(cycleId))
@@ -208,6 +210,9 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
                                 fieldWithPath("startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
                                 fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스"),
                                 fieldWithPath("cycleDetails[].progressTime").type(JsonFieldType.STRING)
                                         .description("인증 시간"),
                                 fieldWithPath("cycleDetails[].progressImage").type(JsonFieldType.STRING)

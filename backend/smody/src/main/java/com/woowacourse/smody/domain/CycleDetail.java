@@ -48,7 +48,7 @@ public class CycleDetail {
 
     private void validateDescription(String description) {
         if (description.length() > 255 || description.isEmpty() || description.isBlank()) {
-            throw new BusinessException(ExceptionData.INVALID_DESCRIPTION);
+            throw new BusinessException(ExceptionData.INVALID_CYCLE_DETAIL_DESCRIPTION);
         }
     }
 }
