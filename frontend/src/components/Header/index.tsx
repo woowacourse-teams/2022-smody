@@ -2,6 +2,7 @@ import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
 import { pushStatus } from 'pushStatus';
 import { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -43,6 +44,7 @@ const itemList = [
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
+  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
   console.log(pushStatus);
   return (
@@ -53,29 +55,12 @@ export const Header = ({ bgColor }: HeaderProps) => {
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
-          <Dropdown button={<Bell count={4} />}>
-            {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
-            <FlexBox
-              alignItems="center"
-              gap="1rem"
-              style={{ cursor: 'default', padding: '0 1rem ' }}
-            >
-              <UnderLineText
-                fontSize={16}
-                fontColor={themeContext.onSurface}
-                fontWeight="bold"
-                underLineColor={themeContext.primary}
-              >
-                알림 설정
-              </UnderLineText>
-
-              <ToggleButton checked={isSubscribed} handleChange={subscribe} />
-              {isLoadingSubscribe && (
-                <LoadingWrapper>
-                  <LoadingDots />
-                </LoadingWrapper>
-              )}
-            </FlexBox>
+          <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
+            <SubscriptionButton
+              isSubscribed={isSubscribed}
+              subscribe={subscribe}
+              isLoadingSubscribe={isLoadingSubscribe}
+            />
 
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
