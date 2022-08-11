@@ -43,6 +43,9 @@ public class ChallengeView extends DomainView {
         challengeGrid.setItems(this.vaddinChallengeService.findAll());
         challengeGrid.addColumn(Challenge::getId).setHeader("challenge_id");
         challengeGrid.addColumn(Challenge::getName).setHeader("name");
+        challengeGrid.addColumn(Challenge::getDescription).setHeader("description");
+        challengeGrid.addColumn(Challenge::getEmojiIndex).setHeader("emoji_index");
+        challengeGrid.addColumn(Challenge::getColorIndex).setHeader("color_index");
         return challengeGrid;
     }
 
@@ -50,24 +53,35 @@ public class ChallengeView extends DomainView {
         HorizontalLayout saveLayout = new HorizontalLayout();
         HorizontalLayout saveForm = new HorizontalLayout();
         TextField nameField = createTextField("name");
-        saveForm.add(nameField);
-        saveLayout.add(saveForm, createSaveButton(nameField));
+        TextField descriptionField = createTextField("description");
+        TextField emojiIndexField = createTextField("emoji_index");
+        TextField colorIndexField = createTextField("color_index");
+        saveForm.add(nameField, descriptionField, emojiIndexField, colorIndexField);
+        saveLayout.add(saveForm, createSaveButton(nameField, descriptionField, emojiIndexField, colorIndexField));
         return saveLayout;
     }
 
-    private Button createSaveButton(TextField nameField) {
+    private Button createSaveButton(TextField nameField,
+                                    TextField descriptionField,
+                                    TextField emojiIndexField,
+                                    TextField colorIndexField) {
         Button saveButton = new Button("생성");
         saveButton.addClickListener(event ->
-                saveChallenge(nameField)
+                saveChallenge(nameField, descriptionField, emojiIndexField, colorIndexField)
         );
         return saveButton;
     }
 
-    private void saveChallenge(TextField nameField) {
+    private void saveChallenge(TextField nameField,
+                               TextField descriptionField,
+                               TextField emojiIndexField,
+                               TextField colorIndexField) {
         try {
             vaddinChallengeService.save(
-                    new Challenge(nameField.getValue())
-            );
+                    new Challenge(nameField.getValue(), descriptionField.getValue(),
+                            Integer.parseInt(emojiIndexField.getValue()),
+                            Integer.parseInt(colorIndexField.getValue())
+            ));
             UI.getCurrent().getPage().reload();
         } catch (Exception exception) {
             Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);
