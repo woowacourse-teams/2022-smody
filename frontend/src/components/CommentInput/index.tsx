@@ -7,12 +7,14 @@ import { FlexBox, Text } from 'components';
 
 export const CommentInput = () => {
   const themeContext = useThemeContext();
-  const { content, handleChangeInput, handleClickWrite } = useCommentInput();
+  const { commentInputRef, content, handleChangeInput, handleClickWrite } =
+    useCommentInput();
 
   return (
     <Wrapper alignItems="center">
       <InnerWrapper alignItems="center">
         <CommentInputElement
+          ref={commentInputRef}
           value={content}
           placeholder="다른 사용자와 소통해보세요!"
           rows={1}

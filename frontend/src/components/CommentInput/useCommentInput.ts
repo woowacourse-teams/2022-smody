@@ -1,6 +1,6 @@
 import { queryKeys } from 'apis/constants';
 import { usePostComment } from 'apis/feedApi';
-import { useState, ChangeEvent } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ const DEFAULT_INPUT_HEIGHT = '20px';
 const INITIAL_CONTENT = '';
 
 const useCommentInput = () => {
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState(INITIAL_CONTENT);
   const { cycleDetailId } = useParams();
   const queryClient = useQueryClient();
@@ -16,8 +17,11 @@ const useCommentInput = () => {
     { cycleDetailId: Number(cycleDetailId) },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(queryKeys.getFeedById);
-        queryClient.invalidateQueries(queryKeys.getCommentsById);
+        invalidateQueries();
+
+        setContent(INITIAL_CONTENT);
+
+        resizeToInitialHeight();
       },
     },
   );
@@ -34,10 +38,23 @@ const useCommentInput = () => {
     // TODO: 비로그인 시 postComment를 실행하지 않도록 구현
     // TODO: content의 length가 0일 때 postComment를 실행하지 않도록 구현
     postComment({ content });
-    setContent(INITIAL_CONTENT);
+  };
+
+  const invalidateQueries = () => {
+    queryClient.invalidateQueries(queryKeys.getFeedById);
+    queryClient.invalidateQueries(queryKeys.getCommentsById);
+  };
+
+  const resizeToInitialHeight = () => {
+    if (!commentInputRef.current) {
+      return;
+    }
+
+    commentInputRef.current.style.height = DEFAULT_INPUT_HEIGHT;
   };
 
   return {
+    commentInputRef,
     content,
     handleChangeInput,
     handleClickWrite,
