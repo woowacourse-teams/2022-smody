@@ -3,6 +3,12 @@ import { usePostComment } from 'apis/feedApi';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
+
+import useSnackBar from 'hooks/useSnackBar';
+
+import { CLIENT_PATH } from 'constants/path';
 
 const DEFAULT_INPUT_HEIGHT = '20px';
 const INITIAL_CONTENT = '';
@@ -10,8 +16,9 @@ const INITIAL_CONTENT = '';
 const useCommentInput = () => {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState(INITIAL_CONTENT);
-  const { cycleDetailId } = useParams();
   const queryClient = useQueryClient();
+  const isLogin = useRecoilValue(isLoginState);
+  const { cycleDetailId } = useParams();
 
   const { mutate: postComment } = usePostComment(
     { cycleDetailId: Number(cycleDetailId) },
@@ -26,6 +33,8 @@ const useCommentInput = () => {
     },
   );
 
+  const renderSnackBar = useSnackBar();
+
   const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
     // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
     event.target.style.height = DEFAULT_INPUT_HEIGHT;
@@ -35,7 +44,17 @@ const useCommentInput = () => {
   };
 
   const handleClickWrite = () => {
-    // TODO: 비로그인 시 postComment를 실행하지 않도록 구현
+    if (!isLogin) {
+      renderSnackBar({
+        message: '로그인한 사용자만 댓글을 작성할 수 있습니다. 로그인을 해주세요:)',
+        status: 'ERROR',
+        linkText: '로그인하러 가기',
+        linkTo: CLIENT_PATH.HOME,
+      });
+
+      return;
+    }
+
     // TODO: content의 length가 0일 때 postComment를 실행하지 않도록 구현
     postComment({ content });
   };
