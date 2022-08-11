@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -8,6 +8,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
+import com.woowacourse.smody.ui.admin.MenuLayout;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("SMODY Admin")

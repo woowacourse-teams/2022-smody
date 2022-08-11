@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin.domain;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
@@ -10,25 +10,23 @@ import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class DomainView extends VerticalLayout {
 
-    protected <T> HorizontalLayout createDeleteLayout(JpaRepository<T, Long> repository) {
+    protected <T> HorizontalLayout createDeleteLayout(SmodyVaddinService smodyVaddinService) {
         HorizontalLayout deleteLayout = new HorizontalLayout();
         TextField deleteTextField = createTextField("삭제할 id");
         Button deleteButton = new Button("삭제");
-        deleteButton.addClickListener(event -> {
-                    deleteResourceById(repository, deleteTextField);
-                }
-        );
+        deleteButton.addClickListener(event -> deleteResourceById(smodyVaddinService, deleteTextField));
         deleteLayout.add(deleteTextField, deleteButton);
         return deleteLayout;
     }
 
-    protected <T> void deleteResourceById(JpaRepository<T, Long> repository, TextField deleteTextField) {
+    protected <T> void deleteResourceById(SmodyVaddinService smodyVaddinService, TextField deleteTextField) {
         try {
-            repository.deleteById(Long.parseLong(deleteTextField.getValue()));
+            smodyVaddinService.deleteById(Long.parseLong(deleteTextField.getValue()));
             UI.getCurrent().getPage().reload();
         } catch (Exception exception) {
             Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);

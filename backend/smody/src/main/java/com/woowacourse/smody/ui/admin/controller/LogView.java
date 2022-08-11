@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -11,6 +11,9 @@ import com.vaadin.flow.router.Route;
 
 import java.io.*;
 import javax.annotation.security.PermitAll;
+
+import com.woowacourse.smody.ui.admin.LogLevel;
+import com.woowacourse.smody.ui.admin.MenuLayout;
 import lombok.extern.slf4j.Slf4j;
 
 @PageTitle("log")
@@ -39,8 +42,8 @@ public class LogView extends VerticalLayout {
             String[] histories = new File(LOG_FILE_PATH).list();
             historySelect.setItems(histories);
             historySelect.setPlaceholder("이전 로그 기록");
-        } finally {
-
+        } catch (Exception ignored) {
+            // 로그 파일 부재용 방어 로직
         }
         return historySelect;
     }

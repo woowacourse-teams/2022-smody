@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin.domain;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -11,8 +11,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.repository.MemberRepository;
 import com.woowacourse.smody.ui.admin.MenuLayout;
+import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("member")
@@ -20,18 +21,18 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class MemberView extends DomainView {
 
-    private final MemberRepository memberRepository;
-    private final String resourceName = "멤버";
+    private final SmodyVaddinService<Member> memberVaadinService;
+    private final static String RESOURCE_NAME = "멤버";
 
-    public MemberView(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public MemberView(SmodyVaddinService<Member> memberVaadinService) {
+        this.memberVaadinService = memberVaadinService;
         add(
-                new H3("모든 " + resourceName),
+                new H3("모든 " + RESOURCE_NAME),
                 createMembersLayout(),
-                new H3(resourceName + " 생성"),
+                new H3(RESOURCE_NAME + " 생성"),
                 createSaveLayout(),
-                new H3(resourceName + " 삭제"),
-                createDeleteLayout(memberRepository),
+                new H3(RESOURCE_NAME + " 삭제"),
+                createDeleteLayout(memberVaadinService),
                 createFooterLayout()
         );
         arrangeComponents();
@@ -39,7 +40,7 @@ public class MemberView extends DomainView {
 
     private Grid<Member> createMembersLayout() {
         Grid<Member> membersGrid = new Grid<>();
-        membersGrid.setItems(memberRepository.findAll());
+        membersGrid.setItems(memberVaadinService.findAll());
         membersGrid.addColumn(Member::getId).setHeader("member_id");
         membersGrid.addColumn(Member::getEmail).setHeader("email");
         membersGrid.addColumn(Member::getNickname).setHeader("nickname");
@@ -74,7 +75,7 @@ public class MemberView extends DomainView {
                             TextField introductionField,
                             TextField pictureField) {
         try {
-            memberRepository.save(
+            memberVaadinService.save(
                     new Member(
                             emailField.getValue(),
                             nicknameField.getValue(),
