@@ -1,27 +1,22 @@
-import { ChangeEventHandler } from 'react';
+import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text } from 'components';
 
-const DEFAULT_INPUT_HEIGHT = '20px';
-
 export const CommentInput = () => {
   const themeContext = useThemeContext();
-
-  const handleChangeInput: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
-    // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
-    event.target.style.height = DEFAULT_INPUT_HEIGHT;
-    event.target.style.height = event.target.scrollHeight + 'px';
-  };
+  const { content, handleChangeInput, handleClickWrite } = useCommentInput();
 
   return (
     <Wrapper alignItems="center">
       <InnerWrapper alignItems="center">
         <CommentInputElement
+          value={content}
           placeholder="다른 사용자와 소통해보세요!"
           rows={1}
+          maxLength={254}
           onChange={handleChangeInput}
         />
         <Text
@@ -29,6 +24,7 @@ export const CommentInput = () => {
           size={12}
           color={themeContext.primary}
           fontWeight="bold"
+          onClick={handleClickWrite}
         >
           작성
         </Text>
@@ -70,6 +66,5 @@ const CommentInputElement = styled.textarea`
     font-weight: normal;
     font-family: 'Source Sans Pro', sans-serif;
     color: ${theme.onInput};
-    overflow-y: hidden;
   `}
 `;

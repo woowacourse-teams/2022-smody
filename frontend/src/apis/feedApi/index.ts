@@ -1,18 +1,27 @@
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
-import { getAllFeeds, getCommentsById, getFeedById } from 'apis/feedApi/api';
+import {
+  getAllFeeds,
+  getCommentsById,
+  getFeedById,
+  postComments,
+} from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
   GetFeedByIdResponse,
   GetCommentsByIdProps,
   GetCommentsByIdResponse,
+  UsePostCommentProps,
+  UsePostCommentMutationFunctionProps,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
 import {
   useQuery,
+  useMutation,
   useInfiniteQuery,
   UseQueryOptions,
+  UseMutationOptions,
   UseInfiniteQueryOptions,
 } from 'react-query';
 
@@ -51,6 +60,21 @@ export const useGetFeedById = (
     () => getFeedById({ cycleDetailId }),
     options,
   );
+
+// 3. 댓글 생성(POST)
+export const usePostComment = (
+  { cycleDetailId }: UsePostCommentProps,
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    UsePostCommentMutationFunctionProps
+  >,
+) =>
+  useMutation<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    UsePostCommentMutationFunctionProps
+  >(({ content }) => postComments({ cycleDetailId, content }), options);
 
 // 4. 댓글 조회(GET)
 export const useGetCommentsById = (
