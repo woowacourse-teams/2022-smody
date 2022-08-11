@@ -1,9 +1,11 @@
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
-import { getAllFeeds, getFeedById } from 'apis/feedApi/api';
+import { getAllFeeds, getCommentsById, getFeedById } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
   GetFeedByIdResponse,
+  GetCommentsByIdProps,
+  GetCommentsByIdResponse,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -47,5 +49,19 @@ export const useGetFeedById = (
   useQuery<AxiosResponse<GetFeedByIdResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getFeedById,
     () => getFeedById({ cycleDetailId }),
+    options,
+  );
+
+// 4. 댓글 조회(GET)
+export const useGetCommentsById = (
+  { cycleDetailId }: GetCommentsByIdProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetCommentsByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetCommentsByIdResponse>, AxiosError<ErrorResponse>>(
+    queryKeys.getCommentsById,
+    () => getCommentsById({ cycleDetailId }),
     options,
   );

@@ -1,21 +1,27 @@
 import useFeedDetailPage from './useFeedDetailPage';
 import styled from 'styled-components';
 
-import { FlexBox, Comment, CommentInput, FeedItem } from 'components';
+import { FlexBox, CommentItem, CommentInput, FeedItem } from 'components';
 
 const FeedDetailPage = () => {
-  const { feedDetailData } = useFeedDetailPage();
+  const { feedData, commentsData } = useFeedDetailPage();
 
-  if (typeof feedDetailData === 'undefined') {
+  if (typeof feedData === 'undefined' || typeof commentsData === 'undefined') {
     return null;
   }
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <FeedItem isClickable={false} {...feedDetailData.data} />
+      <FeedItem isClickable={false} {...feedData.data} />
       <FlexBox as="ul" flexDirection="column" gap="1.563rem">
-        <Comment />
-        <Comment />
+        {commentsData?.data.map((comment) => (
+          <li key={comment.commentId}>
+            <CommentItem
+              isWriter={feedData.data.memberId === comment.memberId}
+              {...comment}
+            />
+          </li>
+        ))}
       </FlexBox>
       <CommentInput />
     </Wrapper>

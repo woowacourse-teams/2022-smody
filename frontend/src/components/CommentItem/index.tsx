@@ -1,3 +1,4 @@
+import { CommentItemProps } from './type';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 
@@ -5,14 +6,16 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text } from 'components';
 
-export const Comment = () => {
+export const CommentItem = ({
+  commentId,
+  memberId,
+  nickname,
+  picture,
+  content,
+  createdAt,
+  isWriter,
+}: CommentItemProps) => {
   const themeContext = useThemeContext();
-  const nickname = '테스트닉네임';
-  const picture = 'https://emoji-copy.com/wp-content/uploads/1f64a.png';
-  const content = '오!!! 정말 열심히 하셨네요ㅎㅎ 저도 좋은 자극 받고 갑니당ㅎㅎ';
-  const createdAt = '2022-08-08T10:00:00';
-  const isWriter = true;
-
   const { year, month, date, hours, minutes } = parseTime(createdAt);
 
   return (

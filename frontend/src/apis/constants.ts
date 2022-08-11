@@ -18,6 +18,7 @@ export const queryKeys = {
   getAllFeeds: 'getAllFeeds',
   getVapidPublicKey: 'getVapidPublicKey',
   getFeedById: 'getFeedById',
+  getCommentsById: 'getCommentsById',
 };
 
 export const mutationKeys = {
