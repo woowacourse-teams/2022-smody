@@ -1,10 +1,16 @@
 import { ToggleButtonProps } from './type';
 import styled from 'styled-components';
 
-export const ToggleButton = ({ checked, handleChange }: ToggleButtonProps) => {
+export const ToggleButton = ({ checked, handleChange, disabled }: ToggleButtonProps) => {
   return (
     <CheckBoxWrapper>
-      <CheckBox id="checkbox" type="checkbox" checked={checked} onChange={handleChange} />
+      <CheckBox
+        id="checkbox"
+        type="checkbox"
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+      />
       <CheckBoxLabel htmlFor="checkbox" />
     </CheckBoxWrapper>
   );

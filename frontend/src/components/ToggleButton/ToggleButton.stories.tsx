@@ -28,4 +28,5 @@ export const DefaultToggleButton = (args: Pick<ToggleButtonProps, 'checked'>) =>
 
 DefaultToggleButton.args = {
   checked: true,
+  disabled: false,
 };
