@@ -5,13 +5,15 @@ import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpResponse;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.smody.domain.PushContent;
+import com.woowacourse.smody.domain.PushNotification;
+import com.woowacourse.smody.push.PushResponse;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -38,19 +40,22 @@ public class WebPushService {
 		this.objectMapper = new ObjectMapper();
 	}
 
-	public void sendNotification(PushSubscription pushSubscription, PushContent pushContent) {
+	public boolean sendNotification(PushSubscription pushSubscription, PushNotification pushNotification) {
+		PushResponse pushResponse = new PushResponse(pushNotification);
+		HttpResponse httpResponse;
 		try {
-			pushService.send(new Notification(
+			httpResponse = pushService.send(new Notification(
 				pushSubscription.getEndpoint(),
 				pushSubscription.getP256dh(),
 				pushSubscription.getAuth(),
-				objectMapper.writeValueAsString(pushContent)
+				objectMapper.writeValueAsString(pushResponse)
 			));
 		} catch (GeneralSecurityException | IOException
 			| JoseException | ExecutionException | InterruptedException e) {
 			log.error("웹 푸시 라이브러리 관련 예외가 발생했습니다.");
 			throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
 		}
+		return httpResponse != null && httpResponse.getStatusLine().getStatusCode() == 201;
 	}
 
 	public String getPublicKey() {

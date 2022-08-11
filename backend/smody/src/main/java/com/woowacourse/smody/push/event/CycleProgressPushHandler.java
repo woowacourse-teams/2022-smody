@@ -1,20 +1,16 @@
 package com.woowacourse.smody.push.event;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.context.ApplicationListener;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.PushContent;
-import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.service.PushSubscriptionService;
-import com.woowacourse.smody.service.WebPushService;
+import com.woowacourse.smody.domain.PushNotification;
+import com.woowacourse.smody.domain.PushStatus;
+import com.woowacourse.smody.repository.PushNotificationRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,41 +18,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CycleProgressPushHandler implements ApplicationListener<CycleProgressPushEvent> {
 
-	private final PushSubscriptionService pushSubscriptionService;
-	private final WebPushService webPushService;
-	private final TaskScheduler taskScheduler;
+	private final PushNotificationRepository pushNotificationRepository;
 
 	@Override
+	@Transactional
 	public void onApplicationEvent(CycleProgressPushEvent event) {
 		Cycle cycle = event.getCycle();
-
-		long pushTime = cycle.getStartTime()
+		if (cycle.isSuccess()) {
+			return;
+		}
+		LocalDateTime pushTime = cycle.getStartTime()
 			.plusDays(cycle.getInterval())
-			.minusHours(12L)
-			.atZone(ZoneId.systemDefault())
-			.toInstant()
-			.toEpochMilli();
+			.minusHours(3L);
 
-		List<PushSubscription> subscriptions = pushSubscriptionService.searchByMember(cycle.getMember());
-
-		taskScheduler.schedule(
-			() -> checkSendPushOrNot(cycle, subscriptions),
-			triggerContext -> new Date(pushTime)
+		Challenge challenge = cycle.getChallenge();
+		PushNotification pushNotification = new PushNotification(
+			challenge.getName() + " 인증까지 얼마 안남았어요~",
+			pushTime,
+			PushStatus.IN_COMPLETE,
+			cycle.getMember()
 		);
-	}
-
-	private void checkSendPushOrNot(Cycle cycle, List<PushSubscription> subscriptions) {
-		if (cycle.isIncreasePossible(LocalDateTime.now())) {
-			sendNotifications(cycle.getChallenge(), subscriptions);
-		}
-	}
-
-	private void sendNotifications(Challenge challenge, List<PushSubscription> subscriptions) {
-		for (PushSubscription subscription : subscriptions) {
-			webPushService.sendNotification(subscription, PushContent.builder()
-				.message(challenge.getName() + " 인증까지 얼마 안남았어요~")
-				.build()
-			);
-		}
+		pushNotificationRepository.save(pushNotification);
 	}
 }

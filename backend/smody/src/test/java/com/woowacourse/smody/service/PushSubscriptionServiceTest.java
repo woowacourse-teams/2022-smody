@@ -2,7 +2,6 @@ package com.woowacourse.smody.service;
 
 import static com.woowacourse.smody.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
@@ -18,8 +17,6 @@ import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
 
 @SpringBootTest
@@ -53,23 +50,6 @@ class PushSubscriptionServiceTest {
 			.map(subscription -> subscription.getMember().getId())
 			.get()
 			.isEqualTo(조조그린_ID);
-	}
-
-	@DisplayName("웹 푸시 라이브러리 예외가 발생하면 비즈니스 예외로 변환한다.")
-	@Test
-	void subscribe_libraryException() {
-		// given
-		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
-			"endpoint-link", "p256dh", "auth");
-		doThrow(new BusinessException(ExceptionData.WEB_PUSH_ERROR))
-			.when(webPushService).sendNotification(any(), any());
-
-		// when // then
-		assertThatThrownBy(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest))
-			.isInstanceOf(BusinessException.class)
-			.extracting("exceptionData")
-			.isEqualTo(ExceptionData.WEB_PUSH_ERROR);
 	}
 
 	@DisplayName("같은 엔드포인트로 다른 회원이 알림을 구독하면 새로운 회원으로 대체된다.")
