@@ -20,9 +20,8 @@ export const push = [
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
     const subscription = req.body;
-
     db.find((user) => user.nickname === 'marco').subscription = subscription;
-    console.log('db', db);
+
     return res(ctx.status(200), ctx.json(db));
   }),
 
@@ -31,11 +30,9 @@ export const push = [
     if (req.headers.headers.authorization === 'Bearer null') {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
-    console.log('@@@', req.body);
     const endpoint = req.body;
 
     db.forEach((user) => {
-      console.log('!', user);
       if (user.subscription.endpoint === endpoint) {
         user.subscription = null;
       }

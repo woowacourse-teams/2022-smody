@@ -14,7 +14,7 @@ const registerServiceWorker = async () => {
   pushStatus.pushSubscription = await registration?.pushManager?.getSubscription();
 };
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+if (process.env.NODE_ENV !== 'production' && 'serviceWorker' in navigator) {
   registerServiceWorker();
 }
 

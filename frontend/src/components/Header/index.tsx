@@ -45,7 +45,6 @@ export const Header = ({ bgColor }: HeaderProps) => {
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
   const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
-  console.log(pushStatus);
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
