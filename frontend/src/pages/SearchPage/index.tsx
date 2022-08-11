@@ -3,7 +3,13 @@ import styled, { css } from 'styled-components';
 
 import { useSearchPage } from 'pages/SearchPage/useSearchPage';
 
-import { LoadingSpinner, ChallengeItem, FlexBox, InfiniteScroll } from 'components';
+import {
+  LoadingSpinner,
+  FlexBox,
+  InfiniteScroll,
+  SearchBar,
+  ChallengeList,
+} from 'components';
 
 import { Z_INDEX } from 'constants/css';
 
@@ -12,27 +18,22 @@ const SearchPage = () => {
     isFetching,
     challengeInfiniteData,
     hasNextPage,
+    search,
+    handleSubmitSearch,
     fetchNextPage,
     handleCreateChallengeButton,
   } = useSearchPage();
 
   return (
     <FlexBox flexDirection="column">
+      <SearchBar search={search} handleSubmitSearch={handleSubmitSearch} />
       <InfiniteScroll
         loadMore={fetchNextPage}
         hasMore={hasNextPage}
         isFetching={isFetching}
         loader={<LoadingSpinner />}
       >
-        <FlexBox as="ul" flexDirection="column" gap="27px">
-          {challengeInfiniteData?.pages.map((page) =>
-            page?.data.map((challengeInfo) => (
-              <li key={challengeInfo.challengeId}>
-                <ChallengeItem {...challengeInfo} />
-              </li>
-            )),
-          )}
-        </FlexBox>
+        <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />
       </InfiniteScroll>
       <CreateChallengeButtonBackground>
         <CreateChallengeButton onClick={handleCreateChallengeButton} />

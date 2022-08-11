@@ -1,8 +1,10 @@
 import { useGetAllChallenges } from 'apis';
+import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
+import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -12,14 +14,30 @@ export const useSearchPage = () => {
   const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
 
+  const search = useInput('');
+
   const {
     isFetching,
     data: challengeInfiniteData,
     hasNextPage,
     fetchNextPage,
-  } = useGetAllChallenges({
-    refetchOnWindowFocus: false,
-  });
+    refetch,
+  } = useGetAllChallenges(
+    { searchValue: search.value },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (search.value === '') {
+      return;
+    }
+
+    refetch();
+  };
 
   const handleCreateChallengeButton = () => {
     if (!isLogin) {
@@ -34,10 +52,16 @@ export const useSearchPage = () => {
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
 
+  if (typeof challengeInfiniteData === 'undefined') {
+    throw new Error('챌린지 데이터가 없습니다');
+  }
+
   return {
     isFetching,
     challengeInfiniteData,
     hasNextPage,
+    search,
+    handleSubmitSearch,
     fetchNextPage,
     handleCreateChallengeButton,
   };
