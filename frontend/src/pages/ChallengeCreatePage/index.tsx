@@ -1,6 +1,5 @@
 import { ColorDivProps, ColorListProps, EmojiListProps } from './type';
 import useChallengeCreatePage from './useChallengeCreatePage';
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import {
