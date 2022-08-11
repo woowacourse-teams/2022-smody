@@ -24,6 +24,10 @@ const SearchPage = () => {
     handleCreateChallengeButton,
   } = useSearchPage();
 
+  if (typeof challengeInfiniteData === 'undefined') {
+    return null;
+  }
+
   return (
     <FlexBox flexDirection="column">
       <SearchBar search={search} handleSubmitSearch={handleSubmitSearch} />

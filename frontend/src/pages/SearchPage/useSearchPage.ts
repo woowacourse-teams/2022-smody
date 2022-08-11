@@ -52,10 +52,6 @@ export const useSearchPage = () => {
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
 
-  if (typeof challengeInfiniteData === 'undefined') {
-    throw new Error('챌린지 데이터가 없습니다');
-  }
-
   return {
     isFetching,
     challengeInfiniteData,
