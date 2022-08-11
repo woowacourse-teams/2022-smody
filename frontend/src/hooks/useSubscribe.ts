@@ -3,6 +3,7 @@ import {
   usePostSubscribe,
   usePostUnsubscribe,
 } from 'apis/pushNotificationApi';
+import { pushStatus } from 'pushStatus';
 import { useEffect, useState } from 'react';
 import { urlB64ToUint8Array } from 'utils';
 
@@ -10,11 +11,16 @@ let pushSupport = false;
 let userSubscription: PushSubscription | null;
 
 const useSubscribe = () => {
+  const isAlreadySubscribed = !!pushStatus.pushSubscription;
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoadingSubscribe, setIsLoadingSubscribe] = useState(false);
   const { refetch: getVapidPublicKey, data } = useGetVapidPublicKey();
   const { mutate: postSubscribe } = usePostSubscribe();
   const { mutate: postUnsubscribe } = usePostUnsubscribe();
+
+  useEffect(() => {
+    setIsSubscribed(isAlreadySubscribed);
+  }, [isAlreadySubscribed]);
 
   useEffect(() => {
     getVapidPublicKey();
