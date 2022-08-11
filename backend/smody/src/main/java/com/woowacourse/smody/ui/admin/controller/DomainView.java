@@ -19,10 +19,7 @@ public abstract class DomainView extends VerticalLayout {
         HorizontalLayout deleteLayout = new HorizontalLayout();
         TextField deleteTextField = createTextField("삭제할 id");
         Button deleteButton = new Button("삭제");
-        deleteButton.addClickListener(event -> {
-                    deleteResourceById(smodyVaddinService, deleteTextField);
-                }
-        );
+        deleteButton.addClickListener(event -> deleteResourceById(smodyVaddinService, deleteTextField));
         deleteLayout.add(deleteTextField, deleteButton);
         return deleteLayout;
     }

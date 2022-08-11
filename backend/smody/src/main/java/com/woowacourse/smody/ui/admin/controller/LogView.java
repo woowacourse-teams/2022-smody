@@ -42,8 +42,8 @@ public class LogView extends VerticalLayout {
             String[] histories = new File(LOG_FILE_PATH).list();
             historySelect.setItems(histories);
             historySelect.setPlaceholder("이전 로그 기록");
-        } finally {
-
+        } catch (Exception ignored) {
+            // 로그 파일 부재용 방어 로직
         }
         return historySelect;
     }

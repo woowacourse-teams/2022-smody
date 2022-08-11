@@ -30,7 +30,7 @@ public class CycleView extends DomainView {
     private final SmodyVaddinService<Cycle> cycleVaadinService;
     private final SmodyVaddinService<Challenge> challengeVaadinService;
     private final SmodyVaddinService<Member> memberVaadinService;
-    private final String resourceName = "사이클";
+    private final static String RESOURCE_NAME = "사이클";
 
     public CycleView(SmodyVaddinService<Cycle> cycleVaadinService,
                      SmodyVaddinService<Challenge> challengeVaadinService,
@@ -39,11 +39,11 @@ public class CycleView extends DomainView {
         this.challengeVaadinService = challengeVaadinService;
         this.memberVaadinService = memberVaadinService;
         add(
-                new H3("모든 " + resourceName),
+                new H3("모든 " + RESOURCE_NAME),
                 createCyclesLayout(),
-                new H3(resourceName + " 생성"),
+                new H3(RESOURCE_NAME + " 생성"),
                 createSaveLayout(),
-                new H3(resourceName + " 삭제"),
+                new H3(RESOURCE_NAME + " 삭제"),
                 createDeleteLayout(cycleVaadinService),
                 createFooterLayout()
         );

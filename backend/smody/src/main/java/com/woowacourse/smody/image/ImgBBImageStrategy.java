@@ -17,12 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Primary
 public class ImgBBImageStrategy implements ImageStrategy {
 
-    private static final String ImgBB_KEY = "085936a4cafeb33b7d1a80073e9a1f91";
+    private static final String IMGBB_KEY = "085936a4cafeb33b7d1a80073e9a1f91";
 
     @Override
     public String extractUrl(MultipartFile image) {
         validateEmptyImage(image);
-        String requestUri = "https://api.imgbb.com/1/upload?key=" + ImgBB_KEY;
+        String requestUri = "https://api.imgbb.com/1/upload?key=" + IMGBB_KEY;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("image", image.getResource());
 

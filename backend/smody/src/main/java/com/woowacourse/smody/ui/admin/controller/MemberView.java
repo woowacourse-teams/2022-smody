@@ -22,16 +22,16 @@ import javax.annotation.security.PermitAll;
 public class MemberView extends DomainView {
 
     private final SmodyVaddinService<Member> memberVaadinService;
-    private final String resourceName = "멤버";
+    private final static String RESOURCE_NAME = "멤버";
 
     public MemberView(SmodyVaddinService<Member> memberVaadinService) {
         this.memberVaadinService = memberVaadinService;
         add(
-                new H3("모든 " + resourceName),
+                new H3("모든 " + RESOURCE_NAME),
                 createMembersLayout(),
-                new H3(resourceName + " 생성"),
+                new H3(RESOURCE_NAME + " 생성"),
                 createSaveLayout(),
-                new H3(resourceName + " 삭제"),
+                new H3(RESOURCE_NAME + " 삭제"),
                 createDeleteLayout(memberVaadinService),
                 createFooterLayout()
         );

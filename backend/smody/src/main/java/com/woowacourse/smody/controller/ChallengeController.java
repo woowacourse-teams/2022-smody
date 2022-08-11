@@ -4,19 +4,15 @@ import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.ChallengeQueryService;
-
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.woowacourse.smody.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.DocFlavor;
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/challenges")
@@ -74,17 +70,5 @@ public class ChallengeController {
     public ResponseEntity<Void> create(ChallengeRequest challengeRequest) {
         Long challengeId = challengeService.create(challengeRequest);
         return ResponseEntity.created(URI.create("/challenges/" + challengeId)).build();
-    }
-
-    @GetMapping("/searched")
-    public ResponseEntity<List<ChallengesResponse>> searchByName(@RequestParam String name) {
-        return ResponseEntity.ok(challengeQueryService.searchByName(name));
-    }
-
-    @GetMapping("/searched/auth")
-    @RequiredLogin
-    public ResponseEntity<List<ChallengesResponse>> searchByName(@LoginMember TokenPayload tokenPayload,
-                                                                 @RequestParam String name) {
-        return ResponseEntity.ok(challengeQueryService.searchByName(tokenPayload, name));
     }
 }

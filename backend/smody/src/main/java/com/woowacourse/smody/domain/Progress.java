@@ -93,11 +93,11 @@ public enum Progress {
 
     private final int count;
 
-    abstract public Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
+    public abstract Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
 
-    abstract public boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
+    public abstract boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
 
-    abstract public long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
+    public abstract long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
 
     private static boolean isBetween(LocalDateTime startTime, LocalDateTime progressTime, Long interval) {
         LocalDateTime fromTime = startTime.plusDays(interval - 1L);

@@ -22,16 +22,16 @@ import javax.annotation.security.PermitAll;
 public class ChallengeView extends DomainView {
 
     private final SmodyVaddinService<Challenge> vaddinChallengeService;
-    private final String resourceName = "챌린지";
+    private final static String RESOURCE_NAME = "챌린지";
 
     public ChallengeView(SmodyVaddinService<Challenge> vaddinChallengeService) {
         this.vaddinChallengeService = vaddinChallengeService;
         add(
-                new H3("모든 " + resourceName),
+                new H3("모든 " + RESOURCE_NAME),
                 createChallengesLayout(),
-                new H3(resourceName + " 생성"),
+                new H3(RESOURCE_NAME + " 생성"),
                 createSaveLayout(),
-                new H3(resourceName + " 삭제"),
+                new H3(RESOURCE_NAME + " 삭제"),
                 createDeleteLayout(vaddinChallengeService),
                 createFooterLayout()
         );
