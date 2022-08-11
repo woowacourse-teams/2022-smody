@@ -1,5 +1,6 @@
 import { getVapidPublicKey, postSubscribe, postUnsubscribe } from './api';
 import { GetVapidPublicKeyResponse } from './type';
+import { mutationKeys, queryKeys } from 'apis/constants';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorResponse } from 'commonType';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
@@ -11,7 +12,7 @@ export const useGetVapidPublicKey = (
   >,
 ) =>
   useQuery<AxiosResponse<GetVapidPublicKeyResponse>, AxiosError<ErrorResponse>>(
-    'getVapidPublicKey',
+    queryKeys.getVapidPublicKey,
     getVapidPublicKey,
     {
       ...options,
@@ -27,7 +28,7 @@ export const usePostSubscribe = (
   >,
 ) => {
   return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PushSubscription>(
-    'postSubscribe',
+    mutationKeys.postSubscribe,
     postSubscribe,
     options,
   );
@@ -37,7 +38,7 @@ export const usePostUnsubscribe = (
   options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, string>,
 ) => {
   return useMutation<AxiosResponse, AxiosError<ErrorResponse>, string>(
-    'postSubscribe',
+    mutationKeys.postUnsubscribe,
     postUnsubscribe,
     options,
   );
