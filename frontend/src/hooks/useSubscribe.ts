@@ -53,7 +53,6 @@ const useSubscribe = () => {
     }
     setIsLoadingSubscribe(true);
     // Uint8Array 타입으로 변환
-    console.log(data.data.publicKey);
     const publicKey = urlB64ToUint8Array(data.data.publicKey);
     console.log('5-publicKey', publicKey);
 
@@ -73,13 +72,13 @@ const useSubscribe = () => {
           // 애플리케이션 서버로 구독 정보 전달
           postSubscribe(subscription);
           userSubscription = subscription;
-          console.log('8-Push subscribed!', userSubscription);
+          console.log('3-Push subscribed!', userSubscription);
           setIsSubscribed(true);
           setIsLoadingSubscribe(false);
         })
         .catch((err) => {
           userSubscription = null;
-          console.error('9-Push subscribe failed:', err);
+          console.error('Push subscribe failed:', err);
         });
     });
   };
@@ -92,7 +91,7 @@ const useSubscribe = () => {
 
     // 푸시 서비스 구독 취소
     userSubscription.unsubscribe().then((result) => {
-      console.log('Push unsubscribed:', result);
+      console.log('4-Push unsubscribed:', userSubscription, result);
       if (result && userSubscription) {
         // 애플리케이션 서버에 저장된 구독 정보 지우기
         postUnsubscribe(userSubscription.endpoint);
@@ -118,10 +117,8 @@ const useSubscribe = () => {
 
       if (userSubscription) {
         pushUnsubscribe();
-        console.log('3-userSubscription', userSubscription);
       } else {
         pushSubscribe();
-        console.log('4-pushSubscribe');
       }
     });
   };

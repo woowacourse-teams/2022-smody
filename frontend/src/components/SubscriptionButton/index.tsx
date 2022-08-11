@@ -13,7 +13,6 @@ export const SubscriptionButton = ({
   isLoadingSubscribe,
 }: SubscriptionButtonProps) => {
   const themeContext = useThemeContext();
-  console.log(pushStatus);
   const isAbleSubscribe =
     pushStatus.pushSupport && pushStatus.notificationPermission === 'granted';
   {
