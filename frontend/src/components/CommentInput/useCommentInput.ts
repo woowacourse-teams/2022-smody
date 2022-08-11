@@ -35,6 +35,8 @@ const useCommentInput = () => {
 
   const renderSnackBar = useSnackBar();
 
+  const isWriteButtonDisabled = content.length === 0;
+
   const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
     // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
     event.target.style.height = DEFAULT_INPUT_HEIGHT;
@@ -55,7 +57,6 @@ const useCommentInput = () => {
       return;
     }
 
-    // TODO: content의 length가 0일 때 postComment를 실행하지 않도록 구현
     postComment({ content });
   };
 
@@ -75,6 +76,7 @@ const useCommentInput = () => {
   return {
     commentInputRef,
     content,
+    isWriteButtonDisabled,
     handleChangeInput,
     handleClickWrite,
   };

@@ -3,12 +3,16 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text } from 'components';
+import { FlexBox } from 'components';
 
 export const CommentInput = () => {
-  const themeContext = useThemeContext();
-  const { commentInputRef, content, handleChangeInput, handleClickWrite } =
-    useCommentInput();
+  const {
+    commentInputRef,
+    content,
+    isWriteButtonDisabled,
+    handleChangeInput,
+    handleClickWrite,
+  } = useCommentInput();
 
   return (
     <Wrapper alignItems="center">
@@ -21,15 +25,9 @@ export const CommentInput = () => {
           maxLength={254}
           onChange={handleChangeInput}
         />
-        <Text
-          style={{ padding: '0 0.625rem' }}
-          size={12}
-          color={themeContext.primary}
-          fontWeight="bold"
-          onClick={handleClickWrite}
-        >
+        <WriteButton disabled={isWriteButtonDisabled} onClick={handleClickWrite}>
           작성
-        </Text>
+        </WriteButton>
       </InnerWrapper>
     </Wrapper>
   );
@@ -68,5 +66,16 @@ const CommentInputElement = styled.textarea`
     font-weight: normal;
     font-family: 'Source Sans Pro', sans-serif;
     color: ${theme.onInput};
+  `}
+`;
+
+const WriteButton = styled.button`
+  ${({ theme, disabled }) => css`
+    height: 20px;
+    padding: 0 0.625rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: ${theme.primary};
+    visibility: ${disabled ? 'hidden' : 'visible'};
   `}
 `;
