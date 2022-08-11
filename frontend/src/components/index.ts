@@ -39,3 +39,4 @@ export * from 'components/FeedItem';
 export * from 'components/BottomSheet';
 export * from 'components/Dropdown';
 export * from 'components/Bell';
+export * from 'components/SubscriptionButton';
