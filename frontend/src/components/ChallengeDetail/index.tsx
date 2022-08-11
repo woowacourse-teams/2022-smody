@@ -6,11 +6,13 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, ThumbnailWrapper, Title, Text } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
+import { emojiList, colorList } from 'constants/style';
 
 export const ChallengeDetail = ({
   challengeName,
   challengerCount,
-  emoji,
+  emojiIndex,
+  colorIndex,
 }: ChallengeDetailProps) => {
   const themeContext = useThemeContext();
 
@@ -31,8 +33,8 @@ export const ChallengeDetail = ({
             함께하세요!
           </ChallengeExplanationText>
         </FlexBox>
-        <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {emoji}
+        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+          {emojiList[emojiIndex]}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
     </FlexBox>

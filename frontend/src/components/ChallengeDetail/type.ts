@@ -7,5 +7,6 @@ export interface ChallengeExplanationTextProps {
 export interface ChallengeDetailProps {
   challengeName: string;
   challengerCount: number;
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }

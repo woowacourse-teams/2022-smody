@@ -7,6 +7,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { Text, ThumbnailWrapper, CycleDetailList, FlexBox, Title } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
+import { emojiList, colorList } from 'constants/style';
 
 const CycleDetailPage = () => {
   const themeContext = useThemeContext();
@@ -16,7 +17,8 @@ const CycleDetailPage = () => {
     return null;
   }
 
-  const { challengeName, startTime, cycleDetails, emoji } = cycleDetailData.data;
+  const { challengeName, startTime, cycleDetails, emojiIndex, colorIndex } =
+    cycleDetailData.data;
   const { year, month, date } = parseTime(startTime);
 
   return (
@@ -36,8 +38,8 @@ const CycleDetailPage = () => {
             {year}년 {month}월 {date}일부터 작심삼일 극복 도전
           </Text>
         </FlexBox>
-        <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {emoji}
+        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+          {emojiList[emojiIndex]}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
       <CycleDetailList cycleDetails={cycleDetails} />

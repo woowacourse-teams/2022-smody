@@ -12,5 +12,6 @@ DefaultCardBox.args = {
   bgColor: 'pink',
   challengeName: '헬스장 가기',
   successCount: 15,
-  emoji: '💪',
+  emojiIndex: 1,
+  colorIndex: 1,
 };
