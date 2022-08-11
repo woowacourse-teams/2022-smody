@@ -20,6 +20,11 @@ public class CycleResponse {
     private LocalDateTime startTime;
     private Integer successCount;
 
+    private String description;
+
+    private Integer emojiIndex;
+    private Integer colorIndex;
+
     private List<CycleDetailResponse> cycleDetails;
 
     public CycleResponse(Cycle cycle, Integer successCount) {
@@ -29,6 +34,9 @@ public class CycleResponse {
         this.progressCount = cycle.getProgress().getCount();
         this.startTime = cycle.getStartTime();
         this.successCount = successCount;
+        this.description = cycle.getChallenge().getDescription();
+        this.emojiIndex = cycle.getChallenge().getEmojiIndex();
+        this.colorIndex = cycle.getChallenge().getColorIndex();
         this.cycleDetails = cycle.getCycleDetails().stream()
                 .map(CycleDetailResponse::new)
                 .collect(Collectors.toList());

@@ -96,4 +96,8 @@ public class Cycle {
                         (int) ChronoUnit.MILLIS.between(detail2.getProgressTime(), detail1.getProgressTime()))
                 .collect(Collectors.toList());
     }
+
+    public boolean matchChallenge(Long challengeId) {
+        return this.challenge.getId().equals(challengeId);
+    }
 }

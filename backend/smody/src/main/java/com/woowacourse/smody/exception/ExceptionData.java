@@ -24,11 +24,15 @@ public enum ExceptionData {
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다", 400),
 
-    INVALID_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
+    INVALID_CYCLE_DETAIL_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
 
+    INVALID_CHALLENGE_DESCRIPTION(7001, "챌린지 소개 형식이 올바르지 않습니다.", 400),
+    DUPLICATE_NAME(7002, "중복된 챌린지 이름입니다.", 400),
+    INVALID_CHALLENGE_NAME(7003, "챌린지 이름 형식이 올바르지 않습니다.", 400),
+    INVALID_SEARCH_NAME(8001, "검색 이름 형식이 올바르지 않습니다.", 400),
     AUTHORIZATION_SERVER_ERROR(9001, "인가 관련 서버 내부의 오류입니다.", 500),
-    IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500);
 
+    IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500);
 
     private final int code;
     private final String message;
