@@ -46,4 +46,13 @@ public class PushNotification {
 		this.pushStatus = pushStatus;
 		this.member = member;
 	}
+
+	public boolean isPushable(LocalDateTime now) {
+		return pushStatus == PushStatus.IN_COMPLETE
+			&& (pushTime.isBefore(now) || pushTime.isEqual(now));
+	}
+
+	public void completePush() {
+		this.pushStatus = PushStatus.COMPLETE;
+	}
 }

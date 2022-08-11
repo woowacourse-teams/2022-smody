@@ -40,7 +40,11 @@ public class PushSubscriptionService {
 		pushSubscriptionRepository.deleteByEndpoint(unSubscription.getEndpoint());
 	}
 
-	public List<PushSubscription> searchByMember(Member member) {
-		return pushSubscriptionRepository.findByMember(member);
+	public List<PushSubscription> searchByMembers(List<Member> members) {
+		return pushSubscriptionRepository.findByMemberIn(members);
+	}
+
+	public void delete(PushSubscription pushSubscription) {
+		pushSubscriptionRepository.delete(pushSubscription);
 	}
 }
