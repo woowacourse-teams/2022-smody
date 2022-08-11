@@ -1,5 +1,5 @@
 import { apiClient } from 'apis/apiClient';
-import { PAGE_SIZE } from 'apis/constants';
+import { PAGE_SIZE, SORT, ORDER } from 'apis/constants';
 import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
@@ -10,7 +10,11 @@ import {
 
 // 1. 피드 전체 조회(GET)
 export const getAllFeeds = async (lastCycleDetailId: number) => {
-  const params = { lastCycleDetailId, size: PAGE_SIZE.FEEDS };
+  const params = {
+    lastCycleDetailId,
+    size: PAGE_SIZE.FEEDS,
+    sort: `${SORT.PROGRESS_TIME}:${ORDER.DESC}`,
+  };
 
   return apiClient.axios.get<GetAllFeedsResponse>('/feeds', {
     params,
