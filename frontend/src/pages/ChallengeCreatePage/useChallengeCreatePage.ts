@@ -8,13 +8,15 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
+const NON_SELECTED = -1;
+
 const useChallengeCreatePage = () => {
   const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
   const challengeName = useInput('', validateChallengeName);
   const challengeDescription = useInput('', validateChallengeDescription);
-  const [colorSelectedIndex, setColorSelectedIndex] = useState(-1);
-  const [emojiSelectedIndex, setEmojiSelectedIndex] = useState(-1);
+  const [colorSelectedIndex, setColorSelectedIndex] = useState(NON_SELECTED);
+  const [emojiSelectedIndex, setEmojiSelectedIndex] = useState(NON_SELECTED);
 
   const [isEmojiBottomSheetOpen, setIsEmojiBottomSheetOpen] = useState(false);
 
@@ -33,7 +35,8 @@ const useChallengeCreatePage = () => {
     },
   });
 
-  const isInvalidEmojiSelect = colorSelectedIndex === -1 || emojiSelectedIndex === -1;
+  const isInvalidEmojiSelect =
+    colorSelectedIndex === NON_SELECTED || emojiSelectedIndex === NON_SELECTED;
 
   const isAllValidated =
     challengeName.isValidated === true &&
