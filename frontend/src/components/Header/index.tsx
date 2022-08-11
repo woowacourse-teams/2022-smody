@@ -1,6 +1,6 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
-import LoadingDots from 'assets/loading_dots.svg';
+import { pushStatus } from 'pushStatus';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -14,8 +14,7 @@ import {
   DarkModeButton,
   Dropdown,
   Bell,
-  ToggleButton,
-  UnderLineText,
+  SubscriptionButton,
 } from 'components';
 
 import { Z_INDEX } from 'constants/css';
@@ -43,8 +42,8 @@ const itemList = [
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
-  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
-
+  const { isSubscribed } = useSubscribe();
+  console.log(pushStatus);
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
@@ -54,28 +53,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
           <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
-            {/* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */}
-            <FlexBox
-              alignItems="center"
-              gap="1rem"
-              style={{ cursor: 'default', padding: '0 1rem ' }}
-            >
-              <UnderLineText
-                fontSize={16}
-                fontColor={themeContext.onSurface}
-                fontWeight="bold"
-                underLineColor={themeContext.primary}
-              >
-                알림 설정
-              </UnderLineText>
-
-              <ToggleButton checked={isSubscribed} handleChange={subscribe} />
-              {isLoadingSubscribe && (
-                <LoadingWrapper>
-                  <LoadingDots />
-                </LoadingWrapper>
-              )}
-            </FlexBox>
+            <SubscriptionButton />
 
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
@@ -133,7 +111,7 @@ const Item = styled(Link)`
   `}
 `;
 
-const LoadingWrapper = styled.div`
-  width: 2rem;
-  height: 2rem;
-`;
+// const LoadingWrapper = styled.div`
+//   width: 2rem;
+//   height: 2rem;
+// `;

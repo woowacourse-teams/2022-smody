@@ -1,11 +1,8 @@
 import { getVapidPublicKey, postSubscribe, postUnsubscribe } from './api';
+import { GetVapidPublicKeyResponse } from './type';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorResponse } from 'commonType';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
-
-interface GetVapidPublicKeyResponse {
-  publicKey: string;
-}
 
 export const useGetVapidPublicKey = (
   options?: UseQueryOptions<

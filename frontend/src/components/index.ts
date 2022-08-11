@@ -37,3 +37,4 @@ export * from 'components/ChallengeDetail';
 export * from 'components/DarkModeButton';
 export * from 'components/Dropdown';
 export * from 'components/Bell';
+export * from 'components/SubscriptionButton';
