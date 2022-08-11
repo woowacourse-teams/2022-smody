@@ -1,6 +1,6 @@
 import { BottomSheetProps } from './type';
 import ReactDOM from 'react-dom';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { Z_INDEX } from 'constants/css';
 
@@ -19,6 +19,15 @@ export const BottomSheet = ({ children, handleCloseBottomSheet }: BottomSheetPro
   );
 };
 
+const slideUp = keyframes`
+  from{
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const BottomSheetContent = styled.div`
   ${({ theme }) => css`
     position: fixed;
@@ -28,12 +37,18 @@ const BottomSheetContent = styled.div`
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
-    height: 220px;
+    height: 300px;
+    overflow-y: auto;
     padding: 34px 0;
     border-radius: 5px 5px 0 0;
     background-color: ${theme.surface};
     z-index: ${Z_INDEX.MODAL};
     transition: bottom 0.4s linear;
+
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+    animation-name: ${slideUp};
+    animation-fill-mode: forwards;
   `}
 `;
 

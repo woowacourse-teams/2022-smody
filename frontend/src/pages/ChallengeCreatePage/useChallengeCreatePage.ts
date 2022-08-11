@@ -16,6 +16,8 @@ const useChallengeCreatePage = () => {
   const [colorSelectedIndex, setColorSelectedIndex] = useState(-1);
   const [emojiSelectedIndex, setEmojiSelectedIndex] = useState(-1);
 
+  const [isEmojiBottomSheetOpen, setIsEmojiBottomSheetOpen] = useState(false);
+
   const {
     mutate: mutatePostChallenge,
     isLoading: isLoadingPostChallenge,
@@ -31,11 +33,12 @@ const useChallengeCreatePage = () => {
     },
   });
 
+  const isInvalidEmojiSelect = colorSelectedIndex === -1 || emojiSelectedIndex === -1;
+
   const isAllValidated =
     challengeName.isValidated === true &&
     challengeDescription.isValidated === true &&
-    colorSelectedIndex !== -1 &&
-    emojiSelectedIndex !== -1;
+    !isInvalidEmojiSelect;
 
   const handleSelectColor = (event: ChangeEvent<HTMLInputElement>) => {
     const currentIndex = Number(event.target.value);
@@ -71,17 +74,29 @@ const useChallengeCreatePage = () => {
     });
   };
 
+  const handleClickEmojiButton = () => {
+    setIsEmojiBottomSheetOpen(true);
+  };
+
+  const handleCloseBottomSheet = () => {
+    setIsEmojiBottomSheetOpen(false);
+  };
+
   return {
     challengeName,
     challengeDescription,
     colorSelectedIndex,
     emojiSelectedIndex,
+    isEmojiBottomSheetOpen,
     isLoadingPostChallenge,
     isSuccessPostChallenge,
+    isInvalidEmojiSelect,
     isAllValidated,
     handleSelectColor,
     handleSelectEmoji,
     handleClickCreateChallenge,
+    handleClickEmojiButton,
+    handleCloseBottomSheet,
   };
 };
 
