@@ -630,7 +630,7 @@ export const mySuccessChallengeData = [
 export const userData = {
   nickname: '테스트닉네임',
   introduction: '테스트 자기소개',
-  picture: 'https://emojiIndex-copy.com/wp-content/uploads/1f64a.png',
+  picture: 'https://src.hidoc.co.kr/image/lib/2022/5/4/1651651323632_0.jpg',
   email: 'test@gmail.com',
 };
 
