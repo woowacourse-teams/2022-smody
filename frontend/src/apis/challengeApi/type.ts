@@ -1,5 +1,9 @@
 import { Challenge, UserChallenge } from 'commonType';
 
+export interface GetChallengeProps {
+  searchValue: string;
+}
+
 export interface GetChallengeResponse {
   challengeId: number;
   challengeName: string;
