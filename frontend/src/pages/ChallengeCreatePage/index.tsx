@@ -56,7 +56,7 @@ const ChallengeCreatePage = () => {
             </li>
           ))}
         </RadioList>
-        <Label htmlFor="대표 이미지">대표 이미지</Label>
+        <Label htmlFor="대표 이모지">대표 이모지</Label>
         <RadioList as="ul" gap="1rem">
           {emojiList.map((emoji, index) => (
             <li key={index}>
