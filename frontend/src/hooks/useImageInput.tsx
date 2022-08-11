@@ -7,22 +7,46 @@ const compressionOptions = {
   useWebWorker: true,
 };
 
+// dataURL을 FormData로 인코딩하는 함수
+const encodeFormData = (dataURL: string, imageName: string): FormData => {
+  // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
+  const byteString = atob(dataURL.split(',')[1]);
+
+  // Blob을 file로 구성하기 위한 준비
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ia]);
+
+  // Blob을 File로 만든다
+  const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
+
+  // File을 FormData로 만든다
+  const formData = new FormData();
+  formData.append(imageName, file);
+
+  return formData;
+};
+
 const useImageInput = (imageName: string) => {
   const [formData, setFormData] = useState(new FormData());
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
-
   const reader = useMemo(() => new FileReader(), []);
 
   const hasImageFormData = formData.get(imageName) !== null;
 
   useEffect(() => {
+    // reader가 Blob을 dataURL로 읽는 작업이 끝나면 실행하는 이벤트 부착
     reader.addEventListener('loadend', handleReaderLoadend);
 
-    // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
     return () => {
-      // URL.revokeObjectURL(previewImageUrl);
+      // 컴포넌트가 언마운트되면 revokeObjectURL()을 통해 생성한 기존 URL을 폐기
+      URL.revokeObjectURL(previewImageUrl);
+      // 컴포넌트가 언마운트되면 reader에 부착된 이벤트를 제거
       reader.removeEventListener('loadend', handleReaderLoadend);
     };
   }, []);
@@ -34,15 +58,13 @@ const useImageInput = (imageName: string) => {
       return;
     }
 
-    const encodedData = encodeFormData(dataURL);
-    setFormData(encodedData);
+    // dataUrl을 File로 encode하여 FormData에 추가
+    const formData = encodeFormData(dataURL, imageName);
+    setFormData(formData);
     setIsImageLoading(false);
   };
 
-  const handleImageInputButtonClick = () => {
-    imageInputRef?.current?.click();
-  };
-
+  // 이미지 선택 시 이벤트 처리
   const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
@@ -62,32 +84,19 @@ const useImageInput = (imageName: string) => {
 
     setPreviewImageUrl(newPreviewImageUrl);
 
-    // 이미지 압축
-    const compressedFile = await imageCompression(file, compressionOptions);
+    // 이미지 압축하여 변환된 Blob
+    const compressedBlob = await imageCompression(file, compressionOptions);
 
-    // reader readAsDataURL완료되면 loadend 이벤트 발생
-    reader.readAsDataURL(compressedFile);
+    // reader로 blob을 dataURL로 읽기 시작(끝나면 reader에 부착된 loadend 이벤트 발생)
+    reader.readAsDataURL(compressedBlob);
   };
 
-  const encodeFormData = (dataURL: string): FormData => {
-    // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
-    const byteString = atob(dataURL.split(',')[1]);
-
-    // Blob를 구성하기 위한 준비
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ia]);
-    const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
-
-    const formData = new FormData();
-    formData.append(imageName, file);
-
-    return formData;
+  //  이미지 인풋에 부착된 ref로 클릭 이벤트 전달
+  const handleImageInputButtonClick = () => {
+    imageInputRef?.current?.click();
   };
 
+  // ref가 부착된 인풋을 render하는 함수
   const renderImageInput = () => (
     <input
       name={imageName}
