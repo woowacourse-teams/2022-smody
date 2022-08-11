@@ -1,20 +1,12 @@
 package com.woowacourse.smody.service;
 
 import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,22 +14,27 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class ChallengeServiceTest {
+import com.woowacourse.smody.IntegrationTest;
+import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.ChallengeRequest;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengeTabResponse;
+import com.woowacourse.smody.dto.ChallengersResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
+
+class ChallengeServiceTest extends IntegrationTest {
 
     @Autowired
     private ChallengeQueryService challengeQueryService;
 
     @Autowired
     private ChallengeService challengeService;
-
-    @Autowired
-    private ResourceFixture fixture;
 
     private final LocalDateTime now = LocalDateTime.now();
 

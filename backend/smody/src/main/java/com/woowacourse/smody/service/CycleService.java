@@ -11,14 +11,18 @@ import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.push.event.CycleProgressPushEvent;
+import com.woowacourse.smody.push.event.CycleProgressPushHandler;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +34,8 @@ public class CycleService {
     private final CycleRepository cycleRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
-
     private final ImageStrategy imageStrategy;
+    private final CycleProgressPushHandler cycleProgressPushHandler;
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
@@ -44,6 +48,8 @@ public class CycleService {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
         Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
+
+        cycleProgressPushHandler.onApplicationEvent(new CycleProgressPushEvent(this, save));
         return save.getId();
     }
 
@@ -63,6 +69,8 @@ public class CycleService {
         validateAuthorizedMember(tokenPayload, cycle);
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
+
+        cycleProgressPushHandler.onApplicationEvent(new CycleProgressPushEvent(this, cycle));
         return new ProgressResponse(cycle.getProgress());
     }
 
