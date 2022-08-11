@@ -6,7 +6,7 @@ import { ThumbnailWrapperProps } from 'components/ThumbnailWrapper/type';
 const SIZES = {
   small: { width: '2.6rem', fontSize: '1.6rem' },
   medium: { width: '4rem', fontSize: '2.2rem' },
-  large: { width: '7.1rem', fontSize: '4.375rem' },
+  large: { width: '7.5rem', fontSize: '4.375rem' },
 };
 
 export const ThumbnailWrapper = styled(FlexBox).attrs({
