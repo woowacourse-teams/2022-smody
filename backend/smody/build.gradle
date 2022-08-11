@@ -54,6 +54,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+
+    implementation group: 'nl.martijndwars', name: 'web-push', version: '5.1.1'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.68'
 }
 
 dependencyManagement {
