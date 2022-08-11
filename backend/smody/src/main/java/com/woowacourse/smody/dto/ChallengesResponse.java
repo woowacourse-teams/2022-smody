@@ -14,15 +14,15 @@ public class ChallengesResponse {
     private String challengeName;
     private Integer challengerCount;
     private Boolean isInProgress;
-    private Integer emoji;
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 
     public ChallengesResponse(Challenge challenge, Integer challengerCount, Boolean isInProgress) {
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
         this.challengerCount = challengerCount;
         this.isInProgress = isInProgress;
-        this.emoji = challenge.getEmoji();
+        this.emojiIndex = challenge.getEmojiIndex();
     }
 
     public ChallengesResponse(Challenge challenge, Integer challengerCount) {
@@ -30,6 +30,6 @@ public class ChallengesResponse {
     }
 
     public ChallengesResponse changeInProgress(Boolean inProgress) {
-        return new ChallengesResponse(challengeId, challengeName, challengerCount, inProgress, emoji, color);
+        return new ChallengesResponse(challengeId, challengeName, challengerCount, inProgress, emojiIndex, colorIndex);
     }
 }
