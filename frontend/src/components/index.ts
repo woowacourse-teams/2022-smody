@@ -36,6 +36,7 @@ export * from 'components/ChallengerList';
 export * from 'components/ChallengeDetail';
 export * from 'components/DarkModeButton';
 export * from 'components/Comment';
+export * from 'components/CommentInput';
 export * from 'components/FeedItem';
 export * from 'components/BottomSheet';
 export * from 'components/Dropdown';
