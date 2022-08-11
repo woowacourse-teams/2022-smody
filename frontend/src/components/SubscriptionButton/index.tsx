@@ -1,15 +1,18 @@
+import { SubscriptionButtonProps } from './type';
 import LoadingDots from 'assets/loading_dots.svg';
 import { pushStatus } from 'pushStatus';
 import styled from 'styled-components';
 
-import useSubscribe from 'hooks/useSubscribe';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, ToggleButton, UnderLineText, Text } from 'components';
 
-export const SubscriptionButton = () => {
+export const SubscriptionButton = ({
+  isSubscribed,
+  subscribe,
+  isLoadingSubscribe,
+}: SubscriptionButtonProps) => {
   const themeContext = useThemeContext();
-  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
   console.log(pushStatus);
   const isAbleSubscribe =
     pushStatus.pushSupport && pushStatus.notificationPermission === 'granted';
