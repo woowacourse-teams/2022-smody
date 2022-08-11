@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.PushNotification;
@@ -29,9 +30,7 @@ import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.CycleService;
 
-@SpringBootTest
-@Transactional
-class CycleProgressPushHandlerTest {
+class CycleProgressPushHandlerTest extends IntegrationTest {
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
@@ -39,12 +38,6 @@ class CycleProgressPushHandlerTest {
 	@Autowired
 	@InjectMocks
 	private CycleService cycleService;
-
-	@MockBean
-	private ImageStrategy imageStrategy;
-
-	@Autowired
-	private ResourceFixture fixture;
 
 	@DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
 	@Test

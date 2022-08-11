@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushNotification;
@@ -29,19 +30,11 @@ import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
 
-@SpringBootTest
-@Transactional
-class PushSchedulerTest {
+class PushSchedulerTest extends IntegrationTest {
 
 	@Autowired
 	@InjectMocks
 	private PushScheduler pushScheduler;
-
-	@MockBean
-	private WebPushService webPushService;
-
-	@Autowired
-	private ResourceFixture fixture;
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;

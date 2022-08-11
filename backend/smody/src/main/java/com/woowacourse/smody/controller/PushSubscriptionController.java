@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
@@ -31,6 +32,7 @@ public class PushSubscriptionController {
 	}
 
 	@PostMapping("/subscribe")
+	@RequiredLogin
 	public ResponseEntity<Void> subscribe(@LoginMember TokenPayload tokenPayload,
 		@RequestBody SubscriptionRequest subscription) {
 		pushSubscriptionService.subscribe(tokenPayload, subscription);
@@ -38,6 +40,7 @@ public class PushSubscriptionController {
 	}
 
 	@PostMapping("/unsubscribe")
+	@RequiredLogin
 	public ResponseEntity<Void> unSubscribe(@LoginMember TokenPayload tokenPayload,
 		@RequestBody UnSubscriptionRequest unSubscription) {
 		pushSubscriptionService.unSubscribe(tokenPayload, unSubscription);

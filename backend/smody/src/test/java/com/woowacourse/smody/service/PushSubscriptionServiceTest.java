@@ -13,22 +13,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
 
-@SpringBootTest
-@Transactional
-class PushSubscriptionServiceTest {
+class PushSubscriptionServiceTest extends IntegrationTest {
 
 	@Autowired
 	@InjectMocks
 	private PushSubscriptionService pushSubscriptionService;
-
-	@MockBean
-	private WebPushService webPushService;
 
 	@Autowired
 	private PushSubscriptionRepository pushSubscriptionRepository;

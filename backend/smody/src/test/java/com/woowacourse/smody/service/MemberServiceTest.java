@@ -1,15 +1,24 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 
-import com.woowacourse.smody.ResourceFixture;
+import java.time.LocalDateTime;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
@@ -18,48 +27,23 @@ import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
-import java.time.LocalDateTime;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-@SpringBootTest
-@Transactional
-public class MemberServiceTest {
+public class MemberServiceTest extends IntegrationTest {
 
     @Autowired
     @InjectMocks
     private MemberService memberService;
 
-    @MockBean
-    private ImageStrategy imageStrategy;
-
     @Autowired
     private CycleRepository cycleRepository;
 
-    @Autowired
-    private ResourceFixture fixture;
-
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
-    private final Image progressImage = new Image(new MockMultipartFile("progressImage", "image".getBytes()),
-            new ImageStrategy() {
-                @Override
-                public String extractUrl(final MultipartFile image) {
-                    return "fakeUrl";
-                }
-            }
+    private final Image progressImage = new Image(
+        new MockMultipartFile("progressImage", "image".getBytes()),
+        image -> "fakeUrl"
     );
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
