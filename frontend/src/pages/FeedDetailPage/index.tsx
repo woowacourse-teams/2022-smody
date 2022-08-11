@@ -1,10 +1,15 @@
 import useFeedDetailPage from './useFeedDetailPage';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { FlexBox, CommentItem, CommentInput, FeedItem } from 'components';
 
 const FeedDetailPage = () => {
   const { feedData, commentsData } = useFeedDetailPage();
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   if (typeof feedData === 'undefined' || typeof commentsData === 'undefined') {
     return null;

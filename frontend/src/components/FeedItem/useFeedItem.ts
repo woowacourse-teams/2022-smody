@@ -5,12 +5,12 @@ import { parseTime } from 'utils';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const useFeedItem = ({ challengeId, progressTime }: UseFeedProps) => {
+const useFeedItem = ({ challengeId, cycleDetailId, progressTime }: UseFeedProps) => {
   const navigate = useNavigate();
   const { year, month, date, hours, minutes } = parseTime(progressTime);
 
   const handleClickFeed: MouseEventHandler<HTMLDivElement> = () => {
-    // TODO: 피드 상세보기 페이지로 이동하는 기능 구현
+    navigate(`${CLIENT_PATH.FEED_DETAIL}/${cycleDetailId}`);
   };
 
   const handleClickChallengeName: MouseEventHandler<HTMLParagraphElement> = (event) => {

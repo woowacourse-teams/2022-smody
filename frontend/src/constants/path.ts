@@ -12,7 +12,7 @@ export const CLIENT_PATH = {
   CERT: '/cert',
   SEARCH: '/search',
   FEED: '/feed',
-  FEED_DETAIL: '/feed/detail/',
+  FEED_DETAIL: '/feed/detail',
   FEED_DETAIL_ID: '/feed/detail/:cycleDetailId',
   PROFILE: '/profile',
   PROFILE_EDIT: '/profile/edit',

@@ -22,7 +22,7 @@ export const FeedItem = ({
   const themeContext = useThemeContext();
 
   const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
-    useFeedItem({ challengeId, progressTime });
+    useFeedItem({ challengeId, cycleDetailId, progressTime });
 
   return (
     <Wrapper
