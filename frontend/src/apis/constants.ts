@@ -16,10 +16,13 @@ export const queryKeys = {
   getMyInfo: 'getMyInfo',
   getChallengersById: 'getChallengersById',
   getAllFeeds: 'getAllFeeds',
+  getVapidPublicKey: 'getVapidPublicKey',
 };
 
 export const mutationKeys = {
   patchMyInfo: 'patchMyInfo',
   deleteMyInfo: 'deleteMyInfo',
   postProfileImage: 'postProfileImage',
+  postSubscribe: 'postSubscribe',
+  postUnsubscribe: 'postUnsubscribe',
 };

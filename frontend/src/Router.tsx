@@ -16,7 +16,6 @@ import {
   CycleDetailPage,
   CertFormPage,
   ChallengeCreatePage,
-  TestPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -75,7 +74,6 @@ const Router = () => {
             element={<ChallengeDetailPage />}
           />
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
-          <Route path="/test" element={<TestPage />} />
 
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={CLIENT_PATH.WILD_CARD} element={<NotFoundPage />} />
