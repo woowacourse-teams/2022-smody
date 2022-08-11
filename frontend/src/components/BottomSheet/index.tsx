@@ -45,10 +45,7 @@ const BottomSheetContent = styled.div`
     z-index: ${Z_INDEX.MODAL};
     transition: bottom 0.4s linear;
 
-    animation-duration: 0.25s;
-    animation-timing-function: ease-out;
-    animation-name: ${slideUp};
-    animation-fill-mode: forwards;
+    animation: 0.25s ease-out forwards ${slideUp};
   `}
 `;
 
