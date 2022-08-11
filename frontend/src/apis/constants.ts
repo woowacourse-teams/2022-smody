@@ -14,10 +14,13 @@ export const queryKeys = {
   getTokenGoogle: 'getTokenGoogle',
   getMyInfo: 'getMyInfo',
   getChallengersById: 'getChallengersById',
+  getVapidPublicKey: 'getVapidPublicKey',
 };
 
 export const mutationKeys = {
   patchMyInfo: 'patchMyInfo',
   deleteMyInfo: 'deleteMyInfo',
   postProfileImage: 'postProfileImage',
+  postSubscribe: 'postSubscribe',
+  postUnsubscribe: 'postUnsubscribe',
 };
