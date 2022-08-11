@@ -4,18 +4,15 @@ import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.ChallengeQueryService;
-
-import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.woowacourse.smody.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.DocFlavor;
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/challenges")

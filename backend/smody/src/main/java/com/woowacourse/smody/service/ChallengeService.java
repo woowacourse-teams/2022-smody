@@ -2,17 +2,14 @@ package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.dto.ChallengeRequest;
-import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.ChallengeRepository;
-import java.util.List;
-import java.util.Optional;
-
-import com.woowacourse.smody.repository.DynamicChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

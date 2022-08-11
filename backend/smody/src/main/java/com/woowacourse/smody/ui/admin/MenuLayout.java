@@ -9,9 +9,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
-import com.woowacourse.smody.ui.admin.domain.ChallengeView;
-import com.woowacourse.smody.ui.admin.domain.CycleView;
-import com.woowacourse.smody.ui.admin.domain.MemberView;
+import com.woowacourse.smody.ui.admin.controller.ChallengeView;
+import com.woowacourse.smody.ui.admin.controller.CycleView;
+import com.woowacourse.smody.ui.admin.controller.LogView;
+import com.woowacourse.smody.ui.admin.controller.MemberView;
 
 public class MenuLayout extends AppLayout {
 

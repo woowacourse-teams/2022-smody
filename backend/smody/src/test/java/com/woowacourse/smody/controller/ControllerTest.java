@@ -14,7 +14,7 @@ import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.MemberService;
 import com.woowacourse.smody.service.OauthService;
-import com.woowacourse.smody.ui.admin.AdminSecurityConfig;
+import com.woowacourse.smody.ui.admin.controller.AdminSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
