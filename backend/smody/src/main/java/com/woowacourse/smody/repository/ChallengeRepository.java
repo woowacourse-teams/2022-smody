@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
+public interface ChallengeRepository extends JpaRepository<Challenge, Long>, DynamicChallengeRepository {
 
     Optional<Challenge> findByName(String name);
-
-    List<Challenge> findByNameContainingIgnoreCase(String name);
 }

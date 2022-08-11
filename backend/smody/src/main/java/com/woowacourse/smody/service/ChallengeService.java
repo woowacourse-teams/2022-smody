@@ -21,15 +21,13 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
 
-    private final DynamicChallengeRepository dynamicChallengeRepository;
-
     public Challenge search(Long challengeId) {
         return challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 
     public List<Challenge> searchAll(String name) {
-        return dynamicChallengeRepository.searchAll(name);
+        return challengeRepository.searchAll(name);
     }
     @Transactional
     public Long create(ChallengeRequest challengeRequest) {

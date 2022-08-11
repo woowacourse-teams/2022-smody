@@ -70,8 +70,7 @@ public class ChallengeController {
 
     @PostMapping
     @RequiredLogin
-    public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
-                                       ChallengeRequest challengeRequest) {
+    public ResponseEntity<Void> create(ChallengeRequest challengeRequest) {
         Long challengeId = challengeService.create(challengeRequest);
         return ResponseEntity.created(URI.create("/challenges/" + challengeId)).build();
     }
