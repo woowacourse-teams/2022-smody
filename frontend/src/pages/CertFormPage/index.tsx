@@ -15,6 +15,7 @@ import {
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
+import { colorList, emojiList } from 'constants/style';
 
 const CertFormPage = () => {
   const {
@@ -25,7 +26,8 @@ const CertFormPage = () => {
     challengeName,
     successCount,
     progressCount,
-    emoji,
+    emojiIndex,
+    colorIndex,
     isButtonDisabled,
     isLoadingPost,
     isSuccessPost,
@@ -61,8 +63,8 @@ const CertFormPage = () => {
           <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
-        <ThumbnailWrapper size="medium" bgColor="#FED6D6">
-          {emoji}
+        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+          {emojiList[emojiIndex]}
         </ThumbnailWrapper>
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
@@ -130,7 +132,7 @@ const CertFormPage = () => {
           challengeName={challengeName}
           successCount={successCount}
           progressCount={progressCount + 1}
-          emoji={emoji}
+          emoji={emojiList[emojiIndex]}
         />
       )}
     </FlexBox>

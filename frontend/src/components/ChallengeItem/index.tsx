@@ -8,13 +8,15 @@ import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
 import { CLIENT_PATH } from 'constants/path';
+import { colorList, emojiList } from 'constants/style';
 
 export const ChallengeItem = ({
   challengeId,
   challengeName,
   challengerCount,
   isInProgress,
-  emoji,
+  emojiIndex,
+  colorIndex,
 }: ChallengeItemProps) => {
   const themeContext = useThemeContext();
   const handleClickProgressButton = useChallengeItem({
@@ -28,8 +30,8 @@ export const ChallengeItem = ({
       <div>
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
           <FlexBox gap="17px" alignItems="center">
-            <ThumbnailWrapper size="small" bgColor="#E6D1F2">
-              {emoji}
+            <ThumbnailWrapper size="small" bgColor={colorList[colorIndex]}>
+              {emojiList[emojiIndex]}
             </ThumbnailWrapper>
             <FlexBox flexDirection="column" gap="0.5rem">
               <Text aria-label="challenge-name" color={themeContext.onSurface} size={16}>

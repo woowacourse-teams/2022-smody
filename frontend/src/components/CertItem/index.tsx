@@ -6,7 +6,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
-import { cursorPointer } from 'constants/style';
+import { colorList, cursorPointer, emojiList } from 'constants/style';
 
 export const CertItem = ({
   cycleId,
@@ -15,7 +15,8 @@ export const CertItem = ({
   progressCount,
   startTime,
   successCount,
-  emoji,
+  emojiIndex,
+  colorIndex,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
   const { certEndDate, isCertPossible, handleClickWrapper, handleClickButton } =
@@ -26,7 +27,8 @@ export const CertItem = ({
       progressCount,
       startTime,
       successCount,
-      emoji,
+      emojiIndex,
+      colorIndex,
     });
 
   return (
@@ -52,8 +54,8 @@ export const CertItem = ({
           해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
       </RowWrapper>
-      <ThumbnailWrapper size="large" bgColor="transparent">
-        {emoji}
+      <ThumbnailWrapper size="large" bgColor={colorList[colorIndex]}>
+        {emojiList[emojiIndex]}
       </ThumbnailWrapper>
       <RowWrapper justifyContent="center" gap="1.5rem">
         <Timer certEndDate={certEndDate} />
