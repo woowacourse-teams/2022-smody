@@ -1,6 +1,7 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
 import { pushStatus } from 'pushStatus';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -42,7 +43,8 @@ const itemList = [
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
-  const { isSubscribed } = useSubscribe();
+  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
+
   console.log(pushStatus);
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
@@ -53,7 +55,11 @@ export const Header = ({ bgColor }: HeaderProps) => {
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
         {isLogin ? (
           <Dropdown button={<Bell count={4} isSubscribed={isSubscribed} />}>
-            <SubscriptionButton />
+            <SubscriptionButton
+              isSubscribed={isSubscribed}
+              subscribe={subscribe}
+              isLoadingSubscribe={isLoadingSubscribe}
+            />
 
             {itemList.map(({ text, linkTo }) => (
               <Item key={text} to={linkTo}>
