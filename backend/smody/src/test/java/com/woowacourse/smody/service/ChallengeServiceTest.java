@@ -153,15 +153,15 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_sort() {
             // when
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(0, 10));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    now, PageRequest.of(0, 10), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
-                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(2, 1, 0, 0, 0)
             );
         }
@@ -170,15 +170,15 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageFullSize() {
             // when
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(0, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    now, PageRequest.of(0, 2), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(2, 1)
             );
         }
@@ -187,15 +187,15 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pagePartialSize() {
             // when
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(1, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    now, PageRequest.of(1, 2), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(오늘의_운동_ID, 알고리즘_풀기_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(0, 0)
             );
         }
@@ -204,8 +204,8 @@ class ChallengeServiceTest {
         @Test
         void findAllWithChallengerCount_pageOverMaxPage() {
             // when
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(3, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    now, PageRequest.of(3, 2), null);
 
             // then
             assertThat(challengeResponses).isEmpty();
@@ -216,15 +216,15 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(0, 10));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(0, 10), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(5),
-                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
-                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getIsInProgress))
                             .containsExactly(true, true, false, false, false)
             );
         }
@@ -234,17 +234,17 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageFullSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(0, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(0, 2), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(2, 1),
-                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getIsInProgress))
                             .containsExactly(true, true)
             );
         }
@@ -254,17 +254,17 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pagePartialSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(1, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(1, 2), null);
 
             // then
             assertAll(
                     () -> assertThat(challengeResponses.size()).isEqualTo(2),
-                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengesResponse::getChallengerCount))
+                    () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(0, 0),
-                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengesResponse::getChallengeId))
+                    () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(오늘의_운동_ID, 알고리즘_풀기_ID),
-                    () -> assertThat(challengeResponses.stream().map(ChallengesResponse::getIsInProgress))
+                    () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getIsInProgress))
                             .containsExactly(false, false)
             );
         }
@@ -274,8 +274,8 @@ class ChallengeServiceTest {
         void findAllWithChallengerCount_pageOverMaxPageAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengesResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(3, 2));
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+                    tokenPayload, now, PageRequest.of(3, 2), null);
 
             // then
             assertThat(challengeResponses).isEmpty();
@@ -387,7 +387,8 @@ class ChallengeServiceTest {
     @Test
     void create() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
 
         // when
         Long challengeId = challengeService.create(challengeRequest);
@@ -400,7 +401,8 @@ class ChallengeServiceTest {
     @Test
     void create_duplicatedName() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
 
         // when
         Long challengeId = challengeService.create(challengeRequest);
@@ -414,7 +416,8 @@ class ChallengeServiceTest {
     @ValueSource(strings = {"   ", ""})
     void create_emptyDesc(String invalidDescription) {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", invalidDescription, 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                "1일 1포스팅 챌린지", invalidDescription, 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -427,7 +430,8 @@ class ChallengeServiceTest {
     @Test
     void create_overDescriptionSize() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 챌린지", "a".repeat(256), 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                "1일 1포스팅 챌린지", "a".repeat(256), 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -441,7 +445,8 @@ class ChallengeServiceTest {
     @ValueSource(strings = {"   ", ""})
     void create_emptyName(String invalidName) {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(invalidName, "1일 1포스팅 챌린지입니다", 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                invalidName, "1일 1포스팅 챌린지입니다", 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -454,7 +459,8 @@ class ChallengeServiceTest {
     @Test
     void create_overNameSize() {
         // given
-        ChallengeRequest challengeRequest = new ChallengeRequest("a".repeat(31), "1일 1포스팅 챌린지입니다", 0, 1);
+        ChallengeRequest challengeRequest = new ChallengeRequest(
+                "a".repeat(31), "1일 1포스팅 챌린지입니다", 0, 1);
 
         // when then
         assertThatThrownBy(() -> challengeService.create(challengeRequest))
@@ -472,16 +478,17 @@ class ChallengeServiceTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when
-        List<ChallengesResponse> challengesResponse = challengeQueryService.searchByName("기");
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                now, PageRequest.of(0, 10), "기");
 
         // then
         assertAll(
-                () -> assertThat(challengesResponse.size()).isEqualTo(2),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengeId))
+                () -> assertThat(challengeTabResponse.size()).isEqualTo(2),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengerCount))
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
                         .containsExactly(2, 1),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getIsInProgress))
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
                         .containsExactly(false, false)
         );
     }
@@ -496,7 +503,8 @@ class ChallengeServiceTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when then
-        assertThatThrownBy(() -> challengeQueryService.searchByName(invalidSearchingName))
+        assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
+                now, PageRequest.of(0, 10), invalidSearchingName))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
@@ -512,16 +520,17 @@ class ChallengeServiceTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        List<ChallengesResponse> challengesResponse = challengeQueryService.searchByName(tokenPayload, "기");
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                tokenPayload, now, PageRequest.of(0, 10), "기");
 
         // then
         assertAll(
-                () -> assertThat(challengesResponse.size()).isEqualTo(2),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengeId))
+                () -> assertThat(challengeTabResponse.size()).isEqualTo(2),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getChallengerCount))
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
                         .containsExactly(2, 1),
-                () -> assertThat(challengesResponse.stream().map(ChallengesResponse::getIsInProgress))
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
                         .containsExactly(false, true)
         );
     }
@@ -537,7 +546,8 @@ class ChallengeServiceTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when then
-        assertThatThrownBy(() -> challengeQueryService.searchByName(tokenPayload, invalidSearchingName))
+        assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
+                tokenPayload, now, PageRequest.of(0, 10), invalidSearchingName))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);

@@ -30,16 +30,16 @@ public class ChallengeQueryService {
     private final MemberService memberService;
     private final CycleService cycleService;
 
-    public List<ChallengesResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable) {
+    public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable, String searchingName) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengesResponse> responses = getResponsesOrderId(inProgressCycles);
+        List<ChallengeTabResponse> responses = getResponsesOrderId(inProgressCycles, searchingName);
         return PagingUtil.page(responses, pageable);
     }
 
-    public List<ChallengesResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
-                                                              Pageable pageable) {
+    public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+                                                                 Pageable pageable, String searchingName) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengesResponse> responses = getResponsesOrderId(inProgressCycles).stream()
+        List<ChallengeTabResponse> responses = getResponsesOrderId(inProgressCycles, searchingName).stream()
                 .map(response -> response.changeInProgress(
                         matchMember(inProgressCycles, tokenPayload, response.getChallengeId()))).collect(toList());
         return PagingUtil.page(responses, pageable);
@@ -65,11 +65,11 @@ public class ChallengeQueryService {
                 .collect(groupingBy(Cycle::getChallenge));
     }
 
-    private List<ChallengesResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles) {
-        return challengeService.searchAll().stream().map(challenge ->
-                        new ChallengesResponse(
+    private List<ChallengeTabResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles, String searchingName) {
+        return challengeService.searchAll(searchingName).stream().map(challenge ->
+                        new ChallengeTabResponse(
                                 challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))
-                .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
+                .sorted(Comparator.comparingLong(ChallengeTabResponse::getChallengeId))
                 .collect(toList());
     }
 
@@ -112,48 +112,5 @@ public class ChallengeQueryService {
                 .map(cycle -> new ChallengersResponse(
                         cycle.getMember(), cycle.getProgress().getCount()))
                 .collect(toList());
-    }
-
-    public List<ChallengesResponse> searchByName(String name) {
-        validateSearchingName(name);
-        List<Challenge> challenges = challengeService.searchByNameContaining(name);
-        Map<Challenge, List<Cycle>> inProgressChallenge = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
-        Map<Challenge, Integer> matchedChallenge = new HashMap<>();
-        challenges.stream()
-                .filter(inProgressChallenge::containsKey)
-                .forEach(challenge -> matchedChallenge.put(challenge, inProgressChallenge.get(challenge).size()));
-        challenges.stream()
-                .filter(challenge -> !inProgressChallenge.containsKey(challenge))
-                .forEach(challenge -> matchedChallenge.put(challenge, 0));
-        return matchedChallenge.keySet().stream()
-                .map(challenge -> new ChallengesResponse(
-                        challenge,  matchedChallenge.get(challenge), false))
-                .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
-                .collect(toList());
-    }
-
-    public List<ChallengesResponse> searchByName(TokenPayload tokenPayload, String name) {
-        validateSearchingName(name);
-        List<Challenge> challenges = challengeService.searchByNameContaining(name);
-        Map<Challenge, List<Cycle>> inProgressChallenge = groupByChallenge(cycleService.searchInProgress(LocalDateTime.now()));
-        Map<Challenge, Integer> matchedChallenge = new HashMap<>();
-        challenges.stream()
-                .filter(inProgressChallenge::containsKey)
-                .forEach(challenge -> matchedChallenge.put(challenge, inProgressChallenge.get(challenge).size()));
-        challenges.stream()
-                .filter(challenge -> !inProgressChallenge.containsKey(challenge))
-                .forEach(challenge -> matchedChallenge.put(challenge, 0));
-        return matchedChallenge.keySet().stream()
-                .map(challenge -> new ChallengesResponse(
-                        challenge, matchedChallenge.get(challenge),
-                        matchMember(inProgressChallenge, tokenPayload, challenge.getId())))
-                .sorted(Comparator.comparingLong(ChallengesResponse::getChallengeId))
-                .collect(toList());
-    }
-
-    private void validateSearchingName(String name) {
-        if (name == null || name.isEmpty() || name.isBlank()) {
-            throw new BusinessException(ExceptionData.INVALID_SEARCH_NAME);
-        }
     }
 }

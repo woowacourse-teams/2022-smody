@@ -15,7 +15,6 @@ import com.woowacourse.smody.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,20 +29,20 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void findAllWithChallengerCount_unAuthorized() throws Exception {
         // given
-        List<ChallengesResponse> challengesResponses = List.of(
-                new ChallengesResponse(1L, "스모디 방문하기", 3, false, 0 ,1),
-                new ChallengesResponse(2L, "미라클 모닝", 5, false, 1, 2)
+        List<ChallengeTabResponse> challengeTabRespons = List.of(
+                new ChallengeTabResponse(1L, "스모디 방문하기", 3, false, 0 ,1),
+                new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
 
-        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class)))
-                .willReturn(challengesResponses);
+        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class), eq(null)))
+                .willReturn(challengeTabRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges?page=0&size=10"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponses)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeTabRespons)))
                 .andDo(document("get-all-challenges", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -61,15 +60,15 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void findAllWithChallengerCount_authorized() throws Exception {
         // given
-        List<ChallengesResponse> challengesResponses = List.of(
-                new ChallengesResponse(1L, "스모디 방문하기", 3, true, 0, 1),
-                new ChallengesResponse(2L, "미라클 모닝", 5, false, 1, 2)
+        List<ChallengeTabResponse> challengeTabRespons = List.of(
+                new ChallengeTabResponse(1L, "스모디 방문하기", 3, true, 0, 1),
+                new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
-                any(Pageable.class)))
-                .willReturn(challengesResponses);
+                any(Pageable.class), eq(null)))
+                .willReturn(challengeTabRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/auth?page=0&size=10")
@@ -77,7 +76,7 @@ class ChallengeControllerTest extends ControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponses)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeTabRespons)))
                 .andDo(document("get-all-challenges-auth", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -243,22 +242,23 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void searchByName_200() throws Exception {
         // given
-        List<ChallengesResponse> challengesResponse = List.of(
-                new ChallengesResponse(
+        List<ChallengeTabResponse> challengeTabResponse = List.of(
+                new ChallengeTabResponse(
                         1L, "알고리즘 공부하기", 15, false, 0, 1
                 ),
-                new ChallengesResponse(
+                new ChallengeTabResponse(
                         5L, "외국어 공부하기", 7, false, 1, 2
                 )
         );
-        given(challengeQueryService.searchByName(eq("공부"))).willReturn(challengesResponse);
+        given(challengeQueryService.findAllWithChallengerCount
+                (any(LocalDateTime.class), any(Pageable.class), eq("공부"))).willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/searched?name=공부"));
+        ResultActions result = mockMvc.perform(get("/challenges?search=공부"));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponse)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeTabResponse)))
                 .andDo(document("search-challenge", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -275,24 +275,26 @@ class ChallengeControllerTest extends ControllerTest {
     @Test
     void searchByName_auth_200() throws Exception {
         // given
-        List<ChallengesResponse> challengesResponse = List.of(
-                new ChallengesResponse(
+        List<ChallengeTabResponse> challengeTabResponse = List.of(
+                new ChallengeTabResponse(
                         1L, "알고리즘 공부하기", 15, true, 0, 1
                 ),
-                new ChallengesResponse(
+                new ChallengeTabResponse(
                         5L, "외국어 공부하기", 7, false, 1, 2
                 )
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.searchByName(any(TokenPayload.class), eq("공부"))).willReturn(challengesResponse);
+        given(challengeQueryService.findAllWithChallengerCount(
+                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class), eq("공부")))
+                .willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/searched/auth?name=공부")
+        ResultActions result = mockMvc.perform(get("/challenges/auth?search=공부")
                 .header("Authorization", "Bearer " + token));
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(challengesResponse)))
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeTabResponse)))
                 .andDo(document("search-challenge-auth", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(

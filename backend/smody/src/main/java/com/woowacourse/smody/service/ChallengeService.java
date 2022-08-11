@@ -9,6 +9,7 @@ import com.woowacourse.smody.repository.ChallengeRepository;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.repository.DynamicChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +21,17 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
 
+    private final DynamicChallengeRepository dynamicChallengeRepository;
+
     public Challenge search(Long challengeId) {
         return challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 
-    public List<Challenge> searchAll() {
-        return challengeRepository.findAll();
+    public List<Challenge> searchAll(String name) {
+        return dynamicChallengeRepository.searchAll(name);
     }
-
+    @Transactional
     public Long create(ChallengeRequest challengeRequest) {
         validateDuplicatedName(challengeRequest.getChallengeName());
         Challenge challenge = challengeRepository.save(new Challenge(
@@ -41,9 +44,5 @@ public class ChallengeService {
         if (challengeRepository.findByName(name).isPresent()) {
             throw new BusinessException(ExceptionData.DUPLICATE_NAME);
         }
-    }
-
-    public List<Challenge> searchByNameContaining(String name) {
-        return challengeRepository.findByNameContainingIgnoreCase(name);
     }
 }

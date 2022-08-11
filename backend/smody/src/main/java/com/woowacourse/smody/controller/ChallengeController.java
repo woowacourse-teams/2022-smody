@@ -11,10 +11,11 @@ import java.util.List;
 
 import com.woowacourse.smody.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.print.DocFlavor;
 
 @RestController
 @RequestMapping("/challenges")
@@ -26,16 +27,18 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengesResponse>> findAllWithChallengerCount(Pageable pageable) {
-        return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable));
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(Pageable pageable,
+                                                                                 @RequestParam(required = false) String search) {
+        return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable, search));
     }
 
     @GetMapping("/auth")
     @RequiredLogin
-    public ResponseEntity<List<ChallengesResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                              Pageable pageable) {
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                                 Pageable pageable,
+                                                                                 @RequestParam(required = false) String search) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
-                tokenPayload, LocalDateTime.now(), pageable)
+                tokenPayload, LocalDateTime.now(), pageable, search)
         );
     }
 
@@ -71,17 +74,5 @@ public class ChallengeController {
                                        ChallengeRequest challengeRequest) {
         Long challengeId = challengeService.create(challengeRequest);
         return ResponseEntity.created(URI.create("/challenges/" + challengeId)).build();
-    }
-
-    @GetMapping("/searched")
-    public ResponseEntity<List<ChallengesResponse>> searchByName(@RequestParam String name) {
-        return ResponseEntity.ok(challengeQueryService.searchByName(name));
-    }
-
-    @GetMapping("/searched/auth")
-    @RequiredLogin
-    public ResponseEntity<List<ChallengesResponse>> searchByName(@LoginMember TokenPayload tokenPayload,
-                                                                 @RequestParam String name) {
-        return ResponseEntity.ok(challengeQueryService.searchByName(tokenPayload, name));
     }
 }
