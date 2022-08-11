@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin.domain;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -11,8 +11,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.ui.admin.MenuLayout;
+import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("challenge")
@@ -20,18 +21,18 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ChallengeView extends DomainView {
 
-    private final ChallengeRepository challengeRepository;
+    private final SmodyVaddinService<Challenge> vaddinChallengeService;
     private final String resourceName = "챌린지";
 
-    public ChallengeView(ChallengeRepository challengeRepository) {
-        this.challengeRepository = challengeRepository;
+    public ChallengeView(SmodyVaddinService<Challenge> vaddinChallengeService) {
+        this.vaddinChallengeService = vaddinChallengeService;
         add(
                 new H3("모든 " + resourceName),
                 createChallengesLayout(),
                 new H3(resourceName + " 생성"),
                 createSaveLayout(),
                 new H3(resourceName + " 삭제"),
-                createDeleteLayout(challengeRepository),
+                createDeleteLayout(vaddinChallengeService),
                 createFooterLayout()
         );
         arrangeComponents();
@@ -39,7 +40,7 @@ public class ChallengeView extends DomainView {
 
     private Grid<Challenge> createChallengesLayout() {
         Grid<Challenge> challengeGrid = new Grid<>();
-        challengeGrid.setItems(challengeRepository.findAll());
+        challengeGrid.setItems(this.vaddinChallengeService.findAll());
         challengeGrid.addColumn(Challenge::getId).setHeader("challenge_id");
         challengeGrid.addColumn(Challenge::getName).setHeader("name");
         return challengeGrid;
@@ -64,7 +65,7 @@ public class ChallengeView extends DomainView {
 
     private void saveChallenge(TextField nameField) {
         try {
-            challengeRepository.save(
+            vaddinChallengeService.save(
                     new Challenge(nameField.getValue())
             );
             UI.getCurrent().getPage().reload();

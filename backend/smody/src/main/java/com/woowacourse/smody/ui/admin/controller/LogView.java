@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -11,6 +11,9 @@ import com.vaadin.flow.router.Route;
 
 import java.io.*;
 import javax.annotation.security.PermitAll;
+
+import com.woowacourse.smody.ui.admin.LogLevel;
+import com.woowacourse.smody.ui.admin.MenuLayout;
 import lombok.extern.slf4j.Slf4j;
 
 @PageTitle("log")
