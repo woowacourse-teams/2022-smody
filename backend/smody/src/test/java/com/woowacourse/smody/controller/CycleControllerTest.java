@@ -178,8 +178,8 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
                                 fieldWithPath("[].startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
                                 fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -211,8 +211,8 @@ public class CycleControllerTest extends ControllerTest {
                                 fieldWithPath("startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
                                 fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
-                                fieldWithPath("emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스"),
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스"),
                                 fieldWithPath("cycleDetails[].progressTime").type(JsonFieldType.STRING)
                                         .description("인증 시간"),
                                 fieldWithPath("cycleDetails[].progressImage").type(JsonFieldType.STRING)

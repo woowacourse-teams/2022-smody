@@ -33,7 +33,7 @@ public class ChallengeService {
         validateDuplicatedName(challengeRequest.getChallengeName());
         Challenge challenge = challengeRepository.save(new Challenge(
                 challengeRequest.getChallengeName(), challengeRequest.getDescription(),
-                challengeRequest.getEmoji(), challengeRequest.getColor()));
+                challengeRequest.getEmojiIndex(), challengeRequest.getColorIndex()));
         return challenge.getId();
     }
 

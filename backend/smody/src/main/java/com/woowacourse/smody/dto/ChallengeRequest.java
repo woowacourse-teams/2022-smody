@@ -11,6 +11,6 @@ public class ChallengeRequest {
 
     private String challengeName;
     private String description;
-    private Integer emoji;
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 }

@@ -15,16 +15,16 @@ public class ChallengeResponse {
     private Integer challengerCount;
     private Boolean isInProgress;
     private String description;
-    private Integer emoji;
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 
     public ChallengeResponse(Challenge challenge, Integer challengerCount, Boolean isInProgress) {
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
         this.challengerCount = challengerCount;
         this.isInProgress = isInProgress;
-        this.emoji = challenge.getEmoji();
-        this.color = challenge.getColor();
+        this.emojiIndex = challenge.getEmojiIndex();
+        this.colorIndex = challenge.getColorIndex();
         this.description = challenge.getDescription();
     }
 

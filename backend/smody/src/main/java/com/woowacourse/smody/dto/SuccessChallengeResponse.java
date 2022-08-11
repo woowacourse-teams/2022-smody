@@ -12,14 +12,14 @@ public class SuccessChallengeResponse {
     private Long challengeId;
     private String challengeName;
     private Integer successCount;
-    private Integer emoji;
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 
     public SuccessChallengeResponse(Challenge challenge, Integer successCount) {
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
         this.successCount = successCount;
-        this.emoji = challenge.getEmoji();
-        this.color = challenge.getColor();
+        this.emojiIndex = challenge.getEmojiIndex();
+        this.colorIndex = challenge.getColorIndex();
     }
 }

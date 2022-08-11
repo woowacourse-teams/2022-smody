@@ -22,9 +22,8 @@ public class CycleResponse {
 
     private String description;
 
-    private Integer emoji;
-
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 
     private List<CycleDetailResponse> cycleDetails;
 
@@ -36,8 +35,8 @@ public class CycleResponse {
         this.startTime = cycle.getStartTime();
         this.successCount = successCount;
         this.description = cycle.getChallenge().getDescription();
-        this.emoji = cycle.getChallenge().getEmoji();
-        this.color = cycle.getChallenge().getColor();
+        this.emojiIndex = cycle.getChallenge().getEmojiIndex();
+        this.colorIndex = cycle.getChallenge().getColorIndex();
         this.cycleDetails = cycle.getCycleDetails().stream()
                 .map(CycleDetailResponse::new)
                 .collect(Collectors.toList());

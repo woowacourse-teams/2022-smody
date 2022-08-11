@@ -17,8 +17,8 @@ public class InProgressCycleResponse {
     private Integer progressCount;
     private LocalDateTime startTime;
     private Integer successCount;
-    private Integer emoji;
-    private Integer color;
+    private Integer emojiIndex;
+    private Integer colorIndex;
 
     public InProgressCycleResponse(Cycle cycle, Integer successCount) {
         this.cycleId = cycle.getId();
@@ -27,7 +27,7 @@ public class InProgressCycleResponse {
         this.progressCount = cycle.getProgress().getCount();
         this.startTime = cycle.getStartTime();
         this.successCount = successCount;
-        this.emoji = cycle.getChallenge().getEmoji();
-        this.color = cycle.getChallenge().getColor();
+        this.emojiIndex = cycle.getChallenge().getEmojiIndex();
+        this.colorIndex = cycle.getChallenge().getColorIndex();
     }
 }

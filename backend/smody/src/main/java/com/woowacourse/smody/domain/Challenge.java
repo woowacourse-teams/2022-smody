@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.woowacourse.smody.dto.ChallengeRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import lombok.AccessLevel;
@@ -30,10 +29,10 @@ public class Challenge {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private Integer emoji;
+    private Integer emojiIndex;
 
     @Column(nullable = false)
-    private Integer color;
+    private Integer colorIndex;
 
     @Column(nullable = false)
     private String description;
@@ -44,13 +43,13 @@ public class Challenge {
         this.name = name;
     }
 
-    public Challenge(String name, String description, Integer emoji, Integer color) {
+    public Challenge(String name, String description, Integer emojiIndex, Integer colorIndex) {
         validateDescription(description);
         validateName(name);
         this.name = name;
         this.description = description;
-        this.emoji = emoji;
-        this.color = color;
+        this.emojiIndex = emojiIndex;
+        this.colorIndex = colorIndex;
     }
 
     private void validateDescription(String description) {

@@ -52,8 +52,8 @@ class ChallengeControllerTest extends ControllerTest {
                                         .description("Challenge 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -86,8 +86,8 @@ class ChallengeControllerTest extends ControllerTest {
                                         .description("Challenge 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -119,8 +119,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING)
                                         .description("Challenge 이름"),
                                 fieldWithPath("[].successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -147,8 +147,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
-                                fieldWithPath("emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -178,8 +178,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
-                                fieldWithPath("emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -234,8 +234,8 @@ class ChallengeControllerTest extends ControllerTest {
                         requestFields(
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
-                                fieldWithPath("emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -266,8 +266,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 
@@ -300,8 +300,8 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("[].challengerCount").type(JsonFieldType.NUMBER).description("참여자 수"),
                                 fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
-                                fieldWithPath("[].emoji").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
-                                fieldWithPath("[].color").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
                         )));
     }
 }
