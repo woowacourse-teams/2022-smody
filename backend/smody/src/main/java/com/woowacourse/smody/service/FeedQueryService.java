@@ -1,8 +1,10 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.CycleDetail;
+import com.woowacourse.smody.domain.Feed;
+import com.woowacourse.smody.dto.FeedRequest;
 import com.woowacourse.smody.dto.FeedResponse;
-import com.woowacourse.smody.repository.CycleDetailRepository;
+import com.woowacourse.smody.repository.FeedRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,33 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FeedQueryService {
 
-    private static final int DEFAULT_CYCLE_DETAIL_ID = 0;
-
-    private final CycleDetailRepository cycleDetailRepository;
+    private final FeedRepository feedRepository;
     private final FeedService feedService;
 
-    public List<FeedResponse> findAll(Pageable pageable, Long cycleDetailId) {
-        if (cycleDetailId == DEFAULT_CYCLE_DETAIL_ID) {
-            List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(
-                    cycleDetailId, LocalDateTime.now(), pageable
-            );
-            return convertFeedResponse(cycleDetails);
+    public List<FeedResponse> findAll(FeedRequest feedRequest) {
+        Pageable pageRequest = feedRequest.toPageRequest();
+
+        if (feedRequest.getCycleDetailId() == null) {
+            List<Feed> feeds = feedRepository.findAllLatest(0L, LocalDateTime.now(), pageRequest);
+            return convertFeedResponse(feeds);
         }
-        CycleDetail cycleDetail = feedService.search(cycleDetailId);
-        List<CycleDetail> cycleDetails = cycleDetailRepository.findAllLatest(
-                cycleDetail.getId(), cycleDetail.getProgressTime(), pageable
-        );
-        return convertFeedResponse(cycleDetails);
+
+        CycleDetail cycleDetail = feedService.search(feedRequest.getCycleDetailId());
+        List<Feed> feeds = feedRepository.findAllLatest(cycleDetail.getId(), cycleDetail.getProgressTime(),
+                pageRequest);
+        return convertFeedResponse(feeds);
+    }
+
+    private List<FeedResponse> convertFeedResponse(List<Feed> feeds) {
+        return feeds.stream()
+                .map(FeedResponse::new)
+                .collect(Collectors.toList());
     }
 
     public FeedResponse searchById(Long cycleDetailId) {
         CycleDetail cycleDetail = feedService.search(cycleDetailId);
         return new FeedResponse(cycleDetail);
-    }
-
-    private List<FeedResponse> convertFeedResponse(List<CycleDetail> cycleDetails) {
-        return cycleDetails.stream()
-                .map(FeedResponse::new)
-                .collect(Collectors.toList());
     }
 }

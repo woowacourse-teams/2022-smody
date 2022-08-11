@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
+import com.woowacourse.smody.dto.FeedRequest;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +40,18 @@ public class FeedQueryServiceTest {
     @Autowired
     private ResourceFixture resourceFixture;
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
-    @DisplayName("0L로 id 값이 들어오면 가장 최신순으로 조회한다")
+    @DisplayName("id 값이 null로 들어오면 가장 최신순으로 조회한다")
     @Test
     void searchAllSortedTime() {
         // given
         LocalDateTime today = LocalDateTime.now().minusDays(3);
         Cycle cycle = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
         makeSuccessCycle(cycle, today);
-
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(Pageable.ofSize(10), 0L);
+        List<FeedResponse> feedResponses = feedQueryService.findAll(new FeedRequest("latest", 10, null));
 
         //then
         assertAll(
@@ -77,7 +78,7 @@ public class FeedQueryServiceTest {
         entityManager.flush();
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(
-                Pageable.ofSize(10), cycle1.getCycleDetails().get(2).getId()
+                new FeedRequest("latest", 10, cycle1.getCycleDetails().get(2).getId())
         );
         // then
         assertAll(

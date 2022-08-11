@@ -3,7 +3,7 @@ package com.woowacourse.smody.service;
 import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.repository.CycleDetailRepository;
+import com.woowacourse.smody.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FeedService {
 
-    private final CycleDetailRepository cycleDetailRepository;
+    private final FeedRepository cycleDetailRepository;
 
     public CycleDetail search(Long cycleDetailId) {
         return cycleDetailRepository.findById(cycleDetailId)
