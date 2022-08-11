@@ -1,3 +1,4 @@
+import { ColorDivProps } from './type';
 import useChallengeCreatePage from './useChallengeCreatePage';
 import styled, { css } from 'styled-components';
 
@@ -38,7 +39,7 @@ const ChallengeCreatePage = () => {
           placeholder="챌린지 설명을 입력해주세요"
           {...challengeDescription}
         />
-        <Label>미리 보기</Label>
+        <Label as="p">미리 보기</Label>
         <ThumbnailWrapper
           size="large"
           bgColor={colorSelectedIndex === -1 ? 'gray' : colorList[colorSelectedIndex]}
@@ -122,10 +123,6 @@ const Label = styled.label`
   `}
 `;
 
-interface ColorDivProps {
-  color: string;
-}
-
 const InvisibleInput = styled.input`
   display: none;
 
@@ -134,8 +131,8 @@ const InvisibleInput = styled.input`
   }
 `;
 
-const ColorDiv = styled.div`
-  ${({ color }: ColorDivProps) => css`
+const ColorDiv = styled.div<ColorDivProps>`
+  ${({ color }) => css`
     width: 3rem;
     height: 3rem;
     background-color: ${color};
