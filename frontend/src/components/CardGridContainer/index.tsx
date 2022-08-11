@@ -1,5 +1,4 @@
 import useCardGridContainer from './useCardGridContainer';
-import { Challenge } from 'commonType';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -39,7 +38,7 @@ export const CardGridContainer = () => {
         <Grid>
           {successChallengeInfiniteData?.pages.map((page) =>
             page?.data?.map((challenge) => (
-              <CardBox key={challenge.challengeId} {...challenge} bgColor="#E6D1F2" />
+              <CardBox key={challenge.challengeId} {...challenge} />
             )),
           )}
         </Grid>

@@ -3,20 +3,22 @@ import styled, { css } from 'styled-components';
 import { FlexBox, Text } from 'components';
 import { CardBoxProps, WrapperProps } from 'components/CardBox/type';
 
+import { colorList, emojiList } from 'constants/style';
+
 import COLOR from 'styles/color';
 
 export const CardBox = ({
   challengeName,
   successCount,
-  bgColor,
-  emoji,
+  emojiIndex,
+  colorIndex,
 }: CardBoxProps) => {
   return (
     <Wrapper
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      bgColor={bgColor}
+      bgColor={colorList[colorIndex]}
     >
       <TitleWrapper
         aria-label="성공한 챌린지 이름"
@@ -27,7 +29,7 @@ export const CardBox = ({
         {challengeName}
       </TitleWrapper>
       <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
-        {emoji}
+        {emojiList[emojiIndex]}
       </EmojiWrapper>
       <TextWrapper size={10} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         챌린지 {successCount}회({successCount * 3}일) 성공

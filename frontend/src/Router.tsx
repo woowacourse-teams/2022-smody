@@ -30,7 +30,8 @@ interface LocationState {
   challengeName?: string;
   progressCount?: number;
   successCount?: number;
-  emoji?: string;
+  emojiIndex?: number;
+  colorIndex?: number;
 }
 
 const CertFlowPage = () => {

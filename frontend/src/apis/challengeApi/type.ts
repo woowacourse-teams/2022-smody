@@ -5,11 +5,13 @@ export interface GetChallengeResponse {
   challengeName: string;
   challengerCount: number;
   isInProgress: boolean;
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }
 
 export interface GetMySuccessChallengesResponse extends Challenge {
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }
 
 export type GetChallengeByIdProps = Pick<Challenge, 'challengeId'>;
@@ -19,7 +21,8 @@ export interface GetChallengeByIdResponse
     UserChallenge,
     'challengeId' | 'challengeName' | 'challengerCount' | 'isInProgress'
   > {
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
   description: string;
 }
 
