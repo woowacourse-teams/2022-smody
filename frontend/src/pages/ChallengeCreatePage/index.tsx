@@ -1,7 +1,7 @@
 import useChallengeCreatePage from './useChallengeCreatePage';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, Input, LoadingButton, Title } from 'components';
+import { FlexBox, Input, LoadingButton, ThumbnailWrapper, Title } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 import { colorList, emojiList } from 'constants/style';
@@ -38,6 +38,13 @@ const ChallengeCreatePage = () => {
           placeholder="챌린지 설명을 입력해주세요"
           {...challengeDescription}
         />
+        <Label>미리 보기</Label>
+        <ThumbnailWrapper
+          size="large"
+          bgColor={colorSelectedIndex === -1 ? 'gray' : colorList[colorSelectedIndex]}
+        >
+          {emojiSelectedIndex !== -1 && emojiList[emojiSelectedIndex]}
+        </ThumbnailWrapper>
         <Label>대표 색상</Label>
         <RadioList as="ul" gap="1rem">
           {colorList.map((color, index) => (
