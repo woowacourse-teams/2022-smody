@@ -61,3 +61,10 @@ export interface Feed
   memberId: number;
   commentCount: number;
 }
+
+export interface Comment extends Pick<User, 'picture' | 'nickname'> {
+  commentId: number;
+  memberId: number;
+  content: string;
+  createdAt: string;
+}

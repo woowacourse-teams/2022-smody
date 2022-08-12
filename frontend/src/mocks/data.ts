@@ -1150,6 +1150,64 @@ export const feedData = [
   },
 ];
 
+export const commentData = [
+  {
+    commentId: 1,
+    memberId: 1,
+    picture: userData.picture,
+    nickname: userData.nickname,
+    content:
+      '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
+    createdAt: '2022-08-08T10:00:00',
+  },
+  {
+    commentId: 2,
+    memberId: 2,
+    picture:
+      'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
+    nickname: '유저1',
+    content:
+      'sadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsf',
+    createdAt: '2022-08-08T10:00:00',
+  },
+  {
+    commentId: 3,
+    memberId: 1,
+    picture: userData.picture,
+    nickname: userData.nickname,
+    content:
+      '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
+    createdAt: '2022-08-08T10:00:00',
+  },
+  {
+    commentId: 4,
+    memberId: 2,
+    picture:
+      'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
+    nickname: '유저1',
+    content: '꾸준히 도전하시는 모습이 멋있네요!! 응원하겠습니다~!',
+    createdAt: '2022-08-08T10:00:00',
+  },
+  {
+    commentId: 5,
+    memberId: 1,
+    picture: userData.picture,
+    nickname: userData.nickname,
+    content:
+      '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
+    createdAt: '2022-08-08T10:00:00',
+  },
+  {
+    commentId: 6,
+    memberId: 2,
+    picture:
+      'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
+    nickname: '유저1',
+    content: '꾸준히 도전하시는 모습이 멋있네요!! 응원하겠습니다~!',
+    createdAt: '2022-08-08T10:00:00',
+  },
+];
+
 export const db = [
   { nickname: 'marco', subscription: {} },
   { nickname: 'does', subscription: { endpoint: 'test' } },

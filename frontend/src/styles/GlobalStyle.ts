@@ -151,6 +151,9 @@ ${({ theme }) => css`
     background-color: transparent;
     border: none;
   }
+  textArea {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
 `}
 `;
 
