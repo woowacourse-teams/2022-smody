@@ -36,3 +36,8 @@ export * from 'components/ChallengerList';
 export * from 'components/ChallengeDetail';
 export * from 'components/DarkModeButton';
 export * from 'components/FeedItem';
+export * from 'components/BottomSheet';
+export * from 'components/Dropdown';
+export * from 'components/Bell';
+export * from 'components/SubscriptionButton';
+export * from 'components/SearchBar';

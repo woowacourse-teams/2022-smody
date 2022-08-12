@@ -13,5 +13,6 @@ export interface CertFormPageLocationState
     Cycle,
     'cycleId' | 'challengeId' | 'challengeName' | 'successCount' | 'progressCount'
   > {
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }

@@ -5,6 +5,7 @@ import {
   getChallengeById,
   getChallengeByIdAuth,
   getChallengersById,
+  postChallenge,
 } from 'apis/challengeApi/api';
 import {
   GetChallengeResponse,
@@ -13,19 +14,24 @@ import {
   GetMySuccessChallengesResponse,
   GetChallengersByIdResponse,
   GetChallengersByIdProps,
+  PostChallengeProps,
+  GetChallengeProps,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
-import { Challenge, ErrorResponse } from 'commonType';
+import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useInfiniteQuery,
   UseQueryOptions,
   UseInfiniteQueryOptions,
+  UseMutationOptions,
+  useMutation,
 } from 'react-query';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
+  { searchValue }: GetChallengeProps,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetChallengeResponse[]>,
     AxiosError<ErrorResponse>
@@ -34,8 +40,8 @@ export const useGetAllChallenges = (
   useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
     queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
-      ? ({ pageParam = 0 }) => getAllChallengesAuth(pageParam)
-      : ({ pageParam = 0 }) => getAllChallenges(pageParam),
+      ? ({ pageParam = 0 }) => getAllChallengesAuth(searchValue, pageParam)
+      : ({ pageParam = 0 }) => getAllChallenges(searchValue, pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {
@@ -96,5 +102,18 @@ export const useGetChallengersById = (
   useQuery<AxiosResponse<GetChallengersByIdResponse[]>, AxiosError<ErrorResponse>>(
     queryKeys.getChallengersById,
     () => getChallengersById({ challengeId }),
+    options,
+  );
+
+// 10. 챌린지 생성
+export const usePostChallenge = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostChallengeProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeProps>(
+    postChallenge,
     options,
   );

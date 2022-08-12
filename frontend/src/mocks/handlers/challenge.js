@@ -61,7 +61,15 @@ export const challenge = [
 
   // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(challengeData));
+    const searchValue = req.url.searchParams.get('search');
+    if (searchValue === null) {
+      return res(ctx.status(200), ctx.json(challengeData));
+    }
+
+    const filteredData = challengeData.filter((challenge) =>
+      challenge.challengeName.includes(searchValue),
+    );
+    return res(ctx.status(200), ctx.json(filteredData));
   }),
   // 5. 모든 챌린지 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
@@ -79,7 +87,15 @@ export const challenge = [
       );
     }
 
-    return res(ctx.status(200), ctx.json(challengeData));
+    const searchValue = req.url.searchParams.get('search');
+    if (searchValue === null) {
+      return res(ctx.status(200), ctx.json(challengeData));
+    }
+
+    const filteredData = challengeData.filter((challenge) =>
+      challenge.challengeName.includes(searchValue),
+    );
+    return res(ctx.status(200), ctx.json(filteredData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
@@ -145,6 +161,13 @@ export const challenge = [
       );
     }
 
+    // return res(ctx.status(200), ctx.json([]));
     return res(ctx.status(200), ctx.json(challengers));
+  }),
+
+  //10. 챌린지 생성(POST)
+  rest.post(`${BASE_URL}/challenges`, (req, res, ctx) => {
+    challengeData.push(req.body);
+    return res(ctx.delay(1000), ctx.json(201));
   }),
 ];

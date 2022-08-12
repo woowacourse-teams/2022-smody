@@ -1,17 +1,33 @@
-import { FlexBox, ChallengeItem } from 'components';
-import { ChallengeListProps } from 'components/ChallengeList/type';
+import { ChallengeListProps } from './type';
+import styled from 'styled-components';
 
-export const ChallengeList = ({ targetRef, challengeListData }: ChallengeListProps) => {
+import { FlexBox, ChallengeItem, EmptyContent } from 'components';
+
+export const ChallengeList = ({ challengeInfiniteData }: ChallengeListProps) => {
+  if (challengeInfiniteData[0].data.length === 0) {
+    return (
+      <EmptyContentWrapper>
+        <EmptyContent
+          title="일치하는 검색 결과가 없습니다 :)"
+          description="다른 챌린지를 찾아볼까요?"
+        />
+      </EmptyContentWrapper>
+    );
+  }
+
   return (
     <FlexBox as="ul" flexDirection="column" gap="27px">
-      {challengeListData?.map((challengeInfo, challengeIndex) => (
-        <li
-          key={challengeInfo.challengeId}
-          ref={challengeIndex === challengeListData.length - 1 ? targetRef : undefined}
-        >
-          <ChallengeItem {...challengeInfo} />
-        </li>
-      ))}
+      {challengeInfiniteData.map((page) =>
+        page.data.map((challengeInfo) => (
+          <li key={challengeInfo.challengeId}>
+            <ChallengeItem {...challengeInfo} />
+          </li>
+        )),
+      )}
     </FlexBox>
   );
 };
+
+const EmptyContentWrapper = styled.div`
+  margin-top: 5rem;
+`;

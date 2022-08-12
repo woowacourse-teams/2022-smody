@@ -1,25 +1,26 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.auth.JwtTokenProvider;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.LoginRequest;
-import com.woowacourse.smody.dto.LoginResponse;
-import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.smody.IntegrationTest;
+import com.woowacourse.smody.auth.JwtTokenProvider;
+import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.dto.LoginRequest;
+import com.woowacourse.smody.dto.LoginResponse;
+import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.repository.MemberRepository;
+
 @SpringBootTest
 @Transactional
-public class OauthServiceTest {
+public class OauthServiceTest extends IntegrationTest {
 
     @Autowired
     private OauthService oauthService;
@@ -29,9 +30,6 @@ public class OauthServiceTest {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private ResourceFixture fixture;
 
     @DisplayName("이미 등록된 회원이면 로그인에 성공한다.")
     @Test

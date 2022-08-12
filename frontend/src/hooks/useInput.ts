@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { ChangeEvent } from 'react';
 
 const useInput = (
-  initialValue: string | undefined,
+  initialValue: string,
   validator?: ValidatorFunction,
   optionalValue?: string,
 ) => {

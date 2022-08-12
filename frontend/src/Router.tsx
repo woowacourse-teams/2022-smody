@@ -15,7 +15,7 @@ import {
   VocPage,
   CycleDetailPage,
   CertFormPage,
-  TestPage,
+  ChallengeCreatePage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -29,7 +29,8 @@ interface LocationState {
   challengeName?: string;
   progressCount?: number;
   successCount?: number;
-  emoji?: string;
+  emojiIndex?: number;
+  colorIndex?: number;
 }
 
 const CertFlowPage = () => {
@@ -58,6 +59,10 @@ const Router = () => {
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
             <Route path={CLIENT_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />
             <Route path={CLIENT_PATH.CERT} element={<CertFlowPage />} />
+            <Route
+              path={CLIENT_PATH.CHALLENGE_CREATE}
+              element={<ChallengeCreatePage />}
+            />
           </Route>
 
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
@@ -69,7 +74,6 @@ const Router = () => {
             element={<ChallengeDetailPage />}
           />
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
-          <Route path="/test" element={<TestPage />} />
 
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={CLIENT_PATH.WILD_CARD} element={<NotFoundPage />} />

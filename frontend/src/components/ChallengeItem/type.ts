@@ -3,7 +3,8 @@ export interface ChallengeItemProps {
   challengeName: string;
   challengerCount: number;
   isInProgress: boolean;
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }
 
 export type useChallengeItemProps = Pick<

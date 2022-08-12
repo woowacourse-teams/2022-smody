@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
-public class PagingUtil<T> {
-
+public class PagingUtil {
+    private PagingUtil() {
+        // static 용도이기 때문에 생성자 block
+    }
     public static <T> List<T> page(List<T> collection, Pageable pageable) {
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();

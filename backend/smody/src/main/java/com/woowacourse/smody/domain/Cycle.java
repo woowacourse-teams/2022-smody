@@ -90,10 +90,22 @@ public class Cycle {
         return this.progress.calculateEndTime(this.startTime, searchTime);
     }
 
+    public boolean isIncreasePossible(LocalDateTime now) {
+        return progress.isIncreasePossible(this.startTime, now);
+    }
+
     public List<CycleDetail> getCycleDetails() {
         return cycleDetails.stream()
                 .sorted((detail1, detail2) ->
                         (int) ChronoUnit.MILLIS.between(detail2.getProgressTime(), detail1.getProgressTime()))
                 .collect(Collectors.toList());
+    }
+
+    public boolean matchChallenge(Long challengeId) {
+        return this.challenge.getId().equals(challengeId);
+    }
+
+    public int getInterval() {
+        return progress.getCount() + 1;
     }
 }

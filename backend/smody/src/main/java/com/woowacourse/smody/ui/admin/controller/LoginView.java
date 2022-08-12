@@ -1,4 +1,4 @@
-package com.woowacourse.smody.ui.admin;
+package com.woowacourse.smody.ui.admin.controller;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;

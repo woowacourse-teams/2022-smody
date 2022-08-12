@@ -1,8 +1,8 @@
 import { Challenge } from 'commonType';
 
 export interface CardBoxProps extends Challenge {
-  bgColor: string;
-  emoji: string;
+  emojiIndex: number;
+  colorIndex: number;
 }
 
 export type WrapperProps = { bgColor: string };

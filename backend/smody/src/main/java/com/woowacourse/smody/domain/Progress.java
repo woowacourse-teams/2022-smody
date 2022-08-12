@@ -31,6 +31,11 @@ public enum Progress {
             LocalDateTime toTime = startTime.plusDays(1L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
         }
+
+        @Override
+        public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime) {
+            return Progress.isBetween(startTime, progressTime, 1L);
+        }
     },
     FIRST(1) {
         @Override
@@ -51,6 +56,11 @@ public enum Progress {
         public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
             LocalDateTime toTime = startTime.plusDays(2L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
+        }
+
+        @Override
+        public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime) {
+            return Progress.isBetween(startTime, progressTime, 2L);
         }
     },
     SECOND(2) {
@@ -73,6 +83,11 @@ public enum Progress {
             LocalDateTime toTime = startTime.plusDays(3L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
         }
+
+        @Override
+        public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime) {
+            return Progress.isBetween(startTime, progressTime, 3L);
+        }
     },
     SUCCESS(3) {
         @Override
@@ -89,15 +104,22 @@ public enum Progress {
         public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
             return -1L * Long.MAX_VALUE;
         }
+
+        @Override
+        public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime) {
+            return false;
+        }
     };
 
     private final int count;
 
-    abstract public Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
+    public abstract Progress increase(LocalDateTime startTime, LocalDateTime progressTime);
 
-    abstract public boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
+    public abstract boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
 
-    abstract public long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
+    public abstract long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
+
+    abstract public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime);
 
     private static boolean isBetween(LocalDateTime startTime, LocalDateTime progressTime, Long interval) {
         LocalDateTime fromTime = startTime.plusDays(interval - 1L);

@@ -26,16 +26,15 @@ public class ResourceFixture {
         this.cycleRepository = cycleRepository;
     }
 
-    public static Long 조조그린_ID = 1L;
-    public static Long 더즈_ID = 2L;
-    public static Long 토닉_ID = 3L;
-    public static Long 알파_ID = 4L;
-
-    public static Long 스모디_방문하기_ID = 1L;
-    public static Long 미라클_모닝_ID = 2L;
-    public static Long 오늘의_운동_ID = 3L;
-    public static Long 알고리즘_풀기_ID = 4L;
-    public static Long JPA_공부_ID = 5L;
+    public static final Long 조조그린_ID = 1L;
+    public static final Long 더즈_ID = 2L;
+    public static final Long 토닉_ID = 3L;
+    public static final Long 알파_ID = 4L;
+    public static final Long 스모디_방문하기_ID = 1L;
+    public static final Long 미라클_모닝_ID = 2L;
+    public static final Long 오늘의_운동_ID = 3L;
+    public static final Long 알고리즘_풀기_ID = 4L;
+    public static final Long JPA_공부_ID = 5L;
 
     public Member 회원_조회(Long id) {
         return memberRepository.findById(id).orElseThrow();
