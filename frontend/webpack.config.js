@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const isProd = process.env.NODE_ENV === 'production';
+const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
 
 dotenv.config({ path: '.env' });
@@ -71,6 +72,7 @@ module.exports = {
         isProd ? process.env.PROD_BASE_URL : process.env.DEV_BASE_URL,
       ),
       'process.env.CLIENT_ID': isProd ? undefined : JSON.stringify(process.env.CLIENT_ID),
+      'process.env.IS_LOCAL': JSON.stringify(isLocal),
     }),
   ],
 };

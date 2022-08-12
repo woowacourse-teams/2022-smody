@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   registerServiceWorker();
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' && !process.env.IS_LOCAL) {
   const { worker } = require('./mocks/browser');
   worker.start();
 }
