@@ -36,7 +36,7 @@ const FeedDetailPage = () => {
 export default FeedDetailPage;
 
 const Wrapper = styled(FlexBox)`
-  padding-bottom: 6.625rem;
+  padding-bottom: 8.625rem;
 `;
 
 const CommentList = styled(FlexBox)`
