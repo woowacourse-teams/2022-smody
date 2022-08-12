@@ -79,7 +79,6 @@ const CommentInputElement = styled.textarea`
     resize: none;
     font-size: 1rem;
     font-weight: normal;
-    font-family: 'Source Sans Pro', sans-serif;
     color: ${theme.onInput};
   `}
 `;
