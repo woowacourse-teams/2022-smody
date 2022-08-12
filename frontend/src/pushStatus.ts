@@ -14,9 +14,3 @@ export const pushStatus: PushStatus = {
   pushSubscription: null,
   notificationPermission: isSupported() && Notification.permission,
 };
-
-// if (isSupported()) {
-//   const pushStatus.notificationPermission = Notification.permission;
-// }
-
-// console.log('isSupported', isSupported);
