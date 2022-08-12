@@ -14,12 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class VaadinMemberService implements SmodyVaddinService<Member> {
 
     private final MemberRepository memberRepository;
+
     @Override
+    @Transactional
     public void deleteById(Long id) {
         memberRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public Member save(Member member) {
         return memberRepository.save(member);
     }
