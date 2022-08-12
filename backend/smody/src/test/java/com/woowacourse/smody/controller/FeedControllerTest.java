@@ -39,7 +39,7 @@ public class FeedControllerTest extends ControllerTest {
         BDDMockito.given(feedQueryService.findAll(any(FeedRequest.class))).willReturn(feedResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/feeds?sort=latest&size=10&lastCycleDetailId=2"));
+        ResultActions result = mockMvc.perform(get("/feeds?size=10"));
 
         // then
         result.andExpect(status().isOk())
