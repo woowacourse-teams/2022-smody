@@ -21,6 +21,7 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
+import com.woowacourse.smody.push.event.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.CycleRepository;
@@ -50,7 +51,7 @@ public class CycleService {
         }
         Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
 
-        pushEventHandler.onApplicationEvent(new PushEvent(this, save));
+        pushEventHandler.onApplicationEvent(new PushEvent(this, save, PushCase.PROGRESS));
         return save.getId();
     }
 
@@ -71,7 +72,7 @@ public class CycleService {
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
 
-        pushEventHandler.onApplicationEvent(new PushEvent(this, cycle));
+        pushEventHandler.onApplicationEvent(new PushEvent(this, cycle, PushCase.PROGRESS));
         return new ProgressResponse(cycle.getProgress());
     }
 

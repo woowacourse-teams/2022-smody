@@ -8,9 +8,11 @@ import lombok.Getter;
 public class PushEvent extends ApplicationEvent {
 
 	private final Object entity;
+	private final PushCase eventCase;
 
-	public PushEvent(Object source, Object entity) {
+	public PushEvent(Object source, Object entity, PushCase eventCase) {
 		super(source);
 		this.entity = entity;
+		this.eventCase = eventCase;
 	}
 }

@@ -5,6 +5,7 @@ import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
+import com.woowacourse.smody.push.event.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PushSubscriptionService {
 
@@ -28,7 +30,7 @@ public class PushSubscriptionService {
 			.map(pushSubscription -> pushSubscription.updateMember(member))
 			.orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-		pushEventHandler.onApplicationEvent(new PushEvent(this, subscription));
+		pushEventHandler.onApplicationEvent(new PushEvent(this, subscription, PushCase.SUBSCRIPTION));
 	}
 
 	@Transactional

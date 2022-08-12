@@ -17,11 +17,11 @@ public class PushEventHandler implements ApplicationListener<PushEvent> {
 
 	@Override
 	public void onApplicationEvent(PushEvent event) {
-		PushMapper.from(event.getSource())
-			.send(
-				event.getEntity(),
-				pushNotificationRepository,
-				webPushService
-			);
+		PushCase eventCase = event.getEventCase();
+		eventCase.push(
+			event.getEntity(),
+			pushNotificationRepository,
+			webPushService
+		);
 	}
 }
