@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
@@ -24,21 +25,13 @@ import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@SpringBootTest
-@Transactional
-public class FeedQueryServiceTest {
+public class FeedQueryServiceTest extends IntegrationTest {
 
     @Autowired
     private FeedQueryService feedQueryService;
-
-    @Autowired
-    private ResourceFixture resourceFixture;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -48,7 +41,7 @@ public class FeedQueryServiceTest {
     void searchAllSortedTime() {
         // given
         LocalDateTime today = LocalDateTime.now().minusDays(3);
-        Cycle cycle = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
         makeSuccessCycle(cycle, today);
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(new FeedRequest("latest", 10, null));
@@ -67,10 +60,10 @@ public class FeedQueryServiceTest {
     void searchByCycleDetailId() {
         // given
         LocalDateTime today = LocalDateTime.now();
-        Cycle cycle1 = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
-        Cycle cycle2 = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, today);
-        Cycle cycle3 = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, today);
-        Cycle cycle4 = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 알고리즘_풀기_ID, today);
+        Cycle cycle1 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
+        Cycle cycle2 = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, today);
+        Cycle cycle3 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, today);
+        Cycle cycle4 = fixture.사이클_생성_NOTHING(조조그린_ID, 알고리즘_풀기_ID, today);
         makeSuccessCycle(cycle1, today);
         makeSuccessCycle(cycle2, today);
         makeSuccessCycle(cycle3, today);
@@ -114,7 +107,7 @@ public class FeedQueryServiceTest {
     void findById() {
         // given
         LocalDateTime today = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
         makeSuccessCycle(cycle, today);
         entityManager.flush();
 

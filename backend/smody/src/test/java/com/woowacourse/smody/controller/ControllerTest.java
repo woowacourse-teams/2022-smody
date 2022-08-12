@@ -12,6 +12,7 @@ import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
 import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
+import com.woowacourse.smody.service.FeedQueryService;
 import com.woowacourse.smody.service.MemberService;
 import com.woowacourse.smody.service.OauthService;
 import com.woowacourse.smody.service.PushSubscriptionService;
@@ -31,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
         ChallengeController.class,
         OauthController.class,
         CommentController.class,
-        FeedController.class
+        FeedController.class,
         PushSubscriptionController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})

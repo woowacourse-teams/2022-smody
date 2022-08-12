@@ -11,16 +11,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface FeedRepository extends JpaRepository<CycleDetail, Long> {
 
-    String feedMapping = "new com.woowacourse.smody.domain.Feed("
+    @Query("select new com.woowacourse.smody.domain.Feed("
             + "cd.id, cd.progressImage, cd.description, cd.progressTime, "
             + "m.id, m.picture, m.nickname, "
             + "ch.id, ch.name ) "
             + "from CycleDetail cd "
             + "join cd.cycle c "
             + "join c.challenge ch "
-            + "join c.member m ";
-
-    @Query("select " + feedMapping
+            + "join c.member m "
             + "where cd.progressTime <= :time and cd.id <> :id ")
     List<Feed> findAllLatest(@Param("id") Long id, @Param("time") LocalDateTime time, Pageable pageable);
 }

@@ -1,7 +1,5 @@
 package com.woowacourse.smody.ui.admin.service;
 
-import com.woowacourse.smody.domain.Challenge;
-
 import java.util.List;
 import java.util.Optional;
 

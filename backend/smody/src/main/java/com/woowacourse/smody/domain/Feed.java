@@ -22,7 +22,8 @@ public class Feed {
     public Feed(
             Long cycleDetailId, String progressImage, String description, LocalDateTime progressTime,
             Long memberId, String picture, String nickname,
-            Long challengeId, String challengeName) {
+            Long challengeId, String challengeName
+    ) {
         this.cycleDetailId = cycleDetailId;
         this.progressImage = progressImage;
         this.description = description;
