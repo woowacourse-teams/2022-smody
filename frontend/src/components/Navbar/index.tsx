@@ -91,7 +91,7 @@ const Footer = styled.footer`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 3.625rem;
+    height: 4rem;
     background-color: ${theme.background};
     border-top: 1px solid ${theme.border};
     z-index: ${Z_INDEX.NAVBAR};
@@ -101,7 +101,7 @@ const Footer = styled.footer`
 const NavItemsContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  margin: 1rem 0;
+  margin: 0.8rem 0;
   overflow-y: hidden;
 `;
 
