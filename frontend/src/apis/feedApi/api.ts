@@ -14,7 +14,7 @@ export const getAllFeeds = async (lastCycleDetailId: number) => {
   const params = {
     lastCycleDetailId,
     size: PAGE_SIZE.FEEDS,
-    sort: `${SORT.PROGRESS_TIME}:${ORDER.DESC}`,
+    sort: `${SORT.LATEST}`,
   };
 
   return apiClient.axios.get<GetAllFeedsResponse>('/feeds', {

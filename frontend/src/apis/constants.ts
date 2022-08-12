@@ -6,6 +6,7 @@ export const PAGE_SIZE = {
 
 export const SORT = {
   PROGRESS_TIME: 'progressTime',
+  LATEST: 'latest',
 };
 
 export const ORDER = {
