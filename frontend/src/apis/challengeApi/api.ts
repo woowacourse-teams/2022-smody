@@ -60,13 +60,13 @@ export const getChallengersById = async ({ challengeId }: GetChallengersByIdProp
 export const postChallenge = async ({
   challengeName,
   description,
-  emoji,
-  color,
+  emojiIndex,
+  colorIndex,
 }: PostChallengeProps) => {
   return authApiClient.axios.post('/challenges', {
     challengeName,
     description,
-    emoji,
-    color,
+    emojiIndex,
+    colorIndex,
   });
 };
