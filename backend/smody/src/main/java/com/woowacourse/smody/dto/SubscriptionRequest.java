@@ -2,7 +2,6 @@ package com.woowacourse.smody.dto;
 
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushSubscription;
-
 import lombok.NoArgsConstructor;
 import nl.martijndwars.webpush.Subscription;
 

@@ -1,10 +1,8 @@
 package com.woowacourse.smody.push.event;
 
-import org.springframework.context.ApplicationEvent;
-
 import com.woowacourse.smody.domain.PushSubscription;
-
 import lombok.Getter;
+import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class SubscriptionPushEvent extends ApplicationEvent {

@@ -11,7 +11,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class DomainView extends VerticalLayout {
 

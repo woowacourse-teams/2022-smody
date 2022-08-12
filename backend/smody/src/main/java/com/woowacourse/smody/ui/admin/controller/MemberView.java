@@ -13,7 +13,6 @@ import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
-
 import javax.annotation.security.PermitAll;
 
 @PageTitle("member")

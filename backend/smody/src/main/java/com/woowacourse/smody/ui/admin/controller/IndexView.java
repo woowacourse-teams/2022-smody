@@ -9,7 +9,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.woowacourse.smody.ui.admin.MenuLayout;
-
 import javax.annotation.security.PermitAll;
 
 @PageTitle("SMODY Admin")
