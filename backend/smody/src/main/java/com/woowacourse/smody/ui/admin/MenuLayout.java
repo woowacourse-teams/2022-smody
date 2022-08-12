@@ -14,6 +14,7 @@ import com.woowacourse.smody.ui.admin.controller.CycleDetailView;
 import com.woowacourse.smody.ui.admin.controller.CycleView;
 import com.woowacourse.smody.ui.admin.controller.LogView;
 import com.woowacourse.smody.ui.admin.controller.MemberView;
+import com.woowacourse.smody.ui.admin.controller.PushNotificationView;
 
 public class MenuLayout extends AppLayout {
 
@@ -39,6 +40,7 @@ public class MenuLayout extends AppLayout {
                 createTab(VaadinIcon.SWORD, "challenge", ChallengeView.class),
                 createTab(VaadinIcon.RECYCLE, "cycle", CycleView.class),
                 createTab(VaadinIcon.AIRPLANE, "cycleDetail", CycleDetailView.class),
+                createTab(VaadinIcon.ALARM, "pushNotification", PushNotificationView.class),
                 createTab(VaadinIcon.BUG, "log", LogView.class)
         );
         return tabs;
