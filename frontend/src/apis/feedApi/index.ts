@@ -56,7 +56,7 @@ export const useGetFeedById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetFeedByIdResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getFeedById,
+    [queryKeys.getFeedById, cycleDetailId],
     () => getFeedById({ cycleDetailId }),
     options,
   );
@@ -85,7 +85,7 @@ export const useGetCommentsById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetCommentsByIdResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getCommentsById,
+    [queryKeys.getCommentsById, cycleDetailId],
     () => getCommentsById({ cycleDetailId }),
     options,
   );
