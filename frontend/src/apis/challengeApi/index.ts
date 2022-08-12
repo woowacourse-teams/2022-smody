@@ -84,7 +84,7 @@ export const useGetChallengeById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetChallengeByIdResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getChallengeById,
+    [queryKeys.getChallengeById, challengeId],
     localStorage.getItem('accessToken')
       ? () => getChallengeByIdAuth({ challengeId })
       : () => getChallengeById({ challengeId }),
@@ -100,7 +100,7 @@ export const useGetChallengersById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetChallengersByIdResponse[]>, AxiosError<ErrorResponse>>(
-    queryKeys.getChallengersById,
+    [queryKeys.getChallengersById, challengeId],
     () => getChallengersById({ challengeId }),
     options,
   );
