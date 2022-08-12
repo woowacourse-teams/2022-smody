@@ -33,9 +33,9 @@ export const FeedItem = ({
     >
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <Text style={{ marginLeft: '0.313rem' }} size={16} color={themeContext.mainText}>
+        <Nickname size={16} color={themeContext.mainText}>
           {nickname}
-        </Text>
+        </Nickname>
         <ChallengeName
           size={20}
           color={themeContext.primary}
@@ -49,23 +49,17 @@ export const FeedItem = ({
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
       />
-      <Text
-        style={{ alignSelf: 'flex-end' }}
+      <Date
         size={12}
         color={themeContext.mainText}
-      >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
+      >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
       <Text size={16} color={themeContext.mainText}>
         {description}
       </Text>
       <Divider />
-      <Text
-        style={{ alignSelf: 'flex-end' }}
-        size={12}
-        color={themeContext.primary}
-        fontWeight="bold"
-      >
+      <CommentCount size={12} color={themeContext.primary} fontWeight="bold">
         {`댓글 ${commentCount}개 보기`}
-      </Text>
+      </CommentCount>
     </Wrapper>
   );
 };
@@ -87,6 +81,10 @@ const ProfileImg = styled.img`
   border-radius: 50%;
 `;
 
+const Nickname = styled(Text)`
+  margin-left: 0.313rem;
+`;
+
 const ChallengeName = styled(Text)`
   margin-left: auto;
   pointer-events: auto;
@@ -95,6 +93,14 @@ const ChallengeName = styled(Text)`
 const ProgressImg = styled.img`
   width: 100%;
   border-radius: 20px;
+`;
+
+const Date = styled(Text)`
+  align-self: flex-end;
+`;
+
+const CommentCount = styled(Text)`
+  align-self: flex-end;
 `;
 
 const Divider = styled.div`

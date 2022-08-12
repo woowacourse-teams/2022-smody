@@ -22,27 +22,18 @@ export const CommentItem = ({
     <Wrapper flexDirection="column">
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <Text
-          style={{ marginLeft: '0.625rem' }}
-          size={16}
-          color={themeContext.onBackground}
-        >
+        <NickName size={16} color={themeContext.onBackground}>
           {nickname}
-        </Text>
+        </NickName>
         {isWriter && (
-          <Text
-            style={{ marginLeft: '0.063rem' }}
-            size={12}
-            color={themeContext.mainText}
-          >
+          <Writer size={12} color={themeContext.mainText}>
             (작성자)
-          </Text>
+          </Writer>
         )}
-        <Text
-          style={{ marginLeft: 'auto' }}
+        <Date
           size={12}
           color={themeContext.mainText}
-        >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
+        >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
       </FlexBox>
       <ContentWrapper>
         <Content size={16} color={themeContext.mainText}>
@@ -61,6 +52,18 @@ const ProfileImg = styled.img`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
+`;
+
+const NickName = styled(Text)`
+  margin-left: 0.625rem;
+`;
+
+const Writer = styled(Text)`
+  margin-left: 0.063rem;
+`;
+
+const Date = styled(Text)`
+  margin-left: auto;
 `;
 
 const ContentWrapper = styled(FlexBox)`
