@@ -824,7 +824,7 @@ export const feedData = [
     picture:
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
-    progressImage: 'https://cdn.pixabay.com/photo/2015/03/09/18/34/beach-666122_1280.jpg',
+    progressImage: 'https://i.ibb.co/mJwjFq1/progress-Image.png',
     description: '바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
