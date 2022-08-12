@@ -10,6 +10,8 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
+import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.repository.PushSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CycleRepository cycleRepository;
     private final ImageStrategy imageStrategy;
+
+    private final PushSubscriptionRepository pushSubscriptionRepository;
+
+    private final PushNotificationRepository pushNotificationRepository;
 
     public MemberResponse searchMyInfo(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
@@ -40,6 +46,8 @@ public class MemberService {
     public void withdraw(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
         cycleRepository.deleteByMember(member);
+        pushNotificationRepository.deleteByMember(member);
+        pushSubscriptionRepository.deleteByMember(member);
         memberRepository.delete(member);
     }
 
