@@ -11,6 +11,7 @@ import useSnackBar from 'hooks/useSnackBar';
 import { CLIENT_PATH } from 'constants/path';
 
 const DEFAULT_INPUT_HEIGHT = '20px';
+const CONTENT_LENGTH_LIMIT = 255;
 const INITIAL_CONTENT = '';
 
 const useCommentInput = () => {
@@ -36,13 +37,13 @@ const useCommentInput = () => {
   const renderSnackBar = useSnackBar();
 
   const isWriteButtonDisabled = content.length === 0;
+  const isShowLengthWarning = content.length >= CONTENT_LENGTH_LIMIT - 1;
 
   const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
-    event.target.style.height = DEFAULT_INPUT_HEIGHT;
-    event.target.style.height = event.target.scrollHeight + 'px';
+    const { target } = event;
 
-    setContent(event.target.value);
+    resizeHeight(target);
+    setContent(target.value.slice(0, CONTENT_LENGTH_LIMIT));
   };
 
   const handleClickWrite = () => {
@@ -65,6 +66,12 @@ const useCommentInput = () => {
     queryClient.invalidateQueries(queryKeys.getCommentsById);
   };
 
+  const resizeHeight = (element: HTMLTextAreaElement) => {
+    // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
+    element.style.height = DEFAULT_INPUT_HEIGHT;
+    element.style.height = element.scrollHeight + 'px';
+  };
+
   const resizeToInitialHeight = () => {
     if (!commentInputRef.current) {
       return;
@@ -77,6 +84,7 @@ const useCommentInput = () => {
     commentInputRef,
     content,
     isWriteButtonDisabled,
+    isShowLengthWarning,
     handleChangeInput,
     handleClickWrite,
   };

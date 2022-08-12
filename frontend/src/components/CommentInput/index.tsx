@@ -1,22 +1,22 @@
+import { InnerWrapperProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
-import useThemeContext from 'hooks/useThemeContext';
-
-import { FlexBox } from 'components';
+import { FlexBox, ValidationMessage } from 'components';
 
 export const CommentInput = () => {
   const {
     commentInputRef,
     content,
     isWriteButtonDisabled,
+    isShowLengthWarning,
     handleChangeInput,
     handleClickWrite,
   } = useCommentInput();
 
   return (
-    <Wrapper alignItems="center">
-      <InnerWrapper alignItems="center">
+    <Wrapper flexDirection="column" alignItems="center">
+      <InnerWrapper alignItems="center" isShowLengthWarning={isShowLengthWarning}>
         <CommentInputElement
           ref={commentInputRef}
           value={content}
@@ -29,6 +29,15 @@ export const CommentInput = () => {
           작성
         </WriteButton>
       </InnerWrapper>
+      {isShowLengthWarning && (
+        <ValidationMessageWrapper>
+          <ValidationMessage
+            isValidated={false}
+            value={content}
+            message={'댓글은 최대 255자까지 입력할 수 있습니다.'}
+          />
+        </ValidationMessageWrapper>
+      )}
     </Wrapper>
   );
 };
@@ -45,11 +54,12 @@ const Wrapper = styled(FlexBox)`
   `}
 `;
 
-const InnerWrapper = styled(FlexBox)`
-  ${({ theme }) => css`
+const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`
+  ${({ theme, isShowLengthWarning }) => css`
     width: 100%;
     padding: 0.563rem 1.313rem;
     background-color: ${theme.input};
+    border: ${isShowLengthWarning ? `solid 2px ${theme.error}` : 'none'};
     border-radius: 20px;
   `}
 `;
@@ -78,4 +88,8 @@ const WriteButton = styled.button`
     color: ${theme.primary};
     visibility: ${disabled ? 'hidden' : 'visible'};
   `}
+`;
+
+const ValidationMessageWrapper = styled.div`
+  align-self: flex-start;
 `;
