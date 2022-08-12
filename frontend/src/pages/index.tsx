@@ -10,3 +10,4 @@ export { default as LandingPage } from 'pages/LandingPage';
 export { default as CycleDetailPage } from 'pages/CycleDetailPage';
 export { default as CertFormPage } from 'pages/CertFormPage';
 export { default as ChallengeCreatePage } from 'pages/ChallengeCreatePage';
+export { default as FeedDetailPage } from 'pages/FeedDetailPage';
