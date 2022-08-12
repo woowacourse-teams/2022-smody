@@ -20,6 +20,7 @@ const useCommentInput = () => {
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
   const { cycleDetailId } = useParams();
+  const renderSnackBar = useSnackBar();
 
   const { mutate: postComment, isLoading: isLoadingPostComment } = usePostComment(
     { cycleDetailId: Number(cycleDetailId) },
@@ -30,11 +31,14 @@ const useCommentInput = () => {
         setContent(INITIAL_CONTENT);
 
         resizeToInitialHeight();
+
+        renderSnackBar({
+          status: 'SUCCESS',
+          message: '댓글이 작성됐습니다.',
+        });
       },
     },
   );
-
-  const renderSnackBar = useSnackBar();
 
   const isVisibleWriteButton = content.length !== 0;
   const isShowLengthWarning = content.length >= CONTENT_LENGTH_LIMIT - 1;
