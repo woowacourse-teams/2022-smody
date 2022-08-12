@@ -72,8 +72,8 @@ const useChallengeCreatePage = () => {
     mutatePostChallenge({
       challengeName: challengeName.value,
       description: challengeDescription.value,
-      emoji: emojiSelectedIndex,
-      color: colorSelectedIndex,
+      emojiIndex: emojiSelectedIndex,
+      colorIndex: colorSelectedIndex,
     });
   };
 

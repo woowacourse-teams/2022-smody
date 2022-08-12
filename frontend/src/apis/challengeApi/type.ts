@@ -43,6 +43,6 @@ export interface GetChallengersByIdResponse {
 export interface PostChallengeProps {
   challengeName: string;
   description: string;
-  emoji: number;
-  color: number;
+  emojiIndex: number;
+  colorIndex: number;
 }
