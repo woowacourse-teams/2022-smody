@@ -8,10 +8,10 @@ import { isLoginState } from 'recoil/auth/atoms';
 
 import useSnackBar from 'hooks/useSnackBar';
 
+import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
-const CONTENT_LENGTH_LIMIT = 255;
 const INITIAL_CONTENT = '';
 
 const useCommentInput = () => {
@@ -41,13 +41,13 @@ const useCommentInput = () => {
   );
 
   const isVisibleWriteButton = content.length !== 0;
-  const isShowLengthWarning = content.length >= CONTENT_LENGTH_LIMIT - 1;
+  const isShowLengthWarning = content.length >= MAX_TEXTAREA_LENGTH - 1;
 
   const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { target } = event;
 
     resizeHeight(target);
-    setContent(target.value.slice(0, CONTENT_LENGTH_LIMIT));
+    setContent(target.value.slice(0, MAX_TEXTAREA_LENGTH));
   };
 
   const handleClickWrite = () => {

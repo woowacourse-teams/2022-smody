@@ -4,6 +4,8 @@ import styled, { css } from 'styled-components';
 
 import { FlexBox, ValidationMessage } from 'components';
 
+import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
+
 export const CommentInput = () => {
   const {
     commentInputRef,
@@ -23,7 +25,7 @@ export const CommentInput = () => {
           value={content}
           placeholder="다른 사용자와 소통해보세요!"
           rows={1}
-          maxLength={254}
+          maxLength={MAX_TEXTAREA_LENGTH - 1}
           onChange={handleChangeInput}
         />
         <WriteButton
