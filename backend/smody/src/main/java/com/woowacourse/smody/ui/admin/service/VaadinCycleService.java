@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VaadinCycleService implements SmodyVaddinService<Cycle> {
 
     private final CycleRepository cycleRepository;
+
     @Override
     @Transactional
     public void deleteById(Long id) {
