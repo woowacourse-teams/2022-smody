@@ -77,7 +77,7 @@ export const useGetCycleById = (
   >,
 ) =>
   useQuery<AxiosResponse<GetCycleByIdResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getCycleById,
+    [queryKeys.getCycleById, cycleId],
     () => getCycleById({ cycleId }),
     options,
   );
