@@ -21,6 +21,7 @@ public enum ExceptionData {
     NOT_FOUND_MEMBER(4001, "존재하지 않는 회원입니다.", 404),
     NOT_FOUND_CHALLENGE(4002, "존재하지 않는 챌린지입니다.", 404),
     NOT_FOUND_CYCLE(4003, "존재하지 않는 사이클입니다.", 404),
+    NOT_FOUND_CYCLE_DETAIL(4004, "존재하지 않는 피드입니다.", 404),
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다", 400),
 
@@ -39,4 +40,4 @@ public enum ExceptionData {
     private final int code;
     private final String message;
     private final int statusCode;
-}
+    }

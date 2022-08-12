@@ -11,18 +11,16 @@ import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.push.event.CycleProgressPushEvent;
-import com.woowacourse.smody.push.event.CycleProgressPushHandler;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
+import com.woowacourse.smody.push.event.CycleProgressPushEvent;
+import com.woowacourse.smody.push.event.CycleProgressPushHandler;
 import com.woowacourse.smody.repository.CycleRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
