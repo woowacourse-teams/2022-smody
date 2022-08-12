@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.woowacourse.smody.domain.*;
+import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.repository.PushSubscriptionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,9 +22,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -37,6 +37,12 @@ public class MemberServiceTest extends IntegrationTest {
 
     @Autowired
     private CycleRepository cycleRepository;
+
+    @Autowired
+    private PushSubscriptionRepository pushSubscriptionRepository;
+
+    @Autowired
+    private PushNotificationRepository pushNotificationRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -94,9 +100,18 @@ public class MemberServiceTest extends IntegrationTest {
     void withdraw() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, LocalDateTime.now());
+        Member member = fixture.회원_조회(조조그린_ID);
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
+        pushNotificationRepository.save(
+                new PushNotification(
+                "asd", LocalDateTime.now(), PushStatus.IN_COMPLETE, member
+                )
+        );
+        pushSubscriptionRepository.save(
+                new PushSubscription("zxc", "qwe", "iop", member
+                )
+        );
 
         // when
         memberService.withdraw(tokenPayload);
@@ -110,7 +125,9 @@ public class MemberServiceTest extends IntegrationTest {
                 () -> assertThat(cycleRepository.findAll())
                         .hasSize(0),
                 () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList())
-                        .hasSize(0)
+                        .hasSize(0),
+                () -> assertThat(pushNotificationRepository.findAll()).hasSize(0),
+                () -> assertThat(pushSubscriptionRepository.findAll()).hasSize(0)
         );
     }
 
