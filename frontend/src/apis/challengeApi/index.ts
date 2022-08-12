@@ -15,6 +15,7 @@ import {
   GetChallengersByIdResponse,
   GetChallengersByIdProps,
   PostChallengeProps,
+  GetChallengeProps,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
@@ -30,6 +31,7 @@ import {
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
+  { searchValue }: GetChallengeProps,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetChallengeResponse[]>,
     AxiosError<ErrorResponse>
@@ -38,8 +40,8 @@ export const useGetAllChallenges = (
   useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
     queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
-      ? ({ pageParam = 0 }) => getAllChallengesAuth(pageParam)
-      : ({ pageParam = 0 }) => getAllChallenges(pageParam),
+      ? ({ pageParam = 0 }) => getAllChallengesAuth(searchValue, pageParam)
+      : ({ pageParam = 0 }) => getAllChallenges(searchValue, pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {

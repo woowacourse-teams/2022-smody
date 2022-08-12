@@ -40,3 +40,4 @@ export * from 'components/BottomSheet';
 export * from 'components/Dropdown';
 export * from 'components/Bell';
 export * from 'components/SubscriptionButton';
+export * from 'components/SearchBar';
