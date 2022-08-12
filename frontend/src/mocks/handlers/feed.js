@@ -62,7 +62,7 @@ export const feed = [
 
     commentData.push(newCommentData);
 
-    return res(ctx.status(201));
+    return res(ctx.delay(2000), ctx.status(201));
   }),
   // 4. 댓글 조회(GET)
   rest.get(`${BASE_URL}/feeds/:cycleDetailId/comments`, (req, res, ctx) => {

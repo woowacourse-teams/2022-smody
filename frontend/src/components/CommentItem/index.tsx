@@ -70,6 +70,7 @@ const ContentWrapper = styled(FlexBox)`
 `;
 
 const Content = styled(Text)`
+  line-height: 1.5;
   word-wrap: break-word;
   word-break: break-all;
 `;

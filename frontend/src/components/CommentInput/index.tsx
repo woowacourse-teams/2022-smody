@@ -8,8 +8,9 @@ export const CommentInput = () => {
   const {
     commentInputRef,
     content,
-    isWriteButtonDisabled,
+    isVisibleWriteButton,
     isShowLengthWarning,
+    isLoadingPostComment,
     handleChangeInput,
     handleClickWrite,
   } = useCommentInput();
@@ -25,7 +26,11 @@ export const CommentInput = () => {
           maxLength={254}
           onChange={handleChangeInput}
         />
-        <WriteButton disabled={isWriteButtonDisabled} onClick={handleClickWrite}>
+        <WriteButton
+          disabled={!isVisibleWriteButton || isLoadingPostComment}
+          isVisible={isVisibleWriteButton}
+          onClick={handleClickWrite}
+        >
           작성
         </WriteButton>
       </InnerWrapper>
@@ -79,14 +84,14 @@ const CommentInputElement = styled.textarea`
   `}
 `;
 
-const WriteButton = styled.button`
-  ${({ theme, disabled }) => css`
+const WriteButton = styled.button<{ isVisible: boolean }>`
+  ${({ theme, disabled, isVisible }) => css`
     height: 20px;
     padding: 0 0.625rem;
     font-size: 0.75rem;
     font-weight: bold;
-    color: ${theme.primary};
-    visibility: ${disabled ? 'hidden' : 'visible'};
+    color: ${disabled ? theme.disabled : theme.primary};
+    visibility: ${isVisible ? 'visible' : 'hidden'};
   `}
 `;
 

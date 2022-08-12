@@ -10,7 +10,7 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const DEFAULT_INPUT_HEIGHT = '20px';
+const DEFAULT_INPUT_HEIGHT = '1.5rem';
 const CONTENT_LENGTH_LIMIT = 255;
 const INITIAL_CONTENT = '';
 
@@ -21,7 +21,7 @@ const useCommentInput = () => {
   const isLogin = useRecoilValue(isLoginState);
   const { cycleDetailId } = useParams();
 
-  const { mutate: postComment } = usePostComment(
+  const { mutate: postComment, isLoading: isLoadingPostComment } = usePostComment(
     { cycleDetailId: Number(cycleDetailId) },
     {
       onSuccess: () => {
@@ -36,7 +36,7 @@ const useCommentInput = () => {
 
   const renderSnackBar = useSnackBar();
 
-  const isWriteButtonDisabled = content.length === 0;
+  const isVisibleWriteButton = content.length !== 0;
   const isShowLengthWarning = content.length >= CONTENT_LENGTH_LIMIT - 1;
 
   const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,8 +83,9 @@ const useCommentInput = () => {
   return {
     commentInputRef,
     content,
-    isWriteButtonDisabled,
+    isVisibleWriteButton,
     isShowLengthWarning,
+    isLoadingPostComment,
     handleChangeInput,
     handleClickWrite,
   };
