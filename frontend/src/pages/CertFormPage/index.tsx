@@ -196,7 +196,6 @@ const TextArea = styled.textarea<TextAreaProps>`
     border: none;
     resize: none;
     font-size: 1rem;
-    font-weight: normal;
     background-color: ${isDark ? theme.input : theme.background};
     color: ${theme.onInput};
 

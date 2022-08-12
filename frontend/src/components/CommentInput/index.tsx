@@ -80,7 +80,6 @@ const CommentInputElement = styled.textarea`
     border: none;
     resize: none;
     font-size: 1rem;
-    font-weight: normal;
     color: ${theme.onInput};
   `}
 `;
