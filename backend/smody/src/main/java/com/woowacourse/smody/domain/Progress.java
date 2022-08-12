@@ -119,7 +119,7 @@ public enum Progress {
 
     public abstract long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
 
-    abstract public boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime);
+    public abstract boolean isIncreasePossible(LocalDateTime startTime, LocalDateTime progressTime);
 
     private static boolean isBetween(LocalDateTime startTime, LocalDateTime progressTime, Long interval) {
         LocalDateTime fromTime = startTime.plusDays(interval - 1L);

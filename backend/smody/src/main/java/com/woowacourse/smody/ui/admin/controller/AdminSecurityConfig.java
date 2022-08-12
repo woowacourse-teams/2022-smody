@@ -2,7 +2,6 @@ package com.woowacourse.smody.ui.admin.controller;
 
 
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
-import com.woowacourse.smody.ui.admin.controller.LoginView;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,7 +28,7 @@ public class AdminSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
                 "/challenges/**", "/cycles/**", "/members/**", "/oauth/**", "/docs/**", "/images/**",
-            "/web-push/**"
+                "/feeds/**", "/web-push/**", "/profile/**"
         );
     }
 
