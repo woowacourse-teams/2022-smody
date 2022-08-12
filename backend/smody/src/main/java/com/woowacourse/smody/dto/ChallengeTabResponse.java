@@ -23,6 +23,7 @@ public class ChallengeTabResponse {
         this.challengerCount = challengerCount;
         this.isInProgress = isInProgress;
         this.emojiIndex = challenge.getEmojiIndex();
+        this.colorIndex = challenge.getColorIndex();
     }
 
     public ChallengeTabResponse(Challenge challenge, Integer challengerCount) {
