@@ -4,6 +4,15 @@ export const PAGE_SIZE = {
   FEEDS: 10,
 };
 
+export const SORT = {
+  PROGRESS_TIME: 'progressTime',
+};
+
+export const ORDER = {
+  DESC: 'desc',
+  ASC: 'asc',
+};
+
 export const queryKeys = {
   getAllChallenges: 'getAllChallenges',
   getMySuccessChallenges: 'getMySuccessChallenges',
@@ -17,6 +26,8 @@ export const queryKeys = {
   getChallengersById: 'getChallengersById',
   getAllFeeds: 'getAllFeeds',
   getVapidPublicKey: 'getVapidPublicKey',
+  getFeedById: 'getFeedById',
+  getCommentsById: 'getCommentsById',
 };
 
 export const mutationKeys = {

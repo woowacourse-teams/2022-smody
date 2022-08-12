@@ -1,9 +1,29 @@
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
-import { getAllFeeds } from 'apis/feedApi/api';
-import { GetAllFeedsResponse } from 'apis/feedApi/type';
+import {
+  getAllFeeds,
+  getCommentsById,
+  getFeedById,
+  postComments,
+} from 'apis/feedApi/api';
+import {
+  GetAllFeedsResponse,
+  GetFeedByIdProps,
+  GetFeedByIdResponse,
+  GetCommentsByIdProps,
+  GetCommentsByIdResponse,
+  UsePostCommentProps,
+  UsePostCommentMutationFunctionProps,
+} from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
-import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
+import {
+  useQuery,
+  useMutation,
+  useInfiniteQuery,
+  UseQueryOptions,
+  UseMutationOptions,
+  UseInfiniteQueryOptions,
+} from 'react-query';
 
 // 1. 피드 전체 조회(GET)
 export const useGetAllFeeds = (
@@ -25,4 +45,47 @@ export const useGetAllFeeds = (
           : currentPage.data[currentDataLength - 1].cycleDetailId;
       },
     },
+  );
+
+// 2. id로 피드 조회(GET)
+export const useGetFeedById = (
+  { cycleDetailId }: GetFeedByIdProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetFeedByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetFeedByIdResponse>, AxiosError<ErrorResponse>>(
+    [queryKeys.getFeedById, cycleDetailId],
+    () => getFeedById({ cycleDetailId }),
+    options,
+  );
+
+// 3. 댓글 생성(POST)
+export const usePostComment = (
+  { cycleDetailId }: UsePostCommentProps,
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    UsePostCommentMutationFunctionProps
+  >,
+) =>
+  useMutation<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    UsePostCommentMutationFunctionProps
+  >(({ content }) => postComments({ cycleDetailId, content }), options);
+
+// 4. 댓글 조회(GET)
+export const useGetCommentsById = (
+  { cycleDetailId }: GetCommentsByIdProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetCommentsByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetCommentsByIdResponse>, AxiosError<ErrorResponse>>(
+    [queryKeys.getCommentsById, cycleDetailId],
+    () => getCommentsById({ cycleDetailId }),
+    options,
   );
