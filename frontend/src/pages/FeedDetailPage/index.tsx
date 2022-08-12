@@ -18,7 +18,7 @@ const FeedDetailPage = () => {
   return (
     <Wrapper flexDirection="column" alignItems="center">
       <FeedItem isClickable={false} {...feedData.data} />
-      <FlexBox as="ul" flexDirection="column" gap="1.563rem">
+      <CommentList as="ul" flexDirection="column" gap="1.563rem">
         {commentsData?.data.map((comment) => (
           <li key={comment.commentId}>
             <CommentItem
@@ -27,7 +27,7 @@ const FeedDetailPage = () => {
             />
           </li>
         ))}
-      </FlexBox>
+      </CommentList>
       <CommentInput />
     </Wrapper>
   );
@@ -37,4 +37,8 @@ export default FeedDetailPage;
 
 const Wrapper = styled(FlexBox)`
   padding-bottom: 6.625rem;
+`;
+
+const CommentList = styled(FlexBox)`
+  max-width: 440px;
 `;

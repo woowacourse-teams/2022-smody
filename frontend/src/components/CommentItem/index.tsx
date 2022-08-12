@@ -45,9 +45,9 @@ export const CommentItem = ({
         >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
       </FlexBox>
       <ContentWrapper>
-        <Text size={16} color={themeContext.mainText}>
+        <Content size={16} color={themeContext.mainText}>
           {content}
-        </Text>
+        </Content>
       </ContentWrapper>
     </Wrapper>
   );
@@ -66,4 +66,10 @@ const ProfileImg = styled.img`
 const ContentWrapper = styled(FlexBox)`
   margin-top: 0.625rem;
   margin-left: 3.125rem;
+  flex-wrap: wrap;
+`;
+
+const Content = styled(Text)`
+  word-wrap: break-word;
+  word-break: break-all;
 `;
