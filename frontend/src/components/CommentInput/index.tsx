@@ -1,4 +1,4 @@
-import { InnerWrapperProps } from './type';
+import { InnerWrapperProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
@@ -83,14 +83,18 @@ const CommentInputElement = styled.textarea`
   `}
 `;
 
-const WriteButton = styled.button<{ isVisible: boolean }>`
-  ${({ theme, disabled, isVisible }) => css`
+const WriteButton = styled.button<WriteButtonProps>`
+  ${({ theme, isVisible }) => css`
     height: 20px;
     padding: 0 0.625rem;
     font-size: 0.75rem;
     font-weight: bold;
-    color: ${disabled ? theme.disabled : theme.primary};
+    color: ${theme.primary};
     visibility: ${isVisible ? 'visible' : 'hidden'};
+
+    &:disabled {
+      color: ${theme.disabled};
+    }
   `}
 `;
 
