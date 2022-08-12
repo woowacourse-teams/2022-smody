@@ -1,8 +1,6 @@
-import { RefObject } from 'react';
-
-import { ChallengeItemProps } from 'components/ChallengeItem/type';
+import { GetChallengeResponse } from 'apis/challengeApi/type';
+import { AxiosResponse } from 'axios';
 
 export interface ChallengeListProps {
-  targetRef?: RefObject<HTMLLIElement>;
-  challengeListData?: ChallengeItemProps[];
+  challengeInfiniteData: AxiosResponse<GetChallengeResponse[]>[];
 }

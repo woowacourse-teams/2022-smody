@@ -11,8 +11,14 @@ import {
 import { PAGE_SIZE } from 'apis/constants';
 
 // 5. 모든 챌린지 조회(GET)- 비회원용
-export const getAllChallenges = async (pageParam: number) => {
-  const params = { page: pageParam, size: PAGE_SIZE.ALL_CHALLENGES };
+export const getAllChallenges = async (searchValue: string, pageParam: number) => {
+  const params =
+    searchValue === ''
+      ? {
+          page: pageParam,
+          size: PAGE_SIZE.ALL_CHALLENGES,
+        }
+      : { search: searchValue, page: pageParam, size: PAGE_SIZE.ALL_CHALLENGES };
 
   return apiClient.axios.get<GetChallengeResponse[]>(`/challenges`, {
     params,
@@ -20,8 +26,14 @@ export const getAllChallenges = async (pageParam: number) => {
 };
 
 // 5. 모든 챌린지 조회(GET) - 회원용
-export const getAllChallengesAuth = async (pageParam: number) => {
-  const params = { page: pageParam, size: PAGE_SIZE.ALL_CHALLENGES };
+export const getAllChallengesAuth = async (searchValue: string, pageParam: number) => {
+  const params =
+    searchValue === ''
+      ? {
+          page: pageParam,
+          size: PAGE_SIZE.ALL_CHALLENGES,
+        }
+      : { search: searchValue, page: pageParam, size: PAGE_SIZE.ALL_CHALLENGES };
 
   return authApiClient.axios.get<GetChallengeResponse[]>(`/challenges/auth`, {
     params,

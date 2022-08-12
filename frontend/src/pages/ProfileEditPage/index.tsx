@@ -79,10 +79,10 @@ const ProfileEditPage = () => {
     }
   }, [hasImageFormData, isSuccessPostImage, isSuccessPatchInfo]);
 
-  const email = useInput(dataMyInfo && dataMyInfo.data.email);
-  const nickname = useInput(dataMyInfo && dataMyInfo.data.nickname, validateNickname);
+  const email = useInput(dataMyInfo ? dataMyInfo.data.email : '');
+  const nickname = useInput(dataMyInfo ? dataMyInfo.data.nickname : '', validateNickname);
   const introduction = useInput(
-    dataMyInfo && dataMyInfo.data.introduction,
+    dataMyInfo ? dataMyInfo.data.introduction : '',
     validateIntroduction,
   );
 
