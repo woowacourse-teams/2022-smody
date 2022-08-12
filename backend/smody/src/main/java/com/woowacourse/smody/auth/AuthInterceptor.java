@@ -20,6 +20,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         RequiredLogin requiredLogin = handlerMethod.getMethodAnnotation(RequiredLogin.class);
         if (Objects.isNull(requiredLogin)) {
