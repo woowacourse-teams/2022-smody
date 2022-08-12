@@ -1,6 +1,13 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
@@ -14,15 +21,11 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
-import com.woowacourse.smody.push.event.CycleProgressPushEvent;
-import com.woowacourse.smody.push.event.CycleProgressPushHandler;
+import com.woowacourse.smody.push.event.PushEvent;
+import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.CycleRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,7 +36,7 @@ public class CycleService {
     private final MemberService memberService;
     private final ChallengeService challengeService;
     private final ImageStrategy imageStrategy;
-    private final CycleProgressPushHandler cycleProgressPushHandler;
+    private final PushEventHandler pushEventHandler;
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
@@ -47,7 +50,7 @@ public class CycleService {
         }
         Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
 
-        cycleProgressPushHandler.onApplicationEvent(new CycleProgressPushEvent(this, save));
+        pushEventHandler.onApplicationEvent(new PushEvent(this, save));
         return save.getId();
     }
 
@@ -68,7 +71,7 @@ public class CycleService {
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
 
-        cycleProgressPushHandler.onApplicationEvent(new CycleProgressPushEvent(this, cycle));
+        pushEventHandler.onApplicationEvent(new PushEvent(this, cycle));
         return new ProgressResponse(cycle.getProgress());
     }
 

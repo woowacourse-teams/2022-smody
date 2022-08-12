@@ -12,25 +12,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.image.ImageStrategy;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.CycleService;
+import com.woowacourse.smody.service.PushSubscriptionService;
 
-class CycleProgressPushHandlerTest extends IntegrationTest {
+class PushEventHandlerTest extends IntegrationTest {
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
@@ -38,6 +37,10 @@ class CycleProgressPushHandlerTest extends IntegrationTest {
 	@Autowired
 	@InjectMocks
 	private CycleService cycleService;
+
+	@Autowired
+	@InjectMocks
+	private PushSubscriptionService pushSubscriptionService;
 
 	@DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
 	@Test
@@ -59,7 +62,8 @@ class CycleProgressPushHandlerTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime)
+			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~")
 		);
 	}
 
@@ -90,7 +94,8 @@ class CycleProgressPushHandlerTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime)
+			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~")
 		);
 	}
 
@@ -115,5 +120,42 @@ class CycleProgressPushHandlerTest extends IntegrationTest {
 
 		// then
 		assertThat(pushNotificationRepository.findAll()).hasSize(0);
+	}
+
+	@DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")
+	@Test
+	void subscribe_pushNotification() {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
+			"endpoint-link", "p256dh", "auth");
+
+		// when
+		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
+
+		// then
+		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
+		assertAll(
+			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다.")
+		);
+	}
+
+	@DisplayName("구독 알림이 요청될 때 예외가 발생하면 비즈니스 예외로 변환한다.")
+	@Test
+	void subscribe_libraryException() {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
+			"endpoint-link", "p256dh", "auth");
+		doThrow(new BusinessException(ExceptionData.WEB_PUSH_ERROR))
+			.when(webPushService).sendNotification(any(), any());
+
+		// when // then
+		assertThatThrownBy(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest))
+			.isInstanceOf(BusinessException.class)
+			.extracting("exceptionData")
+			.isEqualTo(ExceptionData.WEB_PUSH_ERROR);
 	}
 }
