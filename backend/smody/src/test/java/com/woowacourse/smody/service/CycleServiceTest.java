@@ -76,9 +76,10 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void create() {
         // when
+        LocalDateTime time = LocalDateTime.of(1996, 8, 30, 8, 0);
         Long cycleId = cycleService.create(
                 new TokenPayload(조조그린_ID),
-                new CycleRequest(now, 스모디_방문하기_ID)
+                new CycleRequest(time, 스모디_방문하기_ID)
         );
         CycleResponse cycleResponse = cycleQueryService.findById(cycleId);
 
@@ -86,7 +87,7 @@ public class CycleServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(cycleResponse.getCycleId()).isEqualTo(cycleId),
                 () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(스모디_방문하기_ID),
-                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(now)
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(time)
         );
     }
 
@@ -103,6 +104,21 @@ public class CycleServiceTest extends IntegrationTest {
         )).isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+    }
+
+    @DisplayName("현재 시각 기준 24시간이 이후가 지난 시작시간을 가진 사이클을 생성할 때 예외를 발생시킨다.")
+    @Test
+    void create_overOneDay() {
+        // given
+        LocalDateTime invalidTime = LocalDateTime.now().plusDays(1L).plusSeconds(1L);
+
+        // when then
+        assertThatThrownBy(() -> cycleService.create(
+                new TokenPayload(조조그린_ID),
+                new CycleRequest(invalidTime, 알고리즘_풀기_ID)
+        )).isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_START_TIME);
     }
 
     @DisplayName("오늘 성공한 챌린지로 다시 사이클을 생성한 경우 사이클을 내일 날짜로 생성한다.")
