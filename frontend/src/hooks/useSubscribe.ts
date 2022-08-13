@@ -27,12 +27,6 @@ const useSubscribe = () => {
     setIsSubscribed(isAlreadySubscribed);
   }, [isAlreadySubscribed]);
 
-  const isAlreadySubscribed = !!pushStatus.pushSubscription;
-
-  useEffect(() => {
-    setIsSubscribed(isAlreadySubscribed);
-  }, [isAlreadySubscribed]);
-
   const pushSubscribe = () => {
     if (typeof vapid === 'undefined') {
       return;
