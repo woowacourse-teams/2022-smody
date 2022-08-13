@@ -1,25 +1,14 @@
 import ServiceExampleImage from 'assets/service_example.png';
 import styled, { keyframes } from 'styled-components';
 
-<<<<<<< HEAD
 import useInstallApp from 'hooks/useInstallApp';
-=======
-import useAuth from 'hooks/useAuth';
->>>>>>> d4de18d (fix: oAuth 로그인 후 redirect 시 화면 깜박임 및 서스펜스 관련 에러 해결)
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
 
 const LandingPage = () => {
   const themeContext = useThemeContext();
-<<<<<<< HEAD
-
   const { installApp } = useInstallApp();
-=======
-  const { redirectGoogleLoginLink } = useAuth();
-
-  const isLogin = useRecoilValue(isLoginState);
->>>>>>> d4de18d (fix: oAuth 로그인 후 redirect 시 화면 깜박임 및 서스펜스 관련 에러 해결)
 
   return (
     <Wrapper
