@@ -4,10 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.InProgressCycleResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -49,5 +46,19 @@ public class CycleQueryService {
                 .filter(Cycle::isSuccess)
                 .count();
         return new StatResponse(cycles.size(), successCount);
+    }
+
+    public List<CycleHistoryResponse> findAllWithChallenge(TokenPayload tokenPayload,
+                                                           CycleHistoryRequest cycleHistoryRequest,
+                                                           Long challengeId) {
+        List<Cycle> cycles = cycleService.searchByMemberAndChallenge(
+                tokenPayload.getId(), challengeId, cycleHistoryRequest
+        );
+        return cycles.stream()
+                .map(cycle -> new CycleHistoryResponse(cycle.getId(), cycle.getCycleDetails().stream()
+                        .map(cycleDetail -> new CycleDetailResponse(
+                                cycleDetail.getProgressTime(), cycleDetail.getProgressImage(), cycleDetail.getDescription()))
+                        .collect(toList())))
+                .collect(toList());
     }
 }
