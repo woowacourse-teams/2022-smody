@@ -1,5 +1,8 @@
 package com.woowacourse.smody.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -14,13 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.smody.dto.CommentResponse;
 import com.woowacourse.smody.dto.TokenPayload;
-import com.woowacourse.smody.service.FeedQueryService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -61,12 +62,12 @@ public class CommentControllerTest extends ControllerTest {
                 new CommentResponse(1L, "토닉", "토닉.jpg", 2L, "화이팅2",
                         LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
         );
-
-        BDDMockito.given(commentQueryService.findAllByFeed(1L))
+        given(commentQueryService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
                 .willReturn(responses);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds/1/comments"));
+
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(responses)))
@@ -96,11 +97,11 @@ public class CommentControllerTest extends ControllerTest {
                         LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
         );
 
-        BDDMockito.given(commentQueryService.findAllByFeed(1L))
+        given(commentQueryService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
                 .willReturn(responses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/feeds/1/comments")
+        ResultActions result = mockMvc.perform(get("/feeds/1/comments/auth")
                 .header("Authorization", "Bearer " + token));
         // then
         result.andExpect(status().isOk())

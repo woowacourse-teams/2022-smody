@@ -1,6 +1,9 @@
 package com.woowacourse.smody.controller;
 
+import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.CommentResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.CommentQueryService;
 import java.net.URI;
 import java.util.List;
@@ -19,11 +22,18 @@ public class CommentController {
 
     @PostMapping("/feeds/{cycleDetailId}/comments")
     public ResponseEntity<Void> create(@PathVariable Long cycleDetailId) {
-        return ResponseEntity.created(URI.create("/comments/" + 1)).build();
+        return ResponseEntity.created(URI.create("/comments/" + cycleDetailId)).build();
     }
 
     @GetMapping("/feeds/{cycleDetailId}/comments")
     public ResponseEntity<List<CommentResponse>> findAllByCycleDetailId(@PathVariable Long cycleDetailId) {
-        return ResponseEntity.ok(commentQueryService.findAllByFeed(cycleDetailId));
+        return ResponseEntity.ok(commentQueryService.findAllByCycleDetailId(new TokenPayload(0L), cycleDetailId));
+    }
+
+    @GetMapping("/feeds/{cycleDetailId}/comments/auth")
+    @RequiredLogin
+    public ResponseEntity<List<CommentResponse>> findAllByCycleDetailId(@LoginMember TokenPayload tokenPayload,
+                                                                        @PathVariable Long cycleDetailId) {
+        return ResponseEntity.ok(commentQueryService.findAllByCycleDetailId(tokenPayload, cycleDetailId));
     }
 }

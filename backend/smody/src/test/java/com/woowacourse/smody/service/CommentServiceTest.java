@@ -43,7 +43,7 @@ public class CommentServiceTest extends IntegrationTest {
                 new CommentRequest("댓글"));
 
         // then
-        assertThat(commentRepository.findById(commentId).get().getContext()).isEqualTo("댓글");
+        assertThat(commentRepository.findById(commentId).get().getContent()).isEqualTo("댓글");
     }
 
     @DisplayName("댓글 생성 시 생성된 시간을 가진다.")

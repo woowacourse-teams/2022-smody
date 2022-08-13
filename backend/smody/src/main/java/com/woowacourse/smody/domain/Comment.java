@@ -33,18 +33,22 @@ public class Comment extends AuditingEntity {
     private Member member;
 
     @Column(nullable = false)
-    private String context;
+    private String content;
 
-    public Comment(CycleDetail cycleDetail, Member member, String context) {
-        validateContext(context);
+    public Comment(CycleDetail cycleDetail, Member member, String content) {
+        validateContent(content);
         this.cycleDetail = cycleDetail;
         this.member = member;
-        this.context = context;
+        this.content = content;
     }
 
-    private void validateContext(String context) {
-        if (context.isBlank() || context.length() > 255) {
+    private void validateContent(String content) {
+        if (content.isBlank() || content.length() > 255) {
             throw new BusinessException(ExceptionData.INVALID_COMMENT_CONTENT);
         }
+    }
+
+    public boolean isCommentByMemberId(Long memberId) {
+        return this.member.getId().equals(memberId);
     }
 }
