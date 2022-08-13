@@ -130,4 +130,8 @@ public class CycleService {
     public List<Cycle> searchByMember(Member member) {
         return cycleRepository.findByMember(member);
     }
+
+    public List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId) {
+        return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
+    }
 }
