@@ -1,7 +1,10 @@
 import { useGetLinkGoogle } from 'apis';
+import { useGetNotifications } from 'apis/pushNotificationApi';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { isDarkState } from 'recoil/darkMode/atoms';
+
+import useSubscribe from 'hooks/useSubscribe';
 
 export const useHeader = () => {
   const [isDark, setIsDark] = useRecoilState(isDarkState);
@@ -9,6 +12,11 @@ export const useHeader = () => {
   const isLogin = useRecoilValue(isLoginState);
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
+
+  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
+
+  const { data: notificationData } = useGetNotifications({ suspense: false });
+  const notifications = notificationData?.data;
 
   const handleDarkToggle = () => {
     localStorage.setItem('isDark', JSON.stringify(!isDark));
@@ -24,5 +32,9 @@ export const useHeader = () => {
     isLogin,
     handleDarkToggle,
     handleLoginButton,
+    notifications,
+    isSubscribed,
+    subscribe,
+    isLoadingSubscribe,
   };
 };
