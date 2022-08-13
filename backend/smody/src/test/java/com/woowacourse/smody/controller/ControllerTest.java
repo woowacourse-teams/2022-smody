@@ -10,6 +10,7 @@ import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
+import com.woowacourse.smody.service.CommentQueryService;
 import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.FeedQueryService;
@@ -75,6 +76,9 @@ public class ControllerTest {
 
     @MockBean
     protected FeedQueryService feedQueryService;
+
+    @MockBean
+    protected CommentQueryService commentQueryService;
 
     @MockBean
     protected GoogleApi googleApi;

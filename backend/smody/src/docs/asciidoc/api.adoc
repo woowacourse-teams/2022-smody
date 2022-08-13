@@ -115,7 +115,18 @@ include::{snippets}/get-feed/http-request.adoc[]
 include::{snippets}/get-feed/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-feed/response-fields.adoc[]
+
 = 댓글
+== 모든 댓글 조회 (비회원/회원)
+=== Request
+include::{snippets}/get-all-comments/http-request.adoc[]
+include::{snippets}/get-all-comments-auth/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-comments/http-response.adoc[]
+include::{snippets}/get-all-comments-auth/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-comments/response-fields.adoc[]
+
 == 댓글 생성
 === Request
 include::{snippets}/create-comment/http-request.adoc[]

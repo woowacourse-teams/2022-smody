@@ -5,14 +5,22 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.dto.CommentResponse;
 import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.service.FeedQueryService;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -41,5 +49,73 @@ public class CommentControllerTest extends ControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("댓글")
                         )
                 ));
+    }
+
+    @DisplayName("비회원이 특정 피드의 모든 댓글을 조회할 때 200을 응답한다.")
+    @Test
+    void findAllNotLogin() throws Exception {
+        // given
+        List<CommentResponse> responses = List.of(
+                new CommentResponse(1L, "토닉", "토닉.jpg", 1L, "화이팅1",
+                        LocalDateTime.of(2022, 1, 1, 0, 0, 0), false),
+                new CommentResponse(1L, "토닉", "토닉.jpg", 2L, "화이팅2",
+                        LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
+        );
+
+        BDDMockito.given(commentQueryService.findAllByFeed(1L))
+                .willReturn(responses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/feeds/1/comments"));
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(responses)))
+                .andDo(document("get-all-comments", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member Id"),
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[].picture").type(JsonFieldType.STRING).description("사진"),
+                                fieldWithPath("[].commentId").type(JsonFieldType.NUMBER).description("Comment Id"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("댓글 내용"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성된 시간"),
+                                fieldWithPath("[].isMyComment").type(JsonFieldType.BOOLEAN).description("내가 작성한 댓글인지")
+                        ))
+                );
+    }
+
+    @DisplayName("회원이 특정 피드의 모든 댓글을 조회할 때 200을 응답한다.")
+    @Test
+    void findAllLogin() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        List<CommentResponse> responses = List.of(
+                new CommentResponse(1L, "토닉", "토닉.jpg", 1L, "화이팅1",
+                        LocalDateTime.of(2022, 1, 1, 0, 0, 0), true),
+                new CommentResponse(2L, "알파", "토닉.jpg", 2L, "화이팅2",
+                        LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
+        );
+
+        BDDMockito.given(commentQueryService.findAllByFeed(1L))
+                .willReturn(responses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/feeds/1/comments")
+                .header("Authorization", "Bearer " + token));
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(responses)))
+                .andDo(document("get-all-comments-auth", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member Id"),
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[].picture").type(JsonFieldType.STRING).description("사진"),
+                                fieldWithPath("[].commentId").type(JsonFieldType.NUMBER).description("Comment Id"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("댓글 내용"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성된 시간"),
+                                fieldWithPath("[].isMyComment").type(JsonFieldType.BOOLEAN).description("내가 작성한 댓글인지")
+                        ))
+                );
     }
 }
