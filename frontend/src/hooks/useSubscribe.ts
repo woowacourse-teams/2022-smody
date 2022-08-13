@@ -11,7 +11,9 @@ const useSubscribe = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoadingSubscribe, setIsLoadingSubscribe] = useState(false);
 
-  const { refetch: getVapidPublicKey, data: vapid } = useGetVapidPublicKey();
+  const { refetch: getVapidPublicKey, data: vapid } = useGetVapidPublicKey({
+    suspense: false,
+  });
   const { mutate: postSubscribe } = usePostSubscribe();
   const { mutate: postUnsubscribe } = usePostUnsubscribe();
 

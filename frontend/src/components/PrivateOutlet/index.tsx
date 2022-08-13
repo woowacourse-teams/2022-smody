@@ -1,16 +1,17 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
+import useAuth from 'hooks/useAuth';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { LoadingSpinner } from 'components/LoadingSpinner';
-import { PrivateOutletProps } from 'components/PrivateOutlet/type';
 
 import { CLIENT_PATH } from 'constants/path';
 
-export const PrivateOutlet = ({ isLogin, isLoading }: PrivateOutletProps) => {
+export const PrivateOutlet = () => {
+  const { isLogin, isLoadingMyInfo } = useAuth();
   const renderSnackBar = useSnackBar();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoadingMyInfo) return <LoadingSpinner />;
 
   if (!isLogin) {
     renderSnackBar({
