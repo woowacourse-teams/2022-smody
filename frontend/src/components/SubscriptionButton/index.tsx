@@ -59,11 +59,11 @@ export const SubscriptionButton = ({
           fontWeight="bold"
           underLineColor={themeContext.primary}
         >
-          {!isAbleSubscribe ? '알림 설정 불가' : isSubscribed ? '알림 끄기' : '알림 켜기'}
+          알림 설정
         </UnderLineText>
 
         <ToggleButton
-          disabled={!isAbleSubscribe || isLoadingSubscribe}
+          disabled={isLoadingSubscribe}
           checked={isSubscribed}
           handleChange={subscribe}
         />
