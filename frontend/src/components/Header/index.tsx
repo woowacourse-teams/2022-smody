@@ -1,7 +1,5 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
-import { pushStatus } from 'pushStatus';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 

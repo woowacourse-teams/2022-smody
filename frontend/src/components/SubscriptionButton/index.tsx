@@ -1,6 +1,6 @@
 import { SubscriptionButtonProps } from './type';
 import LoadingDots from 'assets/loading_dots.svg';
-import { pushStatus } from 'pushStatus';
+import { pushStatus } from 'push/pushStatus';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
