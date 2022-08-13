@@ -7,9 +7,6 @@ import { pushStatus } from 'pushStatus';
 import { useEffect, useState } from 'react';
 import { urlB64ToUint8Array } from 'utils';
 
-let pushSupport = false;
-let userSubscription: PushSubscription | null;
-
 const useSubscribe = () => {
   const isAlreadySubscribed = !!pushStatus.pushSubscription;
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -30,7 +27,7 @@ const useSubscribe = () => {
       navigator.serviceWorker.ready.then((registration) => {
         if (registration.pushManager) {
           console.log('0-1 registration.pushManager', registration.pushManager);
-          pushSupport = true;
+          pushStatus.pushSupport = true;
 
           // 구독 정보 불러오기
           registration.pushManager.getSubscription().then((subscription) => {
@@ -38,8 +35,8 @@ const useSubscribe = () => {
             if (subscription === null) {
               return;
             }
-            userSubscription = subscription;
-            console.log('0-2 userSubscription', userSubscription);
+            pushStatus.pushSubscription = subscription;
+            console.log('0-2 pushStatus.pushSubscription', pushStatus.pushSubscription);
           });
         }
       });
@@ -71,13 +68,13 @@ const useSubscribe = () => {
         .then((subscription) => {
           // 애플리케이션 서버로 구독 정보 전달
           postSubscribe(subscription);
-          userSubscription = subscription;
-          console.log('3-Push subscribed!', userSubscription);
+          pushStatus.pushSubscription = subscription;
+          console.log('3-Push subscribed!', pushStatus.pushSubscription);
           setIsSubscribed(true);
           setIsLoadingSubscribe(false);
         })
         .catch((err) => {
-          userSubscription = null;
+          pushStatus.pushSubscription = null;
           console.error('Push subscribe failed:', err);
         });
     });
@@ -85,17 +82,17 @@ const useSubscribe = () => {
 
   // 푸시 구독 취소
   const pushUnsubscribe = () => {
-    if (!userSubscription) {
+    if (!pushStatus.pushSubscription) {
       return;
     }
 
     // 푸시 서비스 구독 취소
-    userSubscription.unsubscribe().then((result) => {
-      console.log('4-Push unsubscribed:', userSubscription, result);
-      if (result && userSubscription) {
+    pushStatus.pushSubscription.unsubscribe().then((result) => {
+      console.log('4-Push unsubscribed:', pushStatus.pushSubscription, result);
+      if (result && pushStatus.pushSubscription) {
         // 애플리케이션 서버에 저장된 구독 정보 지우기
-        postUnsubscribe(userSubscription.endpoint);
-        userSubscription = null;
+        postUnsubscribe(pushStatus.pushSubscription.endpoint);
+        pushStatus.pushSubscription = null;
         setIsSubscribed(false);
       }
     });
@@ -104,7 +101,7 @@ const useSubscribe = () => {
   const subscribe = () => {
     //  권한 확인 및 요청
     console.log('시작');
-    if (!pushSupport) {
+    if (!pushStatus.pushSupport) {
       console.log('1');
       return;
     }
@@ -115,7 +112,7 @@ const useSubscribe = () => {
         return;
       }
 
-      if (userSubscription) {
+      if (pushStatus.pushSubscription) {
         pushUnsubscribe();
       } else {
         pushSubscribe();
