@@ -1,4 +1,5 @@
 import { CommentItemProps } from './type';
+import MoreIcon from 'assets/more.svg';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 
@@ -7,13 +8,12 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text } from 'components';
 
 export const CommentItem = ({
-  commentId,
-  memberId,
   nickname,
   picture,
   content,
   createdAt,
   isWriter,
+  isMyComment,
 }: CommentItemProps) => {
   const themeContext = useThemeContext();
   const { year, month, date, hours, minutes } = parseTime(createdAt);
@@ -22,18 +22,27 @@ export const CommentItem = ({
     <Wrapper flexDirection="column">
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <NickName size={16} color={themeContext.onBackground}>
-          {nickname}
-        </NickName>
-        {isWriter && (
-          <Writer size={12} color={themeContext.mainText}>
-            (작성자)
-          </Writer>
+        <CommentInfoWrapper flexDirection="column">
+          <FlexBox>
+            <Text size={16} color={themeContext.onBackground}>
+              {nickname}
+            </Text>
+            {isWriter && (
+              <Writer size={12} color={themeContext.mainText}>
+                (작성자)
+              </Writer>
+            )}
+          </FlexBox>
+          <Text
+            size={12}
+            color={themeContext.mainText}
+          >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
+        </CommentInfoWrapper>
+        {isMyComment && (
+          <MoreIconWrapper>
+            <MoreIcon />
+          </MoreIconWrapper>
         )}
-        <Date
-          size={12}
-          color={themeContext.mainText}
-        >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
       </FlexBox>
       <ContentWrapper>
         <Content size={16} color={themeContext.mainText}>
@@ -54,16 +63,18 @@ const ProfileImg = styled.img`
   border-radius: 50%;
 `;
 
-const NickName = styled(Text)`
-  margin-left: 0.625rem;
+const CommentInfoWrapper = styled(FlexBox)`
+  margin-left: 1.125rem;
 `;
 
 const Writer = styled(Text)`
   margin-left: 0.063rem;
 `;
 
-const Date = styled(Text)`
+const MoreIconWrapper = styled.div`
   margin-left: auto;
+  padding-left: 0.5rem;
+  cursor: pointer;
 `;
 
 const ContentWrapper = styled(FlexBox)`
