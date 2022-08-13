@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FeedService {
 
-    private final FeedRepository cycleDetailRepository;
+    private final FeedRepository feedRepository;
 
     public CycleDetail search(Long cycleDetailId) {
-        return cycleDetailRepository.findById(cycleDetailId)
+        return feedRepository.findById(cycleDetailId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
     }
 }

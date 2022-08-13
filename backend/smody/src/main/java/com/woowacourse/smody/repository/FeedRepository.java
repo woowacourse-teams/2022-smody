@@ -20,5 +20,5 @@ public interface FeedRepository extends JpaRepository<CycleDetail, Long> {
             + "join c.challenge ch "
             + "join c.member m "
             + "where cd.progressTime <= :time and cd.id <> :id ")
-    List<Feed> findAllLatest(@Param("id") Long id, @Param("time") LocalDateTime time, Pageable pageable);
+    List<Feed> findAll(@Param("id") Long id, @Param("time") LocalDateTime time, Pageable pageable);
 }

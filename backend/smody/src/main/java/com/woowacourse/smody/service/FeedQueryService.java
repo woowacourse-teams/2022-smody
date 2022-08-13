@@ -25,12 +25,12 @@ public class FeedQueryService {
         Pageable pageRequest = feedRequest.toPageRequest();
 
         if (feedRequest.getLastCycleDetailId() == null) {
-            List<Feed> feeds = feedRepository.findAllLatest(0L, LocalDateTime.now(), pageRequest);
+            List<Feed> feeds = feedRepository.findAll(0L, LocalDateTime.now(), pageRequest);
             return convertFeedResponse(feeds);
         }
 
         CycleDetail cycleDetail = feedService.search(feedRequest.getLastCycleDetailId());
-        List<Feed> feeds = feedRepository.findAllLatest(cycleDetail.getId(), cycleDetail.getProgressTime(),
+        List<Feed> feeds = feedRepository.findAll(cycleDetail.getId(), cycleDetail.getProgressTime(),
                 pageRequest);
         return convertFeedResponse(feeds);
     }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum ExceptionData {
 
     INVALID_INTRODUCTION_LENGTH(1001, "소개글 길이는 30 자 이내입니다.", 400),
+    INVALID_COMMENT_CONTENT(1002, "댓글의 길이는 1자 이상 255자 이하 입니다.", 400),
 
     INVALID_TOKEN(2002, "유효하지 않은 토큰입니다.", 403),
     UNAUTHORIZED_MEMBER(2003, "인가되지 않은 회원입니다.", 403),
