@@ -42,7 +42,7 @@ public class CycleControllerTest extends ControllerTest {
     void create_201() throws Exception {
         // given
         Long cycleId = 1L;
-        Map<String, Integer> param = Map.of("challengeId", 1);
+        CycleRequest request = new CycleRequest(LocalDateTime.now(), 1L);
         given(cycleService.create(any(TokenPayload.class), any(CycleRequest.class))).willReturn(cycleId);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
@@ -50,7 +50,7 @@ public class CycleControllerTest extends ControllerTest {
         ResultActions result = mockMvc.perform(post("/cycles")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token)
-                .content(objectMapper.writeValueAsString(param)));
+                .content(objectMapper.writeValueAsString(request)));
 
         // then
         result.andExpect(status().isCreated())
@@ -59,7 +59,8 @@ public class CycleControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
 
                         requestFields(
-                                fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id")
+                                fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
+                                fieldWithPath("startTime").type(JsonFieldType.STRING).description("사이클 시작 시간")
                         )));
     }
 
