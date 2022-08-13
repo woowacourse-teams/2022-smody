@@ -46,11 +46,10 @@ export const SnackBar = () => {
 const SnackBarElement = styled.div<{ status: string }>`
   ${({ theme, status }) => css`
     z-index: ${Z_INDEX.SNACKBAR};
-    width: 95%;
-    max-width: 900px;
+    width: 80%;
     margin: 0;
     text-align: center;
-    padding: 1rem;
+    padding: 1.1rem;
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
