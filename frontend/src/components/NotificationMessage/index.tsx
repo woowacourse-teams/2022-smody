@@ -23,20 +23,33 @@ export const NotificationMessage = ({
       queryClient.invalidateQueries(queryKeys.getNotifications);
     },
   });
-  const handleClickNotification = (pushNotificationId: number) => {
+  const handleClickNotification = ({
+    pushNotificationId,
+    pathId,
+    type,
+  }: {
+    pushNotificationId: number;
+    pathId?: number;
+    type?: string;
+  }) => {
     deleteNotification({ pushNotificationId });
-    navigate('/feed');
+    if (type === 'comment') {
+      navigate(`/feed/detail/${pathId}`);
+    }
+    if (type === 'challenge') {
+      navigate(`/cycle/detail/${pathId}`);
+    }
     // TODO : 네비게이트 시킬 라우터 패스, 백엔드로부터 받기
-    // 댓글 달릴 경우 -> cycleDetailId 받기 '/feed/detail/:cycleDetailId',
     // 인증 마감 임박 알릴 경우 -> cycleId 받기 '/cycle/detail/:cycleId',
+    // 댓글 달릴 경우 -> cycleDetailId 받기 '/feed/detail/:cycleDetailId',
   };
 
   return (
     <div>
-      {notifications?.map(({ pushNotificationId, message, pushTime }) => (
+      {notifications?.map(({ pushNotificationId, message, pushTime, pathId, type }) => (
         <NotificationWrapper
           key={pushNotificationId}
-          onClick={() => handleClickNotification(pushNotificationId)}
+          onClick={() => handleClickNotification({ pushNotificationId, pathId, type })}
           flexDirection="column"
           gap="4px"
           alignItems="flex-start"
