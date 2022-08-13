@@ -43,9 +43,13 @@ export const push = [
   }),
 
   // 읽은 알림 삭제(DELETE)
-  rest.delete(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
-    const { pushNotificationId } = req.body;
-    delete notifications[pushNotificationId];
-    return res(ctx.status(200), ctx.json(notifications));
+  rest.delete(`${BASE_URL}/push-notifications/:pushNotificationId`, (req, res, ctx) => {
+    const { pushNotificationId } = req.params;
+    const index = notifications.findIndex(
+      (notification) => notification.pushNotificationId === Number(pushNotificationId),
+    );
+
+    notifications.splice(index, 1);
+    return res(ctx.status(200));
   }),
 ];

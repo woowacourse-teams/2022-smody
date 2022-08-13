@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import useSubscribe from 'hooks/useSubscribe';
 import useThemeContext from 'hooks/useThemeContext';
 
 import {
@@ -26,10 +25,16 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
-  const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
-  const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
-  const { data: notificationData } = useGetNotifications({ suspense: false });
-  const notifications = notificationData?.data;
+  const {
+    isDark,
+    isLogin,
+    handleDarkToggle,
+    handleLoginButton,
+    notifications,
+    isSubscribed,
+    subscribe,
+    isLoadingSubscribe,
+  } = useHeader();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">

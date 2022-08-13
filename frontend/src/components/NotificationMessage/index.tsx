@@ -1,4 +1,7 @@
+import { queryKeys } from 'apis/constants';
+import { useDeleteNotification } from 'apis/pushNotificationApi';
 import { GetNotificationsResponse } from 'apis/pushNotificationApi/type';
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { parseTime } from 'utils';
@@ -14,9 +17,18 @@ export const NotificationMessage = ({
 }) => {
   const navigate = useNavigate();
   const themeContext = useThemeContext();
-
-  const handleClickNotification = () => {
+  const queryClient = useQueryClient();
+  const { mutate: deleteNotification } = useDeleteNotification({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.getNotifications);
+    },
+  });
+  const handleClickNotification = (pushNotificationId: number) => {
+    deleteNotification({ pushNotificationId });
     navigate('/feed');
+    // TODO : 네비게이트 시킬 라우터 패스, 백엔드로부터 받기
+    // 댓글 달릴 경우 -> cycleDetailId 받기 '/feed/detail/:cycleDetailId',
+    // 인증 마감 임박 알릴 경우 -> cycleId 받기 '/cycle/detail/:cycleId',
   };
 
   return (
@@ -24,7 +36,7 @@ export const NotificationMessage = ({
       {notifications?.map(({ pushNotificationId, message, pushTime }) => (
         <NotificationWrapper
           key={pushNotificationId}
-          onClick={handleClickNotification}
+          onClick={() => handleClickNotification(pushNotificationId)}
           flexDirection="column"
           gap="4px"
           alignItems="flex-start"
