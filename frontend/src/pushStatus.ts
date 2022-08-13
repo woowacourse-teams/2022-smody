@@ -5,11 +5,11 @@ type PushStatus = {
   notificationPermission: 'granted' | 'default' | 'denied' | false;
 };
 
-const isSupported = () =>
-  'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
+export const isSupported = () =>
+  'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window;
 
 export const pushStatus: PushStatus = {
-  pushSupport: false,
+  pushSupport: isSupported(),
   serviceWorkerRegistration: null,
   pushSubscription: null,
   notificationPermission: isSupported() && Notification.permission,

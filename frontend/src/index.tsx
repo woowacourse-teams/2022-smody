@@ -3,10 +3,10 @@ import { pushStatus } from 'pushStatus';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
-const registerServiceWorker = async () => {
+const registerPushServiceWorker = async () => {
   let registration = await navigator.serviceWorker.getRegistration();
   if (!registration) {
-    registration = await navigator.serviceWorker.register('serviceWorker.js');
+    registration = await navigator.serviceWorker.register('pushServiceWorker.js');
   }
 
   pushStatus.serviceWorkerRegistration = registration ?? null;
@@ -15,12 +15,12 @@ const registerServiceWorker = async () => {
 };
 
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  registerServiceWorker();
+  registerPushServiceWorker();
 }
 
 if (process.env.NODE_ENV === 'development' && !process.env.IS_LOCAL) {
-  const { worker } = require('./mocks/browser');
-  worker.start();
+  const { mockServiceWorker } = require('./mocks/browser');
+  mockServiceWorker.start();
 }
 
 const rootElement = document.getElementById('root');
