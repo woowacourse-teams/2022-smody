@@ -2,6 +2,7 @@ import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import {
   getAllFeeds,
   getCommentsById,
+  getCommentsByIdAuth,
   getFeedById,
   postComments,
 } from 'apis/feedApi/api';
@@ -9,7 +10,7 @@ import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
   GetFeedByIdResponse,
-  GetCommentsByIdProps,
+  UseGetCommentsByIdProps,
   GetCommentsByIdResponse,
   UsePostCommentProps,
   UsePostCommentMutationFunctionProps,
@@ -78,7 +79,7 @@ export const usePostComment = (
 
 // 4. 댓글 조회(GET)
 export const useGetCommentsById = (
-  { cycleDetailId }: GetCommentsByIdProps,
+  { cycleDetailId, isLogin }: UseGetCommentsByIdProps,
   options?: UseQueryOptions<
     AxiosResponse<GetCommentsByIdResponse>,
     AxiosError<ErrorResponse>
@@ -86,6 +87,8 @@ export const useGetCommentsById = (
 ) =>
   useQuery<AxiosResponse<GetCommentsByIdResponse>, AxiosError<ErrorResponse>>(
     [queryKeys.getCommentsById, cycleDetailId],
-    () => getCommentsById({ cycleDetailId }),
+    isLogin
+      ? () => getCommentsByIdAuth({ cycleDetailId })
+      : () => getCommentsById({ cycleDetailId }),
     options,
   );

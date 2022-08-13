@@ -63,7 +63,7 @@ export const feed = [
 
     return res(ctx.delay(2000), ctx.status(201));
   }),
-  // 4. 댓글 조회(GET)
+  // 4. 댓글 조회(GET) - 비회원용
   rest.get(`${BASE_URL}/feeds/:cycleDetailId/comments`, (req, res, ctx) => {
     const { cycleDetailId } = req.params;
 
@@ -73,6 +73,35 @@ export const feed = [
         ctx.json({
           code: 4002,
           message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    return res(ctx.status(200), ctx.json(commentData));
+  }),
+  // 4. 댓글 조회(GET) - 회원용
+  rest.get(`${BASE_URL}/feeds/:cycleDetailId/comments/auth`, (req, res, ctx) => {
+    const { cycleDetailId } = req.params;
+    const { authorization } = req.headers.headers;
+
+    const accessToken = authorization.split(' ')[1];
+
+    if (Number.isNaN(cycleDetailId) || cycleDetailId > feedData.length) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    if (accessToken !== accessTokenData) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          code: 2002,
+          message: '유효하지 않은 토큰입니다.',
         }),
       );
     }

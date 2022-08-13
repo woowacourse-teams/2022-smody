@@ -34,7 +34,14 @@ export const postComments = async ({ cycleDetailId, content }: PostCommentProps)
   });
 };
 
-// 4. 댓글 조회(GET)
+// 4. 댓글 조회(GET) - 비회원용
 export const getCommentsById = ({ cycleDetailId }: GetCommentsByIdProps) => {
   return apiClient.axios.get<GetCommentsByIdResponse>(`/feeds/${cycleDetailId}/comments`);
+};
+
+// 4. 댓글 조회(GET) - 회원용
+export const getCommentsByIdAuth = ({ cycleDetailId }: GetCommentsByIdProps) => {
+  return authApiClient.axios.get<GetCommentsByIdResponse>(
+    `/feeds/${cycleDetailId}/comments/auth`,
+  );
 };

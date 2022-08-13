@@ -1159,6 +1159,7 @@ export const commentData = [
     content:
       '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: true,
   },
   {
     commentId: 2,
@@ -1169,6 +1170,7 @@ export const commentData = [
     content:
       'sadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsfdsfsafsadfasdfasfsdfsafdsf',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: false,
   },
   {
     commentId: 3,
@@ -1178,6 +1180,7 @@ export const commentData = [
     content:
       '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: true,
   },
   {
     commentId: 4,
@@ -1187,6 +1190,7 @@ export const commentData = [
     nickname: '유저1',
     content: '꾸준히 도전하시는 모습이 멋있네요!! 응원하겠습니다~!',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: false,
   },
   {
     commentId: 5,
@@ -1196,6 +1200,7 @@ export const commentData = [
     content:
       '와우 대단한데요~~! 많은 자극 받고 갑니다ㅎㅎ 저도 내일부터 다시 도전해 봐야겠어요!!',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: true,
   },
   {
     commentId: 6,
@@ -1205,6 +1210,7 @@ export const commentData = [
     nickname: '유저1',
     content: '꾸준히 도전하시는 모습이 멋있네요!! 응원하겠습니다~!',
     createdAt: '2022-08-08T10:00:00',
+    isMyComment: false,
   },
 ];
 
