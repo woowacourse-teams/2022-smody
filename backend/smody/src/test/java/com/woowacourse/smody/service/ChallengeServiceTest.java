@@ -1,5 +1,21 @@
 package com.woowacourse.smody.service;
 
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.woowacourse.smody.dto.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
 import static com.woowacourse.smody.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
@@ -16,12 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.ChallengeRequest;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengeTabResponse;
-import com.woowacourse.smody.dto.ChallengersResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -555,5 +565,46 @@ class ChallengeServiceTest extends IntegrationTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
+    }
+
+    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
+    @Test
+    void findOneWithMine() {
+        //given
+        fixture.사이클_생성_FIRST(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(6L));
+        fixture.사이클_생성_SECOND(알파_ID, 알고리즘_풀기_ID, now.minusDays(9L));
+
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when
+        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findOneWithMine(
+                tokenPayload, 알고리즘_풀기_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("알고리즘 풀기"),
+                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(2),
+                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(8)
+        );
+    }
+
+    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
+    @Test
+    void findOneWithMine_notParticipate() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(6L));
+        fixture.사이클_생성_SECOND(알파_ID, 알고리즘_풀기_ID, now.minusDays(9L));
+
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when then
+        assertThatThrownBy(() -> challengeQueryService.findOneWithMine(tokenPayload, 오늘의_운동_ID))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
     }
 }

@@ -42,4 +42,6 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
+
+    List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId);
 }
