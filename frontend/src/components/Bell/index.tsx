@@ -38,7 +38,7 @@ const BellCount = styled.em`
   width: 1.3rem;
   height: 1.3rem;
   font-size: 0.9rem;
-  padding-top: 2px;
+  padding-top: 5px;
   border-radius: 50%;
   background-color: red;
   color: white;
