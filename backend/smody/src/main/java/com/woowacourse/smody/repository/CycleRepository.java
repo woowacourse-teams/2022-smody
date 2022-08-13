@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface CycleRepository extends JpaRepository<Cycle, Long> {
+public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
 
     List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
 
