@@ -1,5 +1,14 @@
 package com.woowacourse.smody.service;
 
+import static java.util.stream.Collectors.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import com.woowacourse.smody.dto.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Challenge;
@@ -106,6 +115,12 @@ public class CycleService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
+    }
+
+    public List<Cycle> searchByMemberAndChallenge(Long memberId, Long challengeId, CycleHistoryRequest cycleHistoryRequest) {
+        return cycleRepository.findAllFilterBy(
+                memberId, challengeId, cycleHistoryRequest.getFilter(),
+                cycleHistoryRequest.getLastCycleDetailId(), cycleHistoryRequest.toPageRequest());
     }
 
     public List<Cycle> findSuccessLatestByMember(Member member) {

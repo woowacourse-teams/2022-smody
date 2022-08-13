@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -19,14 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.CycleDetailResponse;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.InProgressCycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.domain.CycleDetail;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -261,6 +256,124 @@ public class CycleControllerTest extends ControllerTest {
                         responseFields(
                                 fieldWithPath("totalCount").type(JsonFieldType.NUMBER).description("총 도전 횟수"),
                                 fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("총 성공 횟수")
+                        )));
+    }
+
+    @DisplayName("나의 특정 챌린지의 전체 사이클을 조회 시 200을 응답한다.")
+    @Test
+    void findAllWithChallenge() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        List<CycleHistoryResponse> cycleHistoryResponses = List.of(
+                new CycleHistoryResponse(3L, List.of(
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 1, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 2, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 3, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ))
+                ),
+                new CycleHistoryResponse(4L, List.of(
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 2, 1, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 2, 2, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        )
+                ))
+        );
+        given(cycleQueryService.findAllWithChallenge(any(TokenPayload.class), any(CycleHistoryRequest.class), eq(1L)))
+                .willReturn(cycleHistoryResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/me/1/?size=10&lastCycleId=3")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(cycleHistoryResponses)))
+                .andDo(document("get-all-cycles",
+                        HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+
+                        responseFields(
+                                fieldWithPath("[].cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
+                                fieldWithPath("[].cycleDetails[].progressTime").type(JsonFieldType.STRING)
+                                        .description("인증 시간"),
+                                fieldWithPath("[].cycleDetails[].progressImage").type(JsonFieldType.STRING)
+                                        .description("인증 사진"),
+                                fieldWithPath("[].cycleDetails[].description").type(JsonFieldType.STRING)
+                                        .description("인증 설명")
+                        )));
+    }
+
+    @DisplayName("나의 특정 챌린지의 성공 사이클을 조회 시 200을 응답한다.")
+    @Test
+    void findAllWithChallenge_success() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        List<CycleHistoryResponse> cycleHistoryResponses = List.of(
+                new CycleHistoryResponse(3L, List.of(
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 1, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 2, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 1, 3, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ))
+                ),
+                new CycleHistoryResponse(4L, List.of(
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 2, 1, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 2, 2, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        ),
+                        new CycleDetailResponse(
+                                LocalDateTime.of(2022, 2, 3, 5, 0),
+                                "progressImage.jpg", "인증 내용"
+                        )
+                ))
+        );
+        given(cycleQueryService.findAllWithChallenge(any(TokenPayload.class), any(CycleHistoryRequest.class), eq(1L)))
+                .willReturn(cycleHistoryResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/cycles/me/1/?size=10&lastCycleId=3&filter=success")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(cycleHistoryResponses)))
+                .andDo(document("get-success-cycles",
+                        HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+
+                        responseFields(
+                                fieldWithPath("[].cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
+                                fieldWithPath("[].cycleDetails[].progressTime").type(JsonFieldType.STRING)
+                                        .description("인증 시간"),
+                                fieldWithPath("[].cycleDetails[].progressImage").type(JsonFieldType.STRING)
+                                        .description("인증 사진"),
+                                fieldWithPath("[].cycleDetails[].description").type(JsonFieldType.STRING)
+                                        .description("인증 설명")
                         )));
     }
 }
