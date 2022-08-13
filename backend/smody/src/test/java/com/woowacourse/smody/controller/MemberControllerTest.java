@@ -134,7 +134,7 @@ public class MemberControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(validAuthResponse)))
-                .andDo(document("get-my-info", HOST_INFO,
+                .andDo(document("validate_auth", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("isValid").type(JsonFieldType.BOOLEAN).description("토큰 유효 여부")
