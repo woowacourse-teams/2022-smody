@@ -17,9 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.MemberResponse;
-import com.woowacourse.smody.dto.MemberUpdateRequest;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -118,5 +116,28 @@ public class MemberControllerTest extends ControllerTest {
                 .andDo(document("withdraw", HOST_INFO,
                         preprocessResponse(prettyPrint())
                 ));
+    }
+
+    @DisplayName("나의 토큰의 유효성을 조회한다.")
+    @Test
+    void isValidAuth() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        ValidAuthResponse validAuthResponse = new ValidAuthResponse(true);
+        given(memberService.isValidAuth(any(PreTokenPayLoad.class)))
+                .willReturn(validAuthResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/members/auth")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(validAuthResponse)))
+                .andDo(document("get-my-info", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("isValid").type(JsonFieldType.BOOLEAN).description("토큰 유효 여부")
+                        )));
     }
 }

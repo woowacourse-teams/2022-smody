@@ -2,9 +2,7 @@ package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.MemberResponse;
-import com.woowacourse.smody.dto.MemberUpdateRequest;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
@@ -60,5 +58,9 @@ public class MemberService {
     public void updateProfileImage(TokenPayload tokenPayload, MultipartFile profileImage) {
         Member member = search(tokenPayload);
         member.updatePicture(new Image(profileImage, imageStrategy));
+    }
+
+    public ValidAuthResponse isValidAuth(PreTokenPayLoad preTokenPayLoad) {
+        return new ValidAuthResponse(preTokenPayLoad.isValid());
     }
 }
