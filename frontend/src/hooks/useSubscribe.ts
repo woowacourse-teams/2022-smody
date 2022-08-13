@@ -74,7 +74,9 @@ const useSubscribe = () => {
     }
 
     Notification.requestPermission().then((permission) => {
-      if (Notification.permission !== 'granted') {
+      pushStatus.notificationPermission = permission;
+
+      if (permission !== 'granted') {
         return;
       }
 

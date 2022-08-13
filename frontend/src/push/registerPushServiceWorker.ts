@@ -3,6 +3,13 @@ import { pushStatus } from 'push/pushStatus';
 const isPushServiceWorkerSupported = () =>
   'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window;
 
+const updatePushStatus = async (registration: ServiceWorkerRegistration) => {
+  pushStatus.serviceWorkerRegistration = registration;
+  pushStatus.pushSupport = !!registration?.pushManager;
+  pushStatus.pushSubscription = await registration?.pushManager?.getSubscription();
+  pushStatus.notificationPermission = Notification.permission;
+};
+
 const registerPushServiceWorker = async () => {
   if (!isPushServiceWorkerSupported()) {
     return;
@@ -14,10 +21,7 @@ const registerPushServiceWorker = async () => {
     registration = await navigator.serviceWorker.register('pushServiceWorker.js');
   }
 
-  pushStatus.serviceWorkerRegistration = registration;
-  pushStatus.pushSupport = !!registration?.pushManager;
-  pushStatus.pushSubscription = await registration?.pushManager?.getSubscription();
-  pushStatus.notificationPermission = Notification.permission;
+  await updatePushStatus(registration);
 };
 
 export default registerPushServiceWorker;
