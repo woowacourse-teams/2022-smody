@@ -23,13 +23,7 @@ export const useGetLinkGoogle = (
   useQuery<AxiosResponse<string>, AxiosError<ErrorResponse>>(
     queryKeys.getLinkGoogle,
     getLinkGoogle,
-    {
-      ...options,
-      enabled: false,
-      onSuccess: ({ data: redirectionUrl }) => {
-        window.location.href = redirectionUrl;
-      },
-    },
+    { ...options, enabled: false, retry: false, suspense: false },
   );
 
 export const useGetTokenGoogle = (
@@ -42,7 +36,7 @@ export const useGetTokenGoogle = (
   useQuery<AxiosResponse<GetTokenGoogleResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getTokenGoogle,
     () => getTokenGoogle(code),
-    options,
+    { ...options, refetchOnWindowFocus: false, enabled: false, suspense: false },
   );
 
 export const useGetMyInfo = (
@@ -51,7 +45,17 @@ export const useGetMyInfo = (
   useQuery<AxiosResponse<GetMyInfoResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getMyInfo,
     getMyInfo,
-    options,
+    {
+      ...options,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      suspense: false,
+      onError: () => {
+        // error swallow
+        return null;
+      },
+    },
   );
 
 export const usePatchMyInfo = (

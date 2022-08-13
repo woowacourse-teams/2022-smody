@@ -1,14 +1,15 @@
-import { useGetLinkGoogle } from 'apis';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { isDarkState } from 'recoil/darkMode/atoms';
+
+import useAuth from 'hooks/useAuth';
 
 export const useHeader = () => {
   const [isDark, setIsDark] = useRecoilState(isDarkState);
 
   const isLogin = useRecoilValue(isLoginState);
 
-  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
+  const { redirectGoogleLoginLink } = useAuth();
 
   const handleDarkToggle = () => {
     localStorage.setItem('isDark', JSON.stringify(!isDark));
