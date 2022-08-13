@@ -1212,3 +1212,26 @@ export const db = [
   { nickname: 'marco', subscription: {} },
   { nickname: 'does', subscription: { endpoint: 'test' } },
 ];
+
+export const notifications = [
+  {
+    pushNotificationId: 0,
+    message: '마르코님, 알림이 구독되었어요',
+    pushTime: '2022-08-12T10:10:00',
+  },
+  {
+    pushNotificationId: 1,
+    message: '빅터님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T12:44:00',
+  },
+  {
+    pushNotificationId: 2,
+    message: '미라클 모닝 챌린지 인증 마감까지 3시간 남았어요',
+    pushTime: '2022-08-12T13:23:00',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 좋아요를 눌렀어요',
+    pushTime: '2022-08-12T14:15:00',
+  },
+];

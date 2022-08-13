@@ -1,4 +1,4 @@
-import { db } from 'mocks/data';
+import { db, notifications } from 'mocks/data';
 import { rest } from 'msw';
 
 import { BASE_URL } from 'constants/path';
@@ -30,7 +30,7 @@ export const push = [
     if (req.headers.headers.authorization === 'Bearer null') {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
-    const endpoint = req.body;
+    const { endpoint } = req.body;
 
     db.forEach((user) => {
       if (user.subscription.endpoint === endpoint) {
@@ -39,5 +39,17 @@ export const push = [
     });
 
     return res(ctx.status(200), ctx.json(db));
+  }),
+
+  // 알림 조회(GET)
+  rest.get(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(notifications));
+  }),
+
+  // 읽은 알림 삭제(DELETE)
+  rest.delete(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
+    const { pushNotificationId } = req.body;
+    delete notifications[pushNotificationId];
+    return res(ctx.status(200), ctx.json(notifications));
   }),
 ];

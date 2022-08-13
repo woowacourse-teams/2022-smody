@@ -1,4 +1,4 @@
 export interface BellProps {
-  count: number;
+  count?: number;
   isSubscribed: boolean;
 }

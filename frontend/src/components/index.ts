@@ -43,3 +43,4 @@ export * from 'components/Dropdown';
 export * from 'components/Bell';
 export * from 'components/SubscriptionButton';
 export * from 'components/SearchBar';
+export * from 'components/NotificationMessage';

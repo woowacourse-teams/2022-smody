@@ -94,7 +94,7 @@ const useSubscribe = () => {
       console.log('4-Push unsubscribed:', userSubscription, result);
       if (result && userSubscription) {
         // 애플리케이션 서버에 저장된 구독 정보 지우기
-        postUnsubscribe(userSubscription.endpoint);
+        postUnsubscribe({ endpoint: userSubscription.endpoint });
         userSubscription = null;
         setIsSubscribed(false);
       }

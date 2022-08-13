@@ -29,6 +29,7 @@ export const queryKeys = {
   getVapidPublicKey: 'getVapidPublicKey',
   getFeedById: 'getFeedById',
   getCommentsById: 'getCommentsById',
+  getNotifications: 'getNotifications',
 };
 
 export const mutationKeys = {
@@ -37,4 +38,5 @@ export const mutationKeys = {
   postProfileImage: 'postProfileImage',
   postSubscribe: 'postSubscribe',
   postUnsubscribe: 'postUnsubscribe',
+  deleteNotification: 'deleteNotification',
 };
