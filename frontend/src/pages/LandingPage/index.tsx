@@ -1,17 +1,15 @@
-import { useGetLinkGoogle } from 'apis';
 import ServiceExampleImage from 'assets/service_example.png';
-import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import styled, { keyframes } from 'styled-components';
 
+import useInstallApp from 'hooks/useInstallApp';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text, FixedButton, Logo } from 'components';
 
 const LandingPage = () => {
   const themeContext = useThemeContext();
-  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle();
-  const isLogin = useRecoilValue(isLoginState);
+
+  const { installApp } = useInstallApp();
 
   return (
     <Wrapper
@@ -48,11 +46,7 @@ const LandingPage = () => {
         </Text>
       </ColumnWrapper>
       <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
-      {!isLogin && (
-        <FixedButton onClick={() => redirectGoogleLoginLink()}>
-          구글로 시작하기
-        </FixedButton>
-      )}
+      <FixedButton onClick={installApp}>앱 설치하기</FixedButton>
     </Wrapper>
   );
 };
