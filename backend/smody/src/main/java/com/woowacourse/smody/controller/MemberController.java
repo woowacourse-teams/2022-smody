@@ -1,10 +1,9 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
+import com.woowacourse.smody.auth.PreLoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
-import com.woowacourse.smody.dto.MemberResponse;
-import com.woowacourse.smody.dto.MemberUpdateRequest;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +52,10 @@ public class MemberController {
     public ResponseEntity<Void> withdraw(@LoginMember TokenPayload tokenPayload) {
         memberService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/auth")
+    public ResponseEntity<ValidAuthResponse> isValid(@PreLoginMember PreTokenPayLoad preTokenPayLoad) {
+        return ResponseEntity.ok(memberService.isValidAuth(preTokenPayLoad));
     }
 }
