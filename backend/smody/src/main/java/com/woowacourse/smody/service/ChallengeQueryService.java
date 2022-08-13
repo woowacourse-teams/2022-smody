@@ -6,11 +6,9 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengeTabResponse;
-import com.woowacourse.smody.dto.ChallengersResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -113,5 +111,22 @@ public class ChallengeQueryService {
                 .map(cycle -> new ChallengersResponse(
                         cycle.getMember(), cycle.getProgress().getCount()))
                 .collect(toList());
+    }
+
+    public ChallengeHistoryResponse findOneWithMine(TokenPayload tokenPayload, Long challengeId) {
+        List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId()).stream()
+                .filter(cycle -> !cycle.isInProgress(LocalDateTime.now()))
+                .collect(toList());
+        if (cycles.isEmpty()) {
+            throw new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE);
+        }
+        Challenge challenge = cycles.get(0).getChallenge();
+        int successCount = (int) cycles.stream()
+                .filter(Cycle::isSuccess)
+                .count();
+        int cycleDetailCount = cycles.stream()
+                .mapToInt(cycle -> cycle.getCycleDetails().size())
+                .sum();
+        return new ChallengeHistoryResponse(challenge, successCount, cycleDetailCount);
     }
 }
