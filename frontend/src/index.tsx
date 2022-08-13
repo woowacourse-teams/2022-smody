@@ -1,20 +1,9 @@
 import App from 'App';
-import { pushStatus } from 'pushStatus';
+import registerPushServiceWorker from 'push/registerPushServiceWorker';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
-const registerPushServiceWorker = async () => {
-  let registration = await navigator.serviceWorker.getRegistration();
-  if (!registration) {
-    registration = await navigator.serviceWorker.register('pushServiceWorker.js');
-  }
-
-  pushStatus.serviceWorkerRegistration = registration ?? null;
-  pushStatus.pushSupport = !!registration?.pushManager;
-  pushStatus.pushSubscription = await registration?.pushManager?.getSubscription();
-};
-
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production') {
   registerPushServiceWorker();
 }
 

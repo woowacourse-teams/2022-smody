@@ -1,8 +1,7 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
 import { setBadge } from 'push/badge';
-import { pushStatus } from 'pushStatus';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
