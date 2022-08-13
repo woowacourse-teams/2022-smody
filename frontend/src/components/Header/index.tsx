@@ -1,7 +1,8 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
+import { setBadge } from 'push/badge';
 import { pushStatus } from 'pushStatus';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -44,6 +45,13 @@ export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
   const { isDark, isLogin, handleDarkToggle, handleLoginButton } = useHeader();
   const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
+  {
+    /* TODO badgeNumber에 백엔드에서 받은 알림 count 넣기 */
+  }
+  const badgeNumber = 4;
+  useEffect(() => {
+    setBadge(badgeNumber);
+  }, []);
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
