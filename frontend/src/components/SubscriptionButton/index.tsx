@@ -1,7 +1,7 @@
 import { SubscriptionButtonProps } from './type';
 import LoadingDots from 'assets/loading_dots.svg';
 import { pushStatus } from 'push/pushStatus';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -86,6 +86,13 @@ export const SubscriptionButton = ({
 };
 
 const LoadingWrapper = styled.div`
-  width: 2rem;
-  height: 2rem;
+  ${({ theme }) => css`
+    width: 2rem;
+    height: 2rem;
+
+    & svg circle {
+      fill: ${theme.onSurface};
+      stroke: none;
+    }
+  `}
 `;
