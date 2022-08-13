@@ -15,9 +15,6 @@ export const SubscriptionButton = ({
   const themeContext = useThemeContext();
   const isAbleSubscribe =
     pushStatus.pushSupport && pushStatus.notificationPermission === 'granted';
-  {
-    /* TODO Bell count prop에 백엔드에서 받은 알림 number 넣기 */
-  }
 
   return (
     <>
