@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,6 @@ import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
@@ -109,6 +106,12 @@ public class CycleService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
+    }
+
+    public List<Cycle> searchByMemberAndChallenge(Long memberId, Long challengeId, CycleHistoryRequest cycleHistoryRequest) {
+        return cycleRepository.findAllFilterBy(
+                memberId, challengeId, cycleHistoryRequest.getFilter(),
+                cycleHistoryRequest.getLastCycleDetailId(), cycleHistoryRequest.toPageRequest());
     }
 
     public List<Cycle> findSuccessLatestByMember(Member member) {
