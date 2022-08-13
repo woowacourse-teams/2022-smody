@@ -16,7 +16,7 @@ public class FeedRequest {
 
     private String sort;
     private Integer size;
-    private Long cycleDetailId;
+    private Long lastCycleDetailId;
 
     public Pageable toPageRequest() {
         if (size == null || size < 1) {
