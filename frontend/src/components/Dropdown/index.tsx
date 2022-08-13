@@ -2,7 +2,7 @@ import { DropdownProps } from './type';
 import { MouseEventHandler, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-export const Dropdown = ({ button, children }: DropdownProps) => {
+export const Dropdown = ({ button, nonLinkableElement, children }: DropdownProps) => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const showDropdownMenu = () => {
     setDropdownToggled(true);
@@ -14,10 +14,8 @@ export const Dropdown = ({ button, children }: DropdownProps) => {
     }
   };
 
-  const onSelectMenu: MouseEventHandler<HTMLUListElement> = (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
-      setDropdownToggled(false);
-    }
+  const onSelectMenu: MouseEventHandler<HTMLUListElement> = () => {
+    setDropdownToggled(false);
   };
 
   return (
@@ -25,6 +23,7 @@ export const Dropdown = ({ button, children }: DropdownProps) => {
       <div onClick={showDropdownMenu}>{button}</div>
       {isDropdownToggled && (
         <DropdownMenu>
+          {nonLinkableElement}
           <List onClick={onSelectMenu}>{children}</List>
         </DropdownMenu>
       )}
