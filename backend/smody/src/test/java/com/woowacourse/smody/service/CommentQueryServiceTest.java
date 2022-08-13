@@ -40,11 +40,9 @@ public class CommentQueryServiceTest extends IntegrationTest {
                 new CommentRequest("댓글1"));
         Long 댓글2 = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
                 new CommentRequest("댓글2"));
-
         // when
         List<CommentResponse> commentResponses = commentQueryService.findAllByCycleDetailId(
                 new TokenPayload(0L), cycleDetail.getId());
-
         // then
         assertThat(commentResponses.stream()
                 .map(CommentResponse::getCommentId)
