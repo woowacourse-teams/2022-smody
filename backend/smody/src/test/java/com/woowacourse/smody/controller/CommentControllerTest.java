@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.dto.CommentRequest;
 import com.woowacourse.smody.dto.CommentResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
@@ -35,6 +36,9 @@ public class CommentControllerTest extends ControllerTest {
         Long commentId = 1L;
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         Map<String, String> param = Map.of("content", "화이팅!");
+
+        given(commentService.create(any(TokenPayload.class), eq(1L), any(CommentRequest.class)))
+                .willReturn(commentId);
 
         // when
         ResultActions result = mockMvc.perform(post("/feeds/1/comments")

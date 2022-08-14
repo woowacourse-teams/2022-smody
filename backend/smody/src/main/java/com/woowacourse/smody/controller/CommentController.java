@@ -28,8 +28,8 @@ public class CommentController {
     @RequiredLogin
     public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload, @PathVariable Long cycleDetailId,
                                        @RequestBody CommentRequest commentRequest) {
-        commentService.create(tokenPayload, cycleDetailId, commentRequest);
-        return ResponseEntity.created(URI.create("/comments/" + cycleDetailId)).build();
+        Long commentId = commentService.create(tokenPayload, cycleDetailId, commentRequest);
+        return ResponseEntity.created(URI.create("/comments/" + commentId)).build();
     }
 
     @GetMapping("/feeds/{cycleDetailId}/comments")
