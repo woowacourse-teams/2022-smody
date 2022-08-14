@@ -11,22 +11,23 @@ export const useNotificationMessage = () => {
   const { mutate: deleteNotification } = useDeleteNotification({
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.getNotifications);
+      console.log('딜리트');
     },
   });
 
   const handleClickNotification = ({
     pushNotificationId,
     pathId,
-    type,
+    pushCase,
   }: NotificationHandlerProps) => {
     deleteNotification({ pushNotificationId });
-    if (type === 'subscription') {
+    if (pushCase === 'subscription') {
       navigate(`/search`);
     }
-    if (type === 'comment') {
+    if (pushCase === 'comment') {
       navigate(`/feed/detail/${pathId}`);
     }
-    if (type === 'challenge') {
+    if (pushCase === 'challenge') {
       navigate(`/cycle/detail/${pathId}`);
     }
     // TODO : 네비게이트 시킬 라우터 패스, 백엔드로부터 받기

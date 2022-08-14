@@ -15,7 +15,7 @@ export const useHeader = () => {
 
   const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
-  const { data: notificationData } = useGetNotifications({ suspense: false });
+  const { data: notificationData } = useGetNotifications();
   const notifications = notificationData?.data;
 
   const handleDarkToggle = () => {

@@ -17,24 +17,28 @@ export const NotificationMessage = ({
 
   return (
     <div>
-      {notifications?.map(({ pushNotificationId, message, pushTime, pathId, type }) => (
-        <NotificationWrapper
-          key={pushNotificationId}
-          onClick={() => handleClickNotification({ pushNotificationId, pathId, type })}
-          flexDirection="column"
-          gap="4px"
-          alignItems="flex-start"
-        >
-          <Message color={themeContext.onSurface} size={14}>
-            {message}
-          </Message>
-          <PushTimeText color={themeContext.mainText} size={12}>
-            {parseTime(pushTime).year}년 {parseTime(pushTime).month}월{' '}
-            {parseTime(pushTime).date}일{'  '}
-            {parseTime(pushTime).hours}시 {parseTime(pushTime).minutes}분
-          </PushTimeText>
-        </NotificationWrapper>
-      ))}
+      {notifications?.map(
+        ({ pushNotificationId, message, pushTime, pathId, pushCase }) => (
+          <NotificationWrapper
+            key={pushNotificationId}
+            onClick={() =>
+              handleClickNotification({ pushNotificationId, pathId, pushCase })
+            }
+            flexDirection="column"
+            gap="4px"
+            alignItems="flex-start"
+          >
+            <Message color={themeContext.onSurface} size={14}>
+              {message}
+            </Message>
+            <PushTimeText color={themeContext.mainText} size={12}>
+              {parseTime(pushTime).year}년 {parseTime(pushTime).month}월{' '}
+              {parseTime(pushTime).date}일{'  '}
+              {parseTime(pushTime).hours}시 {parseTime(pushTime).minutes}분
+            </PushTimeText>
+          </NotificationWrapper>
+        ),
+      )}
     </div>
   );
 };

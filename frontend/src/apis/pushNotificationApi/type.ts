@@ -15,7 +15,7 @@ interface CustomNotification {
   message: string;
   pushTime: string;
   pathId: number;
-  type: string;
+  pushCase: string;
 }
 
 export type GetNotificationsResponse = CustomNotification[];
