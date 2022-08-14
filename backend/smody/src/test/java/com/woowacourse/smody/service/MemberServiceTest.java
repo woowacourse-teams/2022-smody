@@ -105,7 +105,7 @@ public class MemberServiceTest extends IntegrationTest {
         cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
         pushNotificationRepository.save(
                 new PushNotification(
-                "asd", LocalDateTime.now(), PushStatus.IN_COMPLETE, member
+                "asd", LocalDateTime.now(), PushStatus.IN_COMPLETE, member, PushCase.CHALLENGE, 1L
                 )
         );
         pushSubscriptionRepository.save(

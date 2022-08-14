@@ -14,13 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.domain.PushSubscription;
@@ -28,7 +25,6 @@ import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
-import com.woowacourse.smody.service.WebPushService;
 
 class PushSchedulerTest extends IntegrationTest {
 
@@ -62,13 +58,23 @@ class PushSchedulerTest extends IntegrationTest {
 
 		LocalDateTime now = LocalDateTime.now();
 
-		pushNotificationRepository.save(new PushNotification(
-			"알림", now.minusHours(1L), PushStatus.IN_COMPLETE, member1
-		));
+		pushNotificationRepository.save(PushNotification.builder()
+			.message("알림")
+			.pushTime(now.minusHours(1L))
+			.pushStatus(PushStatus.IN_COMPLETE)
+			.member(member1)
+			.pushCase(PushCase.CHALLENGE)
+			.pathId(1L)
+			.build());
 
-		pushNotificationRepository.save(new PushNotification(
-			"알림", now.plusHours(1L), PushStatus.IN_COMPLETE, member2
-		));
+		pushNotificationRepository.save(PushNotification.builder()
+			.message("알림")
+			.pushTime(now.plusHours(1L))
+			.pushStatus(PushStatus.IN_COMPLETE)
+			.member(member2)
+			.pushCase(PushCase.SUBSCRIPTION)
+			.pathId(1L)
+			.build());
 	}
 
 	@DisplayName("발송 안 된 알림들을 모두 전송한다.")

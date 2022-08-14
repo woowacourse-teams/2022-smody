@@ -3,6 +3,7 @@ package com.woowacourse.smody.push.event;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.WebPushService;
 

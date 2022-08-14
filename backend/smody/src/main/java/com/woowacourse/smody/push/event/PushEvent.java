@@ -2,6 +2,8 @@ package com.woowacourse.smody.push.event;
 
 import org.springframework.context.ApplicationEvent;
 
+import com.woowacourse.smody.domain.PushCase;
+
 import lombok.Getter;
 
 @Getter

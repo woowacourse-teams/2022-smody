@@ -13,6 +13,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.ui.admin.MenuLayout;
@@ -54,6 +55,8 @@ public class PushNotificationView extends DomainView {
 			.setHeader("member_id");
 		pushNotificationGrid.addColumn(PushNotification::getPushTime).setHeader("push_time");
 		pushNotificationGrid.addColumn(PushNotification::getPushStatus).setHeader("push_status");
+		pushNotificationGrid.addColumn(PushNotification::getPushCase).setHeader("push_case");
+		pushNotificationGrid.addColumn(PushNotification::getPathId).setHeader("path_id");
 		return pushNotificationGrid;
 	}
 
@@ -65,10 +68,12 @@ public class PushNotificationView extends DomainView {
 		TextField memberIdField = createTextField("member_id");
 		DateTimePicker pushTimeField = createPushTimePicker();
 		TextField pushStatusField = createTextField("push_status");
+		TextField pushCaseField = createTextField("push_case");
+		TextField pathIdField = createTextField("path_id");
 
-		saveForm.add(messageField, memberIdField, pushStatusField, pushTimeField);
+		saveForm.add(messageField, memberIdField, pushStatusField, pushTimeField, pushCaseField, pathIdField);
 		saveLayout.add(saveForm, createSaveButton(
-			messageField, memberIdField, pushTimeField, pushStatusField
+			messageField, memberIdField, pushTimeField, pushStatusField, pushCaseField, pathIdField
 		));
 		return saveLayout;
 	}
@@ -82,11 +87,13 @@ public class PushNotificationView extends DomainView {
 	private Button createSaveButton(TextField messageField,
 		TextField memberIdField,
 		DateTimePicker pushTimeField,
-		TextField pushStatusField) {
+		TextField pushStatusField,
+		TextField pushCaseField,
+		TextField pathIdField) {
 		Button saveButton = new Button("생성");
 		saveButton.addClickListener(event ->
 			savePushNotification(
-				messageField, memberIdField, pushTimeField, pushStatusField)
+				messageField, memberIdField, pushTimeField, pushStatusField, pushCaseField, pathIdField)
 		);
 		return saveButton;
 	}
@@ -94,13 +101,18 @@ public class PushNotificationView extends DomainView {
 	private void savePushNotification(TextField messageField,
 		TextField memberIdField,
 		DateTimePicker pushTimeField,
-		TextField pushStatusField) {
+		TextField pushStatusField,
+		TextField pushCaseField,
+		TextField pathIdField) {
 
 		try {
-			Member member = memberVaadinService.findById(Long.parseLong(memberIdField.getValue())).get();
+			Member member = memberVaadinService.findById(Long.parseLong(memberIdField.getValue()))
+				.orElseThrow();
 			PushStatus pushStatus = PushStatus.valueOf(pushStatusField.getValue());
+			PushCase pushCase = PushCase.valueOf(pushCaseField.getValue());
+			long pathId = Long.parseLong(pathIdField.getValue());
 			pushNotificationVaadinService.save(new PushNotification(
-				messageField.getValue(), pushTimeField.getValue(), pushStatus, member
+				messageField.getValue(), pushTimeField.getValue(), pushStatus, member, pushCase, pathId
 			));
 			UI.getCurrent().getPage().reload();
 		} catch (Exception exception) {

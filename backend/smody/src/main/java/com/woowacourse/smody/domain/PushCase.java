@@ -1,12 +1,7 @@
-package com.woowacourse.smody.push.event;
+package com.woowacourse.smody.domain;
 
 import java.time.LocalDateTime;
 
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.WebPushService;
 
@@ -15,19 +10,23 @@ public enum PushCase {
 	SUBSCRIPTION {
 		@Override
 		public void push(Object entity, PushNotificationRepository repository, WebPushService webPushService) {
-			PushSubscription pushSubscription = (PushSubscription) entity;
-			PushNotification pushNotification = repository.save(new PushNotification(
-				pushSubscription.getMember().getNickname() + "님 스모디 알림이 구독되었습니다.",
-				LocalDateTime.now(),
-				PushStatus.COMPLETE,
-				pushSubscription.getMember()
-			));
+			PushSubscription pushSubscription = (PushSubscription)entity;
+
+			Member member = pushSubscription.getMember();
+			PushNotification pushNotification = repository.save(PushNotification.builder()
+				.message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
+				.pushTime(LocalDateTime.now())
+				.pushStatus(PushStatus.COMPLETE)
+				.member(member)
+				.pushCase(PushCase.SUBSCRIPTION)
+				.build()
+			);
 
 			webPushService.sendNotification(pushSubscription, pushNotification);
 		}
 	},
 
-	PROGRESS {
+	CHALLENGE {
 		@Override
 		public void push(Object entity, PushNotificationRepository repository, WebPushService webPushService) {
 			Cycle cycle = (Cycle) entity;
@@ -39,13 +38,14 @@ public enum PushCase {
 				.minusHours(3L);
 
 			Challenge challenge = cycle.getChallenge();
-			PushNotification pushNotification = new PushNotification(
-				challenge.getName() + " 인증까지 얼마 안남았어요~",
-				pushTime,
-				PushStatus.IN_COMPLETE,
-				cycle.getMember()
-			);
-			repository.save(pushNotification);
+			repository.save(PushNotification.builder()
+				.message(challenge.getName() + " 인증까지 얼마 안남았어요~")
+				.pushTime(pushTime)
+				.pushStatus(PushStatus.IN_COMPLETE)
+				.member(cycle.getMember())
+				.pushCase(PushCase.CHALLENGE)
+				.pathId(cycle.getId())
+				.build());
 		}
 	};
 
