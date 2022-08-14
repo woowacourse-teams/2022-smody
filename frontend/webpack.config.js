@@ -72,6 +72,9 @@ module.exports = {
         isProd ? process.env.PROD_BASE_URL : process.env.DEV_BASE_URL,
       ),
       'process.env.CLIENT_ID': isProd ? undefined : JSON.stringify(process.env.CLIENT_ID),
+      'process.env.PUBLIC_KEY': isProd
+        ? undefined
+        : JSON.stringify(process.env.PUBLIC_KEY),
       'process.env.IS_LOCAL': JSON.stringify(isLocal),
     }),
   ],

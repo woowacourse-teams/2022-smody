@@ -1,15 +1,14 @@
 import App from 'App';
+import { isProd, isDev, isLocal } from 'env';
 import registerPushServiceWorker from 'push/registerPushServiceWorker';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
-// production or local
-if (process.env.NODE_ENV === 'production' || process.env.IS_LOCAL) {
+if (isProd || isLocal) {
   registerPushServiceWorker();
 }
 
-// development
-if (process.env.NODE_ENV === 'development' && !process.env.IS_LOCAL) {
+if (isDev) {
   const { mockServiceWorker } = require('./mocks/browser');
   mockServiceWorker.start();
 }

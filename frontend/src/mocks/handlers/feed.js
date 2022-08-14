@@ -1,7 +1,6 @@
+import { BASE_URL } from 'env';
 import { accessTokenData, userData, feedData, commentData } from 'mocks/data';
 import { rest } from 'msw';
-
-import { BASE_URL } from 'constants/path';
 
 const getNowTime = () => {
   const date = new Date();
