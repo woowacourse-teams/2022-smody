@@ -15,6 +15,7 @@ import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.FeedQueryService;
 import com.woowacourse.smody.service.MemberService;
 import com.woowacourse.smody.service.OauthService;
+import com.woowacourse.smody.service.PushNotificationService;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
 import com.woowacourse.smody.ui.admin.controller.AdminSecurityConfig;
@@ -33,7 +34,8 @@ import org.springframework.test.web.servlet.MockMvc;
         OauthController.class,
         CommentController.class,
         FeedController.class,
-        PushSubscriptionController.class
+        PushSubscriptionController.class,
+        PushNotificationController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
 @AutoConfigureRestDocs
@@ -83,4 +85,7 @@ public class ControllerTest {
 
     @MockBean
     protected WebPushService webPushService;
+
+    @MockBean
+    protected PushNotificationService pushNotificationService;
 }

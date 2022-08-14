@@ -180,9 +180,18 @@ include::{snippets}/web-push-subscribe/request-fields.adoc[]
 include::{snippets}/web-push-subscribe/http-response.adoc[]
 
 == 알림 구독 해제
-=== Request
+=== Request 필드
 include::{snippets}/web-push-unsubscribe/http-request.adoc[]
 === Request 필드
 include::{snippets}/web-push-unsubscribe/request-fields.adoc[]
 === Response
 include::{snippets}/web-push-unsubscribe/http-response.adoc[]
+
+== 나의 안 읽은 알림 모두 조회
+=== Request
+include::{snippets}/get-my-notifications/http-request.adoc[]
+=== Response
+include::{snippets}/get-my-notifications/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-my-notifications/response-fields.adoc[]
+
