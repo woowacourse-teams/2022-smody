@@ -1,3 +1,4 @@
+import { queryKeys } from 'apis/constants';
 import {
   useGetVapidPublicKey,
   usePostSubscribe,
@@ -5,6 +6,7 @@ import {
 } from 'apis/pushNotificationApi';
 import { pushStatus } from 'pushStatus';
 import { useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { urlB64ToUint8Array } from 'utils';
 
 let pushSupport = false;
@@ -14,8 +16,13 @@ const useSubscribe = () => {
   const isAlreadySubscribed = !!pushStatus.pushSubscription;
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoadingSubscribe, setIsLoadingSubscribe] = useState(false);
+  const queryClient = useQueryClient();
   const { refetch: getVapidPublicKey, data } = useGetVapidPublicKey();
-  const { mutate: postSubscribe } = usePostSubscribe();
+  const { mutate: postSubscribe } = usePostSubscribe({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKeys.getNotifications);
+    },
+  });
   const { mutate: postUnsubscribe } = usePostUnsubscribe();
 
   useEffect(() => {
