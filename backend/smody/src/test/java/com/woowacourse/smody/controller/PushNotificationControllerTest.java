@@ -57,4 +57,21 @@ class PushNotificationControllerTest extends ControllerTest {
 				)
 			));
 	}
+
+	@DisplayName("알림을 삭제하면 204 응답을 반환한다.")
+	@Test
+	void deleteNotification() throws Exception {
+		// given
+		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+		// when
+		ResultActions result = mockMvc.perform(delete("/push-notifications/1")
+			.header("Authorization", "Bearer " + token));
+
+		// then
+		result.andExpect(status().isNoContent())
+			.andDo(document("delete-notification", HOST_INFO,
+				preprocessResponse(prettyPrint())
+			));
+	}
 }

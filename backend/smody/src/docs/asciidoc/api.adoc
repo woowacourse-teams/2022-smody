@@ -195,3 +195,9 @@ include::{snippets}/get-my-notifications/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-my-notifications/response-fields.adoc[]
 
+== 읽은 알림 삭제
+=== Request
+include::{snippets}/delete-notification/http-request.adoc[]
+=== Response
+include::{snippets}/delete-notification/http-response.adoc[]
+

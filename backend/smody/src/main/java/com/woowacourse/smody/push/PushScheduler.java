@@ -65,15 +65,10 @@ public class PushScheduler {
 		Member member,
 		PushNotification notification) {
 		for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
-			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
-			updatePushStatus(notification, isValidSubscription);
-			removeInvalidSubscription(pushSubscription, isValidSubscription);
-		}
-	}
-
-	private void updatePushStatus(PushNotification notification, boolean isValidSubscription) {
-		if (isValidSubscription) {
 			notification.completePush();
+
+			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
+			removeInvalidSubscription(pushSubscription, isValidSubscription);
 		}
 	}
 

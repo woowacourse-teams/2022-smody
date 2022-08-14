@@ -3,7 +3,9 @@ package com.woowacourse.smody.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +29,11 @@ public class PushNotificationController {
 	public ResponseEntity<List<PushNotificationResponse>> searchNotificationsOfMine(
 		@LoginMember TokenPayload tokenPayload) {
 		return ResponseEntity.ok(pushNotificationService.searchNotificationsOfMine(tokenPayload));
+	}
+
+	@DeleteMapping("{id}")
+	@RequiredLogin
+	public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+		return ResponseEntity.noContent().build();
 	}
 }
