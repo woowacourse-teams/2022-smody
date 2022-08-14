@@ -61,25 +61,20 @@ public class PushScheduler {
         }
     }
 
-    private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
-                                  Member member,
-                                  PushNotification notification) {
-        for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
-            boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
-            updatePushStatus(notification, isValidSubscription);
-            removeInvalidSubscription(pushSubscription, isValidSubscription);
-        }
-    }
+	private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
+		Member member,
+		PushNotification notification) {
+		for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
+			notification.completePush();
 
-    private void updatePushStatus(PushNotification notification, boolean isValidSubscription) {
-        if (isValidSubscription) {
-            notification.completePush();
-        }
-    }
+			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
+			removeInvalidSubscription(pushSubscription, isValidSubscription);
+		}
+	}
 
-    private void removeInvalidSubscription(PushSubscription pushSubscription, boolean isValidSubscription) {
-        if (!isValidSubscription) {
-            pushSubscriptionService.delete(pushSubscription);
-        }
-    }
+	private void removeInvalidSubscription(PushSubscription pushSubscription, boolean isValidSubscription) {
+		if (!isValidSubscription) {
+			pushSubscriptionService.delete(pushSubscription);
+		}
+	}
 }
