@@ -58,6 +58,7 @@ public class PushScheduler {
 		Member member) {
 		for (PushNotification notification : notificationsByMember.get(member)) {
 			sendNotification(subscriptionsByMember, member, notification);
+			notification.completePush();
 		}
 	}
 
@@ -65,8 +66,6 @@ public class PushScheduler {
 		Member member,
 		PushNotification notification) {
 		for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
-			notification.completePush();
-
 			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
 			removeInvalidSubscription(pushSubscription, isValidSubscription);
 		}

@@ -58,4 +58,21 @@ class PushNotificationServiceTest extends IntegrationTest {
 				.containsExactly("challenge", "challenge", "subscription")
 		);
 	}
+
+	@DisplayName("알림을 삭제한다.")
+	@Test
+	void delete() {
+		// given
+		PushNotification notification = fixture.발송된_알림_생성(
+			조조그린_ID, null, LocalDateTime.now().minusHours(2L), PushCase.SUBSCRIPTION
+		);
+
+		// when
+		pushNotificationService.delete(notification.getId());
+
+		// then
+		List<PushNotificationResponse> responses = pushNotificationService.searchNotificationsOfMine(
+			new TokenPayload(조조그린_ID));
+		assertThat(responses).isEmpty();
+	}
 }

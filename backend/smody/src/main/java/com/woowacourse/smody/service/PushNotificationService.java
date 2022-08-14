@@ -29,4 +29,8 @@ public class PushNotificationService {
 			.map(PushNotificationResponse::new)
 			.collect(Collectors.toList());
 	}
+
+	public void delete(Long id) {
+		pushNotificationRepository.deleteById(id);
+	}
 }
