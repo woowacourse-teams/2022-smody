@@ -30,6 +30,7 @@ public class PushNotificationService {
 			.collect(Collectors.toList());
 	}
 
+	@Transactional
 	public void delete(Long id) {
 		pushNotificationRepository.deleteById(id);
 	}
