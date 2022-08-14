@@ -1,13 +1,14 @@
 import useSnackBar from 'hooks/useSnackBar';
 
-const useInstallApp = () => {
-  let deferredPrompt: any; // 비표준 API라서 any로 선언
-  const renderSnackBar = useSnackBar();
+let deferredPrompt: any; // 비표준 API라서 any로 선언
 
-  window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-  });
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+});
+
+const useInstallApp = () => {
+  const renderSnackBar = useSnackBar();
 
   const installApp = () => {
     if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -28,9 +29,6 @@ const useInstallApp = () => {
     }
 
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-    });
   };
   return { installApp };
 };
