@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.dto.CycleRequest;
@@ -49,7 +50,7 @@ class PushEventHandlerTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 
 		// when
-		cycleService.create(
+		Long pathId = cycleService.create(
 			new TokenPayload(조조그린_ID),
 			new CycleRequest(now, 스모디_방문하기_ID)
 		);
@@ -63,7 +64,9 @@ class PushEventHandlerTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
-			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~")
+			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~"),
+			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(pathId)
 		);
 	}
 
@@ -95,7 +98,9 @@ class PushEventHandlerTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
-			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~")
+			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~"),
+			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
 		);
 	}
 
@@ -138,7 +143,9 @@ class PushEventHandlerTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
-			() -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다.")
+			() -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다."),
+			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
+			() -> assertThat(pushNotification.getPathId()).isNull()
 		);
 	}
 

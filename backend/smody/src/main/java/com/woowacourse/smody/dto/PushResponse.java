@@ -1,6 +1,7 @@
-package com.woowacourse.smody.push;
+package com.woowacourse.smody.dto;
 
 import com.woowacourse.smody.domain.PushNotification;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,14 @@ import lombok.NoArgsConstructor;
 public class PushResponse {
 
 	private String message;
+	private Long pathId;
+	private String pushCase;
 
 	public PushResponse(PushNotification pushNotification) {
 		this.message = pushNotification.getMessage();
+		this.pathId = pushNotification.getPathId();
+		this.pushCase = pushNotification.getPushCase()
+			.name()
+			.toLowerCase();
 	}
 }
