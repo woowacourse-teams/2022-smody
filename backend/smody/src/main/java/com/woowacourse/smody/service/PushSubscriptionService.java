@@ -5,7 +5,7 @@ import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
-import com.woowacourse.smody.push.event.PushCase;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
