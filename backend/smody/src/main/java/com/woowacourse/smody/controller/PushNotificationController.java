@@ -34,6 +34,7 @@ public class PushNotificationController {
 	@DeleteMapping("{id}")
 	@RequiredLogin
 	public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+		pushNotificationService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 }

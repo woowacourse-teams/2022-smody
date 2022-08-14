@@ -53,20 +53,19 @@ public class PushScheduler {
                 .collect(groupingBy(PushSubscription::getMember));
     }
 
-    private void sendAllNotificationsOfMember(Map<Member, List<PushNotification>> notificationsByMember,
-                                              Map<Member, List<PushSubscription>> subscriptionsByMember,
-                                              Member member) {
-        for (PushNotification notification : notificationsByMember.get(member)) {
-            sendNotification(subscriptionsByMember, member, notification);
-        }
-    }
+	private void sendAllNotificationsOfMember(Map<Member, List<PushNotification>> notificationsByMember,
+		Map<Member, List<PushSubscription>> subscriptionsByMember,
+		Member member) {
+		for (PushNotification notification : notificationsByMember.get(member)) {
+			sendNotification(subscriptionsByMember, member, notification);
+			notification.completePush();
+		}
+	}
 
 	private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
 		Member member,
 		PushNotification notification) {
 		for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
-			notification.completePush();
-
 			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
 			removeInvalidSubscription(pushSubscription, isValidSubscription);
 		}
