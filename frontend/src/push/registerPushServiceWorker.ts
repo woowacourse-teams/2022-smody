@@ -1,6 +1,6 @@
 import { pushStatus } from 'push/pushStatus';
 
-const isPushServiceWorkerSupported = () =>
+const isPushServiceWorkerSupported =
   'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window;
 
 const updatePushStatus = async (registration: ServiceWorkerRegistration) => {
@@ -11,7 +11,7 @@ const updatePushStatus = async (registration: ServiceWorkerRegistration) => {
 };
 
 const registerPushServiceWorker = async () => {
-  if (!isPushServiceWorkerSupported()) {
+  if (!isPushServiceWorkerSupported) {
     return;
   }
 
