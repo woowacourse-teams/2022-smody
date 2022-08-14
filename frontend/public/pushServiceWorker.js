@@ -19,16 +19,17 @@ self.addEventListener('push', (event) => {
   console.log('Service Worker - push:', data);
 
   const title = 'Three more days, 스모디';
-  const type = data.type;
+  const pushCase = data.pushCase;
   const pathId = data.pathId;
   let path;
-  if (type === 'subscription') {
+  if (pushCase === 'subscription') {
+    console.log('hi');
     path = `/profile`;
   }
-  if (type === 'comment') {
+  if (pushCase === 'comment') {
     path = `/feed/detail/${pathId}`;
   }
-  if (type === 'challenge') {
+  if (pushCase === 'challenge') {
     path = `/cycle/detail/${pathId}`;
   }
 
