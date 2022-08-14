@@ -5,7 +5,7 @@ import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.push.PushResponse;
+import com.woowacourse.smody.dto.PushResponse;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Security;

@@ -12,6 +12,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.dto.CycleRequest;
@@ -135,14 +136,16 @@ class PushEventHandlerTest extends IntegrationTest {
         // when
         pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
 
-        // then
-        PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
-        assertAll(
-                () -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-                () -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
-                () -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다.")
-        );
-    }
+		// then
+		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
+		assertAll(
+			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다."),
+			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
+			() -> assertThat(pushNotification.getPathId()).isNull()
+		);
+	}
 
     @DisplayName("구독 알림이 요청될 때 예외가 발생하면 비즈니스 예외로 변환한다.")
     @Test

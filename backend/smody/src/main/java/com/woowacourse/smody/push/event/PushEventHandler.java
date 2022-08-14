@@ -1,25 +1,32 @@
 package com.woowacourse.smody.push.event;
 
-import com.woowacourse.smody.repository.PushNotificationRepository;
-import com.woowacourse.smody.service.WebPushService;
-import lombok.RequiredArgsConstructor;
+import static java.util.stream.Collectors.*;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import com.woowacourse.smody.domain.PushCase;
+import com.woowacourse.smody.push.strategy.PushStrategy;
+
 @Component
-@RequiredArgsConstructor
 public class PushEventHandler implements ApplicationListener<PushEvent> {
 
-    private final WebPushService webPushService;
-    private final PushNotificationRepository pushNotificationRepository;
+	private final Map<PushCase, PushStrategy> pushStrategies;
 
-    @Override
-    public void onApplicationEvent(PushEvent event) {
-        PushCase eventCase = event.getEventCase();
-        eventCase.push(
-                event.getEntity(),
-                pushNotificationRepository,
-                webPushService
-        );
-    }
+	public PushEventHandler(List<PushStrategy> pushStrategies) {
+		this.pushStrategies = pushStrategies.stream()
+			.collect(toMap(
+				PushStrategy::getPushCase,
+				pushStrategy -> pushStrategy)
+			);
+	}
+
+	@Override
+	public void onApplicationEvent(PushEvent event) {
+		pushStrategies.get(event.getPushCase())
+			.push(event.getEntity());
+	}
 }
