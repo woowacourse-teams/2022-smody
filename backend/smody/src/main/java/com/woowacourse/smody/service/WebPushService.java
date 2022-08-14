@@ -47,9 +47,12 @@ public class WebPushService {
 				pushSubscription.getAuth(),
 				objectMapper.writeValueAsString(pushResponse)
 			));
-		} catch (GeneralSecurityException | IOException
-			| JoseException | ExecutionException | InterruptedException e) {
-			log.error("웹 푸시 라이브러리 관련 예외가 발생했습니다.");
+		} catch (InterruptedException exception) {
+			log.warn("스레드가 interrupted 되었습니다.");
+			Thread.currentThread().interrupt();
+			throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
+		}  catch (GeneralSecurityException | IOException
+			| JoseException | ExecutionException exception) {
 			throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
 		}
 		return httpResponse != null && httpResponse.getStatusLine().getStatusCode() == 201;
