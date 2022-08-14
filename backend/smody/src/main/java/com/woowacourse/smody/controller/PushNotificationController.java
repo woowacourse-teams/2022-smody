@@ -24,7 +24,8 @@ public class PushNotificationController {
 
 	@GetMapping
 	@RequiredLogin
-	public ResponseEntity<List<PushNotificationResponse>> findNotifications(@LoginMember TokenPayload tokenPayload) {
-		return ResponseEntity.ok(pushNotificationService.findByMember(tokenPayload));
+	public ResponseEntity<List<PushNotificationResponse>> searchNotificationsOfMine(
+		@LoginMember TokenPayload tokenPayload) {
+		return ResponseEntity.ok(pushNotificationService.searchNotificationsOfMine(tokenPayload));
 	}
 }

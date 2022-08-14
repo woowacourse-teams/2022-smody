@@ -2,6 +2,8 @@ package com.woowacourse.smody.dto;
 
 import java.time.LocalDateTime;
 
+import com.woowacourse.smody.domain.PushNotification;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,14 @@ public class PushNotificationResponse {
 	private LocalDateTime pushTime;
 	private Long pathId;
 	private String pushCase;
+
+	public PushNotificationResponse(PushNotification pushNotification) {
+		this.pushNotificationId = pushNotification.getId();
+		this.message = pushNotification.getMessage();
+		this.pushTime = pushNotification.getPushTime();
+		this.pathId = pushNotification.getPathId();
+		this.pushCase = pushNotification.getPushCase()
+			.name()
+			.toLowerCase();
+	}
 }
