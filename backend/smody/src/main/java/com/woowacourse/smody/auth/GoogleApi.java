@@ -45,12 +45,19 @@ public class GoogleApi {
                 googleTokenRequest,
                 GoogleTokenResponse.class
         );
+        validateGoogleTokenResponseNotNull(googleTokenResponse);
         return parseMemberInfo(googleTokenResponse);
     }
 
     private void validateAuthorizationCode(String authorizationCode) {
         if (Objects.isNull(authorizationCode)) {
             throw new BusinessException(ExceptionData.INVALID_AUTHORIZATION_CODE);
+        }
+    }
+
+    private void validateGoogleTokenResponseNotNull(GoogleTokenResponse googleTokenResponse) {
+        if (googleTokenResponse == null) {
+            throw new BusinessException(ExceptionData.GOOGLE_RESPONSE_ERROR);
         }
     }
 
