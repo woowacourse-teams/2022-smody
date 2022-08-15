@@ -39,22 +39,50 @@ export const CustomCycleTimeBottomSheet = ({
   handleCloseBottomSheet,
 }: CustomCycleTimeBottomSheetProps) => {
   const themeContext = useThemeContext();
-  const { startHour, handleJoinTodayChallenge } = useCustomCycleTimeBottomSheet({
-    challengeName,
-    joinChallenge,
-    handleCloseBottomSheet,
-  });
+  const { startHour, selectTimeIndex, handleSelectTime, handleJoinTodayChallenge } =
+    useCustomCycleTimeBottomSheet({
+      challengeName,
+      joinChallenge,
+      handleCloseBottomSheet,
+    });
 
   return (
     <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet}>
-      <Wrapper flexDirection="column" gap="30px">
+      <Wrapper flexDirection="column" gap="10px">
         <FlexBox flexDirection="column" gap="10px">
-          <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
-            {challengeName} 챌린지
-          </Text>
           <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
             시작 시간 선택
           </Text>
+          <TipText color={themeContext.mainText}>
+            시작 시간 이후 24시간 이내에 챌린지를 완료해주세요.
+            <br />
+            3일 동안 매일 해당 시작 시간에 챌린지가 재개돼요.
+          </TipText>
+          <StartInfoWrapper>
+            <div>
+              <Text size={20} fontWeight="bold" color={themeContext.primary}>
+                {challengeName}&nbsp;
+              </Text>
+              <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
+                챌린지&nbsp;
+              </Text>
+            </div>
+            <FlexBox alignItems="center">
+              <div>
+                <Text size={20} fontWeight="bold" color={themeContext.primary}>
+                  {selectTimeIndex < startHour ? '내일' : '오늘'}{' '}
+                  {selectTime[selectTimeIndex]}
+                  &nbsp;
+                </Text>
+                <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
+                  부터&nbsp;
+                </Text>
+              </div>
+              <Button size="small" onClick={handleJoinTodayChallenge}>
+                시작
+              </Button>
+            </FlexBox>
+          </StartInfoWrapper>
         </FlexBox>
         <FlexBox flexDirection="column" gap="20px">
           <Text size={16} color={themeContext.onSurface}>
@@ -64,12 +92,17 @@ export const CustomCycleTimeBottomSheet = ({
             {selectTime
               .filter((_, index) => index >= startHour)
               .map((time, index) => (
-                <TimeSelectButton
-                  key={index + startHour}
-                  onClick={() => handleJoinTodayChallenge(index + startHour)}
-                >
-                  {time}
-                </TimeSelectButton>
+                <div key={index + startHour}>
+                  <SelectTimeInputRadio
+                    id={String(index + startHour)}
+                    value={index + startHour}
+                    checked={selectTimeIndex === index + startHour}
+                    onChange={handleSelectTime}
+                  />
+                  <label htmlFor={String(index + startHour)}>
+                    <TimeSelectButton as="div">{time}</TimeSelectButton>
+                  </label>
+                </div>
               ))}
           </FlexWrap>
           <Text size={16} color={themeContext.onSurface}>
@@ -79,30 +112,45 @@ export const CustomCycleTimeBottomSheet = ({
             {selectTime
               .filter((_, index) => index < startHour)
               .map((time, index) => (
-                <TimeSelectButton
-                  key={index}
-                  onClick={() => handleJoinTodayChallenge(index)}
-                >
-                  {time}
-                </TimeSelectButton>
+                <div key={index}>
+                  <SelectTimeInputRadio
+                    id={String(index)}
+                    value={index}
+                    checked={selectTimeIndex === index}
+                    onChange={handleSelectTime}
+                  />
+                  <label htmlFor={String(index)}>
+                    <TimeSelectButton as="div">{time}</TimeSelectButton>
+                  </label>
+                </div>
               ))}
           </FlexWrap>
         </FlexBox>
-        <Button size="large" isActive={true} onClick={() => handleJoinTodayChallenge()}>
-          지금 바로 도전!!
-        </Button>
       </Wrapper>
     </BottomSheet>
   );
 };
 
 const Wrapper = styled(FlexBox)`
+  min-width: 220px;
   max-width: 80%;
   margin: 0 auto;
 `;
 
 const FlexWrap = styled(FlexBox)`
   flex-wrap: wrap;
+`;
+
+const TipText = styled(Text)`
+  line-height: 1.5rem;
+`;
+
+const StartInfoWrapper = styled.div`
+  line-height: 1.8rem;
+  div,
+  ${Text}, div ${Text} {
+    display: inline-block;
+  }
 `;
 
 const TimeSelectButton = styled.button`
@@ -119,6 +167,20 @@ const TimeSelectButton = styled.button`
     cursor: pointer;
     &:hover {
       filter: brightness(0.9);
+    }
+  `}
+`;
+
+const SelectTimeInputRadio = styled.input.attrs({
+  type: 'radio',
+  name: 'selectTimeList',
+})`
+  display: none;
+
+  ${({ theme }) => css`
+    &:checked + label ${TimeSelectButton} {
+      color: ${theme.onPrimary};
+      background-color: ${theme.primary};
     }
   `}
 `;

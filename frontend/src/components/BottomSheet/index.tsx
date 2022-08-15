@@ -44,8 +44,9 @@ const BottomSheetContent = styled.div<BottomSheetContentProps>`
     ${height &&
     css`
       height: ${height};
-      overflow-y: auto;
     `}
+    max-height: 100vh;
+    overflow-y: auto;
     padding: 34px 0;
     border-radius: 5px 5px 0 0;
     background-color: ${theme.surface};

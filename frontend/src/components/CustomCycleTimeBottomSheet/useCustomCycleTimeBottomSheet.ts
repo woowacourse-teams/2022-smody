@@ -1,4 +1,5 @@
 import { CustomCycleTimeBottomSheetProps } from './type';
+import { ChangeEvent, useState } from 'react';
 
 export const useCustomCycleTimeBottomSheet = ({
   challengeName,
@@ -6,24 +7,23 @@ export const useCustomCycleTimeBottomSheet = ({
   handleCloseBottomSheet,
 }: CustomCycleTimeBottomSheetProps) => {
   const startHour = new Date().getHours();
+  const [selectTimeIndex, setSelectTimeIndex] = useState(startHour);
 
-  const handleJoinTodayChallenge = (selectHour?: number) => {
-    if (selectHour === undefined) {
-      joinChallenge({ challengeName });
-      handleCloseBottomSheet();
-      return;
-    }
+  const handleSelectTime = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectTimeIndex(Number(event.target.value));
+  };
 
+  const handleJoinTodayChallenge = () => {
     const currentDate = new Date();
-    currentDate.setHours(selectHour);
+    currentDate.setHours(selectTimeIndex);
     currentDate.setMinutes(0);
     currentDate.setSeconds(0);
-    if (selectHour < startHour) {
+    if (selectTimeIndex < startHour) {
       currentDate.setDate(currentDate.getDate() + 1);
     }
     joinChallenge({ challengeName, startTime: currentDate });
     handleCloseBottomSheet();
   };
 
-  return { startHour, handleJoinTodayChallenge };
+  return { startHour, selectTimeIndex, handleSelectTime, handleJoinTodayChallenge };
 };
