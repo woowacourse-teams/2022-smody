@@ -1,4 +1,4 @@
-import { InnerWrapperProps, WriteButtonProps } from './type';
+import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
@@ -6,7 +6,7 @@ import { FlexBox, ValidationMessage } from 'components';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 
-export const CommentInput = () => {
+export const CommentInput = ({ editMode, turnOffEditMode }: CommentInputProps) => {
   const {
     commentInputRef,
     content,
@@ -15,7 +15,7 @@ export const CommentInput = () => {
     isLoadingPostComment,
     handleChangeInput,
     handleClickWrite,
-  } = useCommentInput();
+  } = useCommentInput({ editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
@@ -33,7 +33,7 @@ export const CommentInput = () => {
           isVisible={isVisibleWriteButton}
           onClick={handleClickWrite}
         >
-          작성
+          {editMode.isEditMode ? '수정' : '작성'}
         </WriteButton>
       </InnerWrapper>
       {isShowLengthWarning && (

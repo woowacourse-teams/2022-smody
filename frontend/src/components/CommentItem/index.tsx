@@ -8,6 +8,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text } from 'components';
 
 export const CommentItem = ({
+  commentId,
   nickname,
   picture,
   content,
@@ -40,7 +41,7 @@ export const CommentItem = ({
           >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
         </CommentInfoWrapper>
         {isMyComment && (
-          <MoreIconWrapper onClick={handleClickMenuButton}>
+          <MoreIconWrapper onClick={() => handleClickMenuButton(commentId)}>
             <MoreIcon />
           </MoreIconWrapper>
         )}

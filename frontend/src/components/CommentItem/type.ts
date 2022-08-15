@@ -2,5 +2,5 @@ import { Comment } from 'commonType';
 
 export interface CommentItemProps extends Comment {
   isWriter: boolean;
-  handleClickMenuButton: () => void;
+  handleClickMenuButton: (commentId: number) => void;
 }

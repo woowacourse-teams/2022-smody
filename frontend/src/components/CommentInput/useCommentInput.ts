@@ -1,6 +1,7 @@
+import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePostComment } from 'apis/feedApi';
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -14,7 +15,7 @@ import { CLIENT_PATH } from 'constants/path';
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
 const INITIAL_CONTENT = '';
 
-const useCommentInput = () => {
+const useCommentInput = ({ editMode, turnOffEditMode }: UseCommentInputProps) => {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState(INITIAL_CONTENT);
   const queryClient = useQueryClient();
@@ -40,6 +41,12 @@ const useCommentInput = () => {
     },
   );
 
+  // TODO: 댓글 수정 API 연결
+
+  useEffect(() => {
+    setContent(editMode.editContent);
+  }, [editMode]);
+
   const isVisibleWriteButton = content.length !== 0;
   const isShowLengthWarning = content.length >= MAX_TEXTAREA_LENGTH - 1;
 
@@ -62,6 +69,10 @@ const useCommentInput = () => {
       return;
     }
 
+    if (editMode.isEditMode) {
+      // TODO: 수정하기에 따라 pathComment 요청보내기
+      return;
+    }
     postComment({ content });
   };
 

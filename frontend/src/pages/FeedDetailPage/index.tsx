@@ -19,10 +19,12 @@ const FeedDetailPage = () => {
     feedData,
     commentsData,
     isMenuBottomSheetOpen,
+    editMode,
     handleClickMenuButton,
     handleCloseBottomSheet,
     handleClickCommentEdit,
     handleClickCommentDelete,
+    turnOffEditMode,
   } = useFeedDetailPage();
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const FeedDetailPage = () => {
           </li>
         ))}
       </CommentList>
-      <CommentInput />
+      <CommentInput editMode={editMode} turnOffEditMode={turnOffEditMode} />
       {isMenuBottomSheetOpen && (
         <MenuBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}

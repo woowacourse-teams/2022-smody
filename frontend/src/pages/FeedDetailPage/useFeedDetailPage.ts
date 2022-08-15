@@ -8,6 +8,12 @@ const useFeedDetailPage = () => {
   const { cycleDetailId } = useParams();
   const isLogin = useRecoilValue(isLoginState);
   const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [editMode, setEditMode] = useState({
+    isEditMode: false,
+    editContent: '',
+  });
+
   const { data: feedData } = useGetFeedById(
     {
       cycleDetailId: Number(cycleDetailId),
@@ -27,30 +33,61 @@ const useFeedDetailPage = () => {
     },
   );
 
-  const handleClickMenuButton = () => {
+  const handleClickMenuButton = (commentId: number) => {
     setIsMenuBottomSheetOpen(true);
+    setSelectedCommentId(commentId);
   };
 
   const handleCloseBottomSheet = () => {
     setIsMenuBottomSheetOpen(false);
+    setSelectedCommentId(null);
   };
 
   const handleClickCommentEdit = () => {
-    // TODO: 댓글 수정하기 API 요청
+    const selectedCommentContent = findCommentContentById();
+
+    setIsMenuBottomSheetOpen(false);
+    setEditMode({
+      isEditMode: true,
+      editContent: selectedCommentContent,
+    });
   };
 
   const handleClickCommentDelete = () => {
     // TODO: 댓글 삭제하기 API 요청
+    console.log('댓글 삭제하기 요청: ', selectedCommentId);
+    setIsMenuBottomSheetOpen(false);
+  };
+
+  const turnOffEditMode = () => {
+    setEditMode({
+      isEditMode: false,
+      editContent: '',
+    });
+  };
+
+  const findCommentContentById = () => {
+    const result = commentsData?.data.find(
+      ({ commentId }) => commentId === selectedCommentId,
+    );
+
+    if (result === undefined) {
+      return '';
+    }
+
+    return result.content;
   };
 
   return {
     feedData,
     commentsData,
     isMenuBottomSheetOpen,
+    editMode,
     handleClickMenuButton,
     handleCloseBottomSheet,
     handleClickCommentEdit,
     handleClickCommentDelete,
+    turnOffEditMode,
   };
 };
 
