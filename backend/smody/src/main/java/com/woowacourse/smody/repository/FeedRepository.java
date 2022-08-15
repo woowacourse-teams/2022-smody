@@ -20,8 +20,10 @@ public interface FeedRepository extends JpaRepository<CycleDetail, Long> {
             + "join cd.cycle c "
             + "join c.challenge ch "
             + "join c.member m "
-            + "where cd.progressTime <= :time and cd.id <> :cycleDetailId ")
-    List<Feed> findAll(@Param("cycleDetailId") Long cycleDetailId, @Param("time") LocalDateTime time, Pageable pageable);
+            + "where (:time is null or cd.progressTime <= :time) and "
+            + "(:cycleDetailId is null or cd.id <> :cycleDetailId) ")
+    List<Feed> findAll(@Param("cycleDetailId") Long cycleDetailId, @Param("time") LocalDateTime time,
+                       Pageable pageable);
 
     @Query("select new com.woowacourse.smody.domain.Feed("
             + "cd.id, cd.progressImage, cd.description, cd.progressTime, "

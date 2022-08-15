@@ -7,9 +7,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.ResourceFixture;
+import com.woowacourse.smody.domain.Comment;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.dto.CommentRequest;
+import com.woowacourse.smody.dto.CommentUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -17,6 +19,8 @@ import com.woowacourse.smody.repository.CommentRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommentServiceTest extends IntegrationTest {
@@ -99,6 +103,69 @@ public class CommentServiceTest extends IntegrationTest {
         // when, then
         assertThatThrownBy(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
                 new CommentRequest(invalidContent)))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);
+    }
+
+    @DisplayName("댓글을 수정한다.")
+    @Test
+    void updateComment() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
+
+        // when
+        commentService.update(new TokenPayload(조조그린_ID),
+                new CommentUpdateRequest(comment.getId(), "수정후"));
+
+        // then
+        assertThat(comment.getContent()).isEqualTo("수정후");
+    }
+
+    @DisplayName("댓글 수정 시 댓글을 찾을 수 없으면 예외를 발생시킨다.")
+    @Test
+    void updateComment_notFound() {
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID),
+                new CommentUpdateRequest(1L, "수정후")))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_COMMENT);
+    }
+
+    @DisplayName("댓글 수정 시 멤버가 작성한 댓글이 아닌 경우 예외를 발생시킨다.")
+    @Test
+    void updateComment_unauthorizedMember() {
+        // given
+        Long unauthorizedMemberId = 0L;
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
+
+        // when
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(unauthorizedMemberId),
+                new CommentUpdateRequest(comment.getId(), "수정후")))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
+    }
+
+    @DisplayName("댓글 수정 시 1자 미만 255자 초과하는 댓글이면 예외를 발생시킨다.")
+    @Test
+    void updateComment_invalidContent() {
+        // given
+        String invalidContent = "1234567890".repeat(25) + "123456";
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
+
+        // when then
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID),
+                new CommentUpdateRequest(comment.getId(), invalidContent)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);

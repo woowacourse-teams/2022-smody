@@ -51,4 +51,9 @@ public class Comment extends AuditingEntity {
     public boolean isCommentByMemberId(Long memberId) {
         return this.member.getId().equals(memberId);
     }
+
+    public void updateContent(String content) {
+        validateContent(content);
+        this.content = content;
+    }
 }

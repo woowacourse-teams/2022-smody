@@ -4,6 +4,7 @@ import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.CommentRequest;
 import com.woowacourse.smody.dto.CommentResponse;
+import com.woowacourse.smody.dto.CommentUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.CommentQueryService;
 import com.woowacourse.smody.service.CommentService;
@@ -12,6 +13,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +33,14 @@ public class CommentController {
                                        @RequestBody CommentRequest commentRequest) {
         Long commentId = commentService.create(tokenPayload, cycleDetailId, commentRequest);
         return ResponseEntity.created(URI.create("/comments/" + commentId)).build();
+    }
+
+    @PatchMapping("/comments/{commentId}")
+    @RequiredLogin
+    public ResponseEntity<Void> update(@LoginMember TokenPayload tokenPayload,
+                                       @ModelAttribute CommentUpdateRequest commentUpdateRequest) {
+        commentService.update(tokenPayload, commentUpdateRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/feeds/{cycleDetailId}/comments")

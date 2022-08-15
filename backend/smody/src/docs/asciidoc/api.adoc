@@ -135,6 +135,14 @@ include::{snippets}/create-comment/request-fields.adoc[]
 === Response
 include::{snippets}/create-comment/http-response.adoc[]
 
+== 댓글 수정
+=== Request
+include::{snippets}/update-comment/http-request.adoc[]
+=== Request 필드
+include::{snippets}/update-comment/request-fields.adoc[]
+=== Response
+include::{snippets}/update-comment/http-response.adoc[]
+
 = 회원
 == 내 정보 조회
 === Request

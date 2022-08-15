@@ -10,6 +10,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -120,6 +121,29 @@ public class CommentControllerTest extends ControllerTest {
                                 fieldWithPath("[].content").type(JsonFieldType.STRING).description("댓글 내용"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성된 시간"),
                                 fieldWithPath("[].isMyComment").type(JsonFieldType.BOOLEAN).description("내가 작성한 댓글인지")
+                        ))
+                );
+    }
+
+    @DisplayName("댓글을 수정할 때 200을 응답한다.")
+    @Test
+    void updateComment() throws Exception {
+        // given
+        CommentRequest commentRequest = new CommentRequest("수정 내용");
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/comments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + token)
+                .content(objectMapper.writeValueAsString(commentRequest)));
+
+        // then
+        result.andExpect(status().isNoContent())
+                .andDo(document("update-comment", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
                         ))
                 );
     }
