@@ -45,6 +45,7 @@ class PushSchedulerTest extends IntegrationTest {
 	void init() {
 		member1 = fixture.회원_조회(1L);
 		member2 = fixture.회원_조회(2L);
+		Member member3 = fixture.회원_조회(3L);
 
 		pushSubscriptionService.subscribe(
 			new TokenPayload(조조그린_ID),
@@ -75,6 +76,15 @@ class PushSchedulerTest extends IntegrationTest {
 			.pushCase(PushCase.SUBSCRIPTION)
 			.pathId(1L)
 			.build());
+
+		pushNotificationRepository.save(PushNotification.builder()
+			.message("알림")
+			.pushTime(now.minusHours(1L))
+			.pushStatus(PushStatus.IN_COMPLETE)
+			.member(member3)
+			.pushCase(PushCase.CHALLENGE)
+			.pathId(1L)
+			.build());
 	}
 
 	@DisplayName("발송 안 된 알림들을 모두 전송한다.")
@@ -89,7 +99,7 @@ class PushSchedulerTest extends IntegrationTest {
 
 		// then
 		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-		assertThat(result).hasSize(3);
+		assertThat(result).hasSize(4);
 	}
 
 	@DisplayName("알림을 전송할 때 적절하지 않는 구독 정보는 삭제한다.")

@@ -65,7 +65,8 @@ public class PushScheduler {
 	private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
 		Member member,
 		PushNotification notification) {
-		for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
+		List<PushSubscription> subscriptions = subscriptionsByMember.getOrDefault(member, List.of());
+		for (PushSubscription pushSubscription : subscriptions) {
 			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
 			removeInvalidSubscription(pushSubscription, isValidSubscription);
 		}
