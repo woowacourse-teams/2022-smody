@@ -7,14 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class VaadinCycleDetailService implements SmodyVaddinService<CycleDetail> {
 
     private final FeedRepository feedRepository;
+
     @Override
     @Transactional
     public void deleteById(Long id) {

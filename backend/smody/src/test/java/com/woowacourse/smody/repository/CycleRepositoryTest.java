@@ -10,7 +10,6 @@ import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Progress;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 @DataJpaTest(showSql = false)
 @Import(ResourceFixture.class)

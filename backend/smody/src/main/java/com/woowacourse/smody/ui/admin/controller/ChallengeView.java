@@ -80,7 +80,7 @@ public class ChallengeView extends DomainView {
                     new Challenge(nameField.getValue(), descriptionField.getValue(),
                             Integer.parseInt(emojiIndexField.getValue()),
                             Integer.parseInt(colorIndexField.getValue())
-            ));
+                    ));
             UI.getCurrent().getPage().reload();
         } catch (Exception exception) {
             Notification.show(exception.getMessage(), 3000, Position.BOTTOM_END);

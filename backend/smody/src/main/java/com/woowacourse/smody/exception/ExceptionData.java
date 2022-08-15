@@ -40,4 +40,4 @@ public enum ExceptionData {
     private final int code;
     private final String message;
     private final int statusCode;
-    }
+}

@@ -31,8 +31,19 @@ export const useSearchPage = () => {
 
   const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const emptyRegexRule = /\s/g;
 
-    if (search.value === '') {
+    if (search.value.replace(emptyRegexRule, '') === '') {
+      renderSnackBar({
+        status: 'ERROR',
+        message: '검색어를 입력해주세요',
+      });
+
+      return;
+    }
+
+    if (search.value.length > 30) {
+      renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
       return;
     }
 

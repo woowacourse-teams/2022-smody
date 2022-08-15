@@ -1,20 +1,16 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import com.woowacourse.smody.dto.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.dto.ProgressRequest;
+import com.woowacourse.smody.dto.ProgressResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
@@ -22,8 +18,12 @@ import com.woowacourse.smody.push.event.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.CycleRepository;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -108,21 +108,11 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallenge(Long memberId, Long challengeId, CycleHistoryRequest cycleHistoryRequest) {
-        return cycleRepository.findAllFilterBy(
-                memberId, challengeId, cycleHistoryRequest.getFilter(),
-                cycleHistoryRequest.getLastCycleDetailId(), cycleHistoryRequest.toPageRequest());
-    }
-
     public List<Cycle> findSuccessLatestByMember(Member member) {
         return cycleRepository.findAllSuccessLatest(member);
     }
 
     public List<Cycle> searchByMember(Member member) {
         return cycleRepository.findByMember(member);
-    }
-
-    public List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId) {
-        return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
     }
 }

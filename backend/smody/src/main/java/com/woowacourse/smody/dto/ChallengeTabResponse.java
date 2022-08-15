@@ -31,6 +31,7 @@ public class ChallengeTabResponse {
     }
 
     public ChallengeTabResponse changeInProgress(Boolean inProgress) {
-        return new ChallengeTabResponse(challengeId, challengeName, challengerCount, inProgress, emojiIndex, colorIndex);
+        return new ChallengeTabResponse(challengeId, challengeName, challengerCount, inProgress, emojiIndex,
+                colorIndex);
     }
 }

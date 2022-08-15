@@ -10,11 +10,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
+
 @Repository
 public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<Challenge> searchAll(String name) {
         return entityManager.createQuery(createDynamicQuery(name))

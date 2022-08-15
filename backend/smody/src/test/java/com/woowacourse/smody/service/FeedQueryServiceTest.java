@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.dto.FeedRequest;
@@ -56,7 +55,6 @@ public class FeedQueryServiceTest extends IntegrationTest {
     }
 
     @DisplayName("모든 피드 조회 시 지정된 Id를 기준으로 최근에 생성된 데이터를 조회한다.")
-    @Test
     void searchByCycleDetailId() {
         // given
         LocalDateTime today = LocalDateTime.now();

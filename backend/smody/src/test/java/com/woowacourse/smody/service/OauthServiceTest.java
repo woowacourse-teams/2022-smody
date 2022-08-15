@@ -1,14 +1,8 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.auth.JwtTokenProvider;
@@ -17,6 +11,11 @@ import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.repository.MemberRepository;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
