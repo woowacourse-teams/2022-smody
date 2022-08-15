@@ -65,7 +65,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     private LocalDateTime convertStartTime(Long lastCycleId) {
         if (lastCycleId < 0) {
-            return LocalDateTime.now().minusDays(3L);
+            return LocalDateTime.now();
         }
         Cycle cycle = entityManager.find(Cycle.class, lastCycleId);
         return cycle.getStartTime();
