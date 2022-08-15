@@ -27,11 +27,9 @@ include::{snippets}/get-my-success-challenges/response-fields.adoc[]
 == 챌린지 하나 상세 조회 (회원/비회원)
 === Request
 include::{snippets}/get-challenge/http-request.adoc[]
-=== Request 필드
 include::{snippets}/get-challenge-auth/http-request.adoc[]
 === Response
 include::{snippets}/get-challenge/http-response.adoc[]
-=== Response 필드
 include::{snippets}/get-challenge/response-fields.adoc[]
 
 == 챌린지 참가자 목록 조회
@@ -39,13 +37,11 @@ include::{snippets}/get-challenge/response-fields.adoc[]
 include::{snippets}/get-challengers/http-request.adoc[]
 === Response
 include::{snippets}/get-challengers/http-response.adoc[]
-=== Response 필드
 include::{snippets}/get-challengers/response-fields.adoc[]
 
 == 챌린지 생성
 === Request
 include::{snippets}/create-challenge/http-request.adoc[]
-=== Request 필드
 include::{snippets}/create-challenge/request-fields.adoc[]
 === Response
 include::{snippets}/create-challenge/http-response.adoc[]
@@ -53,21 +49,11 @@ include::{snippets}/create-challenge/http-response.adoc[]
 == 챌린지 검색 (비회원/회원)
 === Request
 include::{snippets}/search-challenge/http-request.adoc[]
-=== Request 필드
 include::{snippets}/search-challenge-auth/http-request.adoc[]
 === Response
 include::{snippets}/search-challenge/http-response.adoc[]
 include::{snippets}/search-challenge-auth/http-response.adoc[]
-=== Response 필드
 include::{snippets}/search-challenge/response-fields.adoc[]
-
-== 나의 챌린지 조회
-=== Request
-include::{snippets}/find-challenge-mine/http-request.adoc[]
-=== Response
-include::{snippets}/find-challenge-mine/http-response.adoc[]
-=== Response 필드
-include::{snippets}/find-challenge-mine/response-fields.adoc[]
 
 = 사이클
 == 챌린지 사이클 생성
@@ -112,23 +98,6 @@ include::{snippets}/get-cycle-stat/http-request.adoc[]
 include::{snippets}/get-cycle-stat/http-response.adoc[]
 === Response 필드
 include::{snippets}/get-cycle-stat/response-fields.adoc[]
-
-== 나의 특정 챌린지에 대한 전체 사이클 조회
-=== Request
-include::{snippets}/get-all-cycles/http-request.adoc[]
-=== Response
-include::{snippets}/get-all-cycles/http-response.adoc[]
-=== Response 필드
-include::{snippets}/get-all-cycles/response-fields.adoc[]
-
-== 나의 특정 챌린지에 대한 성공 사이클 조회
-=== Request
-include::{snippets}/get-success-cycles/http-request.adoc[]
-=== Response
-include::{snippets}/get-success-cycles/http-response.adoc[]
-=== Response 필드
-include::{snippets}/get-success-cycles/response-fields.adoc[]
-
 
 = 피드
 == 모든 피드 조회
@@ -193,14 +162,6 @@ include::{snippets}/login-google/response-fields.adoc[]
 include::{snippets}/withdraw/http-request.adoc[]
 === Response
 include::{snippets}/withdraw/http-response.adoc[]
-
-== 토큰 확인
-=== Request
-include::{snippets}/validate_auth/http-request.adoc[]
-=== Response
-include::{snippets}/validate_auth/http-response.adoc[]
-=== Response 필드
-include::{snippets}/validate_auth/response-fields.adoc[]
 
 = 웹 푸시 알림
 

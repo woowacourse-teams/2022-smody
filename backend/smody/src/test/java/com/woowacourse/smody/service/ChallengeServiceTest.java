@@ -556,45 +556,4 @@ class ChallengeServiceTest extends IntegrationTest {
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
     }
-
-    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
-    @Test
-    void findOneWithMine() {
-        //given
-        fixture.사이클_생성_FIRST(알파_ID, 알고리즘_풀기_ID, now);
-        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(3L));
-        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(6L));
-        fixture.사이클_생성_SECOND(알파_ID, 알고리즘_풀기_ID, now.minusDays(9L));
-
-        TokenPayload tokenPayload = new TokenPayload(알파_ID);
-
-        // when
-        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findOneWithMine(
-                tokenPayload, 알고리즘_풀기_ID);
-
-        // then
-        assertAll(
-                () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("알고리즘 풀기"),
-                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(2),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(8)
-        );
-    }
-
-    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
-    @Test
-    void findOneWithMine_notParticipate() {
-        //given
-        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
-        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(3L));
-        fixture.사이클_생성_SUCCESS(알파_ID, 알고리즘_풀기_ID, now.minusDays(6L));
-        fixture.사이클_생성_SECOND(알파_ID, 알고리즘_풀기_ID, now.minusDays(9L));
-
-        TokenPayload tokenPayload = new TokenPayload(알파_ID);
-
-        // when then
-        assertThatThrownBy(() -> challengeQueryService.findOneWithMine(tokenPayload, 오늘의_운동_ID))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
-    }
 }

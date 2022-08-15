@@ -2,7 +2,12 @@ package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
-import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.dto.ChallengeRequest;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengeTabResponse;
+import com.woowacourse.smody.dto.ChallengersResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
 import java.net.URI;
@@ -76,12 +81,5 @@ public class ChallengeController {
     public ResponseEntity<Void> create(@RequestBody ChallengeRequest challengeRequest) {
         Long challengeId = challengeService.create(challengeRequest);
         return ResponseEntity.created(URI.create("/challenges/" + challengeId)).build();
-    }
-
-    @GetMapping("/me/{challengeId}")
-    @RequiredLogin
-    public ResponseEntity<ChallengeHistoryResponse> findOneWithMine(@LoginMember TokenPayload tokenPayload,
-                                                                    @PathVariable Long challengeId) {
-        return ResponseEntity.ok(challengeQueryService.findOneWithMine(tokenPayload, challengeId));
     }
 }

@@ -16,13 +16,6 @@ public enum SortSelection {
         public Sort getSort() {
             return Sort.by("progressTime").descending().and(Sort.by("id").descending());
         }
-    },
-
-    CYCLE_LATEST("cycle_latest") {
-        @Override
-        public Sort getSort() {
-            return Sort.by("startTime").descending().and(Sort.by("id").descending());
-        }
     };
 
     private final String parameter;

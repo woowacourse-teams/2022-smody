@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
+public interface CycleRepository extends JpaRepository<Cycle, Long> {
 
     List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
 
@@ -42,6 +42,4 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
-
-    List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId);
 }

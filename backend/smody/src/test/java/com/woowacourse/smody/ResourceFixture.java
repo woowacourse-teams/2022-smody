@@ -1,12 +1,13 @@
 package com.woowacourse.smody;
 
-import com.woowacourse.smody.domain.*;
+import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.repository.ChallengeRepository;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.MemberRepository;
 import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -45,45 +46,27 @@ public class ResourceFixture {
     }
 
     public Cycle 사이클_생성(Long memberId, Long challengeId, Progress progress, LocalDateTime startTime) {
-        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
-        return 인증_기록_추가(cycle, progress);
+        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), progress, startTime);
+        return cycleRepository.save(cycle);
     }
 
     public Cycle 사이클_생성_NOTHING(Long memberId, Long challengeId, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
-        return 인증_기록_추가(cycle, Progress.NOTHING);
+        return cycleRepository.save(cycle);
     }
 
     public Cycle 사이클_생성_FIRST(Long memberId, Long challengeId, LocalDateTime startTime) {
-        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
-        return 인증_기록_추가(cycle, Progress.FIRST);
+        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.FIRST, startTime);
+        return cycleRepository.save(cycle);
     }
 
     public Cycle 사이클_생성_SECOND(Long memberId, Long challengeId, LocalDateTime startTime) {
-        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
-        return 인증_기록_추가(cycle, Progress.SECOND);
+        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.SECOND, startTime);
+        return cycleRepository.save(cycle);
     }
 
     public Cycle 사이클_생성_SUCCESS(Long memberId, Long challengeId, LocalDateTime startTime) {
-        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
-        return 인증_기록_추가(cycle, Progress.SUCCESS);
-    }
-
-    private Cycle 인증_기록_추가(Cycle cycle, Progress progress) {
-        List<CycleDetail> cycleDetails = List.of(
-                new CycleDetail(
-                        cycle, cycle.getStartTime().plusSeconds(1L), "image1.jpg", "first"
-                ),
-                new CycleDetail(
-                        cycle, cycle.getStartTime().plusDays(1L), "image2.jpg", "second"
-                ),
-                new CycleDetail(
-                        cycle, cycle.getStartTime().plusDays(2L), "image3.jpg", "third"
-                )
-        );
-        for (int i = 0; i < progress.getCount(); i++) {
-            cycle.increaseProgress(cycleDetails.get(i));
-        }
+        Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.SUCCESS, startTime);
         return cycleRepository.save(cycle);
     }
 }
