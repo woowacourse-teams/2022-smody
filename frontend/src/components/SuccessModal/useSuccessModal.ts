@@ -58,7 +58,7 @@ const useSuccessModal = ({
   };
 
   const handleClickRetry = () => {
-    joinChallenge(challengeName);
+    joinChallenge({ challengeName });
   };
 
   const isChallengeComplete = progressCount === CYCLE_SUCCESS_CRITERIA;

@@ -25,7 +25,7 @@ const useChallengeItem = ({
   const handleClickProgressButton = () => {
     isInProgress
       ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
-      : joinChallenge(challengeName);
+      : joinChallenge({ challengeName });
   };
 
   return handleClickProgressButton;

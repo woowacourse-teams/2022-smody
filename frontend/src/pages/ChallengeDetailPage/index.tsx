@@ -3,11 +3,25 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, FixedButton, ChallengerList, ChallengeDetail, Text } from 'components';
+import {
+  FlexBox,
+  FixedButton,
+  ChallengerList,
+  ChallengeDetail,
+  Text,
+  CustomCycleTimeBottomSheet,
+} from 'components';
 
 const ChallengeDetailPage = () => {
   const themeContext = useThemeContext();
-  const { challengeData, joinChallenge } = useChallengeDetailPage();
+  const {
+    challengeData,
+    joinChallenge,
+    currentHour,
+    isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
+    handleCloseBottomSheet,
+  } = useChallengeDetailPage();
 
   if (typeof challengeData?.data === 'undefined') {
     return null;
@@ -24,13 +38,17 @@ const ChallengeDetailPage = () => {
         </Text>
         <ChallengerList challengeId={challengeId} />
       </FlexBox>
-      <FixedButton
-        size="large"
-        onClick={() => joinChallenge(challengeName)}
-        disabled={isInProgress}
-      >
+      <FixedButton size="large" onClick={handleOpenBottomSheet} disabled={isInProgress}>
         {isInProgress ? '도전중' : '도전하기'}
       </FixedButton>
+      {isCustomCycleTimeOpen && (
+        <CustomCycleTimeBottomSheet
+          challengeName={challengeName}
+          startHour={currentHour}
+          joinChallenge={joinChallenge}
+          handleCloseBottomSheet={handleCloseBottomSheet}
+        />
+      )}
     </Wrapper>
   );
 };
