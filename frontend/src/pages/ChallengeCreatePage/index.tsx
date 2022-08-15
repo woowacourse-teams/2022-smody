@@ -78,7 +78,7 @@ const ChallengeCreatePage = () => {
               이모지 리스트 보기
             </Button>
             {isEmojiBottomSheetOpen && (
-              <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet}>
+              <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet} height="300px">
                 <EmojiList
                   emojiSelectedIndex={emojiSelectedIndex}
                   handleSelectEmoji={handleSelectEmoji}
