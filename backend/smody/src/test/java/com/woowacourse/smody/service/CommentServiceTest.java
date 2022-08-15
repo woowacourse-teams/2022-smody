@@ -121,8 +121,8 @@ public class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
-        commentService.update(new TokenPayload(조조그린_ID),
-                new CommentUpdateRequest(comment.getId(), "수정후"));
+        commentService.update(new TokenPayload(조조그린_ID), comment.getId(),
+                new CommentUpdateRequest("수정후"));
 
         // then
         assertThat(comment.getContent()).isEqualTo("수정후");
@@ -131,8 +131,8 @@ public class CommentServiceTest extends IntegrationTest {
     @DisplayName("댓글 수정 시 댓글을 찾을 수 없으면 예외를 발생시킨다.")
     @Test
     void updateComment_notFound() {
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID),
-                new CommentUpdateRequest(1L, "수정후")))
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID), 1L,
+                new CommentUpdateRequest("수정후")))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_COMMENT);
@@ -149,8 +149,8 @@ public class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(unauthorizedMemberId),
-                new CommentUpdateRequest(comment.getId(), "수정후")))
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(unauthorizedMemberId), comment.getId(),
+                new CommentUpdateRequest("수정후")))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
@@ -167,8 +167,8 @@ public class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when then
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID),
-                new CommentUpdateRequest(comment.getId(), invalidContent)))
+        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID), comment.getId(),
+                new CommentUpdateRequest(invalidContent)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);

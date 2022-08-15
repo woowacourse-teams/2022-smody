@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.smody.dto.CommentRequest;
 import com.woowacourse.smody.dto.CommentResponse;
+import com.woowacourse.smody.dto.CommentUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -130,7 +131,7 @@ public class CommentControllerTest extends ControllerTest {
     @Test
     void updateComment() throws Exception {
         // given
-        CommentRequest commentRequest = new CommentRequest("수정 내용");
+        CommentUpdateRequest commentRequest = new CommentUpdateRequest("수정 내용");
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         // when

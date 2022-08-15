@@ -39,8 +39,9 @@ public class CommentController {
     @PatchMapping("/comments/{commentId}")
     @RequiredLogin
     public ResponseEntity<Void> update(@LoginMember TokenPayload tokenPayload,
-                                       @ModelAttribute CommentUpdateRequest commentUpdateRequest) {
-        commentService.update(tokenPayload, commentUpdateRequest);
+                                       @PathVariable Long commentId,
+                                       @RequestBody CommentUpdateRequest commentUpdateRequest) {
+        commentService.update(tokenPayload, commentId, commentUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 

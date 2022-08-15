@@ -8,9 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class CommentUpdateRequest {
 
-    private Long commentId;
     private String content;
 }
