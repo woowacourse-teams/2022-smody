@@ -146,10 +146,12 @@ const TipText = styled(Text)`
 `;
 
 const StartInfoWrapper = styled.div`
-  line-height: 1.8rem;
   div,
-  ${Text}, div ${Text} {
+  ${Text}, ${Button} {
     display: inline-block;
+    height: 34px;
+    line-height: 34px;
+    vertical-align: bottom;
   }
 `;
 
