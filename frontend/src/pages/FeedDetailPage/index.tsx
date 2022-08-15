@@ -44,6 +44,7 @@ const FeedDetailPage = () => {
           <li key={comment.commentId}>
             <CommentItem
               isWriter={feedData.data.memberId === comment.memberId}
+              isSelectedComment={comment.commentId === selectedCommentId}
               handleClickMenuButton={handleClickMenuButton}
               {...comment}
             />

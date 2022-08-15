@@ -1,6 +1,6 @@
-import { CommentItemProps } from './type';
+import { CommentItemProps, WrapperProps } from './type';
 import MoreIcon from 'assets/more.svg';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -13,15 +13,16 @@ export const CommentItem = ({
   picture,
   content,
   createdAt,
-  isWriter,
   isMyComment,
+  isWriter,
+  isSelectedComment,
   handleClickMenuButton,
 }: CommentItemProps) => {
   const themeContext = useThemeContext();
   const { year, month, date, hours, minutes } = parseTime(createdAt);
 
   return (
-    <Wrapper flexDirection="column">
+    <Wrapper flexDirection="column" isSelectedComment={isSelectedComment}>
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
         <CommentInfoWrapper flexDirection="column">
@@ -55,8 +56,12 @@ export const CommentItem = ({
   );
 };
 
-const Wrapper = styled(FlexBox)`
-  width: 100%;
+const Wrapper = styled(FlexBox)<WrapperProps>`
+  ${({ theme, isSelectedComment }) => css`
+    width: 100%;
+    background-color: ${isSelectedComment ? theme.secondary : undefined};
+    border-radius: 5px;
+  `}
 `;
 
 const ProfileImg = styled.img`
