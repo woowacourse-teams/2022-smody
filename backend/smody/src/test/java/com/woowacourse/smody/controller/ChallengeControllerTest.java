@@ -97,18 +97,19 @@ class ChallengeControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회 시 200을 응답한다.")
+    @DisplayName("나의 참가한 챌린지 이력을 조회 시 200을 응답한다.")
     @Test
-    void searchSuccessOfMine() throws Exception {
+    void searchOfMine() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        List<SuccessChallengeResponse> successChallengeResponses = List.of(
-                new SuccessChallengeResponse(1L, "스모디 방문하기", 2, 0, 1),
-                new SuccessChallengeResponse(2L, "미라클 모닝", 1, 1, 2)
+        List<ChallengeOfMineResponse> challengeOfMineRespons = List.of(
+                new ChallengeOfMineResponse(1L, "스모디 방문하기", 2, 0, 1),
+                new ChallengeOfMineResponse(2L, "미라클 모닝", 1, 1, 2),
+                new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
-                .willReturn(successChallengeResponses);
+        given(challengeQueryService.searchOfMine(any(TokenPayload.class), any(Pageable.class)))
+                .willReturn(challengeOfMineRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/me?page=0&size=10")
@@ -117,7 +118,7 @@ class ChallengeControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(
-                        objectMapper.writeValueAsString(successChallengeResponses)))
+                        objectMapper.writeValueAsString(challengeOfMineRespons)))
                 .andDo(document("get-my-success-challenges", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(

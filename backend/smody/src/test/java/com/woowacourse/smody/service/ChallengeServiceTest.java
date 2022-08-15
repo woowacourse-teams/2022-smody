@@ -68,7 +68,7 @@ class ChallengeServiceTest extends IntegrationTest {
             fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
             fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.FIRST, now.minusDays(3L));
             fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(6L));
-            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now);
+            fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now.minusSeconds(1L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(6L));
@@ -83,18 +83,18 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine() {
             // when
-            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, PageRequest.of(0, 10));
 
             // then
             assertAll(
                     () -> assertThat(responses.size()).isEqualTo(5),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getSuccessCount)
-                            .containsExactly(2, 1, 1, 3, 1),
+                            .map(ChallengeOfMineResponse::getSuccessCount)
+                            .containsExactly(1, 2, 1, 3, 1),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getChallengeId)
-                            .containsExactly(미라클_모닝_ID, 스모디_방문하기_ID, 오늘의_운동_ID, JPA_공부_ID, 알고리즘_풀기_ID)
+                            .map(ChallengeOfMineResponse::getChallengeId)
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, JPA_공부_ID, 알고리즘_풀기_ID)
             );
         }
 
@@ -102,18 +102,18 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageFullSize() {
             // when
-            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, PageRequest.of(0, 3));
 
             // then
             assertAll(
                     () -> assertThat(responses.size()).isEqualTo(3),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getSuccessCount)
-                            .containsExactly(2, 1, 1),
+                            .map(ChallengeOfMineResponse::getSuccessCount)
+                            .containsExactly(1, 2, 1),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getChallengeId)
-                            .containsExactly(미라클_모닝_ID, 스모디_방문하기_ID, 오늘의_운동_ID)
+                            .map(ChallengeOfMineResponse::getChallengeId)
+                            .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID)
             );
         }
 
@@ -121,17 +121,17 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pagePartialSize() {
             // when
-            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, PageRequest.of(1, 3));
 
             // then
             assertAll(
                     () -> assertThat(responses.size()).isEqualTo(2),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getSuccessCount)
+                            .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(3, 1),
                     () -> assertThat(responses)
-                            .map(SuccessChallengeResponse::getChallengeId)
+                            .map(ChallengeOfMineResponse::getChallengeId)
                             .containsExactly(JPA_공부_ID, 알고리즘_풀기_ID)
             );
         }
@@ -140,7 +140,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
-            List<SuccessChallengeResponse> responses = challengeQueryService.searchSuccessOfMine(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, PageRequest.of(2, 3));
 
             // then

@@ -111,4 +111,11 @@ public class Cycle {
     public int getInterval() {
         return progress.getCount() + 1;
     }
+
+    public LocalDateTime getLatestProgressTime() {
+        if (this.cycleDetails.isEmpty()) {
+            return this.startTime;
+        }
+        return getCycleDetails().get(0).getProgressTime();
+    }
 }

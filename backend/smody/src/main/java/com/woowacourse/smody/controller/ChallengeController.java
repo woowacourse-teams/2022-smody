@@ -47,9 +47,9 @@ public class ChallengeController {
 
     @GetMapping(value = "/me")
     @RequiredLogin
-    public ResponseEntity<List<SuccessChallengeResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
-                                                                              Pageable pageable) {
-        return ResponseEntity.ok(challengeQueryService.searchSuccessOfMine(tokenPayload, pageable));
+    public ResponseEntity<List<ChallengeOfMineResponse>> searchSuccessOfMine(@LoginMember TokenPayload tokenPayload,
+                                                                             Pageable pageable) {
+        return ResponseEntity.ok(challengeQueryService.searchOfMine(tokenPayload, pageable));
     }
 
     @GetMapping(value = "/{id}")
