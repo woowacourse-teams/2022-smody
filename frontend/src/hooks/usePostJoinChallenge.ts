@@ -1,6 +1,7 @@
 import { usePostCycle } from 'apis';
 import { Challenge } from 'commonType';
 import { useRef } from 'react';
+import { parseDateToISOString } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -8,6 +9,11 @@ import { CLIENT_PATH } from 'constants/path';
 
 interface PostJoinChallengeProps extends Pick<Challenge, 'challengeId'> {
   successCallback?: () => void;
+}
+
+export interface JoinChallengeProps {
+  challengeName: string;
+  startTime?: Date;
 }
 
 const usePostJoinChallenge = ({
@@ -18,7 +24,7 @@ const usePostJoinChallenge = ({
 
   const renderSnackBar = useSnackBar();
 
-  const { mutate, isSuccess } = usePostCycle({
+  const { mutate, isSuccess: isSuccessJoinChallenge } = usePostCycle({
     onSuccess: () => {
       successCallback && successCallback();
 
@@ -31,12 +37,16 @@ const usePostJoinChallenge = ({
     },
   });
 
-  const joinChallenge = (challengeName: string) => {
+  const joinChallenge = ({ challengeName, startTime }: JoinChallengeProps) => {
     challengeNameRef.current = challengeName;
-    mutate({ challengeId });
+    if (!startTime) {
+      mutate({ challengeId, startTime: parseDateToISOString(new Date()) });
+      return;
+    }
+    mutate({ challengeId, startTime: parseDateToISOString(startTime) });
   };
 
-  return { joinChallenge, isSuccess };
+  return { joinChallenge, isSuccessJoinChallenge };
 };
 
 export default usePostJoinChallenge;

@@ -48,3 +48,10 @@ export const urlB64ToUint8Array = (base64String: string) => {
   }
   return outputArray;
 };
+
+export const parseDateToISOString = (date: Date) => {
+  const currentDate = date;
+  currentDate.setHours(currentDate.getHours() + 9);
+  const [stringTypeDate, _] = currentDate.toISOString().split('.');
+  return stringTypeDate;
+};

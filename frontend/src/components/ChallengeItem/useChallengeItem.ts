@@ -1,34 +1,33 @@
 import { useChallengeItemProps } from './type';
 import { queryKeys } from 'apis/constants';
+import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
-import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
+import useJoinChallenge from 'hooks/useJoinChallenge';
 
-import { CLIENT_PATH } from 'constants/path';
-
-const useChallengeItem = ({
-  challengeId,
-  isInProgress,
-  challengeName,
-}: useChallengeItemProps) => {
-  const navigate = useNavigate();
+const useChallengeItem = ({ challengeId }: useChallengeItemProps) => {
   const queryClient = useQueryClient();
 
-  const { joinChallenge } = usePostJoinChallenge({
-    challengeId: Number(challengeId),
-    successCallback: () => {
+  const {
+    joinChallenge,
+    isSuccessJoinChallenge,
+    isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
+    handleCloseBottomSheet,
+  } = useJoinChallenge({ challengeId });
+
+  useEffect(() => {
+    if (isSuccessJoinChallenge) {
       queryClient.invalidateQueries(queryKeys.getAllChallenges);
-    },
-  });
+    }
+  }, [isSuccessJoinChallenge]);
 
-  const handleClickProgressButton = () => {
-    isInProgress
-      ? navigate(`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`)
-      : joinChallenge(challengeName);
+  return {
+    joinChallenge,
+    isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
+    handleCloseBottomSheet,
   };
-
-  return handleClickProgressButton;
 };
 
 export default useChallengeItem;

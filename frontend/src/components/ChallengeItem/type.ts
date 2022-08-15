@@ -7,7 +7,4 @@ export interface ChallengeItemProps {
   colorIndex: number;
 }
 
-export type useChallengeItemProps = Pick<
-  ChallengeItemProps,
-  'challengeId' | 'challengeName' | 'isInProgress'
->;
+export type useChallengeItemProps = Pick<ChallengeItemProps, 'challengeId'>;
