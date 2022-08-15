@@ -10,7 +10,6 @@ const useChallengeDetailPage = () => {
   const queryClient = useQueryClient();
   const { challengeId } = useParams();
   const [isCustomCycleTimeOpen, setIsCustomCycleTimeOpen] = useState(false);
-  const currentHour = new Date().getHours();
 
   const { data: challengeData } = useGetChallengeById(
     { challengeId: Number(challengeId) },
@@ -38,7 +37,6 @@ const useChallengeDetailPage = () => {
   return {
     challengeData,
     joinChallenge,
-    currentHour,
     isCustomCycleTimeOpen,
     handleOpenBottomSheet,
     handleCloseBottomSheet,

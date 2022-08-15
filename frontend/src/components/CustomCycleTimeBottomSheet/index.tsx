@@ -35,14 +35,12 @@ const selectTime = [
 
 export const CustomCycleTimeBottomSheet = ({
   challengeName,
-  startHour,
   joinChallenge,
   handleCloseBottomSheet,
 }: CustomCycleTimeBottomSheetProps) => {
   const themeContext = useThemeContext();
-  const handleJoinTodayChallenge = useCustomCycleTimeBottomSheet({
+  const { startHour, handleJoinTodayChallenge } = useCustomCycleTimeBottomSheet({
     challengeName,
-    startHour,
     joinChallenge,
     handleCloseBottomSheet,
   });

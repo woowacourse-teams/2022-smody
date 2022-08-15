@@ -9,5 +9,5 @@ export interface ChallengeItemProps {
 
 export type useChallengeItemProps = Pick<
   ChallengeItemProps,
-  'challengeId' | 'challengeName' | 'isInProgress'
+  'challengeId' | 'isInProgress'
 >;

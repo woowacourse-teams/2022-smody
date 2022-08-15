@@ -2,10 +2,11 @@ import { CustomCycleTimeBottomSheetProps } from './type';
 
 export const useCustomCycleTimeBottomSheet = ({
   challengeName,
-  startHour,
   joinChallenge,
   handleCloseBottomSheet,
 }: CustomCycleTimeBottomSheetProps) => {
+  const startHour = new Date().getHours();
+
   const handleJoinTodayChallenge = (selectHour?: number) => {
     if (selectHour === undefined) {
       joinChallenge({ challengeName });
@@ -24,5 +25,5 @@ export const useCustomCycleTimeBottomSheet = ({
     handleCloseBottomSheet();
   };
 
-  return handleJoinTodayChallenge;
+  return { startHour, handleJoinTodayChallenge };
 };

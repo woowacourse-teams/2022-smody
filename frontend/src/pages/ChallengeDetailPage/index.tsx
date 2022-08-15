@@ -17,7 +17,6 @@ const ChallengeDetailPage = () => {
   const {
     challengeData,
     joinChallenge,
-    currentHour,
     isCustomCycleTimeOpen,
     handleOpenBottomSheet,
     handleCloseBottomSheet,
@@ -44,7 +43,6 @@ const ChallengeDetailPage = () => {
       {isCustomCycleTimeOpen && (
         <CustomCycleTimeBottomSheet
           challengeName={challengeName}
-          startHour={currentHour}
           joinChallenge={joinChallenge}
           handleCloseBottomSheet={handleCloseBottomSheet}
         />
