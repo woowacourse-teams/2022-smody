@@ -6,6 +6,7 @@ import {
   getFeedById,
   postComments,
   patchComments,
+  deleteComments,
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
@@ -16,6 +17,7 @@ import {
   UsePostCommentProps,
   UsePostCommentMutationFunctionProps,
   PatchCommentsProps,
+  DeleteCommentsProps,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -105,5 +107,18 @@ export const usePatchComments = (
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchCommentsProps>(
     ({ commentId, content }) => patchComments({ commentId, content }),
+    options,
+  );
+
+// 6. 댓글 삭제(DELETE)
+export const useDeleteComments = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    DeleteCommentsProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteCommentsProps>(
+    ({ commentId }) => deleteComments({ commentId }),
     options,
   );

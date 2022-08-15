@@ -1,8 +1,10 @@
-import { useGetCommentsById, useGetFeedById } from 'apis/feedApi';
+import { useDeleteComments, useGetCommentsById, useGetFeedById } from 'apis/feedApi';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
+
+import useSnackBar from 'hooks/useSnackBar';
 
 const useFeedDetailPage = () => {
   const { cycleDetailId } = useParams();
@@ -13,8 +15,9 @@ const useFeedDetailPage = () => {
     isEditMode: false,
     editContent: '',
   });
+  const renderSnackBar = useSnackBar();
 
-  const { data: feedData } = useGetFeedById(
+  const { data: feedData, refetch: refetchGetFeedById } = useGetFeedById(
     {
       cycleDetailId: Number(cycleDetailId),
     },
@@ -23,7 +26,7 @@ const useFeedDetailPage = () => {
     },
   );
 
-  const { data: commentsData } = useGetCommentsById(
+  const { data: commentsData, refetch: refetchGetCommentsById } = useGetCommentsById(
     {
       cycleDetailId: Number(cycleDetailId),
       isLogin,
@@ -32,6 +35,24 @@ const useFeedDetailPage = () => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const { mutate: deleteComment } = useDeleteComments({
+    onSuccess: () => {
+      refetchQueries();
+      setSelectedCommentId(null);
+      setIsMenuBottomSheetOpen(false);
+
+      renderSnackBar({
+        status: 'SUCCESS',
+        message: '댓글이 삭제됐습니다.',
+      });
+    },
+  });
+
+  const refetchQueries = () => {
+    refetchGetFeedById();
+    refetchGetCommentsById();
+  };
 
   const handleClickMenuButton = (commentId: number) => {
     setIsMenuBottomSheetOpen(true);
@@ -54,9 +75,9 @@ const useFeedDetailPage = () => {
   };
 
   const handleClickCommentDelete = () => {
-    // TODO: 댓글 삭제하기 API 요청
-    console.log('댓글 삭제하기 요청: ', selectedCommentId);
-    setIsMenuBottomSheetOpen(false);
+    if (typeof selectedCommentId === 'number') {
+      deleteComment({ commentId: selectedCommentId });
+    }
   };
 
   const turnOffEditMode = () => {
@@ -64,6 +85,8 @@ const useFeedDetailPage = () => {
       isEditMode: false,
       editContent: '',
     });
+
+    setSelectedCommentId(null);
   };
 
   const findCommentContentById = () => {

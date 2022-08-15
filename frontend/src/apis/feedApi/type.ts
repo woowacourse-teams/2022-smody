@@ -21,3 +21,5 @@ export type GetCommentsByIdProps = Pick<Feed, 'cycleDetailId'>;
 export type GetCommentsByIdResponse = Comment[];
 
 export type PatchCommentsProps = Pick<Comment, 'commentId' | 'content'>;
+
+export type DeleteCommentsProps = Pick<Comment, 'commentId'>;

@@ -145,4 +145,40 @@ export const feed = [
 
     return res(ctx.delay(2000), ctx.status(204));
   }),
+  // 6. 댓글 삭제
+  rest.delete(`${BASE_URL}/comments/:commentId`, (req, res, ctx) => {
+    const { commentId: targetCommentIdString } = req.params;
+    const { authorization } = req.headers.headers;
+
+    const accessToken = authorization.split(' ')[1];
+
+    const targetCommentId = Number(targetCommentIdString);
+    const commentDataIndex = commentData.findIndex(
+      ({ commentId }) => commentId === targetCommentId,
+    );
+
+    if (Number.isNaN(targetCommentId) || commentDataIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          code: 4002,
+          message: '존재하지 않는 챌린지입니다.',
+        }),
+      );
+    }
+
+    if (accessToken !== accessTokenData) {
+      return res(
+        ctx.status(403),
+        ctx.json({
+          code: 2002,
+          message: '유효하지 않은 토큰입니다.',
+        }),
+      );
+    }
+
+    commentData.splice(commentDataIndex, 1);
+
+    return res(ctx.delay(2000), ctx.status(204));
+  }),
 ];

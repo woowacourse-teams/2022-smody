@@ -8,6 +8,7 @@ import {
   GetCommentsByIdResponse,
   PostCommentProps,
   PatchCommentsProps,
+  DeleteCommentsProps,
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
@@ -52,4 +53,9 @@ export const patchComments = async ({ commentId, content }: PatchCommentsProps) 
   return authApiClient.axios.patch(`comments/${commentId}`, {
     content,
   });
+};
+
+// 6. 댓글 삭제(DELETE)
+export const deleteComments = async ({ commentId }: DeleteCommentsProps) => {
+  return authApiClient.axios.delete(`comments/${commentId}`);
 };
