@@ -4,9 +4,9 @@ import {
   cycleData,
   cycleDetailData,
   mySuccessChallengeData,
-  accessTokenData,
   challengers,
 } from 'mocks/data';
+import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 import { API_PATH } from 'constants/path';
@@ -73,11 +73,7 @@ export const challenge = [
   }),
   // 5. 모든 챌린지 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
-    const { authorization } = req.headers.headers;
-
-    const accessToken = authorization.split(' ')[1];
-
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({
@@ -121,9 +117,6 @@ export const challenge = [
   // 8. 챌린지 하나 상세 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/:challengeId/auth`, (req, res, ctx) => {
     const { challengeId } = req.params;
-    const { authorization } = req.headers.headers;
-
-    const accessToken = authorization.split(' ')[1];
 
     if (Number.isNaN(challengeId) || challengeId > challengeData.length) {
       return res(
@@ -135,7 +128,7 @@ export const challenge = [
       );
     }
 
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({

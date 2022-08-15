@@ -1,5 +1,6 @@
 import { BASE_URL } from 'env';
-import { accessTokenData, userData, feedData, commentData } from 'mocks/data';
+import { userData, feedData, commentData } from 'mocks/data';
+import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 const getNowTime = () => {
@@ -35,11 +36,8 @@ export const feed = [
   // 3. 댓글 생성(POST)
   rest.post(`${BASE_URL}/feeds/:cycleDetailId/comments`, (req, res, ctx) => {
     const { content } = req.body;
-    const { authorization } = req.headers.headers;
 
-    const accessToken = authorization.split(' ')[1];
-
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({
@@ -82,9 +80,6 @@ export const feed = [
   // 4. 댓글 조회(GET) - 회원용
   rest.get(`${BASE_URL}/feeds/:cycleDetailId/comments/auth`, (req, res, ctx) => {
     const { cycleDetailId } = req.params;
-    const { authorization } = req.headers.headers;
-
-    const accessToken = authorization.split(' ')[1];
 
     if (Number.isNaN(cycleDetailId) || cycleDetailId > feedData.length) {
       return res(
@@ -96,7 +91,7 @@ export const feed = [
       );
     }
 
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({
@@ -111,10 +106,7 @@ export const feed = [
   // 5. 댓글 수정
   rest.patch(`${BASE_URL}/comments/:commentId`, (req, res, ctx) => {
     const { commentId: targetCommentIdString } = req.params;
-    const { authorization } = req.headers.headers;
     const { content } = req.body;
-
-    const accessToken = authorization.split(' ')[1];
 
     const targetCommentId = Number(targetCommentIdString);
     const commentDataIndex = commentData.findIndex(
@@ -131,7 +123,7 @@ export const feed = [
       );
     }
 
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({
@@ -148,9 +140,6 @@ export const feed = [
   // 6. 댓글 삭제
   rest.delete(`${BASE_URL}/comments/:commentId`, (req, res, ctx) => {
     const { commentId: targetCommentIdString } = req.params;
-    const { authorization } = req.headers.headers;
-
-    const accessToken = authorization.split(' ')[1];
 
     const targetCommentId = Number(targetCommentIdString);
     const commentDataIndex = commentData.findIndex(
@@ -167,7 +156,7 @@ export const feed = [
       );
     }
 
-    if (accessToken !== accessTokenData) {
+    if (!checkValidAccessToken(req)) {
       return res(
         ctx.status(403),
         ctx.json({
