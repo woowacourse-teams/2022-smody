@@ -6,16 +6,23 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.*;
-
+import com.woowacourse.smody.dto.ChallengeRequest;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengeTabResponse;
+import com.woowacourse.smody.dto.ChallengersResponse;
+import com.woowacourse.smody.dto.SuccessChallengeResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +37,7 @@ class ChallengeControllerTest extends ControllerTest {
     void findAllWithChallengerCount_unAuthorized() throws Exception {
         // given
         List<ChallengeTabResponse> challengeTabRespons = List.of(
-                new ChallengeTabResponse(1L, "스모디 방문하기", 3, false, 0 ,1),
+                new ChallengeTabResponse(1L, "스모디 방문하기", 3, false, 0, 1),
                 new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
 

@@ -21,27 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PushSubscriptionController {
 
-	private final PushSubscriptionService pushSubscriptionService;
-	private final WebPushService webPushService;
+    private final PushSubscriptionService pushSubscriptionService;
+    private final WebPushService webPushService;
 
-	@GetMapping("/public-key")
-	public ResponseEntity<VapidPublicKeyResponse> sendPublicKey() {
-		return ResponseEntity.ok(new VapidPublicKeyResponse(webPushService.getPublicKey()));
-	}
+    @GetMapping("/public-key")
+    public ResponseEntity<VapidPublicKeyResponse> sendPublicKey() {
+        return ResponseEntity.ok(new VapidPublicKeyResponse(webPushService.getPublicKey()));
+    }
 
-	@PostMapping("/subscribe")
-	@RequiredLogin
-	public ResponseEntity<Void> subscribe(@LoginMember TokenPayload tokenPayload,
-		@RequestBody SubscriptionRequest subscription) {
-		pushSubscriptionService.subscribe(tokenPayload, subscription);
-		return ResponseEntity.ok().build();
-	}
+    @PostMapping("/subscribe")
+    @RequiredLogin
+    public ResponseEntity<Void> subscribe(@LoginMember TokenPayload tokenPayload,
+                                          @RequestBody SubscriptionRequest subscription) {
+        pushSubscriptionService.subscribe(tokenPayload, subscription);
+        return ResponseEntity.ok().build();
+    }
 
-	@PostMapping("/unsubscribe")
-	@RequiredLogin
-	public ResponseEntity<Void> unSubscribe(@LoginMember TokenPayload tokenPayload,
-		@RequestBody UnSubscriptionRequest unSubscription) {
-		pushSubscriptionService.unSubscribe(tokenPayload, unSubscription);
-		return ResponseEntity.noContent().build();
-	}
+    @PostMapping("/unsubscribe")
+    @RequiredLogin
+    public ResponseEntity<Void> unSubscribe(@LoginMember TokenPayload tokenPayload,
+                                            @RequestBody UnSubscriptionRequest unSubscription) {
+        pushSubscriptionService.unSubscribe(tokenPayload, unSubscription);
+        return ResponseEntity.noContent().build();
+    }
 }

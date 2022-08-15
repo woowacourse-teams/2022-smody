@@ -12,12 +12,12 @@ values ('bcc101106@gmail.com', '알파',
         'https://lh3.googleusercontent.com/a/AItbvmmloBfQkCwgxHvdDFPtuqIkAbMKWjk_NHd7xXjq=s192-c-br100-rg-mo');
 
 insert into challenge (name, description, emoji_index, color_index)
-values ('스모디 방문하기', '스모디 방문하기 챌린지입니다.', 0 , 1);
+values ('스모디 방문하기', '스모디 방문하기 챌린지입니다.', 0, 1);
 insert into challenge (name, description, emoji_index, color_index)
-values ('미라클 모닝', '미라클 모닝 챌린지입니다.', 0 , 1);
+values ('미라클 모닝', '미라클 모닝 챌린지입니다.', 0, 1);
 insert into challenge (name, description, emoji_index, color_index)
-values ('오늘의 운동', '오늘의 운동 챌린지입니다.', 0 , 1);
+values ('오늘의 운동', '오늘의 운동 챌린지입니다.', 0, 1);
 insert into challenge (name, description, emoji_index, color_index)
-values ('알고리즘 풀기', '알고리즘 풀기 챌린지입니다.', 0 , 1);
+values ('알고리즘 풀기', '알고리즘 풀기 챌린지입니다.', 0, 1);
 insert into challenge (name, description, emoji_index, color_index)
-values ('JPA 공부', 'JPA 공부 챌린지입니다.', 0 , 1);
+values ('JPA 공부', 'JPA 공부 챌린지입니다.', 0, 1);

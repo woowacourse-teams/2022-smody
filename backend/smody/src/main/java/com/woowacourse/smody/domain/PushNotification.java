@@ -20,37 +20,37 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PushNotification {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "push_notification_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "push_notification_id")
+    private Long id;
 
-	@JoinColumn(name = "member_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Member member;
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
-	@Column(nullable = false)
-	private String message;
+    @Column(nullable = false)
+    private String message;
 
-	@Column(nullable = false)
-	private LocalDateTime pushTime;
+    @Column(nullable = false)
+    private LocalDateTime pushTime;
 
-	@Enumerated(EnumType.STRING)
-	private PushStatus pushStatus;
+    @Enumerated(EnumType.STRING)
+    private PushStatus pushStatus;
 
-	public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member) {
-		this.message = message;
-		this.pushTime = pushTime;
-		this.pushStatus = pushStatus;
-		this.member = member;
-	}
+    public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member) {
+        this.message = message;
+        this.pushTime = pushTime;
+        this.pushStatus = pushStatus;
+        this.member = member;
+    }
 
-	public boolean isPushable(LocalDateTime now) {
-		return pushStatus == PushStatus.IN_COMPLETE
-			&& (pushTime.isBefore(now) || pushTime.isEqual(now));
-	}
+    public boolean isPushable(LocalDateTime now) {
+        return pushStatus == PushStatus.IN_COMPLETE
+                && (pushTime.isBefore(now) || pushTime.isEqual(now));
+    }
 
-	public void completePush() {
-		this.pushStatus = PushStatus.COMPLETE;
-	}
+    public void completePush() {
+        this.pushStatus = PushStatus.COMPLETE;
+    }
 }

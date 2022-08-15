@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PushResponse {
 
-	private String message;
+    private String message;
 
-	public PushResponse(PushNotification pushNotification) {
-		this.message = pushNotification.getMessage();
-	}
+    public PushResponse(PushNotification pushNotification) {
+        this.message = pushNotification.getMessage();
+    }
 }

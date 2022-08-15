@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class VapidPublicKeyResponse {
 
-	private String publicKey;
+    private String publicKey;
 }

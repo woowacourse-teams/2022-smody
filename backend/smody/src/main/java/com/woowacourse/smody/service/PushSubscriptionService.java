@@ -19,31 +19,31 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PushSubscriptionService {
 
-	private final PushSubscriptionRepository pushSubscriptionRepository;
-	private final MemberService memberService;
-	private final PushEventHandler pushEventHandler;
+    private final PushSubscriptionRepository pushSubscriptionRepository;
+    private final MemberService memberService;
+    private final PushEventHandler pushEventHandler;
 
-	@Transactional
-	public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
-		Member member = memberService.search(tokenPayload);
-		PushSubscription subscription = pushSubscriptionRepository.findByEndpoint(subscriptionRequest.endpoint)
-			.map(pushSubscription -> pushSubscription.updateMember(member))
-			.orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
+    @Transactional
+    public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
+        Member member = memberService.search(tokenPayload);
+        PushSubscription subscription = pushSubscriptionRepository.findByEndpoint(subscriptionRequest.endpoint)
+                .map(pushSubscription -> pushSubscription.updateMember(member))
+                .orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-		pushEventHandler.onApplicationEvent(new PushEvent(this, subscription, PushCase.SUBSCRIPTION));
-	}
+        pushEventHandler.onApplicationEvent(new PushEvent(this, subscription, PushCase.SUBSCRIPTION));
+    }
 
-	@Transactional
-	public void unSubscribe(TokenPayload tokenPayload, UnSubscriptionRequest unSubscription) {
-		memberService.search(tokenPayload);
-		pushSubscriptionRepository.deleteByEndpoint(unSubscription.getEndpoint());
-	}
+    @Transactional
+    public void unSubscribe(TokenPayload tokenPayload, UnSubscriptionRequest unSubscription) {
+        memberService.search(tokenPayload);
+        pushSubscriptionRepository.deleteByEndpoint(unSubscription.getEndpoint());
+    }
 
-	public List<PushSubscription> searchByMembers(List<Member> members) {
-		return pushSubscriptionRepository.findByMemberIn(members);
-	}
+    public List<PushSubscription> searchByMembers(List<Member> members) {
+        return pushSubscriptionRepository.findByMemberIn(members);
+    }
 
-	public void delete(PushSubscription pushSubscription) {
-		pushSubscriptionRepository.delete(pushSubscription);
-	}
+    public void delete(PushSubscription pushSubscription) {
+        pushSubscriptionRepository.delete(pushSubscription);
+    }
 }
