@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PushSchedulerExecutor {
 
-	private final PushScheduler pushScheduler;
+    private final PushScheduler pushScheduler;
 
-	@Scheduled(initialDelay = 5000, fixedDelayString = "${push.schedule.period}")
-	public void execute() {
-		pushScheduler.sendPushNotifications();
-	}
+    @Scheduled(initialDelay = 5000, fixedDelayString = "${push.schedule.period}")
+    public void execute() {
+        pushScheduler.sendPushNotifications();
+    }
 }

@@ -36,7 +36,8 @@ public class ChallengeController {
     @GetMapping
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(Pageable pageable,
                                                                                  @RequestParam(required = false) String search) {
-        return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable, search));
+        return ResponseEntity.ok(
+                challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable, search));
     }
 
     @GetMapping("/auth")

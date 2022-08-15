@@ -13,8 +13,6 @@ import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

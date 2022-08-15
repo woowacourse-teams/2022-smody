@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PushNotificationRepository extends JpaRepository<PushNotification, Long> {
 
-	List<PushNotification> findByPushStatus(PushStatus pushStatus);
+    List<PushNotification> findByPushStatus(PushStatus pushStatus);
 
-	void deleteByMember(Member member);
+    void deleteByMember(Member member);
 }

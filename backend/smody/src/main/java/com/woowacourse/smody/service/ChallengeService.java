@@ -25,6 +25,7 @@ public class ChallengeService {
     public List<Challenge> searchAll(String name) {
         return challengeRepository.searchAll(name);
     }
+
     @Transactional
     public Long create(ChallengeRequest challengeRequest) {
         validateDuplicatedName(challengeRequest.getChallengeName());

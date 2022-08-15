@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UnSubscriptionRequest {
 
-	private String endpoint;
+    private String endpoint;
 }

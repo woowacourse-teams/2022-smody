@@ -189,7 +189,7 @@ public class CycleControllerTest extends ControllerTest {
         // given
         long cycleId = 1L;
         CycleResponse cycleResponse = new CycleResponse(
-                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3,"미라클 모닝입니다", 0, 1,
+                cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3, "미라클 모닝입니다", 0, 1,
                 List.of(new CycleDetailResponse(LocalDateTime.now(), "image1", "인증 내용1"),
                         new CycleDetailResponse(LocalDateTime.now(), "image2", "인증 내용2")));
         given(cycleQueryService.findById(cycleId))

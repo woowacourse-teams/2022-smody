@@ -8,11 +8,11 @@ import nl.martijndwars.webpush.Subscription;
 @NoArgsConstructor
 public class SubscriptionRequest extends Subscription {
 
-	public SubscriptionRequest(String endpoint, String p256dh, String auth) {
-		super(endpoint, new Keys(p256dh, auth));
-	}
+    public SubscriptionRequest(String endpoint, String p256dh, String auth) {
+        super(endpoint, new Keys(p256dh, auth));
+    }
 
-	public PushSubscription toEntity(Member member) {
-		return new PushSubscription(endpoint, keys.p256dh, keys.auth, member);
-	}
+    public PushSubscription toEntity(Member member) {
+        return new PushSubscription(endpoint, keys.p256dh, keys.auth, member);
+    }
 }
