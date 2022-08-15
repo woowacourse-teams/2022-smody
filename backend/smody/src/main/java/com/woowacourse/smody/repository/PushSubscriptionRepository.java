@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PushSubscriptionRepository extends JpaRepository<PushSubscription, Long> {
 
-	Optional<PushSubscription> findByEndpoint(String endpoint);
+    Optional<PushSubscription> findByEndpoint(String endpoint);
 
-	void deleteByEndpoint(String endpoint);
+    void deleteByEndpoint(String endpoint);
 
-	List<PushSubscription> findByMemberIn(List<Member> members);
+    List<PushSubscription> findByMemberIn(List<Member> members);
 
-	void deleteByMember(Member member);
+    void deleteByMember(Member member);
 }

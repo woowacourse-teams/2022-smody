@@ -31,7 +31,8 @@ public class ChallengeQueryService {
     private final MemberService memberService;
     private final CycleService cycleService;
 
-    public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable, String searchingName) {
+    public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable,
+                                                                 String searchingName) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
         List<ChallengeTabResponse> responses = getResponsesOrderId(inProgressCycles, searchingName);
         return PagingUtil.page(responses, pageable);
@@ -66,7 +67,8 @@ public class ChallengeQueryService {
                 .collect(groupingBy(Cycle::getChallenge));
     }
 
-    private List<ChallengeTabResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles, String searchingName) {
+    private List<ChallengeTabResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles,
+                                                           String searchingName) {
         return challengeService.searchAll(searchingName).stream().map(challenge ->
                         new ChallengeTabResponse(
                                 challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))

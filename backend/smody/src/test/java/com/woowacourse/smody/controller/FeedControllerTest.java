@@ -47,7 +47,8 @@ public class FeedControllerTest extends ControllerTest {
                 .andDo(document("get-all-feeds", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("[].cycleDetailId").type(JsonFieldType.NUMBER).description("CycleDetail Id"),
+                                fieldWithPath("[].cycleDetailId").type(JsonFieldType.NUMBER)
+                                        .description("CycleDetail Id"),
                                 fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("Member Id"),
                                 fieldWithPath("[].picture").type(JsonFieldType.STRING).description("프로필 이미지"),
                                 fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
