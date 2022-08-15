@@ -14,6 +14,7 @@ export const CommentItem = ({
   createdAt,
   isWriter,
   isMyComment,
+  handleClickMenuButton,
 }: CommentItemProps) => {
   const themeContext = useThemeContext();
   const { year, month, date, hours, minutes } = parseTime(createdAt);
@@ -39,7 +40,7 @@ export const CommentItem = ({
           >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
         </CommentInfoWrapper>
         {isMyComment && (
-          <MoreIconWrapper>
+          <MoreIconWrapper onClick={handleClickMenuButton}>
             <MoreIcon />
           </MoreIconWrapper>
         )}
