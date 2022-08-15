@@ -78,7 +78,7 @@ const ChallengeCreatePage = () => {
               이모지 리스트 보기
             </Button>
             {isEmojiBottomSheetOpen && (
-              <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet}>
+              <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet} height="300px">
                 <EmojiList
                   emojiSelectedIndex={emojiSelectedIndex}
                   handleSelectEmoji={handleSelectEmoji}
@@ -90,7 +90,7 @@ const ChallengeCreatePage = () => {
             )}
           </EmojiSelectWrapper>
         </EmojiWrapper>
-        <ButtonWrapper>
+        <ButtonWrapper justifyContent="center">
           <LoadingButton
             isDisabled={!isAllValidated}
             isLoading={isLoadingPostChallenge}
@@ -222,7 +222,7 @@ const EmojiDiv = styled.div`
   cursor: pointer;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 80%;
+const ButtonWrapper = styled(FlexBox)`
+  width: 100%;
   margin: 3rem auto 0;
 `;

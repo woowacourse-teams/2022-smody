@@ -1,10 +1,14 @@
-import { BottomSheetProps } from './type';
+import { BottomSheetContentProps, BottomSheetProps } from './type';
 import ReactDOM from 'react-dom';
 import styled, { css, keyframes } from 'styled-components';
 
 import { Z_INDEX } from 'constants/css';
 
-export const BottomSheet = ({ children, handleCloseBottomSheet }: BottomSheetProps) => {
+export const BottomSheet = ({
+  children,
+  height,
+  handleCloseBottomSheet,
+}: BottomSheetProps) => {
   return (
     <>
       {ReactDOM.createPortal(
@@ -12,7 +16,7 @@ export const BottomSheet = ({ children, handleCloseBottomSheet }: BottomSheetPro
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(
-        <BottomSheetContent>{children}</BottomSheetContent>,
+        <BottomSheetContent height={height}>{children}</BottomSheetContent>,
         document.getElementById('overlay-root') as HTMLElement,
       )}
     </>
@@ -28,8 +32,8 @@ const slideUp = keyframes`
   }
 `;
 
-const BottomSheetContent = styled.div`
-  ${({ theme }) => css`
+const BottomSheetContent = styled.div<BottomSheetContentProps>`
+  ${({ theme, height }) => css`
     position: fixed;
     left: 0;
     bottom: 0;
@@ -37,7 +41,11 @@ const BottomSheetContent = styled.div`
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
-    height: 300px;
+    ${height &&
+    css`
+      height: ${height};
+    `}
+    max-height: 100vh;
     overflow-y: auto;
     padding: 34px 0;
     border-radius: 5px 5px 0 0;

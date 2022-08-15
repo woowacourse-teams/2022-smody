@@ -4,7 +4,13 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Text, FlexBox, Button, ThumbnailWrapper } from 'components';
+import {
+  Text,
+  FlexBox,
+  Button,
+  ThumbnailWrapper,
+  CustomCycleTimeBottomSheet,
+} from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -19,11 +25,12 @@ export const ChallengeItem = ({
   colorIndex,
 }: ChallengeItemProps) => {
   const themeContext = useThemeContext();
-  const handleClickProgressButton = useChallengeItem({
-    challengeId,
-    challengeName,
-    isInProgress,
-  });
+  const {
+    joinChallenge,
+    isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
+    handleCloseBottomSheet,
+  } = useChallengeItem({ challengeId });
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center">
@@ -44,9 +51,16 @@ export const ChallengeItem = ({
           </FlexBox>
         </Link>
       </div>
-      <Button onClick={handleClickProgressButton} size="small" isActive={!isInProgress}>
+      <Button onClick={handleOpenBottomSheet} size="small" disabled={isInProgress}>
         {isInProgress ? '도전중' : '도전'}
       </Button>
+      {isCustomCycleTimeOpen && (
+        <CustomCycleTimeBottomSheet
+          challengeName={challengeName}
+          joinChallenge={joinChallenge}
+          handleCloseBottomSheet={handleCloseBottomSheet}
+        />
+      )}
     </Wrapper>
   );
 };
