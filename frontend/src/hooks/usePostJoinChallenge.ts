@@ -1,5 +1,5 @@
 import { usePostCycle } from 'apis';
-import { Challenge, Cycle } from 'commonType';
+import { Challenge } from 'commonType';
 import { useRef } from 'react';
 import { parseDateToISOString } from 'utils';
 
@@ -24,7 +24,7 @@ const usePostJoinChallenge = ({
 
   const renderSnackBar = useSnackBar();
 
-  const { mutate, isSuccess } = usePostCycle({
+  const { mutate, isSuccess: isSuccessJoinChallenge } = usePostCycle({
     onSuccess: () => {
       successCallback && successCallback();
 
@@ -46,7 +46,7 @@ const usePostJoinChallenge = ({
     mutate({ challengeId, startTime: parseDateToISOString(startTime) });
   };
 
-  return { joinChallenge, isSuccess };
+  return { joinChallenge, isSuccessJoinChallenge };
 };
 
 export default usePostJoinChallenge;

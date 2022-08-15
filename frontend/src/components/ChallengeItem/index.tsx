@@ -27,13 +27,10 @@ export const ChallengeItem = ({
   const themeContext = useThemeContext();
   const {
     joinChallenge,
-    handleClickProgressButton,
     isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
     handleCloseBottomSheet,
-  } = useChallengeItem({
-    challengeId,
-    isInProgress,
-  });
+  } = useChallengeItem({ challengeId });
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center">
@@ -54,7 +51,7 @@ export const ChallengeItem = ({
           </FlexBox>
         </Link>
       </div>
-      <Button onClick={handleClickProgressButton} size="small" isActive={!isInProgress}>
+      <Button onClick={handleOpenBottomSheet} size="small" disabled={isInProgress}>
         {isInProgress ? '도전중' : '도전'}
       </Button>
       {isCustomCycleTimeOpen && (

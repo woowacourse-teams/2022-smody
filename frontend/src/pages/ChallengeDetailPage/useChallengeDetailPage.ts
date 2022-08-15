@@ -1,15 +1,28 @@
 import { useGetChallengeById } from 'apis';
 import { queryKeys } from 'apis/constants';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
+import useJoinChallenge from 'hooks/useJoinChallenge';
 
 const useChallengeDetailPage = () => {
   const queryClient = useQueryClient();
   const { challengeId } = useParams();
-  const [isCustomCycleTimeOpen, setIsCustomCycleTimeOpen] = useState(false);
+  const {
+    joinChallenge,
+    isSuccessJoinChallenge,
+    isCustomCycleTimeOpen,
+    handleOpenBottomSheet,
+    handleCloseBottomSheet,
+  } = useJoinChallenge({ challengeId: Number(challengeId) });
+
+  useEffect(() => {
+    if (isSuccessJoinChallenge) {
+      queryClient.invalidateQueries(queryKeys.getChallengeById);
+      queryClient.invalidateQueries(queryKeys.getChallengersById);
+    }
+  }, [isSuccessJoinChallenge]);
 
   const { data: challengeData } = useGetChallengeById(
     { challengeId: Number(challengeId) },
@@ -17,22 +30,6 @@ const useChallengeDetailPage = () => {
       refetchOnWindowFocus: false,
     },
   );
-
-  const { joinChallenge } = usePostJoinChallenge({
-    challengeId: Number(challengeId),
-    successCallback: () => {
-      queryClient.invalidateQueries(queryKeys.getChallengeById);
-      queryClient.invalidateQueries(queryKeys.getChallengersById);
-    },
-  });
-
-  const handleOpenBottomSheet = () => {
-    setIsCustomCycleTimeOpen(true);
-  };
-
-  const handleCloseBottomSheet = () => {
-    setIsCustomCycleTimeOpen(false);
-  };
 
   return {
     challengeData,
