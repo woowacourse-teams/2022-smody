@@ -10,7 +10,7 @@ import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.service.PushNotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChallengePushStrategy implements PushStrategy {
 
-	private final PushNotificationRepository pushNotificationRepository;
+	private final PushNotificationService pushNotificationService;
 
 	@Override
 	@Transactional
@@ -28,12 +28,12 @@ public class ChallengePushStrategy implements PushStrategy {
 		if (cycle.isSuccess()) {
 			return;
 		}
-		pushNotificationRepository.save(buildNotification(cycle));
+		pushNotificationService.register(buildNotification(cycle));
 	}
 
 	private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
-		pushNotificationRepository.findByPathIdAndPushStatus(cycle.getId(), PushStatus.IN_COMPLETE)
-			.ifPresent(pushNotificationRepository::delete);
+		pushNotificationService.searchSamePathAndStatus(cycle.getId(), PushStatus.IN_COMPLETE)
+			.ifPresent(notification -> pushNotificationService.delete(notification.getId()));
 	}
 
 	@Override

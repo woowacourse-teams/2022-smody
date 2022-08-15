@@ -7,6 +7,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +34,7 @@ import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.PushSubscriptionService;
 
-class PushEventHandlerTest extends IntegrationTest {
+class PushEventListenerTest extends IntegrationTest {
 
 	private  static final MultipartFile IMAGE = new MockMultipartFile(
 		"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
@@ -46,6 +50,9 @@ class PushEventHandlerTest extends IntegrationTest {
 	@Autowired
 	@InjectMocks
 	private PushSubscriptionService pushSubscriptionService;
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
 	@Test

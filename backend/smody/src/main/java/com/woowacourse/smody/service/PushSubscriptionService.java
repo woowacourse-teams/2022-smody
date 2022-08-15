@@ -1,18 +1,21 @@
 package com.woowacourse.smody.service;
 
+import java.util.List;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
-import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
-import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,7 +24,7 @@ public class PushSubscriptionService {
 
 	private final PushSubscriptionRepository pushSubscriptionRepository;
 	private final MemberService memberService;
-	private final PushEventHandler pushEventHandler;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	@Transactional
 	public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
@@ -30,7 +33,7 @@ public class PushSubscriptionService {
 			.map(pushSubscription -> pushSubscription.updateMember(member))
 			.orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-		pushEventHandler.onApplicationEvent(new PushEvent(this, subscription, PushCase.SUBSCRIPTION));
+		applicationEventPublisher.publishEvent(new PushEvent(subscription, PushCase.SUBSCRIPTION));
 	}
 
 	@Transactional
