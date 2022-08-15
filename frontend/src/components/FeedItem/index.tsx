@@ -8,7 +8,6 @@ import { FlexBox, Text } from 'components';
 
 export const FeedItem = ({
   cycleDetailId,
-  memberId,
   picture,
   nickname,
   progressImage,
@@ -27,7 +26,7 @@ export const FeedItem = ({
   return (
     <Wrapper
       flexDirection="column"
-      gap="0.625rem"
+      gap="0.8rem"
       onClick={handleClickFeed}
       isClickable={isClickable}
     >
@@ -50,14 +49,14 @@ export const FeedItem = ({
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
       />
       <Date
-        size={12}
+        size={14}
         color={themeContext.mainText}
       >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
-      <Text size={16} color={themeContext.mainText}>
+      <Text size={16} color={themeContext.onBackground}>
         {description}
       </Text>
-      <Divider />
-      <CommentCount size={12} color={themeContext.primary} fontWeight="bold">
+      {/* <Divider /> */}
+      <CommentCount size={14} color={themeContext.mainText}>
         {`댓글 ${commentCount}개 보기`}
       </CommentCount>
     </Wrapper>
@@ -94,16 +93,18 @@ const ChallengeName = styled(Text)`
 
 const ProgressImg = styled.img`
   width: 100%;
+  height: 400px;
+  object-fit: cover;
   border-radius: 20px;
   background-color: white;
 `;
 
 const Date = styled(Text)`
-  align-self: flex-end;
+  align-self: flex-start;
 `;
 
 const CommentCount = styled(Text)`
-  align-self: flex-end;
+  align-self: flex-start;
 `;
 
 const Divider = styled.div`

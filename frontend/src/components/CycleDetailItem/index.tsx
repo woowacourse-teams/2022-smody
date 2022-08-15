@@ -81,4 +81,5 @@ const CycleImg = styled.div<CycleImgProps>`
 
 const DetailContents = styled.div`
   padding: 1rem;
+  overflow: auto;
 `;
