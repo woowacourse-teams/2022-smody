@@ -123,8 +123,8 @@ public class CycleService {
                 cycleHistoryRequest.getLastCycleDetailId(), cycleHistoryRequest.toPageRequest());
     }
 
-    public List<Cycle> findSuccessLatestByMember(Member member) {
-        return cycleRepository.findAllSuccessLatest(member);
+    public List<Cycle> findByMember(Member member) {
+        return cycleRepository.findByMember(member);
     }
 
     public List<Cycle> searchByMember(Member member) {

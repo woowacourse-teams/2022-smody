@@ -23,7 +23,7 @@ public enum ExceptionData {
     NOT_FOUND_CYCLE(4003, "존재하지 않는 사이클입니다.", 404),
     NOT_FOUND_CYCLE_DETAIL(4004, "존재하지 않는 피드입니다.", 404),
 
-    EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다", 400),
+    EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다.", 400),
 
     INVALID_CYCLE_DETAIL_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
 
