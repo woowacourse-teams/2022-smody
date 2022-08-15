@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,6 +41,12 @@ public class CommentController {
     public ResponseEntity<Void> update(@LoginMember TokenPayload tokenPayload,
                                        @ModelAttribute CommentUpdateRequest commentUpdateRequest) {
         commentService.update(tokenPayload, commentUpdateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    @RequiredLogin
+    public ResponseEntity<Void> delete(@LoginMember TokenPayload tokenPayload, @PathVariable Long commentId) {
         return ResponseEntity.noContent().build();
     }
 

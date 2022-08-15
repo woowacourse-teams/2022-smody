@@ -9,6 +9,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -146,5 +147,22 @@ public class CommentControllerTest extends ControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
                         ))
                 );
+    }
+
+    @DisplayName("댓글을 삭제할 때 204를 응답한다.")
+    @Test
+    void deleteComment() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/comments/1")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isNoContent())
+                .andDo(document("delete-comment", HOST_INFO,
+                        preprocessResponse(prettyPrint())
+                ));
     }
 }

@@ -143,6 +143,12 @@ include::{snippets}/update-comment/request-fields.adoc[]
 === Response
 include::{snippets}/update-comment/http-response.adoc[]
 
+== 댓글 삭제
+=== Request
+include::{snippets}/delete-comment/http-request.adoc[]
+=== Response
+include::{snippets}/delete-comment/http-response.adoc[]
+
 = 회원
 == 내 정보 조회
 === Request
