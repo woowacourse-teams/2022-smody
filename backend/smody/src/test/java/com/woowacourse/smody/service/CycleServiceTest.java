@@ -473,13 +473,13 @@ public class CycleServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(historyResponses.size()).isEqualTo(3),
+                    () -> assertThat(historyResponses.size()).isEqualTo(4),
                     () -> assertThat(historyResponses)
                             .map(CycleHistoryResponse::getCycleId)
-                            .containsExactly(failed1.getId(), success1.getId(), success2.getId()),
+                            .containsExactly(inProgress1.getId(), failed1.getId(), success1.getId(), success2.getId()),
                     () -> assertThat(historyResponses)
                             .map(historyResponse -> historyResponse.getCycleDetails().size())
-                            .containsExactly(0, 3, 3)
+                            .containsExactly(1, 0, 3, 3)
             );
         }
 
