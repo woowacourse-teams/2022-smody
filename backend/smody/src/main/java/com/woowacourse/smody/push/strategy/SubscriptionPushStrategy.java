@@ -10,7 +10,7 @@ import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.service.PushNotificationService;
 import com.woowacourse.smody.service.WebPushService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubscriptionPushStrategy implements PushStrategy {
 
-	private final PushNotificationRepository pushNotificationRepository;
+	private final PushNotificationService pushNotificationService;
 	private final WebPushService webPushService;
 
 	@Override
@@ -28,7 +28,7 @@ public class SubscriptionPushStrategy implements PushStrategy {
 		PushSubscription pushSubscription = (PushSubscription)entity;
 
 		Member member = pushSubscription.getMember();
-		PushNotification pushNotification = pushNotificationRepository.save(buildNotification(member));
+		PushNotification pushNotification = pushNotificationService.register(buildNotification(member));
 
 		webPushService.sendNotification(pushSubscription, pushNotification);
 	}

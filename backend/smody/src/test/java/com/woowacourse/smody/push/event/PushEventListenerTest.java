@@ -7,6 +7,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,15 +33,8 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.PushSubscriptionService;
-import java.time.LocalDateTime;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-class PushEventHandlerTest extends IntegrationTest {
+class PushEventListenerTest extends IntegrationTest {
 
 	private  static final MultipartFile IMAGE = new MockMultipartFile(
 		"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
@@ -46,25 +43,28 @@ class PushEventHandlerTest extends IntegrationTest {
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
 
-    @Autowired
-    @InjectMocks
-    private CycleService cycleService;
+	@Autowired
+	@InjectMocks
+	private CycleService cycleService;
 
-    @Autowired
-    @InjectMocks
-    private PushSubscriptionService pushSubscriptionService;
+	@Autowired
+	@InjectMocks
+	private PushSubscriptionService pushSubscriptionService;
 
-    @DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
-    @Test
-    void cycleCreate_pushNotification() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
+	@PersistenceContext
+	private EntityManager em;
 
-        // when
-        cycleService.create(
-                new TokenPayload(조조그린_ID),
-                new CycleRequest(now, 스모디_방문하기_ID)
-        );
+	@DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
+	@Test
+	void cycleCreate_pushNotification() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+
+		// when
+		Long pathId = cycleService.create(
+			new TokenPayload(조조그린_ID),
+			new CycleRequest(now, 스모디_방문하기_ID)
+		);
 
 		// then
 		LocalDateTime pushTime = now
@@ -81,12 +81,12 @@ class PushEventHandlerTest extends IntegrationTest {
 		);
 	}
 
-    @DisplayName("사이클을 진행하면 발송 예정인 알림이 저장된다.")
-    @Test
-    void increaseProgress_sendNotification() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now.minusDays(1L));
+	@DisplayName("사이클을 진행하면 발송 예정인 알림이 저장된다.")
+	@Test
+	void increaseProgress_sendNotification() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now.minusDays(1L));
 
 		given(imageStrategy.extractUrl(any()))
 			.willReturn("fakeUrl");
@@ -112,12 +112,12 @@ class PushEventHandlerTest extends IntegrationTest {
 		);
 	}
 
-    @DisplayName("사이클을 성공하면 알림이 저장되지 않는다.")
-    @Test
-    void increaseProgressSuccess_sendNotification_no() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
+	@DisplayName("사이클을 성공하면 알림이 저장되지 않는다.")
+	@Test
+	void increaseProgressSuccess_sendNotification_no() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+		Cycle cycle = fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
 
 		given(imageStrategy.extractUrl(any()))
 			.willReturn("fakeUrl");
@@ -128,20 +128,20 @@ class PushEventHandlerTest extends IntegrationTest {
 			new ProgressRequest(cycle.getId(), now, IMAGE, "인증")
 		);
 
-        // then
-        assertThat(pushNotificationRepository.findAll()).hasSize(0);
-    }
+		// then
+		assertThat(pushNotificationRepository.findAll()).hasSize(0);
+	}
 
-    @DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")
-    @Test
-    void subscribe_pushNotification() {
-        // given
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
-                "endpoint-link", "p256dh", "auth");
+	@DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")
+	@Test
+	void subscribe_pushNotification() {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
+			"endpoint-link", "p256dh", "auth");
 
-        // when
-        pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
+		// when
+		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
@@ -165,10 +165,10 @@ class PushEventHandlerTest extends IntegrationTest {
 		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
 			"endpoint-link", "p256dh", "auth");
 
-        // when // then
-        assertThatThrownBy(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.WEB_PUSH_ERROR);
-    }
+		// when // then
+		assertThatThrownBy(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest))
+			.isInstanceOf(BusinessException.class)
+			.extracting("exceptionData")
+			.isEqualTo(ExceptionData.WEB_PUSH_ERROR);
+	}
 }
