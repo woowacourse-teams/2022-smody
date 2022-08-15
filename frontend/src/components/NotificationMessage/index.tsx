@@ -15,6 +15,11 @@ export const NotificationMessage = ({
   const themeContext = useThemeContext();
   const { handleClickNotification } = useNotificationMessage();
 
+  const formatTime = (time: string) => {
+    const { year, month, date, hours, minutes } = parseTime(time);
+    return `${year}년 ${month}월 ${date}일 ${hours}:${minutes}`;
+  };
+
   return (
     <div>
       {notifications?.map(
@@ -32,9 +37,7 @@ export const NotificationMessage = ({
               {message}
             </Message>
             <PushTimeText color={themeContext.mainText} size={12}>
-              {parseTime(pushTime).year}년 {parseTime(pushTime).month}월{' '}
-              {parseTime(pushTime).date}일{'  '}
-              {parseTime(pushTime).hours}시 {parseTime(pushTime).minutes}분
+              {formatTime(pushTime)}
             </PushTimeText>
           </NotificationWrapper>
         ),

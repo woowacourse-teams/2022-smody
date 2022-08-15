@@ -1,3 +1,5 @@
+import { CLIENT_PATH } from 'constants/path';
+
 self.addEventListener('install', (event) => {
   console.log('Service Worker - install');
 });
@@ -24,13 +26,13 @@ self.addEventListener('push', (event) => {
   let path;
   if (pushCase === 'subscription') {
     console.log('hi');
-    path = `/profile`;
+    path = `${CLIENT_PATH.PROFILE}`;
   }
   if (pushCase === 'comment') {
-    path = `/feed/detail/${pathId}`;
+    path = `${CLIENT_PATH.FEED_DETAIL}/${pathId}`;
   }
   if (pushCase === 'challenge') {
-    path = `/cycle/detail/${pathId}`;
+    path = `${CLIENT_PATH.CYCLE_DETAIL}/${pathId}`;
   }
 
   const options = {

@@ -1,22 +1,10 @@
 import { DropdownProps } from './type';
-import { MouseEventHandler, useState } from 'react';
+import { useDropdown } from './useDropdown';
 import styled, { css } from 'styled-components';
 
 export const Dropdown = ({ button, nonLinkableElement, children }: DropdownProps) => {
-  const [isDropdownToggled, setDropdownToggled] = useState(false);
-  const showDropdownMenu = () => {
-    setDropdownToggled(true);
-  };
-
-  const hideDropdownMenu: MouseEventHandler<HTMLDivElement> = (event) => {
-    if (event.currentTarget === event.target) {
-      setDropdownToggled(false);
-    }
-  };
-
-  const onSelectMenu: MouseEventHandler<HTMLUListElement> = () => {
-    setDropdownToggled(false);
-  };
+  const { isDropdownToggled, showDropdownMenu, hideDropdownMenu, onSelectMenu } =
+    useDropdown();
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>

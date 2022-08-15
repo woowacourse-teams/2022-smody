@@ -36,7 +36,6 @@ const useSubscribe = () => {
       // 푸시 기능 지원 여부에 따라 알림 구독 버튼 보이기/숨기기 처리
       navigator.serviceWorker.ready.then((registration) => {
         if (registration.pushManager) {
-          console.log('0-1 registration.pushManager', registration.pushManager);
           pushSupport = true;
 
           // 구독 정보 불러오기
@@ -46,7 +45,6 @@ const useSubscribe = () => {
               return;
             }
             userSubscription = subscription;
-            console.log('0-2 userSubscription', userSubscription);
           });
         }
       });
@@ -61,7 +59,6 @@ const useSubscribe = () => {
     setIsLoadingSubscribe(true);
     // Uint8Array 타입으로 변환
     const publicKey = urlB64ToUint8Array(data.data.publicKey);
-    console.log('5-publicKey', publicKey);
 
     navigator.serviceWorker.ready.then((registration) => {
       // 구독 옵션
@@ -70,8 +67,6 @@ const useSubscribe = () => {
         applicationServerKey: publicKey,
       };
 
-      console.log('6-registration', registration);
-
       // 푸시 서비스 구독
       registration.pushManager
         .subscribe(option)
@@ -79,13 +74,12 @@ const useSubscribe = () => {
           // 애플리케이션 서버로 구독 정보 전달
           postSubscribe(subscription);
           userSubscription = subscription;
-          console.log('3-Push subscribed!', userSubscription);
+
           setIsSubscribed(true);
           setIsLoadingSubscribe(false);
         })
         .catch((err) => {
           userSubscription = null;
-          console.error('Push subscribe failed:', err);
         });
     });
   };
@@ -98,7 +92,6 @@ const useSubscribe = () => {
 
     // 푸시 서비스 구독 취소
     userSubscription.unsubscribe().then((result) => {
-      console.log('4-Push unsubscribed:', userSubscription, result);
       if (result && userSubscription) {
         // 애플리케이션 서버에 저장된 구독 정보 지우기
         postUnsubscribe({ endpoint: userSubscription.endpoint });
@@ -110,14 +103,12 @@ const useSubscribe = () => {
 
   const subscribe = () => {
     //  권한 확인 및 요청
-    console.log('시작');
+
     if (!pushSupport) {
-      console.log('1');
       return;
     }
 
     Notification.requestPermission().then((permission) => {
-      console.log('2-Push Permission:', permission);
       if (Notification.permission !== 'granted') {
         return;
       }
