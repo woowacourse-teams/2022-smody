@@ -3,7 +3,7 @@ package com.woowacourse.smody.push.event;
 import static com.woowacourse.smody.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
@@ -31,6 +31,10 @@ import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.PushSubscriptionService;
 
 class PushEventHandlerTest extends IntegrationTest {
+
+	private  static final MultipartFile IMAGE = new MockMultipartFile(
+		"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+	);
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
@@ -77,16 +81,13 @@ class PushEventHandlerTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now.minusDays(1L));
 
-		MultipartFile imageFile = new MockMultipartFile(
-			"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-		);
 		given(imageStrategy.extractUrl(any()))
 			.willReturn("fakeUrl");
 
 		// when
 		cycleService.increaseProgress(
 			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now, imageFile, "인증")
+			new ProgressRequest(cycle.getId(), now, IMAGE, "인증")
 		);
 
 		// then
@@ -111,16 +112,13 @@ class PushEventHandlerTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
 
-		MultipartFile imageFile = new MockMultipartFile(
-			"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-		);
 		given(imageStrategy.extractUrl(any()))
 			.willReturn("fakeUrl");
 
 		// when
 		cycleService.increaseProgress(
 			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now, imageFile, "인증")
+			new ProgressRequest(cycle.getId(), now, IMAGE, "인증")
 		);
 
 		// then
@@ -153,11 +151,12 @@ class PushEventHandlerTest extends IntegrationTest {
 	@Test
 	void subscribe_libraryException() {
 		// given
+		doThrow(new BusinessException(ExceptionData.WEB_PUSH_ERROR))
+			.when(webPushService).sendNotification(any(), any());
+
 		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
 			"endpoint-link", "p256dh", "auth");
-		doThrow(new BusinessException(ExceptionData.WEB_PUSH_ERROR))
-			.when(webPushService).sendNotification(any(), any());
 
 		// when // then
 		assertThatThrownBy(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest))

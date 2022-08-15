@@ -41,6 +41,7 @@ public class PushNotification {
 	private PushStatus pushStatus;
 
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private PushCase pushCase;
 
 	private Long pathId;
