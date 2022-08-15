@@ -4,6 +4,8 @@ import { useDeleteNotification } from 'apis/pushNotificationApi';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { CLIENT_PATH } from 'constants/path';
+
 export const useNotificationMessage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -11,7 +13,6 @@ export const useNotificationMessage = () => {
   const { mutate: deleteNotification } = useDeleteNotification({
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.getNotifications);
-      console.log('딜리트');
     },
   });
 
@@ -22,13 +23,13 @@ export const useNotificationMessage = () => {
   }: NotificationHandlerProps) => {
     deleteNotification({ pushNotificationId });
     if (pushCase === 'subscription') {
-      navigate(`/search`);
+      navigate(`${CLIENT_PATH.PROFILE}`);
     }
     if (pushCase === 'comment') {
-      navigate(`/feed/detail/${pathId}`);
+      navigate(`${CLIENT_PATH.FEED_DETAIL}/${pathId}`);
     }
     if (pushCase === 'challenge') {
-      navigate(`/cycle/detail/${pathId}`);
+      navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${pathId}`);
     }
   };
 
