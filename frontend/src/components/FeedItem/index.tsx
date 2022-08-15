@@ -65,14 +65,16 @@ export const FeedItem = ({
 
 const Wrapper = styled(FlexBox)<WrapperProps>`
   ${({ isClickable }) => css`
-    width: 400px;
+    /* width: 340px; */
+    max-width: 440px;
+    min-width: 366px;
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
 
-    @media all and (max-width: 400px) {
-      width: 366px;
-    }
+    /* @media all and (max-width: 500px) {
+      width: 95%;
+    } */
   `}
 `;
 
