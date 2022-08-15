@@ -1,6 +1,6 @@
 import { Cycle, CycleDetail } from 'commonType';
 
-export type PostCycleProps = Pick<Cycle, 'challengeId'>;
+export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
 
 export interface GetMyCyclesInProgressResponse extends Cycle {
   emojiIndex: number;
