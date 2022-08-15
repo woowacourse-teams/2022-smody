@@ -10,7 +10,6 @@ export const Text = styled.p<TextProps>`
     color: ${color};
     font-weight: ${fontWeight};
     line-height: 1.5;
-    padding-left: 4px;
   `}
 `;
 

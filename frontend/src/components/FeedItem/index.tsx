@@ -52,9 +52,9 @@ export const FeedItem = ({
         size={14}
         color={themeContext.mainText}
       >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
-      <Text size={16} color={themeContext.onBackground}>
+      <MainText size={16} color={themeContext.onBackground}>
         {description}
-      </Text>
+      </MainText>
       {/* <Divider /> */}
       <CommentCount size={14} color={themeContext.mainText}>
         {`댓글 ${commentCount}개 보기`}
@@ -101,10 +101,17 @@ const ProgressImg = styled.img`
 
 const Date = styled(Text)`
   align-self: flex-start;
+  padding-left: 4px;
+`;
+
+const MainText = styled(Text)`
+  align-self: flex-start;
+  padding-left: 4px;
 `;
 
 const CommentCount = styled(Text)`
   align-self: flex-start;
+  padding-left: 4px;
 `;
 
 const Divider = styled.div`
