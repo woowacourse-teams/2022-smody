@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, ThumbnailWrapper, Title, Text } from 'components';
+import { FlexBox, ThumbnailWrapper, Title, Text, ShareButton } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 import { emojiList, colorList } from 'constants/style';
@@ -13,12 +13,15 @@ export const ChallengeDetail = ({
   challengerCount,
   emojiIndex,
   colorIndex,
+  description,
 }: ChallengeDetailProps) => {
   const themeContext = useThemeContext();
 
   return (
     <FlexBox flexDirection="column">
-      <Title text={challengeName} linkTo={CLIENT_PATH.SEARCH} />
+      <Title text={challengeName} linkTo={CLIENT_PATH.SEARCH}>
+        <ShareButton text={`${challengeName} 챌린지에 함께 도전해요!`} />
+      </Title>
       <ChallengeDetailWrapper
         flexDirection="row"
         justifyContent="space-between"
@@ -26,11 +29,12 @@ export const ChallengeDetail = ({
       >
         <FlexBox flexDirection="column" gap="1rem">
           <Text size={16} color={themeContext.primary}>
-            현재 {challengerCount}명이 함께 도전 중이에요
+            {challengerCount
+              ? `현재 ${challengerCount}명이 함께 도전 중이에요`
+              : '첫 도전자가 되어보세요'}
           </Text>
           <ChallengeExplanationText color={themeContext.onBackground}>
-            &quot;{challengeName}&quot; 챌린지를 {challengerCount}명의 사람들과 지금 바로
-            함께하세요!
+            {description}
           </ChallengeExplanationText>
         </FlexBox>
         <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>

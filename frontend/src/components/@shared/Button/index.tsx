@@ -5,7 +5,7 @@ import { ButtonProps } from 'components/@shared/Button/type';
 const SIZES = {
   small: { minWidth: '50px', height: '29px', fontSize: '12px' },
   medium: { minWidth: '149px', height: '34px', fontSize: '14px' },
-  large: { minWidth: '80%', height: '45px', fontSize: '15px' },
+  large: { minWidth: '100%', height: '45px', fontSize: '15px' },
 };
 
 export const Button = styled.button<ButtonProps>`
