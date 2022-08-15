@@ -40,6 +40,13 @@ public class CommentService {
         comment.updateContent(commentUpdateRequest.getContent());
     }
 
+    @Transactional
+    public void delete(TokenPayload tokenPayload, Long commentId) {
+        Comment comment = search(commentId);
+        validateMember(tokenPayload.getId(), comment);
+        commentRepository.delete(comment);
+    }
+
     private Comment search(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_COMMENT));

@@ -17,10 +17,10 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.CommentRepository;
 import java.time.LocalDateTime;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommentServiceTest extends IntegrationTest {
@@ -33,6 +33,9 @@ public class CommentServiceTest extends IntegrationTest {
 
     @Autowired
     private ResourceFixture resourceFixture;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @DisplayName("댓글을 생성한다.")
     @Test
@@ -169,5 +172,59 @@ public class CommentServiceTest extends IntegrationTest {
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);
+    }
+
+    @DisplayName("댓글을 삭제한다.")
+    @Test
+    void deleteComment() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
+        commentRepository.save(comment);
+        Long commentId = comment.getId();
+
+        // when
+        commentService.delete(new TokenPayload(조조그린_ID), commentId);
+        entityManager.flush();
+        entityManager.clear();
+
+        // then
+        assertThat(commentRepository.findById(commentId).isEmpty()).isTrue();
+    }
+
+    @DisplayName("댓글 삭제 시 작성자가 아니면 예외를 발생시킨다.")
+    @Test
+    void delete_unauthorizedMember() {
+        // given
+        Long unauthorizedMemberId = 0L;
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
+        commentRepository.save(comment);
+        Long commentId = comment.getId();
+
+        // when then
+        assertThatThrownBy(() -> commentService.delete(new TokenPayload(unauthorizedMemberId), commentId))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
+    }
+
+    @DisplayName("댓글 삭제 시 댓글이 존재하지 않으면 예외를 발생시킨다.")
+    @Test
+    void delete_notFoundComment() {
+        // given
+        Long notFoundCommentId = 0L;
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+
+        assertThatThrownBy(() -> commentService.delete(new TokenPayload(조조그린_ID), notFoundCommentId))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_COMMENT);
     }
 }

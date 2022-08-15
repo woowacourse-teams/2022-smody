@@ -47,6 +47,7 @@ public class CommentController {
     @DeleteMapping("/comments/{commentId}")
     @RequiredLogin
     public ResponseEntity<Void> delete(@LoginMember TokenPayload tokenPayload, @PathVariable Long commentId) {
+        commentService.delete(tokenPayload, commentId);
         return ResponseEntity.noContent().build();
     }
 
