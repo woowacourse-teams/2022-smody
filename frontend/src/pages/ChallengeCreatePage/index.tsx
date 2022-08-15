@@ -90,7 +90,7 @@ const ChallengeCreatePage = () => {
             )}
           </EmojiSelectWrapper>
         </EmojiWrapper>
-        <ButtonWrapper>
+        <ButtonWrapper justifyContent="center">
           <LoadingButton
             isDisabled={!isAllValidated}
             isLoading={isLoadingPostChallenge}
@@ -222,7 +222,7 @@ const EmojiDiv = styled.div`
   cursor: pointer;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 80%;
+const ButtonWrapper = styled(FlexBox)`
+  width: 100%;
   margin: 3rem auto 0;
 `;
