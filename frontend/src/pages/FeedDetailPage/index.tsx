@@ -21,6 +21,7 @@ const FeedDetailPage = () => {
     isMenuBottomSheetOpen,
     selectedCommentId,
     editMode,
+    isLoadingDeleteComment,
     handleClickMenuButton,
     handleCloseBottomSheet,
     handleClickCommentEdit,
@@ -58,6 +59,7 @@ const FeedDetailPage = () => {
       />
       {isMenuBottomSheetOpen && (
         <MenuBottomSheet
+          isLoadingDeleteComment={isLoadingDeleteComment}
           handleCloseBottomSheet={handleCloseBottomSheet}
           handleClickCommentEdit={handleClickCommentEdit}
           handleClickCommentDelete={handleClickCommentDelete}
@@ -70,6 +72,7 @@ const FeedDetailPage = () => {
 export default FeedDetailPage;
 
 const MenuBottomSheet = ({
+  isLoadingDeleteComment,
   handleCloseBottomSheet,
   handleClickCommentEdit,
   handleClickCommentDelete,
@@ -83,6 +86,7 @@ const MenuBottomSheet = ({
           as="button"
           size={16}
           color={themeContext.onBackground}
+          disabled={isLoadingDeleteComment}
           onClick={handleClickCommentEdit}
         >
           댓글 수정하기
@@ -91,6 +95,7 @@ const MenuBottomSheet = ({
           as="button"
           size={16}
           color={themeContext.error}
+          disabled={isLoadingDeleteComment}
           onClick={handleClickCommentDelete}
         >
           댓글 삭제하기
@@ -121,6 +126,10 @@ const MenuBottomSheetButton = styled(Text)`
 
     &:active {
       background-color: ${theme.disabled};
+    }
+
+    &:disabled {
+      color: ${theme.disabled};
     }
   `}
 `;

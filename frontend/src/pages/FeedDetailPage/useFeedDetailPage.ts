@@ -36,7 +36,7 @@ const useFeedDetailPage = () => {
     },
   );
 
-  const { mutate: deleteComment } = useDeleteComments({
+  const { mutate: deleteComment, isLoading: isLoadingDeleteComment } = useDeleteComments({
     onSuccess: () => {
       refetchQueries();
       setSelectedCommentId(null);
@@ -107,6 +107,7 @@ const useFeedDetailPage = () => {
     isMenuBottomSheetOpen,
     selectedCommentId,
     editMode,
+    isLoadingDeleteComment,
     handleClickMenuButton,
     handleCloseBottomSheet,
     handleClickCommentEdit,
