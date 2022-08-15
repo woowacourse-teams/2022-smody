@@ -19,3 +19,5 @@ export interface UseGetCommentsByIdProps extends Pick<Feed, 'cycleDetailId'> {
 export type GetCommentsByIdProps = Pick<Feed, 'cycleDetailId'>;
 
 export type GetCommentsByIdResponse = Comment[];
+
+export type PatchCommentsProps = Pick<Comment, 'commentId' | 'content'>;

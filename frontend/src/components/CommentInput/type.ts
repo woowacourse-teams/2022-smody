@@ -7,6 +7,7 @@ export interface WriteButtonProps {
 }
 
 export interface CommentInputProps {
+  selectedCommentId: number | null;
   editMode: {
     isEditMode: boolean;
     editContent: string;

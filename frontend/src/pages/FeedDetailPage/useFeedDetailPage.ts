@@ -82,6 +82,7 @@ const useFeedDetailPage = () => {
     feedData,
     commentsData,
     isMenuBottomSheetOpen,
+    selectedCommentId,
     editMode,
     handleClickMenuButton,
     handleCloseBottomSheet,

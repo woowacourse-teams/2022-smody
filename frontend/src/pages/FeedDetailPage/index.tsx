@@ -19,6 +19,7 @@ const FeedDetailPage = () => {
     feedData,
     commentsData,
     isMenuBottomSheetOpen,
+    selectedCommentId,
     editMode,
     handleClickMenuButton,
     handleCloseBottomSheet,
@@ -49,7 +50,11 @@ const FeedDetailPage = () => {
           </li>
         ))}
       </CommentList>
-      <CommentInput editMode={editMode} turnOffEditMode={turnOffEditMode} />
+      <CommentInput
+        selectedCommentId={selectedCommentId}
+        editMode={editMode}
+        turnOffEditMode={turnOffEditMode}
+      />
       {isMenuBottomSheetOpen && (
         <MenuBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}

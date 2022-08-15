@@ -5,6 +5,7 @@ import {
   getCommentsByIdAuth,
   getFeedById,
   postComments,
+  patchComments,
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
@@ -14,6 +15,7 @@ import {
   GetCommentsByIdResponse,
   UsePostCommentProps,
   UsePostCommentMutationFunctionProps,
+  PatchCommentsProps,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -90,5 +92,18 @@ export const useGetCommentsById = (
     isLogin
       ? () => getCommentsByIdAuth({ cycleDetailId })
       : () => getCommentsById({ cycleDetailId }),
+    options,
+  );
+
+// 5. 댓글 수정(PATCH)
+export const usePatchComments = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PatchCommentsProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchCommentsProps>(
+    ({ commentId, content }) => patchComments({ commentId, content }),
     options,
   );

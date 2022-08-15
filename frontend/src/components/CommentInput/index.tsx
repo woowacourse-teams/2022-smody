@@ -6,16 +6,21 @@ import { FlexBox, ValidationMessage } from 'components';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 
-export const CommentInput = ({ editMode, turnOffEditMode }: CommentInputProps) => {
+export const CommentInput = ({
+  selectedCommentId,
+  editMode,
+  turnOffEditMode,
+}: CommentInputProps) => {
   const {
     commentInputRef,
     content,
     isVisibleWriteButton,
     isShowLengthWarning,
     isLoadingPostComment,
+    isLoadingPatchComment,
     handleChangeInput,
     handleClickWrite,
-  } = useCommentInput({ editMode, turnOffEditMode });
+  } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
@@ -29,7 +34,9 @@ export const CommentInput = ({ editMode, turnOffEditMode }: CommentInputProps) =
           onChange={handleChangeInput}
         />
         <WriteButton
-          disabled={!isVisibleWriteButton || isLoadingPostComment}
+          disabled={
+            !isVisibleWriteButton || isLoadingPostComment || isLoadingPatchComment
+          }
           isVisible={isVisibleWriteButton}
           onClick={handleClickWrite}
         >

@@ -1,5 +1,5 @@
 import { authApiClient, apiClient } from 'apis/apiClient';
-import { PAGE_SIZE, SORT, ORDER } from 'apis/constants';
+import { PAGE_SIZE, SORT } from 'apis/constants';
 import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
@@ -7,6 +7,7 @@ import {
   GetCommentsByIdProps,
   GetCommentsByIdResponse,
   PostCommentProps,
+  PatchCommentsProps,
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
@@ -44,4 +45,11 @@ export const getCommentsByIdAuth = ({ cycleDetailId }: GetCommentsByIdProps) => 
   return authApiClient.axios.get<GetCommentsByIdResponse>(
     `/feeds/${cycleDetailId}/comments/auth`,
   );
+};
+
+// 5. 댓글 수정(PATCH)
+export const patchComments = async ({ commentId, content }: PatchCommentsProps) => {
+  return authApiClient.axios.patch(`comments/${commentId}`, {
+    content,
+  });
 };

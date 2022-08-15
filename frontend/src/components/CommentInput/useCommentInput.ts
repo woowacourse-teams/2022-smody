@@ -1,6 +1,6 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
-import { usePostComment } from 'apis/feedApi';
+import { usePatchComments, usePostComment } from 'apis/feedApi';
 import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -15,7 +15,11 @@ import { CLIENT_PATH } from 'constants/path';
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
 const INITIAL_CONTENT = '';
 
-const useCommentInput = ({ editMode, turnOffEditMode }: UseCommentInputProps) => {
+const useCommentInput = ({
+  selectedCommentId,
+  editMode,
+  turnOffEditMode,
+}: UseCommentInputProps) => {
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [content, setContent] = useState(INITIAL_CONTENT);
   const queryClient = useQueryClient();
@@ -41,7 +45,22 @@ const useCommentInput = ({ editMode, turnOffEditMode }: UseCommentInputProps) =>
     },
   );
 
-  // TODO: 댓글 수정 API 연결
+  const { mutate: patchComment, isLoading: isLoadingPatchComment } = usePatchComments({
+    onSuccess: () => {
+      invalidateQueries();
+
+      setContent(INITIAL_CONTENT);
+
+      resizeToInitialHeight();
+
+      renderSnackBar({
+        status: 'SUCCESS',
+        message: '댓글이 수정됐습니다.',
+      });
+
+      turnOffEditMode();
+    },
+  });
 
   useEffect(() => {
     setContent(editMode.editContent);
@@ -69,8 +88,8 @@ const useCommentInput = ({ editMode, turnOffEditMode }: UseCommentInputProps) =>
       return;
     }
 
-    if (editMode.isEditMode) {
-      // TODO: 수정하기에 따라 pathComment 요청보내기
+    if (editMode.isEditMode && typeof selectedCommentId === 'number') {
+      patchComment({ commentId: selectedCommentId, content });
       return;
     }
     postComment({ content });
@@ -101,6 +120,7 @@ const useCommentInput = ({ editMode, turnOffEditMode }: UseCommentInputProps) =>
     isVisibleWriteButton,
     isShowLengthWarning,
     isLoadingPostComment,
+    isLoadingPatchComment,
     handleChangeInput,
     handleClickWrite,
   };
