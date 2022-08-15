@@ -1,8 +1,8 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
+import { isDev, isLocal } from 'env';
 import { setBadge } from 'push/badge';
-import { pushStatus } from 'pushStatus';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -57,6 +57,8 @@ export const Header = ({ bgColor }: HeaderProps) => {
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
+        {isDev && 'DEV'}
+        {isLocal && 'LOCAL'}
       </Link>
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />

@@ -1,7 +1,6 @@
+import { BASE_URL } from 'env';
 import { userData, accessTokenData } from 'mocks/data';
 import { rest } from 'msw';
-
-import { BASE_URL } from 'constants/path';
 
 export const auth = [
   // 1. 내 정보 조회(GET)

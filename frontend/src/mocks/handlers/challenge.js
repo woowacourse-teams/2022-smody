@@ -1,3 +1,4 @@
+import { BASE_URL } from 'env';
 import {
   challengeData,
   cycleData,
@@ -9,7 +10,6 @@ import {
 import { rest } from 'msw';
 
 import { API_PATH } from 'constants/path';
-import { BASE_URL } from 'constants/path';
 
 export const challenge = [
   //1. 챌린지 사이클 생성(POST)

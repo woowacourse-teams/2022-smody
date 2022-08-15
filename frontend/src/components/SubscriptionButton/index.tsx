@@ -1,7 +1,7 @@
 import { SubscriptionButtonProps } from './type';
 import LoadingDots from 'assets/loading_dots.svg';
-import { pushStatus } from 'pushStatus';
-import styled from 'styled-components';
+import { pushStatus } from 'push/pushStatus';
+import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -59,11 +59,11 @@ export const SubscriptionButton = ({
           fontWeight="bold"
           underLineColor={themeContext.primary}
         >
-          {!isAbleSubscribe ? '알림 설정 불가' : isSubscribed ? '알림 끄기' : '알림 켜기'}
+          알림 설정
         </UnderLineText>
 
         <ToggleButton
-          disabled={!isAbleSubscribe || isLoadingSubscribe}
+          disabled={isLoadingSubscribe}
           checked={isSubscribed}
           handleChange={subscribe}
         />
@@ -83,6 +83,13 @@ export const SubscriptionButton = ({
 };
 
 const LoadingWrapper = styled.div`
-  width: 2rem;
-  height: 2rem;
+  ${({ theme }) => css`
+    width: 2rem;
+    height: 2rem;
+
+    & svg circle {
+      fill: ${theme.onSurface};
+      stroke: none;
+    }
+  `}
 `;

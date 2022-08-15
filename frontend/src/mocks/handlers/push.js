@@ -1,12 +1,8 @@
+import { BASE_URL } from 'env';
 import { db } from 'mocks/data';
 import { rest } from 'msw';
 
-import { BASE_URL } from 'constants/path';
-
-const publicKey = {
-  publicKey:
-    'BCyawrgMy1I1meZj7wqeS8skspdDyNF8d2bEqTWQdA4ma7yickBKsCrXVFcN9Awyf3tGcjw-hJ_DUYLY7nJi24I',
-};
+const publicKey = process.env.PUBLIC_KEY;
 
 export const push = [
   // VAPID 공개키 조회(GET)

@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, HeadersDefaults } from 'axios';
-
-import { BASE_URL } from 'constants/path';
+import { BASE_URL } from 'env';
 
 interface AxiosHeaders extends HeadersDefaults {
   Authorization: string;
