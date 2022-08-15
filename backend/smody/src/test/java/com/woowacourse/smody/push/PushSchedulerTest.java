@@ -25,8 +25,6 @@ import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.dto.SubscriptionRequest;
-import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
@@ -46,50 +44,20 @@ class PushSchedulerTest extends IntegrationTest {
     private Member member1;
     private Member member2;
 
-    @BeforeEach
-    void init() {
-        member1 = fixture.회원_조회(1L);
-        member2 = fixture.회원_조회(2L);
-		Member member3 = fixture.회원_조회(3L);
-
-        pushSubscriptionService.subscribe(
-                new TokenPayload(조조그린_ID),
-                new SubscriptionRequest("endpoint1", "p256dh", "auth")
-        );
-
-        pushSubscriptionService.subscribe(
-                new TokenPayload(더즈_ID),
-                new SubscriptionRequest("endpoint2", "p256dh", "auth")
-        );
+	@BeforeEach
+	void init() {
+		member1 = fixture.회원_조회(조조그린_ID);
+		member2 = fixture.회원_조회(더즈_ID);
 
         LocalDateTime now = LocalDateTime.now();
 
-		pushNotificationRepository.save(PushNotification.builder()
-			.message("알림")
-			.pushTime(now.minusHours(1L))
-			.pushStatus(PushStatus.IN_COMPLETE)
-			.member(member1)
-			.pushCase(PushCase.CHALLENGE)
-			.pathId(1L)
-			.build());
+		fixture.알림_구독(조조그린_ID, "endpoint1");
+		fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
 
-		pushNotificationRepository.save(PushNotification.builder()
-			.message("알림")
-			.pushTime(now.plusHours(1L))
-			.pushStatus(PushStatus.IN_COMPLETE)
-			.member(member2)
-			.pushCase(PushCase.SUBSCRIPTION)
-			.pathId(1L)
-			.build());
+		fixture.알림_구독(더즈_ID, "endpoint2");
+		fixture.발송_예정_알림_생성(더즈_ID, 1L, now.plusHours(1L), PushCase.SUBSCRIPTION);
 
-		pushNotificationRepository.save(PushNotification.builder()
-			.message("알림")
-			.pushTime(now.minusHours(1L))
-			.pushStatus(PushStatus.IN_COMPLETE)
-			.member(member3)
-			.pushCase(PushCase.CHALLENGE)
-			.pathId(1L)
-			.build());
+		fixture.발송_예정_알림_생성(토닉_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
 	}
 
     @DisplayName("발송 안 된 알림들을 모두 전송한다.")
@@ -102,10 +70,10 @@ class PushSchedulerTest extends IntegrationTest {
         // when
         pushScheduler.sendPushNotifications();
 
-        // then
-        List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-        assertThat(result).hasSize(4);
-    }
+		// then
+		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
+		assertThat(result).hasSize(2);
+	}
 
     @DisplayName("알림을 전송할 때 적절하지 않는 구독 정보는 삭제한다.")
     @Test

@@ -10,13 +10,11 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.repository.PushNotificationRepository;
-import com.woowacourse.smody.repository.PushSubscriptionRepository;
 
 class SubscriptionPushStrategyTest extends IntegrationTest {
 
@@ -27,16 +25,12 @@ class SubscriptionPushStrategyTest extends IntegrationTest {
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
 
-	@Autowired
-	private PushSubscriptionRepository pushSubscriptionRepository;
-
 	@DisplayName("알림 구독에 대한 알림을 전송한다.")
 	@Test
 	void push() {
 		// given
-		Member member = fixture.회원_조회(조조그린_ID);
-		PushSubscription pushSubscription = new PushSubscription("endpoint", "p245dh", "auth", member);
-		pushSubscriptionRepository.save(pushSubscription);
+		PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
+
 
 		// when
 		pushStrategy.push(pushSubscription);
