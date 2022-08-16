@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +34,6 @@ import com.woowacourse.smody.repository.PushSubscriptionRepository;
 public class MemberServiceTest extends IntegrationTest {
 
     @Autowired
-    @InjectMocks
     private MemberService memberService;
 
     @Autowired
