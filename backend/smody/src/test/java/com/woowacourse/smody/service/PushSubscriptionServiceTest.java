@@ -1,8 +1,13 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.PushSubscription;
@@ -10,16 +15,10 @@ import com.woowacourse.smody.dto.SubscriptionRequest;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
-import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class PushSubscriptionServiceTest extends IntegrationTest {
 
     @Autowired
-    @InjectMocks
     private PushSubscriptionService pushSubscriptionService;
 
     @Autowired

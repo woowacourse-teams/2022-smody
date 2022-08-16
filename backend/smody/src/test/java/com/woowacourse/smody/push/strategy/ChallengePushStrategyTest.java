@@ -48,7 +48,7 @@ class ChallengePushStrategyTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
-			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~"),
+			() -> assertThat(pushNotification.getMessage()).contains("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
 		);
@@ -82,7 +82,7 @@ class ChallengePushStrategyTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
-			() -> assertThat(pushNotification.getMessage()).contains("인증까지 얼마 안남았어요~"),
+			() -> assertThat(pushNotification.getMessage()).isEqualTo("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
 		);
