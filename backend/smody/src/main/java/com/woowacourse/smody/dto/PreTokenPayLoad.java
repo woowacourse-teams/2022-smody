@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PreTokenPayLoad {
 
-    private boolean isValid;
+    private String token;
 }

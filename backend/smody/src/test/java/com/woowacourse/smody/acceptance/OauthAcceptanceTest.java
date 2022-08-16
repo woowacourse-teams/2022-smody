@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class MemberAcceptanceTest extends AcceptanceTest {
+public class OauthAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -26,7 +26,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .auth().oauth2(token)
                 .when()
-                .get("/members/auth")
+                .get("/oauth/auth")
                 .then().log().all()
                 .extract();
 

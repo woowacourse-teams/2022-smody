@@ -59,8 +59,4 @@ public class MemberService {
         Member member = search(tokenPayload);
         member.updatePicture(new Image(profileImage, imageStrategy));
     }
-
-    public ValidAuthResponse isValidAuth(PreTokenPayLoad preTokenPayLoad) {
-        return new ValidAuthResponse(preTokenPayLoad.isValid());
-    }
 }

@@ -53,9 +53,4 @@ public class MemberController {
         memberService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();
     }
-    
-    @GetMapping("/auth")
-    public ResponseEntity<ValidAuthResponse> isValid(@PreLoginMember PreTokenPayLoad preTokenPayLoad) {
-        return ResponseEntity.ok(memberService.isValidAuth(preTokenPayLoad));
-    }
 }
