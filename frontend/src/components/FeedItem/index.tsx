@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text } from 'components';
+import { FlexBox, Text, UnderLineText } from 'components';
 
 export const FeedItem = ({
   cycleDetailId,
@@ -32,30 +32,34 @@ export const FeedItem = ({
     >
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <Nickname size={16} color={themeContext.mainText}>
-          {nickname}
-        </Nickname>
-        <ChallengeName
-          size={20}
-          color={themeContext.primary}
-          fontWeight="bold"
-          onClick={handleClickChallengeName}
-        >
-          {challengeName}
-        </ChallengeName>
+        <FlexBox alignItems="center">
+          <Nickname size={20} color={themeContext.onBackground}>
+            {nickname}
+          </Nickname>
+          <OfText size={16} color={themeContext.onBackground}>
+            의&nbsp;
+          </OfText>
+          <UnderLineText
+            fontSize={20}
+            fontColor={themeContext.onBackground}
+            underLineColor={themeContext.primary}
+            fontWeight="bold"
+            onClick={handleClickChallengeName}
+          >
+            {challengeName}
+          </UnderLineText>
+        </FlexBox>
       </FlexBox>
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
       />
-      <Date
-        size={14}
-        color={themeContext.mainText}
-      >{`${year}.${month}.${date} ${hours}:${minutes}`}</Date>
+      <Text size={12} color={themeContext.mainText}>
+        {`${year}.${month}.${date} ${hours}:${minutes}`}
+      </Text>
       <MainText size={16} color={themeContext.onBackground}>
         {description}
       </MainText>
-      {/* <Divider /> */}
       <CommentCount size={14} color={themeContext.mainText}>
         {`댓글 ${commentCount}개 보기`}
       </CommentCount>
@@ -88,9 +92,8 @@ const Nickname = styled(Text)`
   margin-left: 0.313rem;
 `;
 
-const ChallengeName = styled(Text)`
-  margin-left: auto;
-  pointer-events: auto;
+const OfText = styled(Text)`
+  text-align: end;
 `;
 
 const ProgressImg = styled.img`
@@ -101,11 +104,6 @@ const ProgressImg = styled.img`
   background-color: white;
 `;
 
-const Date = styled(Text)`
-  align-self: flex-start;
-  padding-left: 4px;
-`;
-
 const MainText = styled(Text)`
   align-self: flex-start;
   padding-left: 4px;
@@ -114,12 +112,4 @@ const MainText = styled(Text)`
 const CommentCount = styled(Text)`
   align-self: flex-start;
   padding-left: 4px;
-`;
-
-const Divider = styled.div`
-  ${({ theme }) => css`
-    width: 100%;
-    height: 2px;
-    background-color: ${theme.secondary};
-  `}
 `;
