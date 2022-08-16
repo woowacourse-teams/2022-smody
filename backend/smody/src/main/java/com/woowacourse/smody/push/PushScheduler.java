@@ -9,6 +9,7 @@ import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
+import com.woowacourse.smody.util.TimeStrategy;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +25,13 @@ public class PushScheduler {
     private final PushNotificationRepository pushNotificationRepository;
     private final PushSubscriptionService pushSubscriptionService;
     private final WebPushService webPushService;
+	private final TimeStrategy timeStrategy;
 
     @Transactional
     public void sendPushNotifications() {
         List<PushNotification> notifications = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE);
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = timeStrategy.now();
         Map<Member, List<PushNotification>> notificationsByMember = groupByMemberNotifications(notifications, now);
 
         List<Member> members = new ArrayList<>(notificationsByMember.keySet());

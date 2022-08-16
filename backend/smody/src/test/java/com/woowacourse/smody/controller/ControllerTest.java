@@ -19,6 +19,7 @@ import com.woowacourse.smody.service.PushNotificationService;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
 import com.woowacourse.smody.ui.admin.controller.AdminSecurityConfig;
+import com.woowacourse.smody.util.TimeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,7 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
         PushSubscriptionController.class,
         PushNotificationController.class
 })
-@Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
+@Import({TimeStrategy.class, JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
 @AutoConfigureRestDocs
 public class ControllerTest {
 

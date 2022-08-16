@@ -11,6 +11,7 @@ import com.woowacourse.smody.dto.StatResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
+import com.woowacourse.smody.util.TimeStrategy;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CycleController {
 
     private final CycleService cycleService;
     private final CycleQueryService cycleQueryService;
+    private final TimeStrategy timeStrategy;
 
     @PostMapping
     @RequiredLogin
@@ -45,7 +47,7 @@ public class CycleController {
     @RequiredLogin
     public ResponseEntity<ProgressResponse> increase(@LoginMember TokenPayload tokenPayload,
                                                      @ModelAttribute ProgressRequest progressRequest) {
-        progressRequest.setProgressTime(LocalDateTime.now());
+        progressRequest.setProgressTime(timeStrategy.now());
         ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, progressRequest);
         return ResponseEntity.ok(progressResponse);
     }
@@ -54,7 +56,7 @@ public class CycleController {
     @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  Pageable pageable) {
-        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
+        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, timeStrategy.now(), pageable));
     }
 
     @GetMapping("/{cycleId}")

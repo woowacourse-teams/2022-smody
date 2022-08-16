@@ -10,6 +10,7 @@ import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
+import com.woowacourse.smody.util.TimeStrategy;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,14 +31,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChallengeController {
 
     private final ChallengeQueryService challengeQueryService;
-
     private final ChallengeService challengeService;
+    private final TimeStrategy timeStrategy;
 
     @GetMapping
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(Pageable pageable,
                                                                                  @RequestParam(required = false) String search) {
         return ResponseEntity.ok(
-                challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable, search));
+                challengeQueryService.findAllWithChallengerCount(timeStrategy.now(), pageable, search));
     }
 
     @GetMapping("/auth")
@@ -46,7 +47,7 @@ public class ChallengeController {
                                                                                  Pageable pageable,
                                                                                  @RequestParam(required = false) String search) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
-                tokenPayload, LocalDateTime.now(), pageable, search)
+                tokenPayload, timeStrategy.now(), pageable, search)
         );
     }
 
@@ -59,7 +60,7 @@ public class ChallengeController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@PathVariable Long id) {
-        return ResponseEntity.ok(challengeQueryService.findOneWithChallengerCount(LocalDateTime.now(), id));
+        return ResponseEntity.ok(challengeQueryService.findOneWithChallengerCount(timeStrategy.now(), id));
     }
 
     @GetMapping(value = "/{id}/auth")
@@ -67,7 +68,7 @@ public class ChallengeController {
     public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@LoginMember TokenPayload tokenPayload,
                                                                         @PathVariable Long id) {
         return ResponseEntity.ok(challengeQueryService.findOneWithChallengerCount(
-                tokenPayload, LocalDateTime.now(), id)
+                tokenPayload, timeStrategy.now(), id)
         );
     }
 

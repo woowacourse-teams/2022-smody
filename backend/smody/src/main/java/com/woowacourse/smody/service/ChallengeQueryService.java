@@ -12,6 +12,7 @@ import com.woowacourse.smody.dto.ChallengersResponse;
 import com.woowacourse.smody.dto.SuccessChallengeResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.util.PagingUtil;
+import com.woowacourse.smody.util.TimeStrategy;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ChallengeQueryService {
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
+    private final TimeStrategy timeStrategy;
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable,
                                                                  String searchingName) {
@@ -107,7 +109,7 @@ public class ChallengeQueryService {
 
     public List<ChallengersResponse> findAllChallengers(Long challengeId) {
         Challenge challenge = challengeService.search(challengeId);
-        List<Cycle> inProgressCycle = cycleService.searchInProgress(LocalDateTime.now())
+        List<Cycle> inProgressCycle = cycleService.searchInProgress(timeStrategy.now())
                 .stream()
                 .filter(cycle -> cycle.matchChallenge(challenge.getId()))
                 .collect(toList());

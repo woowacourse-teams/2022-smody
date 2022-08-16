@@ -10,9 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Sql("/truncate.sql")
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/data.sql")
+@Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, scripts = "/truncate.sql")
 class AcceptanceTest {
 
     @Autowired

@@ -5,6 +5,7 @@ import com.woowacourse.smody.domain.Feed;
 import com.woowacourse.smody.dto.FeedRequest;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.repository.FeedRepository;
+import com.woowacourse.smody.util.TimeStrategy;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,12 +21,13 @@ public class FeedQueryService {
 
     private final FeedRepository feedRepository;
     private final FeedService feedService;
+    private final TimeStrategy timeStrategy;
 
     public List<FeedResponse> findAll(FeedRequest feedRequest) {
         Pageable pageRequest = feedRequest.toPageRequest();
 
         if (feedRequest.getLastCycleDetailId() == null) {
-            List<Feed> feeds = feedRepository.findAllLatest(0L, LocalDateTime.now(), pageRequest);
+            List<Feed> feeds = feedRepository.findAllLatest(0L, timeStrategy.now(), pageRequest);
             return convertFeedResponse(feeds);
         }
 

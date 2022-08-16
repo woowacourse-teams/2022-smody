@@ -1,5 +1,6 @@
 package com.woowacourse.smody.push.strategy;
 
+import com.woowacourse.smody.util.TimeStrategy;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class SubscriptionPushStrategy implements PushStrategy {
 
 	private final PushNotificationService pushNotificationService;
 	private final WebPushService webPushService;
+	private final TimeStrategy timeStrategy;
 
 	@Override
 	@Transactional
@@ -38,7 +40,7 @@ public class SubscriptionPushStrategy implements PushStrategy {
 		Member member = (Member)entity;
 		return PushNotification.builder()
 			.message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
-			.pushTime(LocalDateTime.now())
+			.pushTime(timeStrategy.now())
 			.pushStatus(PushStatus.COMPLETE)
 			.member(member)
 			.pushCase(getPushCase())
