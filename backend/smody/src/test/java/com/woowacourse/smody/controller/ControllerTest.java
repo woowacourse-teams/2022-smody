@@ -10,6 +10,8 @@ import com.woowacourse.smody.auth.JwtTokenExtractor;
 import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.service.ChallengeQueryService;
 import com.woowacourse.smody.service.ChallengeService;
+import com.woowacourse.smody.service.CommentQueryService;
+import com.woowacourse.smody.service.CommentService;
 import com.woowacourse.smody.service.CycleQueryService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.FeedQueryService;
@@ -24,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -38,6 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
         PushNotificationController.class
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
+@MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class ControllerTest {
 
@@ -73,6 +77,12 @@ public class ControllerTest {
 
     @MockBean
     protected FeedQueryService feedQueryService;
+
+    @MockBean
+    protected CommentQueryService commentQueryService;
+
+    @MockBean
+    protected CommentService commentService;
 
     @MockBean
     protected GoogleApi googleApi;

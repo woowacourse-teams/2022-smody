@@ -18,11 +18,13 @@ public class Feed {
     private String nickname;
     private Long challengeId;
     private String challengeName;
+    private Integer commentCount;
 
     public Feed(
             Long cycleDetailId, String progressImage, String description, LocalDateTime progressTime,
             Long memberId, String picture, String nickname,
-            Long challengeId, String challengeName
+            Long challengeId, String challengeName,
+            Integer commentCount
     ) {
         this.cycleDetailId = cycleDetailId;
         this.progressImage = progressImage;
@@ -33,5 +35,6 @@ public class Feed {
         this.nickname = nickname;
         this.challengeId = challengeId;
         this.challengeName = challengeName;
+        this.commentCount = commentCount;
     }
 }
