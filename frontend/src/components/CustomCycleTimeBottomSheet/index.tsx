@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { BottomSheet, Button, Text, FlexBox } from 'components';
+import { BottomSheet, Button, Text, FlexBox, UnderLineText } from 'components';
 
 const selectTime = [
   '0:00',
@@ -60,11 +60,16 @@ export const CustomCycleTimeBottomSheet = ({
           </TipText>
           <StartInfoWrapper>
             <div>
-              <Text size={20} fontWeight="bold" color={themeContext.primary}>
-                {challengeName}&nbsp;
-              </Text>
+              <UnderLineText
+                fontSize={20}
+                fontWeight="bold"
+                fontColor={themeContext.onSurface}
+                underLineColor={themeContext.primary}
+              >
+                {challengeName}
+              </UnderLineText>
               <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
-                챌린지&nbsp;
+                &nbsp;챌린지&nbsp;
               </Text>
             </div>
             <FlexBox alignItems="center">
@@ -147,7 +152,7 @@ const TipText = styled(Text)`
 
 const StartInfoWrapper = styled.div`
   div,
-  ${Text}, ${Button} {
+  ${Text}, ${Button}, ${UnderLineText} {
     display: inline-block;
     height: 34px;
     line-height: 34px;
