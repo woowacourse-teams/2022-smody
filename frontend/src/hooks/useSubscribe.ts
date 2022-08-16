@@ -63,7 +63,7 @@ const useSubscribe = () => {
 
     pushStatus.pushSubscription.unsubscribe().then((result) => {
       if (result && pushStatus.pushSubscription) {
-        postUnsubscribe(pushStatus.pushSubscription.endpoint);
+        postUnsubscribe({ endpoint: pushStatus.pushSubscription.endpoint });
         pushStatus.pushSubscription = null;
         setIsSubscribed(false);
       }
