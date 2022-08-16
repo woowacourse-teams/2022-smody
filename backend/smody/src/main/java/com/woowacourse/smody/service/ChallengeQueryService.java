@@ -4,6 +4,8 @@ import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,27 +82,29 @@ public class ChallengeQueryService {
                 .anyMatch(cycle -> cycle.matchMember(tokenPayload.getId()));
     }
 
-    public List<ChallengeOfMineResponse> searchOfMine(TokenPayload tokenPayload, Pageable pageable) {
+    public List<ChallengeOfMineResponse> searchOfMineWithFilter(TokenPayload tokenPayload,
+                                                                ChallengeOfMineRequest challengeOfMineRequest) {
         Member member = memberService.search(tokenPayload);
-        List<Cycle> cycles = cycleService.findByMember(member);
+        List<Cycle> cycles = cycleService.findByMemberWithFilter(member, challengeOfMineRequest.getFilter());
 
-        Map<Challenge, Long> groupedSize = cycles.stream()
-                .filter(Cycle::isSuccess)
-                .collect(groupingBy(Cycle::getChallenge, Collectors.counting()));
+        Map<Challenge, Integer> groupedSize = groupByChallenge(cycles).entrySet()
+                .stream()
+                .collect(toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
+                        .filter(Cycle::isSuccess)
+                        .mapToInt(cycle -> 1)
+                        .sum()));
 
         Map<Challenge, LocalDateTime> groupByProgressTime = groupByChallenge(cycles).entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
-                        .map(Cycle::getLatestProgressTime)
-                        .sorted(Comparator.reverseOrder())
-                        .findFirst()
-                        .get()));
+                        .map(Cycle::getLatestProgressTime).max(Comparator.naturalOrder())
+                        .orElseThrow(() -> new BusinessException(ExceptionData.NO_CERTED_CHALLENGE))));
 
         List<Challenge> latestChallenges = groupByProgressTime.entrySet()
                 .stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .map(Map.Entry::getKey)
                 .collect(toList());
 
-        List<Challenge> pagedChallenges = PagingUtil.page(latestChallenges, pageable);
+        List<Challenge> pagedChallenges = PagingUtil.page(latestChallenges, challengeOfMineRequest.toPageRequest());
         return pagedChallenges.stream()
                 .map(challenge -> new ChallengeOfMineResponse(
                         challenge, groupedSize.get(challenge).intValue()

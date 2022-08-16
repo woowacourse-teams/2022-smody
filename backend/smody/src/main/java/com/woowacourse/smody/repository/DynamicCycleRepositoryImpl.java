@@ -21,13 +21,13 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         String convertedFilter = convertFilter(filter);
         Long convertedLastCycleIndex = convertLastCycleIndex(lastCycleId);
         LocalDateTime convertedStartTime = convertStartTime(convertedLastCycleIndex);
-        return entityManager.createQuery(createDynamicQuery(
+        return entityManager.createQuery(findAllFilterByQuery(
                 memberId, challengeId, convertedFilter, convertedLastCycleIndex, convertedStartTime))
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
 
-    private CriteriaQuery<Cycle> createDynamicQuery(
+    private CriteriaQuery<Cycle> findAllFilterByQuery(
             Long memberId, Long challengeId, String filter, Long lastCycleId, LocalDateTime startTime) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cycle> cycleCriteriaQuery = criteriaBuilder.createQuery(Cycle.class);
@@ -70,5 +70,29 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         }
         Cycle cycle = entityManager.find(Cycle.class, lastCycleId);
         return cycle.getStartTime();
+    }
+
+    @Override
+    public List<Cycle> findByMemberWithFilter(Long memberId, String filter) {
+        String convertedFilter = convertFilter(filter);
+        return entityManager.createQuery(findByMemberWithFilterQuery(memberId, convertedFilter))
+                .getResultList();
+    }
+
+    private CriteriaQuery<Cycle> findByMemberWithFilterQuery(
+            Long memberId, String filter) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Cycle> cycleCriteriaQuery = criteriaBuilder.createQuery(Cycle.class);
+        Root<Cycle> cycleRoot = cycleCriteriaQuery.from(Cycle.class);
+        Predicate equalsToMember = criteriaBuilder.equal(cycleRoot.get("member").get("id"), memberId);
+        Predicate equalsToSuccess = criteriaBuilder.equal(cycleRoot.get("progress").as(String.class), filter.toUpperCase());
+
+        if (filter.equals("success")) {
+            return cycleCriteriaQuery.select(cycleRoot)
+                    .where(criteriaBuilder.and(
+                            equalsToMember, equalsToSuccess));
+        }
+        return cycleCriteriaQuery.select(cycleRoot)
+                .where(equalsToMember);
     }
 }
