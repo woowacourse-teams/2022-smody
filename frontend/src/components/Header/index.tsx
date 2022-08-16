@@ -1,9 +1,6 @@
 import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
-import { useGetNotifications } from 'apis/pushNotificationApi';
 import { isDev, isLocal } from 'env';
-import { setBadge } from 'push/badge';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
