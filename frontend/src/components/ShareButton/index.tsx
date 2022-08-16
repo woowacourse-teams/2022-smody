@@ -1,20 +1,25 @@
 import ShareIcon from 'assets/share_icon.svg';
 import styled from 'styled-components';
 
-const share = ({ text }: { text: string }) => {
-  if (navigator.share) {
-    navigator
-      .share({
+import useSnackBar from 'hooks/useSnackBar';
+
+export const ShareButton = ({ text }: { text: string }) => {
+  const renderSnackBar = useSnackBar();
+
+  const share = ({ text }: { text: string }) => {
+    if (navigator.share) {
+      navigator.share({
         title: document.title,
         text,
         url: document.location.href,
-      })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error));
-  }
-};
-
-export const ShareButton = ({ text }: { text: string }) => {
+      });
+    } else {
+      renderSnackBar({
+        message: '공유 기능은 안드로이드 앱에서 가능합니다',
+        status: 'ERROR',
+      });
+    }
+  };
   return (
     <IconWrapper onClick={() => share({ text })}>
       <ShareIcon />
