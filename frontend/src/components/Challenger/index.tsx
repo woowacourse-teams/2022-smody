@@ -21,7 +21,7 @@ export const Challenger = ({
     <Wrapper justifyContent="space-between" alignItems="center">
       <FlexBox gap="17px" alignItems="center">
         <ProfileImg src={picture} alt={`${nickName} 프로필 사진`} />
-        <FlexBox flexDirection="column" gap="0.5rem">
+        <FlexBox flexDirection="column">
           <Text size={16} color={themeContext.onSurface}>
             {nickName}
           </Text>

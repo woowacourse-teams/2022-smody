@@ -32,9 +32,12 @@ const useSuccessModal = ({
   emoji,
 }: UseSuccessModalProps) => {
   const navigate = useNavigate();
-  const { reward: confettiReward } = useReward('confettiRewardId', 'confetti');
+  const { reward: confettiReward } = useReward('confettiRewardId', 'confetti', {
+    elementSize: 17,
+  });
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: [emoji],
+    elementSize: 35,
   });
 
   const postJoinChallengeSuccessCallback = () => {
