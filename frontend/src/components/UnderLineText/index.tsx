@@ -22,7 +22,7 @@ export const UnderLineText = styled.p<UnderLineTextProps>`
       display: block;
       position: absolute;
       left: 0;
-      bottom: 4px;
+      bottom: 1px;
       width: 100%;
       height: ${fontSizeMapper[fontSize ?? 16] * 0.4}rem;
       background-color: ${underLineColor};

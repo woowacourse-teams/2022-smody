@@ -43,6 +43,7 @@ const Wrapper = styled.div<{ isDropdownToggled: boolean }>`
 
 const DropdownMenu = styled.div`
   ${({ theme }) => css`
+    overflow: auto;
     height: fit-content;
     max-height: 32rem;
     white-space: nowrap;
@@ -73,6 +74,25 @@ const DropdownMenu = styled.div`
       border: 8px solid transparent;
       border-bottom-color: ${theme.primary};
       position: absolute;
+    }
+
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
     }
   `}
 `;

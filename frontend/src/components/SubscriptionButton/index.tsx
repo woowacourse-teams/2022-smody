@@ -51,7 +51,7 @@ export const SubscriptionButton = ({
       <FlexBox
         alignItems="center"
         gap="1rem"
-        style={{ cursor: 'default', padding: '0 1rem ' }}
+        style={{ cursor: 'default', padding: '0 1rem', margin: '1rem 0 0.5rem 0' }}
       >
         <UnderLineText
           fontSize={16}
@@ -68,14 +68,9 @@ export const SubscriptionButton = ({
           handleChange={subscribe}
         />
         {isLoadingSubscribe && (
-          <FlexBox gap="0.5rem" flexDirection="row" alignItems="center">
-            <Text size={14} color={themeContext.onSurface}>
-              알림 설정 중
-            </Text>
-            <LoadingWrapper>
-              <LoadingDots />
-            </LoadingWrapper>
-          </FlexBox>
+          <LoadingWrapper>
+            <LoadingDots />
+          </LoadingWrapper>
         )}
       </FlexBox>
     </>
@@ -84,7 +79,7 @@ export const SubscriptionButton = ({
 
 const LoadingWrapper = styled.div`
   ${({ theme }) => css`
-    width: 2rem;
+    width: 2.4rem;
     height: 2rem;
 
     & svg circle {

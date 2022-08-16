@@ -50,6 +50,7 @@ const NotificationWrapper = styled(FlexBox)`
   ${({ theme }) => css`
     padding: 0.4rem 0.8rem;
     width: 100%;
+    overflow: auto;
     &:hover {
       background-color: ${theme.primary};
       & p:first-child {
