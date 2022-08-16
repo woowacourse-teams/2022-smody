@@ -6,7 +6,15 @@ import styled, { css } from 'styled-components';
 import useMatchPath from 'hooks/useMatchPath';
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Header, LoadingSpinner, Navbar, SnackBar } from 'components';
+import {
+  ErrorBoundary,
+  ErrorFallbackMain,
+  FlexBox,
+  Header,
+  LoadingSpinner,
+  Navbar,
+  SnackBar,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -43,9 +51,15 @@ export const Layout = () => {
         bgColor={bgColor}
         horizontalPadding={horizontalPadding}
       >
-        <Suspense fallback={<LoadingSpinner />}>
-          <Outlet />
-        </Suspense>
+        <ErrorBoundary
+          renderFallback={(renderFallbackParams) => (
+            <ErrorFallbackMain {...renderFallbackParams} />
+          )}
+        >
+          <Suspense fallback={<LoadingSpinner />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
       </OutletWrapper>
       <Navbar />
       <SnackBar />
