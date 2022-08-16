@@ -1,6 +1,7 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
@@ -76,6 +77,13 @@ module.exports = {
         ? undefined
         : JSON.stringify(process.env.PUBLIC_KEY),
       'process.env.IS_LOCAL': JSON.stringify(isLocal),
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public/image', to: 'image' },
+        { from: 'public/manifest.json', to: '.' },
+        { from: 'public/pushServiceWorker.js', to: '.' },
+      ],
     }),
   ],
 };
