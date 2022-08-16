@@ -1,5 +1,4 @@
-import { useGetMyChallengeById } from 'apis';
-import { useParams } from 'react-router-dom';
+import useChallengeInfoWithUser from './useChallengeInfoWithUser';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -13,16 +12,9 @@ import { AvailablePickedColor } from 'styles/type';
 
 export const ChallengeInfoWithUser = () => {
   const themeContext = useThemeContext();
-  const { challengeId } = useParams();
+  const challengeData = useChallengeInfoWithUser();
 
-  const { data: challengeData } = useGetMyChallengeById(
-    { challengeId: Number(challengeId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  if (typeof challengeData === 'undefined') {
+  if (typeof challengeData?.data === 'undefined') {
     return null;
   }
 
