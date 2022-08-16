@@ -1,9 +1,5 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,16 +30,6 @@ import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 class ChallengeServiceTest extends IntegrationTest {
 
@@ -305,7 +291,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeQueryService.findOneWithChallengerCount(now, 미라클_모닝_ID);
+        ChallengeResponse challengeResponse = challengeQueryService.findWithChallengerCount(now, 미라클_모닝_ID);
 
         // then
         assertAll(
@@ -326,7 +312,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // when
         ChallengeResponse challengeResponse = challengeQueryService
-                .findOneWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
+                .findWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
 
         // then
         assertAll(
@@ -579,7 +565,7 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findOneWithMine(
+        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findWithMine(
                 tokenPayload, 알고리즘_풀기_ID);
 
         // then
@@ -601,10 +587,14 @@ class ChallengeServiceTest extends IntegrationTest {
 
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
-        // when then
-        assertThatThrownBy(() -> challengeQueryService.findOneWithMine(tokenPayload, 오늘의_운동_ID))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
+        // when
+        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findWithMine(tokenPayload, 오늘의_운동_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("오늘의 운동"),
+                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(0),
+                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(0)
+        );
     }
 }
