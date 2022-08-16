@@ -33,6 +33,7 @@ export const Layout = () => {
   return (
     <Wrapper>
       <Header bgColor={bgColor} />
+
       <OutletWrapper
         flexDirection="column"
         bgColor={bgColor}

@@ -1,46 +1,34 @@
-import { useGetMyInfo, useGetTokenGoogle } from 'apis';
+import { useGetLinkGoogle, useGetMyInfo, useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
 
-const removeQueryParams = () => {
-  window.location.href = window.location.href.split('?')[0];
-};
+import { CLIENT_PATH } from 'constants/path';
 
 const useAuth = () => {
+  const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  const { isLoading: isLoadingMyInfo, refetch: refetchMyInfo } = useGetMyInfo();
 
-  const { isLoading, refetch: refetchGetMyInfo } = useGetMyInfo({
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    suspense: false,
-    onSuccess: () => {
-      setIsLogin(true);
-    },
-    onError: () => {
-      // error swallow
-      return null;
+  const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle({
+    onSuccess: ({ data: redirectionUrl }) => {
+      window.location.href = redirectionUrl;
     },
   });
 
   const googleAuthCode = getUrlParameter('code');
-
   const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
-    refetchOnWindowFocus: false,
-    enabled: false,
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
-      refetchGetMyInfo();
-
+      refetchMyInfo();
       setIsLogin(true);
-      removeQueryParams();
-
+      navigate(CLIENT_PATH.CERT);
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',
         status: 'SUCCESS',
@@ -55,7 +43,7 @@ const useAuth = () => {
     getTokenGoogle();
   }, []);
 
-  return { isLogin, isLoading };
+  return { redirectGoogleLoginLink, isLoadingMyInfo, isLogin };
 };
 
 export default useAuth;
