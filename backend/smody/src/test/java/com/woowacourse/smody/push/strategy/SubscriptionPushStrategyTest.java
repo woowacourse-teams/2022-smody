@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.IntegrationTest;
@@ -19,7 +18,6 @@ import com.woowacourse.smody.repository.PushNotificationRepository;
 class SubscriptionPushStrategyTest extends IntegrationTest {
 
 	@Autowired
-	@InjectMocks
 	private SubscriptionPushStrategy pushStrategy;
 
 	@Autowired
@@ -40,7 +38,7 @@ class SubscriptionPushStrategyTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
-			() -> assertThat(pushNotification.getMessage()).contains("스모디 알림이 구독되었습니다."),
+			() -> assertThat(pushNotification.getMessage()).contains("조조그린님 스모디 알림이 구독되었습니다."),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
 			() -> assertThat(pushNotification.getPathId()).isNull()
 		);

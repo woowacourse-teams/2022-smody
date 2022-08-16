@@ -12,14 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.ResourceFixture;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.domain.PushNotification;
@@ -27,12 +22,10 @@ import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.PushSubscriptionService;
-import com.woowacourse.smody.service.WebPushService;
 
 class PushSchedulerTest extends IntegrationTest {
 
     @Autowired
-    @InjectMocks
     private PushScheduler pushScheduler;
 
     @Autowired

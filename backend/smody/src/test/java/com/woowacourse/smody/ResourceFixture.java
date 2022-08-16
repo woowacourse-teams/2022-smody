@@ -17,17 +17,20 @@ public class ResourceFixture {
 	private final CycleRepository cycleRepository;
 	private final PushNotificationRepository pushNotificationRepository;
 	private final PushSubscriptionRepository pushSubscriptionRepository;
+	private final CommentRepository commentRepository;
 
 	public ResourceFixture(MemberRepository memberRepository,
 		ChallengeRepository challengeRepository,
 		CycleRepository cycleRepository,
 		PushNotificationRepository pushNotificationRepository,
-		PushSubscriptionRepository pushSubscriptionRepository) {
+		PushSubscriptionRepository pushSubscriptionRepository,
+		CommentRepository commentRepository) {
 		this.memberRepository = memberRepository;
 		this.challengeRepository = challengeRepository;
 		this.cycleRepository = cycleRepository;
 		this.pushNotificationRepository = pushNotificationRepository;
 		this.pushSubscriptionRepository = pushSubscriptionRepository;
+		this.commentRepository = commentRepository;
 	}
 
     public static final Long 조조그린_ID = 1L;
@@ -41,7 +44,7 @@ public class ResourceFixture {
     public static final Long 알고리즘_풀기_ID = 4L;
     public static final Long JPA_공부_ID = 5L;
 
-    private static final Image 이미지 = new Image(new MockMultipartFile(
+    public static final Image 이미지 = new Image(new MockMultipartFile(
             "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
     ), image -> "image.jpg");
 
@@ -127,5 +130,10 @@ public class ResourceFixture {
 			"auth",
 			회원_조회(memberId)
 		));
+	}
+
+	public Comment 댓글_등록(CycleDetail cycleDetail, Long memberId, String content) {
+		Comment comment = new Comment(cycleDetail, 회원_조회(memberId), content);
+		return commentRepository.save(comment);
 	}
 }
