@@ -1,7 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.GoogleApi;
-import com.woowacourse.smody.auth.PreLoginMember;
+import com.woowacourse.smody.auth.TokenChecker;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
 import com.woowacourse.smody.dto.PreTokenPayLoad;
@@ -34,8 +34,8 @@ public class OauthController {
         return ResponseEntity.ok(oauthService.login(loginRequest));
     }
 
-    @GetMapping("/auth")
-    public ResponseEntity<ValidAuthResponse> isValid(@PreLoginMember PreTokenPayLoad preTokenPayLoad) {
+    @GetMapping("/check")
+    public ResponseEntity<ValidAuthResponse> isValid(@TokenChecker PreTokenPayLoad preTokenPayLoad) {
         return ResponseEntity.ok(oauthService.isValidAuth(preTokenPayLoad));
     }
 }

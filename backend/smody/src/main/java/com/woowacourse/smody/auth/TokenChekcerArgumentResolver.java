@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @AllArgsConstructor
-public class PreLoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
+public class TokenChekcerArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenExtractor jwtTokenExtractor;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(PreLoginMember.class);
+        return parameter.hasParameterAnnotation(TokenChecker.class);
     }
 
     @Override

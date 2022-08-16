@@ -1,7 +1,6 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
-import com.woowacourse.smody.auth.PreLoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.service.MemberService;

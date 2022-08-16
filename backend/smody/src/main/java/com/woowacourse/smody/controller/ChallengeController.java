@@ -47,14 +47,14 @@ public class ChallengeController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@PathVariable Long id) {
+    public ResponseEntity<ChallengeResponse> findWithChallengerCount(@PathVariable Long id) {
         return ResponseEntity.ok(challengeQueryService.findWithChallengerCount(LocalDateTime.now(), id));
     }
 
     @GetMapping(value = "/{id}/auth")
     @RequiredLogin
-    public ResponseEntity<ChallengeResponse> findOneWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                        @PathVariable Long id) {
+    public ResponseEntity<ChallengeResponse> findWithChallengerCount(@LoginMember TokenPayload tokenPayload,
+                                                                     @PathVariable Long id) {
         return ResponseEntity.ok(challengeQueryService.findWithChallengerCount(
                 tokenPayload, LocalDateTime.now(), id)
         );
@@ -74,8 +74,8 @@ public class ChallengeController {
 
     @GetMapping("/me/{challengeId}")
     @RequiredLogin
-    public ResponseEntity<ChallengeHistoryResponse> findOneWithMine(@LoginMember TokenPayload tokenPayload,
-                                                                    @PathVariable Long challengeId) {
+    public ResponseEntity<ChallengeHistoryResponse> findWithMine(@LoginMember TokenPayload tokenPayload,
+                                                                 @PathVariable Long challengeId) {
         return ResponseEntity.ok(challengeQueryService.findWithMine(tokenPayload, challengeId));
     }
 }
