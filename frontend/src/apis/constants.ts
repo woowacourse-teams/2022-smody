@@ -1,6 +1,7 @@
 export const PAGE_SIZE = {
   ALL_CHALLENGES: 10,
   SUCCESS_CHALLENGES: 10,
+  CYCLES: 10,
   FEEDS: 10,
 };
 
@@ -31,6 +32,7 @@ export const queryKeys = {
   getCommentsById: 'getCommentsById',
   getNotifications: 'getNotifications',
   getMyChallengeById: 'getMyChallengeById',
+  getMyCyclesByChallengeId: 'getMyCyclesByChallengeId',
 };
 
 export const mutationKeys = {
