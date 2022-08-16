@@ -54,7 +54,7 @@ class OauthControllerTest extends ControllerTest {
                 .willReturn(validAuthResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/oauth/auth")
+        ResultActions result = mockMvc.perform(get("/oauth/check")
                 .header("Authorization", "Bearer " + token));
 
         // then

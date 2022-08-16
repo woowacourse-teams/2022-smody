@@ -1,26 +1,12 @@
 package com.woowacourse.smody;
 
 import com.woowacourse.smody.domain.*;
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.repository.ChallengeRepository;
-import com.woowacourse.smody.repository.CycleRepository;
-import com.woowacourse.smody.repository.MemberRepository;
-import com.woowacourse.smody.repository.PushNotificationRepository;
-import com.woowacourse.smody.repository.PushSubscriptionRepository;
+import com.woowacourse.smody.repository.*;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @SuppressWarnings("NonAsciiCharacters")
@@ -105,7 +91,7 @@ public class ResourceFixture {
                 )
         );
         for (int i = 0; i < progress.getCount(); i++) {
-            cycle.increaseProgress(cycleDetails.get(i));
+            cycle.increaseProgress(cycleDetails.get(i).getProgressTime(), 이미지, cycleDetails.get(i).getDescription());
         }
         return cycleRepository.save(cycle);
     }
