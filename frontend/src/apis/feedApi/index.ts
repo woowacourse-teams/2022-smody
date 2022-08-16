@@ -2,17 +2,22 @@ import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import {
   getAllFeeds,
   getCommentsById,
+  getCommentsByIdAuth,
   getFeedById,
   postComments,
+  patchComments,
+  deleteComments,
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
   GetFeedByIdProps,
   GetFeedByIdResponse,
-  GetCommentsByIdProps,
+  UseGetCommentsByIdProps,
   GetCommentsByIdResponse,
   UsePostCommentProps,
   UsePostCommentMutationFunctionProps,
+  PatchCommentsProps,
+  DeleteCommentsProps,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -78,7 +83,7 @@ export const usePostComment = (
 
 // 4. 댓글 조회(GET)
 export const useGetCommentsById = (
-  { cycleDetailId }: GetCommentsByIdProps,
+  { cycleDetailId, isLogin }: UseGetCommentsByIdProps,
   options?: UseQueryOptions<
     AxiosResponse<GetCommentsByIdResponse>,
     AxiosError<ErrorResponse>
@@ -86,6 +91,34 @@ export const useGetCommentsById = (
 ) =>
   useQuery<AxiosResponse<GetCommentsByIdResponse>, AxiosError<ErrorResponse>>(
     [queryKeys.getCommentsById, cycleDetailId],
-    () => getCommentsById({ cycleDetailId }),
+    isLogin
+      ? () => getCommentsByIdAuth({ cycleDetailId })
+      : () => getCommentsById({ cycleDetailId }),
+    options,
+  );
+
+// 5. 댓글 수정(PATCH)
+export const usePatchComments = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PatchCommentsProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchCommentsProps>(
+    ({ commentId, content }) => patchComments({ commentId, content }),
+    options,
+  );
+
+// 6. 댓글 삭제(DELETE)
+export const useDeleteComments = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    DeleteCommentsProps
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteCommentsProps>(
+    ({ commentId }) => deleteComments({ commentId }),
     options,
   );

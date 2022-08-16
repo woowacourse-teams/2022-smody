@@ -67,4 +67,5 @@ export interface Comment extends Pick<User, 'picture' | 'nickname'> {
   memberId: number;
   content: string;
   createdAt: string;
+  isMyComment: boolean;
 }
