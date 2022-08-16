@@ -1,20 +1,28 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
+import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.dto.MemberResponse;
 import com.woowacourse.smody.dto.MemberUpdateRequest;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -23,15 +31,6 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
-import java.time.LocalDateTime;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 public class MemberServiceTest extends IntegrationTest {
 
@@ -104,18 +103,10 @@ public class MemberServiceTest extends IntegrationTest {
     void withdraw() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        Member member = fixture.회원_조회(조조그린_ID);
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
-        pushNotificationRepository.save(
-                new PushNotification(
-                        "asd", LocalDateTime.now(), PushStatus.IN_COMPLETE, member
-                )
-        );
-        pushSubscriptionRepository.save(
-                new PushSubscription("zxc", "qwe", "iop", member
-                )
-        );
+        fixture.알림_구독(조조그린_ID, "endpoint");
+        fixture.발송_예정_알림_생성(조조그린_ID, null, LocalDateTime.now(), PushCase.SUBSCRIPTION);
 
         // when
         memberService.withdraw(tokenPayload);

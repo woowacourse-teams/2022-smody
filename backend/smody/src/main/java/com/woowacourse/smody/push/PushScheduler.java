@@ -53,33 +53,28 @@ public class PushScheduler {
                 .collect(groupingBy(PushSubscription::getMember));
     }
 
-    private void sendAllNotificationsOfMember(Map<Member, List<PushNotification>> notificationsByMember,
-                                              Map<Member, List<PushSubscription>> subscriptionsByMember,
-                                              Member member) {
-        for (PushNotification notification : notificationsByMember.get(member)) {
-            sendNotification(subscriptionsByMember, member, notification);
-        }
-    }
+	private void sendAllNotificationsOfMember(Map<Member, List<PushNotification>> notificationsByMember,
+		Map<Member, List<PushSubscription>> subscriptionsByMember,
+		Member member) {
+		for (PushNotification notification : notificationsByMember.get(member)) {
+			sendNotification(subscriptionsByMember, member, notification);
+			notification.completePush();
+		}
+	}
 
-    private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
-                                  Member member,
-                                  PushNotification notification) {
-        for (PushSubscription pushSubscription : subscriptionsByMember.get(member)) {
-            boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
-            updatePushStatus(notification, isValidSubscription);
-            removeInvalidSubscription(pushSubscription, isValidSubscription);
-        }
-    }
+	private void sendNotification(Map<Member, List<PushSubscription>> subscriptionsByMember,
+		Member member,
+		PushNotification notification) {
+		List<PushSubscription> subscriptions = subscriptionsByMember.getOrDefault(member, List.of());
+		for (PushSubscription pushSubscription : subscriptions) {
+			boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
+			removeInvalidSubscription(pushSubscription, isValidSubscription);
+		}
+	}
 
-    private void updatePushStatus(PushNotification notification, boolean isValidSubscription) {
-        if (isValidSubscription) {
-            notification.completePush();
-        }
-    }
-
-    private void removeInvalidSubscription(PushSubscription pushSubscription, boolean isValidSubscription) {
-        if (!isValidSubscription) {
-            pushSubscriptionService.delete(pushSubscription);
-        }
-    }
+	private void removeInvalidSubscription(PushSubscription pushSubscription, boolean isValidSubscription) {
+		if (!isValidSubscription) {
+			pushSubscriptionService.delete(pushSubscription);
+		}
+	}
 }

@@ -12,6 +12,7 @@ public enum ExceptionData {
     INVALID_TOKEN(2002, "유효하지 않은 토큰입니다.", 403),
     UNAUTHORIZED_MEMBER(2003, "인가되지 않은 회원입니다.", 403),
     INVALID_AUTHORIZATION_CODE(2004, "OAuth 인증 코드가 올바르지 않습니다.", 403),
+    GOOGLE_RESPONSE_ERROR(2005, "구글 토큰 응답이 도착하지 않았습니다.", 404),
 
     ALREADY_SUCCESS(3001, "이미 성공한 사이클입니다.", 400),
     INVALID_PROGRESS_TIME(3002, "인증할 수 있는 시간이 아닙니다.", 400),
