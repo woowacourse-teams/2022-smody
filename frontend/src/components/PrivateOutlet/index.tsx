@@ -1,17 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 
-import useAuth from 'hooks/useAuth';
 import useSnackBar from 'hooks/useSnackBar';
-
-import { LoadingSpinner } from 'components/LoadingSpinner';
 
 import { CLIENT_PATH } from 'constants/path';
 
 export const PrivateOutlet = () => {
-  const { isLogin, isLoadingMyInfo } = useAuth();
+  const isLogin = useRecoilValue(isLoginState);
   const renderSnackBar = useSnackBar();
-
-  if (isLoadingMyInfo) return <LoadingSpinner />;
 
   if (!isLogin) {
     renderSnackBar({

@@ -1,5 +1,5 @@
 import { Layout } from 'Layout';
-import { useGetMyInfo } from 'apis';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
@@ -48,10 +48,10 @@ const CertFlowPage = () => {
 const Router = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
 
-  useGetMyInfo({
-    onSuccess: () => {
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
       setIsLogin(true);
-    },
+    }
   });
 
   return (
