@@ -9,6 +9,10 @@ const CertPage = () => {
   const { cycles } = useCertPage();
 
   if (typeof cycles === 'undefined') {
+    return null;
+  }
+
+  if (cycles.length === 0) {
     return (
       <EmptyContent
         title="도전 중인 챌린지가 없습니다 :)"
