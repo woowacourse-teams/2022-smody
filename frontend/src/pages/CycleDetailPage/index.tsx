@@ -4,7 +4,14 @@ import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Text, ThumbnailWrapper, CycleDetailList, FlexBox, Title } from 'components';
+import {
+  Text,
+  ThumbnailWrapper,
+  CycleDetailList,
+  FlexBox,
+  Title,
+  ShareButton,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 import { emojiList, colorList } from 'constants/style';
@@ -23,7 +30,11 @@ const CycleDetailPage = () => {
 
   return (
     <div>
-      <Title text="인증기록 보기" linkTo={CLIENT_PATH.CERT} />
+      <Title text="인증기록 보기" linkTo={CLIENT_PATH.CERT}>
+        <ShareButton
+          text={`${year}년 ${month}월 ${date}일부터 도전한 ${challengeName} 작심삼일 극복 챌린지 기록을 공유해요`}
+        />
+      </Title>
       <ChallengeDetailWrapper
         flexDirection="row"
         justifyContent="space-evenly"
@@ -42,7 +53,9 @@ const CycleDetailPage = () => {
           {emojiList[emojiIndex]}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <CycleDetailList cycleDetails={cycleDetails} />
+      <FlexBox style={{ height: '50vh' }}>
+        <CycleDetailList cycleDetails={cycleDetails} />
+      </FlexBox>
     </div>
   );
 };
