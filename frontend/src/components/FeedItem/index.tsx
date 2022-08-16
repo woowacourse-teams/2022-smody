@@ -32,13 +32,13 @@ export const FeedItem = ({
     >
       <FlexBox alignItems="center">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <FlexBox alignItems="flex-end">
+        <FlexBox alignItems="center">
           <Nickname size={20} color={themeContext.onBackground}>
             {nickname}
           </Nickname>
-          <Text style={{ textAlign: 'end' }} size={16} color={themeContext.onBackground}>
+          <OfText size={16} color={themeContext.onBackground}>
             의&nbsp;
-          </Text>
+          </OfText>
           <UnderLineText
             fontSize={20}
             fontColor={themeContext.onBackground}
@@ -90,6 +90,10 @@ const ProfileImg = styled.img`
 
 const Nickname = styled(Text)`
   margin-left: 0.313rem;
+`;
+
+const OfText = styled(Text)`
+  text-align: end;
 `;
 
 const ProgressImg = styled.img`
