@@ -69,7 +69,7 @@ public class CycleDetailRepositoryTest {
         cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(6L),
                 "image.jpg", "인증6"));
         // when
-        List<Feed> feeds = cycleDetailRepository.findAllLatest(인증5.getId(), 인증5.getProgressTime(),
+        List<Feed> feeds = cycleDetailRepository.findAll(인증5.getId(), 인증5.getProgressTime(),
                 PageRequest.of(0, 3, SortSelection.FEED_LATEST.getSort()));
 
         // then

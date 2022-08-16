@@ -1,6 +1,5 @@
 package com.woowacourse.smody.service;
 
-import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.domain.Feed;
 import com.woowacourse.smody.dto.FeedRequest;
 import com.woowacourse.smody.dto.FeedResponse;
@@ -25,12 +24,12 @@ public class FeedQueryService {
         Pageable pageRequest = feedRequest.toPageRequest();
 
         if (feedRequest.getLastCycleDetailId() == null) {
-            List<Feed> feeds = feedRepository.findAllLatest(0L, LocalDateTime.now(), pageRequest);
+            List<Feed> feeds = feedRepository.findAll(0L, LocalDateTime.now(), pageRequest);
             return convertFeedResponse(feeds);
         }
 
-        CycleDetail cycleDetail = feedService.search(feedRequest.getLastCycleDetailId());
-        List<Feed> feeds = feedRepository.findAllLatest(cycleDetail.getId(), cycleDetail.getProgressTime(),
+        Feed feed = feedService.search(feedRequest.getLastCycleDetailId());
+        List<Feed> feeds = feedRepository.findAll(feed.getCycleDetailId(), feed.getProgressTime(),
                 pageRequest);
         return convertFeedResponse(feeds);
     }
@@ -42,7 +41,7 @@ public class FeedQueryService {
     }
 
     public FeedResponse searchById(Long cycleDetailId) {
-        CycleDetail cycleDetail = feedService.search(cycleDetailId);
-        return new FeedResponse(cycleDetail);
+        Feed feed = feedService.search(cycleDetailId);
+        return new FeedResponse(feed);
     }
 }
