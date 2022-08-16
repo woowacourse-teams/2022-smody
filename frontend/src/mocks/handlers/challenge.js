@@ -6,6 +6,7 @@ import {
   mySuccessChallengeData,
   challengers,
   myChallenge,
+  myCyclesByChallengeID,
 } from 'mocks/data';
 import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
@@ -170,5 +171,10 @@ export const challenge = [
     const { challengeId } = req.params;
 
     return res(ctx.delay(2000), ctx.status(200), ctx.json(myChallenge));
+  }),
+
+  //챌린지에 대한 전체 사이클 상세 조회 기능
+  rest.get(`${BASE_URL}/cycles/me/:challengeId`, (req, res, ctx) => {
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(myCyclesByChallengeID));
   }),
 ];

@@ -1256,3 +1256,45 @@ export const myChallenge = {
   successCount: 3,
   cycleDetailCount: 5,
 };
+
+export const myCyclesByChallengeID = [
+  {
+    cycleId: 3,
+    emojiIndex: 0,
+    colorIndex: 1,
+    cycleDetails: [
+      {
+        progressImage: 'url',
+        progressTime: '2022-07-01T17:00:00',
+        description: '알찼다.',
+      },
+      {
+        progressImage: 'url',
+        progressTime: '2022-07-01T17:00:00',
+        description: '알찼다.',
+      },
+      {
+        progressImage: 'url',
+        progressTime: '2022-07-01T17:00:00',
+        description: '알찼다.',
+      },
+    ],
+  },
+  {
+    cycleId: 2,
+    emojiIndex: 0,
+    colorIndex: 1,
+    cycleDetails: [
+      {
+        progressImage: 'url',
+        progressTime: '2022-07-01T17:00:00',
+        description: '알찼다.',
+      },
+      {
+        progressImage: 'url',
+        progressTime: '2022-07-01T17:00:00',
+        description: '알찼다.',
+      },
+    ],
+  },
+];
