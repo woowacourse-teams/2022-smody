@@ -9,4 +9,5 @@ export interface ChallengeDetailProps {
   challengerCount: number;
   emojiIndex: number;
   colorIndex: number;
+  description: string;
 }

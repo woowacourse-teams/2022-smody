@@ -14,4 +14,5 @@ export const FixedButton = styled(Button).attrs({
   margin: 0 auto 4.8rem;
   box-sizing: border-box;
   z-index: ${Z_INDEX.FIXED_BUTTON};
+  min-width: 80%;
 `;
