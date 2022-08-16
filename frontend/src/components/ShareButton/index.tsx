@@ -15,7 +15,7 @@ export const ShareButton = ({ text }: { text: string }) => {
       });
     } else {
       renderSnackBar({
-        message: '공유 기능은 안드로이드 앱에서 가능합니다',
+        message: '공유 기능은 모바일에서 가능합니다',
         status: 'ERROR',
       });
     }
