@@ -7,6 +7,8 @@ import {
   GetChallengersByIdProps,
   GetChallengersByIdResponse,
   PostChallengeProps,
+  GetMyChallengeByIdProps,
+  GetMyChallengeByIdResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
@@ -81,4 +83,11 @@ export const postChallenge = async ({
     emojiIndex,
     colorIndex,
   });
+};
+
+// 참여한 챌린지 상세 조회 기능
+export const getMyChallengeById = async ({ challengeId }: GetMyChallengeByIdProps) => {
+  return authApiClient.axios.get<GetMyChallengeByIdResponse>(
+    `/challenges/me/${challengeId}`,
+  );
 };

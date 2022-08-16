@@ -30,6 +30,7 @@ export const queryKeys = {
   getFeedById: 'getFeedById',
   getCommentsById: 'getCommentsById',
   getNotifications: 'getNotifications',
+  getMyChallengeById: 'getMyChallengeById',
 };
 
 export const mutationKeys = {
