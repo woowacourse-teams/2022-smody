@@ -1247,3 +1247,12 @@ export const notifications = [
     type: 'comment',
   },
 ];
+
+export const myChallenge = {
+  challengeName: '만보 걷기',
+  description: '3보 이상 걸으면 택시 잡자',
+  emojiIndex: 0,
+  colorIndex: 1,
+  successCount: 3,
+  cycleDetailCount: 5,
+};
