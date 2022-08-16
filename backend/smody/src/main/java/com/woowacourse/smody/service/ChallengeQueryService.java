@@ -2,17 +2,13 @@ package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.*;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -46,15 +42,15 @@ public class ChallengeQueryService {
         return PagingUtil.page(responses, pageable);
     }
 
-    public ChallengeResponse findOneWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
+    public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
         Challenge challenge = challengeService.search(challengeId);
         int count = inProgressCycles.getOrDefault(challenge, List.of()).size();
         return new ChallengeResponse(challenge, count);
     }
 
-    public ChallengeResponse findOneWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
-                                                        Long challengeId) {
+    public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
+                                                     Long challengeId) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
         Challenge challenge = challengeService.search(challengeId);
         int count = inProgressCycles.getOrDefault(challenge, List.of()).size();
@@ -122,14 +118,11 @@ public class ChallengeQueryService {
                 .collect(toList());
     }
 
-    public ChallengeHistoryResponse findOneWithMine(TokenPayload tokenPayload, Long challengeId) {
+    public ChallengeHistoryResponse findWithMine(TokenPayload tokenPayload, Long challengeId) {
         List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId()).stream()
                 .filter(cycle -> !cycle.isInProgress(LocalDateTime.now()))
                 .collect(toList());
-        if (cycles.isEmpty()) {
-            throw new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE);
-        }
-        Challenge challenge = cycles.get(0).getChallenge();
+        Challenge challenge = challengeService.search(challengeId);
         int successCount = (int) cycles.stream()
                 .filter(Cycle::isSuccess)
                 .count();

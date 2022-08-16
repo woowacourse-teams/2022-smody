@@ -133,7 +133,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+        given(challengeQueryService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
@@ -162,7 +162,7 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findOneWithChallengerCount(
+        given(challengeQueryService.findWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
 
@@ -319,7 +319,7 @@ class ChallengeControllerTest extends ControllerTest {
                 "알고리즘 풀기", "알고리즘 풀기 챌린지입니다", 0, 1,
                 10, 40);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.findOneWithMine(
+        given(challengeQueryService.findWithMine(
                 any(TokenPayload.class), eq(1L)))
                 .willReturn(challengeHistoryResponse);
 
