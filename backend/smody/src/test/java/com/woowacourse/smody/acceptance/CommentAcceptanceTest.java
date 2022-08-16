@@ -31,19 +31,13 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @DisplayName("댓글을 수정한다.")
     @Test
     void updateComment() {
-        // 로그인을 한다.
-        // 챌린지를 생성한다.
-        // 사이클을 생성한다.
-        // 사이클에 인증을 한다.
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         Member member = cycle.getMember();
         String token = 로그인_혹은_회원가입(member);
         CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
-        // 인증한 피드에 댓글을 작성한다.
         Comment comment = new Comment(cycleDetail, member, "수정전");
         commentRepository.save(comment);
-        // 댓글을 수정한다.
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().oauth2(token)
                 .body(new CommentUpdateRequest("수정후"))
@@ -51,7 +45,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
                 .patch("/comments/" + comment.getId())
                 .then().log().all()
                 .extract();
-        // 수정된 댓글을 확인한다.
         Comment actual = commentRepository.findById(comment.getId()).get();
         assertThat(actual.getContent()).isEqualTo("수정후");
     }

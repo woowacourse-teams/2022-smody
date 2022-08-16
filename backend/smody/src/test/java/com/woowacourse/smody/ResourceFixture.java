@@ -16,6 +16,7 @@ import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
 
 import java.time.LocalDateTime;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
