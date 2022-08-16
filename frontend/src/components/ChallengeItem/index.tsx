@@ -40,7 +40,7 @@ export const ChallengeItem = ({
             <ThumbnailWrapper size="small" bgColor={colorList[colorIndex]}>
               {emojiList[emojiIndex]}
             </ThumbnailWrapper>
-            <FlexBox flexDirection="column" gap="0.5rem">
+            <FlexBox flexDirection="column">
               <Text aria-label="challenge-name" color={themeContext.onSurface} size={16}>
                 {challengeName}
               </Text>

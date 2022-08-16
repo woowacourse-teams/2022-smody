@@ -9,6 +9,7 @@ export const Text = styled.p<TextProps>`
     font-size: ${fontSizeMapper[size ?? 16]}rem;
     color: ${color};
     font-weight: ${fontWeight};
+    line-height: 1.5;
   `}
 `;
 
