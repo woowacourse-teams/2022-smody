@@ -64,9 +64,9 @@ public class CycleController {
 
     @GetMapping("/me/{challengeId}")
     @RequiredLogin
-    public ResponseEntity<List<CycleHistoryResponse>> findAllWithChallenge(@LoginMember TokenPayload tokenPayload,
-                                                                           @PathVariable Long challengeId,
-                                                                           @ModelAttribute CycleHistoryRequest cycleHistoryRequest) {
-        return ResponseEntity.ok(cycleQueryService.findAllWithChallenge(tokenPayload, cycleHistoryRequest, challengeId));
+    public ResponseEntity<List<FilteredCycleHistoryResponse>> findAllByMemberAndChallengeWithFilter(@LoginMember TokenPayload tokenPayload,
+                                                                                                    @ModelAttribute FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
+        return ResponseEntity.ok(cycleQueryService.findAllByMemberAndChallengeWithFilter(tokenPayload, filteredCycleHistoryRequest));
     }
 }
+
