@@ -1,8 +1,11 @@
 package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.GoogleApi;
+import com.woowacourse.smody.auth.PreLoginMember;
 import com.woowacourse.smody.dto.LoginRequest;
 import com.woowacourse.smody.dto.LoginResponse;
+import com.woowacourse.smody.dto.PreTokenPayLoad;
+import com.woowacourse.smody.dto.ValidAuthResponse;
 import com.woowacourse.smody.service.OauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +32,10 @@ public class OauthController {
     public ResponseEntity<LoginResponse> loginGoogle(@RequestParam String code) {
         LoginRequest loginRequest = googleApi.requestToken(code);
         return ResponseEntity.ok(oauthService.login(loginRequest));
+    }
+
+    @GetMapping("/auth")
+    public ResponseEntity<ValidAuthResponse> isValid(@PreLoginMember PreTokenPayLoad preTokenPayLoad) {
+        return ResponseEntity.ok(oauthService.isValidAuth(preTokenPayLoad));
     }
 }

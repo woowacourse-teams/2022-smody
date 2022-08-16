@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PreLoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenExtractor jwtTokenExtractor;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -28,6 +27,6 @@ public class PreLoginMemberArgumentResolver implements HandlerMethodArgumentReso
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = jwtTokenExtractor.extract(request);
-        return new PreTokenPayLoad(jwtTokenProvider.validateToken(token));
+        return new PreTokenPayLoad(token);
     }
 }
