@@ -4,16 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.domain.*;
 import com.woowacourse.smody.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static java.util.stream.Collectors.toList;
 
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;

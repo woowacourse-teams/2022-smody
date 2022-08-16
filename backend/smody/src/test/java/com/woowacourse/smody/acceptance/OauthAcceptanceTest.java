@@ -26,7 +26,7 @@ public class OauthAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .auth().oauth2(token)
                 .when()
-                .get("/oauth/auth")
+                .get("/oauth/check")
                 .then().log().all()
                 .extract();
 
