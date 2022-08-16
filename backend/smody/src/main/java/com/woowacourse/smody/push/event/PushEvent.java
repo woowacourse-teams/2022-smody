@@ -1,17 +1,17 @@
 package com.woowacourse.smody.push.event;
 
+import com.woowacourse.smody.domain.PushCase;
+
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class PushEvent extends ApplicationEvent {
+public class PushEvent {
 
-    private final Object entity;
-    private final PushCase eventCase;
+	private final Object entity;
+	private final PushCase pushCase;
 
-    public PushEvent(Object source, Object entity, PushCase eventCase) {
-        super(source);
-        this.entity = entity;
-        this.eventCase = eventCase;
-    }
+	public PushEvent(Object entity, PushCase pushCase) {
+		this.entity = entity;
+		this.pushCase = pushCase;
+	}
 }

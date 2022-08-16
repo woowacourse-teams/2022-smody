@@ -70,13 +70,6 @@ public class Cycle {
         }
     }
 
-    public void increaseProgress(CycleDetail cycleDetail) {
-        this.progress = progress.increase(startTime, cycleDetail.getProgressTime());
-        if (this.cycleDetails.size() <= 2) {
-            this.cycleDetails.add(cycleDetail);
-        }
-    }
-
     public boolean matchMember(Long memberId) {
         return member.getId().equals(memberId);
     }
@@ -95,10 +88,6 @@ public class Cycle {
 
     public long calculateEndTime(LocalDateTime searchTime) {
         return this.progress.calculateEndTime(this.startTime, searchTime);
-    }
-
-    public boolean isIncreasePossible(LocalDateTime now) {
-        return progress.isIncreasePossible(this.startTime, now);
     }
 
     public List<CycleDetail> getCycleDetails() {

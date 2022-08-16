@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,15 +36,26 @@ public class PushNotification {
     @Column(nullable = false)
     private LocalDateTime pushTime;
 
-    @Enumerated(EnumType.STRING)
-    private PushStatus pushStatus;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PushStatus pushStatus;
 
-    public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member) {
-        this.message = message;
-        this.pushTime = pushTime;
-        this.pushStatus = pushStatus;
-        this.member = member;
-    }
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PushCase pushCase;
+
+	private Long pathId;
+
+	@Builder
+	public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member,
+		PushCase pushCase, Long pathId) {
+		this.message = message;
+		this.pushTime = pushTime;
+		this.pushStatus = pushStatus;
+		this.member = member;
+		this.pushCase = pushCase;
+		this.pathId = pathId;
+	}
 
     public boolean isPushable(LocalDateTime now) {
         return pushStatus == PushStatus.IN_COMPLETE
