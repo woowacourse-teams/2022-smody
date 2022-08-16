@@ -1,30 +1,17 @@
 import { DropdownProps } from './type';
-import { MouseEventHandler, useState } from 'react';
+import { useDropdown } from './useDropdown';
 import styled, { css } from 'styled-components';
 
-export const Dropdown = ({ button, children }: DropdownProps) => {
-  const [isDropdownToggled, setDropdownToggled] = useState(false);
-  const showDropdownMenu = () => {
-    setDropdownToggled(true);
-  };
-
-  const hideDropdownMenu: MouseEventHandler<HTMLDivElement> = (event) => {
-    if (event.currentTarget === event.target) {
-      setDropdownToggled(false);
-    }
-  };
-
-  const onSelectMenu: MouseEventHandler<HTMLUListElement> = (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
-      setDropdownToggled(false);
-    }
-  };
+export const Dropdown = ({ button, nonLinkableElement, children }: DropdownProps) => {
+  const { isDropdownToggled, showDropdownMenu, hideDropdownMenu, onSelectMenu } =
+    useDropdown();
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <div onClick={showDropdownMenu}>{button}</div>
       {isDropdownToggled && (
         <DropdownMenu>
+          {nonLinkableElement}
           <List onClick={onSelectMenu}>{children}</List>
         </DropdownMenu>
       )}
@@ -56,6 +43,7 @@ const Wrapper = styled.div<{ isDropdownToggled: boolean }>`
 
 const DropdownMenu = styled.div`
   ${({ theme }) => css`
+    overflow: auto;
     height: fit-content;
     max-height: 32rem;
     white-space: nowrap;
@@ -86,6 +74,25 @@ const DropdownMenu = styled.div`
       border: 8px solid transparent;
       border-bottom-color: ${theme.primary};
       position: absolute;
+    }
+
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
     }
   `}
 `;

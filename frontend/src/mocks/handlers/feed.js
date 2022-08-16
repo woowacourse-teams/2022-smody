@@ -34,7 +34,6 @@ export const feed = [
   }),
   // 3. 댓글 생성(POST)
   rest.post(`${BASE_URL}/feeds/:cycleDetailId/comments`, (req, res, ctx) => {
-    console.log('댓글 생성 API의 content: ', req.body);
     const { content } = req.body;
     const { authorization } = req.headers.headers;
 
