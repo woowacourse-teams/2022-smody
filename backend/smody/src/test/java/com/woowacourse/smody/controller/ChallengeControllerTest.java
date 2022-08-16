@@ -104,7 +104,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchOfMine(any(TokenPayload.class), any(Pageable.class)))
+        given(challengeQueryService.searchOfMineWithFilter(any(TokenPayload.class), any(ChallengeOfMineRequest.class)))
                 .willReturn(challengeOfMineRespons);
 
         // when

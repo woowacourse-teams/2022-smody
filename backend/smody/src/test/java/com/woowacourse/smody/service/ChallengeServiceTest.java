@@ -53,31 +53,34 @@ class ChallengeServiceTest extends IntegrationTest {
 
             fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
             fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.FIRST, now.minusDays(3L));
-            fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(6L));
+
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now.minusSeconds(1L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, now.minusDays(1L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
             fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(6L));
+
             fixture.사이클_생성(조조그린_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(9L));
+
             fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(20L));
             fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(23L));
             fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.SUCCESS, now.minusDays(26L));
+
             fixture.사이클_생성(조조그린_ID, 알고리즘_풀기_ID, Progress.SUCCESS, now.minusDays(30L));
         }
 
         @DisplayName("조회")
         @Test
-        void searchSuccessOfMine() {
+        void searchOfMine() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
-                    tokenPayload, PageRequest.of(0, 10));
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest(null, 0, 10));
 
             // then
             assertAll(
                     () -> assertThat(responses.size()).isEqualTo(5),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
-                            .containsExactly(1, 2, 1, 3, 1),
+                            .containsExactly(0, 2, 1, 3, 1),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getChallengeId)
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, JPA_공부_ID, 알고리즘_풀기_ID)
@@ -86,17 +89,17 @@ class ChallengeServiceTest extends IntegrationTest {
 
         @DisplayName("0페이지의 3개만 조회")
         @Test
-        void searchSuccessOfMine_pageFullSize() {
+        void searchOfMine_pageFullSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
-                    tokenPayload, PageRequest.of(0, 3));
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest(null, 0, 3));
 
             // then
             assertAll(
                     () -> assertThat(responses.size()).isEqualTo(3),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
-                            .containsExactly(1, 2, 1),
+                            .containsExactly(0, 2, 1),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getChallengeId)
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID)
@@ -105,10 +108,78 @@ class ChallengeServiceTest extends IntegrationTest {
 
         @DisplayName("1페이지의 2개만 조회")
         @Test
+        void searchOfMine_pagePartialSize() {
+            // when
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest(null, 1, 2));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(2),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getSuccessCount)
+                            .containsExactly(1, 3),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getChallengeId)
+                            .containsExactly(오늘의_운동_ID, JPA_공부_ID)
+            );
+        }
+
+        @DisplayName("없는 페이지로 조회")
+        @Test
+        void searchOfMine_pageOverMaxPage() {
+            // when
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest(null, 2, 3));
+
+            // then
+            assertThat(responses).isEmpty();
+        }
+
+        @DisplayName("성공한 챌린지들만 조회")
+        @Test
+        void searchSuccessOfMine() {
+            // when
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest("success", 0, 10));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(4),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getSuccessCount)
+                            .containsExactly(2, 1, 3, 1),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getChallengeId)
+                            .containsExactly(미라클_모닝_ID, 오늘의_운동_ID, JPA_공부_ID, 알고리즘_풀기_ID)
+            );
+        }
+
+        @DisplayName("내가 성공한 챌린지들의 0페이지의 3개만 조회")
+        @Test
+        void searchSuccessOfMine_pageFullSize() {
+            // when
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest("success", 0, 3));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses.size()).isEqualTo(3),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getSuccessCount)
+                            .containsExactly(2, 1, 3),
+                    () -> assertThat(responses)
+                            .map(ChallengeOfMineResponse::getChallengeId)
+                            .containsExactly(미라클_모닝_ID, 오늘의_운동_ID, JPA_공부_ID)
+            );
+        }
+
+        @DisplayName("내가 성공한 챌린지들의 1페이지의 2개만 조회")
+        @Test
         void searchSuccessOfMine_pagePartialSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
-                    tokenPayload, PageRequest.of(1, 3));
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest("success", 1, 2));
 
             // then
             assertAll(
@@ -122,12 +193,12 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("없는 페이지로 조회")
+        @DisplayName("내가 성공한 챌린지들의 없는 페이지로 조회")
         @Test
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
-                    tokenPayload, PageRequest.of(2, 3));
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                    tokenPayload, new ChallengeOfMineRequest("success", 2, 3));
 
             // then
             assertThat(responses).isEmpty();

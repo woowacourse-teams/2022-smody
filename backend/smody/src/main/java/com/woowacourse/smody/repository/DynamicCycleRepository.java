@@ -10,4 +10,6 @@ public interface DynamicCycleRepository {
 
     List<Cycle> findAllFilterBy(
             Long memberId, Long challengeId, String filter, Long lastCycleId, Pageable pageable);
+
+    List<Cycle> findByMemberWithFilter(Long memberId, String filter);
 }
