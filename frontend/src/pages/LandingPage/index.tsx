@@ -8,7 +8,6 @@ import { FlexBox, Text, FixedButton, Logo } from 'components';
 
 const LandingPage = () => {
   const themeContext = useThemeContext();
-
   const { installApp } = useInstallApp();
 
   return (
