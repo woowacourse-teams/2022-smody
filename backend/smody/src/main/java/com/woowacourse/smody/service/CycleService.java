@@ -1,7 +1,5 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +25,7 @@ import com.woowacourse.smody.push.event.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.push.event.PushEventHandler;
 import com.woowacourse.smody.repository.CycleRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -117,10 +110,10 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallenge(Long memberId, Long challengeId, CycleHistoryRequest cycleHistoryRequest) {
+    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
         return cycleRepository.findAllFilterBy(
-                memberId, challengeId, cycleHistoryRequest.getFilter(),
-                cycleHistoryRequest.getLastCycleDetailId(), cycleHistoryRequest.toPageRequest());
+                memberId, filteredCycleHistoryRequest.getChallengeId(), filteredCycleHistoryRequest.getFilter(),
+                filteredCycleHistoryRequest.getLastCycleId(), filteredCycleHistoryRequest.toPageRequest());
     }
 
     public List<Cycle> findByMember(Member member) {

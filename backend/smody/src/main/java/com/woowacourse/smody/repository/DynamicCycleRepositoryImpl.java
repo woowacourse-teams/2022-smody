@@ -11,6 +11,7 @@ import java.util.List;
 
 public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
+    public static final long FIRST_SEARCH = -1L;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -58,7 +59,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     private Long convertLastCycleIndex(Long lastCycleId) {
         if (lastCycleId == null) {
-            return -1L;
+            return FIRST_SEARCH;
         }
         return lastCycleId;
     }

@@ -48,16 +48,14 @@ public class CycleQueryService {
         return new StatResponse(cycles.size(), successCount);
     }
 
-    public List<CycleHistoryResponse> findAllWithChallenge(TokenPayload tokenPayload,
-                                                           CycleHistoryRequest cycleHistoryRequest,
-                                                           Long challengeId) {
-        List<Cycle> cycles = cycleService.searchByMemberAndChallenge(
-                tokenPayload.getId(), challengeId, cycleHistoryRequest
+    public List<FilteredCycleHistoryResponse> findAllByMemberAndChallengeWithFilter(TokenPayload tokenPayload,
+                                                                                    FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
+        List<Cycle> cycles = cycleService.searchByMemberAndChallengeWithFilter(
+                tokenPayload.getId(), filteredCycleHistoryRequest
         );
         return cycles.stream()
-                .map(cycle -> new CycleHistoryResponse(cycle.getId(), cycle.getCycleDetails().stream()
-                        .map(cycleDetail -> new CycleDetailResponse(
-                                cycleDetail.getProgressTime(), cycleDetail.getProgressImage(), cycleDetail.getDescription()))
+                .map(cycle -> new FilteredCycleHistoryResponse(cycle.getId(), cycle.getCycleDetails().stream()
+                        .map(CycleDetailResponse::new)
                         .collect(toList())))
                 .collect(toList());
     }

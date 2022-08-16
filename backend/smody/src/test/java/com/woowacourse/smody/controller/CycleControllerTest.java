@@ -20,13 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -265,8 +264,8 @@ public class CycleControllerTest extends ControllerTest {
     void findAllWithChallenge() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        List<CycleHistoryResponse> cycleHistoryResponses = List.of(
-                new CycleHistoryResponse(3L, List.of(
+        List<FilteredCycleHistoryResponse> filteredCycleHistoryRespons = List.of(
+                new FilteredCycleHistoryResponse(3L, List.of(
                         new CycleDetailResponse(
                                 LocalDateTime.of(2022, 1, 1, 5, 0),
                                 "progressImage.jpg", "인증 내용"
@@ -280,7 +279,7 @@ public class CycleControllerTest extends ControllerTest {
                                 "progressImage.jpg", "인증 내용"
                         ))
                 ),
-                new CycleHistoryResponse(4L, List.of(
+                new FilteredCycleHistoryResponse(4L, List.of(
                         new CycleDetailResponse(
                                 LocalDateTime.of(2022, 2, 1, 5, 0),
                                 "progressImage.jpg", "인증 내용"
@@ -291,8 +290,8 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllWithChallenge(any(TokenPayload.class), any(CycleHistoryRequest.class), eq(1L)))
-                .willReturn(cycleHistoryResponses);
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+                .willReturn(filteredCycleHistoryRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/cycles/me/1/?size=10&lastCycleId=3")
@@ -301,7 +300,7 @@ public class CycleControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(
-                        objectMapper.writeValueAsString(cycleHistoryResponses)))
+                        objectMapper.writeValueAsString(filteredCycleHistoryRespons)))
                 .andDo(document("get-all-cycles",
                         HOST_INFO,
                         preprocessResponse(prettyPrint()),
@@ -322,8 +321,8 @@ public class CycleControllerTest extends ControllerTest {
     void findAllWithChallenge_success() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        List<CycleHistoryResponse> cycleHistoryResponses = List.of(
-                new CycleHistoryResponse(3L, List.of(
+        List<FilteredCycleHistoryResponse> filteredCycleHistoryRespons = List.of(
+                new FilteredCycleHistoryResponse(3L, List.of(
                         new CycleDetailResponse(
                                 LocalDateTime.of(2022, 1, 1, 5, 0),
                                 "progressImage.jpg", "인증 내용"
@@ -337,7 +336,7 @@ public class CycleControllerTest extends ControllerTest {
                                 "progressImage.jpg", "인증 내용"
                         ))
                 ),
-                new CycleHistoryResponse(4L, List.of(
+                new FilteredCycleHistoryResponse(4L, List.of(
                         new CycleDetailResponse(
                                 LocalDateTime.of(2022, 2, 1, 5, 0),
                                 "progressImage.jpg", "인증 내용"
@@ -352,8 +351,8 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllWithChallenge(any(TokenPayload.class), any(CycleHistoryRequest.class), eq(1L)))
-                .willReturn(cycleHistoryResponses);
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+                .willReturn(filteredCycleHistoryRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/cycles/me/1/?size=10&lastCycleId=3&filter=success")
@@ -362,7 +361,7 @@ public class CycleControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(
-                        objectMapper.writeValueAsString(cycleHistoryResponses)))
+                        objectMapper.writeValueAsString(filteredCycleHistoryRespons)))
                 .andDo(document("get-success-cycles",
                         HOST_INFO,
                         preprocessResponse(prettyPrint()),

@@ -1,11 +1,5 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,19 +35,6 @@ import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImgBBImageStrategy;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
 
@@ -465,17 +446,17 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge() {
             //given
-            CycleHistoryRequest cycleHistoryRequest = new CycleHistoryRequest(null, 10, null);
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, null, 스모디_방문하기_ID);
 
             // when
-            List<CycleHistoryResponse> historyResponses = cycleQueryService.findAllWithChallenge(
-                    tokenPayload, cycleHistoryRequest, 스모디_방문하기_ID);
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
 
             // then
             assertAll(
                     () -> assertThat(historyResponses.size()).isEqualTo(4),
                     () -> assertThat(historyResponses)
-                            .map(CycleHistoryResponse::getCycleId)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(inProgress1.getId(), failed1.getId(), success1.getId(), success2.getId()),
                     () -> assertThat(historyResponses)
                             .map(historyResponse -> historyResponse.getCycleDetails().size())
@@ -487,17 +468,17 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_cursorPaganation() {
             //given
-            CycleHistoryRequest cycleHistoryRequest = new CycleHistoryRequest(null, 10, failed1.getId());
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, failed1.getId(), 스모디_방문하기_ID);
 
             // when
-            List<CycleHistoryResponse> historyResponses = cycleQueryService.findAllWithChallenge(
-                    tokenPayload, cycleHistoryRequest, 스모디_방문하기_ID);
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
 
             // then
             assertAll(
                     () -> assertThat(historyResponses.size()).isEqualTo(2),
                     () -> assertThat(historyResponses)
-                            .map(CycleHistoryResponse::getCycleId)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success1.getId(), success2.getId()),
                     () -> assertThat(historyResponses)
                             .map(historyResponse -> historyResponse.getCycleDetails().size())
@@ -509,17 +490,17 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_succeess() {
             //given
-            CycleHistoryRequest cycleHistoryRequest = new CycleHistoryRequest("success", 10, null);
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 스모디_방문하기_ID);
 
             // when
-            List<CycleHistoryResponse> historyResponses = cycleQueryService.findAllWithChallenge(
-                    tokenPayload, cycleHistoryRequest, 스모디_방문하기_ID);
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
 
             // then
             assertAll(
                     () -> assertThat(historyResponses.size()).isEqualTo(2),
                     () -> assertThat(historyResponses)
-                            .map(CycleHistoryResponse::getCycleId)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success1.getId(), success2.getId()),
                     () -> assertThat(historyResponses)
                             .map(historyResponse -> historyResponse.getCycleDetails().size())
@@ -531,17 +512,17 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_successCursorPaganation() {
             //given
-            CycleHistoryRequest cycleHistoryRequest = new CycleHistoryRequest("success", 10, success1.getId());
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, success1.getId(), 스모디_방문하기_ID);
 
             // when
-            List<CycleHistoryResponse> historyResponses = cycleQueryService.findAllWithChallenge(
-                    tokenPayload, cycleHistoryRequest, 스모디_방문하기_ID);
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
 
             // then
             assertAll(
                     () -> assertThat(historyResponses.size()).isEqualTo(1),
                     () -> assertThat(historyResponses)
-                            .map(CycleHistoryResponse::getCycleId)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success2.getId()),
                     () -> assertThat(historyResponses)
                             .map(historyResponse -> historyResponse.getCycleDetails().size())
@@ -553,11 +534,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_noSuccessCursorPaganation() {
             //given
-            CycleHistoryRequest cycleHistoryRequest = new CycleHistoryRequest("success", 10, null);
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 알고리즘_풀기_ID);
 
             // when
-            List<CycleHistoryResponse> historyResponses = cycleQueryService.findAllWithChallenge(
-                    tokenPayload, cycleHistoryRequest, 알고리즘_풀기_ID);
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
 
             // then
             assertThat(historyResponses).isEmpty();

@@ -12,11 +12,13 @@ import org.springframework.data.domain.Pageable;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CycleHistoryRequest {
+public class FilteredCycleHistoryRequest {
 
     private String filter;
     private Integer size;
-    private Long lastCycleDetailId;
+    private Long lastCycleId;
+
+    private Long challengeId;
 
     public Pageable toPageRequest() {
         if (size == null || size < 1) {
