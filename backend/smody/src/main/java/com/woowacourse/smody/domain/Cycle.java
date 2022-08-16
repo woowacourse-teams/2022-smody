@@ -54,13 +54,20 @@ public class Cycle {
     private LocalDateTime startTime;
 
     public Cycle(Member member, Challenge challenge, Progress progress, LocalDateTime startTime) {
-        if (startTime.isAfter(LocalDateTime.now()) && progress != Progress.NOTHING) {
-            throw new BusinessException(ExceptionData.INVALID_START_TIME);
-        }
+        validateStartTime(progress, startTime);
         this.member = member;
         this.challenge = challenge;
         this.progress = progress;
         this.startTime = startTime;
+    }
+
+    private void validateStartTime(Progress progress, LocalDateTime startTime) {
+        if (startTime.isAfter(LocalDateTime.now().plusDays(1L))) {
+            throw new BusinessException(ExceptionData.INVALID_START_TIME);
+        }
+        if (startTime.isAfter(LocalDateTime.now()) && progress != Progress.NOTHING) {
+            throw new BusinessException(ExceptionData.INVALID_START_TIME);
+        }
     }
 
     public void increaseProgress(LocalDateTime progressTime, Image progressImage, String description) {
@@ -103,5 +110,12 @@ public class Cycle {
 
     public int getInterval() {
         return progress.getCount() + 1;
+    }
+
+    public LocalDateTime getLatestProgressTime() {
+        if (this.cycleDetails.isEmpty()) {
+            return this.startTime;
+        }
+        return getCycleDetails().get(0).getProgressTime();
     }
 }

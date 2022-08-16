@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class SuccessChallengeResponse {
+public class ChallengeOfMineResponse {
     private Long challengeId;
     private String challengeName;
     private Integer successCount;
     private Integer emojiIndex;
     private Integer colorIndex;
 
-    public SuccessChallengeResponse(Challenge challenge, Integer successCount) {
+    public ChallengeOfMineResponse(Challenge challenge, Integer successCount) {
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
         this.successCount = successCount;
