@@ -11,3 +11,4 @@ export { default as CycleDetailPage } from 'pages/CycleDetailPage';
 export { default as CertFormPage } from 'pages/CertFormPage';
 export { default as ChallengeCreatePage } from 'pages/ChallengeCreatePage';
 export { default as FeedDetailPage } from 'pages/FeedDetailPage';
+export { default as ChallengeRecordsPage } from 'pages/ChallengeRecordsPage';

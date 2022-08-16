@@ -18,6 +18,7 @@ import {
   CycleDetailPage,
   CertFormPage,
   ChallengeCreatePage,
+  ChallengeRecordsPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -67,6 +68,10 @@ const Router = () => {
             <Route
               path={CLIENT_PATH.CHALLENGE_CREATE}
               element={<ChallengeCreatePage />}
+            />
+            <Route
+              path={CLIENT_PATH.PROFILE_CHALLENGE_DETAIL_ID}
+              element={<ChallengeRecordsPage />}
             />
           </Route>
 

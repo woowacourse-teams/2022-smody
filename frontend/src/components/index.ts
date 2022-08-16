@@ -46,3 +46,4 @@ export * from 'components/SearchBar';
 export * from 'components/CustomCycleTimeBottomSheet';
 export * from 'components/NotificationMessage';
 export * from 'components/ShareButton';
+export * from 'components/ChallengeInfoWithUser';
