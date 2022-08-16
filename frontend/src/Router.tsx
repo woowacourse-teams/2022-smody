@@ -1,8 +1,5 @@
 import { Layout } from 'Layout';
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   FeedPage,
@@ -46,20 +43,11 @@ const CertFlowPage = () => {
 };
 
 const Router = () => {
-  const setIsLogin = useSetRecoilState(isLoginState);
-
-  useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      setIsLogin(true);
-    }
-  });
-
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<LandingNavigation />} />
-
+          <Route element={<LandingNavigation />} />
           <Route element={<PrivateOutlet />}>
             <Route path={CLIENT_PATH.PROFILE} element={<ProfilePage />} />
             <Route path={CLIENT_PATH.PROFILE_EDIT} element={<ProfileEditPage />} />

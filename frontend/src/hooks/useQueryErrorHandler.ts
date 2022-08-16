@@ -11,7 +11,6 @@ import { CLIENT_PATH } from 'constants/path';
 
 const useQueryErrorHandler = () => {
   const renderSnackBar = useSnackBar();
-  const setIsLogin = useSetRecoilState(isLoginState);
 
   const queryErrorHandler = (error: AxiosError<ErrorResponse>): void => {
     if (typeof error.response === 'undefined') {
@@ -32,7 +31,6 @@ const useQueryErrorHandler = () => {
     // 로그아웃 처리
     if (code === 2002) {
       authApiClient.deleteAuth();
-      setIsLogin(false);
     }
   };
 

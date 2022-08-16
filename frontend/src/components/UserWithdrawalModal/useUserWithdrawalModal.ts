@@ -3,8 +3,6 @@ import { useDeleteMyInfo } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
@@ -16,8 +14,6 @@ const useUserWithdrawalModal = ({ email }: UseUserWithdrawalModalProps) => {
   const renderSnackBar = useSnackBar();
   const emailInput = useInput('');
 
-  const setIsLogin = useSetRecoilState(isLoginState);
-
   const { mutate: deleteMyInfo } = useDeleteMyInfo({
     onSuccess: () => {
       renderSnackBar({
@@ -27,7 +23,6 @@ const useUserWithdrawalModal = ({ email }: UseUserWithdrawalModalProps) => {
       });
 
       authApiClient.deleteAuth();
-      setIsLogin(false);
 
       navigate(CLIENT_PATH.HOME);
     },

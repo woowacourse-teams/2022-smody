@@ -1,11 +1,14 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 export const nicknameState = atom({
   key: 'nicknameState',
   default: '',
 });
 
-export const isLoginState = atom({
+export const isLoginState = selector({
   key: 'isLoginState',
-  default: false,
+  get: () => {
+    const accessToken = localStorage.getItem('accessToken');
+    return !!accessToken;
+  },
 });

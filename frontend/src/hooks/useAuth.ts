@@ -2,7 +2,7 @@ import { useGetLinkGoogle, useGetMyInfo, useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { getUrlParameter } from 'utils';
 
@@ -13,7 +13,7 @@ import { CLIENT_PATH } from 'constants/path';
 const useAuth = () => {
   const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  const isLogin = useRecoilValue(isLoginState);
   const { isLoading: isLoadingMyInfo, refetch: refetchMyInfo } = useGetMyInfo();
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle({
@@ -27,7 +27,6 @@ const useAuth = () => {
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
       refetchMyInfo();
-      setIsLogin(true);
       navigate(CLIENT_PATH.CERT);
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',
