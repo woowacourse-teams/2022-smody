@@ -1,6 +1,5 @@
 package com.woowacourse.smody.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CycleRequest {
+public class PreTokenPayLoad {
 
-    private LocalDateTime startTime;
-    private Long challengeId;
+    private String token;
 }

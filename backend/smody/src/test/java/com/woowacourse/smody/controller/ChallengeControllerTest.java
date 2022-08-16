@@ -15,12 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.ChallengeRequest;
-import com.woowacourse.smody.dto.ChallengeResponse;
-import com.woowacourse.smody.dto.ChallengeTabResponse;
-import com.woowacourse.smody.dto.ChallengersResponse;
-import com.woowacourse.smody.dto.SuccessChallengeResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -97,18 +93,19 @@ class ChallengeControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("나의 성공한 챌린지를 페이지네이션 없이 조회 시 200을 응답한다.")
+    @DisplayName("나의 참가한 챌린지 이력을 조회 시 200을 응답한다.")
     @Test
-    void searchSuccessOfMine() throws Exception {
+    void searchOfMine() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        List<SuccessChallengeResponse> successChallengeResponses = List.of(
-                new SuccessChallengeResponse(1L, "스모디 방문하기", 2, 0, 1),
-                new SuccessChallengeResponse(2L, "미라클 모닝", 1, 1, 2)
+        List<ChallengeOfMineResponse> challengeOfMineRespons = List.of(
+                new ChallengeOfMineResponse(1L, "스모디 방문하기", 2, 0, 1),
+                new ChallengeOfMineResponse(2L, "미라클 모닝", 1, 1, 2),
+                new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchSuccessOfMine(any(TokenPayload.class), any(Pageable.class)))
-                .willReturn(successChallengeResponses);
+        given(challengeQueryService.searchOfMineWithFilter(any(TokenPayload.class), any(ChallengeOfMineRequest.class)))
+                .willReturn(challengeOfMineRespons);
 
         // when
         ResultActions result = mockMvc.perform(get("/challenges/me?page=0&size=10")
@@ -117,7 +114,7 @@ class ChallengeControllerTest extends ControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andExpect(content().json(
-                        objectMapper.writeValueAsString(successChallengeResponses)))
+                        objectMapper.writeValueAsString(challengeOfMineRespons)))
                 .andDo(document("get-my-success-challenges", HOST_INFO,
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -136,7 +133,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findOneWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+        given(challengeQueryService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
@@ -165,7 +162,7 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findOneWithChallengerCount(
+        given(challengeQueryService.findWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
 
@@ -311,6 +308,37 @@ class ChallengeControllerTest extends ControllerTest {
                                 fieldWithPath("[].isInProgress").type(JsonFieldType.BOOLEAN).description("참여 여부"),
                                 fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
                                 fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스")
+                        )));
+    }
+
+    @DisplayName("회원이 자신이 참가한 챌린지를 조회할 때 200을 응답한다.")
+    @Test
+    void findOneWithMine_auth_200() throws Exception {
+        // given
+        ChallengeHistoryResponse challengeHistoryResponse = new ChallengeHistoryResponse(
+                "알고리즘 풀기", "알고리즘 풀기 챌린지입니다", 0, 1,
+                10, 40);
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        given(challengeQueryService.findWithMine(
+                any(TokenPayload.class), eq(1L)))
+                .willReturn(challengeHistoryResponse);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/challenges/me/1")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(challengeHistoryResponse)))
+                .andDo(document("find-challenge-mine", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("챌린지 소개"),
+                                fieldWithPath("emojiIndex").type(JsonFieldType.NUMBER).description("이모지의 인덱스"),
+                                fieldWithPath("colorIndex").type(JsonFieldType.NUMBER).description("배경색상의 인덱스"),
+                                fieldWithPath("successCount").type(JsonFieldType.NUMBER).description("성공 횟수"),
+                                fieldWithPath("cycleDetailCount").type(JsonFieldType.NUMBER).description("인증 횟수")
                         )));
     }
 }

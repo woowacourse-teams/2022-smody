@@ -1,15 +1,16 @@
 package com.woowacourse.smody.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CycleRequest {
+public class FilteredCycleHistoryResponse {
 
-    private LocalDateTime startTime;
-    private Long challengeId;
+    private Long cycleId;
+    private List<CycleDetailResponse> cycleDetails;
 }

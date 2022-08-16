@@ -1,5 +1,20 @@
 package com.woowacourse.smody.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.woowacourse.smody.dto.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import static com.woowacourse.smody.ResourceFixture.JPA_공부_ID;
 import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
 import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
@@ -17,29 +32,9 @@ import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
 import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.InProgressCycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImgBBImageStrategy;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
 
@@ -62,9 +57,10 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void create() {
         // when
+        LocalDateTime time = LocalDateTime.of(1996, 8, 30, 8, 0);
         Long cycleId = cycleService.create(
                 new TokenPayload(조조그린_ID),
-                new CycleRequest(now, 스모디_방문하기_ID)
+                new CycleRequest(time, 스모디_방문하기_ID)
         );
         CycleResponse cycleResponse = cycleQueryService.findById(cycleId);
 
@@ -72,7 +68,7 @@ public class CycleServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(cycleResponse.getCycleId()).isEqualTo(cycleId),
                 () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(스모디_방문하기_ID),
-                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(now)
+                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(time)
         );
     }
 
@@ -89,6 +85,21 @@ public class CycleServiceTest extends IntegrationTest {
         )).isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+    }
+
+    @DisplayName("현재 시각 기준 24시간이 이후가 지난 시작시간을 가진 사이클을 생성할 때 예외를 발생시킨다.")
+    @Test
+    void create_overOneDay() {
+        // given
+        LocalDateTime invalidTime = LocalDateTime.now().plusDays(1L).plusSeconds(1L);
+
+        // when then
+        assertThatThrownBy(() -> cycleService.create(
+                new TokenPayload(조조그린_ID),
+                new CycleRequest(invalidTime, 알고리즘_풀기_ID)
+        )).isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.INVALID_START_TIME);
     }
 
     @DisplayName("오늘 성공한 챌린지로 다시 사이클을 생성한 경우 사이클을 내일 날짜로 생성한다.")
@@ -407,6 +418,130 @@ public class CycleServiceTest extends IntegrationTest {
                     () -> assertThat(response.getTotalCount()).isEqualTo(7),
                     () -> assertThat(response.getSuccessCount()).isEqualTo(1)
             );
+        }
+
+    }
+
+    @DisplayName("자신의 특정 챌린지를 기준으로")
+    @Nested
+    class Nested2 {
+        Cycle inProgress1;
+        Cycle failed1;
+        Cycle failed2;
+        Cycle success1;
+        Cycle success2;
+        TokenPayload tokenPayload;
+
+        @BeforeEach
+        void setUp() {
+            inProgress1 = fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now);
+            failed1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
+            failed2 = fixture.사이클_생성_SECOND(조조그린_ID, 알고리즘_풀기_ID, now.minusDays(4L));
+            success1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
+            success2 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(9L));
+            tokenPayload = new TokenPayload(조조그린_ID);
+        }
+
+        @DisplayName("전체 사이클 조회")
+        @Test
+        void findAllWithChallenge() {
+            //given
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, null, 스모디_방문하기_ID);
+
+            // when
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
+
+            // then
+            assertAll(
+                    () -> assertThat(historyResponses.size()).isEqualTo(4),
+                    () -> assertThat(historyResponses)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
+                            .containsExactly(inProgress1.getId(), failed1.getId(), success1.getId(), success2.getId()),
+                    () -> assertThat(historyResponses)
+                            .map(historyResponse -> historyResponse.getCycleDetails().size())
+                            .containsExactly(1, 0, 3, 3)
+            );
+        }
+
+        @DisplayName("전체 사이클 커서 페이징 조회")
+        @Test
+        void findAllWithChallenge_cursorPaganation() {
+            //given
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, failed1.getId(), 스모디_방문하기_ID);
+
+            // when
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
+
+            // then
+            assertAll(
+                    () -> assertThat(historyResponses.size()).isEqualTo(2),
+                    () -> assertThat(historyResponses)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
+                            .containsExactly(success1.getId(), success2.getId()),
+                    () -> assertThat(historyResponses)
+                            .map(historyResponse -> historyResponse.getCycleDetails().size())
+                            .containsExactly(3, 3)
+            );
+        }
+
+        @DisplayName("성공 사이클 조회")
+        @Test
+        void findAllWithChallenge_succeess() {
+            //given
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 스모디_방문하기_ID);
+
+            // when
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
+
+            // then
+            assertAll(
+                    () -> assertThat(historyResponses.size()).isEqualTo(2),
+                    () -> assertThat(historyResponses)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
+                            .containsExactly(success1.getId(), success2.getId()),
+                    () -> assertThat(historyResponses)
+                            .map(historyResponse -> historyResponse.getCycleDetails().size())
+                            .containsExactly(3, 3)
+            );
+        }
+
+        @DisplayName("성공 사이클 커서 페이징 조회")
+        @Test
+        void findAllWithChallenge_successCursorPaganation() {
+            //given
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, success1.getId(), 스모디_방문하기_ID);
+
+            // when
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
+
+            // then
+            assertAll(
+                    () -> assertThat(historyResponses.size()).isEqualTo(1),
+                    () -> assertThat(historyResponses)
+                            .map(FilteredCycleHistoryResponse::getCycleId)
+                            .containsExactly(success2.getId()),
+                    () -> assertThat(historyResponses)
+                            .map(historyResponse -> historyResponse.getCycleDetails().size())
+                            .containsExactly(3)
+            );
+        }
+
+        @DisplayName("성공한 사이클이 없을 때 성공 기준 사이클 커서 페이징 조회")
+        @Test
+        void findAllWithChallenge_noSuccessCursorPaganation() {
+            //given
+            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 알고리즘_풀기_ID);
+
+            // when
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+                    tokenPayload, filteredCycleHistoryRequest);
+
+            // then
+            assertThat(historyResponses).isEmpty();
         }
     }
 }
