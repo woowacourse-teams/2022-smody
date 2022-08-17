@@ -32,7 +32,11 @@ const checkIntroductionFormat: checkFormatFunction = (introduction) =>
 const checkChallengeNameFormat: checkFormatFunction = (challengeName) => {
   const challengeNameLength = challengeName.trim().length;
 
-  return challengeNameLength === 0 || challengeNameLength > 30;
+  return (
+    challengeNameLength !== challengeName.length ||
+    challengeNameLength === 0 ||
+    challengeNameLength > 30
+  );
 };
 
 const checkChallengeDescriptionFormat: checkFormatFunction = (challengeDescription) => {
@@ -89,7 +93,7 @@ export const validateChallengeName: ValidatorFunction = (challengeName: string) 
   if (checkChallengeNameFormat(challengeName)) {
     return {
       isValidated: false,
-      message: '앞 뒤의 공백을 제외하고 1~30자 이내로 입력해 주세요.',
+      message: '앞 뒤 공백 없이 1~30자 이내로 입력해 주세요.',
     };
   }
   return { isValidated: true, message: '올바른 입력입니다.' };
