@@ -136,7 +136,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pageOverMaxPage() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new PagingParams(null, 3, JPA_공부_ID, null));
+                    tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, null));
 
             // then
             assertThat(responses).isEmpty();

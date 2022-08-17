@@ -97,9 +97,8 @@ public class ChallengeQueryService {
         Member member = memberService.search(tokenPayload);
         LocalDateTime latestTime = generateBaseTime(pagingParams.getCursorId(), tokenPayload.getId());
 
-        List<Cycle> cycles = cycleService.findByMemberWithFilter(member, pagingParams)
-                .stream().filter(cycle -> cycle.getLatestProgressTime().isBefore(latestTime))
-                .collect(toList());
+        List<Cycle> cycles = cycleService.findByMemberWithFilter(member, pagingParams);
+
         Map<Challenge, Integer> groupedSize = groupByChallenge(cycles).entrySet()
                 .stream()
                 .collect(toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
@@ -114,11 +113,14 @@ public class ChallengeQueryService {
 
         List<Challenge> latestChallenges = groupByProgressTime.entrySet()
                 .stream()
+                .filter(entry -> entry.getValue().isBefore(latestTime))
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .map(Map.Entry::getKey)
-                .collect(toList()).subList(0, Math.min(groupByProgressTime.size(), pagingParams.getDefaultSize()));
+                .collect(toList());
 
-        return latestChallenges.stream()
+        List<Challenge> pagedChallenges = latestChallenges.subList(0, Math.min(latestChallenges.size(), pagingParams.getDefaultSize()));
+
+        return pagedChallenges.stream()
                 .map(challenge -> new ChallengeOfMineResponse(
                         challenge, groupedSize.get(challenge)
                 )).collect(toList());
