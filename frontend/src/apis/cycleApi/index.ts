@@ -94,7 +94,7 @@ export const useGetCycleById = (
 
 // 챌린지에 대한 전체 사이클 상세 조회 기능
 export const useGetMyCyclesByChallengeId = (
-  { challengeId }: GetMyCyclesByChallengeIdProps,
+  { challengeId, filter }: GetMyCyclesByChallengeIdProps,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
     AxiosError<ErrorResponse>
@@ -104,8 +104,9 @@ export const useGetMyCyclesByChallengeId = (
     AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
     AxiosError<ErrorResponse>
   >(
-    [queryKeys.getMyCyclesByChallengeId, challengeId],
-    ({ pageParam = 0 }) => getMyCyclesByChallengeId({ challengeId, cursorId: pageParam }),
+    [queryKeys.getMyCyclesByChallengeId, challengeId, filter],
+    ({ pageParam = 0 }) =>
+      getMyCyclesByChallengeId({ challengeId, filter, cursorId: pageParam }),
     {
       ...options,
       getNextPageParam: (currentPage) => {
