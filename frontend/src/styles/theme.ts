@@ -38,7 +38,7 @@ export const darkTheme: DefaultTheme = {
   onPrimary: COLOR.WHITE,
 
   secondary: COLOR.LIGHTER_BLACK,
-  onSecondary: COLOR.DARK_PURPLE,
+  onSecondary: COLOR.LIGHT_PURPLE,
 
   background: COLOR.BLACK,
   onBackground: COLOR.DARKER_WHITE,
