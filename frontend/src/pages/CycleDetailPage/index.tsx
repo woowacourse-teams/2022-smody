@@ -53,9 +53,9 @@ const CycleDetailPage = () => {
           {emojiList[emojiIndex]}
         </ThumbnailWrapper>
       </ChallengeDetailWrapper>
-      <FlexBox style={{ height: '50vh' }}>
+      <CycleDetailListWrapper>
         <CycleDetailList cycleDetails={cycleDetails} />
-      </FlexBox>
+      </CycleDetailListWrapper>
     </div>
   );
 };
@@ -65,4 +65,9 @@ export default CycleDetailPage;
 const ChallengeDetailWrapper = styled(FlexBox)`
   line-height: 1rem;
   margin-bottom: 2rem;
+`;
+
+const CycleDetailListWrapper = styled(FlexBox)`
+  width: 100%;
+  height: 50vh;
 `;
