@@ -18,7 +18,6 @@ import {
   SubscriptionButton,
   NotificationMessage,
   ErrorBoundary,
-  ErrorFallbackHeader,
   ErrorFallbackLogInButton,
 } from 'components';
 
@@ -39,36 +38,47 @@ export const Header = ({ bgColor }: HeaderProps) => {
       </Link>
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
-        {/* <ErrorBoundary
-          pathname={pathname}
-          renderFallback={(renderFallbackParams) => <ErrorFallbackHeader />}
-        > */}
         <HeaderRightButton />
-        {/* </ErrorBoundary> */}
       </FlexBox>
     </Wrapper>
   );
 };
 
 const HeaderRightButton = () => {
-  const { isLogin, pathname, handleClickErrorFallbackLoginButton } =
-    useHeaderRightButton();
+  const {
+    isLogin,
+    pathname,
+    notificationCount,
+    isSubscribed,
+    handleClickErrorFallbackLoginButton,
+    updateNotificationCount,
+    updateIsSubscribed,
+  } = useHeaderRightButton();
 
   if (isLogin) {
     return (
-      <div>드롭다운 버튼</div>
-      // <Dropdown
-      //   button={<Bell count={notifications?.length} isSubscribed={isSubscribed} />}
-      //   nonLinkableElement={
-      //     <SubscriptionButton
-      //       isSubscribed={isSubscribed}
-      //       subscribe={subscribe}
-      //       isLoadingSubscribe={isLoadingSubscribe}
-      //     />
-      //   }
-      // >
-      //   <NotificationMessage notifications={notifications} />
-      // </Dropdown>
+      <Dropdown
+        button={<Bell count={notificationCount} isSubscribed={isSubscribed} />}
+        nonLinkableElement={
+          <ErrorBoundary
+            pathname="pathname"
+            renderFallback={(renderFallbackParams) => (
+              <div>SubscriptionButton에서 에러발생</div>
+            )}
+          >
+            <SubscriptionButton updateIsSubscribed={updateIsSubscribed} />
+          </ErrorBoundary>
+        }
+      >
+        <ErrorBoundary
+          pathname={pathname}
+          renderFallback={(renderFallbackParams) => (
+            <div>NotificationMessage에서 에러발생</div>
+          )}
+        >
+          <NotificationMessage updateNotificationCount={updateNotificationCount} />
+        </ErrorBoundary>
+      </Dropdown>
     );
   }
 

@@ -24,6 +24,7 @@ export const useHeader = () => {
     handleDarkToggle,
   };
 };
+<<<<<<< HEAD
 
 export const useHeaderRightButton = () => {
   const renderSnackBar = useSnackBar();

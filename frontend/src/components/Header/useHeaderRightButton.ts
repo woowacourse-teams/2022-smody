@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
@@ -6,6 +7,11 @@ import useSnackBar from 'hooks/useSnackBar';
 
 export const useHeaderRightButton = () => {
   const isLogin = useRecoilValue(isLoginState);
+  const [notificationCount, setNotificationCount] = useState<number | undefined>(
+    undefined,
+  );
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   const { pathname } = useLocation();
   const renderSnackbar = useSnackBar();
 
@@ -16,9 +22,21 @@ export const useHeaderRightButton = () => {
     });
   };
 
+  const updateNotificationCount = (updatedNotificationCount: number) => {
+    setNotificationCount(updatedNotificationCount);
+  };
+
+  const updateIsSubscribed = (updatedIsSubscribed: boolean) => {
+    setIsSubscribed(updatedIsSubscribed);
+  };
+
   return {
     isLogin,
     pathname,
+    notificationCount,
+    isSubscribed,
     handleClickErrorFallbackLoginButton,
+    updateNotificationCount,
+    updateIsSubscribed,
   };
 };
