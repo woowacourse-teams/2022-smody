@@ -2,13 +2,14 @@ import { apiClient, authApiClient } from 'apis/apiClient';
 import {
   GetChallengeResponse,
   GetChallengeByIdProps,
-  GetMySuccessChallengesResponse,
+  GetMyChallengesResponse,
   GetChallengeByIdResponse,
   GetChallengersByIdProps,
   GetChallengersByIdResponse,
   PostChallengeProps,
   GetMyChallengeByIdProps,
   GetMyChallengeByIdResponse,
+  GetMyChallengesProps,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
@@ -43,10 +44,10 @@ export const getAllChallengesAuth = async (searchValue: string, pageParam: numbe
 };
 
 // 6. 나의 성공한 챌린지 조회(GET)
-export const getMySuccessChallenges = async (pageParam: number) => {
-  const params = { page: pageParam, size: PAGE_SIZE.SUCCESS_CHALLENGES };
+export const getMyChallenges = async ({ cursorId }: GetMyChallengesProps) => {
+  const params = { size: PAGE_SIZE.SUCCESS_CHALLENGES, cursorId };
 
-  return authApiClient.axios.get<GetMySuccessChallengesResponse[]>(`/challenges/me`, {
+  return authApiClient.axios.get<GetMyChallengesResponse[]>(`/challenges/me`, {
     params,
   });
 };

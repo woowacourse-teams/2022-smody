@@ -1,7 +1,7 @@
 import {
   getAllChallenges,
   getAllChallengesAuth,
-  getMySuccessChallenges,
+  getMyChallenges,
   getChallengeById,
   getChallengeByIdAuth,
   getChallengersById,
@@ -12,7 +12,7 @@ import {
   GetChallengeResponse,
   GetChallengeByIdProps,
   GetChallengeByIdResponse,
-  GetMySuccessChallengesResponse,
+  GetMyChallengesResponse,
   GetChallengersByIdResponse,
   GetChallengersByIdProps,
   PostChallengeProps,
@@ -55,25 +55,24 @@ export const useGetAllChallenges = (
     },
   );
 
-// 6. 나의 성공한 챌린지 조회(GET)
-export const useGetMySuccessChallenges = (
+// 6. 내가 참가한 챌린지 조회(GET)
+export const useGetMyChallenges = (
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetMySuccessChallengesResponse[]>,
+    AxiosResponse<GetMyChallengesResponse[]>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<
-    AxiosResponse<GetMySuccessChallengesResponse[]>,
-    AxiosError<ErrorResponse>
-  >(
-    queryKeys.getMySuccessChallenges,
-    ({ pageParam = 0 }) => getMySuccessChallenges(pageParam),
+  useInfiniteQuery<AxiosResponse<GetMyChallengesResponse[]>, AxiosError<ErrorResponse>>(
+    queryKeys.getMyChallenges,
+    ({ pageParam = 0 }) => getMyChallenges({ cursorId: pageParam }),
     {
       ...options,
       getNextPageParam: (currentPage) => {
-        return currentPage.data.length < PAGE_SIZE.SUCCESS_CHALLENGES
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.SUCCESS_CHALLENGES
           ? undefined
-          : currentPage.config.params.page + 1;
+          : currentPage.data[currentDataLength - 1].challengeId;
       },
     },
   );
