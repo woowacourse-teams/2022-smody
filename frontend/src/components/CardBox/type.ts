@@ -1,6 +1,6 @@
 import { Challenge } from 'commonType';
 
-export interface CardBoxProps extends Challenge {
+export interface CardBoxProps extends Omit<Challenge, 'challengerCount'> {
   emojiIndex: number;
   colorIndex: number;
 }
