@@ -18,6 +18,7 @@ import {
   SubscriptionButton,
   NotificationMessage,
   ErrorBoundary,
+  ErrorFallbackSubscriptionButton,
   ErrorFallbackLogInButton,
 } from 'components';
 
@@ -63,7 +64,7 @@ const HeaderRightButton = () => {
           <ErrorBoundary
             pathname="pathname"
             renderFallback={(renderFallbackParams) => (
-              <div>SubscriptionButton에서 에러발생</div>
+              <ErrorFallbackSubscriptionButton {...renderFallbackParams} />
             )}
           >
             <SubscriptionButton updateIsSubscribed={updateIsSubscribed} />

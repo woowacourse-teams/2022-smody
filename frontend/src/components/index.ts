@@ -52,3 +52,4 @@ export * from 'components/ErrorBoundary';
 export * from 'components/ErrorFallbackMain';
 export * from 'components/ErrorFallbackHeader';
 export * from 'components/ErrorFallbackLoginButton';
+export * from 'components/ErrorFallbackSubscriptionButton';
