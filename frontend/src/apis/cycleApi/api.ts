@@ -57,7 +57,7 @@ export const getMyCyclesByChallengeId = async ({
     cursorId,
   };
 
-  return apiClient.axios.get<GetMyCyclesByChallengeIdResponse[]>(
+  return authApiClient.axios.get<GetMyCyclesByChallengeIdResponse[]>(
     `/cycles/me/${challengeId}`,
     { params },
   );
