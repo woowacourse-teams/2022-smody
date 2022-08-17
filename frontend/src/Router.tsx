@@ -50,6 +50,7 @@ const Router = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
 
   useGetMyInfo({
+    useErrorBoundary: false,
     onSuccess: () => {
       setIsLogin(true);
     },
