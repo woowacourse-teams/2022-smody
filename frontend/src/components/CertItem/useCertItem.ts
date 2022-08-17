@@ -1,7 +1,7 @@
 import { CertItemProps } from './type';
 import { MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addDays } from 'utils';
+import { addDays, parseTime } from 'utils';
 
 import { CYCLE_UNIT } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
@@ -46,7 +46,16 @@ const useCertItem = ({
     });
   };
 
-  return { certEndDate, isCertPossible, handleClickWrapper, handleClickButton };
+  const { hours, minutes } = parseTime(startTime);
+  const startTimeString = `${hours}:${minutes}`;
+
+  return {
+    certEndDate,
+    isCertPossible,
+    handleClickWrapper,
+    handleClickButton,
+    startTimeString,
+  };
 };
 
 export default useCertItem;
