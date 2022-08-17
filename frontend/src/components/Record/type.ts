@@ -14,6 +14,8 @@ export interface RecordItemProps
   index: number;
 }
 
+export type HandleNavigateFeedDetailProps = Pick<CycleDetailWithId, 'cycleDetailId'>;
+
 export interface RecordWrapperProps {
   isSuccess: boolean;
 }

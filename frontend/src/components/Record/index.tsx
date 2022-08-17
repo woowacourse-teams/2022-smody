@@ -5,6 +5,7 @@ import {
   RecordWrapperProps,
 } from './type';
 import { useRecord } from './useRecord';
+import { useRecordItem } from './useRecordItem';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -12,7 +13,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
-import { emojiList } from 'constants/style';
+import { cursorPointer, emojiList } from 'constants/style';
 
 const CyclePeriod = [...Array(CYCLE_SUCCESS_CRITERIA)];
 
@@ -49,6 +50,7 @@ export const Record = ({ emojiIndex, startTime, cycleDetails }: RecordProps) => 
 
 const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProps) => {
   const themeContext = useThemeContext();
+  const handleNavigateFeedDetail = useRecordItem();
 
   if (isBlank) {
     return (
@@ -60,7 +62,15 @@ const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProp
     );
   }
 
-  return <RecordItemWrapper recordImg={cycleDetails[index].progressImage} />;
+  return (
+    <RecordItemWrapper
+      style={{ ...cursorPointer }}
+      recordImg={cycleDetails[index].progressImage}
+      onClick={() =>
+        handleNavigateFeedDetail({ cycleDetailId: cycleDetails[index].cycleDetailId })
+      }
+    />
+  );
 };
 
 const RecordWrapper = styled(FlexBox)<RecordWrapperProps>`
