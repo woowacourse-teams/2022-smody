@@ -111,7 +111,7 @@ const Wrapper = styled(FlexBox)`
 
 const CommentList = styled(FlexBox)`
   width: 100%;
-  max-width: 400px;
+  max-width: 430px;
 `;
 
 const MenuBottomSheetWrapper = styled(FlexBox)`
