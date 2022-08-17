@@ -28,7 +28,7 @@ export interface GetCycleByIdResponse extends Cycle {
 
 export type GetMyCyclesByChallengeIdProps = Pick<Challenge, 'challengeId'>;
 
-export interface getMyCyclesByChallengeIdAPIProps extends GetMyCyclesByChallengeIdProps {
+export interface GetMyCyclesByChallengeIdAPIProps extends GetMyCyclesByChallengeIdProps {
   cursorId: number;
 }
 

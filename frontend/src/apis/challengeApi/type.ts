@@ -13,7 +13,11 @@ export interface GetChallengeResponse {
   colorIndex: number;
 }
 
-export interface GetMySuccessChallengesResponse extends Challenge {
+export interface GetMyChallengesProps {
+  cursorId: number;
+}
+
+export interface GetMyChallengesResponse extends Omit<Challenge, 'challengerCount'> {
   emojiIndex: number;
   colorIndex: number;
 }

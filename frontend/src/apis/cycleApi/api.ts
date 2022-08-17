@@ -8,9 +8,8 @@ import {
   GetMyCyclesStatResponse,
   GetCycleByIdResponse,
   GetMyCyclesInProgressResponse,
-  GetMyCyclesByChallengeIdProps,
   GetMyCyclesByChallengeIdResponse,
-  getMyCyclesByChallengeIdAPIProps,
+  GetMyCyclesByChallengeIdAPIProps,
 } from 'apis/cycleApi/type';
 
 // 1. 챌린지 사이클 생성(POST)
@@ -51,7 +50,7 @@ export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
 export const getMyCyclesByChallengeId = async ({
   challengeId,
   cursorId,
-}: getMyCyclesByChallengeIdAPIProps) => {
+}: GetMyCyclesByChallengeIdAPIProps) => {
   const params = {
     size: PAGE_SIZE.CYCLES,
     cursorId,
