@@ -31,8 +31,8 @@ export const CardBox = ({
       <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
         {emojiList[emojiIndex]}
       </EmojiWrapper>
-      <TextWrapper size={10} color={COLOR.DARKEST_GRAY} fontWeight="bold">
-        챌린지 {successCount}회({successCount * 3}일) 성공
+      <TextWrapper size={14} color={COLOR.DARKEST_GRAY} fontWeight="bold">
+        <Count color={COLOR.PURPLE}>{successCount}</Count>회 성공
       </TextWrapper>
     </Wrapper>
   );
@@ -56,12 +56,13 @@ const TitleWrapper = styled(Text).attrs((props) => ({ ...props }))`
   white-space: nowrap;
 `;
 
-const EmojiWrapper = styled(Text).attrs((props) => ({ ...props }))`
-  margin-top: 12px;
-`;
+const EmojiWrapper = styled(Text).attrs((props) => ({ ...props }))``;
 
 const TextWrapper = styled(Text).attrs((props) => ({ ...props }))`
   word-break: keep-all;
   text-align: center;
-  margin-top: 20px;
+`;
+
+const Count = styled.span`
+  color: ${COLOR.PURPLE};
 `;
