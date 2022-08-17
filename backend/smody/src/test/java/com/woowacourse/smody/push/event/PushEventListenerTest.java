@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -190,5 +191,23 @@ class PushEventListenerTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId())
 		);
+	}
+
+	@DisplayName("자신의 댓글을 작성하면 알림이 저장되지 않는다.")
+	@Test
+	void createComment_notPush() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
+		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+
+		CommentRequest commentRequest = new CommentRequest("댓글입니다");
+
+		// when
+		commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest);
+
+		// then
+		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
+		assertThat(results).isEmpty();
 	}
 }
