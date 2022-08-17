@@ -80,6 +80,7 @@ const CycleImg = styled.div<CycleImgProps>`
 `;
 
 const DetailContents = styled.div`
+  width: 60%;
   padding: 1rem;
   overflow: auto;
 `;
