@@ -1,8 +1,5 @@
 import { Layout } from 'Layout';
-import { useGetMyInfo } from 'apis';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 
 import {
   FeedPage,
@@ -47,15 +44,6 @@ const CertFlowPage = () => {
 };
 
 const Router = () => {
-  const setIsLogin = useSetRecoilState(isLoginState);
-
-  useGetMyInfo({
-    useErrorBoundary: false,
-    onSuccess: () => {
-      setIsLogin(true);
-    },
-  });
-
   return (
     <BrowserRouter>
       <Routes>

@@ -1,4 +1,4 @@
-import { useGetLinkGoogle, useGetMyInfo, useGetTokenGoogle } from 'apis';
+import { useGetLinkGoogle, useGetTokenGoogle } from 'apis';
 import { authApiClient } from 'apis/apiClient';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,6 @@ const useAuth = () => {
   const navigate = useNavigate();
   const renderSnackBar = useSnackBar();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
-  const { isLoading: isLoadingMyInfo, refetch: refetchMyInfo } = useGetMyInfo();
 
   const { refetch: redirectGoogleLoginLink } = useGetLinkGoogle({
     onSuccess: ({ data: redirectionUrl }) => {
@@ -26,7 +25,6 @@ const useAuth = () => {
   const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
-      refetchMyInfo();
       setIsLogin(true);
       navigate(CLIENT_PATH.CERT);
       renderSnackBar({
@@ -43,7 +41,7 @@ const useAuth = () => {
     getTokenGoogle();
   }, []);
 
-  return { redirectGoogleLoginLink, isLoadingMyInfo, isLogin };
+  return { redirectGoogleLoginLink, isLogin };
 };
 
 export default useAuth;
