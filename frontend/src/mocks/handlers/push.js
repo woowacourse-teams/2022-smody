@@ -1,5 +1,6 @@
 import { BASE_URL } from 'env';
 import { db, notifications } from 'mocks/data';
+import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 const publicKey = process.env.PUBLIC_KEY;
@@ -12,9 +13,10 @@ export const push = [
 
   // 구독 정보 저장(POST)
   rest.post(`${BASE_URL}/web-push/subscribe`, (req, res, ctx) => {
-    if (req.headers.headers.authorization === 'Bearer null') {
+    if (!checkValidAccessToken(req)) {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
+
     const subscription = req.body;
     db.find((user) => user.nickname === 'marco').subscription = subscription;
 
@@ -23,9 +25,10 @@ export const push = [
 
   // 구독 정보 삭제(POST)
   rest.post(`${BASE_URL}/web-push/unsubscribe`, (req, res, ctx) => {
-    if (req.headers.headers.authorization === 'Bearer null') {
+    if (!checkValidAccessToken(req)) {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
+
     const { endpoint } = req.body;
 
     db.forEach((user) => {
@@ -39,7 +42,7 @@ export const push = [
 
   // 알림 조회(GET)
   rest.get(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
-    if (req.headers.headers.authorization === 'Bearer null') {
+    if (!checkValidAccessToken(req)) {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 

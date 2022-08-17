@@ -18,16 +18,28 @@ export const challenge = [
   rest.post(`${BASE_URL}${API_PATH.CYCLE}`, (req, res, ctx) => {
     const { challengeId } = req.body;
 
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     challengeData[challengeId - 1].isInProgress = true;
 
     return res(ctx.json(201));
   }),
   // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
   rest.get(`${BASE_URL}/cycles/me`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(ctx.status(200), ctx.json(cycleData));
   }),
   // 3.나의 사이클 통계 정보 조회
   rest.get(`${BASE_URL}/cycles/me/stat`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(
       ctx.status(200),
       ctx.json({
@@ -56,6 +68,11 @@ export const challenge = [
   // 4. 챌린지 사이클의 진척도 증가(POST)
   rest.post(`${BASE_URL}/cycles/:cycleId/progress`, (req, res, ctx) => {
     const { cycleId } = req.params;
+
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     cycleData[cycleId - 1].progressCount++;
 
     return res(ctx.delay(2000), ctx.status(200), ctx.json({ progressCount: 2 }));
@@ -76,13 +93,7 @@ export const challenge = [
   // 5. 모든 챌린지 조회(GET) - 회원
   rest.get(`${BASE_URL}/challenges/auth`, (req, res, ctx) => {
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     const searchValue = req.url.searchParams.get('search');
@@ -93,10 +104,15 @@ export const challenge = [
     const filteredData = challengeData.filter((challenge) =>
       challenge.challengeName.includes(searchValue),
     );
+
     return res(ctx.status(200), ctx.json(filteredData));
   }),
   // 6. 나의 성공한 챌린지 조회(GET)
   rest.get(`${BASE_URL}/challenges/me`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(ctx.status(200), ctx.json(mySuccessChallengeData));
   }),
   // 8. 챌린지 하나 상세 조회(GET) - 비회원
@@ -131,18 +147,12 @@ export const challenge = [
     }
 
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     return res(ctx.status(200), ctx.json(challengeData[challengeId - 1]));
   }),
-
+  // 9. 챌린지 참가자 목록 조회
   rest.get(`${BASE_URL}/challenges/:challengeId/challengers`, (req, res, ctx) => {
     const { challengeId } = req.params;
 
@@ -156,12 +166,15 @@ export const challenge = [
       );
     }
 
-    // return res(ctx.status(200), ctx.json([]));
     return res(ctx.status(200), ctx.json(challengers));
   }),
 
   //10. 챌린지 생성(POST)
   rest.post(`${BASE_URL}/challenges`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     challengeData.push(req.body);
     return res(ctx.delay(1000), ctx.json(201));
   }),
