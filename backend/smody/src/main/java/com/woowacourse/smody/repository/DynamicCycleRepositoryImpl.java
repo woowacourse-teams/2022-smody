@@ -31,7 +31,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         Predicate equalsToMember = criteriaBuilder.equal(cycleRoot.get("member").get("id"), memberId);
         Predicate equalsToChallenge = criteriaBuilder.equal(cycleRoot.get("challenge").get("id"), challengeId);
         Predicate equalsToSuccess = criteriaBuilder.equal(cycleRoot.get("progress").as(String.class), filter.toUpperCase());
-        Order orderByStartTime = criteriaBuilder.desc(cycleRoot.get(pagingParams.getSort()));
+        Order orderByStartTime = criteriaBuilder.desc(cycleRoot.get(convertSort(pagingParams.getSort())));
         Predicate overThanId = criteriaBuilder.greaterThan(cycleRoot.get("id"), pagingParams.getCursorId());
 
         if (filter.equals("success")) {
@@ -50,6 +50,13 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
             return "";
         }
         return filter;
+    }
+
+    private String convertSort(String sort) {
+        if (sort == null) {
+            return "startTime";
+        }
+        return sort;
     }
 
     @Override
