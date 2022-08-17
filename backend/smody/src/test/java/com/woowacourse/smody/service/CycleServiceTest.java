@@ -41,6 +41,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
@@ -267,7 +268,7 @@ public class CycleServiceTest extends IntegrationTest {
 
         // when
         List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
-                tokenPayload, now, PageRequest.of(0, 10));
+                tokenPayload, now, new PagingParams(null, null, 0L, null));
 
         // then
         assertAll(
@@ -367,7 +368,7 @@ public class CycleServiceTest extends IntegrationTest {
         void findAllInProgress_sort() {
             // when
             List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
-                    tokenPayload, now, PageRequest.of(0, 10));
+                    tokenPayload, now, new PagingParams(null, null, 0L, null));
 
             // then
             assertThat(actual)
@@ -381,7 +382,7 @@ public class CycleServiceTest extends IntegrationTest {
         void findAllInProgress_pagingFullSize() {
             // when
             List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
-                    tokenPayload, now, PageRequest.of(0, 3));
+                    tokenPayload, now, new PagingParams(null, 3, 0L, null));
 
             // then
             assertThat(actual)
@@ -394,7 +395,7 @@ public class CycleServiceTest extends IntegrationTest {
         void findAllInProgress_pagingPartialSize() {
             // when
             List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
-                    tokenPayload, now, PageRequest.of(1, 3));
+                    tokenPayload, now, new PagingParams(null, 2, inProgress3.getId(), null));
 
             // then
             assertThat(actual)
@@ -407,7 +408,7 @@ public class CycleServiceTest extends IntegrationTest {
         void findAllInProgress_pagingOverMaxPage() {
             // when
             List<InProgressCycleResponse> actual = cycleQueryService.findInProgressOfMine(
-                    tokenPayload, now, PageRequest.of(2, 3));
+                    tokenPayload, now, new PagingParams(null, 3, proceed1.getId(), null));
 
             // then
             assertThat(actual).isEmpty();

@@ -11,6 +11,8 @@ import com.woowacourse.smody.util.PagingUtil;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,14 +35,24 @@ public class CycleQueryService {
 
     public List<InProgressCycleResponse> findInProgressOfMine(TokenPayload tokenPayload,
                                                               LocalDateTime searchTime,
-                                                              Pageable pageable) {
+                                                              PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        List<Cycle> inProgressCycles = cycleService.searchInProgressByMember(searchTime, member);
+        Long latestEndTime = generateBaseEndTime(pagingParams.getCursorId());
+        List<Cycle> inProgressCycles = cycleService.searchInProgressByMember(searchTime, latestEndTime, member, pagingParams);
         inProgressCycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(searchTime)));
-        List<Cycle> pagedCycles = PagingUtil.page(inProgressCycles, pageable);
+        List<Cycle> pagedCycles = inProgressCycles.subList(0, Math.min(inProgressCycles.size(), pagingParams.getDefaultSize()));
         return pagedCycles.stream()
                 .map(cycle -> new InProgressCycleResponse(cycle, cycleService.countSuccess(cycle)))
                 .collect(toList());
+    }
+
+    private Long generateBaseEndTime(Long cycleId) {
+        Optional<Cycle> lastCycle = cycleService.findById(cycleId);
+        if (lastCycle.isEmpty()) {
+            return Long.MIN_VALUE;
+        }
+        Cycle cycle = lastCycle.get();
+        return cycle.calculateEndTime(LocalDateTime.now());
     }
 
     public StatResponse searchStat(TokenPayload tokenPayload) {

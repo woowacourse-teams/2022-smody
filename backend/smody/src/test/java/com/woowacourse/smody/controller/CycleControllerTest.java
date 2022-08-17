@@ -154,7 +154,7 @@ public class CycleControllerTest extends ControllerTest {
                 new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3, 0, 1),
                 new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3, 0, 1));
         given(cycleQueryService.findInProgressOfMine(
-                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
+                any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)
         )).willReturn(inProgressCycleResponses);
 
         // when

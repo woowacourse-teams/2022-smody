@@ -56,8 +56,8 @@ public class CycleController {
     @GetMapping(value = "/me")
     @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
-                                                                                 Pageable pageable) {
-        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pageable));
+                                                                                 @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/{cycleId}")

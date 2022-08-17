@@ -15,6 +15,7 @@ import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.repository.CycleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -90,10 +91,12 @@ public class CycleService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 
-    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member) {
+    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Long endTime, Member member, PagingParams pagingParams) {
         return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
                 .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
+                .filter(cycle -> cycle.isInProgress(searchTime) &&
+                        cycle.calculateEndTime(searchTime) >= endTime &&
+                        !cycle.getId().equals(pagingParams.getCursorId()))
                 .collect(toList());
     }
 
@@ -109,8 +112,8 @@ public class CycleService {
                 memberId, challengeId, pagingParams);
     }
 
-    public List<Cycle> findByMember(Member member) {
-        return cycleRepository.findByMember(member);
+    public Optional<Cycle> findById(Long id) {
+        return cycleRepository.findById(id);
     }
 
     public List<Cycle> searchByMember(Member member) {
