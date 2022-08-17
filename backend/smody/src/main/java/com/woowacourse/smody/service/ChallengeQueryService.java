@@ -64,7 +64,7 @@ public class ChallengeQueryService {
                                                            PagingParams pagingParams) {
         return challengeService.searchAll(
                     pagingParams.getFilter(),
-                    pagingParams.getCursorId(),
+                    pagingParams.getDefaultCursorId(),
                     pagingParams.getDefaultSize()
                 ).stream().map(challenge ->
                         new ChallengeTabResponse(
@@ -84,7 +84,7 @@ public class ChallengeQueryService {
     public List<ChallengeOfMineResponse> searchOfMineWithFilter(TokenPayload tokenPayload,
                                                                 PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        LocalDateTime latestTime = generateBaseTime(pagingParams.getCursorId(), tokenPayload.getId());
+        LocalDateTime latestTime = generateBaseTime(pagingParams.getDefaultCursorId(), tokenPayload.getId());
 
         List<Cycle> cycles = cycleService.findByMemberWithFilter(member, pagingParams);
 

@@ -33,4 +33,11 @@ public class PagingParams {
         }
         return this.size;
     }
+
+    public Long getDefaultCursorId() {
+        if (this.cursorId == null) {
+            return 0L;
+        }
+        return this.cursorId;
+    }
 }

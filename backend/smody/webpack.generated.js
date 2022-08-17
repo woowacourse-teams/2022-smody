@@ -23,8 +23,8 @@ const themePartRegex = /(\\|\/)themes\1[\s\S]*?\1/;
 const frontendFolder = path.resolve(__dirname, 'frontend');
 const frontendGeneratedFolder = path.resolve(__dirname, 'frontend/generated');
 const fileNameOfTheFlowGeneratedMainEntryPoint = path.resolve(__dirname, 'build/frontend/generated-flow-imports.js');
-const mavenOutputFolderForFlowBundledFiles = path.resolve(__dirname, 'build/classes/META-INF/VAADIN/webapp');
-const mavenOutputFolderForResourceFiles = path.resolve(__dirname, 'build/classes/META-INF/VAADIN');
+const mavenOutputFolderForFlowBundledFiles = path.resolve(__dirname, 'build/resources/main/META-INF/VAADIN/webapp');
+const mavenOutputFolderForResourceFiles = path.resolve(__dirname, 'build/resources/main/META-INF/VAADIN');
 const useClientSideIndexFileForBootstrapping = true;
 const clientSideIndexHTML = './index.html';
 const clientSideIndexEntryPoint = path.resolve(__dirname, 'frontend', 'generated/', 'vaadin.ts');;
@@ -63,7 +63,7 @@ const projectStaticAssetsFolders = [
   frontendFolder
 ];
 
-const projectStaticAssetsOutputFolder = path.resolve(__dirname, 'build/classes/META-INF/VAADIN/webapp/VAADIN/static');
+const projectStaticAssetsOutputFolder = path.resolve(__dirname, 'build/resources/main/META-INF/VAADIN/webapp/VAADIN/static');
 
 // Folders in the project which can contain application themes
 const themeProjectFolders = projectStaticAssetsFolders.map((folder) => path.resolve(folder, 'themes'));

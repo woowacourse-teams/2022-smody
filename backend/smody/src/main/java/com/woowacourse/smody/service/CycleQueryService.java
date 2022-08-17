@@ -35,7 +35,7 @@ public class CycleQueryService {
                                                               LocalDateTime searchTime,
                                                               PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        Long latestEndTime = generateBaseEndTime(pagingParams.getCursorId());
+        Long latestEndTime = generateBaseEndTime(pagingParams.getDefaultCursorId());
         List<Cycle> inProgressCycles = cycleService.searchInProgressByMember(searchTime, latestEndTime, member, pagingParams);
         inProgressCycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(searchTime)));
         List<Cycle> pagedCycles = inProgressCycles.subList(0, Math.min(inProgressCycles.size(), pagingParams.getDefaultSize()));
