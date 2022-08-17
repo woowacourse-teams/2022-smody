@@ -17,7 +17,7 @@ export const ORDER = {
 
 export const queryKeys = {
   getAllChallenges: 'getAllChallenges',
-  getMySuccessChallenges: 'getMySuccessChallenges',
+  getMyChallenges: 'getMyChallenges',
   getChallengeById: 'getChallengeById',
   getMyCyclesInProgress: 'getMyCyclesInProgress',
   getMyCyclesStat: 'getMyCyclesStat',
