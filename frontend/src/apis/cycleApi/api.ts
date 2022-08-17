@@ -50,11 +50,15 @@ export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
 export const getMyCyclesByChallengeId = async ({
   challengeId,
   cursorId,
+  filter,
 }: GetMyCyclesByChallengeIdAPIProps) => {
-  const params = {
-    size: PAGE_SIZE.CYCLES,
-    cursorId,
-  };
+  const params =
+    filter === 'all'
+      ? {
+          size: PAGE_SIZE.CYCLES,
+          cursorId,
+        }
+      : { size: PAGE_SIZE.CYCLES, cursorId, filter };
 
   return authApiClient.axios.get<GetMyCyclesByChallengeIdResponse[]>(
     `/cycles/me/${challengeId}`,
