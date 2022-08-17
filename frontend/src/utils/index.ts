@@ -1,7 +1,9 @@
+import { TIMEZONE_OFFSET } from 'constants/domain';
+
 type addDaysFunction = (date: Date, days: number) => Date;
 
 export const addDays: addDaysFunction = (date, days) => {
-  const newDate = date;
+  const newDate = new Date(date.getTime());
   newDate.setDate(date.getDate() + days);
   return newDate;
 };
@@ -51,7 +53,7 @@ export const urlB64ToUint8Array = (base64String: string) => {
 
 export const parseDateToISOString = (date: Date) => {
   const currentDate = date;
-  currentDate.setHours(currentDate.getHours() + 9);
+  currentDate.setHours(currentDate.getHours() + TIMEZONE_OFFSET);
   const [stringTypeDate, _] = currentDate.toISOString().split('.');
   return stringTypeDate;
 };
