@@ -1,5 +1,7 @@
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
+import { queryKeys } from 'apis/constants';
 import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { validateNickname, validateIntroduction } from 'utils/validator';
@@ -56,26 +58,21 @@ const ProfileEditPage = () => {
   const renderSnackBar = useSnackBar();
   const [isOpenUserWithdrawalModal, setIsOpenUserWithdrawalModal] = useState(false);
   const [isClickable, setIsClickable] = useState(true);
-  const { data: dataMyInfo } = useGetMyInfo({
-    refetchOnWindowFocus: false,
-  });
+  const { data: dataMyInfo } = useGetMyInfo();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (hasImageFormData && isSuccessPostImage && isSuccessPatchInfo) {
+    if (
+      (hasImageFormData && isSuccessPostImage && isSuccessPatchInfo) ||
+      (!hasImageFormData && isSuccessPatchInfo)
+    ) {
+      queryClient.invalidateQueries(queryKeys.getMyInfo);
       navigate(CLIENT_PATH.PROFILE);
       renderSnackBar({
         message: '프로필 수정이 완료됐습니다.',
         status: 'SUCCESS',
       });
       return;
-    }
-
-    if (!hasImageFormData && isSuccessPatchInfo) {
-      navigate(CLIENT_PATH.PROFILE);
-      renderSnackBar({
-        message: '프로필 수정이 완료됐습니다.',
-        status: 'SUCCESS',
-      });
     }
   }, [hasImageFormData, isSuccessPostImage, isSuccessPatchInfo]);
 
@@ -98,23 +95,14 @@ const ProfileEditPage = () => {
 
     setIsClickable(false);
 
-    if (hasImageFormData) {
-      postProfileImage({ formData });
-    }
-
-    if (
-      typeof nickname.value === 'undefined' ||
-      typeof introduction.value === 'undefined'
-    ) {
-      setIsClickable(true);
-      return;
-    }
-
     editMyInfo({
       nickname: nickname.value,
       introduction: introduction.value,
-      picture: dataMyInfo.data.picture,
     });
+
+    if (hasImageFormData) {
+      postProfileImage({ formData });
+    }
   };
 
   const handleClickUserWithdrawal: MouseEventHandler<HTMLButtonElement> = () => {
