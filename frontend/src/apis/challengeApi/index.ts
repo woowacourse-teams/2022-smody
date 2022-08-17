@@ -6,6 +6,7 @@ import {
   getChallengeByIdAuth,
   getChallengersById,
   postChallenge,
+  getMyChallengeById,
 } from 'apis/challengeApi/api';
 import {
   GetChallengeResponse,
@@ -16,6 +17,8 @@ import {
   GetChallengersByIdProps,
   PostChallengeProps,
   GetChallengeProps,
+  GetMyChallengeByIdProps,
+  GetMyChallengeByIdResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
@@ -115,5 +118,19 @@ export const usePostChallenge = (
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeProps>(
     postChallenge,
+    options,
+  );
+
+// 참여한 챌린지 상세 조회 기능
+export const useGetMyChallengeById = (
+  { challengeId }: GetMyChallengeByIdProps,
+  options?: UseQueryOptions<
+    AxiosResponse<GetMyChallengeByIdResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetMyChallengeByIdResponse>, AxiosError<ErrorResponse>>(
+    [queryKeys.getMyChallengeById, challengeId],
+    () => getMyChallengeById({ challengeId }),
     options,
   );

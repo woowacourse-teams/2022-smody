@@ -1,3 +1,4 @@
+import { useCardBox } from './useCardBox';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, Text } from 'components';
@@ -8,13 +9,17 @@ import { colorList, emojiList } from 'constants/style';
 import COLOR from 'styles/color';
 
 export const CardBox = ({
+  challengeId,
   challengeName,
   successCount,
   emojiIndex,
   colorIndex,
 }: CardBoxProps) => {
+  const handleNavigateMyChallenge = useCardBox({ challengeId });
+
   return (
     <Wrapper
+      onClick={handleNavigateMyChallenge}
       flexDirection="column"
       alignItems="center"
       justifyContent="center"

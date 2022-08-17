@@ -1247,3 +1247,56 @@ export const notifications = [
     type: 'comment',
   },
 ];
+
+export const myChallenge = {
+  challengeName: '만보 걷기',
+  description: '3보 이상 걸으면 택시 잡자',
+  emojiIndex: 0,
+  colorIndex: 1,
+  successCount: 3,
+  cycleDetailCount: 5,
+};
+
+export const myCyclesByChallengeID = [
+  {
+    cycleId: 3,
+    emojiIndex: 0,
+    colorIndex: 1,
+    startTime: '2022-07-01T17:00:00',
+    cycleDetails: [
+      {
+        cycleDetailId: 1,
+        progressImage:
+          'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+      },
+      {
+        cycleDetailId: 2,
+        progressImage:
+          'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+      },
+      {
+        cycleDetailId: 3,
+        progressImage:
+          'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+      },
+    ],
+  },
+  {
+    cycleId: 4,
+    emojiIndex: 0,
+    colorIndex: 1,
+    startTime: '2022-07-08T17:00:00',
+    cycleDetails: [
+      {
+        cycleDetailId: 4,
+        progressImage:
+          'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+      },
+      {
+        cycleDetailId: 5,
+        progressImage:
+          'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+      },
+    ],
+  },
+];

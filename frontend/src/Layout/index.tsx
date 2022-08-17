@@ -28,7 +28,11 @@ export const Layout = () => {
     CLIENT_PATH.HOME,
     CLIENT_PATH.CYCLE_DETAIL,
   ]);
-  const horizontalPadding = getPathMatchHorizontalPadding([CLIENT_PATH.PROFILE]);
+
+  const horizontalPadding = getPathMatchHorizontalPadding(
+    [CLIENT_PATH.PROFILE],
+    [CLIENT_PATH.PROFILE_CHALLENGE_DETAIL],
+  );
 
   return (
     <Wrapper>

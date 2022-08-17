@@ -5,6 +5,8 @@ import {
   cycleDetailData,
   mySuccessChallengeData,
   challengers,
+  myChallenge,
+  myCyclesByChallengeID,
 } from 'mocks/data';
 import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
@@ -162,5 +164,17 @@ export const challenge = [
   rest.post(`${BASE_URL}/challenges`, (req, res, ctx) => {
     challengeData.push(req.body);
     return res(ctx.delay(1000), ctx.json(201));
+  }),
+
+  //참여한 챌린지 상세 조회 기능
+  rest.get(`${BASE_URL}/challenges/me/:challengeId`, (req, res, ctx) => {
+    const { challengeId } = req.params;
+
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(myChallenge));
+  }),
+
+  //챌린지에 대한 전체 사이클 상세 조회 기능
+  rest.get(`${BASE_URL}/cycles/me/:challengeId`, (req, res, ctx) => {
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(myCyclesByChallengeID));
   }),
 ];

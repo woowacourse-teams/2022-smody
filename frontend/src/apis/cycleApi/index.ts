@@ -1,10 +1,11 @@
-import { queryKeys } from 'apis/constants';
+import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import {
   postCycle,
   getMyCyclesInProgress,
   getMyCyclesStat,
   postCycleProgress,
   getCycleById,
+  getMyCyclesByChallengeId,
 } from 'apis/cycleApi/api';
 import {
   PostCycleProps,
@@ -14,10 +15,19 @@ import {
   GetCycleByIdResponse,
   GetCycleByIdProps,
   GetMyCyclesInProgressResponse,
+  GetMyCyclesByChallengeIdProps,
+  GetMyCyclesByChallengeIdResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import {
+  useQuery,
+  useMutation,
+  UseQueryOptions,
+  UseMutationOptions,
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+} from 'react-query';
 
 // 1. 챌린지 사이클 생성(POST)
 export const usePostCycle = (
@@ -80,4 +90,30 @@ export const useGetCycleById = (
     [queryKeys.getCycleById, cycleId],
     () => getCycleById({ cycleId }),
     options,
+  );
+
+// 챌린지에 대한 전체 사이클 상세 조회 기능
+export const useGetMyCyclesByChallengeId = (
+  { challengeId }: GetMyCyclesByChallengeIdProps,
+  options?: UseInfiniteQueryOptions<
+    AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useInfiniteQuery<
+    AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
+    AxiosError<ErrorResponse>
+  >(
+    [queryKeys.getMyCyclesByChallengeId, challengeId],
+    ({ pageParam = 0 }) => getMyCyclesByChallengeId({ challengeId, cursorId: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (currentPage) => {
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.CYCLES
+          ? undefined
+          : currentPage.data[currentDataLength - 1].cycleId;
+      },
+    },
   );
