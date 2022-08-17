@@ -55,8 +55,8 @@ public class ChallengeController {
     @GetMapping(value = "/me")
     @RequiredLogin
     public ResponseEntity<List<ChallengeOfMineResponse>> searchOfMineWithFilter(@LoginMember TokenPayload tokenPayload,
-                                                                                @ModelAttribute ChallengeOfMineRequest challengeOfMineRequest) {
-        return ResponseEntity.ok(challengeQueryService.searchOfMineWithFilter(tokenPayload, challengeOfMineRequest));
+                                                                                @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(challengeQueryService.searchOfMineWithFilter(tokenPayload, pagingParams));
     }
 
     @GetMapping(value = "/{id}")

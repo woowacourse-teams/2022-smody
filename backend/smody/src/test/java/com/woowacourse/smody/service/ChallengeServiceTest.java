@@ -79,7 +79,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 0, 10));
+                    tokenPayload, new PagingParams(null, null, 0L, null));
 
             // then
             assertAll(
@@ -98,7 +98,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pageFullSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 0, 3));
+                    tokenPayload, new PagingParams(null, 3, 0L, null));
 
             // then
             assertAll(
@@ -117,7 +117,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pagePartialSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 1, 2));
+                    tokenPayload, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
             assertAll(
@@ -136,7 +136,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pageOverMaxPage() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 2, 3));
+                    tokenPayload, new PagingParams(null, 3, JPA_공부_ID, null));
 
             // then
             assertThat(responses).isEmpty();
@@ -147,7 +147,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 0, 10));
+                    tokenPayload, new PagingParams(null, null, 0L, "success"));
 
             // then
             assertAll(
@@ -166,7 +166,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pageFullSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 0, 3));
+                    tokenPayload, new PagingParams(null, 3, 0L, "success"));
 
             // then
             assertAll(
@@ -185,7 +185,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pagePartialSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 1, 2));
+                    tokenPayload, new PagingParams(null, 2, 오늘의_운동_ID, "success"));
 
             // then
             assertAll(
@@ -204,7 +204,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 2, 3));
+                    tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, "success"));
 
             // then
             assertThat(responses).isEmpty();

@@ -2,12 +2,7 @@ package com.woowacourse.smody.service;
 
 import static java.util.stream.Collectors.toList;
 
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.PushCase;
+import com.woowacourse.smody.domain.*;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.FilteredCycleHistoryRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
@@ -127,7 +122,7 @@ public class CycleService {
         return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
     }
 
-    public List<Cycle> findByMemberWithFilter(Member member, String filter) {
-        return cycleRepository.findByMemberWithFilter(member.getId(), filter);
+    public List<Cycle> findByMemberWithFilter(Member member, PagingParams pagingParams) {
+        return cycleRepository.findByMemberWithFilter(member.getId(), pagingParams);
     }
 }

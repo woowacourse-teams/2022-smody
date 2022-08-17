@@ -1,6 +1,9 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.ChallengeRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;

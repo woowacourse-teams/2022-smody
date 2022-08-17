@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -91,10 +93,13 @@ public class ChallengeQueryService {
     }
 
     public List<ChallengeOfMineResponse> searchOfMineWithFilter(TokenPayload tokenPayload,
-                                                                ChallengeOfMineRequest challengeOfMineRequest) {
+                                                                PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        List<Cycle> cycles = cycleService.findByMemberWithFilter(member, challengeOfMineRequest.getFilter());
+        LocalDateTime latestTime = generateBaseTime(pagingParams.getCursorId(), tokenPayload.getId());
 
+        List<Cycle> cycles = cycleService.findByMemberWithFilter(member, pagingParams)
+                .stream().filter(cycle -> cycle.getLatestProgressTime().isBefore(latestTime))
+                .collect(toList());
         Map<Challenge, Integer> groupedSize = groupByChallenge(cycles).entrySet()
                 .stream()
                 .collect(toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
@@ -108,14 +113,14 @@ public class ChallengeQueryService {
                         .orElseThrow(() -> new BusinessException(ExceptionData.NO_CERTED_CHALLENGE))));
 
         List<Challenge> latestChallenges = groupByProgressTime.entrySet()
-                .stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .map(Map.Entry::getKey)
-                .collect(toList());
+                .collect(toList()).subList(0, Math.min(groupByProgressTime.size(), pagingParams.getDefaultSize()));
 
-        List<Challenge> pagedChallenges = PagingUtil.page(latestChallenges, challengeOfMineRequest.toPageRequest());
-        return pagedChallenges.stream()
+        return latestChallenges.stream()
                 .map(challenge -> new ChallengeOfMineResponse(
-                        challenge, groupedSize.get(challenge).intValue()
+                        challenge, groupedSize.get(challenge)
                 )).collect(toList());
     }
 
@@ -143,5 +148,20 @@ public class ChallengeQueryService {
                 .mapToInt(cycle -> cycle.getCycleDetails().size())
                 .sum();
         return new ChallengeHistoryResponse(challenge, successCount, cycleDetailCount);
+    }
+
+    private LocalDateTime generateBaseTime(Long challengeId, Long memberId) {
+        List<Cycle> lastChallengeCycles = cycleService.findAllByChallengeIdAndMemberId(
+                challengeId, memberId);
+        if (lastChallengeCycles.isEmpty()) {
+            return LocalDateTime.now();
+        }
+        return lastChallengeCycles.stream()
+                .sorted(Comparator.comparing(Cycle::getLatestProgressTime)
+                        .reversed())
+                .findFirst()
+                .get()
+                .getLatestProgressTime();
+
     }
 }

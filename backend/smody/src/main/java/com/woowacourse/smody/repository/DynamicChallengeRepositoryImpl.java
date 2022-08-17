@@ -1,6 +1,8 @@
 package com.woowacourse.smody.repository;
 
 import com.woowacourse.smody.domain.Challenge;
+import com.woowacourse.smody.domain.Cycle;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.util.List;

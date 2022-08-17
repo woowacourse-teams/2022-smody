@@ -111,11 +111,11 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchOfMineWithFilter(any(TokenPayload.class), any(ChallengeOfMineRequest.class)))
+        given(challengeQueryService.searchOfMineWithFilter(any(TokenPayload.class), any(PagingParams.class)))
                 .willReturn(challengeOfMineRespons);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/me?page=0&size=10")
+        ResultActions result = mockMvc.perform(get("/challenges/me?size=10&cursorId=7")
                 .header("Authorization", "Bearer " + token));
 
         // then
@@ -265,7 +265,7 @@ class ChallengeControllerTest extends ControllerTest {
                 (any(LocalDateTime.class), any(PagingParams.class))).willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges?size=10&cursorId=9&search=공부"));
+        ResultActions result = mockMvc.perform(get("/challenges?size=10&cursorId=9&filter=공부"));
 
         // then
         result.andExpect(status().isOk())
@@ -300,7 +300,7 @@ class ChallengeControllerTest extends ControllerTest {
                 .willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/auth?size=10&cursorId=9&search=공부")
+        ResultActions result = mockMvc.perform(get("/challenges/auth?size=10&cursorId=9&filter=공부")
                 .header("Authorization", "Bearer " + token));
 
         // then
