@@ -1,5 +1,6 @@
 import useCertItem from './useCertItem';
 import styled, { css } from 'styled-components';
+import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -19,17 +20,22 @@ export const CertItem = ({
   colorIndex,
 }: CertItemProps) => {
   const themeContext = useThemeContext();
-  const { certEndDate, isCertPossible, handleClickWrapper, handleClickButton } =
-    useCertItem({
-      cycleId,
-      challengeId,
-      challengeName,
-      progressCount,
-      startTime,
-      successCount,
-      emojiIndex,
-      colorIndex,
-    });
+  const {
+    certEndDate,
+    isCertPossible,
+    handleClickWrapper,
+    handleClickButton,
+    startTimeString,
+  } = useCertItem({
+    cycleId,
+    challengeId,
+    challengeName,
+    progressCount,
+    startTime,
+    successCount,
+    emojiIndex,
+    colorIndex,
+  });
 
   return (
     <Wrapper
@@ -49,22 +55,25 @@ export const CertItem = ({
         </TitleText>
         <CheckCircles progressCount={progressCount} />
       </TitleWrapper>
-      <RowWrapper justifyContent="center" gap="1.5rem">
+      <FlexBox justifyContent="center" gap="1.5rem">
         <Text color={themeContext.onSurface} size={16}>
           해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
-      </RowWrapper>
+      </FlexBox>
       <ThumbnailWrapper size="large" bgColor={colorList[colorIndex]}>
         {emojiList[emojiIndex]}
       </ThumbnailWrapper>
-      <RowWrapper justifyContent="center" gap="1.5rem">
+      <FlexBox flexDirection="column" justifyContent="center" alignItems="center">
+        <Text color={themeContext.mainText} size={16}>
+          매일 <Circle>{startTimeString}</Circle>에 시작되는 챌린지
+        </Text>
         <Timer certEndDate={certEndDate} />
-      </RowWrapper>
-      <RowWrapper justifyContent="center" gap="1.5rem">
+      </FlexBox>
+      <FlexBox justifyContent="center" gap="1.5rem">
         <Button disabled={!isCertPossible} onClick={handleClickButton} size="large">
           {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
         </Button>
-      </RowWrapper>
+      </FlexBox>
     </Wrapper>
   );
 };
@@ -82,10 +91,6 @@ const Wrapper = styled(FlexBox)`
   `}
 `;
 
-const RowWrapper = styled(FlexBox)`
-  width: 100%;
-`;
-
 const TitleWrapper = styled(FlexBox)`
   width: 96%;
 `;
@@ -95,4 +100,15 @@ const TitleText = styled(Text)`
   width: 186px;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const Circle = styled.em`
+  ${({ theme }) => css`
+    border-radius: 10px;
+    background-color: ${theme.secondary};
+    color: ${theme.onSurface};
+    padding: 3px 7px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  `}
 `;

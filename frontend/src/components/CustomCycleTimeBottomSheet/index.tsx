@@ -83,9 +83,9 @@ export const CustomCycleTimeBottomSheet = ({
                   부터&nbsp;
                 </Text>
               </div>
-              <Button size="small" onClick={handleJoinTodayChallenge}>
+              <StartButton size="small" onClick={handleJoinTodayChallenge}>
                 시작
-              </Button>
+              </StartButton>
             </FlexBox>
           </StartInfoWrapper>
         </FlexBox>
@@ -105,7 +105,9 @@ export const CustomCycleTimeBottomSheet = ({
                     onChange={handleSelectTime}
                   />
                   <label htmlFor={String(index + startHour)}>
-                    <TimeSelectButton as="div">{time}</TimeSelectButton>
+                    <TimeSelectButton size="small" as="div">
+                      {time}
+                    </TimeSelectButton>
                   </label>
                 </div>
               ))}
@@ -125,7 +127,9 @@ export const CustomCycleTimeBottomSheet = ({
                     onChange={handleSelectTime}
                   />
                   <label htmlFor={String(index)}>
-                    <TimeSelectButton as="div">{time}</TimeSelectButton>
+                    <TimeSelectButton size="small" as="div">
+                      {time}
+                    </TimeSelectButton>
                   </label>
                 </div>
               ))}
@@ -160,18 +164,23 @@ const StartInfoWrapper = styled.div`
   }
 `;
 
-const TimeSelectButton = styled.button`
+const StartButton = styled(Button)`
+  width: 80px;
+  height: 35px;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+`;
+
+const TimeSelectButton = styled(Button)`
   ${({ theme }) => css`
     width: 70px;
     height: 35px;
-    vertical-align: middle;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1rem;
     color: ${theme.onSecondary};
     background-color: ${theme.secondary};
-    border-radius: 7px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
     &:hover {
       filter: brightness(0.9);
     }

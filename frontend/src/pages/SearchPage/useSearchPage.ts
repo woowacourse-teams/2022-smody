@@ -22,12 +22,7 @@ export const useSearchPage = () => {
     hasNextPage,
     fetchNextPage,
     refetch,
-  } = useGetAllChallenges(
-    { searchValue: search.value },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  } = useGetAllChallenges({ searchValue: search.value });
 
   const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

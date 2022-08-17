@@ -17,24 +17,14 @@ const useFeedDetailPage = () => {
   });
   const renderSnackBar = useSnackBar();
 
-  const { data: feedData, refetch: refetchGetFeedById } = useGetFeedById(
-    {
-      cycleDetailId: Number(cycleDetailId),
-    },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data: feedData, refetch: refetchGetFeedById } = useGetFeedById({
+    cycleDetailId: Number(cycleDetailId),
+  });
 
-  const { data: commentsData, refetch: refetchGetCommentsById } = useGetCommentsById(
-    {
-      cycleDetailId: Number(cycleDetailId),
-      isLogin,
-    },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data: commentsData, refetch: refetchGetCommentsById } = useGetCommentsById({
+    cycleDetailId: Number(cycleDetailId),
+    isLogin,
+  });
 
   const { mutate: deleteComment, isLoading: isLoadingDeleteComment } = useDeleteComments({
     onSuccess: () => {

@@ -54,7 +54,7 @@ export const Layout = () => {
 };
 
 const Wrapper = styled.div`
-  min-width: 400px;
+  /* min-width: 400px; */
 `;
 
 const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`

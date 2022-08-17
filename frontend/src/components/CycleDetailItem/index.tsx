@@ -22,7 +22,7 @@ export const CycleDetailItem = ({
       <FlexBox flexDirection="row">
         <CycleImg src={progressImage} />
         <DetailContents>
-          <FlexBox flexDirection="column" gap="1rem">
+          <FlexBox flexDirection="column" gap="0.25rem">
             <Text size={14} color={themeContext.mainText}>
               {year}년 {month}월 {date}일 {hours}:{minutes}
             </Text>
@@ -80,6 +80,12 @@ const CycleImg = styled.div<CycleImgProps>`
 `;
 
 const DetailContents = styled.div`
-  padding: 1rem;
-  overflow: auto;
+  width: 60%;
+  height: 90%;
+  padding: 0.7rem 1rem 1rem 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;

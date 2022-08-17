@@ -1,4 +1,5 @@
 import { CycleDetailListProps } from './type';
+import styled from 'styled-components';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
@@ -20,10 +21,14 @@ export const CycleDetailList = ({ cycleDetails }: CycleDetailListProps) => {
   }
 
   return (
-    <FlexBox alignItems="center" flexDirection="column" gap="2rem">
+    <CycleDetailItemContainer alignItems="center" flexDirection="column" gap="2rem">
       {cycleDetails.map((cycleDetail) => (
         <CycleDetailItem key={cycleDetail.progressTime} {...cycleDetail} />
       ))}
-    </FlexBox>
+    </CycleDetailItemContainer>
   );
 };
+
+const CycleDetailItemContainer = styled(FlexBox)`
+  width: 100%;
+`;

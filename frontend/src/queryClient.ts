@@ -7,6 +7,7 @@ export const generateQueryClient = (
     defaultOptions: {
       queries: {
         retry: 0,
+        refetchOnWindowFocus: false,
         onError: queryErrorHandler,
         suspense: true,
       },

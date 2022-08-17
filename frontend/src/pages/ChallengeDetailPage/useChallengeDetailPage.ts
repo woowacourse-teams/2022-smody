@@ -24,12 +24,9 @@ const useChallengeDetailPage = () => {
     }
   }, [isSuccessJoinChallenge]);
 
-  const { data: challengeData } = useGetChallengeById(
-    { challengeId: Number(challengeId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data: challengeData } = useGetChallengeById({
+    challengeId: Number(challengeId),
+  });
 
   return {
     challengeData,
