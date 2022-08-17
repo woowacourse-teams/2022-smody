@@ -1,12 +1,19 @@
 import { useGetNotifications } from 'apis/pushNotificationApi';
+import { setBadge } from 'push/badge';
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { isDarkState } from 'recoil/darkMode/atoms';
 
 import useAuth from 'hooks/useAuth';
+import useSnackBar from 'hooks/useSnackBar';
 import useSubscribe from 'hooks/useSubscribe';
 
+const broadcast = new BroadcastChannel('push-channel');
+
 export const useHeader = () => {
+  const renderSnackBar = useSnackBar();
+
   const [isDark, setIsDark] = useRecoilState(isDarkState);
 
   const isLogin = useRecoilValue(isLoginState);
@@ -15,8 +22,14 @@ export const useHeader = () => {
 
   const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
 
-  const { data: notificationData } = useGetNotifications();
+  const { data: notificationData, refetch } = useGetNotifications();
   const notifications = notificationData?.data;
+
+  const badgeNumber = notifications?.length;
+
+  useEffect(() => {
+    setBadge(badgeNumber);
+  }, [setBadge, badgeNumber]);
 
   const handleDarkToggle = () => {
     localStorage.setItem('isDark', JSON.stringify(!isDark));
@@ -25,6 +38,16 @@ export const useHeader = () => {
 
   const handleLoginButton = () => {
     redirectGoogleLoginLink();
+  };
+
+  broadcast.onmessage = (event) => {
+    console.log('@@@', event.data.message);
+    const message = event.data.message;
+    refetch();
+    renderSnackBar({
+      status: 'SUCCESS',
+      message: `[알림] ${message}`,
+    });
   };
 
   return {
