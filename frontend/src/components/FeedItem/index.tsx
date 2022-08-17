@@ -46,7 +46,9 @@ export const FeedItem = ({
             fontWeight="bold"
             onClick={handleClickChallengeName}
           >
-            {challengeName}
+            {challengeName.length > 9
+              ? `${challengeName.substring(0, 9)}...`
+              : challengeName}
           </UnderLineText>
         </FlexBox>
       </FlexBox>
