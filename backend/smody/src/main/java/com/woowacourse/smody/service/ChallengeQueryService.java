@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toMap;
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.dto.ChallengeOfMineRequest;
 import com.woowacourse.smody.dto.ChallengeOfMineResponse;
@@ -35,20 +36,17 @@ public class ChallengeQueryService {
     private final MemberService memberService;
     private final CycleService cycleService;
 
-    public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, Pageable pageable,
-                                                                 String searchingName) {
+    public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, PagingParams pagingParams) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengeTabResponse> responses = getResponsesOrderId(inProgressCycles, searchingName);
-        return PagingUtil.page(responses, pageable);
+        return getResponsesOrderId(inProgressCycles, pagingParams);
     }
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
-                                                                 Pageable pageable, String searchingName) {
+                                                                 PagingParams pagingParams) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        List<ChallengeTabResponse> responses = getResponsesOrderId(inProgressCycles, searchingName).stream()
+        return getResponsesOrderId(inProgressCycles, pagingParams).stream()
                 .map(response -> response.changeInProgress(
                         matchMember(inProgressCycles, tokenPayload, response.getChallengeId()))).collect(toList());
-        return PagingUtil.page(responses, pageable);
     }
 
     public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
@@ -72,8 +70,12 @@ public class ChallengeQueryService {
     }
 
     private List<ChallengeTabResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles,
-                                                           String searchingName) {
-        return challengeService.searchAll(searchingName).stream().map(challenge ->
+                                                           PagingParams pagingParams) {
+        return challengeService.searchAll(
+                    pagingParams.getFilter(),
+                    pagingParams.getCursorId(),
+                    pagingParams.getDefaultSize()
+                ).stream().map(challenge ->
                         new ChallengeTabResponse(
                                 challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))
                 .sorted(Comparator.comparingLong(ChallengeTabResponse::getChallengeId))

@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.dto.ChallengeOfMineRequest;
 import com.woowacourse.smody.dto.ChallengeOfMineResponse;
@@ -43,11 +44,11 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
 
-        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(Pageable.class), eq(null)))
+        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges?page=0&size=10"));
+        ResultActions result = mockMvc.perform(get("/challenges?size=10&cursorId=7"));
 
         // then
         result.andExpect(status().isOk())
@@ -76,11 +77,11 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
-                any(Pageable.class), eq(null)))
+                any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/auth?page=0&size=10")
+        ResultActions result = mockMvc.perform(get("/challenges/auth?size=10&cursorId=7")
                 .header("Authorization", "Bearer " + token));
 
         // then
@@ -261,10 +262,10 @@ class ChallengeControllerTest extends ControllerTest {
                 )
         );
         given(challengeQueryService.findAllWithChallengerCount
-                (any(LocalDateTime.class), any(Pageable.class), eq("공부"))).willReturn(challengeTabResponse);
+                (any(LocalDateTime.class), any(PagingParams.class))).willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges?search=공부"));
+        ResultActions result = mockMvc.perform(get("/challenges?size=10&cursorId=9&search=공부"));
 
         // then
         result.andExpect(status().isOk())
@@ -295,11 +296,11 @@ class ChallengeControllerTest extends ControllerTest {
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         given(challengeQueryService.findAllWithChallengerCount(
-                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class), eq("공부")))
+                any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabResponse);
 
         // when
-        ResultActions result = mockMvc.perform(get("/challenges/auth?search=공부")
+        ResultActions result = mockMvc.perform(get("/challenges/auth?size=10&cursorId=9&search=공부")
                 .header("Authorization", "Bearer " + token));
 
         // then

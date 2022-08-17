@@ -2,6 +2,7 @@ package com.woowacourse.smody.controller;
 
 import com.woowacourse.smody.auth.LoginMember;
 import com.woowacourse.smody.auth.RequiredLogin;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.dto.ChallengeOfMineRequest;
 import com.woowacourse.smody.dto.ChallengeOfMineResponse;
@@ -37,19 +38,17 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(Pageable pageable,
-                                                                                 @RequestParam(required = false) String search) {
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(
-                challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pageable, search));
+                challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/auth")
     @RequiredLogin
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                                 Pageable pageable,
-                                                                                 @RequestParam(required = false) String search) {
+                                                                                 @ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
-                tokenPayload, LocalDateTime.now(), pageable, search)
+                tokenPayload, LocalDateTime.now(), pagingParams)
         );
     }
 

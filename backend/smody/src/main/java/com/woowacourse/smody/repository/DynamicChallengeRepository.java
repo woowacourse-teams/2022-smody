@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface DynamicChallengeRepository {
 
-    List<Challenge> searchAll(String name);
+    List<Challenge> searchAll(String name, Long cursorId, Integer size);
 }

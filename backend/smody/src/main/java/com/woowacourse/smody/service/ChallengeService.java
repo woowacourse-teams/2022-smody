@@ -22,8 +22,8 @@ public class ChallengeService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 
-    public List<Challenge> searchAll(String name) {
-        return challengeRepository.searchAll(name);
+    public List<Challenge> searchAll(String name, Long cursorId, Integer size) {
+        return challengeRepository.searchAll(name, cursorId, size);
     }
 
     @Transactional
