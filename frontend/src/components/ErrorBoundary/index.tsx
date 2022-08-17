@@ -9,6 +9,7 @@ const UNKNOWN_ERROR_MESSAGE = '알 수 없는 오류가 발생했습니다.';
 const INITIAL_STATE = { hasError: false, errorCode: null, errorMessage: null };
 
 const isAxiosError = (error: Error) => error instanceof AxiosError;
+
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
@@ -36,7 +37,7 @@ export class ErrorBoundary extends React.Component<
 
     const { response } = error as AxiosError<ErrorResponse>;
 
-    if (typeof response === 'undefined' || typeof response === 'undefined') {
+    if (typeof response === 'undefined' || typeof response.data === 'undefined') {
       return { hasError: true, errorCode: null, errorMessage: UNKNOWN_ERROR_MESSAGE };
     }
 
