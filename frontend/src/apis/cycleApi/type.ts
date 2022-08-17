@@ -1,4 +1,4 @@
-import { Cycle, CycleDetail } from 'commonType';
+import { Challenge, Cycle, CycleDetail, CycleDetailWithId } from 'commonType';
 
 export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
 
@@ -24,4 +24,18 @@ export interface GetCycleByIdResponse extends Cycle {
   emojiIndex: number;
   colorIndex: number;
   cycleDetails: CycleDetail[];
+}
+
+export type GetMyCyclesByChallengeIdProps = Pick<Challenge, 'challengeId'>;
+
+export interface getMyCyclesByChallengeIdAPIProps extends GetMyCyclesByChallengeIdProps {
+  cursorId: number;
+}
+
+export interface GetMyCyclesByChallengeIdResponse {
+  cycleId: number;
+  emojiIndex: number;
+  colorIndex: number;
+  startTime: string;
+  cycleDetails: Pick<CycleDetailWithId, 'cycleDetailId' | 'progressImage'>[];
 }

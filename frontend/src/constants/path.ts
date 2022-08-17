@@ -14,6 +14,8 @@ export const CLIENT_PATH = {
   FEED_DETAIL_ID: '/feed/detail/:cycleDetailId',
   PROFILE: '/profile',
   PROFILE_EDIT: '/profile/edit',
+  PROFILE_CHALLENGE_DETAIL: '/profile/challenges/detail',
+  PROFILE_CHALLENGE_DETAIL_ID: '/profile/challenges/detail/:challengeId',
   CYCLE_DETAIL: '/cycle/detail',
   CYCLE_DETAIL_ID: '/cycle/detail/:cycleId',
   CHALLENGE_CREATE: '/challenge/create',

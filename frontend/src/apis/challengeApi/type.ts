@@ -46,3 +46,14 @@ export interface PostChallengeProps {
   emojiIndex: number;
   colorIndex: number;
 }
+
+export type GetMyChallengeByIdProps = Pick<Challenge, 'challengeId'>;
+
+export interface GetMyChallengeByIdResponse {
+  challengeName: string;
+  description: string;
+  emojiIndex: number;
+  colorIndex: number;
+  successCount: number;
+  cycleDetailCount: number;
+}
