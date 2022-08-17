@@ -1,13 +1,15 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Feed;
-import com.woowacourse.smody.dto.FeedRequest;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.repository.FeedRepository;
+import com.woowacourse.smody.repository.SortSelection;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +22,23 @@ public class FeedQueryService {
     private final FeedRepository feedRepository;
     private final FeedService feedService;
 
-    public List<FeedResponse> findAll(FeedRequest feedRequest) {
-        Pageable pageRequest = feedRequest.toPageRequest();
+    public Pageable toPageRequest(Integer size, String sort) {
+        if (size == null || size < 1) {
+            return PageRequest.of(0, 10, SortSelection.findByParameter(sort).getSort());
+        }
+        return PageRequest.of(0, size, SortSelection.findByParameter(sort).getSort());
+    }
 
-        if (feedRequest.getLastCycleDetailId() == null) {
+    public List<FeedResponse> findAll(PagingParams pagingParams) {
+
+        Pageable pageRequest = toPageRequest(pagingParams.getSize(), pagingParams.getSort());
+
+        if (pagingParams.getCursorId() == null) {
             List<Feed> feeds = feedRepository.findAll(0L, LocalDateTime.now(), pageRequest);
             return convertFeedResponse(feeds);
         }
 
-        Feed feed = feedService.search(feedRequest.getLastCycleDetailId());
+        Feed feed = feedService.search(pagingParams.getCursorId());
         List<Feed> feeds = feedRepository.findAll(feed.getCycleDetailId(), feed.getProgressTime(),
                 pageRequest);
         return convertFeedResponse(feeds);

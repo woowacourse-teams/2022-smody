@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.dto.FeedRequest;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -43,7 +43,7 @@ public class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, today);
         makeSuccessCycle(cycle, today);
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(new FeedRequest("latest", 10, null));
+        List<FeedResponse> feedResponses = feedQueryService.findAll(new PagingParams("latest", 10));
 
         //then
         assertAll(
@@ -69,7 +69,7 @@ public class FeedQueryServiceTest extends IntegrationTest {
         entityManager.flush();
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(
-                new FeedRequest("latest", 10, cycle1.getCycleDetails().get(2).getId())
+                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
         );
         // then
         assertAll(

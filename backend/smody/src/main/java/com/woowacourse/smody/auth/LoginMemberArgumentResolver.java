@@ -2,7 +2,6 @@ package com.woowacourse.smody.auth;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-
 import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;

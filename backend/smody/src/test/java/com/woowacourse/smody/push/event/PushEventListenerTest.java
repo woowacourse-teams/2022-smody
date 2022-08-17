@@ -1,19 +1,15 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+import static com.woowacourse.smody.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
@@ -32,6 +28,13 @@ import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.service.CommentService;
 import com.woowacourse.smody.service.CycleService;
 import com.woowacourse.smody.service.PushSubscriptionService;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 class PushEventListenerTest extends IntegrationTest {
 

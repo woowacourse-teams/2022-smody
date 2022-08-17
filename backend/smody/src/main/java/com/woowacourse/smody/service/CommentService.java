@@ -13,7 +13,6 @@ import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.repository.CommentRepository;
 import com.woowacourse.smody.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

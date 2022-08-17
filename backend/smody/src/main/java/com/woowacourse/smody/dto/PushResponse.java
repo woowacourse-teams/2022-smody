@@ -1,7 +1,6 @@
 package com.woowacourse.smody.dto;
 
 import com.woowacourse.smody.domain.PushNotification;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

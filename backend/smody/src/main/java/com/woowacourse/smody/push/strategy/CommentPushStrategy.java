@@ -1,10 +1,5 @@
 package com.woowacourse.smody.push.strategy;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.woowacourse.smody.domain.Comment;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushCase;
@@ -14,8 +9,10 @@ import com.woowacourse.smody.domain.PushSubscription;
 import com.woowacourse.smody.service.PushNotificationService;
 import com.woowacourse.smody.service.PushSubscriptionService;
 import com.woowacourse.smody.service.WebPushService;
-
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor

@@ -12,8 +12,6 @@ import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.dto.CommentUpdateRequest;
 import com.woowacourse.smody.repository.CommentRepository;
 import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
