@@ -1,13 +1,14 @@
 package com.woowacourse.smody.push.event;
 
-import static java.util.stream.Collectors.toMap;
-
 import com.woowacourse.smody.domain.PushCase;
 import com.woowacourse.smody.push.strategy.PushStrategy;
-import java.util.List;
-import java.util.Map;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 @Component
 public class PushEventListener {

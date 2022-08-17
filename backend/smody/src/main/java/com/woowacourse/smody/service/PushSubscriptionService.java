@@ -8,11 +8,12 @@ import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

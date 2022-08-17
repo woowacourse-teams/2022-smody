@@ -9,12 +9,12 @@ import static com.woowacourse.smody.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
 import static com.woowacourse.smody.ResourceFixture.토닉_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.dto.ChallengeOfMineRequest;
@@ -79,7 +79,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 0, 10));
+                    tokenPayload, new PagingParams(null, null, 0L, null));
 
             // then
             assertAll(
@@ -98,7 +98,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pageFullSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 0, 3));
+                    tokenPayload, new PagingParams(null, 3, 0L, null));
 
             // then
             assertAll(
@@ -117,7 +117,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pagePartialSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 1, 2));
+                    tokenPayload, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
             assertAll(
@@ -136,7 +136,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchOfMine_pageOverMaxPage() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest(null, 2, 3));
+                    tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, null));
 
             // then
             assertThat(responses).isEmpty();
@@ -147,7 +147,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 0, 10));
+                    tokenPayload, new PagingParams(null, null, 0L, "success"));
 
             // then
             assertAll(
@@ -166,7 +166,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pageFullSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 0, 3));
+                    tokenPayload, new PagingParams(null, 3, 0L, "success"));
 
             // then
             assertAll(
@@ -185,7 +185,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pagePartialSize() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 1, 2));
+                    tokenPayload, new PagingParams(null, 2, 오늘의_운동_ID, "success"));
 
             // then
             assertAll(
@@ -204,14 +204,14 @@ class ChallengeServiceTest extends IntegrationTest {
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
-                    tokenPayload, new ChallengeOfMineRequest("success", 2, 3));
+                    tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, "success"));
 
             // then
             assertThat(responses).isEmpty();
         }
     }
 
-    @DisplayName("모든 챌린지를 참여 중인 사람 수 기준 내림차순으로")
+    @DisplayName("모든 챌린지를 ")
     @Nested
     class FindAllWithChallengerCountSortTest {
 
@@ -226,12 +226,12 @@ class ChallengeServiceTest extends IntegrationTest {
             fixture.사이클_생성(토닉_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(3L)); //성공
         }
 
-        @DisplayName("정렬")
+        @DisplayName("조회")
         @Test
         void findAllWithChallengerCount_sort() {
             // when
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(0, 10), null);
+                    now, new PagingParams(null, null, 0L, null));
 
             // then
             assertAll(
@@ -243,12 +243,12 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 0페이지의 2개만 조회")
+        @DisplayName("2개만 조회")
         @Test
         void findAllWithChallengerCount_pageFullSize() {
             // when
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(0, 2), null);
+            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(now,
+                    new PagingParams(null, 2, 0L, null));
 
             // then
             assertAll(
@@ -260,12 +260,12 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 1페이지의 1개만 조회")
+        @DisplayName("커서 기준 2개만 조회")
         @Test
         void findAllWithChallengerCount_pagePartialSize() {
             // when
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(1, 2), null);
+                    now, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
             assertAll(
@@ -277,24 +277,24 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 최대 페이지를 초과한 페이지 조회")
+        @DisplayName("데이터의 마지막이 커서이면서 3개 조회")
         @Test
         void findAllWithChallengerCount_pageOverMaxPage() {
             // when
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    now, PageRequest.of(3, 2), null);
+                    now, new PagingParams(null, 3, JPA_공부_ID, null));
 
             // then
             assertThat(challengeResponses).isEmpty();
         }
 
-        @DisplayName("정렬하면서 회원인 경우")
+        @DisplayName("회원이 조회")
         @Test
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(0, 10), null);
+                    tokenPayload, now, new PagingParams(null, null, 0L, null));
 
             // then
             assertAll(
@@ -306,13 +306,13 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 0페이지의 2개만 조회하면서 회원인 경우")
+        @DisplayName("회원이 2개 조회")
         @Test
         void findAllWithChallengerCount_pageFullSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(0, 2), null);
+                    tokenPayload, now, new PagingParams(null, 2, 0L, null));
 
             // then
             assertAll(
@@ -326,13 +326,13 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 1페이지의 1개만 조회하면서 회원인 경우")
+        @DisplayName("회원이 커서를 기준으로 2개를 조회")
         @Test
         void findAllWithChallengerCount_pagePartialSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(1, 2), null);
+                    tokenPayload, now, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
             assertAll(
@@ -346,13 +346,13 @@ class ChallengeServiceTest extends IntegrationTest {
             );
         }
 
-        @DisplayName("정렬 후 최대 페이지를 초과한 페이지 조회하면서 회원인 경우")
+        @DisplayName("회원이 데이터의 마지막이 커서이면서 3개 조회")
         @Test
         void findAllWithChallengerCount_pageOverMaxPageAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
             List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
-                    tokenPayload, now, PageRequest.of(3, 2), null);
+                    tokenPayload, now, new PagingParams(null, 3, JPA_공부_ID, null));
 
             // then
             assertThat(challengeResponses).isEmpty();
@@ -556,7 +556,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // when
         List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
-                now, PageRequest.of(0, 10), "기");
+                now, new PagingParams(null, null, 0L, "기"));
 
         // then
         assertAll(
@@ -570,6 +570,46 @@ class ChallengeServiceTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("비회원이 챌린지를 이름 기준으로 검색 후 페이지네이션")
+    @Test
+    void searchByName_unAuthorizedCursorPaging() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+
+        // when
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                now, new PagingParams(null, null, 스모디_방문하기_ID, "기"));
+
+        // then
+        assertAll(
+                () -> assertThat(challengeTabResponse.size()).isEqualTo(1),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
+                        .containsExactly(알고리즘_풀기_ID),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
+                        .containsExactly( 1),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
+                        .containsExactly(false)
+        );
+    }
+
+    @DisplayName("비회원이 챌린지를 이름 기준으로 검색하고 마지막 커서로 페이지네이션")
+    @Test
+    void searchByName_unAuthorizedLastCursor() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+
+        // when
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                now, new PagingParams(null, null, 알고리즘_풀기_ID, "기"));
+
+        // then
+        assertThat(challengeTabResponse).isEmpty();
+    }
+
     @DisplayName("비회원이 챌린지를 빈 이름 혹은 공백 문자로 검색하는 경우")
     @ParameterizedTest
     @ValueSource(strings = {" ", ""})
@@ -581,7 +621,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // when then
         assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
-                now, PageRequest.of(0, 10), invalidSearchingName))
+                now, new PagingParams(null, null, 0L, invalidSearchingName)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
@@ -598,7 +638,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // when
         List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
-                tokenPayload, now, PageRequest.of(0, 10), "기");
+                tokenPayload, now, new PagingParams(null, null, 0L, "기"));
 
         // then
         assertAll(
@@ -610,6 +650,48 @@ class ChallengeServiceTest extends IntegrationTest {
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
                         .containsExactly(false, true)
         );
+    }
+
+    @DisplayName("회원이 챌린지를 이름 기준으로 검색 후 페이지네이션")
+    @Test
+    void searchByName_authorizedCursorPaging() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                tokenPayload, now, new PagingParams(null, null, 스모디_방문하기_ID, "기"));
+
+        // then
+        assertAll(
+                () -> assertThat(challengeTabResponse.size()).isEqualTo(1),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
+                        .containsExactly(알고리즘_풀기_ID),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
+                        .containsExactly( 1),
+                () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
+                        .containsExactly(true)
+        );
+    }
+
+    @DisplayName("회원이 챌린지를 이름 기준으로 검색하고 마지막 커서로 페이지네이션")
+    @Test
+    void searchByName_authorizedLastCursor() {
+        //given
+        fixture.사이클_생성_NOTHING(알파_ID, 알고리즘_풀기_ID, now);
+        fixture.사이클_생성_NOTHING(토닉_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
+        TokenPayload tokenPayload = new TokenPayload(알파_ID);
+
+        // when
+        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+                tokenPayload, now, new PagingParams(null, null, 알고리즘_풀기_ID, "기"));
+
+        // then
+        assertThat(challengeTabResponse).isEmpty();
     }
 
     @DisplayName("회원이 챌린지를 빈 이름 혹은 공백 문자로 검색하는 경우")
@@ -624,7 +706,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // when then
         assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
-                tokenPayload, now, PageRequest.of(0, 10), invalidSearchingName))
+                tokenPayload, now, new PagingParams(null, null, 0L, invalidSearchingName)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_SEARCH_NAME);
