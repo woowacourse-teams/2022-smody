@@ -5,10 +5,11 @@ import com.woowacourse.smody.domain.Feed;
 import com.woowacourse.smody.dto.CommentResponse;
 import com.woowacourse.smody.dto.TokenPayload;
 import com.woowacourse.smody.repository.CommentRepository;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

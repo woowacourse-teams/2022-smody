@@ -1,22 +1,20 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.toList;
-
 import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.*;
-import com.woowacourse.smody.util.PagingUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)

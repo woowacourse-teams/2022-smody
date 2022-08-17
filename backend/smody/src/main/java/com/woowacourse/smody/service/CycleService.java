@@ -1,10 +1,7 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.toList;
-
 import com.woowacourse.smody.domain.*;
 import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.FilteredCycleHistoryRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -13,14 +10,16 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.repository.CycleRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)

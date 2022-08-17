@@ -3,11 +3,12 @@ package com.woowacourse.smody.repository;
 import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface PushNotificationRepository extends JpaRepository<PushNotification, Long> {
 

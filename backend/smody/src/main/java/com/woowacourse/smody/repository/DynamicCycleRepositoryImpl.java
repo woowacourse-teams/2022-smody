@@ -1,20 +1,15 @@
 package com.woowacourse.smody.repository;
 
-import com.woowacourse.smody.domain.Challenge;
 import com.woowacourse.smody.domain.Cycle;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.woowacourse.smody.domain.PagingParams;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-
-import com.woowacourse.smody.domain.PagingParams;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
-    public static final long FIRST_SEARCH = -1L;
     @PersistenceContext
     private EntityManager entityManager;
 

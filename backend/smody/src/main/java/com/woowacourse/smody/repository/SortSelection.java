@@ -1,7 +1,8 @@
 package com.woowacourse.smody.repository;
 
-import java.util.Arrays;
 import org.springframework.data.domain.Sort;
+
+import java.util.Arrays;
 
 public enum SortSelection {
 

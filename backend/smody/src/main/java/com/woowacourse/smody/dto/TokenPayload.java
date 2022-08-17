@@ -1,9 +1,10 @@
 package com.woowacourse.smody.dto;
 
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
