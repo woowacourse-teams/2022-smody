@@ -39,6 +39,10 @@ export const push = [
 
   // 알림 조회(GET)
   rest.get(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
+    if (req.headers.headers.authorization === 'Bearer null') {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(ctx.status(200), ctx.json(notifications));
   }),
 
