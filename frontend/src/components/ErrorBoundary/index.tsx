@@ -6,8 +6,9 @@ import React from 'react';
 import { ERROR_MESSAGE } from 'constants/message';
 
 const UNKNOWN_ERROR_MESSAGE = '알 수 없는 오류가 발생했습니다.';
-const isAxiosError = (error: Error) => error instanceof AxiosError;
+const INITIAL_STATE = { hasError: false, errorCode: null, errorMessage: null };
 
+const isAxiosError = (error: Error) => error instanceof AxiosError;
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
@@ -15,7 +16,16 @@ export class ErrorBoundary extends React.Component<
   constructor(props: ErrorBoundaryProps) {
     super(props);
 
-    this.state = { hasError: false, errorCode: null, errorMessage: null };
+    this.state = INITIAL_STATE;
+  }
+
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    const { pathname: currentPathname } = this.props;
+    const { pathname: prevPathname } = prevProps;
+
+    if (prevPathname !== currentPathname) {
+      this.setState(INITIAL_STATE);
+    }
   }
 
   static getDerivedStateFromError(error: Error) {

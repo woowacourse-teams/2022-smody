@@ -1,6 +1,7 @@
 import { OutletWrapperProps } from 'Layout/type';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
@@ -23,6 +24,7 @@ const OTHER_PATH_PADDING = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
 
 export const Layout = () => {
   const themeContext = useThemeContext();
+  const { pathname } = useLocation();
 
   const getPathMatchColor = useMatchPath(themeContext.secondary, themeContext.background);
 
@@ -52,6 +54,7 @@ export const Layout = () => {
         horizontalPadding={horizontalPadding}
       >
         <ErrorBoundary
+          pathname={pathname}
           renderFallback={(renderFallbackParams) => (
             <ErrorFallbackMain {...renderFallbackParams} />
           )}
