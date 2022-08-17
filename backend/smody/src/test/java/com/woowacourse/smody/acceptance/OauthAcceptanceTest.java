@@ -1,5 +1,8 @@
 package com.woowacourse.smody.acceptance;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.auth.JwtTokenProvider;
 import com.woowacourse.smody.dto.TokenPayload;
 import io.restassured.RestAssured;
@@ -8,9 +11,6 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class OauthAcceptanceTest extends AcceptanceTest {
 

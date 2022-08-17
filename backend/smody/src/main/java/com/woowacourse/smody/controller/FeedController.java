@@ -1,6 +1,6 @@
 package com.woowacourse.smody.controller;
 
-import com.woowacourse.smody.dto.FeedRequest;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.service.FeedQueryService;
 import java.util.List;
@@ -20,8 +20,8 @@ public class FeedController {
     private final FeedQueryService feedQueryService;
 
     @GetMapping
-    public ResponseEntity<List<FeedResponse>> findAll(@ModelAttribute FeedRequest feedRequest) {
-        List<FeedResponse> feedResponses = feedQueryService.findAll(feedRequest);
+    public ResponseEntity<List<FeedResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
+        List<FeedResponse> feedResponses = feedQueryService.findAll(pagingParams);
         return ResponseEntity.ok(feedResponses);
     }
 

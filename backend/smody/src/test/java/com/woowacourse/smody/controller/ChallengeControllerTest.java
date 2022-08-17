@@ -15,8 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.*;
-
+import com.woowacourse.smody.dto.ChallengeHistoryResponse;
+import com.woowacourse.smody.dto.ChallengeOfMineRequest;
+import com.woowacourse.smody.dto.ChallengeOfMineResponse;
+import com.woowacourse.smody.dto.ChallengeRequest;
+import com.woowacourse.smody.dto.ChallengeResponse;
+import com.woowacourse.smody.dto.ChallengeTabResponse;
+import com.woowacourse.smody.dto.ChallengersResponse;
+import com.woowacourse.smody.dto.TokenPayload;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

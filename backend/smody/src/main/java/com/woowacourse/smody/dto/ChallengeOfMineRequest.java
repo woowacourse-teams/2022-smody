@@ -1,6 +1,5 @@
 package com.woowacourse.smody.dto;
 
-import com.woowacourse.smody.repository.SortSelection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
