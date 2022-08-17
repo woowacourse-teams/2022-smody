@@ -1,7 +1,14 @@
+const broadcast = new BroadcastChannel('push-channel');
+
+self.addEventListener('install', (event) => {});
+
+self.addEventListener('activate', (event) => {});
+
+self.addEventListener('fetch', (event) => {});
+
 /**
  * 알림 관련 코드
  */
-
 self.addEventListener('push', (event) => {
   const data = event.data.json();
 
@@ -30,6 +37,8 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
+
+  broadcast.postMessage({ message: data.message });
 });
 
 self.addEventListener('notificationclick', (event) => {
