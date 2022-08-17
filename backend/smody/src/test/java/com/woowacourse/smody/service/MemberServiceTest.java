@@ -1,12 +1,25 @@
 package com.woowacourse.smody.service;
 
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
@@ -21,14 +34,6 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.repository.CycleRepository;
 import com.woowacourse.smody.repository.PushNotificationRepository;
 import com.woowacourse.smody.repository.PushSubscriptionRepository;
-import java.time.LocalDateTime;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 public class MemberServiceTest extends IntegrationTest {
 
@@ -140,5 +145,49 @@ public class MemberServiceTest extends IntegrationTest {
 
         // then
         assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
+    }
+
+    @DisplayName("회원을 프로필 이미지와 닉네임, 소개를 다른 스레드에서 각각 수정하면 "
+        + "전체가 다 수정되어야 한다.")
+    @Test
+    @Rollback(value = false)
+    void updateMember_multiThread() throws InterruptedException {
+        // given
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        CountDownLatch latch = new CountDownLatch(2);
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
+        given(imageStrategy.extractUrl(any()))
+            .willReturn("update-image-url");
+
+        // when
+        service.execute(() -> {
+            memberService.updateMyInfo(tokenPayload, new MemberUpdateRequest("쬬그린", "HI"));
+            latch.countDown();
+        });
+
+        service.execute(() -> {
+            MockMultipartFile image = new MockMultipartFile("update-image.jpg", "byte".getBytes());
+            memberService.updateProfileImage(tokenPayload, image);
+            latch.countDown();
+        });
+
+        latch.await();
+
+        // then
+        Member result = memberService.search(tokenPayload);
+        assertAll(
+            () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
+            () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
+            () -> assertThat(result.getIntroduction()).isEqualTo("HI")
+        );
+        rollbackToOriginalData(result);
+    }
+
+    private void rollbackToOriginalData(Member result) {
+        result.updateNickname("조조그린");
+        result.updatePicture(new Image(null,
+            image -> "'https://lh3.googleusercontent.com/a-/AFdZucp2Jil0TsQ_Edr7hFi7RGfyJK48yeffjHgCVI3JNw=s96-c'"));
+        result.updateIntroduction(null);
     }
 }
