@@ -1,9 +1,7 @@
 import { useGetMyCyclesInProgress } from 'apis';
 
 const useCertPage = () => {
-  const { data } = useGetMyCyclesInProgress({
-    refetchOnWindowFocus: false,
-  });
+  const { data } = useGetMyCyclesInProgress();
 
   const cycles = data?.data;
 

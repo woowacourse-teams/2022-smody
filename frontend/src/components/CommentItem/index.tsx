@@ -37,7 +37,7 @@ export const CommentItem = ({
             )}
           </FlexBox>
           <Text
-            size={12}
+            size={14}
             color={themeContext.mainText}
           >{`${year}.${month}.${date} ${hours}:${minutes}`}</Text>
         </CommentInfoWrapper>
@@ -48,7 +48,7 @@ export const CommentItem = ({
         )}
       </FlexBox>
       <ContentWrapper>
-        <Content size={16} color={themeContext.mainText}>
+        <Content size={16} color={themeContext.mainText} style={{ whiteSpace: 'pre' }}>
           {content}
         </Content>
       </ContentWrapper>
@@ -75,7 +75,8 @@ const CommentInfoWrapper = styled(FlexBox)`
 `;
 
 const Writer = styled(Text)`
-  margin-left: 0.063rem;
+  margin-left: 0.3rem;
+  line-height: 2;
 `;
 
 const MoreIconWrapper = styled.div`
@@ -85,13 +86,14 @@ const MoreIconWrapper = styled.div`
 `;
 
 const ContentWrapper = styled(FlexBox)`
-  margin-top: 0.625rem;
   margin-left: 3.125rem;
   flex-wrap: wrap;
 `;
 
 const Content = styled(Text)`
-  line-height: 1.5;
-  word-wrap: break-word;
-  word-break: break-all;
+  ${({ theme }) => css`
+    color: ${theme.onBackground};
+    word-wrap: break-word;
+    word-break: break-all;
+  `}
 `;

@@ -39,26 +39,26 @@ export const Profile = () => {
           <FlexBox gap="2.625rem">
             <FlexBox gap="0.4rem">
               <Text size={16} color={themeContext.onBackground}>
-                성공
+                성공횟수
               </Text>
               <Text
                 aria-label="성공한 챌린지 횟수"
                 size={16}
                 fontWeight="bold"
-                color={themeContext.onBackground}
+                color={themeContext.primary}
               >
                 {successCount}
               </Text>
             </FlexBox>
             <FlexBox gap="0.4rem">
               <Text size={16} color={themeContext.onBackground}>
-                전체
+                도전횟수
               </Text>
               <Text
                 aria-label="시도한 챌린지 횟수"
                 size={16}
                 fontWeight="bold"
-                color={themeContext.onBackground}
+                color={themeContext.primary}
               >
                 {totalCount}
               </Text>

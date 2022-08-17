@@ -6,9 +6,7 @@ const useCardGridContainer = () => {
     hasNextPage,
     fetchNextPage,
     isFetching,
-  } = useGetMyChallenges({
-    refetchOnWindowFocus: false,
-  });
+  } = useGetMyChallenges();
 
   return { myChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching };
 };
