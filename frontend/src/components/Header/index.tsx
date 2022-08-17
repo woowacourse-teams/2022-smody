@@ -1,7 +1,8 @@
 import { HeaderProps } from './type';
-import { useHeader } from './useHeader';
+import { useHeader, useHeaderRightButton } from './useHeader';
 import { isDev, isLocal } from 'env';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -15,6 +16,8 @@ import {
   Bell,
   SubscriptionButton,
   NotificationMessage,
+  ErrorBoundary,
+  ErrorFallbackHeader,
 } from 'components';
 
 import { Z_INDEX } from 'constants/css';
@@ -22,16 +25,9 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
-  const {
-    isDark,
-    isLogin,
-    handleDarkToggle,
-    handleLoginButton,
-    notifications,
-    isSubscribed,
-    subscribe,
-    isLoadingSubscribe,
-  } = useHeader();
+  const { pathname } = useLocation();
+
+  const { isDark, handleDarkToggle } = useHeader();
 
   return (
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
@@ -42,26 +38,48 @@ export const Header = ({ bgColor }: HeaderProps) => {
       </Link>
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
-        {isLogin ? (
-          <Dropdown
-            button={<Bell count={notifications?.length} isSubscribed={isSubscribed} />}
-            nonLinkableElement={
-              <SubscriptionButton
-                isSubscribed={isSubscribed}
-                subscribe={subscribe}
-                isLoadingSubscribe={isLoadingSubscribe}
-              />
-            }
-          >
-            <NotificationMessage notifications={notifications} />
-          </Dropdown>
-        ) : (
-          <Button size="small" onClick={handleLoginButton}>
-            로그인
-          </Button>
-        )}
+        <ErrorBoundary
+          pathname={pathname}
+          renderFallback={(renderFallbackParams) => <ErrorFallbackHeader />}
+        >
+          <HeaderRightButton />
+        </ErrorBoundary>
       </FlexBox>
     </Wrapper>
+  );
+};
+
+const HeaderRightButton = () => {
+  const {
+    isLogin,
+    handleLoginButton,
+    notifications,
+    isSubscribed,
+    subscribe,
+    isLoadingSubscribe,
+  } = useHeaderRightButton();
+
+  if (isLogin) {
+    return (
+      <Dropdown
+        button={<Bell count={notifications?.length} isSubscribed={isSubscribed} />}
+        nonLinkableElement={
+          <SubscriptionButton
+            isSubscribed={isSubscribed}
+            subscribe={subscribe}
+            isLoadingSubscribe={isLoadingSubscribe}
+          />
+        }
+      >
+        <NotificationMessage notifications={notifications} />
+      </Dropdown>
+    );
+  }
+
+  return (
+    <Button size="small" onClick={handleLoginButton}>
+      로그인
+    </Button>
   );
 };
 

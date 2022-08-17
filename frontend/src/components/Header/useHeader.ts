@@ -12,10 +12,21 @@ import useSubscribe from 'hooks/useSubscribe';
 const broadcast = new BroadcastChannel('push-channel');
 
 export const useHeader = () => {
-  const renderSnackBar = useSnackBar();
-
   const [isDark, setIsDark] = useRecoilState(isDarkState);
 
+  const handleDarkToggle = () => {
+    localStorage.setItem('isDark', JSON.stringify(!isDark));
+    setIsDark((prev) => !prev);
+  };
+
+  return {
+    isDark,
+    handleDarkToggle,
+  };
+};
+
+export const useHeaderRightButton = () => {
+  const renderSnackBar = useSnackBar();
   const isLogin = useRecoilValue(isLoginState);
 
   const { redirectGoogleLoginLink } = useAuth();
@@ -30,11 +41,6 @@ export const useHeader = () => {
   useEffect(() => {
     setBadge(badgeNumber);
   }, [setBadge, badgeNumber]);
-
-  const handleDarkToggle = () => {
-    localStorage.setItem('isDark', JSON.stringify(!isDark));
-    setIsDark((prev) => !prev);
-  };
 
   const handleLoginButton = () => {
     redirectGoogleLoginLink();
@@ -51,9 +57,7 @@ export const useHeader = () => {
   };
 
   return {
-    isDark,
     isLogin,
-    handleDarkToggle,
     handleLoginButton,
     notifications,
     isSubscribed,
