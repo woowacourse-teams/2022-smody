@@ -12,7 +12,12 @@ export const Title = ({ text, linkTo, children }: TitleProps) => {
   const { backToPreviousPage } = useTitle({ linkTo });
 
   return (
-    <TitleWrapper flexDirection="row" justifyContent="space-between">
+    <TitleWrapper
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      gap="10px"
+    >
       <IconWrapper>
         <MdArrowBackIosNew
           size={20}
