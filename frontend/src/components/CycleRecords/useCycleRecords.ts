@@ -1,25 +1,18 @@
-import { useGetMyCyclesByChallengeId } from 'apis';
-import { useParams } from 'react-router-dom';
+import { SelectOptions } from './type';
+import { useState } from 'react';
 
 export const useCycleRecords = () => {
-  const { challengeId } = useParams();
+  const [selectOption, setSelectOption] = useState<SelectOptions>('all');
 
-  const {
-    data: myCyclesInfiniteData,
-    isFetching: isFetchingMyCycles,
-    hasNextPage: hasNextPageMyCycles,
-    fetchNextPage: fetchNextPageMyCycles,
-  } = useGetMyCyclesByChallengeId(
-    { challengeId: Number(challengeId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const handleSelectButton = (select: SelectOptions) => {
+    if (select === selectOption) {
+      return;
+    }
+    setSelectOption(select);
+  };
 
   return {
-    myCyclesInfiniteData,
-    isFetchingMyCycles,
-    hasNextPageMyCycles,
-    fetchNextPageMyCycles,
+    selectOption,
+    handleSelectButton,
   };
 };
