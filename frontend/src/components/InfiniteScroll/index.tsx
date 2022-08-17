@@ -1,5 +1,6 @@
 import { InfiniteScrollProps } from './type';
 import { RefObject, useMemo, useRef } from 'react';
+import styled from 'styled-components';
 
 import useIntersect from 'hooks/useIntersect';
 
@@ -25,10 +26,14 @@ export const InfiniteScroll = ({
   }, options);
 
   return (
-    <FlexBox ref={rootRef} flexDirection="column">
+    <Wrapper ref={rootRef} flexDirection="column">
       {children}
       <div ref={targetRef} />
       {isFetching && loader}
-    </FlexBox>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled(FlexBox)`
+  width: 100%;
+`;

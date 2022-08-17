@@ -26,7 +26,7 @@ export const Record = ({ emojiIndex, startTime, cycleDetails }: RecordProps) => 
   return (
     <RecordWrapper
       flexDirection="column"
-      gap="5px"
+      gap="10px"
       isSuccess={currentCycleCertCount === CYCLE_SUCCESS_CRITERIA}
     >
       <Text color={themeContext.onSurface} fontWeight="bold">
@@ -65,21 +65,20 @@ const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProp
 
 const RecordWrapper = styled(FlexBox)<RecordWrapperProps>`
   ${({ theme, isSuccess }) => css`
+    max-width: 1000px;
     border-radius: 20px;
     padding: 10px 15px 15px;
-    background-color: ${isSuccess ? theme.secondary : theme.disabled};
+    margin: 0 auto;
+    background-color: ${isSuccess ? theme.secondary : theme.blur};
   `}
 `;
 
 const RecordItemWrapper = styled(FlexBox)<RecordItemWrapperProps>`
   ${({ theme, recordImg }) => css`
-    width: 30%;
-
     position: relative;
-
-    /* height: 100px; */
+    width: 30%;
     border-radius: 20px;
-    background-color: ${theme.disabledInput};
+    background-color: ${theme.disabled};
     ${recordImg &&
     css`
       background: url(${recordImg}) no-repeat center / cover;

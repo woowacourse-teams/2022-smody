@@ -8,8 +8,6 @@ import { FlexBox, Title, Text, ShareButton, ThumbnailWrapper } from 'components'
 import { CLIENT_PATH } from 'constants/path';
 import { colorList, emojiList } from 'constants/style';
 
-import { AvailablePickedColor } from 'styles/type';
-
 export const ChallengeInfoWithUser = () => {
   const themeContext = useThemeContext();
   const challengeData = useChallengeInfoWithUser();
@@ -29,24 +27,26 @@ export const ChallengeInfoWithUser = () => {
 
   return (
     <FlexBox flexDirection="column">
-      <Title text={challengeName} linkTo={CLIENT_PATH.FEED}>
+      <Title text={challengeName} linkTo={CLIENT_PATH.PROFILE}>
         <ShareButton text={`${challengeName} 챌린지에 함께 도전해요!`} />
       </Title>
       <ChallengeDetailWrapper
         flexDirection="row"
         justifyContent="space-between"
+        alignItems="center"
         gap="1rem"
       >
-        <FlexBox flexDirection="column" gap="1rem">
-          <ChallengeExplanationText color={themeContext.onBackground}>
-            {description}
-          </ChallengeExplanationText>
-          <FlexBox gap="2.625rem">
+        <ChallengeDescriptionWrapper
+          flexDirection="column"
+          gap="1rem"
+          justifyContent="center"
+        >
+          <FlexBox gap="2.625rem" justifyContent="center">
             <FlexBox gap="0.4rem">
               <Text size={16} color={themeContext.onBackground}>
                 인증
               </Text>
-              <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
+              <Text size={16} fontWeight="bold" color={themeContext.primary}>
                 {cycleDetailCount}
               </Text>
             </FlexBox>
@@ -54,12 +54,15 @@ export const ChallengeInfoWithUser = () => {
               <Text size={16} color={themeContext.onBackground}>
                 성공
               </Text>
-              <Text size={16} fontWeight="bold" color={themeContext.onBackground}>
+              <Text size={16} fontWeight="bold" color={themeContext.primary}>
                 {successCount}
               </Text>
             </FlexBox>
           </FlexBox>
-        </FlexBox>
+          <ChallengeExplanationWrapper>
+            <Text color={themeContext.onBackground}>{description}</Text>
+          </ChallengeExplanationWrapper>
+        </ChallengeDescriptionWrapper>
         <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
           {emojiList[emojiIndex]}
         </ThumbnailWrapper>
@@ -69,18 +72,19 @@ export const ChallengeInfoWithUser = () => {
 };
 
 const ChallengeDetailWrapper = styled(FlexBox)`
+  max-width: 1000px;
   line-height: 1rem;
+  margin: 0 auto;
 `;
 
-export interface ChallengeExplanationTextProps {
-  color: AvailablePickedColor;
-}
+const ChallengeDescriptionWrapper = styled(FlexBox)`
+  flex-grow: 1;
+  flex-wrap: wrap;
+  text-align: center;
+`;
 
-const ChallengeExplanationText = styled(Text).attrs<ChallengeExplanationTextProps>(
-  ({ color }) => ({
-    size: 20,
-    color: color,
-  }),
-)<ChallengeExplanationTextProps>`
+const ChallengeExplanationWrapper = styled.div`
+  word-wrap: break-word;
+  word-break: break-all;
   line-height: 1.7rem;
 `;
