@@ -1,5 +1,6 @@
 import { BASE_URL } from 'env';
 import { userData, accessTokenData } from 'mocks/data';
+import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 export const auth = [
@@ -52,5 +53,16 @@ export const auth = [
   // 프로필 이미지 업로드(POST)
   rest.post(`${BASE_URL}/members/me/profile-image`, (req, res, ctx) => {
     return res(ctx.delay(5000), ctx.status(201));
+  }),
+
+  // AccessToken 유효성 판단(GET)
+  rest.get(`${BASE_URL}/oauth/check`, (req, res, ctx) => {
+    return res(
+      ctx.delay(2000),
+      ctx.status(200),
+      ctx.json({
+        isValid: checkValidAccessToken(req),
+      }),
+    );
   }),
 ];

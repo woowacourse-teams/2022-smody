@@ -11,3 +11,7 @@ export type PatchMyInfoProps = Pick<User, 'nickname' | 'introduction'>;
 export interface PostProfileImageProps {
   formData: FormData;
 }
+
+export interface GetIsValidAccessTokenResponse {
+  isValid: boolean;
+}
