@@ -50,11 +50,11 @@ export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
 // 챌린지에 대한 전체 사이클 상세 조회 기능
 export const getMyCyclesByChallengeId = async ({
   challengeId,
-  lastCycleId,
+  cursorId,
 }: getMyCyclesByChallengeIdAPIProps) => {
   const params = {
     size: PAGE_SIZE.CYCLES,
-    lastCycleId,
+    cursorId,
   };
 
   return apiClient.axios.get<GetMyCyclesByChallengeIdResponse[]>(

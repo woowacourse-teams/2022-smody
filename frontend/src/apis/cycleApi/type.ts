@@ -29,7 +29,7 @@ export interface GetCycleByIdResponse extends Cycle {
 export type GetMyCyclesByChallengeIdProps = Pick<Challenge, 'challengeId'>;
 
 export interface getMyCyclesByChallengeIdAPIProps extends GetMyCyclesByChallengeIdProps {
-  lastCycleId: number;
+  cursorId: number;
 }
 
 export interface GetMyCyclesByChallengeIdResponse {
