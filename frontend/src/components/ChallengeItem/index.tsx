@@ -51,7 +51,12 @@ export const ChallengeItem = ({
           </FlexBox>
         </Link>
       </div>
-      <Button onClick={handleOpenBottomSheet} size="small" disabled={isInProgress}>
+      <Button
+        onClick={handleOpenBottomSheet}
+        size="small"
+        disabled={isInProgress}
+        style={{ width: '64px' }}
+      >
         {isInProgress ? '도전중' : '도전'}
       </Button>
       {isCustomCycleTimeOpen && (
