@@ -6,9 +6,7 @@ export const useFeedPage = () => {
     isFetching,
     hasNextPage,
     fetchNextPage,
-  } = useGetAllFeeds({
-    refetchOnWindowFocus: false,
-  });
+  } = useGetAllFeeds();
 
   return {
     feedInfiniteData,
