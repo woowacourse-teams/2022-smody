@@ -31,6 +31,10 @@ public class CommentPushStrategy implements PushStrategy {
 		Comment comment = (Comment)entity;
 		Member cycleDetailWriter = extractDetailWriter(comment);
 
+		if (comment.getMember() == cycleDetailWriter) {
+			return;
+		}
+
 		PushNotification pushNotification = pushNotificationService.register(buildNotification(entity));
 
 		List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(List.of(cycleDetailWriter));
