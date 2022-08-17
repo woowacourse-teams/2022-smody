@@ -9,10 +9,10 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   const themeContext = useThemeContext();
-  const { successChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching } =
+  const { myChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching } =
     useCardGridContainer();
 
-  if (successChallengeInfiniteData?.pages[0].data.length === 0) {
+  if (myChallengeInfiniteData?.pages[0].data.length === 0) {
     return (
       <EmptyContent
         title="아직 성공한 챌린지가 없습니다 :)"
@@ -36,7 +36,7 @@ export const CardGridContainer = () => {
         loader={<LoadingSpinner />}
       >
         <Grid>
-          {successChallengeInfiniteData?.pages.map((page) =>
+          {myChallengeInfiniteData?.pages.map((page) =>
             page?.data?.map((challenge) => (
               <CardBox key={challenge.challengeId} {...challenge} />
             )),
