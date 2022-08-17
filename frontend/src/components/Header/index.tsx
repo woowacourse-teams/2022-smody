@@ -1,8 +1,9 @@
 import { HeaderProps } from './type';
-import { useHeader, useHeaderRightButton } from './useHeader';
+import { useHeader } from './useHeader';
+import { useHeaderRightButton } from './useHeaderRightButton';
+import { useLoginButton } from './useLoginButton';
 import { isDev, isLocal } from 'env';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -18,6 +19,7 @@ import {
   NotificationMessage,
   ErrorBoundary,
   ErrorFallbackHeader,
+  ErrorFallbackLogInButton,
 } from 'components';
 
 import { Z_INDEX } from 'constants/css';
@@ -25,7 +27,6 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
-  const { pathname } = useLocation();
 
   const { isDark, handleDarkToggle } = useHeader();
 
@@ -38,46 +39,58 @@ export const Header = ({ bgColor }: HeaderProps) => {
       </Link>
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />
-        <ErrorBoundary
+        {/* <ErrorBoundary
           pathname={pathname}
           renderFallback={(renderFallbackParams) => <ErrorFallbackHeader />}
-        >
-          <HeaderRightButton />
-        </ErrorBoundary>
+        > */}
+        <HeaderRightButton />
+        {/* </ErrorBoundary> */}
       </FlexBox>
     </Wrapper>
   );
 };
 
 const HeaderRightButton = () => {
-  const {
-    isLogin,
-    handleLoginButton,
-    notifications,
-    isSubscribed,
-    subscribe,
-    isLoadingSubscribe,
-  } = useHeaderRightButton();
+  const { isLogin, pathname, handleClickErrorFallbackLoginButton } =
+    useHeaderRightButton();
 
   if (isLogin) {
     return (
-      <Dropdown
-        button={<Bell count={notifications?.length} isSubscribed={isSubscribed} />}
-        nonLinkableElement={
-          <SubscriptionButton
-            isSubscribed={isSubscribed}
-            subscribe={subscribe}
-            isLoadingSubscribe={isLoadingSubscribe}
-          />
-        }
-      >
-        <NotificationMessage notifications={notifications} />
-      </Dropdown>
+      <div>드롭다운 버튼</div>
+      // <Dropdown
+      //   button={<Bell count={notifications?.length} isSubscribed={isSubscribed} />}
+      //   nonLinkableElement={
+      //     <SubscriptionButton
+      //       isSubscribed={isSubscribed}
+      //       subscribe={subscribe}
+      //       isLoadingSubscribe={isLoadingSubscribe}
+      //     />
+      //   }
+      // >
+      //   <NotificationMessage notifications={notifications} />
+      // </Dropdown>
     );
   }
 
   return (
-    <Button size="small" onClick={handleLoginButton}>
+    <ErrorBoundary
+      pathname={pathname}
+      renderFallback={(renderFallbackParams) => (
+        <ErrorFallbackLogInButton
+          handleClickErrorFallbackLoginButton={handleClickErrorFallbackLoginButton}
+        />
+      )}
+    >
+      <LoginButton />
+    </ErrorBoundary>
+  );
+};
+
+const LoginButton = () => {
+  const { handleClickLoginButton } = useLoginButton();
+
+  return (
+    <Button size="small" onClick={handleClickLoginButton}>
       로그인
     </Button>
   );
