@@ -26,7 +26,7 @@ export class ErrorBoundary extends React.Component<
 
     const { response } = error as AxiosError<ErrorResponse>;
 
-    if (typeof response === 'undefined') {
+    if (typeof response === 'undefined' || typeof response === 'undefined') {
       return { hasError: true, errorCode: null, errorMessage: UNKNOWN_ERROR_MESSAGE };
     }
 
