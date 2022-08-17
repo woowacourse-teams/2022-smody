@@ -38,6 +38,7 @@ export const usePostCycle = (
     options,
   );
 
+// TODO 4. 인피니트 쿼리 및 커서페이징 처리
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const useGetMyCyclesInProgress = (
   options?: UseQueryOptions<
@@ -92,6 +93,7 @@ export const useGetCycleById = (
     options,
   );
 
+// TODO 커서페이징은 이거 참고
 // 챌린지에 대한 전체 사이클 상세 조회 기능
 export const useGetMyCyclesByChallengeId = (
   { challengeId, filter }: GetMyCyclesByChallengeIdProps,

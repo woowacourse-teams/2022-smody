@@ -46,6 +46,7 @@ export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
   return apiClient.axios.get<GetCycleByIdResponse>(`/cycles/${cycleId}`);
 };
 
+// TODO 커서페이징 이거 참고할 것
 // 챌린지에 대한 전체 사이클 상세 조회 기능
 export const getMyCyclesByChallengeId = async ({
   challengeId,

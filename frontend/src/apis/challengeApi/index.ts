@@ -32,6 +32,7 @@ import {
   useMutation,
 } from 'react-query';
 
+// TODO 1. 커서페이징 처리
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
   { searchValue }: GetChallengeProps,

@@ -30,6 +30,7 @@ import {
   UseInfiniteQueryOptions,
 } from 'react-query';
 
+// TODO 3. 커서페이징 처리
 // 1. 피드 전체 조회(GET)
 export const useGetAllFeeds = (
   options?: UseInfiniteQueryOptions<
