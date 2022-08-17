@@ -7,7 +7,7 @@
   "orientation": "any",
   "scope": "/",
   "short_name": "Smody",
-  "start_url": "/",
+  "start_url": "/home",
   "theme_color": "#7c61ff",
   "categories": [],
   "screenshots": [],
