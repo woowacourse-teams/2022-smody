@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.CycleDetailResponse;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
@@ -297,7 +299,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -358,7 +360,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when

@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface DynamicCycleRepository {
 
     List<Cycle> findAllFilterBy(
-            Long memberId, Long challengeId, String filter, Long lastCycleId, Pageable pageable);
+            Long memberId, Long challengeId, PagingParams pagingParams);
 
     List<Cycle> findByMemberWithFilter(Long memberId, PagingParams pagingParams);
 

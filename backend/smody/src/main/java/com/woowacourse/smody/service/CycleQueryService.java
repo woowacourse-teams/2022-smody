@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.CycleDetailResponse;
 import com.woowacourse.smody.dto.CycleResponse;
 import com.woowacourse.smody.dto.FilteredCycleHistoryRequest;
@@ -55,9 +56,10 @@ public class CycleQueryService {
     }
 
     public List<FilteredCycleHistoryResponse> findAllByMemberAndChallengeWithFilter(TokenPayload tokenPayload,
-                                                                                    FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
+                                                                                    Long challengeId,
+                                                                                    PagingParams pagingParams) {
         List<Cycle> cycles = cycleService.searchByMemberAndChallengeWithFilter(
-                tokenPayload.getId(), filteredCycleHistoryRequest
+                tokenPayload.getId(), challengeId, pagingParams
         );
         return cycles.stream()
                 .map(cycle -> new FilteredCycleHistoryResponse(cycle.getId(), cycle.getCycleDetails().stream()

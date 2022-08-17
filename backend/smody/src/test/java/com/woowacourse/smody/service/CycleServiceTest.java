@@ -16,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import com.woowacourse.smody.IntegrationTest;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.Image;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.domain.Progress;
 import com.woowacourse.smody.dto.CycleRequest;
 import com.woowacourse.smody.dto.CycleResponse;
@@ -451,11 +452,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge() {
             //given
-            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, null, 스모디_방문하기_ID);
+            PagingParams pagingParams = new PagingParams("startTime", null, 0L, null);
 
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
-                    tokenPayload, filteredCycleHistoryRequest);
+                    tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
             assertAll(
@@ -473,11 +474,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_cursorPaganation() {
             //given
-            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest(null, 10, failed1.getId(), 스모디_방문하기_ID);
+            PagingParams pagingParams = new PagingParams("startTime", 2, failed1.getId(), null);
 
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
-                    tokenPayload, filteredCycleHistoryRequest);
+                    tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
             assertAll(
@@ -495,11 +496,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_succeess() {
             //given
-            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 스모디_방문하기_ID);
+            PagingParams pagingParams = new PagingParams("startTime", null, 0L, "success");
 
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
-                    tokenPayload, filteredCycleHistoryRequest);
+                    tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
             assertAll(
@@ -517,11 +518,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_successCursorPaganation() {
             //given
-            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, success1.getId(), 스모디_방문하기_ID);
+            PagingParams pagingParams = new PagingParams("startTime", 1, success1.getId(), "success");
 
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
-                    tokenPayload, filteredCycleHistoryRequest);
+                    tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
             assertAll(
@@ -539,11 +540,11 @@ public class CycleServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallenge_noSuccessCursorPaganation() {
             //given
-            FilteredCycleHistoryRequest filteredCycleHistoryRequest = new FilteredCycleHistoryRequest("success", 10, null, 알고리즘_풀기_ID);
+            PagingParams pagingParams = new PagingParams("startTime", null, 0L, "success");
 
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
-                    tokenPayload, filteredCycleHistoryRequest);
+                    tokenPayload, 알고리즘_풀기_ID, pagingParams);
 
             // then
             assertThat(historyResponses).isEmpty();

@@ -20,36 +20,33 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     @Override
     public List<Cycle> findAllFilterBy(
-            Long memberId, Long challengeId, String filter, Long lastCycleId, Pageable pageable) {
-        String convertedFilter = convertFilter(filter);
-        Long convertedLastCycleIndex = convertLastCycleIndex(lastCycleId);
-        LocalDateTime convertedStartTime = convertStartTime(convertedLastCycleIndex);
+            Long memberId, Long challengeId, PagingParams pagingParams) {
         return entityManager.createQuery(findAllFilterByQuery(
-                memberId, challengeId, convertedFilter, convertedLastCycleIndex, convertedStartTime))
-                .setMaxResults(pageable.getPageSize())
+                memberId, challengeId, pagingParams))
+                .setMaxResults(pagingParams.getDefaultSize())
                 .getResultList();
     }
 
     private CriteriaQuery<Cycle> findAllFilterByQuery(
-            Long memberId, Long challengeId, String filter, Long lastCycleId, LocalDateTime startTime) {
+            Long memberId, Long challengeId, PagingParams pagingParams) {
+        String filter = convertFilter(pagingParams.getFilter());
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cycle> cycleCriteriaQuery = criteriaBuilder.createQuery(Cycle.class);
         Root<Cycle> cycleRoot = cycleCriteriaQuery.from(Cycle.class);
         Predicate equalsToMember = criteriaBuilder.equal(cycleRoot.get("member").get("id"), memberId);
         Predicate equalsToChallenge = criteriaBuilder.equal(cycleRoot.get("challenge").get("id"), challengeId);
         Predicate equalsToSuccess = criteriaBuilder.equal(cycleRoot.get("progress").as(String.class), filter.toUpperCase());
-        Order orderByStartTime = criteriaBuilder.desc(cycleRoot.get("startTime"));
-        Predicate notEqualsToId = criteriaBuilder.notEqual(cycleRoot.get("id"), lastCycleId);
-        Predicate overThanStartTime = criteriaBuilder.lessThanOrEqualTo(cycleRoot.get("startTime"), startTime);
+        Order orderByStartTime = criteriaBuilder.desc(cycleRoot.get(pagingParams.getSort()));
+        Predicate overThanId = criteriaBuilder.greaterThan(cycleRoot.get("id"), pagingParams.getCursorId());
 
         if (filter.equals("success")) {
             return cycleCriteriaQuery.select(cycleRoot)
                     .where(criteriaBuilder.and(
-                            equalsToMember, equalsToChallenge, equalsToSuccess, notEqualsToId, overThanStartTime))
+                            equalsToMember, equalsToChallenge, equalsToSuccess, overThanId))
                     .orderBy(orderByStartTime);
         }
         return cycleCriteriaQuery.select(cycleRoot)
-                .where(criteriaBuilder.and(equalsToMember, equalsToChallenge, notEqualsToId, overThanStartTime))
+                .where(criteriaBuilder.and(equalsToMember, equalsToChallenge, overThanId))
                 .orderBy(orderByStartTime);
     }
 
@@ -58,21 +55,6 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
             return "";
         }
         return filter;
-    }
-
-    private Long convertLastCycleIndex(Long lastCycleId) {
-        if (lastCycleId == null) {
-            return FIRST_SEARCH;
-        }
-        return lastCycleId;
-    }
-
-    private LocalDateTime convertStartTime(Long lastCycleId) {
-        if (lastCycleId <= 0) {
-            return LocalDateTime.now();
-        }
-        Cycle cycle = entityManager.find(Cycle.class, lastCycleId);
-        return cycle.getStartTime();
     }
 
     @Override

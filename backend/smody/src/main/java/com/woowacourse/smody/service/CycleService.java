@@ -104,10 +104,9 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
+    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
         return cycleRepository.findAllFilterBy(
-                memberId, filteredCycleHistoryRequest.getChallengeId(), filteredCycleHistoryRequest.getFilter(),
-                filteredCycleHistoryRequest.getLastCycleId(), filteredCycleHistoryRequest.toPageRequest());
+                memberId, challengeId, pagingParams);
     }
 
     public List<Cycle> findByMember(Member member) {
