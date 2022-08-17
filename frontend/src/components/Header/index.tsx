@@ -19,6 +19,7 @@ import {
   NotificationMessage,
   ErrorBoundary,
   ErrorFallbackSubscriptionButton,
+  ErrorFallbackNotificationMessage,
   ErrorFallbackLogInButton,
 } from 'components';
 
@@ -74,7 +75,7 @@ const HeaderRightButton = () => {
         <ErrorBoundary
           pathname={pathname}
           renderFallback={(renderFallbackParams) => (
-            <div>NotificationMessage에서 에러발생</div>
+            <ErrorFallbackNotificationMessage {...renderFallbackParams} />
           )}
         >
           <NotificationMessage updateNotificationCount={updateNotificationCount} />
