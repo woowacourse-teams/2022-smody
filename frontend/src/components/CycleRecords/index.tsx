@@ -1,41 +1,44 @@
-import { useGetMyCyclesByChallengeId } from 'apis';
-import { useParams } from 'react-router-dom';
+import { useCycleRecords } from './useCycleRecords';
+import styled from 'styled-components';
+
+import { FlexBox } from 'components/@shared/FlexBox';
+
+import { InfiniteScroll } from 'components/InfiniteScroll';
+import { LoadingSpinner } from 'components/LoadingSpinner';
+import { Record } from 'components/Record';
 
 export const CycleRecords = () => {
-  const { challengeId } = useParams();
-
   const {
-    data: cyclesByChallengeIdInfiniteData,
-    isFetching,
-    hasNextPage,
-    fetchNextPage,
-  } = useGetMyCyclesByChallengeId(
-    { challengeId: Number(challengeId) },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+    myCyclesInfiniteData,
+    isFetchingMyCycles,
+    hasNextPageMyCycles,
+    fetchNextPageMyCycles,
+  } = useCycleRecords();
 
-  if (typeof cyclesByChallengeIdInfiniteData === 'undefined') {
+  if (typeof myCyclesInfiniteData === 'undefined') {
     return null;
   }
 
   return (
     <InfiniteScroll
-      loadMore={fetchNextPage}
-      hasMore={hasNextPage}
-      isFetching={isFetching}
+      loadMore={fetchNextPageMyCycles}
+      hasMore={hasNextPageMyCycles}
+      isFetching={isFetchingMyCycles}
       loader={<LoadingSpinner />}
     >
-      <FlexBox as="ul" flexDirection="column" alignItems="center">
-        {feedInfiniteData?.pages.map((page) =>
-          page?.data.map((feedInfo) => (
-            <li key={feedInfo.cycleDetailId}>
-              <FeedItem {...feedInfo} />
-            </li>
+      <FlexBox as="ul" flexDirection="column" alignItems="center" gap="1rem">
+        {myCyclesInfiniteData?.pages.map((page) =>
+          page?.data.map((cycle) => (
+            <RecordList key={cycle.cycleId}>
+              <Record {...cycle} />
+            </RecordList>
           )),
         )}
       </FlexBox>
     </InfiniteScroll>
   );
 };
+
+const RecordList = styled.li`
+  width: 100%;
+`;
