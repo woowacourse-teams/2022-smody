@@ -48,7 +48,7 @@ export const CommentItem = ({
         )}
       </FlexBox>
       <ContentWrapper>
-        <Content size={16} color={themeContext.mainText}>
+        <Content size={16} color={themeContext.mainText} style={{ whiteSpace: 'pre' }}>
           {content}
         </Content>
       </ContentWrapper>
