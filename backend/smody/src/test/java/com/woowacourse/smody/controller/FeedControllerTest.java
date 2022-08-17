@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.FeedRequest;
+import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.FeedResponse;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -36,10 +36,10 @@ public class FeedControllerTest extends ControllerTest {
                         "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
                         1L, "미라클 모닝", 4)
         );
-        BDDMockito.given(feedQueryService.findAll(any(FeedRequest.class))).willReturn(feedResponses);
+        BDDMockito.given(feedQueryService.findAll(any(PagingParams.class))).willReturn(feedResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/feeds?size=10"));
+        ResultActions result = mockMvc.perform(get("/feeds?size=10&cursorId=2&sort=latest"));
 
         // then
         result.andExpect(status().isOk())

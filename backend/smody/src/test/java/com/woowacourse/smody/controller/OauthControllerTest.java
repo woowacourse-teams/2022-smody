@@ -11,7 +11,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.*;
+import com.woowacourse.smody.dto.LoginRequest;
+import com.woowacourse.smody.dto.LoginResponse;
+import com.woowacourse.smody.dto.PreTokenPayLoad;
+import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.dto.ValidAuthResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;

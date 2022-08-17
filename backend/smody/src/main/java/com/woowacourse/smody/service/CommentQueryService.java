@@ -1,7 +1,6 @@
 package com.woowacourse.smody.service;
 
 import com.woowacourse.smody.domain.Comment;
-import com.woowacourse.smody.domain.CycleDetail;
 import com.woowacourse.smody.domain.Feed;
 import com.woowacourse.smody.dto.CommentResponse;
 import com.woowacourse.smody.dto.TokenPayload;
