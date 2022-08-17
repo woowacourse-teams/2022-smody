@@ -105,7 +105,7 @@ export const useGetMyCyclesByChallengeId = (
     AxiosError<ErrorResponse>
   >(
     [queryKeys.getMyCyclesByChallengeId, challengeId],
-    ({ pageParam }) => getMyCyclesByChallengeId({ challengeId, cursorId: pageParam }),
+    ({ pageParam = 0 }) => getMyCyclesByChallengeId({ challengeId, cursorId: pageParam }),
     {
       ...options,
       getNextPageParam: (currentPage) => {
