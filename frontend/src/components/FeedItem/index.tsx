@@ -26,7 +26,7 @@ export const FeedItem = ({
   return (
     <Wrapper
       flexDirection="column"
-      gap="0.8rem"
+      gap="0.4rem"
       onClick={handleClickFeed}
       isClickable={isClickable}
     >
@@ -54,14 +54,14 @@ export const FeedItem = ({
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
       />
-      <Text size={12} color={themeContext.mainText}>
+      <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
       </Text>
       <MainText size={16} color={themeContext.onBackground}>
         {description}
       </MainText>
       <CommentCount size={14} color={themeContext.mainText}>
-        {`댓글 ${commentCount}개 보기`}
+        {`댓글 ${commentCount}개`}
       </CommentCount>
     </Wrapper>
   );
@@ -69,16 +69,11 @@ export const FeedItem = ({
 
 const Wrapper = styled(FlexBox)<WrapperProps>`
   ${({ isClickable }) => css`
-    /* width: 340px; */
     max-width: 440px;
     min-width: 366px;
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
-
-    /* @media all and (max-width: 500px) {
-      width: 95%;
-    } */
   `}
 `;
 
@@ -102,14 +97,13 @@ const ProgressImg = styled.img`
   object-fit: cover;
   border-radius: 20px;
   background-color: white;
+  margin: 0.5rem 0;
 `;
 
 const MainText = styled(Text)`
   align-self: flex-start;
-  padding-left: 4px;
 `;
 
 const CommentCount = styled(Text)`
   align-self: flex-start;
-  padding-left: 4px;
 `;
