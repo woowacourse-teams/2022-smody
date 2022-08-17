@@ -6,3 +6,5 @@ export interface CardBoxProps extends Challenge {
 }
 
 export type WrapperProps = { bgColor: string };
+
+export type UseCardBoxProps = Pick<Challenge, 'challengeId'>;
