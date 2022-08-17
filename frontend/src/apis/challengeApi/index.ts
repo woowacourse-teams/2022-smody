@@ -32,7 +32,6 @@ import {
   useMutation,
 } from 'react-query';
 
-// TODO 1. 커서페이징 처리
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
   { searchValue }: GetChallengeProps,
@@ -49,9 +48,11 @@ export const useGetAllChallenges = (
     {
       ...options,
       getNextPageParam: (currentPage) => {
-        return currentPage.data.length < PAGE_SIZE.ALL_CHALLENGES
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.ALL_CHALLENGES
           ? undefined
-          : currentPage.config.params.page + 1;
+          : currentPage.data[currentDataLength - 1].challengeId;
       },
     },
   );
