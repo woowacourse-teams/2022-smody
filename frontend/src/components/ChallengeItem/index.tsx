@@ -51,14 +51,13 @@ export const ChallengeItem = ({
           </FlexBox>
         </Link>
       </div>
-      <Button
+      <ProgressButton
         onClick={handleOpenBottomSheet}
         size="small"
         disabled={isInProgress}
-        style={{ width: '64px' }}
       >
         {isInProgress ? '도전중' : '도전'}
-      </Button>
+      </ProgressButton>
       {isCustomCycleTimeOpen && (
         <CustomCycleTimeBottomSheet
           challengeName={challengeName}
@@ -77,4 +76,8 @@ const Wrapper = styled(FlexBox)`
   ${Button} {
     flex-grow: 0;
   }
+`;
+
+const ProgressButton = styled(Button)`
+  width: 68px;
 `;
