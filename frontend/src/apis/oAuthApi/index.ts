@@ -36,7 +36,7 @@ export const useGetTokenGoogle = (
   useQuery<AxiosResponse<GetTokenGoogleResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getTokenGoogle,
     () => getTokenGoogle(code),
-    { ...options, refetchOnWindowFocus: false, enabled: false, suspense: false },
+    { ...options, enabled: false, suspense: false },
   );
 
 export const useGetMyInfo = (
@@ -48,7 +48,6 @@ export const useGetMyInfo = (
     {
       ...options,
       refetchOnMount: false,
-      refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       suspense: false,
       onError: () => {
