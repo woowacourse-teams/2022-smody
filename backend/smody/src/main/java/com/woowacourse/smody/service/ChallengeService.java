@@ -32,6 +32,7 @@ public class ChallengeService {
     @Transactional
     public Long create(ChallengeRequest challengeRequest) {
         validateDuplicatedName(challengeRequest.getChallengeName());
+        validateNameFormat(challengeRequest.getChallengeName());
         Challenge challenge = challengeRepository.save(new Challenge(
                 challengeRequest.getChallengeName(), challengeRequest.getDescription(),
                 challengeRequest.getEmojiIndex(), challengeRequest.getColorIndex()));
@@ -41,6 +42,18 @@ public class ChallengeService {
     private void validateDuplicatedName(String name) {
         if (challengeRepository.findByName(name).isPresent()) {
             throw new BusinessException(ExceptionData.DUPLICATE_NAME);
+        }
+    }
+
+    private void validateNameFormat(String name) {
+        if (name.isBlank() || name.isEmpty()) {
+            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
+        }
+        if (name.length() > 30) {
+            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
+        }
+        if (name.trim().length() != name.length()) {
+            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
         }
     }
 }
