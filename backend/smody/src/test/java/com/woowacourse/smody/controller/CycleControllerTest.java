@@ -1,6 +1,7 @@
 package com.woowacourse.smody.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -19,16 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.smody.dto.CycleDetailResponse;
-import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.CycleResponse;
-import com.woowacourse.smody.dto.FilteredCycleHistoryRequest;
-import com.woowacourse.smody.dto.FilteredCycleHistoryResponse;
-import com.woowacourse.smody.dto.InProgressCycleResponse;
-import com.woowacourse.smody.dto.ProgressRequest;
-import com.woowacourse.smody.dto.ProgressResponse;
-import com.woowacourse.smody.dto.StatResponse;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.domain.PagingParams;
+import com.woowacourse.smody.dto.*;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
@@ -161,7 +154,7 @@ public class CycleControllerTest extends ControllerTest {
                 new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3, 0, 1),
                 new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3, 0, 1));
         given(cycleQueryService.findInProgressOfMine(
-                any(TokenPayload.class), any(LocalDateTime.class), any(Pageable.class)
+                any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)
         )).willReturn(inProgressCycleResponses);
 
         // when
@@ -271,33 +264,31 @@ public class CycleControllerTest extends ControllerTest {
     void findAllWithChallenge() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        LocalDateTime firstCycleStartTime = LocalDateTime.of(2022, 1, 1, 5, 0);
+        LocalDateTime secondCycleStartTime = LocalDateTime.of(2022, 2, 1, 5, 0);
+
         List<FilteredCycleHistoryResponse> filteredCycleHistoryRespons = List.of(
-                new FilteredCycleHistoryResponse(3L, List.of(
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 1, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                new FilteredCycleHistoryResponse(3L, 0, 1, firstCycleStartTime, List.of(
+                        new FilteredCycleDetailResponse(
+                                1L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 2, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                2L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 3, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                3L, "progressImage.jpg"
                         ))
                 ),
-                new FilteredCycleHistoryResponse(4L, List.of(
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 2, 1, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                new FilteredCycleHistoryResponse(4L, 1, 2, secondCycleStartTime, List.of(
+                        new FilteredCycleDetailResponse(
+                                4L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 2, 2, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                5L, "progressImage.jpg"
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -314,12 +305,13 @@ public class CycleControllerTest extends ControllerTest {
 
                         responseFields(
                                 fieldWithPath("[].cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
-                                fieldWithPath("[].cycleDetails[].progressTime").type(JsonFieldType.STRING)
-                                        .description("인증 시간"),
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("색상 인덱스"),
+                                fieldWithPath("[].startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
+                                fieldWithPath("[].cycleDetails[].cycleDetailId").type(JsonFieldType.NUMBER)
+                                        .description("사이클 인증 정보 ID"),
                                 fieldWithPath("[].cycleDetails[].progressImage").type(JsonFieldType.STRING)
-                                        .description("인증 사진"),
-                                fieldWithPath("[].cycleDetails[].description").type(JsonFieldType.STRING)
-                                        .description("인증 설명")
+                                        .description("인증 사진")
                         )));
     }
 
@@ -328,37 +320,34 @@ public class CycleControllerTest extends ControllerTest {
     void findAllWithChallenge_success() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        LocalDateTime firstCycleStartTime = LocalDateTime.of(2022, 1, 1, 5, 0);
+        LocalDateTime secondCycleStartTime = LocalDateTime.of(2022, 2, 1, 5, 0);
+
         List<FilteredCycleHistoryResponse> filteredCycleHistoryRespons = List.of(
-                new FilteredCycleHistoryResponse(3L, List.of(
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 1, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                new FilteredCycleHistoryResponse(3L, 0, 1, firstCycleStartTime, List.of(
+                        new FilteredCycleDetailResponse(
+                                1L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 2, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                2L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 1, 3, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                3L, "progressImage.jpg"
                         ))
                 ),
-                new FilteredCycleHistoryResponse(4L, List.of(
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 2, 1, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                new FilteredCycleHistoryResponse(4L, 1, 2, secondCycleStartTime, List.of(
+                        new FilteredCycleDetailResponse(
+                                4L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 2, 2, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                5L, "progressImage.jpg"
                         ),
-                        new CycleDetailResponse(
-                                LocalDateTime.of(2022, 2, 3, 5, 0),
-                                "progressImage.jpg", "인증 내용"
+                        new FilteredCycleDetailResponse(
+                                6L, "progressImage.jpg"
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), any(FilteredCycleHistoryRequest.class)))
+        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -375,12 +364,13 @@ public class CycleControllerTest extends ControllerTest {
 
                         responseFields(
                                 fieldWithPath("[].cycleId").type(JsonFieldType.NUMBER).description("사이클 Id"),
-                                fieldWithPath("[].cycleDetails[].progressTime").type(JsonFieldType.STRING)
-                                        .description("인증 시간"),
+                                fieldWithPath("[].emojiIndex").type(JsonFieldType.NUMBER).description("이모지 인덱스"),
+                                fieldWithPath("[].colorIndex").type(JsonFieldType.NUMBER).description("색상 인덱스"),
+                                fieldWithPath("[].startTime").type(JsonFieldType.STRING).description("사이클 시작 시간"),
+                                fieldWithPath("[].cycleDetails[].cycleDetailId").type(JsonFieldType.NUMBER)
+                                        .description("사이클 인증 정보 ID"),
                                 fieldWithPath("[].cycleDetails[].progressImage").type(JsonFieldType.STRING)
-                                        .description("인증 사진"),
-                                fieldWithPath("[].cycleDetails[].description").type(JsonFieldType.STRING)
-                                        .description("인증 설명")
+                                        .description("인증 사진")
                         )));
     }
 }

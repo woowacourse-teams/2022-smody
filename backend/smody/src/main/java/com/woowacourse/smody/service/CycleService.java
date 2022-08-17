@@ -1,15 +1,7 @@
 package com.woowacourse.smody.service;
 
-import static java.util.stream.Collectors.toList;
-
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Image;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
-import com.woowacourse.smody.domain.PushCase;
+import com.woowacourse.smody.domain.*;
 import com.woowacourse.smody.dto.CycleRequest;
-import com.woowacourse.smody.dto.FilteredCycleHistoryRequest;
 import com.woowacourse.smody.dto.ProgressRequest;
 import com.woowacourse.smody.dto.ProgressResponse;
 import com.woowacourse.smody.dto.TokenPayload;
@@ -18,13 +10,16 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.ImageStrategy;
 import com.woowacourse.smody.push.event.PushEvent;
 import com.woowacourse.smody.repository.CycleRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -95,10 +90,12 @@ public class CycleService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 
-    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member) {
+    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Long endTime, Member member, PagingParams pagingParams) {
         return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
                 .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
+                .filter(cycle -> cycle.isInProgress(searchTime) &&
+                        cycle.calculateEndTime(searchTime) >= endTime &&
+                        !cycle.getId().equals(pagingParams.getCursorId()))
                 .collect(toList());
     }
 
@@ -109,14 +106,13 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, FilteredCycleHistoryRequest filteredCycleHistoryRequest) {
+    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
         return cycleRepository.findAllFilterBy(
-                memberId, filteredCycleHistoryRequest.getChallengeId(), filteredCycleHistoryRequest.getFilter(),
-                filteredCycleHistoryRequest.getLastCycleId(), filteredCycleHistoryRequest.toPageRequest());
+                memberId, challengeId, pagingParams);
     }
 
-    public List<Cycle> findByMember(Member member) {
-        return cycleRepository.findByMember(member);
+    public Optional<Cycle> findById(Long id) {
+        return cycleRepository.findById(id);
     }
 
     public List<Cycle> searchByMember(Member member) {
@@ -127,7 +123,7 @@ public class CycleService {
         return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
     }
 
-    public List<Cycle> findByMemberWithFilter(Member member, String filter) {
-        return cycleRepository.findByMemberWithFilter(member.getId(), filter);
+    public List<Cycle> findByMemberWithFilter(Member member, PagingParams pagingParams) {
+        return cycleRepository.findByMemberWithFilter(member.getId(), pagingParams);
     }
 }

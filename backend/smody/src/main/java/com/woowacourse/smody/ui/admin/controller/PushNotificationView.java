@@ -16,6 +16,7 @@ import com.woowacourse.smody.domain.PushNotification;
 import com.woowacourse.smody.domain.PushStatus;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("pushNotification")
