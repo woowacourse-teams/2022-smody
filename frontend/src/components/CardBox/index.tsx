@@ -33,9 +33,9 @@ export const CardBox = ({
       >
         {challengeName}
       </TitleWrapper>
-      <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
+      <Text size={40} color={COLOR.BLACK} fontWeight="normal">
         {emojiList[emojiIndex]}
-      </EmojiWrapper>
+      </Text>
       <TextWrapper size={10} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         챌린지 {successCount}회({successCount * 3}일) 성공
       </TextWrapper>
@@ -45,6 +45,7 @@ export const CardBox = ({
 
 const Wrapper = styled(FlexBox)`
   ${({ bgColor }: WrapperProps) => css`
+    padding: 5px;
     background-color: ${bgColor};
     border: 0;
     width: 128px;
@@ -53,7 +54,7 @@ const Wrapper = styled(FlexBox)`
   `}
 `;
 
-const TitleWrapper = styled(Text).attrs((props) => ({ ...props }))`
+const TitleWrapper = styled(Text)`
   width: 108px;
   text-align: center;
   overflow: hidden;
@@ -61,12 +62,9 @@ const TitleWrapper = styled(Text).attrs((props) => ({ ...props }))`
   white-space: nowrap;
 `;
 
-const EmojiWrapper = styled(Text).attrs((props) => ({ ...props }))`
-  margin-top: 12px;
-`;
-
-const TextWrapper = styled(Text).attrs((props) => ({ ...props }))`
-  word-break: keep-all;
+const TextWrapper = styled(Text)`
+  word-break: break-all;
+  word-wrap: break-word;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
 `;

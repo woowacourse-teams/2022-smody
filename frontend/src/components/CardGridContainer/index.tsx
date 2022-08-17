@@ -15,10 +15,10 @@ export const CardGridContainer = () => {
   if (myChallengeInfiniteData?.pages[0].data.length === 0) {
     return (
       <EmptyContent
-        title="아직 성공한 챌린지가 없습니다 :)"
-        description="첫 챌린지를 힘내서 해보아요💪💪"
-        linkText="인증 페이지로 이동하기"
-        linkTo={CLIENT_PATH.CERT}
+        title="아직 참가한 챌린지가 없습니다 :)"
+        description="챌린지에 참가해보세요💪💪"
+        linkText="챌린지 검색 페이지로 이동하기"
+        linkTo={CLIENT_PATH.SEARCH}
       />
     );
   }
@@ -26,7 +26,7 @@ export const CardGridContainer = () => {
   return (
     <div>
       <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
-        성공한 챌린지
+        참가한 챌린지
       </Text>
       <Line />
       <InfiniteScroll
