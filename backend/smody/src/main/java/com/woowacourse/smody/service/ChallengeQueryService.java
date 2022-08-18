@@ -108,18 +108,17 @@ public class ChallengeQueryService {
                 .map(Map.Entry::getKey)
                 .collect(toList());
 
-        List<Challenge> futureChallenges = groupByProgressTime.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().isAfter(latestTime))
-                .sorted(Map.Entry.<Challenge, LocalDateTime>comparingByValue().reversed().thenComparing(entry -> entry.getKey().getId()))
-                .map(Map.Entry::getKey)
-                .collect(toList());
+//        List<Challenge> futureChallenges = groupByProgressTime.entrySet()
+//                .stream()
+//                .filter(entry -> entry.getValue().isAfter(latestTime))
+//                .sorted(Map.Entry.<Challenge, LocalDateTime>comparingByValue().reversed().thenComparing(entry -> entry.getKey().getId()))
+//                .map(Map.Entry::getKey)
+//                .collect(toList());
+//
+//        latestChallenges.addAll(futureChallenges);
 
-        latestChallenges.addAll(futureChallenges);
 
-        Optional<Cycle> lastCycle = cycleService.findById(pagingParams.getDefaultCursorId());
-
-        if (lastCycle.isEmpty()) {
+        if (pagingParams.getDefaultCursorId() <= 0) {
             List<Challenge> pagedChallenges = latestChallenges.subList(0, Math.min(latestChallenges.size(), pagingParams.getDefaultSize()));
             return pagedChallenges.stream()
                     .map(challenge -> new ChallengeOfMineResponse(
@@ -127,7 +126,8 @@ public class ChallengeQueryService {
                     )).collect(toList());
         }
 
-        int idx = latestChallenges.indexOf(lastCycle.get().getChallenge());
+        Challenge lastChallenge = challengeService.search(pagingParams.getCursorId());
+        int idx = latestChallenges.indexOf(lastChallenge);
 
         List<Challenge> pagedChallenges = latestChallenges.subList(idx + 1, Math.min(latestChallenges.size(), idx + 1 + pagingParams.getDefaultSize()));
 

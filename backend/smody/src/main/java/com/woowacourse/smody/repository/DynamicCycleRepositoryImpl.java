@@ -79,7 +79,6 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
             return cycleCriteriaQuery.select(cycleRoot)
                     .where(
                             criteriaBuilder.and(
-                                    criteriaBuilder.notEqual(cycleRoot.get("challenge").get("id"), id),
                                     criteriaBuilder.equal(cycleRoot.get("member").get("id"), memberId),
                                     criteriaBuilder.equal(cycleRoot.get("progress").as(String.class), filter.toUpperCase())
                             )
@@ -88,7 +87,6 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         return cycleCriteriaQuery.select(cycleRoot)
                 .where(
                         criteriaBuilder.and(
-                                criteriaBuilder.notEqual(cycleRoot.get("challenge").get("id"), id),
                                 criteriaBuilder.equal(cycleRoot.get("member").get("id"), memberId)
                         )
                 );
