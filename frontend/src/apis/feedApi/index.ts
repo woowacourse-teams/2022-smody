@@ -40,7 +40,7 @@ export const useGetAllFeeds = (
 ) =>
   useInfiniteQuery<AxiosResponse<GetAllFeedsResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getAllFeeds,
-    ({ pageParam }) => getAllFeeds(pageParam),
+    ({ pageParam = 0 }) => getAllFeeds(pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {
