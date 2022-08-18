@@ -1,12 +1,15 @@
 package com.woowacourse.smody.repository;
 
+import com.vaadin.flow.component.html.Pre;
 import com.woowacourse.smody.domain.Cycle;
 import com.woowacourse.smody.domain.PagingParams;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
@@ -15,15 +18,15 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     @Override
     public List<Cycle> findAllFilterBy(
-            Long memberId, Long challengeId, PagingParams pagingParams) {
+            Long memberId, Long challengeId, LocalDateTime lastTime, PagingParams pagingParams) {
         return entityManager.createQuery(findAllFilterByQuery(
-                memberId, challengeId, pagingParams))
+                memberId, challengeId, lastTime, pagingParams))
                 .setMaxResults(pagingParams.getDefaultSize())
                 .getResultList();
     }
 
     private CriteriaQuery<Cycle> findAllFilterByQuery(
-            Long memberId, Long challengeId, PagingParams pagingParams) {
+            Long memberId, Long challengeId, LocalDateTime lastTime, PagingParams pagingParams) {
         String filter = convertFilter(pagingParams.getFilter());
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cycle> cycleCriteriaQuery = criteriaBuilder.createQuery(Cycle.class);
@@ -32,16 +35,16 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         Predicate equalsToChallenge = criteriaBuilder.equal(cycleRoot.get("challenge").get("id"), challengeId);
         Predicate equalsToSuccess = criteriaBuilder.equal(cycleRoot.get("progress").as(String.class), filter.toUpperCase());
         Order orderByStartTime = criteriaBuilder.desc(cycleRoot.get(convertSort(pagingParams.getSort())));
-        Predicate overThanId = criteriaBuilder.greaterThan(cycleRoot.get("id"), pagingParams.getCursorId());
-
+        Predicate notEqualId = criteriaBuilder.notEqual(cycleRoot.get("id"), pagingParams.getDefaultCursorId());
+        Predicate olderThanLastTime = criteriaBuilder.lessThanOrEqualTo(cycleRoot.get("startTime"), lastTime);
         if (filter.equals("success")) {
             return cycleCriteriaQuery.select(cycleRoot)
                     .where(criteriaBuilder.and(
-                            equalsToMember, equalsToChallenge, equalsToSuccess, overThanId))
+                            equalsToMember, equalsToChallenge, equalsToSuccess, notEqualId, olderThanLastTime))
                     .orderBy(orderByStartTime);
         }
         return cycleCriteriaQuery.select(cycleRoot)
-                .where(criteriaBuilder.and(equalsToMember, equalsToChallenge, overThanId))
+                .where(criteriaBuilder.and(equalsToMember, equalsToChallenge, notEqualId, olderThanLastTime))
                 .orderBy(orderByStartTime);
     }
 
@@ -62,7 +65,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
     @Override
     public List<Cycle> findByMemberWithFilter(Long memberId, PagingParams pagingParams) {
         String convertedFilter = convertFilter(pagingParams.getFilter());
-        return entityManager.createQuery(findByMemberWithFilterQuery(memberId, convertedFilter, pagingParams.getCursorId()))
+        return entityManager.createQuery(findByMemberWithFilterQuery(memberId, convertedFilter, pagingParams.getDefaultCursorId()))
                 .getResultList();
     }
 

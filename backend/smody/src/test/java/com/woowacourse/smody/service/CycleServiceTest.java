@@ -441,11 +441,11 @@ public class CycleServiceTest extends IntegrationTest {
 
         @BeforeEach
         void setUp() {
+            success1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
+            success2 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(9L));
             inProgress1 = fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now);
             failed1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
             failed2 = fixture.사이클_생성_SECOND(조조그린_ID, 알고리즘_풀기_ID, now.minusDays(4L));
-            success1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
-            success2 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(9L));
             tokenPayload = new TokenPayload(조조그린_ID);
         }
 

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,6 +97,7 @@ public class CycleService {
                 .filter(cycle -> cycle.isInProgress(searchTime) &&
                         cycle.calculateEndTime(searchTime) >= endTime &&
                         !cycle.getId().equals(pagingParams.getDefaultCursorId()))
+                .sorted(Comparator.comparing(Cycle::getId))
                 .collect(toList());
     }
 
@@ -106,9 +108,9 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
+    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, LocalDateTime lastTime, PagingParams pagingParams) {
         return cycleRepository.findAllFilterBy(
-                memberId, challengeId, pagingParams);
+                memberId, challengeId, lastTime, pagingParams);
     }
 
     public Optional<Cycle> findById(Long id) {

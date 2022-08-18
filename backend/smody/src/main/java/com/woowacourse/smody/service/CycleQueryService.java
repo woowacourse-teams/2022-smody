@@ -6,6 +6,7 @@ import com.woowacourse.smody.domain.Member;
 import com.woowacourse.smody.domain.PagingParams;
 import com.woowacourse.smody.dto.*;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +67,9 @@ public class CycleQueryService {
                                                                                     Long challengeId,
                                                                                     PagingParams pagingParams) {
         Challenge challenge = challengeService.search(challengeId);
+        LocalDateTime lastTime = generateBaseStartTime(pagingParams.getDefaultCursorId());
         List<Cycle> cycles = cycleService.searchByMemberAndChallengeWithFilter(
-                tokenPayload.getId(), challengeId, pagingParams
+                tokenPayload.getId(), challengeId, lastTime, pagingParams
         );
         return cycles.stream()
                 .map(cycle -> new FilteredCycleHistoryResponse(
@@ -80,5 +82,14 @@ public class CycleQueryService {
                                 )
                         .collect(toList())))
                 .collect(toList());
+    }
+
+    private LocalDateTime generateBaseStartTime(Long cycleId) {
+        Optional<Cycle> lastCycle = cycleService.findById(cycleId);
+        if (lastCycle.isEmpty()) {
+            return LocalDateTime.now();
+        }
+        Cycle cycle = lastCycle.get();
+        return cycle.getStartTime();
     }
 }
