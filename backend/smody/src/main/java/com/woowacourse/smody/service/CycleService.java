@@ -96,7 +96,7 @@ public class CycleService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime) &&
                         cycle.calculateEndTime(searchTime) >= endTime &&
-                        !cycle.getId().equals(pagingParams.getDefaultCursorId()))
+                        cycle.getId() > (pagingParams.getDefaultCursorId()))
                 .sorted(Comparator.comparing(Cycle::getId))
                 .collect(toList());
     }
