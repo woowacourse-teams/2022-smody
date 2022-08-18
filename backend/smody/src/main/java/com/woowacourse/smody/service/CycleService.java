@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,12 +92,17 @@ public class CycleService {
     }
 
     public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Long endTime, Member member, PagingParams pagingParams) {
-        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
+        List<Cycle> cycles = cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
                 .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime) &&
-                        cycle.calculateEndTime(searchTime) >= endTime &&
-                        !cycle.getId().equals(pagingParams.getDefaultCursorId()))
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .sorted(Comparator.comparing(cycle -> cycle.calculateEndTime(searchTime)))
                 .collect(toList());
+        Optional<Cycle> lastCycle = cycleRepository.findById(pagingParams.getDefaultCursorId());
+        if (lastCycle.isEmpty()) {
+            return cycles.subList(0, Math.min(cycles.size(), pagingParams.getDefaultSize()));
+        }
+        int idx = cycles.indexOf(lastCycle.get());
+        return cycles.subList(idx + 1, Math.min(cycles.size(), idx + 1 + pagingParams.getDefaultSize()));
     }
 
     public List<Cycle> searchInProgress(LocalDateTime searchTime) {
@@ -106,9 +112,9 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
+    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, LocalDateTime lastTime, PagingParams pagingParams) {
         return cycleRepository.findAllFilterBy(
-                memberId, challengeId, pagingParams);
+                memberId, challengeId, lastTime, pagingParams);
     }
 
     public Optional<Cycle> findById(Long id) {

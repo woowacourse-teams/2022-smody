@@ -211,6 +211,32 @@ class ChallengeServiceTest extends IntegrationTest {
         }
     }
 
+    @DisplayName("내 전체 참여 챌린지 조회에서 같은 인증 시간이라면 id순으로 정렬")
+    @Test
+    void searchOfMine_sameTime() {
+        // given
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 오늘의_운동_ID, Progress.NOTHING, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SECOND, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(7L));
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
+        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+                tokenPayload, new PagingParams(null, null, 0L, null));
+
+        // then
+        assertAll(
+                () -> assertThat(responses.size()).isEqualTo(3),
+                () -> assertThat(responses)
+                        .map(ChallengeOfMineResponse::getSuccessCount)
+                        .containsExactly(1, 0, 0),
+                () -> assertThat(responses)
+                        .map(ChallengeOfMineResponse::getChallengeId)
+                        .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID)
+        );
+
+    }
+
     @DisplayName("모든 챌린지를 ")
     @Nested
     class FindAllWithChallengerCountSortTest {
