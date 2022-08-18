@@ -38,13 +38,7 @@ export const feed = [
     const { content } = req.body;
 
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     const newCommentData = {
@@ -92,13 +86,7 @@ export const feed = [
     }
 
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     return res(ctx.status(200), ctx.json(commentData));
@@ -124,13 +112,7 @@ export const feed = [
     }
 
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     commentData[commentDataIndex] = { ...commentData[commentDataIndex], content };
@@ -157,13 +139,7 @@ export const feed = [
     }
 
     if (!checkValidAccessToken(req)) {
-      return res(
-        ctx.status(403),
-        ctx.json({
-          code: 2002,
-          message: '유효하지 않은 토큰입니다.',
-        }),
-      );
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
     commentData.splice(commentDataIndex, 1);

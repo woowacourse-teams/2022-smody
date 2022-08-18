@@ -1,5 +1,5 @@
+import { NotificationMessageProps } from './type';
 import { useNotificationMessage } from './useNotificationMessage';
-import { GetNotificationsResponse } from 'apis/pushNotificationApi/type';
 import styled, { css } from 'styled-components';
 import { parseTime } from 'utils';
 
@@ -8,12 +8,12 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text } from 'components';
 
 export const NotificationMessage = ({
-  notifications,
-}: {
-  notifications?: GetNotificationsResponse;
-}) => {
+  updateNotificationCount,
+}: NotificationMessageProps) => {
   const themeContext = useThemeContext();
-  const { handleClickNotification } = useNotificationMessage();
+  const { notifications, handleClickNotification } = useNotificationMessage({
+    updateNotificationCount,
+  });
 
   const formatTime = (time: string) => {
     const { year, month, date, hours, minutes } = parseTime(time);

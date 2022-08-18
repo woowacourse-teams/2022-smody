@@ -6,12 +6,14 @@ import {
   patchMyInfo,
   deleteMyInfo,
   postProfileImage,
+  getIsValidAccessToken,
 } from 'apis/oAuthApi/api';
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
   PatchMyInfoProps,
   PostProfileImageProps,
+  GetIsValidAccessTokenResponse,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -91,4 +93,16 @@ export const usePostProfileImage = (
     postProfileImage,
     options,
   );
+};
+
+export const useGetIsValidAccessToken = (
+  options?: UseQueryOptions<
+    AxiosResponse<GetIsValidAccessTokenResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) => {
+  return useQuery<
+    AxiosResponse<GetIsValidAccessTokenResponse>,
+    AxiosError<ErrorResponse>
+  >(queryKeys.getIsValidAccessToken, getIsValidAccessToken, options);
 };

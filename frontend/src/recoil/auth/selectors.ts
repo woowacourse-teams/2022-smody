@@ -1,13 +1,10 @@
-import { selector } from 'recoil';
+import { AtomEffect } from 'recoil';
+import { isLoginStateType } from 'recoil/auth/type';
 
-// export const isLoginState = selector({
-//   key: 'isLoginState',
-//   get: () => {
-//     const accessToken = localStorage.getItem('accessToken');
+export const isLoginStateLocalStorageEffect: AtomEffect<isLoginStateType> = ({
+  setSelf,
+}) => {
+  const accessToken = localStorage.getItem('accessToken');
 
-//     if (accessToken) {
-//       return true;
-//     }
-//     return false;
-//   },
-// });
+  setSelf(accessToken !== null);
+};

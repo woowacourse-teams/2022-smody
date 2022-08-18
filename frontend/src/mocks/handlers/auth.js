@@ -1,13 +1,15 @@
 import { BASE_URL } from 'env';
 import { userData, accessTokenData } from 'mocks/data';
+import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 export const auth = [
   // 1. 내 정보 조회(GET)
   rest.get(`${BASE_URL}/members/me`, (req, res, ctx) => {
-    if (req.headers.headers.authorization === 'Bearer null') {
+    if (!checkValidAccessToken(req)) {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
+
     return res(ctx.status(200), ctx.json(userData));
   }),
 
@@ -38,6 +40,10 @@ export const auth = [
   rest.patch(`${BASE_URL}/members/me`, (req, res, ctx) => {
     const { nickname, introduction } = req.body;
 
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     userData.nickname = nickname;
     userData.introduction = introduction;
 
@@ -46,11 +52,30 @@ export const auth = [
 
   // 4. 회원 탈퇴(DELETE)
   rest.delete(`${BASE_URL}/members/me`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(ctx.status(204));
   }),
 
   // 프로필 이미지 업로드(POST)
   rest.post(`${BASE_URL}/members/me/profile-image`, (req, res, ctx) => {
+    if (!checkValidAccessToken(req)) {
+      return res(ctx.status(403), ctx.json({ code: 2002 }));
+    }
+
     return res(ctx.delay(5000), ctx.status(201));
+  }),
+
+  // AccessToken 유효성 판단(GET)
+  rest.get(`${BASE_URL}/oauth/check`, (req, res, ctx) => {
+    return res(
+      ctx.delay(2000),
+      ctx.status(200),
+      ctx.json({
+        isValid: checkValidAccessToken(req),
+      }),
+    );
   }),
 ];

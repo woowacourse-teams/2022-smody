@@ -2,13 +2,20 @@ import { DropdownProps } from './type';
 import { useDropdown } from './useDropdown';
 import styled, { css } from 'styled-components';
 
-export const Dropdown = ({ button, nonLinkableElement, children }: DropdownProps) => {
+export const Dropdown = ({
+  disabled = false,
+  button,
+  nonLinkableElement,
+  children,
+}: DropdownProps) => {
   const { isDropdownToggled, showDropdownMenu, hideDropdownMenu, onSelectMenu } =
     useDropdown();
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
-      <div onClick={showDropdownMenu}>{button}</div>
+      <DropdownButton disabled={disabled} onClick={showDropdownMenu}>
+        {button}
+      </DropdownButton>
       {isDropdownToggled && (
         <DropdownMenu>
           {nonLinkableElement}
@@ -39,6 +46,18 @@ const Wrapper = styled.div<{ isDropdownToggled: boolean }>`
   position: relative;
 
   ${({ isDropdownToggled }) => isDropdownToggled && EntireBackground}
+`;
+
+const DropdownButton = styled.button`
+  ${({ theme }) => css`
+    padding: 0;
+
+    &:disabled {
+      & svg path {
+        fill: ${theme.disabled};
+      }
+    }
+  `}
 `;
 
 const DropdownMenu = styled.div`
