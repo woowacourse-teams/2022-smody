@@ -2,6 +2,7 @@ import { apiClient, authApiClient } from 'apis/apiClient';
 import { PAGE_SIZE } from 'apis/constants';
 import {
   PostCycleProps,
+  GetMyCyclesInProgressProps,
   PostCycleProgressProps,
   PostCycleProgressResponse,
   GetCycleByIdProps,
@@ -18,8 +19,15 @@ export const postCycle = async ({ challengeId, startTime }: PostCycleProps) => {
 };
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
-export const getMyCyclesInProgress = async () => {
-  return authApiClient.axios.get<GetMyCyclesInProgressResponse[]>('/cycles/me');
+export const getMyCyclesInProgress = async ({ cursorId }: GetMyCyclesInProgressProps) => {
+  const params = {
+    size: PAGE_SIZE.CYCLES,
+    cursorId,
+  };
+
+  return authApiClient.axios.get<GetMyCyclesInProgressResponse[]>('/cycles/me', {
+    params,
+  });
 };
 
 // 3. 나의 사이클 통계 정보 조회(GET)

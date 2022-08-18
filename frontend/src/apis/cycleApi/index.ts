@@ -41,15 +41,27 @@ export const usePostCycle = (
 // TODO 4. 인피니트 쿼리 및 커서페이징 처리
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const useGetMyCyclesInProgress = (
-  options?: UseQueryOptions<
+  options?: UseInfiniteQueryOptions<
     AxiosResponse<GetMyCyclesInProgressResponse[]>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useQuery<AxiosResponse<GetMyCyclesInProgressResponse[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<
+    AxiosResponse<GetMyCyclesInProgressResponse[]>,
+    AxiosError<ErrorResponse>
+  >(
     queryKeys.getMyCyclesInProgress,
-    getMyCyclesInProgress,
-    options,
+    ({ pageParam = 0 }) => getMyCyclesInProgress({ cursorId: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (currentPage) => {
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.CYCLES
+          ? undefined
+          : currentPage.data[currentDataLength - 1].cycleId;
+      },
+    },
   );
 
 // 3. 나의 사이클 통계 정보 조회(GET)
