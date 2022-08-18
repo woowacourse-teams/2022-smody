@@ -115,16 +115,6 @@ public class ChallengeQueryService {
                 .map(Map.Entry::getKey)
                 .collect(toList());
 
-//        List<Challenge> futureChallenges = groupByProgressTime.entrySet()
-//                .stream()
-//                .filter(entry -> entry.getValue().isAfter(latestTime))
-//                .sorted(Map.Entry.<Challenge, LocalDateTime>comparingByValue().reversed().thenComparing(entry -> entry.getKey().getId()))
-//                .map(Map.Entry::getKey)
-//                .collect(toList());
-//
-//        latestChallenges.addAll(futureChallenges);
-
-
         if (pagingParams.getDefaultCursorId() <= 0) {
             List<Challenge> pagedChallenges = latestChallenges.subList(0, Math.min(latestChallenges.size(), pagingParams.getDefaultSize()));
             return pagedChallenges.stream()
