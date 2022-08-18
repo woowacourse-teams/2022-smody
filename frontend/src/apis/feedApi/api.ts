@@ -12,9 +12,9 @@ import {
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
-export const getAllFeeds = async (lastCycleDetailId: number) => {
+export const getAllFeeds = async (cursorId: number) => {
   const params = {
-    lastCycleDetailId,
+    cursorId,
     size: PAGE_SIZE.FEEDS,
     sort: `${SORT.LATEST}`,
   };

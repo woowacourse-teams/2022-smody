@@ -48,9 +48,11 @@ export const useGetAllChallenges = (
     {
       ...options,
       getNextPageParam: (currentPage) => {
-        return currentPage.data.length < PAGE_SIZE.ALL_CHALLENGES
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.ALL_CHALLENGES
           ? undefined
-          : currentPage.config.params.page + 1;
+          : currentPage.data[currentDataLength - 1].challengeId;
       },
     },
   );

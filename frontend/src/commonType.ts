@@ -47,7 +47,6 @@ export interface CycleDetailWithId extends CycleDetail {
   cycleDetailId: number;
 }
 
-// TODO : type.ts 전체 리팩토링 필요
 export interface UserChallenge extends Challenge {
   successCount: number;
   isInProgress: boolean;
