@@ -77,7 +77,7 @@ const Wrapper = styled.div``;
 
 const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`
   ${({ bgColor, horizontalPadding }) => css`
-    min-height: calc(100vh - 119px);
+    min-height: 100vh;
     background-color: ${bgColor};
 
     /* PC (해상도 1024px)*/
