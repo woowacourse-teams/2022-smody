@@ -102,7 +102,7 @@ public class CycleService {
             return cycles.subList(0, Math.min(cycles.size(), pagingParams.getDefaultSize()));
         }
         int idx = cycles.indexOf(lastCycle.get());
-        return cycles.subList(idx, Math.min(cycles.size(), idx + pagingParams.getDefaultSize()));
+        return cycles.subList(idx + 1, Math.min(cycles.size(), idx + 1 + pagingParams.getDefaultSize()));
     }
 
     public List<Cycle> searchInProgress(LocalDateTime searchTime) {
