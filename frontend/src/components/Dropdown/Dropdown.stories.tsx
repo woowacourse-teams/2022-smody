@@ -11,4 +11,6 @@ export const DefaultDropdown = (args: DropdownProps) => <Dropdown {...args} />;
 
 DefaultDropdown.args = {
   children: <Bell count={0} isSubscribed={true} />,
+  updateIsSubscribed: (updatedIsSubscribed: boolean) => {},
+  updateNotificationCount: (updatedNotificationCount: number) => {},
 };
