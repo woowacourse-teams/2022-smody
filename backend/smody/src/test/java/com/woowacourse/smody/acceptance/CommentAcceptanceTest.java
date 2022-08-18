@@ -1,16 +1,16 @@
 package com.woowacourse.smody.acceptance;
 
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.smody.ResourceFixture;
-import com.woowacourse.smody.domain.Comment;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.CycleDetail;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.CommentUpdateRequest;
-import com.woowacourse.smody.repository.CommentRepository;
+import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
+import com.woowacourse.smody.comment.repository.CommentRepository;
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.support.ResourceFixture;
 import io.restassured.RestAssured;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;

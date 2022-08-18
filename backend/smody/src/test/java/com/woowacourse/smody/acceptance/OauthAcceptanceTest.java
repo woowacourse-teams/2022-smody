@@ -3,8 +3,8 @@ package com.woowacourse.smody.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.auth.JwtTokenProvider;
-import com.woowacourse.smody.dto.TokenPayload;
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.auth.token.JwtTokenProvider;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

@@ -10,13 +10,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.CycleDetail;
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
-
-import javax.annotation.security.PermitAll;
 import java.time.LocalDateTime;
+import javax.annotation.security.PermitAll;
 
 @PageTitle("cycleDetail")
 @Route(value = "/admin/cycleDetail", layout = MenuLayout.class)

@@ -1,8 +1,8 @@
 package com.woowacourse.smody.acceptance;
 
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.dto.LoginRequest;
-import com.woowacourse.smody.service.OauthService;
+import com.woowacourse.smody.auth.dto.LoginRequest;
+import com.woowacourse.smody.auth.service.OauthService;
+import com.woowacourse.smody.member.domain.Member;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

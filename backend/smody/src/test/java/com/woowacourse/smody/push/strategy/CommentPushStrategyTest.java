@@ -1,22 +1,22 @@
 package com.woowacourse.smody.push.strategy;
 
-import static com.woowacourse.smody.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.domain.Comment;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.CycleDetail;
-import com.woowacourse.smody.domain.PushCase;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.push.domain.PushCase;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushStatus;
+import com.woowacourse.smody.push.repository.PushNotificationRepository;
+import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

@@ -10,13 +10,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.PushCase;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.PushCase;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
-
 import javax.annotation.security.PermitAll;
 
 @PageTitle("pushNotification")
