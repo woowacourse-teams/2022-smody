@@ -110,7 +110,7 @@ const LoginButton = () => {
 
 const Wrapper = styled(FlexBox)<HeaderProps>`
   ${({ bgColor }) => css`
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

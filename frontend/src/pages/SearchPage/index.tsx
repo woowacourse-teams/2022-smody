@@ -49,7 +49,7 @@ const SearchPage = () => {
 export default SearchPage;
 
 const Wrapper = styled(FlexBox)`
-  margin-top: 40px;
+  margin-top: 60px;
 `;
 
 const CreateChallengeButtonBackground = styled.div`
