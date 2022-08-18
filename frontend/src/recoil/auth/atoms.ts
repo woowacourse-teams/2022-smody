@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { isLoginStateLocalStorageEffect } from 'recoil/auth/selectors';
 
 export const nicknameState = atom({
   key: 'nicknameState',
@@ -7,5 +8,5 @@ export const nicknameState = atom({
 
 export const isLoginState = atom({
   key: 'isLoginState',
-  default: false,
+  effects: [isLoginStateLocalStorageEffect],
 });

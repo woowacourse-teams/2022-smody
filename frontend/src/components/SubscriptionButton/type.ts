@@ -1,5 +1,3 @@
 export interface SubscriptionButtonProps {
-  isSubscribed: boolean;
-  subscribe: () => void;
-  isLoadingSubscribe: boolean;
+  updateIsSubscribed: (updatedIsSubscribed: boolean) => void;
 }

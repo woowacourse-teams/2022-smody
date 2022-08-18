@@ -33,6 +33,7 @@ export const queryKeys = {
   getNotifications: 'getNotifications',
   getMyChallengeById: 'getMyChallengeById',
   getMyCyclesByChallengeId: 'getMyCyclesByChallengeId',
+  getIsValidAccessToken: 'getIsValidAccessToken',
 };
 
 export const mutationKeys = {

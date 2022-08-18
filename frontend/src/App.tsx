@@ -1,22 +1,31 @@
 import Router from 'Router';
-import { generateQueryClient } from 'queryClient';
-import { QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { useRecoilValue } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';
 import { ThemeProvider } from 'styled-components';
 
-import useQueryErrorHandler from 'hooks/useQueryErrorHandler';
-
 import GlobalStyle from 'styles/GlobalStyle';
 import { darkTheme, lightTheme } from 'styles/theme';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      suspense: true,
+      useErrorBoundary: true,
+    },
+    mutations: {
+      useErrorBoundary: true,
+    },
+  },
+});
+
 const App = () => {
   const isDark = useRecoilValue(isDarkState);
-  const queryErrorHandler = useQueryErrorHandler();
 
   return (
-    <QueryClientProvider client={generateQueryClient(queryErrorHandler)}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <Router />
