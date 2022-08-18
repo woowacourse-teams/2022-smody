@@ -92,13 +92,17 @@ public class CycleService {
     }
 
     public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Long endTime, Member member, PagingParams pagingParams) {
-        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
+        List<Cycle> cycles = cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
                 .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime) &&
-                        cycle.calculateEndTime(searchTime) >= endTime &&
-                        cycle.getId() > (pagingParams.getDefaultCursorId()))
-                .sorted(Comparator.comparing(Cycle::getId))
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .sorted(Comparator.comparing(cycle -> cycle.calculateEndTime(searchTime)))
                 .collect(toList());
+        Optional<Cycle> lastCycle = cycleRepository.findById(pagingParams.getDefaultCursorId());
+        if (lastCycle.isEmpty()) {
+            return cycles.subList(0, Math.min(cycles.size(), pagingParams.getDefaultSize()));
+        }
+        int idx = cycles.indexOf(lastCycle.get());
+        return cycles.subList(idx, Math.min(cycles.size(), idx + pagingParams.getDefaultSize()));
     }
 
     public List<Cycle> searchInProgress(LocalDateTime searchTime) {
