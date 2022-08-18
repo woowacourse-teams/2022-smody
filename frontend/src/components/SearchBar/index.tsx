@@ -22,7 +22,7 @@ const Background = styled.div`
     position: fixed;
     top: 60px;
     background-color: ${theme.background};
-    padding: 5px 0;
+    padding: 8px 0 15px;
 
     @media all and (min-width: 1024px) {
       left: ${horizontalPadding.pc};
