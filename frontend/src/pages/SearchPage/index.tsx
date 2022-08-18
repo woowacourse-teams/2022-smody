@@ -29,7 +29,7 @@ const SearchPage = () => {
   }
 
   return (
-    <FlexBox flexDirection="column">
+    <Wrapper flexDirection="column">
       <SearchBar search={search} handleSubmitSearch={handleSubmitSearch} />
       <InfiniteScroll
         loadMore={fetchNextPage}
@@ -42,11 +42,15 @@ const SearchPage = () => {
       <CreateChallengeButtonBackground>
         <CreateChallengeButton onClick={handleCreateChallengeButton} />
       </CreateChallengeButtonBackground>
-    </FlexBox>
+    </Wrapper>
   );
 };
 
 export default SearchPage;
+
+const Wrapper = styled(FlexBox)`
+  margin-top: 40px;
+`;
 
 const CreateChallengeButtonBackground = styled.div`
   ${({ theme }) => css`
