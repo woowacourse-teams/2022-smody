@@ -30,6 +30,7 @@ import {
   UseInfiniteQueryOptions,
 } from 'react-query';
 
+// TODO 3. 커서페이징 처리
 // 1. 피드 전체 조회(GET)
 export const useGetAllFeeds = (
   options?: UseInfiniteQueryOptions<
@@ -39,7 +40,7 @@ export const useGetAllFeeds = (
 ) =>
   useInfiniteQuery<AxiosResponse<GetAllFeedsResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getAllFeeds,
-    ({ pageParam }) => getAllFeeds(pageParam),
+    ({ pageParam = 0 }) => getAllFeeds(pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {

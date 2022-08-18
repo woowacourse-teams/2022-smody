@@ -1,18 +1,19 @@
 import useCertPage from './useCertPage';
 import styled, { css } from 'styled-components';
 
-import { EmptyContent, CertItem } from 'components';
+import { EmptyContent, CertItem, InfiniteScroll, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
 const CertPage = () => {
-  const { cycles } = useCertPage();
+  const { cycleInfiniteData, isFetching, hasNextPage, fetchNextPage, getCycleCount } =
+    useCertPage();
 
-  if (typeof cycles === 'undefined') {
+  if (typeof cycleInfiniteData === 'undefined') {
     return null;
   }
 
-  if (cycles.length === 0) {
+  if (getCycleCount() === 0) {
     return (
       <EmptyContent
         title="도전 중인 챌린지가 없습니다 :)"
@@ -24,17 +25,30 @@ const CertPage = () => {
   }
 
   return (
-    <Wrapper>
-      {cycles.map((cycle) => (
-        <CertItem key={cycle.cycleId} {...cycle} />
-      ))}
-    </Wrapper>
+    <div>
+      <InfiniteScroll
+        loadMore={fetchNextPage}
+        hasMore={hasNextPage}
+        isFetching={isFetching}
+        loader={<LoadingSpinner />}
+      >
+        <CycleList>
+          {cycleInfiniteData?.pages.map((page) =>
+            page?.data.map((cycleInfo) => (
+              <li key={cycleInfo.cycleId}>
+                <CertItem {...cycleInfo} />
+              </li>
+            )),
+          )}
+        </CycleList>
+      </InfiniteScroll>
+    </div>
   );
 };
 
 export default CertPage;
 
-const Wrapper = styled.div`
+const CycleList = styled.ul`
   ${({ theme }) => css`
     display: grid;
     grid-gap: 16px;
