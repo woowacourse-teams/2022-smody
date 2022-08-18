@@ -107,5 +107,5 @@ const MainText = styled(Text)`
 `;
 
 const CommentCount = styled(Text)`
-  align-self: flex-start;
+  align-self: flex-end;
 `;

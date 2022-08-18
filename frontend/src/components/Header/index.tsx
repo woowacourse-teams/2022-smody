@@ -71,6 +71,8 @@ const HeaderRightButton = () => {
             <SubscriptionButton updateIsSubscribed={updateIsSubscribed} />
           </ErrorBoundary>
         }
+        updateNotificationCount={updateNotificationCount}
+        updateIsSubscribed={updateIsSubscribed}
       >
         <ErrorBoundary
           pathname={pathname}

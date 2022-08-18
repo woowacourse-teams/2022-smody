@@ -7,9 +7,11 @@ export const Dropdown = ({
   button,
   nonLinkableElement,
   children,
+  updateNotificationCount,
+  updateIsSubscribed,
 }: DropdownProps) => {
   const { isDropdownToggled, showDropdownMenu, hideDropdownMenu, onSelectMenu } =
-    useDropdown();
+    useDropdown({ updateNotificationCount, updateIsSubscribed });
 
   return (
     <Wrapper isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
