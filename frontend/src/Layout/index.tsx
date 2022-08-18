@@ -1,12 +1,21 @@
 import { OutletWrapperProps } from 'Layout/type';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useMatchPath from 'hooks/useMatchPath';
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Header, LoadingSpinner, Navbar, SnackBar } from 'components';
+import {
+  ErrorBoundary,
+  ErrorFallbackMain,
+  FlexBox,
+  Header,
+  LoadingSpinner,
+  Navbar,
+  SnackBar,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -15,6 +24,7 @@ const OTHER_PATH_PADDING = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
 
 export const Layout = () => {
   const themeContext = useThemeContext();
+  const { pathname } = useLocation();
 
   const getPathMatchColor = useMatchPath(themeContext.secondary, themeContext.background);
 
@@ -43,9 +53,16 @@ export const Layout = () => {
         bgColor={bgColor}
         horizontalPadding={horizontalPadding}
       >
-        <Suspense fallback={<LoadingSpinner />}>
-          <Outlet />
-        </Suspense>
+        <ErrorBoundary
+          pathname={pathname}
+          renderFallback={(renderFallbackParams) => (
+            <ErrorFallbackMain {...renderFallbackParams} />
+          )}
+        >
+          <Suspense fallback={<LoadingSpinner />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
       </OutletWrapper>
       <Navbar />
       <SnackBar />

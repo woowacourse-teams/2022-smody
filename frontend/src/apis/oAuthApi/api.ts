@@ -41,3 +41,8 @@ export const postProfileImage = async ({ formData }: PostProfileImageProps) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+// AccessToken 유효성 판단(GET)
+export const getIsValidAccessToken = async () => {
+  return authApiClient.axios.get('/oauth/check');
+};
