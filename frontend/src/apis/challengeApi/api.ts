@@ -21,7 +21,7 @@ export const getAllChallenges = async (searchValue: string, cursorId: number) =>
           cursorId,
           size: PAGE_SIZE.ALL_CHALLENGES,
         }
-      : { search: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
+      : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
   return apiClient.axios.get<GetChallengeResponse[]>(`/challenges`, {
     params,
@@ -36,7 +36,7 @@ export const getAllChallengesAuth = async (searchValue: string, cursorId: number
           cursorId,
           size: PAGE_SIZE.ALL_CHALLENGES,
         }
-      : { search: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
+      : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
   return authApiClient.axios.get<GetChallengeResponse[]>(`/challenges/auth`, {
     params,
