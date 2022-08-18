@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.*;
 
@@ -107,16 +108,28 @@ public class ChallengeQueryService {
                 .map(Map.Entry::getKey)
                 .collect(toList());
 
-//        List<Challenge> futureChallenges = groupByProgressTime.entrySet()
-//                .stream()
-//                .filter(entry -> entry.getValue().isAfter(latestTime))
-//                .sorted(Map.Entry.<Challenge, LocalDateTime>comparingByValue().reversed().thenComparing(entry -> entry.getKey().getId()))
-//                .map(Map.Entry::getKey)
-//                .collect(toList());
-//
-//        latestChallenges.addAll(futureChallenges);
+        List<Challenge> futureChallenges = groupByProgressTime.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isAfter(latestTime))
+                .sorted(Map.Entry.<Challenge, LocalDateTime>comparingByValue().reversed().thenComparing(entry -> entry.getKey().getId()))
+                .map(Map.Entry::getKey)
+                .collect(toList());
 
-        List<Challenge> pagedChallenges = latestChallenges.subList(0, Math.min(latestChallenges.size(), pagingParams.getDefaultSize()));
+        latestChallenges.addAll(futureChallenges);
+
+        Optional<Cycle> lastCycle = cycleService.findById(pagingParams.getDefaultCursorId());
+
+        if (lastCycle.isEmpty()) {
+            List<Challenge> pagedChallenges = latestChallenges.subList(0, Math.min(latestChallenges.size(), pagingParams.getDefaultSize()));
+            return pagedChallenges.stream()
+                    .map(challenge -> new ChallengeOfMineResponse(
+                            challenge, groupedSize.get(challenge)
+                    )).collect(toList());
+        }
+
+        int idx = latestChallenges.indexOf(lastCycle.get().getChallenge());
+
+        List<Challenge> pagedChallenges = latestChallenges.subList(idx + 1, Math.min(latestChallenges.size(), idx + 1 + pagingParams.getDefaultSize()));
 
         return pagedChallenges.stream()
                 .map(challenge -> new ChallengeOfMineResponse(
@@ -162,6 +175,5 @@ public class ChallengeQueryService {
                 .findFirst()
                 .get()
                 .getLatestProgressTime();
-
     }
 }

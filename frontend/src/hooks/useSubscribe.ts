@@ -1,3 +1,4 @@
+import useSnackBar from './useSnackBar';
 import {
   useGetVapidPublicKey,
   usePostSubscribe,
@@ -16,6 +17,7 @@ const useSubscribe = () => {
   });
   const { mutate: postSubscribe } = usePostSubscribe();
   const { mutate: postUnsubscribe } = usePostUnsubscribe();
+  const renderSnackBar = useSnackBar();
 
   useEffect(() => {
     getVapidPublicKey();
@@ -66,6 +68,10 @@ const useSubscribe = () => {
         postUnsubscribe({ endpoint: pushStatus.pushSubscription.endpoint });
         pushStatus.pushSubscription = null;
         setIsSubscribed(false);
+        renderSnackBar({
+          message: '[알림] 알림 구독이 해지되었습니다',
+          status: 'SUCCESS',
+        });
       }
     });
   };
