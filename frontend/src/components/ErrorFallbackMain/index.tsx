@@ -26,7 +26,7 @@ export const ErrorFallbackMain = ({
     });
 
     // 로그아웃 처리
-    if (errorCode === 2002) {
+    if (errorCode === 2002 || errorCode === 2003 || errorCode === 4001) {
       authApiClient.deleteAuth();
       setIsLogin(false);
     }
