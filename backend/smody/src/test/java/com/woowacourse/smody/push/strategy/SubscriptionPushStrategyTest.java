@@ -1,15 +1,15 @@
 package com.woowacourse.smody.push.strategy;
 
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.domain.PushCase;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.push.domain.PushCase;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushStatus;
+import com.woowacourse.smody.push.domain.PushSubscription;
+import com.woowacourse.smody.push.repository.PushNotificationRepository;
+import com.woowacourse.smody.support.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

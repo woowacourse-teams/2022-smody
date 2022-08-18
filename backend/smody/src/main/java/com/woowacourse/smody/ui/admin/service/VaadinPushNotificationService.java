@@ -1,12 +1,11 @@
 package com.woowacourse.smody.ui.admin.service;
 
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.repository.PushNotificationRepository;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.repository.PushNotificationRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

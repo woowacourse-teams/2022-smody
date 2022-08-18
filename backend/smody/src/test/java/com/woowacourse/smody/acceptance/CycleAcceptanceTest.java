@@ -4,7 +4,7 @@ import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_�
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.domain.Member;
+import com.woowacourse.smody.member.domain.Member;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;

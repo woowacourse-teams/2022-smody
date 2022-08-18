@@ -1,6 +1,6 @@
 package com.woowacourse.smody.push.event;
 
-import com.woowacourse.smody.domain.PushCase;
+import com.woowacourse.smody.push.domain.PushCase;
 import lombok.Getter;
 
 @Getter

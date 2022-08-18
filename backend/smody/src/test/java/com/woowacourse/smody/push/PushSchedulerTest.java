@@ -1,20 +1,20 @@
 package com.woowacourse.smody.push;
 
-import static com.woowacourse.smody.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.ResourceFixture.토닉_ID;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 
-import com.woowacourse.smody.IntegrationTest;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.PushCase;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.repository.PushNotificationRepository;
-import com.woowacourse.smody.service.PushSubscriptionService;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.PushCase;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushStatus;
+import com.woowacourse.smody.push.domain.PushSubscription;
+import com.woowacourse.smody.push.repository.PushNotificationRepository;
+import com.woowacourse.smody.push.service.PushSubscriptionService;
+import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

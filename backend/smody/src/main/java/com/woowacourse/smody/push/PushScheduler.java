@@ -1,22 +1,21 @@
 package com.woowacourse.smody.push;
 
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.PushNotification;
-import com.woowacourse.smody.domain.PushStatus;
-import com.woowacourse.smody.domain.PushSubscription;
-import com.woowacourse.smody.repository.PushNotificationRepository;
-import com.woowacourse.smody.service.PushSubscriptionService;
-import com.woowacourse.smody.service.WebPushService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.groupingBy;
 
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushStatus;
+import com.woowacourse.smody.push.domain.PushSubscription;
+import com.woowacourse.smody.push.repository.PushNotificationRepository;
+import com.woowacourse.smody.push.service.PushSubscriptionService;
+import com.woowacourse.smody.push.service.WebPushService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.groupingBy;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
