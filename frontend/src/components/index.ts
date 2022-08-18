@@ -53,3 +53,4 @@ export * from 'components/ErrorFallbackMain';
 export * from 'components/ErrorFallbackLoginButton';
 export * from 'components/ErrorFallbackSubscriptionButton';
 export * from 'components/ErrorFallbackNotificationMessage';
+export * from 'components/ScrollToTop';

@@ -15,6 +15,7 @@ import {
   LoadingSpinner,
   Navbar,
   SnackBar,
+  ScrollToTop,
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -60,7 +61,9 @@ export const Layout = () => {
           )}
         >
           <Suspense fallback={<LoadingSpinner />}>
-            <Outlet />
+            <ScrollToTop pathname={pathname}>
+              <Outlet />
+            </ScrollToTop>
           </Suspense>
         </ErrorBoundary>
       </OutletWrapper>
@@ -70,9 +73,7 @@ export const Layout = () => {
   );
 };
 
-const Wrapper = styled.div`
-  /* min-width: 400px; */
-`;
+const Wrapper = styled.div``;
 
 const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`
   ${({ bgColor, horizontalPadding }) => css`
