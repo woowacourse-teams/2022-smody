@@ -1,5 +1,6 @@
 import { UseDropdownProps } from './type';
 import { useGetNotifications } from 'apis/pushNotificationApi';
+import { setBadge } from 'push/badge';
 import { pushStatus } from 'push/pushStatus';
 import { MouseEventHandler, useState, useEffect } from 'react';
 
@@ -12,7 +13,10 @@ export const useDropdown = ({
   useGetNotifications({
     useErrorBoundary: false,
     onSuccess: ({ data: notifications }) => {
+      const notificationCount = notifications.length;
+
       updateNotificationCount(notifications.length);
+      setBadge(notificationCount);
     },
   });
 
