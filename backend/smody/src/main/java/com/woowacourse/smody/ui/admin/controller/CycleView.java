@@ -12,15 +12,14 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.woowacourse.smody.domain.Challenge;
-import com.woowacourse.smody.domain.Cycle;
-import com.woowacourse.smody.domain.Member;
-import com.woowacourse.smody.domain.Progress;
+import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
-
-import javax.annotation.security.PermitAll;
 import java.time.LocalDateTime;
+import javax.annotation.security.PermitAll;
 
 @PageTitle("cycle")
 @Route(value = "/admin/cycle", layout = MenuLayout.class)

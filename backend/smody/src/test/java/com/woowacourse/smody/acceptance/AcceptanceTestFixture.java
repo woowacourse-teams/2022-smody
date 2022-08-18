@@ -1,6 +1,6 @@
 package com.woowacourse.smody.acceptance;
 
-import com.woowacourse.smody.dto.CycleRequest;
+import com.woowacourse.smody.cycle.dto.CycleRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
