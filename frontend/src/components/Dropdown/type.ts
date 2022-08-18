@@ -5,4 +5,11 @@ export interface DropdownProps {
   button: ReactNode;
   nonLinkableElement?: ReactNode;
   children?: ReactNode;
+  updateIsSubscribed: (updatedIsSubscribed: boolean) => void;
+  updateNotificationCount: (updatedNotificationCount: number) => void;
 }
+
+export type UseDropdownProps = Pick<
+  DropdownProps,
+  'updateIsSubscribed' | 'updateNotificationCount'
+>;
