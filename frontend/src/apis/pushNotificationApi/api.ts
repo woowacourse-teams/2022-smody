@@ -10,7 +10,7 @@ export const postSubscribe = async (subscription: PushSubscription) => {
 };
 
 export const postUnsubscribe = async ({ endpoint }: PostUnsubscribeProps) => {
-  return authApiClient.axios.post('/web-push/unsubscribe', endpoint);
+  return authApiClient.axios.post('/web-push/unsubscribe', { endpoint });
 };
 
 export const getNotifications = async () => {
