@@ -2,6 +2,10 @@ import { Challenge, Cycle, CycleDetail, CycleDetailWithId } from 'commonType';
 
 export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
 
+export interface GetMyCyclesInProgressProps {
+  cursorId: number;
+}
+
 export interface GetMyCyclesInProgressResponse extends Cycle {
   emojiIndex: number;
   colorIndex: number;
