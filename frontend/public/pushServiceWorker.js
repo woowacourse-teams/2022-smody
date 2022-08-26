@@ -1,10 +1,19 @@
+const VERSION = 'version 1.0.1';
+
 const broadcast = new BroadcastChannel('push-channel');
 
-self.addEventListener('install', (event) => {});
+self.addEventListener('install', (event) => {
+  console.log('SMODY service worker - install', VERSION);
 
-self.addEventListener('activate', (event) => {});
+  // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
+  self.skipWaiting();
+});
 
-self.addEventListener('fetch', (event) => {});
+self.addEventListener('activate', (event) => {
+  console.log('SMODY service worker - activate', VERSION);
+  // 활성화 즉시 클라이언트를 제어한다.(새로고침 불필요)
+  self.clients.claim();
+});
 
 /**
  * 알림 관련 코드
