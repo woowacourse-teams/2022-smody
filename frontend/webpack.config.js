@@ -82,7 +82,7 @@ module.exports = {
       patterns: [
         { from: 'public/image', to: 'image' },
         { from: 'public/manifest.json', to: '.' },
-        { from: 'public/pushServiceWorker.js', to: '.' },
+        { from: 'public/pwaServiceWorker.js', to: '.' },
       ],
     }),
   ],

@@ -1,6 +1,4 @@
-const VERSION = 'version 1.0.1';
-
-const broadcast = new BroadcastChannel('push-channel');
+const VERSION = 'v3.1';
 
 self.addEventListener('install', (event) => {
   console.log('SMODY service worker - install', VERSION);
@@ -15,9 +13,9 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-/**
- * 알림 관련 코드
- */
+// 알림 관련 코드
+const broadcast = new BroadcastChannel('push-channel');
+
 self.addEventListener('push', (event) => {
   const data = event.data.json();
 
