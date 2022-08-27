@@ -1,4 +1,5 @@
-import { pushStatus } from 'push/pushStatus';
+import { indexedDB } from './indexedDB';
+import { pushStatus } from 'pwa/pushStatus';
 
 const isPwaServiceWorkerSupported =
   'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window;
@@ -26,6 +27,7 @@ const registerPwaServiceWorker = async () => {
   }
 
   await updatePushStatus(registration);
+  indexedDB._openDatabase();
 };
 
 export default registerPwaServiceWorker;

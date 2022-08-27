@@ -1,6 +1,6 @@
 import App from 'App';
 import { isProd, isDev, isLocal } from 'env';
-import registerPwaServiceWorker from 'push/registerPwaServiceWorker';
+import registerPwaServiceWorker from 'pwa/registerPwaServiceWorker';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
