@@ -1,5 +1,6 @@
-const VERSION = 'v2.1';
+const VERSION = 'v3';
 const CACHE_NAME = 'smody-cache_' + VERSION;
+const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
 const CLIENT_PATH = {
   HOME: '/home',
@@ -56,6 +57,18 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   console.log('SMODY service worker - activate', VERSION);
+
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(
+        keyList.map((key) => {
+          if (key !== CACHE_NAME && key !== IMAGE_CACHE_NAME) {
+            return caches.delete(key);
+          }
+        }),
+      );
+    }),
+  );
   // 활성화 즉시 클라이언트를 제어한다.(새로고침 불필요)
   self.clients.claim();
 });
@@ -95,6 +108,28 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
         return cache.match('/index.html');
+      }),
+    );
+  }
+
+  // 게시물 이미지 캐싱
+  // 요청 url의 pathname이 /images로 시작하면 게시물 이미지 요청이다.
+  if (url.pathname.startsWith('/images')) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE_NAME).then((cache) => {
+        return cache.match(event.request).then((cacheResponse) => {
+          // 캐시가 존재하는 경우 캐시 응답
+          if (cacheResponse) {
+            return cacheResponse;
+          } else {
+            // 존재하지 않는 경우 최초 1회만 캐싱
+            return fetch(event.request).then((networkResponse) => {
+              // 캐싱하고 네트워크 리소스 응답
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+          }
+        });
       }),
     );
   }
@@ -141,3 +176,5 @@ self.addEventListener('notificationclick', (event) => {
 
   event.waitUntil(self.clients.openWindow(fullPath));
 });
+
+// {"cycleDetailId":1,"memberId":1,"picture":"https://lh3.googleusercontent.com/a-/AFdZucpO9cImh2jsYvsSScpWit8Ds9KyGdk5IOz_Y7Pz=s96-c","nickname":"마르코","progressImage":"https://images.smody.co.kr/images/513b5828-e206-47de-ba88-09b1bc288eb8.jpg","description":"테스트","progressTime":"2022-08-28T01:59:07.031518","challengeId":1,"challengeName":"미라클 모닝","commentCount":0}
