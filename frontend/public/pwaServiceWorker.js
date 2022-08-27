@@ -1,18 +1,5 @@
-const VERSION = 'v2';
+const VERSION = 'v2.1';
 const CACHE_NAME = 'smody-cache_' + VERSION;
-
-const IMMUTABLE_APPSHELL = [
-  '/image/android-chrome-192x192.png',
-  '/image/android-chrome-512x512.png',
-  '/image/apple-touch-icon.png',
-  '/image/favicon-16x16.png',
-  '/image/favicon-32x32.png',
-  '/image/favicon.ico',
-  '/assets/service_example.png',
-  '/manifest.json',
-];
-
-const MUTABLE_APPSHELL = ['/', '/bundle', '/index.html'];
 
 const CLIENT_PATH = {
   HOME: '/home',
@@ -39,6 +26,19 @@ const CLIENT_PATH = {
 
 const routerList = Object.values(CLIENT_PATH);
 
+const IMMUTABLE_APPSHELL = [
+  '/image/android-chrome-192x192.png',
+  '/image/android-chrome-512x512.png',
+  '/image/apple-touch-icon.png',
+  '/image/favicon-16x16.png',
+  '/image/favicon-32x32.png',
+  '/image/favicon.ico',
+  '/assets/service_example.png',
+  '/manifest.json',
+];
+
+const MUTABLE_APPSHELL = ['/', '/bundle', '/index.html'];
+
 const CACHE_LIST = IMMUTABLE_APPSHELL.concat(MUTABLE_APPSHELL);
 
 self.addEventListener('install', (event) => {
@@ -62,17 +62,15 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  console.log(url.pathname);
-
+  const urlPath = url.pathname.split('?')[0];
   // 자주 변경되지 않는 리소스인 경우
-  if (IMMUTABLE_APPSHELL.includes(url.pathname)) {
+  if (IMMUTABLE_APPSHELL.includes(urlPath)) {
     // 캐시 우선, 후 네트워크 응답
     event.respondWith(
-      caches.match(event.request).then((response) => {
+      caches.match(urlPath).then((response) => {
         return response || fetch(event.request);
       }),
     );
-    console.log('fetch', url.pathname);
   }
 
   // bundle js 파일 요청할 경우 응답
@@ -93,7 +91,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // route path를 요청할 경우 index.html 응답
-  if (routerList.includes(url.pathname)) {
+  if (routerList.includes(urlPath)) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
         return cache.match('/index.html');
