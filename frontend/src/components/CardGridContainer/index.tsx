@@ -1,4 +1,5 @@
 import useCardGridContainer from './useCardGridContainer';
+import { GetMyChallengesResponse } from 'apis/challengeApi/type';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -9,8 +10,30 @@ import { CLIENT_PATH } from 'constants/path';
 
 export const CardGridContainer = () => {
   const themeContext = useThemeContext();
-  const { myChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching } =
-    useCardGridContainer();
+  const {
+    myChallengeInfiniteData,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+    isError,
+    savedMyChallenges,
+  } = useCardGridContainer();
+
+  if (isError) {
+    return (
+      <div>
+        <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
+          참가한 챌린지
+        </Text>
+        <Line />
+        <Grid>
+          {savedMyChallenges.map((challenge: GetMyChallengesResponse) => (
+            <CardBox key={challenge.challengeId} {...challenge} />
+          ))}
+        </Grid>
+      </div>
+    );
+  }
 
   if (myChallengeInfiniteData?.pages[0].data.length === 0) {
     return (

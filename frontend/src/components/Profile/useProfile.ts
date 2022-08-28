@@ -5,15 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
-import { LoadingSpinner } from 'components/LoadingSpinner';
-
 import { CLIENT_PATH } from 'constants/path';
 
 const useProfile = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
-  const { data: myInfo } = useGetMyInfo();
-  const { data: myCyclesStat } = useGetMyCyclesStat();
+  const { data: myInfo, isError: isErrorMyInfo } = useGetMyInfo({
+    useErrorBoundary: false,
+  });
+  const { data: myCyclesStat, isError: isErrorMyCyclesStat } = useGetMyCyclesStat({
+    useErrorBoundary: false,
+  });
 
   const handleClickEdit: MouseEventHandler<HTMLButtonElement> = () => {
     navigate(CLIENT_PATH.PROFILE_EDIT);
@@ -30,6 +32,8 @@ const useProfile = () => {
     myCyclesStat,
     handleClickEdit,
     handleClickLogout,
+    isErrorMyInfo,
+    isErrorMyCyclesStat,
   };
 };
 

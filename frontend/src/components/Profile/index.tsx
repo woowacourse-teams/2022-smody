@@ -7,7 +7,18 @@ import { FlexBox, Text, Button } from 'components';
 
 export const Profile = () => {
   const themeContext = useThemeContext();
-  const { myInfo, myCyclesStat, handleClickEdit, handleClickLogout } = useProfile();
+  const {
+    myInfo,
+    myCyclesStat,
+    handleClickEdit,
+    handleClickLogout,
+    isErrorMyInfo,
+    isErrorMyCyclesStat,
+  } = useProfile();
+
+  if (isErrorMyInfo || isErrorMyCyclesStat) {
+    return <h2>현재 오프라인 상태입니다.</h2>;
+  }
 
   if (typeof myInfo === 'undefined' || typeof myCyclesStat === 'undefined') {
     return null;
