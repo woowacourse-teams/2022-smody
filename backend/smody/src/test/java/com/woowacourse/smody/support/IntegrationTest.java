@@ -1,14 +1,13 @@
 package com.woowacourse.smody.support;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.push.service.WebPushService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
+import com.woowacourse.smody.support.isoloation.SmodyTestEnvironment;
 
-@SpringBootTest
-@Transactional
+@SmodyTestEnvironment
 public class IntegrationTest {
 
     @MockBean
