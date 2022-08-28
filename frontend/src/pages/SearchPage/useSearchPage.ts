@@ -1,5 +1,7 @@
 import { useGetAllChallenges } from 'apis';
-import { FormEvent } from 'react';
+import { GetChallengeResponse } from 'apis/challengeApi/type';
+import { indexedDB } from 'pwa/indexedDB';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
@@ -22,7 +24,33 @@ export const useSearchPage = () => {
     hasNextPage,
     fetchNextPage,
     refetch,
-  } = useGetAllChallenges({ searchValue: search.value });
+    isError,
+  } = useGetAllChallenges(
+    { searchValue: search.value },
+    {
+      useErrorBoundary: false,
+      onSuccess: (data) => {
+        const challenges = data.pages[0].data;
+        indexedDB.clearPost('challenge').then(() => {
+          for (const challenge of challenges) {
+            indexedDB.savePost('challenge', challenge);
+            console.log('data', challenge);
+          }
+        });
+      },
+    },
+  );
+
+  const [savedChallenges, setSavedChallenges] = useState<GetChallengeResponse[]>([]);
+
+  useEffect(() => {
+    if (!isError) {
+      return;
+    }
+    indexedDB.getPosts('challenge').then((challenges) => {
+      setSavedChallenges(challenges);
+    });
+  }, [isError]);
 
   const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,5 +94,7 @@ export const useSearchPage = () => {
     handleSubmitSearch,
     fetchNextPage,
     handleCreateChallengeButton,
+    savedChallenges,
+    isError,
   };
 };
