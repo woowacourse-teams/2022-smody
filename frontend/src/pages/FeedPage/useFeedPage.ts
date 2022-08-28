@@ -21,14 +21,14 @@ export const useFeedPage = () => {
     },
   });
 
-  const [feeds, setFeeds] = useState([]);
+  const [savedFeeds, setSavedFeeds] = useState([]);
 
   useEffect(() => {
     if (!isError) {
       return;
     }
     indexedDB.getFeeds().then((feeds) => {
-      setFeeds(feeds);
+      setSavedFeeds(feeds);
     });
   }, [isError]);
 
@@ -38,6 +38,6 @@ export const useFeedPage = () => {
     hasNextPage,
     fetchNextPage,
     isError,
-    feeds,
+    savedFeeds,
   };
 };

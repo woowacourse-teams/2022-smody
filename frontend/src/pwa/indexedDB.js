@@ -19,6 +19,10 @@ class IndexedDB {
         db.createObjectStore('feed', {
           keyPath: 'cycleDetailId',
         });
+
+        db.createObjectStore('cycle', {
+          keyPath: 'cycleId',
+        });
       };
 
       request.onsuccess = () => {
@@ -88,6 +92,80 @@ class IndexedDB {
               cursor.continue();
             } else {
               resolve(feeds);
+            }
+          };
+
+          cursorRequest.onerror = (event) => {
+            reject(event);
+          };
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  clearCycle() {
+    return new Promise((resolve, reject) => {
+      this._openDatabase()
+        .then((db) => {
+          const transaction = db.transaction('cycle', 'readwrite');
+          const cycleObjectStore = transaction.objectStore('cycle');
+          cycleObjectStore.clear();
+
+          transaction.oncomplete = (event) => {
+            resolve(event);
+          };
+
+          transaction.onerror = (event) => {
+            reject(event);
+          };
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  saveCycle(data) {
+    return new Promise((resolve, reject) => {
+      this._openDatabase()
+        .then((db) => {
+          const transaction = db.transaction('cycle', 'readwrite');
+          const cycleObjectStore = transaction.objectStore('cycle');
+          cycleObjectStore.add(data);
+
+          transaction.oncomplete = (event) => {
+            resolve(event);
+          };
+
+          transaction.onerror = (event) => {
+            reject(event);
+          };
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  getCycles() {
+    return new Promise((resolve, reject) => {
+      this._openDatabase()
+        .then((db) => {
+          const cycles = [];
+          const cursorRequest = db
+            .transaction('cycle')
+            .objectStore('cycle')
+            .openCursor(null, 'prev');
+
+          cursorRequest.onsuccess = (event) => {
+            const cursor = event.target.result;
+            if (cursor) {
+              cycles.push(cursor.value);
+              cursor.continue();
+            } else {
+              resolve(cycles);
             }
           };
 

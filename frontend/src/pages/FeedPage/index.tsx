@@ -6,13 +6,19 @@ import { useFeedPage } from 'pages/FeedPage/useFeedPage';
 import { FeedItem, InfiniteScroll, LoadingSpinner } from 'components';
 
 const FeedPage = () => {
-  const { feedInfiniteData, isFetching, hasNextPage, fetchNextPage, isError, feeds } =
-    useFeedPage();
+  const {
+    feedInfiniteData,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    savedFeeds,
+  } = useFeedPage();
 
   if (isError) {
     return (
       <FeedContainer as="ul">
-        {feeds.map((feedInfo: Feed) => (
+        {savedFeeds.map((feedInfo: Feed) => (
           <li key={feedInfo.cycleDetailId}>
             <FeedItem {...feedInfo} />
           </li>
