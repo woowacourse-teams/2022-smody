@@ -20,10 +20,13 @@ const registerPwaServiceWorker = async () => {
 
   const newScriptPath = '/pwaServiceWorker.js';
   const oldScriptUrl = registration?.active?.scriptURL;
-  const oldScriptPath = new URL(oldScriptUrl!).pathname;
-
-  if (!registration || oldScriptPath !== newScriptPath) {
+  if (!oldScriptUrl) {
     registration = await navigator.serviceWorker.register(newScriptPath);
+  } else {
+    const oldScriptPath = new URL(oldScriptUrl).pathname;
+    if (!registration || oldScriptPath !== newScriptPath) {
+      registration = await navigator.serviceWorker.register(newScriptPath);
+    }
   }
 
   await updatePushStatus(registration);
