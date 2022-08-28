@@ -1,3 +1,4 @@
+import { Feed } from 'commonType';
 import styled from 'styled-components';
 
 import { useFeedPage } from 'pages/FeedPage/useFeedPage';
@@ -5,7 +6,20 @@ import { useFeedPage } from 'pages/FeedPage/useFeedPage';
 import { FeedItem, InfiniteScroll, LoadingSpinner } from 'components';
 
 const FeedPage = () => {
-  const { feedInfiniteData, isFetching, hasNextPage, fetchNextPage } = useFeedPage();
+  const { feedInfiniteData, isFetching, hasNextPage, fetchNextPage, isError, feeds } =
+    useFeedPage();
+
+  if (isError) {
+    return (
+      <FeedContainer as="ul">
+        {feeds.map((feedInfo: Feed) => (
+          <li key={feedInfo.cycleDetailId}>
+            <FeedItem {...feedInfo} />
+          </li>
+        ))}
+      </FeedContainer>
+    );
+  }
 
   if (feedInfiniteData === undefined) {
     return null;

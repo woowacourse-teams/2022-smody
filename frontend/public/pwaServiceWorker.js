@@ -76,8 +76,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const urlPath = url.pathname.split('?')[0];
-  // 자주 변경되지 않는 리소스인 경우
+
   if (IMMUTABLE_APPSHELL.includes(urlPath)) {
+    // 자주 변경되지 않는 리소스인 경우
     // 캐시 우선, 후 네트워크 응답
     event.respondWith(
       caches.match(urlPath).then((response) => {
@@ -176,5 +177,3 @@ self.addEventListener('notificationclick', (event) => {
 
   event.waitUntil(self.clients.openWindow(fullPath));
 });
-
-// {"cycleDetailId":1,"memberId":1,"picture":"https://lh3.googleusercontent.com/a-/AFdZucpO9cImh2jsYvsSScpWit8Ds9KyGdk5IOz_Y7Pz=s96-c","nickname":"마르코","progressImage":"https://images.smody.co.kr/images/513b5828-e206-47de-ba88-09b1bc288eb8.jpg","description":"테스트","progressTime":"2022-08-28T01:59:07.031518","challengeId":1,"challengeName":"미라클 모닝","commentCount":0}
