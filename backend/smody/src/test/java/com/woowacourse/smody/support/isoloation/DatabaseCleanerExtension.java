@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-public class DBCleanerExtension implements AfterEachCallback {
+public class DatabaseCleanerExtension implements AfterEachCallback {
 
 	@Override
 	public void afterEach(ExtensionContext context) {

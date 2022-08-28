@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-public class DataInitializeExtension implements BeforeEachCallback {
+public class DatabaseInitializerExtension implements BeforeEachCallback {
 
 	@Override
 	public void beforeEach(ExtensionContext context) {
