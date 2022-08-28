@@ -13,9 +13,9 @@ export const useFeedPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const feeds = data.pages[0].data;
-      indexedDB.clearFeed().then(() => {
+      indexedDB.clearPost('feed').then(() => {
         for (const feed of feeds) {
-          indexedDB.saveFeed(feed);
+          indexedDB.savePost('feed', feed);
         }
       });
     },
@@ -27,7 +27,7 @@ export const useFeedPage = () => {
     if (!isError) {
       return;
     }
-    indexedDB.getFeeds().then((feeds) => {
+    indexedDB.getPosts('feed').then((feeds) => {
       setSavedFeeds(feeds);
     });
   }, [isError]);

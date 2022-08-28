@@ -31,13 +31,13 @@ class IndexedDB {
     });
   }
 
-  clearFeed() {
+  clearPost(name) {
     return new Promise((resolve, reject) => {
       this._openDatabase()
         .then((db) => {
-          const transaction = db.transaction('feed', 'readwrite');
-          const feedObjectStore = transaction.objectStore('feed');
-          feedObjectStore.clear();
+          const transaction = db.transaction(name, 'readwrite');
+          const objectStore = transaction.objectStore(name);
+          objectStore.clear();
 
           transaction.oncomplete = (event) => {
             resolve(event);
@@ -53,13 +53,13 @@ class IndexedDB {
     });
   }
 
-  saveFeed(data) {
+  savePost(name, data) {
     return new Promise((resolve, reject) => {
       this._openDatabase()
         .then((db) => {
-          const transaction = db.transaction('feed', 'readwrite');
-          const feedObjectStore = transaction.objectStore('feed');
-          feedObjectStore.add(data);
+          const transaction = db.transaction(name, 'readwrite');
+          const objectStore = transaction.objectStore(name);
+          objectStore.add(data);
 
           transaction.oncomplete = (event) => {
             resolve(event);
@@ -75,97 +75,23 @@ class IndexedDB {
     });
   }
 
-  getFeeds() {
+  getPosts(name) {
     return new Promise((resolve, reject) => {
       this._openDatabase()
         .then((db) => {
-          const feeds = [];
+          const posts = [];
           const cursorRequest = db
-            .transaction('feed')
-            .objectStore('feed')
+            .transaction(name)
+            .objectStore(name)
             .openCursor(null, 'prev');
 
           cursorRequest.onsuccess = (event) => {
             const cursor = event.target.result;
             if (cursor) {
-              feeds.push(cursor.value);
+              posts.push(cursor.value);
               cursor.continue();
             } else {
-              resolve(feeds);
-            }
-          };
-
-          cursorRequest.onerror = (event) => {
-            reject(event);
-          };
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  clearCycle() {
-    return new Promise((resolve, reject) => {
-      this._openDatabase()
-        .then((db) => {
-          const transaction = db.transaction('cycle', 'readwrite');
-          const cycleObjectStore = transaction.objectStore('cycle');
-          cycleObjectStore.clear();
-
-          transaction.oncomplete = (event) => {
-            resolve(event);
-          };
-
-          transaction.onerror = (event) => {
-            reject(event);
-          };
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  saveCycle(data) {
-    return new Promise((resolve, reject) => {
-      this._openDatabase()
-        .then((db) => {
-          const transaction = db.transaction('cycle', 'readwrite');
-          const cycleObjectStore = transaction.objectStore('cycle');
-          cycleObjectStore.add(data);
-
-          transaction.oncomplete = (event) => {
-            resolve(event);
-          };
-
-          transaction.onerror = (event) => {
-            reject(event);
-          };
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  getCycles() {
-    return new Promise((resolve, reject) => {
-      this._openDatabase()
-        .then((db) => {
-          const cycles = [];
-          const cursorRequest = db
-            .transaction('cycle')
-            .objectStore('cycle')
-            .openCursor(null, 'prev');
-
-          cursorRequest.onsuccess = (event) => {
-            const cursor = event.target.result;
-            if (cursor) {
-              cycles.push(cursor.value);
-              cursor.continue();
-            } else {
-              resolve(cycles);
+              resolve(posts);
             }
           };
 

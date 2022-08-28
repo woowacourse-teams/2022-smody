@@ -13,9 +13,9 @@ const useCertPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const cycles = data.pages[0].data;
-      indexedDB.clearCycle().then(() => {
+      indexedDB.clearPost('cycle').then(() => {
         for (const cycle of cycles) {
-          indexedDB.saveCycle(cycle);
+          indexedDB.savePost('cycle', cycle);
         }
       });
     },
@@ -27,7 +27,7 @@ const useCertPage = () => {
     if (!isError) {
       return;
     }
-    indexedDB.getCycles().then((cycles) => {
+    indexedDB.getPosts('cycle').then((cycles) => {
       setSavedCycles(cycles);
     });
   }, [isError]);
