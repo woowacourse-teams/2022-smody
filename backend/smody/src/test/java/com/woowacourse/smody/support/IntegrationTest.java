@@ -7,11 +7,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.push.service.WebPushService;
-import com.woowacourse.smody.support.isoloation.DatabaseCleanerExtension;
-import com.woowacourse.smody.support.isoloation.DatabaseInitializerExtension;
+import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
 
 @SpringBootTest
-@ExtendWith({DatabaseInitializerExtension.class, DatabaseCleanerExtension.class})
+@ExtendWith(SmodyTestEnvironmentExtension.class)
 public class IntegrationTest {
 
     @MockBean

@@ -1,9 +1,6 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -74,7 +71,8 @@ class PushEventListenerTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(pushTime.format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("스모디 방문하기 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(pathId)
@@ -94,7 +92,7 @@ class PushEventListenerTest extends IntegrationTest {
 		// when
 		cycleService.increaseProgress(
 			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now, IMAGE, "인증")
+			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), IMAGE, "인증")
 		);
 
 		// then
@@ -105,7 +103,8 @@ class PushEventListenerTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(pushTime.format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
@@ -125,7 +124,7 @@ class PushEventListenerTest extends IntegrationTest {
 		// when
 		cycleService.increaseProgress(
 			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now, IMAGE, "인증")
+			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), IMAGE, "인증")
 		);
 
 		// then

@@ -70,4 +70,8 @@ public class Member {
     public void updateIntroduction(String introduction) {
         this.introduction = introduction;
     }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
+    }
 }

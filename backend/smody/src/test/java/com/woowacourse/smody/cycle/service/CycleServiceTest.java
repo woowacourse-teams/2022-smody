@@ -1,17 +1,23 @@
 package com.woowacourse.smody.cycle.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.common.PagingParams;
@@ -29,17 +35,6 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.image.strategy.ImgBBImageStrategy;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
 
@@ -122,7 +117,8 @@ public class CycleServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(success.getStartTime().plusDays(3L)),
+                () -> assertThat(cycleResponse.getStartTime().format(FORMATTER))
+                    .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
         );
     }
@@ -256,7 +252,7 @@ public class CycleServiceTest extends IntegrationTest {
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
-        fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(4L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
         Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
@@ -277,7 +273,7 @@ public class CycleServiceTest extends IntegrationTest {
                         .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(1, 1),
                 () -> assertThat(actual)
-                        .filteredOn(response -> response.getChallengeId().equals(2L))
+                        .filteredOn(response -> response.getChallengeId().equals(미라클_모닝_ID))
                         .map(InProgressCycleResponse::getSuccessCount)
                         .containsExactly(2)
         );
@@ -287,13 +283,7 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void findById() {
         // given
-        Cycle inProgress = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
-        Image progressImage = new Image(
-                new MockMultipartFile("progressImage", "image".getBytes()),
-                image -> "fakeUrl"
-        );
-        inProgress.increaseProgress(now.plusSeconds(1L), progressImage, "인증 완료");
-        inProgress.increaseProgress(now.plusDays(1L).plusSeconds(1L), progressImage, "인증 완료");
+        Cycle inProgress = fixture.사이클_생성_SECOND(조조그린_ID, 스모디_방문하기_ID, now);
 
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SECOND(조조그린_ID, 스모디_방문하기_ID, now.minusDays(6L));
@@ -309,12 +299,13 @@ public class CycleServiceTest extends IntegrationTest {
                 () -> assertThat(cycleResponse.getChallengeId()).isEqualTo(inProgress.getChallenge().getId()),
                 () -> assertThat(cycleResponse.getChallengeName()).isEqualTo(inProgress.getChallenge().getName()),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(inProgress.getProgress().getCount()),
-                () -> assertThat(cycleResponse.getStartTime()).isEqualTo(inProgress.getStartTime()),
+                () -> assertThat(cycleResponse.getStartTime().format(FORMATTER))
+                    .isEqualTo(inProgress.getStartTime().format(FORMATTER)),
                 () -> assertThat(cycleResponse.getSuccessCount()).isEqualTo(2),
-                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime()).isEqualTo(
-                        now.plusSeconds(1L)),
-                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime()).isEqualTo(
-                        now.plusDays(1L).plusSeconds(1L))
+                () -> assertThat(cycleResponse.getCycleDetails().get(0).getProgressTime().format(FORMATTER)).isEqualTo(
+                        now.plusSeconds(1L).format(FORMATTER)),
+                () -> assertThat(cycleResponse.getCycleDetails().get(1).getProgressTime().format(FORMATTER))
+                    .isEqualTo(now.plusDays(1L).format(FORMATTER))
 
         );
     }

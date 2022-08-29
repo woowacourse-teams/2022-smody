@@ -6,26 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import com.woowacourse.smody.support.isoloation.DatabaseCleaner;
-import com.woowacourse.smody.support.isoloation.DatabaseInitializer;
+import com.woowacourse.smody.support.isoloation.SmodyDatabaseManager;
 
 @DataJpaTest(showSql = false)
-@Import({ResourceFixture.class, DatabaseInitializer.class, DatabaseCleaner.class})
+@Import({ResourceFixture.class, SmodyDatabaseManager.class})
 public class RepositoryTest {
 
 	@Autowired
-	private DatabaseInitializer databaseInitializer;
-
-	@Autowired
-	private DatabaseCleaner databaseCleaner;
+	private SmodyDatabaseManager smodyDatabaseManager;
 
 	@BeforeEach
 	void init() {
-		databaseInitializer.setUp();
+		smodyDatabaseManager.setUp();
 	}
 
 	@AfterEach
 	void clear() {
-		databaseCleaner.truncateTables();
+		smodyDatabaseManager.truncateTables();
 	}
 }
