@@ -34,7 +34,6 @@ export const useSearchPage = () => {
         indexedDB.clearPost('challenge').then(() => {
           for (const challenge of challenges) {
             indexedDB.savePost('challenge', challenge);
-            console.log('data', challenge);
           }
         });
       },

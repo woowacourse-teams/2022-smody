@@ -68,7 +68,6 @@ class IndexedDB {
           const transaction = db.transaction(name, 'readwrite');
           const objectStore = transaction.objectStore(name);
           objectStore.add(data);
-          console.log('db data', data);
 
           transaction.oncomplete = (event) => {
             resolve(event);
