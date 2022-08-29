@@ -26,9 +26,13 @@ public class SmodyDatabaseManager {
 
 	private List<String> extractTableNames(EntityManager entityManager) {
 		return entityManager.getMetamodel().getEntities().stream()
-			.filter(entityType -> entityType.getJavaType().getAnnotation(Entity.class) != null)
+			.filter(this::isEntity)
 			.map(this::convertCamelToUnderscore)
 			.collect(Collectors.toList());
+	}
+
+	private boolean isEntity(EntityType<?> entityType) {
+		return entityType.getJavaType().getAnnotation(Entity.class) != null;
 	}
 
 	private String convertCamelToUnderscore(EntityType<?> entityType) {
