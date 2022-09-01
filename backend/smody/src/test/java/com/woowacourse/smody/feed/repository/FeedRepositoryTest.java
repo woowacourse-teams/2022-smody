@@ -10,6 +10,7 @@ import com.woowacourse.smody.common.SortSelection;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.feed.domain.Feed;
+import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +23,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 
-@DataJpaTest(showSql = false)
-@Import(ResourceFixture.class)
-public class FeedRepositoryTest {
+public class FeedRepositoryTest extends RepositoryTest {
 
     @Autowired
     private FeedRepository feedRepository;

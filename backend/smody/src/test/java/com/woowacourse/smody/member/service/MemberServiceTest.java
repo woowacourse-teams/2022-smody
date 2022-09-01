@@ -111,8 +111,6 @@ public class MemberServiceTest extends IntegrationTest {
 
         // when
         memberService.withdraw(tokenPayload);
-        em.flush();
-        em.clear();
 
         // then
         assertAll(

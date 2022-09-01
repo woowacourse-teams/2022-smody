@@ -33,6 +33,9 @@ public class ImgBBImageStrategy implements ImageStrategy {
         ImageUrlResponse response = new RestTemplate()
                 .postForEntity(requestUri, httpEntity, ImageUrlResponse.class)
                 .getBody();
+        if (response == null) {
+            throw new IllegalStateException("ImgBB 서버로부터 응답을 받아오지 못했습니다.");
+        }
         return response.getData().getUrl();
     }
 

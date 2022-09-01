@@ -12,6 +12,7 @@ import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.feed.domain.Feed;
 import com.woowacourse.smody.feed.repository.FeedRepository;
 import com.woowacourse.smody.image.domain.Image;
+import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-@DataJpaTest(showSql = false)
-@Import(ResourceFixture.class)
-public class CycleDetailRepositoryTest {
+public class CycleDetailRepositoryTest extends RepositoryTest {
 
     @Autowired
     private FeedRepository cycleDetailRepository;

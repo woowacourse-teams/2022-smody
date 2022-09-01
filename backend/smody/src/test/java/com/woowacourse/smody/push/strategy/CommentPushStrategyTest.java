@@ -1,8 +1,6 @@
 package com.woowacourse.smody.push.strategy;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +53,8 @@ class CommentPushStrategyTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(comment.getCreatedAt()),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(comment.getCreatedAt().format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
@@ -79,7 +78,8 @@ class CommentPushStrategyTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(comment.getCreatedAt()),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(comment.getCreatedAt().format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
