@@ -18,6 +18,7 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
@@ -61,6 +62,8 @@ public class ResourceFixture {
     public static final Image 이미지 = new Image(new MockMultipartFile(
             "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
     ), image -> "image.jpg");
+
+	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Member 회원_조회(Long id) {
         return memberRepository.findById(id).orElseThrow();

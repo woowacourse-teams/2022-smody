@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushSubscription;
+import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-@DataJpaTest
-@Import(ResourceFixture.class)
-class PushSubscriptionRepositoryTest {
+class PushSubscriptionRepositoryTest extends RepositoryTest {
 
     @Autowired
     private PushSubscriptionRepository pushSubscriptionRepository;

@@ -28,7 +28,7 @@ public class CommentPushStrategy implements PushStrategy {
 		Comment comment = (Comment)entity;
 		Member cycleDetailWriter = extractDetailWriter(comment);
 
-		if (comment.getMember() == cycleDetailWriter) {
+		if (cycleDetailWriter.matchId(comment.getMember().getId())) {
 			return;
 		}
 
