@@ -17,6 +17,8 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.support.IntegrationTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
@@ -125,7 +127,8 @@ public class CommentServiceTest extends IntegrationTest {
                 new CommentUpdateRequest("수정후"));
 
         // then
-        assertThat(comment.getContent()).isEqualTo("수정후");
+        Optional<Comment> findComment = commentRepository.findById(comment.getId());
+        assertThat(findComment.get().getContent()).isEqualTo("수정후");
     }
 
     @DisplayName("댓글 수정 시 댓글을 찾을 수 없으면 예외를 발생시킨다.")
@@ -187,8 +190,6 @@ public class CommentServiceTest extends IntegrationTest {
 
         // when
         commentService.delete(new TokenPayload(조조그린_ID), commentId);
-        entityManager.flush();
-        entityManager.clear();
 
         // then
         assertThat(commentRepository.findById(commentId).isEmpty()).isTrue();

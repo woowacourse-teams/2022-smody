@@ -1,7 +1,6 @@
 package com.woowacourse.smody.push.strategy;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -46,7 +45,8 @@ class ChallengePushStrategyTest extends IntegrationTest {
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(pushTime.format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).contains("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
@@ -80,7 +80,8 @@ class ChallengePushStrategyTest extends IntegrationTest {
 			() -> assertThat(results).hasSize(1),
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime()).isEqualTo(pushTime),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(pushTime.format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())

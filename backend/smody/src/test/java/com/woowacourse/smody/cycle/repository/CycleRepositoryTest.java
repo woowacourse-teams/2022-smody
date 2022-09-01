@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.image.domain.Image;
+import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,9 +21,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 
-@DataJpaTest(showSql = false)
-@Import(ResourceFixture.class)
-class CycleRepositoryTest {
+class CycleRepositoryTest extends RepositoryTest {
 
     @Autowired
     private CycleRepository cycleRepository;
