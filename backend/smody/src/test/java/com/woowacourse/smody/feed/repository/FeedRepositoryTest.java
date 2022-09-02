@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.repository.CommentRepository;
-import com.woowacourse.smody.common.SortSelection;
+import com.woowacourse.smody.common.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.feed.domain.Feed;
@@ -19,9 +19,6 @@ import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.PageRequest;
 
 public class FeedRepositoryTest extends RepositoryTest {
 
@@ -45,8 +42,7 @@ public class FeedRepositoryTest extends RepositoryTest {
         commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "댓글"));
         entityManager.clear();
 
-        List<Feed> feeds = feedRepository.findAll(0L, LocalDateTime.now().plusDays(5),
-                PageRequest.of(0, 10, SortSelection.FEED_LATEST.getSort()));
+        List<Feed> feeds = feedRepository.searchAll(new PagingParams("latest", 10, 0L));
 
         assertThat(feeds).hasSize(3);
     }

@@ -5,6 +5,7 @@ import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.common.PagingParams;
 import com.woowacourse.smody.common.SortSelection;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
@@ -69,9 +70,9 @@ public class CycleDetailRepositoryTest extends RepositoryTest {
                 "image.jpg", "인증5"));
         cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(6L),
                 "image.jpg", "인증6"));
+
         // when
-        List<Feed> feeds = cycleDetailRepository.findAll(인증5.getId(), 인증5.getProgressTime(),
-                PageRequest.of(0, 3, SortSelection.FEED_LATEST.getSort()));
+        List<Feed> feeds = cycleDetailRepository.searchAll(new PagingParams("latest", 3, 인증5.getId()));
 
         // then
         assertAll(
