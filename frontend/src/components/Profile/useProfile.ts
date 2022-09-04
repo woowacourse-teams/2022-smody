@@ -10,12 +10,8 @@ import { CLIENT_PATH } from 'constants/path';
 const useProfile = () => {
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
-  const { data: myInfo, isError: isErrorMyInfo } = useGetMyInfo({
-    useErrorBoundary: false,
-  });
-  const { data: myCyclesStat, isError: isErrorMyCyclesStat } = useGetMyCyclesStat({
-    useErrorBoundary: false,
-  });
+  const { data: myInfo } = useGetMyInfo();
+  const { data: myCyclesStat } = useGetMyCyclesStat();
 
   const handleClickEdit: MouseEventHandler<HTMLButtonElement> = () => {
     navigate(CLIENT_PATH.PROFILE_EDIT);
@@ -32,8 +28,6 @@ const useProfile = () => {
     myCyclesStat,
     handleClickEdit,
     handleClickLogout,
-    isErrorMyInfo,
-    isErrorMyCyclesStat,
   };
 };
 

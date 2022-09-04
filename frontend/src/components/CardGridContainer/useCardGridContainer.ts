@@ -1,6 +1,5 @@
 import { useGetMyChallenges } from 'apis';
 import { indexedDB } from 'pwa/indexedDB';
-import { useEffect, useState } from 'react';
 
 const useCardGridContainer = () => {
   const {
@@ -8,7 +7,6 @@ const useCardGridContainer = () => {
     hasNextPage,
     fetchNextPage,
     isFetching,
-    isError,
   } = useGetMyChallenges({
     useErrorBoundary: false,
     onSuccess: (data) => {
@@ -21,24 +19,11 @@ const useCardGridContainer = () => {
     },
   });
 
-  const [savedMyChallenges, setSavedMyChallenges] = useState([]);
-
-  useEffect(() => {
-    if (!isError) {
-      return;
-    }
-    indexedDB.getPosts('myChallenge').then((myChallenges) => {
-      setSavedMyChallenges(myChallenges);
-    });
-  }, [isError]);
-
   return {
     myChallengeInfiniteData,
     hasNextPage,
     fetchNextPage,
     isFetching,
-    isError,
-    savedMyChallenges,
   };
 };
 
