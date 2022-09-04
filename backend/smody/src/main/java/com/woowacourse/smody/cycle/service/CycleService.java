@@ -98,18 +98,11 @@ public class CycleService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 
-    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Long endTime, Member member, PagingParams pagingParams) {
-        List<Cycle> cycles = cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
+    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member) {
+        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
-                .sorted(Comparator.comparing(cycle -> cycle.calculateEndTime(searchTime)))
                 .collect(toList());
-        Optional<Cycle> lastCycle = cycleRepository.findById(pagingParams.getDefaultCursorId());
-        if (lastCycle.isEmpty()) {
-            return cycles.subList(0, Math.min(cycles.size(), pagingParams.getDefaultSize()));
-        }
-        int idx = cycles.indexOf(lastCycle.get());
-        return cycles.subList(idx + 1, Math.min(cycles.size(), idx + 1 + pagingParams.getDefaultSize()));
     }
 
     public List<Cycle> searchInProgress(LocalDateTime searchTime) {
@@ -117,11 +110,6 @@ public class CycleService {
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
-    }
-
-    public List<Cycle> searchByMemberAndChallengeWithFilter(Long memberId, Long challengeId, LocalDateTime lastTime, PagingParams pagingParams) {
-        return cycleRepository.findAllFilterBy(
-                memberId, challengeId, lastTime, pagingParams);
     }
 
     public Optional<Cycle> findById(Long id) {

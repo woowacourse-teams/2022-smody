@@ -74,7 +74,7 @@ public class CycleController {
     public ResponseEntity<List<FilteredCycleHistoryResponse>> findAllByMemberAndChallengeWithFilter(@LoginMember TokenPayload tokenPayload,
                                                                                                     @PathVariable Long challengeId,
                                                                                                     @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(cycleQueryService.findAllByMemberAndChallengeWithFilter(tokenPayload, challengeId, pagingParams));
+        return ResponseEntity.ok(cycleQueryService.findAllByMemberAndChallenge(tokenPayload, challengeId, pagingParams));
     }
 }
 

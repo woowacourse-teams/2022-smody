@@ -4,6 +4,8 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -98,6 +100,12 @@ public enum Progress {
     public abstract boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
 
     public abstract long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
+
+    public static Optional<Progress> from(String name) {
+        return Arrays.stream(values())
+                .filter(progress -> progress.name().equalsIgnoreCase(name))
+                .findAny();
+    }
 
     private static boolean isBetween(LocalDateTime startTime, LocalDateTime progressTime, Long interval) {
         LocalDateTime fromTime = startTime.plusDays(interval - 1L);

@@ -444,7 +444,7 @@ public class CycleServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams("startTime", null, 0L, null);
 
             // when
-            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
@@ -466,7 +466,7 @@ public class CycleServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams("startTime", 2, failed1.getId(), null);
 
             // when
-            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
@@ -488,7 +488,7 @@ public class CycleServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams("startTime", null, 0L, "success");
 
             // when
-            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
@@ -510,7 +510,7 @@ public class CycleServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams("startTime", 1, success1.getId(), "success");
 
             // when
-            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);
 
             // then
@@ -532,7 +532,7 @@ public class CycleServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams("startTime", null, 0L, "success");
 
             // when
-            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallengeWithFilter(
+            List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 알고리즘_풀기_ID, pagingParams);
 
             // then

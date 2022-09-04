@@ -297,7 +297,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -356,7 +356,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
