@@ -1,6 +1,6 @@
 package com.woowacourse.smody.feed.service;
 
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.feed.domain.Feed;
 import com.woowacourse.smody.feed.dto.FeedResponse;
 import com.woowacourse.smody.feed.repository.FeedRepository;

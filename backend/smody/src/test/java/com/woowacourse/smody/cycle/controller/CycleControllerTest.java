@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.dto.CycleDetailResponse;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.CycleResponse;

@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.repository.CommentRepository;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.feed.domain.Feed;

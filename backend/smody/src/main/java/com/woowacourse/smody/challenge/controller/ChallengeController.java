@@ -11,7 +11,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import com.woowacourse.smody.challenge.service.ChallengeQueryService;
 import com.woowacourse.smody.challenge.service.ChallengeService;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;

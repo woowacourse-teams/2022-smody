@@ -5,8 +5,7 @@ import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.smody.common.PagingParams;
-import com.woowacourse.smody.common.SortSelection;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
@@ -20,9 +19,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 

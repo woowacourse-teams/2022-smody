@@ -20,7 +20,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;

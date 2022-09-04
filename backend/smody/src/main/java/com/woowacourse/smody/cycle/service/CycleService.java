@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.service.ChallengeService;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;

@@ -22,7 +22,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;

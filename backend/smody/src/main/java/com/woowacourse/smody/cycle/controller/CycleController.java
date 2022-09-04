@@ -3,7 +3,7 @@ package com.woowacourse.smody.cycle.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.CycleResponse;
 import com.woowacourse.smody.cycle.dto.FilteredCycleHistoryResponse;

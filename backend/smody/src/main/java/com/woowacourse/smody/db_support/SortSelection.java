@@ -1,4 +1,4 @@
-package com.woowacourse.smody.common;
+package com.woowacourse.smody.db_support;
 
 import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
 

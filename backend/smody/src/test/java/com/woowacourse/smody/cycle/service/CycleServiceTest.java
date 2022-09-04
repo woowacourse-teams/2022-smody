@@ -20,7 +20,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;

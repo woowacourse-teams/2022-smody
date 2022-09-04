@@ -3,15 +3,15 @@ package com.woowacourse.smody.feed.repository;
 import static com.woowacourse.smody.comment.domain.QComment.comment;
 import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woowacourse.smody.common.PagingParams;
-import com.woowacourse.smody.common.SortSelection;
+import com.woowacourse.smody.db_support.DynamicQuery;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.db_support.SortSelection;
 import com.woowacourse.smody.feed.domain.Feed;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,32 +38,23 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
 
     @Override
     public List<Feed> searchAll(PagingParams pagingParams) {
-        BooleanBuilder filters = getBooleanBuilder(pagingParams);
         OrderSpecifier<?>[] orders = SortSelection.findByParameter(pagingParams.getSort())
                 .getOrderSpecifiers();
+
+        Long cycleDetailId = pagingParams.getDefaultCursorId();
+        LocalDateTime progressTime = getCursorProgressTime(cycleDetailId);
 
         return queryFactory
                 .select(Projections.constructor(Feed.class, FEED_FIELDS))
                 .from(cycleDetail)
-                .where(filters)
+                .where(DynamicQuery.builder()
+                        .and(() -> cycleDetail.id.ne(cycleDetailId))
+                        .and(() -> cycleDetail.progressTime.loe(progressTime))
+                        .build()
+                )
                 .orderBy(orders)
                 .limit(pagingParams.getSize())
                 .fetch();
-    }
-
-    private BooleanBuilder getBooleanBuilder(PagingParams pagingParams) {
-        BooleanBuilder builder = new BooleanBuilder();
-        Long cycleDetailId = pagingParams.getDefaultCursorId();
-        LocalDateTime progressTime = getCursorProgressTime(cycleDetailId);
-
-        if (cycleDetailId != null) {
-            builder.and(cycleDetail.id.ne(cycleDetailId));
-        }
-
-        if (progressTime != null) {
-            builder.and(cycleDetail.progressTime.loe(progressTime));
-        }
-        return builder;
     }
 
     private LocalDateTime getCursorProgressTime(Long cycleDetailId) {
