@@ -1,4 +1,4 @@
-const VERSION = 'v3';
+const VERSION = 'v4';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -79,7 +79,7 @@ self.addEventListener('fetch', (event) => {
 
   if (IMMUTABLE_APPSHELL.includes(urlPath)) {
     // 자주 변경되지 않는 리소스인 경우
-    // 캐시 우선, 후 네트워크 응답
+    // 선 캐시, 후 네트워크 응답
     event.respondWith(
       caches.match(urlPath).then((response) => {
         return response || fetch(event.request);
@@ -87,12 +87,14 @@ self.addEventListener('fetch', (event) => {
     );
   }
 
-  // bundle js 파일 요청할 경우 응답
+  // bundle js 파일 요청할 경우
+  // 선 네트워크, 후 캐시 응답
   if (event.request.url.includes('bundle')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
         return fetch(event.request)
           .then((networkResponse) => {
+            // 최신화된 데이터를 캐시에 업데이트한다
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           })
@@ -106,10 +108,9 @@ self.addEventListener('fetch', (event) => {
 
   // route path를 요청할 경우 index.html 응답
   if (routerList.includes(urlPath)) {
+    // 선 캐시, 후 네트워크
     event.respondWith(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.match('/index.html');
-      }),
+      caches.match('/index.html').then((response) => response || fetch(event.request)),
     );
   }
 
