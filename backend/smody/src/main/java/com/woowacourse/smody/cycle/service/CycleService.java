@@ -21,7 +21,6 @@ import com.woowacourse.smody.member.service.MemberService;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.event.PushEvent;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -124,7 +123,7 @@ public class CycleService {
         return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
     }
 
-    public List<Cycle> findByMemberWithFilter(Member member, PagingParams pagingParams) {
-        return cycleRepository.findByMemberWithFilter(member.getId(), pagingParams);
+    public List<Cycle> findAllByMember(Member member, PagingParams pagingParams) {
+        return cycleRepository.findAllByMember(member.getId(), pagingParams);
     }
 }

@@ -6,6 +6,7 @@ import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,10 @@ public class ChallengeService {
     public Challenge search(Long challengeId) {
         return challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
+    }
+
+    public Optional<Challenge> findById(Long challengeId) {
+        return challengeRepository.findById(challengeId);
     }
 
     public List<Challenge> searchAll(String name, Long cursorId, Integer size) {

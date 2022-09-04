@@ -236,6 +236,8 @@ class ChallengeServiceTest extends IntegrationTest {
 
     }
 
+    //TODO: 재도전 사이클도 프로필 챌린지 조회에서 가능해야 함!
+
     @DisplayName("모든 챌린지를 ")
     @Nested
     class FindAllWithChallengerCountSortTest {
