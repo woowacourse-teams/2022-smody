@@ -30,36 +30,47 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChallengeQueryService {
 
+    private static final TokenPayload NOT_LOGIN = new TokenPayload(0L);
+
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, PagingParams pagingParams) {
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        return getResponsesOrderId(inProgressCycles, pagingParams);
+        return findAllWithChallengerCount(NOT_LOGIN, searchTime, pagingParams);
     }
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                                  PagingParams pagingParams) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        return getResponsesOrderId(inProgressCycles, pagingParams).stream()
-                .map(response -> response.changeInProgress(
-                        matchMember(inProgressCycles, tokenPayload, response.getChallengeId()))).collect(toList());
+        List<Challenge> challenges = challengeService.searchAll(pagingParams);
+        return getChallengeTabResponses(challenges, inProgressCycles, tokenPayload);
+    }
+
+    private List<ChallengeTabResponse> getChallengeTabResponses(List<Challenge> challenges,
+                                                                Map<Challenge, List<Cycle>> inProgressCycles,
+                                                                TokenPayload tokenPayload) {
+        return challenges.stream()
+                .map(challenge -> new ChallengeTabResponse(
+                        challenge,
+                        getChallengerCount(inProgressCycles, challenge),
+                        isChallenging(inProgressCycles, tokenPayload, challenge.getId())
+                )).collect(toList());
     }
 
     public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
-        Challenge challenge = challengeService.search(challengeId);
-        int count = inProgressCycles.getOrDefault(challenge, List.of()).size();
-        return new ChallengeResponse(challenge, count);
+        return findWithChallengerCount(NOT_LOGIN, searchTime, challengeId);
     }
 
     public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                      Long challengeId) {
         Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
         Challenge challenge = challengeService.search(challengeId);
-        int count = inProgressCycles.getOrDefault(challenge, List.of()).size();
-        return new ChallengeResponse(challenge, count, matchMember(inProgressCycles, tokenPayload, challengeId));
+        return new ChallengeResponse(
+                challenge,
+                getChallengerCount(inProgressCycles, challenge),
+                isChallenging(inProgressCycles, tokenPayload, challengeId)
+        );
     }
 
     private Map<Challenge, List<Cycle>> groupByChallenge(List<Cycle> cycles) {
@@ -67,25 +78,20 @@ public class ChallengeQueryService {
                 .collect(groupingBy(Cycle::getChallenge));
     }
 
-    private List<ChallengeTabResponse> getResponsesOrderId(Map<Challenge, List<Cycle>> inProgressCycles,
-                                                           PagingParams pagingParams) {
-        return challengeService.searchAll(
-                        pagingParams.getFilter(),
-                        pagingParams.getDefaultCursorId(),
-                        pagingParams.getDefaultSize()
-                ).stream().map(challenge ->
-                        new ChallengeTabResponse(
-                                challenge, inProgressCycles.getOrDefault(challenge, List.of()).size()))
-                .sorted(Comparator.comparingLong(ChallengeTabResponse::getChallengeId))
-                .collect(toList());
+    private boolean isChallenging(Map<Challenge, List<Cycle>> inProgressCycles,
+                                  TokenPayload tokenPayload,
+                                  Long challengeId) {
+        Challenge challenge = challengeService.search(challengeId);
+        return getCyclesByChallenge(inProgressCycles, challenge).stream()
+                .anyMatch(cycle -> cycle.matchMember(tokenPayload.getId()));
     }
 
-    private boolean matchMember(Map<Challenge, List<Cycle>> inProgressCycles,
-                                TokenPayload tokenPayload,
-                                Long challengeId) {
-        Challenge challenge = challengeService.search(challengeId);
-        return inProgressCycles.getOrDefault(challenge, List.of()).stream()
-                .anyMatch(cycle -> cycle.matchMember(tokenPayload.getId()));
+    private List<Cycle> getCyclesByChallenge(Map<Challenge, List<Cycle>> inProgressCycles, Challenge challenge) {
+        return inProgressCycles.getOrDefault(challenge, List.of());
+    }
+
+    private int getChallengerCount(Map<Challenge, List<Cycle>> inProgressCycles, Challenge challenge) {
+        return getCyclesByChallenge(inProgressCycles, challenge).size();
     }
 
     public List<ChallengeOfMineResponse> searchOfMine(TokenPayload tokenPayload,

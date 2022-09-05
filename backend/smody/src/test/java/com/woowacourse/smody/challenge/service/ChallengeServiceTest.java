@@ -77,7 +77,6 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine() {
             // when
-            System.out.println("###############");
             List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, null, 0L, null));
 
