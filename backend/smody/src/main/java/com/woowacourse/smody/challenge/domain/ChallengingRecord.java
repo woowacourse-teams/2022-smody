@@ -6,26 +6,28 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
-public class MemberChallenge {
+public class ChallengingRecord {
 
     private final List<Cycle> cycles;
 
-    public MemberChallenge(List<Cycle> cycles) {
+    ChallengingRecord(List<Cycle> cycles) {
         validateOnlyMember(cycles);
         validateOnlyChallenge(cycles);
         this.cycles = cycles;
     }
 
-    public static List<MemberChallenge> from(List<Cycle> cycles) {
+    public static List<ChallengingRecord> from(List<Cycle> cycles) {
         return cycles.stream()
+                .filter(cycle -> cycle.isInProgress(LocalDateTime.now()))
                 .collect(groupingBy(Cycle::getChallenge, toList()))
                 .values()
                 .stream()
-                .map(MemberChallenge::new)
+                .map(ChallengingRecord::new)
                 .collect(toList());
     }
 
@@ -48,7 +50,7 @@ public class MemberChallenge {
     }
 
     public int getSuccessCount() {
-        return (int)cycles.stream()
+        return (int) cycles.stream()
                 .filter(Cycle::isSuccess)
                 .count();
     }
@@ -63,5 +65,11 @@ public class MemberChallenge {
     public Challenge getChallenge() {
         return cycles.get(0)
                 .getChallenge();
+    }
+
+    public boolean match(Member member) {
+        return cycles.get(0)
+                .getMember()
+                .equals(member);
     }
 }

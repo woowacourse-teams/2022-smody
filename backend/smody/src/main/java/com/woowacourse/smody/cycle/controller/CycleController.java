@@ -3,7 +3,6 @@ package com.woowacourse.smody.cycle.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
-import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.CycleResponse;
 import com.woowacourse.smody.cycle.dto.FilteredCycleHistoryResponse;
@@ -13,6 +12,7 @@ import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
 import com.woowacourse.smody.cycle.service.CycleQueryService;
 import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.db_support.PagingParams;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +55,8 @@ public class CycleController {
     @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressOfMine(@LoginMember TokenPayload tokenPayload,
                                                                                  @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pagingParams));
+        return ResponseEntity.ok(
+                cycleQueryService.findInProgressOfMine(tokenPayload, LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/{cycleId}")
@@ -71,10 +72,12 @@ public class CycleController {
 
     @GetMapping("/me/{challengeId}")
     @RequiredLogin
-    public ResponseEntity<List<FilteredCycleHistoryResponse>> findAllByMemberAndChallengeWithFilter(@LoginMember TokenPayload tokenPayload,
-                                                                                                    @PathVariable Long challengeId,
-                                                                                                    @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(cycleQueryService.findAllByMemberAndChallenge(tokenPayload, challengeId, pagingParams));
+    public ResponseEntity<List<FilteredCycleHistoryResponse>> findAllByMemberAndChallengeWithFilter(
+            @LoginMember TokenPayload tokenPayload,
+            @PathVariable Long challengeId,
+            @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(
+                cycleQueryService.findAllByMemberAndChallenge(tokenPayload, challengeId, pagingParams));
     }
 }
 

@@ -6,20 +6,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
-import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class MemberChallengeTest {
+class ChallengingRecordTest {
 
     @DisplayName("MemberChallenge는 같은 챌린지, 같은 회원을 가지고 있어야 한다.")
     @Test
@@ -37,7 +34,7 @@ class MemberChallengeTest {
         );
 
         // when then
-        assertDoesNotThrow(() -> new MemberChallenge(cycles));
+        assertDoesNotThrow(() -> new ChallengingRecord(cycles));
     }
 
     @DisplayName("MemberChallenge는 같은 회원을 가지고 있어야 한다.")
@@ -57,7 +54,7 @@ class MemberChallengeTest {
         );
 
         // when then
-        assertThatThrownBy(() -> new MemberChallenge(cycles))
+        assertThatThrownBy(() -> new ChallengingRecord(cycles))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DATA_INTEGRITY_ERROR);
@@ -80,7 +77,7 @@ class MemberChallengeTest {
         );
 
         // when then
-        assertThatThrownBy(() -> new MemberChallenge(cycles))
+        assertThatThrownBy(() -> new ChallengingRecord(cycles))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DATA_INTEGRITY_ERROR);
@@ -93,7 +90,7 @@ class MemberChallengeTest {
         List<Cycle> cycles = new ArrayList<>();
 
         // when then
-        assertThatThrownBy(() -> new MemberChallenge(cycles))
+        assertThatThrownBy(() -> new ChallengingRecord(cycles))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DATA_INTEGRITY_ERROR);
@@ -113,10 +110,10 @@ class MemberChallengeTest {
                 new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(3L)),
                 new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(6L))
         );
-        MemberChallenge memberChallenge = new MemberChallenge(cycles);
+        ChallengingRecord challengingRecord = new ChallengingRecord(cycles);
 
         // when
-        int actual = memberChallenge.getSuccessCount();
+        int actual = challengingRecord.getSuccessCount();
 
         // then
         assertThat(actual).isEqualTo(2);
@@ -140,10 +137,10 @@ class MemberChallengeTest {
                 new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(3L)),
                 new Cycle(member, challenge, Progress.SUCCESS, now.minusDays(6L))
         );
-        MemberChallenge memberChallenge = new MemberChallenge(cycles);
+        ChallengingRecord challengingRecord = new ChallengingRecord(cycles);
 
         // when
-        LocalDateTime actual = memberChallenge.getLatestProgressTime();
+        LocalDateTime actual = challengingRecord.getLatestProgressTime();
 
         // then
         assertThat(actual).isEqualTo(now.plusMinutes(5));

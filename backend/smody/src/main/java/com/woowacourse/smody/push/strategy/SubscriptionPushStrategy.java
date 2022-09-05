@@ -16,34 +16,34 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SubscriptionPushStrategy implements PushStrategy {
 
-	private final PushNotificationService pushNotificationService;
-	private final WebPushService webPushService;
+    private final PushNotificationService pushNotificationService;
+    private final WebPushService webPushService;
 
-	@Override
-	@Transactional
-	public void push(Object entity) {
-		PushSubscription pushSubscription = (PushSubscription)entity;
+    @Override
+    @Transactional
+    public void push(Object entity) {
+        PushSubscription pushSubscription = (PushSubscription) entity;
 
-		Member member = pushSubscription.getMember();
-		PushNotification pushNotification = pushNotificationService.register(buildNotification(member));
+        Member member = pushSubscription.getMember();
+        PushNotification pushNotification = pushNotificationService.register(buildNotification(member));
 
-		webPushService.sendNotification(pushSubscription, pushNotification);
-	}
+        webPushService.sendNotification(pushSubscription, pushNotification);
+    }
 
-	@Override
-	public PushNotification buildNotification(Object entity) {
-		Member member = (Member)entity;
-		return PushNotification.builder()
-			.message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
-			.pushTime(LocalDateTime.now())
-			.pushStatus(PushStatus.COMPLETE)
-			.member(member)
-			.pushCase(getPushCase())
-			.build();
-	}
+    @Override
+    public PushNotification buildNotification(Object entity) {
+        Member member = (Member) entity;
+        return PushNotification.builder()
+                .message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
+                .pushTime(LocalDateTime.now())
+                .pushStatus(PushStatus.COMPLETE)
+                .member(member)
+                .pushCase(getPushCase())
+                .build();
+    }
 
-	@Override
-	public PushCase getPushCase() {
-		return PushCase.SUBSCRIPTION;
-	}
+    @Override
+    public PushCase getPushCase() {
+        return PushCase.SUBSCRIPTION;
+    }
 }

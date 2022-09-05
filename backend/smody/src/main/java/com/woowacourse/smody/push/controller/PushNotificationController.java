@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PushNotificationController {
 
-	private final PushNotificationService pushNotificationService;
+    private final PushNotificationService pushNotificationService;
 
-	@GetMapping
-	@RequiredLogin
-	public ResponseEntity<List<PushNotificationResponse>> searchNotificationsOfMine(
-		@LoginMember TokenPayload tokenPayload) {
-		return ResponseEntity.ok(pushNotificationService.searchNotificationsOfMine(tokenPayload));
-	}
+    @GetMapping
+    @RequiredLogin
+    public ResponseEntity<List<PushNotificationResponse>> searchNotificationsOfMine(
+            @LoginMember TokenPayload tokenPayload) {
+        return ResponseEntity.ok(pushNotificationService.searchNotificationsOfMine(tokenPayload));
+    }
 
-	@DeleteMapping("{id}")
-	@RequiredLogin
-	public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
-		pushNotificationService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("{id}")
+    @RequiredLogin
+    public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+        pushNotificationService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

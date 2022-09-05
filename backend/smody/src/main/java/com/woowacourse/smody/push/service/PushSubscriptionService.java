@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PushSubscriptionService {
 
-	private final PushSubscriptionRepository pushSubscriptionRepository;
-	private final MemberService memberService;
-	private final ApplicationEventPublisher applicationEventPublisher;
+    private final PushSubscriptionRepository pushSubscriptionRepository;
+    private final MemberService memberService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
@@ -31,8 +31,8 @@ public class PushSubscriptionService {
                 .map(pushSubscription -> pushSubscription.updateMember(member))
                 .orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-		applicationEventPublisher.publishEvent(new PushEvent(subscription, PushCase.SUBSCRIPTION));
-	}
+        applicationEventPublisher.publishEvent(new PushEvent(subscription, PushCase.SUBSCRIPTION));
+    }
 
     @Transactional
     public void unSubscribe(TokenPayload tokenPayload, UnSubscriptionRequest unSubscription) {

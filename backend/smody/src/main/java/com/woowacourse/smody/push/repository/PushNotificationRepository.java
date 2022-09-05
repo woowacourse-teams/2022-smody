@@ -13,11 +13,11 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
 
     List<PushNotification> findByPushStatus(PushStatus pushStatus);
 
-	Optional<PushNotification> findByPathIdAndPushStatus(Long pathId, PushStatus pushStatus);
+    Optional<PushNotification> findByPathIdAndPushStatus(Long pathId, PushStatus pushStatus);
 
-	void deleteByMember(Member member);
+    void deleteByMember(Member member);
 
-	@Query("select pn from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus "
-		+ "order by pn.pushTime desc")
-	List<PushNotification> findAllLatest(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
+    @Query("select pn from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus "
+            + "order by pn.pushTime desc")
+    List<PushNotification> findAllLatest(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
 }

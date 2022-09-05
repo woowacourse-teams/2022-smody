@@ -1,11 +1,11 @@
 package com.woowacourse.smody.challenge.service;
 
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.challenge.domain.MemberChallenge;
+import com.woowacourse.smody.challenge.domain.ChallengingRecord;
+import com.woowacourse.smody.challenge.domain.ChallengingRecords;
 import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
@@ -18,9 +18,7 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,102 +28,79 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChallengeQueryService {
 
-    private static final TokenPayload NOT_LOGIN = new TokenPayload(0L);
-
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(LocalDateTime searchTime, PagingParams pagingParams) {
-        return findAllWithChallengerCount(NOT_LOGIN, searchTime, pagingParams);
+        return findAllWithChallengerCount(new TokenPayload(0L), searchTime, pagingParams);
     }
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                                  PagingParams pagingParams) {
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
+        Member member = memberService.findMember(tokenPayload);
+        List<Cycle> cycles = cycleService.searchInProgress(searchTime);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         List<Challenge> challenges = challengeService.searchAll(pagingParams);
-        return getChallengeTabResponses(challenges, inProgressCycles, tokenPayload);
+        return getChallengeTabResponses(challenges, member, challengingRecords);
     }
 
     private List<ChallengeTabResponse> getChallengeTabResponses(List<Challenge> challenges,
-                                                                Map<Challenge, List<Cycle>> inProgressCycles,
-                                                                TokenPayload tokenPayload) {
+                                                                Member member,
+                                                                ChallengingRecords challengingRecords) {
         return challenges.stream()
                 .map(challenge -> new ChallengeTabResponse(
                         challenge,
-                        getChallengerCount(inProgressCycles, challenge),
-                        isChallenging(inProgressCycles, tokenPayload, challenge.getId())
+                        challengingRecords.countChallenger(challenge),
+                        challengingRecords.isChallenging(challenge, member)
                 )).collect(toList());
     }
 
     public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
-        return findWithChallengerCount(NOT_LOGIN, searchTime, challengeId);
+        return findWithChallengerCount(new TokenPayload(0L), searchTime, challengeId);
     }
 
     public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                      Long challengeId) {
-        Map<Challenge, List<Cycle>> inProgressCycles = groupByChallenge(cycleService.searchInProgress(searchTime));
+        Member member = memberService.findMember(tokenPayload);
+        List<Cycle> cycles = cycleService.searchInProgress(searchTime);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         Challenge challenge = challengeService.search(challengeId);
         return new ChallengeResponse(
                 challenge,
-                getChallengerCount(inProgressCycles, challenge),
-                isChallenging(inProgressCycles, tokenPayload, challengeId)
+                challengingRecords.countChallenger(challenge),
+                challengingRecords.isChallenging(challenge, member)
         );
-    }
-
-    private Map<Challenge, List<Cycle>> groupByChallenge(List<Cycle> cycles) {
-        return cycles.stream()
-                .collect(groupingBy(Cycle::getChallenge));
-    }
-
-    private boolean isChallenging(Map<Challenge, List<Cycle>> inProgressCycles,
-                                  TokenPayload tokenPayload,
-                                  Long challengeId) {
-        Challenge challenge = challengeService.search(challengeId);
-        return getCyclesByChallenge(inProgressCycles, challenge).stream()
-                .anyMatch(cycle -> cycle.matchMember(tokenPayload.getId()));
-    }
-
-    private List<Cycle> getCyclesByChallenge(Map<Challenge, List<Cycle>> inProgressCycles, Challenge challenge) {
-        return inProgressCycles.getOrDefault(challenge, List.of());
-    }
-
-    private int getChallengerCount(Map<Challenge, List<Cycle>> inProgressCycles, Challenge challenge) {
-        return getCyclesByChallenge(inProgressCycles, challenge).size();
     }
 
     public List<ChallengeOfMineResponse> searchOfMine(TokenPayload tokenPayload,
                                                       PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        List<Cycle> cycles = cycleService.findAllByMember(member, pagingParams);
-        List<MemberChallenge> memberChallenges = sortByLatestProgressTime(MemberChallenge.from(cycles));
+        ChallengingRecords challengingRecords = ChallengingRecords.from(
+                cycleService.findAllByMember(member, pagingParams)
+        );
+        List<ChallengingRecord> sortedRecords = challengingRecords.sortByLatestProgressTime();
 
-        MemberChallenge cursorMemberChallenge = getCursorMemberChallenge(pagingParams, memberChallenges);
-        List<MemberChallenge> pagedMemberChallenges = CursorPaging.apply(
-                memberChallenges, cursorMemberChallenge, pagingParams.getDefaultSize()
+        ChallengingRecord cursorChallengingRecord = getCursorMemberChallenge(pagingParams, sortedRecords);
+        List<ChallengingRecord> pagedMyChallengeHistories = CursorPaging.apply(
+                sortedRecords, cursorChallengingRecord, pagingParams.getDefaultSize()
         );
 
-        return pagedMemberChallenges.stream()
+        return pagedMyChallengeHistories.stream()
                 .map(ChallengeOfMineResponse::new)
                 .collect(toList());
     }
 
-    private List<MemberChallenge> sortByLatestProgressTime(List<MemberChallenge> memberChallenges) {
-        return memberChallenges.stream()
-                .sorted(Comparator.comparing(MemberChallenge::getLatestProgressTime).reversed()
-                        .thenComparing(memberChallenge -> memberChallenge.getChallenge().getId()))
-                .collect(toList());
-    }
-
-    private MemberChallenge getCursorMemberChallenge(PagingParams pagingParams,
-                                                     List<MemberChallenge> memberChallenges) {
+    private ChallengingRecord getCursorMemberChallenge(PagingParams pagingParams,
+                                                       List<ChallengingRecord> myChallengeHistories) {
         return challengeService.findById(pagingParams.getDefaultCursorId())
-                .map(cursor -> extractMatchChallenge(memberChallenges, cursor))
+                .map(cursor -> extractMatchChallenge(myChallengeHistories, cursor))
                 .orElse(null);
     }
 
-    private MemberChallenge extractMatchChallenge(List<MemberChallenge> memberChallenges, Challenge lastChallenge) {
-        return memberChallenges.stream()
+    private ChallengingRecord extractMatchChallenge(List<ChallengingRecord> myChallengeHistories,
+                                                    Challenge lastChallenge) {
+        return myChallengeHistories.stream()
                 .filter(memberChallenge -> memberChallenge.getChallenge().equals(lastChallenge))
                 .findAny()
                 .orElse(null);

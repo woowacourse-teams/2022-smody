@@ -10,8 +10,6 @@ import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -55,10 +53,10 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                 .join(cycle.challenge).fetchJoin()
                 .leftJoin(cycle.cycleDetails).fetchJoin()
                 .where(DynamicQuery.builder()
-                    .and(() -> cycle.member.id.eq(memberId))
-                    .and(() -> cycle.progress.eq(Progress.from(pagingParams.getFilter())
-                            .orElse(null)))
-                    .build()
+                        .and(() -> cycle.member.id.eq(memberId))
+                        .and(() -> cycle.progress.eq(Progress.from(pagingParams.getFilter())
+                                .orElse(null)))
+                        .build()
                 )
                 .distinct()
                 .fetch();

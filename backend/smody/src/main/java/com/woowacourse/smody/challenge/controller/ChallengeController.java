@@ -35,7 +35,8 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@ModelAttribute PagingParams pagingParams) {
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(
+            @ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(
                 challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
     }

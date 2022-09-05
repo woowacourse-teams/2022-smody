@@ -53,6 +53,7 @@ public enum SortSelection {
     }
 
     public abstract Sort getSort();
+
     public abstract OrderSpecifier<?>[] getOrderSpecifiers();
 
     public static SortSelection findByParameter(String parameter) {

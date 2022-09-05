@@ -19,7 +19,8 @@ public class DynamicQuery {
     public DynamicQuery and(Supplier<BooleanExpression> expressionSupplier) {
         try {
             booleanBuilder.and(expressionSupplier.get());
-        } catch (IllegalArgumentException | NullPointerException ignored) {}
+        } catch (IllegalArgumentException | NullPointerException ignored) {
+        }
         return this;
     }
 

@@ -1,7 +1,7 @@
 package com.woowacourse.smody.cycle.repository;
 
-import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.db_support.PagingParams;
 import java.util.List;
 
 public interface DynamicCycleRepository {

@@ -22,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private static final TokenPayload NOT_LOGIN = new TokenPayload(0L);
+    private static final Member NOT_LOGIN_MEMBER = new Member("email", "비회원", "없는 이미지");
+
     private final MemberRepository memberRepository;
     private final CycleRepository cycleRepository;
     private final ImageStrategy imageStrategy;
@@ -60,5 +63,12 @@ public class MemberService {
     public void updateProfileImage(TokenPayload tokenPayload, MultipartFile profileImage) {
         Member member = search(tokenPayload);
         member.updatePicture(new Image(profileImage, imageStrategy));
+    }
+
+    public Member findMember(TokenPayload tokenPayload) {
+        if (tokenPayload.equals(NOT_LOGIN)) {
+            return NOT_LOGIN_MEMBER;
+        }
+        return search(tokenPayload);
     }
 }
