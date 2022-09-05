@@ -47,7 +47,6 @@ public class SmodyImageStrategy implements ImageStrategy {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
-        return httpEntity;
+        return new HttpEntity<>(body, headers);
     }
 }

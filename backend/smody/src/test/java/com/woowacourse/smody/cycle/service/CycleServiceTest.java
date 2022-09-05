@@ -449,7 +449,7 @@ public class CycleServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(historyResponses.size()).isEqualTo(4),
+                    () -> assertThat(historyResponses).hasSize(4),
                     () -> assertThat(historyResponses)
                             .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(inProgress1.getId(), failed1.getId(), success1.getId(), success2.getId()),
@@ -471,7 +471,7 @@ public class CycleServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(historyResponses.size()).isEqualTo(2),
+                    () -> assertThat(historyResponses).hasSize(2),
                     () -> assertThat(historyResponses)
                             .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success1.getId(), success2.getId()),
@@ -493,7 +493,7 @@ public class CycleServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(historyResponses.size()).isEqualTo(2),
+                    () -> assertThat(historyResponses).hasSize(2),
                     () -> assertThat(historyResponses)
                             .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success1.getId(), success2.getId()),
@@ -515,7 +515,7 @@ public class CycleServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(historyResponses.size()).isEqualTo(1),
+                    () -> assertThat(historyResponses).hasSize(1),
                     () -> assertThat(historyResponses)
                             .map(FilteredCycleHistoryResponse::getCycleId)
                             .containsExactly(success2.getId()),

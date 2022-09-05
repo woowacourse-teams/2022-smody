@@ -34,7 +34,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.web.multipart.MultipartFile;
 
-public class MemberServiceTest extends IntegrationTest {
+class MemberServiceTest extends IntegrationTest {
 
     @Autowired
     private MemberService memberService;
@@ -117,11 +117,11 @@ public class MemberServiceTest extends IntegrationTest {
                 () -> assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
                         .isInstanceOf(BusinessException.class),
                 () -> assertThat(cycleRepository.findAll())
-                        .hasSize(0),
+                        .isEmpty(),
                 () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList())
-                        .hasSize(0),
-                () -> assertThat(pushNotificationRepository.findAll()).hasSize(0),
-                () -> assertThat(pushSubscriptionRepository.findAll()).hasSize(0)
+                        .isEmpty(),
+                () -> assertThat(pushNotificationRepository.findAll()).isEmpty(),
+                () -> assertThat(pushSubscriptionRepository.findAll()).isEmpty()
         );
     }
 

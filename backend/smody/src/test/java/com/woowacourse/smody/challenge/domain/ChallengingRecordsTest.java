@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class ChallengingRecordsTest {
+class ChallengingRecordsTest {
 
     private ChallengingRecords challengingRecords;
     private final Challenge challenge1 = new Challenge("미라클 모닝");
