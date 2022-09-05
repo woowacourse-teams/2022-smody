@@ -52,11 +52,15 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
     public List<Cycle> findAllByMember(Long memberId, PagingParams pagingParams) {
         return queryFactory
                 .selectFrom(cycle)
+                .join(cycle.challenge).fetchJoin()
+                .leftJoin(cycle.cycleDetails).fetchJoin()
                 .where(DynamicQuery.builder()
                     .and(() -> cycle.member.id.eq(memberId))
                     .and(() -> cycle.progress.eq(Progress.from(pagingParams.getFilter())
                             .orElse(null)))
                     .build()
-                ).fetch();
+                )
+                .distinct()
+                .fetch();
     }
 }

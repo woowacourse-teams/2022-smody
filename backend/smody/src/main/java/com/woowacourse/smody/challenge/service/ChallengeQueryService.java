@@ -88,23 +88,26 @@ public class ChallengeQueryService {
                 .anyMatch(cycle -> cycle.matchMember(tokenPayload.getId()));
     }
 
-    public List<ChallengeOfMineResponse> searchOfMineWithFilter(TokenPayload tokenPayload,
-                                                                PagingParams pagingParams) {
+    public List<ChallengeOfMineResponse> searchOfMine(TokenPayload tokenPayload,
+                                                      PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
         List<Cycle> cycles = cycleService.findAllByMember(member, pagingParams);
-        List<MemberChallenge> memberChallenges = MemberChallenge.from(cycles)
-                .stream()
+        List<MemberChallenge> memberChallenges = sortByLatestProgressTime(MemberChallenge.from(cycles));
+
+        MemberChallenge cursorMemberChallenge = getCursorMemberChallenge(pagingParams, memberChallenges);
+        List<MemberChallenge> pagedMemberChallenges = CursorPaging.apply(
+                memberChallenges, cursorMemberChallenge, pagingParams.getDefaultSize()
+        );
+
+        return pagedMemberChallenges.stream()
+                .map(ChallengeOfMineResponse::new)
+                .collect(toList());
+    }
+
+    private List<MemberChallenge> sortByLatestProgressTime(List<MemberChallenge> memberChallenges) {
+        return memberChallenges.stream()
                 .sorted(Comparator.comparing(MemberChallenge::getLatestProgressTime).reversed()
                         .thenComparing(memberChallenge -> memberChallenge.getChallenge().getId()))
-                .collect(toList());
-
-        MemberChallenge cursorChallenge = getCursorMemberChallenge(pagingParams, memberChallenges);
-        List<MemberChallenge> pagedChallenges = CursorPaging.apply(memberChallenges, cursorChallenge,
-                pagingParams.getDefaultSize());
-
-        return pagedChallenges.stream()
-                .map(memberChallenge -> new ChallengeOfMineResponse(memberChallenge.getChallenge(),
-                        memberChallenge.getSuccessCount()))
                 .collect(toList());
     }
 
@@ -146,13 +149,5 @@ public class ChallengeQueryService {
                 .mapToInt(cycle -> cycle.getCycleDetails().size())
                 .sum();
         return new ChallengeHistoryResponse(challenge, successCount, cycleDetailCount);
-    }
-
-    private LocalDateTime getLatestProgressTimeOfChallenge(Long challengeId, Long memberId) {
-        List<Cycle> lastChallengeCycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, memberId);
-        return lastChallengeCycles.stream()
-                .map(Cycle::getLatestProgressTime)
-                .max(Comparator.naturalOrder())
-                .orElse(LocalDateTime.now());
     }
 }

@@ -1,6 +1,7 @@
 package com.woowacourse.smody.challenge.dto;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.challenge.domain.MemberChallenge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,11 @@ public class ChallengeOfMineResponse {
     private Integer emojiIndex;
     private Integer colorIndex;
 
-    public ChallengeOfMineResponse(Challenge challenge, Integer successCount) {
+    public ChallengeOfMineResponse(MemberChallenge memberChallenge) {
+        Challenge challenge = memberChallenge.getChallenge();
         this.challengeId = challenge.getId();
         this.challengeName = challenge.getName();
-        this.successCount = successCount;
+        this.successCount = memberChallenge.getSuccessCount();
         this.emojiIndex = challenge.getEmojiIndex();
         this.colorIndex = challenge.getColorIndex();
     }
