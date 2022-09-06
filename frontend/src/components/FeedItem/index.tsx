@@ -17,6 +17,7 @@ export const FeedItem = ({
   challengeName,
   commentCount,
   isClickable = true,
+  isShowBriefChallengeName = true,
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
 
@@ -30,27 +31,25 @@ export const FeedItem = ({
       onClick={handleClickFeed}
       isClickable={isClickable}
     >
-      <FlexBox alignItems="center">
+      <FlexBox alignItems="center" flexWrap="wrap">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <FlexBox alignItems="center">
-          <Nickname size={20} color={themeContext.onBackground}>
-            {nickname}
-          </Nickname>
-          <OfText size={16} color={themeContext.onBackground}>
-            의&nbsp;
-          </OfText>
-          <ChallengeName
-            fontSize={20}
-            fontColor={themeContext.onBackground}
-            underLineColor={themeContext.primary}
-            fontWeight="bold"
-            onClick={handleClickChallengeName}
-          >
-            {challengeName.length > 9
-              ? `${challengeName.substring(0, 9)}...`
-              : challengeName}
-          </ChallengeName>
-        </FlexBox>
+        <Nickname size={20} color={themeContext.onBackground}>
+          {nickname}
+        </Nickname>
+        <OfText size={16} color={themeContext.onBackground}>
+          의&nbsp;
+        </OfText>
+        <ChallengeName
+          fontSize={20}
+          fontColor={themeContext.onBackground}
+          underLineColor={themeContext.primary}
+          fontWeight="bold"
+          onClick={handleClickChallengeName}
+        >
+          {isShowBriefChallengeName && challengeName.length > 9
+            ? `${challengeName.substring(0, 9)}...`
+            : challengeName}
+        </ChallengeName>
       </FlexBox>
       <ProgressImg
         src={progressImage}
