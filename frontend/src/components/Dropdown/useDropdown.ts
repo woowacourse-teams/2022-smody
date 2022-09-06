@@ -1,7 +1,7 @@
 import { UseDropdownProps } from './type';
 import { useGetNotifications } from 'apis/pushNotificationApi';
-import { setBadge } from 'push/badge';
-import { pushStatus } from 'push/pushStatus';
+import { setBadge } from 'pwa/badge';
+import { pushStatus } from 'pwa/pushStatus';
 import { MouseEventHandler, useState, useEffect } from 'react';
 
 export const useDropdown = ({

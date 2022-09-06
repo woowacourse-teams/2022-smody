@@ -37,6 +37,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
         {isDev && 'DEV'}
         {isLocal && 'LOCAL'}
+        {!navigator.onLine && ' OFFLINE'}
       </Link>
       <FlexBox gap="1rem">
         <DarkModeButton checked={isDark} handleChange={handleDarkToggle} />

@@ -1,6 +1,6 @@
 import { SubscriptionButtonProps } from './type';
 import LoadingDots from 'assets/loading_dots.svg';
-import { pushStatus } from 'push/pushStatus';
+import { pushStatus } from 'pwa/pushStatus';
 import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 

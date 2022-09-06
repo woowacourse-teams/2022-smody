@@ -1,32 +1,69 @@
 {
-  "background_color": "#f5f3ff",
+  "name": "Smody",
+  "short_name": "Smody",
   "description": "작심삼일에 지쳤을 때, Three more days. 스모디",
+  "start_url": "/home",
+  "scope": "/",
+  "background_color": "#f5f3ff",
+  "theme_color": "#7c61ff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Smody",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "Smody",
-  "start_url": "/home",
-  "theme_color": "#7c61ff",
-  "categories": [],
-  "screenshots": [],
+  "orientation": "portrait",
+  "categories": ["lifestyle", "productivity", "social"],
+  "screenshots": [
+    {
+      "src": "image/screenshot-0.png",
+      "sizes": "1276x1836",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "스모디 앱의 홈스크린"
+    },
+    {
+      "src": "image/screenshot-1.png",
+      "sizes": "1276x1836",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "챌린지 인증"
+    },
+    {
+      "src": "image/screenshot-2.png",
+      "sizes": "1276x1836",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "챌린지 검색"
+    },
+    {
+      "src": "image/screenshot-3.png",
+      "sizes": "1276x1836",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "피드"
+    },
+    {
+      "src": "image/screenshot-4.png",
+      "sizes": "1276x1836",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "프로필"
+    }
+  ],
   "icons": [
     {
       "src": "image/favicon.ico",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "sizes": "48x48"
     },
     {
       "src": "image/android-chrome-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "image/android-chrome-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any"
+      "purpose": "maskable"
     },
     {
       "src": "image/favicon-16x16.png",
@@ -41,6 +78,28 @@
       "purpose": "any"
     }
   ],
-  "shortcuts": [],
+  "shortcuts": [
+    {
+      "name": "챌린지 인증하기",
+      "short_name": "인증",
+      "description": "진행 중인 챌린지를 인증할 수 있다",
+      "url": "/cert",
+      "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "새로운 챌린지 검색하기",
+      "short_name": "검색",
+      "description": "새로운 챌린지를 검색하고 도전할 수 있다",
+      "url": "/search",
+      "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "피드 보기",
+      "short_name": "피드",
+      "description": "다른 사용자들의 피드를 볼 수 있다",
+      "url": "/feed",
+      "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ],
   "gcm_sender_id": "671293991399"
 }
