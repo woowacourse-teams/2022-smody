@@ -54,7 +54,7 @@ export const FeedItem = ({
           <OfText size={16} color={themeContext.onBackground}>
             의&nbsp;
           </OfText>
-          <UnderLineText
+          <ChallengeName
             fontSize={20}
             fontColor={themeContext.onBackground}
             underLineColor={themeContext.primary}
@@ -64,7 +64,7 @@ export const FeedItem = ({
             {challengeName.length > 9
               ? `${challengeName.substring(0, 9)}...`
               : challengeName}
-          </UnderLineText>
+          </ChallengeName>
         </FlexBox>
       </FlexBox>
       <ProgressImg
