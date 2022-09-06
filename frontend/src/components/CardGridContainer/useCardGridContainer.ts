@@ -1,4 +1,5 @@
 import { useGetMyChallenges } from 'apis';
+import { indexedDB } from 'pwa/indexedDB';
 
 const useCardGridContainer = () => {
   const {
@@ -6,9 +7,24 @@ const useCardGridContainer = () => {
     hasNextPage,
     fetchNextPage,
     isFetching,
-  } = useGetMyChallenges();
+  } = useGetMyChallenges({
+    useErrorBoundary: false,
+    onSuccess: (data) => {
+      const myChallenges = data.pages[0].data;
+      indexedDB.clearPost('myChallenge').then(() => {
+        for (const myChallenge of myChallenges) {
+          indexedDB.savePost('myChallenge', myChallenge);
+        }
+      });
+    },
+  });
 
-  return { myChallengeInfiniteData, hasNextPage, fetchNextPage, isFetching };
+  return {
+    myChallengeInfiniteData,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+  };
 };
 
 export default useCardGridContainer;

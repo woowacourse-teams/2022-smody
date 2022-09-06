@@ -4,7 +4,7 @@ import {
   usePostSubscribe,
   usePostUnsubscribe,
 } from 'apis/pushNotificationApi';
-import { pushStatus } from 'push/pushStatus';
+import { pushStatus } from 'pwa/pushStatus';
 import { useEffect, useState } from 'react';
 import { urlB64ToUint8Array } from 'utils';
 
