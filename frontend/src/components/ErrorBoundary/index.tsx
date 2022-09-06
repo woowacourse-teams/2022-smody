@@ -6,6 +6,9 @@ import React from 'react';
 import { ERROR_MESSAGE } from 'constants/message';
 
 const UNKNOWN_ERROR_MESSAGE = '알 수 없는 오류가 발생했습니다.';
+const OFFLINE_ERROR_MESSAGE =
+  'Offline 상태입니다. 인증, 검색, 피드 페이지에서 마지막으로 조회한 데이터만 볼 수 있습니다.';
+
 const INITIAL_STATE = { hasError: false, errorCode: null, errorMessage: null };
 
 const isAxiosError = (error: Error) => error instanceof AxiosError;
@@ -36,6 +39,10 @@ export class ErrorBoundary extends React.Component<
     }
 
     const { response } = error as AxiosError<ErrorResponse>;
+
+    if (!navigator.onLine) {
+      return { hasError: true, errorCode: null, errorMessage: OFFLINE_ERROR_MESSAGE };
+    }
 
     if (typeof response === 'undefined' || typeof response.data === 'undefined') {
       return { hasError: true, errorCode: null, errorMessage: UNKNOWN_ERROR_MESSAGE };

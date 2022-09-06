@@ -1,7 +1,7 @@
 import { UseNotificationMessageProps, NotificationHandlerProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { useGetNotifications, useDeleteNotification } from 'apis/pushNotificationApi';
-import { setBadge } from 'push/badge';
+import { setBadge } from 'pwa/badge';
 import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';

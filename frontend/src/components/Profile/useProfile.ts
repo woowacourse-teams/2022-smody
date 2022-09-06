@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
-import { LoadingSpinner } from 'components/LoadingSpinner';
-
 import { CLIENT_PATH } from 'constants/path';
 
 const useProfile = () => {
