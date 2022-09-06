@@ -104,6 +104,9 @@ const ProgressImg = styled.img`
 
 const MainText = styled(Text)`
   align-self: flex-start;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 const CommentCount = styled(Text)`
