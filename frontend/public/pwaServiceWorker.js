@@ -1,58 +1,34 @@
-const VERSION = 'v4';
+const VERSION = 'v4.1';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
-const CLIENT_PATH = {
-  HOME: '/home',
-  LOGIN: '/login',
-  SIGN_UP: '/sign_up',
-  CERT: '/cert',
-  SEARCH: '/search',
-  FEED: '/feed',
-  FEED_DETAIL: '/feed/detail',
-  FEED_DETAIL_ID: '/feed/detail/:cycleDetailId',
-  PROFILE: '/profile',
-  PROFILE_EDIT: '/profile/edit',
-  PROFILE_CHALLENGE_DETAIL: '/profile/challenges/detail',
-  PROFILE_CHALLENGE_DETAIL_ID: '/profile/challenges/detail/:challengeId',
-  CYCLE_DETAIL: '/cycle/detail',
-  CYCLE_DETAIL_ID: '/cycle/detail/:cycleId',
-  CHALLENGE_CREATE: '/challenge/create',
-  CHALLENGE_DETAIL: '/challenge/detail',
-  CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
-  VOC: '/voc',
-  NOT_FOUND: '/not_found',
-  WILD_CARD: '*',
-};
-
-const routerList = Object.values(CLIENT_PATH);
-
-const IMMUTABLE_APPSHELL = [
+const APP_SHELL = [
   '/image/android-chrome-192x192.png',
   '/image/android-chrome-512x512.png',
   '/image/apple-touch-icon.png',
   '/image/favicon-16x16.png',
   '/image/favicon-32x32.png',
   '/image/favicon.ico',
+  '/image/screenshot-0.png',
+  '/image/screenshot-1.png',
+  '/image/screenshot-2.png',
+  '/image/screenshot-3.png',
+  '/image/screenshot-4.png',
   '/assets/service_example.png',
   '/manifest.json',
+  '/index.html',
 ];
-
-const MUTABLE_APPSHELL = ['/', '/bundle', '/index.html'];
-
-const CACHE_LIST = IMMUTABLE_APPSHELL.concat(MUTABLE_APPSHELL);
 
 self.addEventListener('install', (event) => {
   console.log('SMODY service worker - install', VERSION);
 
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(CACHE_LIST);
-    }),
-  );
-
-  // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
-  self.skipWaiting();
+  event
+    .waitUntil(
+      caches.open(CACHE_NAME).then((cache) => {
+        return cache.addAll(APP_SHELL);
+      }),
+    )
+    .then(() => self.skipWaiting()); // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
 });
 
 self.addEventListener('activate', (event) => {
@@ -77,18 +53,18 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const urlPath = url.pathname.split('?')[0];
 
-  if (IMMUTABLE_APPSHELL.includes(urlPath)) {
-    // 자주 변경되지 않는 리소스인 경우
-    // 선 캐시, 후 네트워크 응답
+  // APP_SHELL, 선 캐시, 후 네트워크 응답
+  if (APP_SHELL.includes(urlPath)) {
     event.respondWith(
       caches.match(urlPath).then((response) => {
         return response || fetch(event.request);
       }),
     );
+
+    return;
   }
 
-  // bundle js 파일 요청할 경우
-  // 선 네트워크, 후 캐시 응답
+  // bundle 자바스크립트 파일, 선 네트워크, 후 캐시 응답
   if (event.request.url.includes('bundle')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
@@ -104,18 +80,18 @@ self.addEventListener('fetch', (event) => {
           });
       }),
     );
+
+    return;
   }
 
-  // route path를 요청할 경우 index.html 응답
-  if (routerList.includes(urlPath)) {
-    // 선 캐시, 후 네트워크
-    event.respondWith(
-      caches.match('/index.html').then((response) => response || fetch(event.request)),
-    );
+  // router navigate 응답
+  if (event.request.mode === 'navigate') {
+    event.respondWith(caches.match('/index.html') || fetch(event.request));
+
+    return;
   }
 
   // 게시물 이미지 캐싱
-  // 요청 url의 pathname이 /images로 시작하면 게시물 이미지 요청이다.
   if (url.pathname.startsWith('/images')) {
     event.respondWith(
       caches.open(IMAGE_CACHE_NAME).then((cache) => {
@@ -134,6 +110,8 @@ self.addEventListener('fetch', (event) => {
         });
       }),
     );
+
+    return;
   }
 });
 
