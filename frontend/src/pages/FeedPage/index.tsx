@@ -73,4 +73,8 @@ const FeedContainer = styled.div`
   @media all and (max-width: 880px) {
     grid-template-columns: repeat(1, minmax(370px, max-content));
   }
+
+  @media all and (max-width: 366px) {
+    grid-template-columns: 100%;
+  }
 `;

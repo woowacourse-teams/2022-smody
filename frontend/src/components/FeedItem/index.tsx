@@ -87,6 +87,10 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
+
+    @media all and (max-width: 366px) {
+      min-width: auto;
+    }
   `}
 `;
 
