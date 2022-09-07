@@ -7,7 +7,11 @@ export interface FeedItemProps extends Feed {
 
 export type UseFeedProps = Pick<
   FeedItemProps,
-  'challengeId' | 'cycleDetailId' | 'progressTime'
+  | 'challengeId'
+  | 'cycleDetailId'
+  | 'progressTime'
+  | 'challengeName'
+  | 'isShowBriefChallengeName'
 >;
 
 export type WrapperProps = Pick<FeedItemProps, 'isClickable'>;

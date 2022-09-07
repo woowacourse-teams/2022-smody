@@ -21,8 +21,22 @@ export const FeedItem = ({
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
 
-  const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
-    useFeedItem({ challengeId, cycleDetailId, progressTime });
+  const {
+    year,
+    month,
+    date,
+    hours,
+    minutes,
+    renderedChallengeName,
+    handleClickFeed,
+    handleClickChallengeName,
+  } = useFeedItem({
+    challengeId,
+    cycleDetailId,
+    progressTime,
+    challengeName,
+    isShowBriefChallengeName,
+  });
 
   return (
     <Wrapper
@@ -46,9 +60,7 @@ export const FeedItem = ({
           fontWeight="bold"
           onClick={handleClickChallengeName}
         >
-          {isShowBriefChallengeName && challengeName.length > 9
-            ? `${challengeName.substring(0, 9)}...`
-            : challengeName}
+          {renderedChallengeName}
         </ChallengeName>
       </FlexBox>
       <ProgressImg
