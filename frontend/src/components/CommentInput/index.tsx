@@ -93,6 +93,7 @@ const CommentInputElement = styled.textarea`
 
 const WriteButton = styled.button<WriteButtonProps>`
   ${({ theme, isVisible }) => css`
+    min-width: 50px;
     height: 20px;
     padding: 0 0.625rem;
     font-size: 0.75rem;
