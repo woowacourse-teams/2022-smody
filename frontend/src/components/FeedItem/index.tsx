@@ -60,9 +60,7 @@ export const FeedItem = ({
           fontWeight="bold"
           onClick={handleClickChallengeName}
         >
-          {isShowBriefChallengeName && challengeName.length > 9
-            ? `${challengeName.substring(0, 9)}...`
-            : challengeName}
+          {renderedChallengeName}
         </ChallengeName>
       </FlexBox>
       <ProgressImg
