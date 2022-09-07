@@ -513,14 +513,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_request"><a class="link" href="#_request">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges?page=0&amp;size=10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges?size=10&amp;cursorId=7 HTTP/1.1
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/auth?page=0&amp;size=10 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/auth?size=10&amp;cursorId=7 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE0LCJleHAiOjE2NjI3OTk2MTR9.y9VIMotUZV01udEUqjQUarWiYWZXp6cmUUm0O-LJkgg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -534,7 +534,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 334
+Content-Length: 320
 
 [ {
   "challengeId" : 1,
@@ -612,8 +612,8 @@ Content-Length: 334
 <h3 id="_request_2"><a class="link" href="#_request_2">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/me?page=0&amp;size=10 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/me?size=10&amp;cursorId=7 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE1LCJleHAiOjE2NjI3OTk2MTV9.U1tI5EYpTXyccx1SpDHw5ZK2gKrYRsDA-ocR33uoc6c
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -627,7 +627,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 407
+Content-Length: 389
 
 [ {
   "challengeId" : 1,
@@ -714,7 +714,7 @@ Host: www.smody.co.kr</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/1/auth HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE1LCJleHAiOjE2NjI3OTk2MTV9.U1tI5EYpTXyccx1SpDHw5ZK2gKrYRsDA-ocR33uoc6c
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -728,7 +728,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 222
+Content-Length: 214
 
 {
   "challengeId" : 1,
@@ -819,7 +819,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 302
+Content-Length: 290
 
 [ {
   "memberId" : 1,
@@ -892,8 +892,8 @@ Content-Length: 302
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /challenges HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
-Content-Length: 165
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE1LCJleHAiOjE2NjI3OTk2MTV9.U1tI5EYpTXyccx1SpDHw5ZK2gKrYRsDA-ocR33uoc6c
+Content-Length: 160
 Host: www.smody.co.kr
 
 {
@@ -965,7 +965,7 @@ Location: /challenges/1</code></pre>
 <h3 id="_request_6"><a class="link" href="#_request_6">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges?search=%EA%B3%B5%EB%B6%80 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges?size=10&amp;cursorId=9&amp;filter=%EA%B3%B5%EB%B6%80 HTTP/1.1
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -974,8 +974,8 @@ Host: www.smody.co.kr</code></pre>
 <h3 id="_request_필드_3"><a class="link" href="#_request_필드_3">Request 필드</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/auth?search=%EA%B3%B5%EB%B6%80 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/auth?size=10&amp;cursorId=9&amp;filter=%EA%B3%B5%EB%B6%80 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE0LCJleHAiOjE2NjI3OTk2MTR9.y9VIMotUZV01udEUqjQUarWiYWZXp6cmUUm0O-LJkgg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -989,7 +989,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 344
+Content-Length: 330
 
 [ {
   "challengeId" : 1,
@@ -1015,7 +1015,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 343
+Content-Length: 329
 
 [ {
   "challengeId" : 1,
@@ -1094,7 +1094,7 @@ Content-Length: 343
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /challenges/me/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE1LCJleHAiOjE2NjI3OTk2MTV9.U1tI5EYpTXyccx1SpDHw5ZK2gKrYRsDA-ocR33uoc6c
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1108,7 +1108,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 202
+Content-Length: 195
 
 {
   "challengeName" : "알고리즘 풀기",
@@ -1182,12 +1182,12 @@ Content-Length: 202
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /cycles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
-Content-Length: 73
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
+Content-Length: 69
 Host: www.smody.co.kr
 
 {
-  "startTime" : "2022-08-17T11:58:35.9935356",
+  "startTime" : "2022-09-07T17:47:01.975309",
   "challengeId" : 1
 }</code></pre>
 </div>
@@ -1245,7 +1245,7 @@ Location: /cycles/1</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /cycles/1/progress HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
 Host: www.smody.co.kr
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -1309,7 +1309,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 27
+Content-Length: 25
 
 {
   "progressCount" : 2
@@ -1351,7 +1351,7 @@ Content-Length: 27
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me?page=0&amp;size=5 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1365,14 +1365,14 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 448
+Content-Length: 428
 
 [ {
   "cycleId" : 1,
   "challengeId" : 1,
   "challengeName" : "미라클 모닝",
   "progressCount" : 2,
-  "startTime" : "2022-08-17T11:58:35.6525377",
+  "startTime" : "2022-09-07T17:47:01.581348",
   "successCount" : 3,
   "emojiIndex" : 0,
   "colorIndex" : 1
@@ -1381,7 +1381,7 @@ Content-Length: 448
   "challengeId" : 2,
   "challengeName" : "오늘의 운동",
   "progressCount" : 1,
-  "startTime" : "2022-08-17T11:58:35.6525377",
+  "startTime" : "2022-09-07T17:47:01.581348",
   "successCount" : 3,
   "emojiIndex" : 0,
   "colorIndex" : 1
@@ -1471,24 +1471,24 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 557
+Content-Length: 534
 
 {
   "cycleId" : 1,
   "challengeId" : 1,
   "challengeName" : "미라클 모닝",
   "progressCount" : 2,
-  "startTime" : "2022-08-17T11:58:35.9435379",
+  "startTime" : "2022-09-07T17:47:01.88344",
   "successCount" : 3,
   "description" : "미라클 모닝입니다",
   "emojiIndex" : 0,
   "colorIndex" : 1,
   "cycleDetails" : [ {
-    "progressTime" : "2022-08-17T11:58:35.9435379",
+    "progressTime" : "2022-09-07T17:47:01.886366",
     "progressImage" : "image1",
     "description" : "인증 내용1"
   }, {
-    "progressTime" : "2022-08-17T11:58:35.9435379",
+    "progressTime" : "2022-09-07T17:47:01.886482",
     "progressImage" : "image2",
     "description" : "인증 내용2"
   } ]
@@ -1585,7 +1585,7 @@ Content-Length: 557
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me/stat HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1599,7 +1599,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 48
+Content-Length: 45
 
 {
   "totalCount" : 35,
@@ -1647,7 +1647,7 @@ Content-Length: 48
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me/1/?size=10&amp;lastCycleId=3 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1661,33 +1661,34 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 766
+Content-Length: 618
 
 [ {
   "cycleId" : 3,
+  "emojiIndex" : 0,
+  "colorIndex" : 1,
+  "startTime" : "2022-01-01T05:00:00",
   "cycleDetails" : [ {
-    "progressTime" : "2022-01-01T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 1,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-01-02T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 2,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-01-03T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 3,
+    "progressImage" : "progressImage.jpg"
   } ]
 }, {
   "cycleId" : 4,
+  "emojiIndex" : 1,
+  "colorIndex" : 2,
+  "startTime" : "2022-02-01T05:00:00",
   "cycleDetails" : [ {
-    "progressTime" : "2022-02-01T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 4,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-02-02T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 5,
+    "progressImage" : "progressImage.jpg"
   } ]
 } ]</code></pre>
 </div>
@@ -1715,19 +1716,29 @@ Content-Length: 766
 <td class="tableblock halign-left valign-top"><p class="tableblock">사이클 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].progressTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].emojiIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이모지 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].colorIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">색상 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].startTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이클 시작 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].cycleDetailId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이클 인증 정보 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].progressImage</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">인증 사진</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증 설명</p></td>
 </tr>
 </tbody>
 </table>
@@ -1742,7 +1753,7 @@ Content-Length: 766
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /cycles/me/1/?size=10&amp;lastCycleId=3&amp;filter=success HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE1LCJleHAiOjE2NjA5NjQzMTV9.8RYov_WbTqTFNIBFdAzLiIpJH-337MqpCn2gvC0KXyk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIxLCJleHAiOjE2NjI3OTk2MjF9.zB9xEcNq_wRvLUNlFW4PvIfP1O8LupbN357LvrPAC_o
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1756,37 +1767,37 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 900
+Content-Length: 692
 
 [ {
   "cycleId" : 3,
+  "emojiIndex" : 0,
+  "colorIndex" : 1,
+  "startTime" : "2022-01-01T05:00:00",
   "cycleDetails" : [ {
-    "progressTime" : "2022-01-01T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 1,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-01-02T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 2,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-01-03T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 3,
+    "progressImage" : "progressImage.jpg"
   } ]
 }, {
   "cycleId" : 4,
+  "emojiIndex" : 1,
+  "colorIndex" : 2,
+  "startTime" : "2022-02-01T05:00:00",
   "cycleDetails" : [ {
-    "progressTime" : "2022-02-01T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 4,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-02-02T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 5,
+    "progressImage" : "progressImage.jpg"
   }, {
-    "progressTime" : "2022-02-03T05:00:00",
-    "progressImage" : "progressImage.jpg",
-    "description" : "인증 내용"
+    "cycleDetailId" : 6,
+    "progressImage" : "progressImage.jpg"
   } ]
 } ]</code></pre>
 </div>
@@ -1814,19 +1825,29 @@ Content-Length: 900
 <td class="tableblock halign-left valign-top"><p class="tableblock">사이클 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].progressTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].emojiIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이모지 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].colorIndex</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">색상 인덱스</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].startTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이클 시작 시간</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].cycleDetailId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이클 인증 정보 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].progressImage</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">인증 사진</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].cycleDetails[].description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증 설명</p></td>
 </tr>
 </tbody>
 </table>
@@ -1841,7 +1862,7 @@ Content-Length: 900
 <h3 id="_request_15"><a class="link" href="#_request_15">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /feeds?size=10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /feeds?size=10&amp;cursorId=2&amp;sort=latest HTTP/1.1
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -1855,7 +1876,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 606
+Content-Length: 584
 
 [ {
   "cycleDetailId" : 2,
@@ -1975,7 +1996,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 300
+Content-Length: 289
 
 {
   "cycleDetailId" : 1,
@@ -2078,7 +2099,7 @@ Host: www.smody.co.kr</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /feeds/1/comments/auth HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDY3LCJleHAiOjE2NjA5NjQyNjd9.Q5JHeNafsgkIrRH0UEkqTLgz7fq1NcZ3JdUDD7Qjeng
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIwLCJleHAiOjE2NjI3OTk2MjB9.8rx_mXjQiv2r8ZDcw2B4a6F4WzRIpVMtVu97TImrb-w
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2092,7 +2113,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 390
+Content-Length: 374
 
 [ {
   "memberId" : 1,
@@ -2120,7 +2141,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 389
+Content-Length: 373
 
 [ {
   "memberId" : 1,
@@ -2207,8 +2228,8 @@ Content-Length: 389
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /feeds/1/comments HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDY3LCJleHAiOjE2NjA5NjQyNjd9.Q5JHeNafsgkIrRH0UEkqTLgz7fq1NcZ3JdUDD7Qjeng
-Content-Length: 32
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIwLCJleHAiOjE2NjI3OTk2MjB9.8rx_mXjQiv2r8ZDcw2B4a6F4WzRIpVMtVu97TImrb-w
+Content-Length: 30
 Host: www.smody.co.kr
 
 {
@@ -2264,8 +2285,8 @@ Location: /comments/1</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /comments/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDY3LCJleHAiOjE2NjA5NjQyNjd9.Q5JHeNafsgkIrRH0UEkqTLgz7fq1NcZ3JdUDD7Qjeng
-Content-Length: 35
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIwLCJleHAiOjE2NjI3OTk2MjB9.8rx_mXjQiv2r8ZDcw2B4a6F4WzRIpVMtVu97TImrb-w
+Content-Length: 33
 Host: www.smody.co.kr
 
 {
@@ -2319,7 +2340,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /comments/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDY3LCJleHAiOjE2NjA5NjQyNjd9.Q5JHeNafsgkIrRH0UEkqTLgz7fq1NcZ3JdUDD7Qjeng
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDIwLCJleHAiOjE2NjI3OTk2MjB9.8rx_mXjQiv2r8ZDcw2B4a6F4WzRIpVMtVu97TImrb-w
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2346,7 +2367,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTEzLCJleHAiOjE2NjA5NjQzMTN9.dMq9jXE5w_hA36jdOHBkZan8bnW2XmSw-uSsjKv08E0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI2LCJleHAiOjE2NjI3OTk2MjZ9.0UKLmMoB2UTNJ2VZ2d4yCFcb4pdmBfNjUHvl2haN8YU
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2360,7 +2381,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 128
+Content-Length: 123
 
 {
   "email" : "alpha@naver.com",
@@ -2421,8 +2442,8 @@ Content-Length: 128
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /members/me HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTEzLCJleHAiOjE2NjA5NjQzMTN9.dMq9jXE5w_hA36jdOHBkZan8bnW2XmSw-uSsjKv08E0
-Content-Length: 57
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI2LCJleHAiOjE2NjI3OTk2MjZ9.0UKLmMoB2UTNJ2VZ2d4yCFcb4pdmBfNjUHvl2haN8YU
+Content-Length: 54
 Host: www.smody.co.kr
 
 {
@@ -2483,7 +2504,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /members/me/profile-image HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTEzLCJleHAiOjE2NjA5NjQzMTN9.dMq9jXE5w_hA36jdOHBkZan8bnW2XmSw-uSsjKv08E0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI2LCJleHAiOjE2NjI3OTk2MjZ9.0UKLmMoB2UTNJ2VZ2d4yCFcb4pdmBfNjUHvl2haN8YU
 Host: www.smody.co.kr
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2550,7 +2571,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 67
+Content-Length: 64
 
 {
   "accessToken" : "smodyAccessToken",
@@ -2598,7 +2619,7 @@ Content-Length: 67
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTEzLCJleHAiOjE2NjA5NjQzMTN9.dMq9jXE5w_hA36jdOHBkZan8bnW2XmSw-uSsjKv08E0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI2LCJleHAiOjE2NjI3OTk2MjZ9.0UKLmMoB2UTNJ2VZ2d4yCFcb4pdmBfNjUHvl2haN8YU
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2624,7 +2645,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /oauth/check HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE2LCJleHAiOjE2NjA5NjQzMTZ9.oyU13dLETlF5nVUajVh1XTULtrSkBo0QEkY9jAqbH60
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDE0LCJleHAiOjE2NjI3OTk2MTR9.y9VIMotUZV01udEUqjQUarWiYWZXp6cmUUm0O-LJkgg
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2638,7 +2659,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 24
+Content-Length: 22
 
 {
   "isValid" : true
@@ -2694,7 +2715,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 111
+Content-Length: 109
 
 {
   "publicKey" : "BNzzfdcBcThU27FcGve6F3GF6He2Fro82ZMuOLga9fukatLMlaKB6GdO-82loi6W4iGdPQZAp_4HLgST8z5of_E"
@@ -2713,8 +2734,8 @@ Content-Length: 111
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /web-push/subscribe HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE2LCJleHAiOjE2NjA5NjQzMTZ9.oyU13dLETlF5nVUajVh1XTULtrSkBo0QEkY9jAqbH60
-Content-Length: 103
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI3LCJleHAiOjE2NjI3OTk2Mjd9.sYjnFktixZE9LUYq80Z87xrDWsK-2iCdkHjh7GaO8pI
+Content-Length: 97
 Host: www.smody.co.kr
 
 {
@@ -2783,8 +2804,8 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /web-push/unsubscribe HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MTE2LCJleHAiOjE2NjA5NjQzMTZ9.oyU13dLETlF5nVUajVh1XTULtrSkBo0QEkY9jAqbH60
-Content-Length: 36
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI3LCJleHAiOjE2NjI3OTk2Mjd9.sYjnFktixZE9LUYq80Z87xrDWsK-2iCdkHjh7GaO8pI
+Content-Length: 34
 Host: www.smody.co.kr
 
 {
@@ -2838,7 +2859,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /push-notifications HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI3LCJleHAiOjE2NjI3OTk2Mjd9.sYjnFktixZE9LUYq80Z87xrDWsK-2iCdkHjh7GaO8pI
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2852,18 +2873,18 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 418
+Content-Length: 405
 
 [ {
   "pushNotificationId" : 1,
   "message" : "조조그린님 스모디 알림이 구독되었습니다..",
-  "pushTime" : "2022-08-17T11:57:50.885378",
+  "pushTime" : "2022-09-07T17:47:07.209182",
   "pathId" : 1,
   "pushCase" : "subscription"
 }, {
   "pushNotificationId" : 2,
   "message" : "미라클 모닝 챌린지 인증까지 얼마 안남았어요~",
-  "pushTime" : "2022-08-17T11:57:50.8863787",
+  "pushTime" : "2022-09-07T17:47:07.209293",
   "pathId" : 2,
   "pushCase" : "challenge"
 } ]</code></pre>
@@ -2924,7 +2945,7 @@ Content-Length: 418
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /push-notifications/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYwNzA1MDcwLCJleHAiOjE2NjA5NjQyNzB9.5Y-aikZviroFnh33kPazTILxo-6n2phzzpozwYL0w0k
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyNTQwNDI3LCJleHAiOjE2NjI3OTk2Mjd9.sYjnFktixZE9LUYq80Z87xrDWsK-2iCdkHjh7GaO8pI
 Host: www.smody.co.kr</code></pre>
 </div>
 </div>
@@ -2946,7 +2967,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-16 20:31:54 +0900
+Last updated 2022-08-16 19:56:30 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
