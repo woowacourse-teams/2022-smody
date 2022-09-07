@@ -55,6 +55,8 @@ dependencies {
 
     implementation group: 'nl.martijndwars', name: 'web-push', version: '5.1.1'
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.68'
+
+    implementation group: 'org.hyperic', name: 'sigar', version: '1.6.4'
 }
 
 dependencyManagement {
