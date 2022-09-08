@@ -41,6 +41,14 @@
     <title>Smody</title>
   </head>
   <body>
+    <script>
+      if (
+        !window.location.port &&
+        typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object'
+      ) {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+      }
+    </script>
     <div id="root"></div>
     <div id="snackbar-root"></div>
     <div id="backdrop-root"></div>
