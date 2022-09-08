@@ -1,4 +1,5 @@
-import ServiceExampleImage from 'assets/service_example.png';
+import ServiceExamplePng from 'assets/service_example.png';
+import ServiceExampleWebp from 'assets/service_example.webp';
 import styled, { keyframes } from 'styled-components';
 
 import useInstallApp from 'hooks/useInstallApp';
@@ -44,7 +45,10 @@ const LandingPage = () => {
           여러 챌린지를 확인해보세요
         </Text>
       </ColumnWrapper>
-      <ServiceExample src={ServiceExampleImage} alt="서비스 예시 이미지" />
+      <picture>
+        <source type="image/webp" srcSet={ServiceExampleWebp} />
+        <ServiceExample src={ServiceExamplePng} alt="서비스 예시 이미지" />
+      </picture>
       <FixedButton onClick={installApp}>앱 설치하기</FixedButton>
     </Wrapper>
   );
