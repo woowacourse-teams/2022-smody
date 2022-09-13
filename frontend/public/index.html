@@ -25,7 +25,6 @@
     <meta property="og:image:height" content="512" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Smody" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -41,6 +40,14 @@
     <title>Smody</title>
   </head>
   <body>
+    <script>
+      if (
+        !window.location.port &&
+        typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object'
+      ) {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+      }
+    </script>
     <div id="root"></div>
     <div id="snackbar-root"></div>
     <div id="backdrop-root"></div>
