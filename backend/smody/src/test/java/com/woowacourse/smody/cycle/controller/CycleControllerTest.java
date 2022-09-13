@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.dto.CycleDetailResponse;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.CycleResponse;
@@ -297,7 +297,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -356,7 +356,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallengeWithFilter(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when

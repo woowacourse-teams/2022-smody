@@ -15,47 +15,47 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChallengePushStrategy implements PushStrategy {
 
-	private final PushNotificationService pushNotificationService;
+    private final PushNotificationService pushNotificationService;
 
-	@Override
-	@Transactional
-	public void push(Object entity) {
-		Cycle cycle = (Cycle)entity;
-		deleteInCompleteNotificationIfSamePathIdPresent(cycle);
-		if (cycle.isSuccess()) {
-			return;
-		}
-		pushNotificationService.register(buildNotification(cycle));
-	}
+    @Override
+    @Transactional
+    public void push(Object entity) {
+        Cycle cycle = (Cycle) entity;
+        deleteInCompleteNotificationIfSamePathIdPresent(cycle);
+        if (cycle.isSuccess()) {
+            return;
+        }
+        pushNotificationService.register(buildNotification(cycle));
+    }
 
-	private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
-		pushNotificationService.searchSamePathAndStatus(cycle.getId(), PushStatus.IN_COMPLETE)
-			.ifPresent(notification -> pushNotificationService.delete(notification.getId()));
-	}
+    private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
+        pushNotificationService.searchSamePathAndStatus(cycle.getId(), PushStatus.IN_COMPLETE)
+                .ifPresent(notification -> pushNotificationService.delete(notification.getId()));
+    }
 
-	@Override
-	public PushNotification buildNotification(Object entity) {
-		Cycle cycle = (Cycle)entity;
-		Challenge challenge = cycle.getChallenge();
-		LocalDateTime pushTime = extractPushTime(cycle);
-		return PushNotification.builder()
-			.message(challenge.getName() + " 인증까지 얼마 안남았어요~")
-			.pushTime(pushTime)
-			.pushStatus(PushStatus.IN_COMPLETE)
-			.member(cycle.getMember())
-			.pushCase(getPushCase())
-			.pathId(cycle.getId())
-			.build();
-	}
+    @Override
+    public PushNotification buildNotification(Object entity) {
+        Cycle cycle = (Cycle) entity;
+        Challenge challenge = cycle.getChallenge();
+        LocalDateTime pushTime = extractPushTime(cycle);
+        return PushNotification.builder()
+                .message(challenge.getName() + " 인증까지 얼마 안남았어요~")
+                .pushTime(pushTime)
+                .pushStatus(PushStatus.IN_COMPLETE)
+                .member(cycle.getMember())
+                .pushCase(getPushCase())
+                .pathId(cycle.getId())
+                .build();
+    }
 
-	private LocalDateTime extractPushTime(Cycle cycle) {
-		return cycle.getStartTime()
-			.plusDays(cycle.getInterval())
-			.minusHours(3L);
-	}
+    private LocalDateTime extractPushTime(Cycle cycle) {
+        return cycle.getStartTime()
+                .plusDays(cycle.getInterval())
+                .minusHours(3L);
+    }
 
-	@Override
-	public PushCase getPushCase() {
-		return PushCase.CHALLENGE;
-	}
+    @Override
+    public PushCase getPushCase() {
+        return PushCase.CHALLENGE;
+    }
 }

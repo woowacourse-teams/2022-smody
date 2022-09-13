@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum PushCase {
 
-	SUBSCRIPTION,
-	CHALLENGE,
-	COMMENT
+    SUBSCRIPTION,
+    CHALLENGE,
+    COMMENT
 }

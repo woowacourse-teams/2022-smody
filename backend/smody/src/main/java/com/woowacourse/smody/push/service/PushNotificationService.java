@@ -19,28 +19,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PushNotificationService {
 
-	private final PushNotificationRepository pushNotificationRepository;
-	private final MemberService memberService;
+    private final PushNotificationRepository pushNotificationRepository;
+    private final MemberService memberService;
 
-	@Transactional
-	public PushNotification register(PushNotification pushNotification) {
-		return pushNotificationRepository.save(pushNotification);
-	}
+    @Transactional
+    public PushNotification register(PushNotification pushNotification) {
+        return pushNotificationRepository.save(pushNotification);
+    }
 
-	public List<PushNotificationResponse> searchNotificationsOfMine(TokenPayload tokenPayload) {
-		Member member = memberService.search(tokenPayload);
-		return pushNotificationRepository.findAllLatest(member, PushStatus.COMPLETE)
-			.stream()
-			.map(PushNotificationResponse::new)
-			.collect(Collectors.toList());
-	}
+    public List<PushNotificationResponse> searchNotificationsOfMine(TokenPayload tokenPayload) {
+        Member member = memberService.search(tokenPayload);
+        return pushNotificationRepository.findAllLatest(member, PushStatus.COMPLETE)
+                .stream()
+                .map(PushNotificationResponse::new)
+                .collect(Collectors.toList());
+    }
 
-	@Transactional
-	public void delete(Long id) {
-		pushNotificationRepository.deleteById(id);
-	}
+    @Transactional
+    public void delete(Long id) {
+        pushNotificationRepository.deleteById(id);
+    }
 
-	public Optional<PushNotification> searchSamePathAndStatus(Long pathId, PushStatus status) {
-		return pushNotificationRepository.findByPathIdAndPushStatus(pathId, status);
-	}
+    public Optional<PushNotification> searchSamePathAndStatus(Long pathId, PushStatus status) {
+        return pushNotificationRepository.findByPathIdAndPushStatus(pathId, status);
+    }
 }

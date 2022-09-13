@@ -20,8 +20,8 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
-import com.woowacourse.smody.common.PagingParams;
 import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
@@ -77,12 +77,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, null, 0L, null));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(5),
+                    () -> assertThat(responses).hasSize(5),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(0, 2, 1, 3, 1),
@@ -96,12 +96,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pageFullSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 3, 0L, null));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(3),
+                    () -> assertThat(responses).hasSize(3),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(0, 2, 1),
@@ -115,12 +115,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pagePartialSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(2),
+                    () -> assertThat(responses).hasSize(2),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(1, 3),
@@ -134,7 +134,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pageOverMaxPage() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, null));
 
             // then
@@ -145,12 +145,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, null, 0L, "success"));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(4),
+                    () -> assertThat(responses).hasSize(4),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(2, 1, 3, 1),
@@ -164,12 +164,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageFullSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 3, 0L, "success"));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(3),
+                    () -> assertThat(responses).hasSize(3),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(2, 1, 3),
@@ -183,12 +183,12 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pagePartialSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 2, 오늘의_운동_ID, "success"));
 
             // then
             assertAll(
-                    () -> assertThat(responses.size()).isEqualTo(2),
+                    () -> assertThat(responses).hasSize(2),
                     () -> assertThat(responses)
                             .map(ChallengeOfMineResponse::getSuccessCount)
                             .containsExactly(3, 1),
@@ -202,7 +202,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                     tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, "success"));
 
             // then
@@ -220,12 +220,12 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(7L));
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
-        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMineWithFilter(
+        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
                 tokenPayload, new PagingParams(null, null, 0L, null));
 
         // then
         assertAll(
-                () -> assertThat(responses.size()).isEqualTo(3),
+                () -> assertThat(responses).hasSize(3),
                 () -> assertThat(responses)
                         .map(ChallengeOfMineResponse::getSuccessCount)
                         .containsExactly(1, 0, 0),
@@ -234,6 +234,32 @@ class ChallengeServiceTest extends IntegrationTest {
                         .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID)
         );
 
+    }
+
+    @DisplayName("내 전체 참여 챌린지 조회에서 미래에 시작하는 사이클도 조회한다.")
+    @Test
+    void searchOfMine_retry() {
+        // given
+        fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 오늘의_운동_ID, Progress.NOTHING, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SECOND, now.minusDays(2L));
+        fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(7L));
+        fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.NOTHING, now.plusDays(1L));
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
+        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+                tokenPayload, new PagingParams(null, null, 0L, null));
+
+        // then
+        assertAll(
+                () -> assertThat(responses).hasSize(4),
+                () -> assertThat(responses)
+                        .map(ChallengeOfMineResponse::getSuccessCount)
+                        .containsExactly(0, 1, 0, 0),
+                () -> assertThat(responses)
+                        .map(ChallengeOfMineResponse::getChallengeId)
+                        .containsExactly(JPA_공부_ID, 스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID)
+        );
     }
 
     @DisplayName("모든 챌린지를 ")
@@ -260,7 +286,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses).hasSize(5),
                     () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
@@ -277,7 +303,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses).hasSize(2),
                     () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
@@ -294,7 +320,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses).hasSize(2),
                     () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(오늘의_운동_ID, 알고리즘_풀기_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
@@ -323,7 +349,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(5),
+                    () -> assertThat(challengeResponses).hasSize(5),
                     () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID, 오늘의_운동_ID, 알고리즘_풀기_ID, JPA_공부_ID),
                     () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getIsInProgress))
@@ -341,7 +367,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses).hasSize(2),
                     () -> assertThat(challengeResponses.stream().map(ChallengeTabResponse::getChallengeId))
                             .containsExactly(스모디_방문하기_ID, 미라클_모닝_ID),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
@@ -361,7 +387,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(challengeResponses.size()).isEqualTo(2),
+                    () -> assertThat(challengeResponses).hasSize(2),
                     () -> assertThat(challengeResponses.stream().mapToInt(ChallengeTabResponse::getChallengerCount))
                             .containsExactly(0, 0),
                     () -> assertThat(challengeResponses.stream().mapToLong(ChallengeTabResponse::getChallengeId))
@@ -440,7 +466,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(challengersResponse.size()).isEqualTo(2),
+                () -> assertThat(challengersResponse).hasSize(2),
                 () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getMemberId))
                         .containsExactly(member1.getId(), member2.getId()),
                 () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getNickName))
@@ -585,7 +611,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(challengeTabResponse.size()).isEqualTo(2),
+                () -> assertThat(challengeTabResponse).hasSize(2),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
@@ -609,11 +635,11 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(challengeTabResponse.size()).isEqualTo(1),
+                () -> assertThat(challengeTabResponse).hasSize(1),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(알고리즘_풀기_ID),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
-                        .containsExactly( 1),
+                        .containsExactly(1),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
                         .containsExactly(false)
         );
@@ -667,7 +693,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(challengeTabResponse.size()).isEqualTo(2),
+                () -> assertThat(challengeTabResponse).hasSize(2),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(스모디_방문하기_ID, 알고리즘_풀기_ID),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
@@ -692,11 +718,11 @@ class ChallengeServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(challengeTabResponse.size()).isEqualTo(1),
+                () -> assertThat(challengeTabResponse).hasSize(1),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengeId))
                         .containsExactly(알고리즘_풀기_ID),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getChallengerCount))
-                        .containsExactly( 1),
+                        .containsExactly(1),
                 () -> assertThat(challengeTabResponse.stream().map(ChallengeTabResponse::getIsInProgress))
                         .containsExactly(true)
         );
@@ -777,8 +803,8 @@ class ChallengeServiceTest extends IntegrationTest {
         // then
         assertAll(
                 () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("오늘의 운동"),
-                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(0),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(0)
+                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isZero(),
+                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isZero()
         );
     }
 }
