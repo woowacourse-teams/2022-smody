@@ -5,12 +5,14 @@ const path = require('path');
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 dotenv.config({ path: '.env' });
 
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: isProd ? 'hidden-source-map' : 'eval',
+  devtool: isProd ? false : 'eval',
   performance: {
     hints: false,
   },
@@ -28,19 +30,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: ['babel-loader', 'ts-loader'],
+        test: /\.(js|jsx|ts|tsx)$/i,
+        exclude: /node_modules/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2020',
+        },
       },
       {
-        test: /\.(png)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'assets/[name].[ext]?[hash]',
-            },
-          },
-        ],
+        test: /\.(png|webp)$/,
+        type: 'asset',
+        generator: {
+          filename: 'assets/[name][hash][ext]',
+        },
       },
       // CRA에서는 svg를 자동으로 처리해주지만, CRA를 사용하지 않은 경우 webpack config를 통한 사용 설정이 필요하다.
       {
@@ -59,6 +62,13 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
     },
+    minimizer: [
+      '...',
+      new ESBuildMinifyPlugin({
+        target: 'es2020',
+        css: true,
+      }),
+    ],
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -85,5 +95,6 @@ module.exports = {
         { from: 'public/pwaServiceWorker.js', to: '.' },
       ],
     }),
+    new BundleAnalyzerPlugin(),
   ],
 };
