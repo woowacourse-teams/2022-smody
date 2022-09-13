@@ -36,9 +36,6 @@ public class CommentServiceTest extends IntegrationTest {
     @Autowired
     private ResourceFixture resourceFixture;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @DisplayName("댓글을 생성한다.")
     @Test
     void create() {
@@ -192,7 +189,7 @@ public class CommentServiceTest extends IntegrationTest {
         commentService.delete(new TokenPayload(조조그린_ID), commentId);
 
         // then
-        assertThat(commentRepository.findById(commentId).isEmpty()).isTrue();
+        assertThat(commentRepository.findById(commentId)).isEmpty();
     }
 
     @DisplayName("댓글 삭제 시 작성자가 아니면 예외를 발생시킨다.")

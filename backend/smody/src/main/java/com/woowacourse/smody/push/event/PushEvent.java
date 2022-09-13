@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class PushEvent {
 
-	private final Object entity;
-	private final PushCase pushCase;
+    private final Object entity;
+    private final PushCase pushCase;
 
-	public PushEvent(Object entity, PushCase pushCase) {
-		this.entity = entity;
-		this.pushCase = pushCase;
-	}
+    public PushEvent(Object entity, PushCase pushCase) {
+        this.entity = entity;
+        this.pushCase = pushCase;
+    }
 }
