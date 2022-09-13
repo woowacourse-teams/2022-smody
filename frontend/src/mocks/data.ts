@@ -1,7 +1,7 @@
 export const challengeData = [
   {
     challengeId: 1,
-    challengeName: '미라클 모닝',
+    challengeName: '상쾌한 하루의 시작, 미라클 모닝!',
     challengerCount: 35,
     isInProgress: true,
     emojiIndex: 1,
