@@ -1,7 +1,7 @@
 package com.woowacourse.smody.comment.domain;
 
-import com.woowacourse.smody.common.AuditingEntity;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.db_support.AuditingEntity;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;

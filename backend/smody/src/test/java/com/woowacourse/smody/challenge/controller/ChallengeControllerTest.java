@@ -22,7 +22,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -110,7 +110,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchOfMineWithFilter(any(TokenPayload.class), any(PagingParams.class)))
+        given(challengeQueryService.searchOfMine(any(TokenPayload.class), any(PagingParams.class)))
                 .willReturn(challengeOfMineRespons);
 
         // when

@@ -11,7 +11,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import com.woowacourse.smody.challenge.service.ChallengeQueryService;
 import com.woowacourse.smody.challenge.service.ChallengeService;
-import com.woowacourse.smody.common.PagingParams;
+import com.woowacourse.smody.db_support.PagingParams;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +35,8 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@ModelAttribute PagingParams pagingParams) {
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(
+            @ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(
                 challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
     }
@@ -53,7 +54,7 @@ public class ChallengeController {
     @RequiredLogin
     public ResponseEntity<List<ChallengeOfMineResponse>> searchOfMineWithFilter(@LoginMember TokenPayload tokenPayload,
                                                                                 @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(challengeQueryService.searchOfMineWithFilter(tokenPayload, pagingParams));
+        return ResponseEntity.ok(challengeQueryService.searchOfMine(tokenPayload, pagingParams));
     }
 
     @GetMapping(value = "/{id}")

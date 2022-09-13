@@ -17,11 +17,26 @@ export const FeedItem = ({
   challengeName,
   commentCount,
   isClickable = true,
+  isShowBriefChallengeName = true,
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
 
-  const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
-    useFeedItem({ challengeId, cycleDetailId, progressTime });
+  const {
+    year,
+    month,
+    date,
+    hours,
+    minutes,
+    renderedChallengeName,
+    handleClickFeed,
+    handleClickChallengeName,
+  } = useFeedItem({
+    challengeId,
+    cycleDetailId,
+    progressTime,
+    challengeName,
+    isShowBriefChallengeName,
+  });
 
   return (
     <Wrapper
@@ -77,6 +92,10 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
+
+    @media all and (max-width: 366px) {
+      min-width: auto;
+    }
   `}
 `;
 
@@ -92,6 +111,10 @@ const Nickname = styled(Text)`
 
 const OfText = styled(Text)`
   text-align: end;
+`;
+
+const ChallengeName = styled(UnderLineText)`
+  pointer-events: auto;
 `;
 
 const ProgressImg = styled.img`

@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class PushEventListener {
 
-	private final Map<PushCase, PushStrategy> pushStrategies;
+    private final Map<PushCase, PushStrategy> pushStrategies;
 
-	public PushEventListener(List<PushStrategy> pushStrategies) {
-		this.pushStrategies = pushStrategies.stream()
-			.collect(toMap(
-				PushStrategy::getPushCase,
-				pushStrategy -> pushStrategy)
-			);
-	}
+    public PushEventListener(List<PushStrategy> pushStrategies) {
+        this.pushStrategies = pushStrategies.stream()
+                .collect(toMap(
+                        PushStrategy::getPushCase,
+                        pushStrategy -> pushStrategy)
+                );
+    }
 
-	@EventListener
-	public void handle(PushEvent event) {
-		pushStrategies.get(event.getPushCase())
-			.push(event.getEntity());
-	}
+    @EventListener
+    public void handle(PushEvent event) {
+        pushStrategies.get(event.getPushCase())
+                .push(event.getEntity());
+    }
 }

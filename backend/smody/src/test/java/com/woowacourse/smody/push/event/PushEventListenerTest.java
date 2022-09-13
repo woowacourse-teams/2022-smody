@@ -128,7 +128,7 @@ class PushEventListenerTest extends IntegrationTest {
 		);
 
 		// then
-		assertThat(pushNotificationRepository.findAll()).hasSize(0);
+		assertThat(pushNotificationRepository.findAll()).isEmpty();
 	}
 
 	@DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")

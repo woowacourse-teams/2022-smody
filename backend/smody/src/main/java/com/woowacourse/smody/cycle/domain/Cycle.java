@@ -121,4 +121,8 @@ public class Cycle {
         }
         return getCycleDetails().get(0).getProgressTime();
     }
+
+    public boolean matchChallenge(Challenge challenge) {
+        return this.challenge.equals(challenge);
+    }
 }

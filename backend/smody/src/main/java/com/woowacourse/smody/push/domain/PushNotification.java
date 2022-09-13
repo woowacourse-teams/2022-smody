@@ -37,26 +37,26 @@ public class PushNotification {
     @Column(nullable = false)
     private LocalDateTime pushTime;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private PushStatus pushStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PushStatus pushStatus;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private PushCase pushCase;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PushCase pushCase;
 
-	private Long pathId;
+    private Long pathId;
 
-	@Builder
-	public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member,
-		PushCase pushCase, Long pathId) {
-		this.message = message;
-		this.pushTime = pushTime;
-		this.pushStatus = pushStatus;
-		this.member = member;
-		this.pushCase = pushCase;
-		this.pathId = pathId;
-	}
+    @Builder
+    public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member,
+                            PushCase pushCase, Long pathId) {
+        this.message = message;
+        this.pushTime = pushTime;
+        this.pushStatus = pushStatus;
+        this.member = member;
+        this.pushCase = pushCase;
+        this.pathId = pathId;
+    }
 
     public boolean isPushable(LocalDateTime now) {
         return pushStatus == PushStatus.IN_COMPLETE

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class CommentTest {
+class CommentTest {
 
     @DisplayName("댓글 생성 시 content의 길이가 1자 미만 255자 초과일 경우 예외를 발생시킨다.")
     @Test
