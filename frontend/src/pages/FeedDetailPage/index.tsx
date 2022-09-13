@@ -39,7 +39,7 @@ const FeedDetailPage = () => {
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <FeedItem isClickable={false} {...feedData.data} />
+      <FeedItem isClickable={false} isShowBriefChallengeName={false} {...feedData.data} />
       <CommentList as="ul" flexDirection="column" gap="1.563rem">
         {commentsData?.data.map((comment) => (
           <li key={comment.commentId}>

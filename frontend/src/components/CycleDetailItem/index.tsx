@@ -26,7 +26,7 @@ export const CycleDetailItem = ({
             <Text size={14} color={themeContext.mainText}>
               {year}년 {month}월 {date}일 {hours}:{minutes}
             </Text>
-            <Text color={themeContext.onSurface}>{description}</Text>
+            <MainText color={themeContext.onSurface}>{description}</MainText>
           </FlexBox>
         </DetailContents>
       </FlexBox>
@@ -88,4 +88,10 @@ const DetailContents = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+`;
+
+const MainText = styled(Text)`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
 `;

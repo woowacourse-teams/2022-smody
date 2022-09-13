@@ -17,11 +17,26 @@ export const FeedItem = ({
   challengeName,
   commentCount,
   isClickable = true,
+  isShowBriefChallengeName = true,
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
 
-  const { year, month, date, hours, minutes, handleClickFeed, handleClickChallengeName } =
-    useFeedItem({ challengeId, cycleDetailId, progressTime });
+  const {
+    year,
+    month,
+    date,
+    hours,
+    minutes,
+    renderedChallengeName,
+    handleClickFeed,
+    handleClickChallengeName,
+  } = useFeedItem({
+    challengeId,
+    cycleDetailId,
+    progressTime,
+    challengeName,
+    isShowBriefChallengeName,
+  });
 
   return (
     <Wrapper
@@ -30,27 +45,23 @@ export const FeedItem = ({
       onClick={handleClickFeed}
       isClickable={isClickable}
     >
-      <FlexBox alignItems="center">
+      <FlexBox alignItems="center" flexWrap="wrap">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <FlexBox alignItems="center">
-          <Nickname size={20} color={themeContext.onBackground}>
-            {nickname}
-          </Nickname>
-          <OfText size={16} color={themeContext.onBackground}>
-            의&nbsp;
-          </OfText>
-          <UnderLineText
-            fontSize={20}
-            fontColor={themeContext.onBackground}
-            underLineColor={themeContext.primary}
-            fontWeight="bold"
-            onClick={handleClickChallengeName}
-          >
-            {challengeName.length > 9
-              ? `${challengeName.substring(0, 9)}...`
-              : challengeName}
-          </UnderLineText>
-        </FlexBox>
+        <Nickname size={20} color={themeContext.onBackground}>
+          {nickname}
+        </Nickname>
+        <OfText size={16} color={themeContext.onBackground}>
+          의&nbsp;
+        </OfText>
+        <ChallengeName
+          fontSize={20}
+          fontColor={themeContext.onBackground}
+          underLineColor={themeContext.primary}
+          fontWeight="bold"
+          onClick={handleClickChallengeName}
+        >
+          {renderedChallengeName}
+        </ChallengeName>
       </FlexBox>
       <ProgressImg
         src={progressImage}
@@ -76,6 +87,10 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
+
+    @media all and (max-width: 366px) {
+      min-width: auto;
+    }
   `}
 `;
 
@@ -91,6 +106,10 @@ const Nickname = styled(Text)`
 
 const OfText = styled(Text)`
   text-align: end;
+`;
+
+const ChallengeName = styled(UnderLineText)`
+  pointer-events: auto;
 `;
 
 const ProgressImg = styled.img`
