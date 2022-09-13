@@ -31,7 +31,7 @@ export const FeedItem = ({
       isClickable={isClickable}
     >
       <FlexBox alignItems="center">
-        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
+        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
         <FlexBox alignItems="center">
           <Nickname size={20} color={themeContext.onBackground}>
             {nickname}
@@ -55,6 +55,7 @@ export const FeedItem = ({
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
+        loading="lazy"
       />
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
