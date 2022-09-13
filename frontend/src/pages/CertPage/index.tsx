@@ -1,4 +1,5 @@
 import useCertPage from './useCertPage';
+import { GetMyCyclesInProgressResponse } from 'apis/cycleApi/type';
 import styled, { css } from 'styled-components';
 
 import { EmptyContent, CertItem, InfiniteScroll, LoadingSpinner } from 'components';
@@ -6,8 +7,27 @@ import { EmptyContent, CertItem, InfiniteScroll, LoadingSpinner } from 'componen
 import { CLIENT_PATH } from 'constants/path';
 
 const CertPage = () => {
-  const { cycleInfiniteData, isFetching, hasNextPage, fetchNextPage, getCycleCount } =
-    useCertPage();
+  const {
+    cycleInfiniteData,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    getCycleCount,
+    isError,
+    savedCycles,
+  } = useCertPage();
+
+  if (isError) {
+    return (
+      <CycleList>
+        {savedCycles.map((cycleInfo: GetMyCyclesInProgressResponse) => (
+          <li key={cycleInfo.cycleId}>
+            <CertItem {...cycleInfo} />
+          </li>
+        ))}
+      </CycleList>
+    );
+  }
 
   if (typeof cycleInfiniteData === 'undefined') {
     return null;

@@ -48,7 +48,7 @@ export const CommentItem = ({
         )}
       </FlexBox>
       <ContentWrapper>
-        <Content size={16} color={themeContext.mainText} style={{ whiteSpace: 'pre' }}>
+        <Content size={16} color={themeContext.mainText}>
           {content}
         </Content>
       </ContentWrapper>
@@ -93,6 +93,7 @@ const ContentWrapper = styled(FlexBox)`
 const Content = styled(Text)`
   ${({ theme }) => css`
     color: ${theme.onBackground};
+    white-space: pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
   `}

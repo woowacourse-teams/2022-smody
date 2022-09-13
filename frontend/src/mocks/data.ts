@@ -825,7 +825,8 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://i.ibb.co/mJwjFq1/progress-Image.png',
-    description: '바다가 너무 예쁘네요^_^',
+    description:
+      '바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
     challengeName: challengeData[0].challengeName,
@@ -838,7 +839,8 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
-    description: '오늘 날씨가 너무 좋아요~!',
+    description:
+      'Moo https://www.acmicpc.net/problem/5904 https://github.com/tonic523/Algorithm/tree/main/%EB%B6%84%ED%95%A0%20%EC%A0%95%EB%B3%B5/Moo%20%EA%B2%8C%EC%9E%84',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
     challengeName: challengeData[0].challengeName,

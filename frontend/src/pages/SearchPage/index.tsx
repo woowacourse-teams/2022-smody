@@ -9,6 +9,7 @@ import {
   InfiniteScroll,
   SearchBar,
   ChallengeList,
+  ChallengeItem,
 } from 'components';
 
 import { Z_INDEX } from 'constants/css';
@@ -22,7 +23,21 @@ const SearchPage = () => {
     handleSubmitSearch,
     fetchNextPage,
     handleCreateChallengeButton,
+    isError,
+    savedChallenges,
   } = useSearchPage();
+
+  if (isError) {
+    return (
+      <FlexBox as="ul" flexDirection="column" gap="27px">
+        {savedChallenges.map((challengeInfo) => (
+          <li key={challengeInfo.challengeId}>
+            <ChallengeItem {...challengeInfo} />
+          </li>
+        ))}
+      </FlexBox>
+    );
+  }
 
   if (typeof challengeInfiniteData === 'undefined') {
     return null;
