@@ -42,7 +42,6 @@ public class CommentService {
 
     @Transactional
     public void update(TokenPayload tokenPayload, Long commentId, CommentUpdateRequest commentUpdateRequest) {
-        System.out.println("=========");
         Comment comment = search(commentId);
         validateMember(tokenPayload.getId(), comment);
         comment.updateContent(commentUpdateRequest.getContent());

@@ -25,7 +25,8 @@ public class SmodyImageStrategy implements ImageStrategy {
     public String extractUrl(MultipartFile rawImage) {
         validateEmptyImage(rawImage);
         ResponseEntity<String> imageServerResponse = new RestTemplate()
-                .postForEntity("https://images.smody.co.kr/images/upload", generateImageRequest(rawImage), String.class);
+                .postForEntity("https://images.smody.co.kr/images/upload", generateImageRequest(rawImage),
+                        String.class);
         if (imageServerResponse.getStatusCode().is4xxClientError()) {
             throw new BusinessException(ExceptionData.FORBIDDEN_IMAGE_SERVER);
         }
@@ -46,7 +47,6 @@ public class SmodyImageStrategy implements ImageStrategy {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
-        return httpEntity;
+        return new HttpEntity<>(body, headers);
     }
 }

@@ -3,9 +3,11 @@ package com.woowacourse.smody.challenge.service;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,20 @@ public class ChallengeService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CHALLENGE));
     }
 
-    public List<Challenge> searchAll(String name, Long cursorId, Integer size) {
-        return challengeRepository.searchAll(name, cursorId, size);
+    public Optional<Challenge> findById(Long challengeId) {
+        return challengeRepository.findById(challengeId);
+    }
+
+    public List<Challenge> searchAll(PagingParams pagingParams) {
+        String searchWord = pagingParams.getFilter();
+        validateSearchWord(searchWord);
+        return challengeRepository.searchAll(pagingParams);
+    }
+
+    private void validateSearchWord(String searchWord) {
+        if (searchWord != null && (searchWord.isBlank() || searchWord.isEmpty())) {
+            throw new BusinessException(ExceptionData.INVALID_SEARCH_NAME);
+        }
     }
 
     @Transactional

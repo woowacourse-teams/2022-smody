@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PushNotificationResponse {
 
-	private Long pushNotificationId;
-	private String message;
-	private LocalDateTime pushTime;
-	private Long pathId;
-	private String pushCase;
+    private Long pushNotificationId;
+    private String message;
+    private LocalDateTime pushTime;
+    private Long pathId;
+    private String pushCase;
 
-	public PushNotificationResponse(PushNotification pushNotification) {
-		this.pushNotificationId = pushNotification.getId();
-		this.message = pushNotification.getMessage();
-		this.pushTime = pushNotification.getPushTime();
-		this.pathId = pushNotification.getPathId();
-		this.pushCase = pushNotification.getPushCase()
-			.name()
-			.toLowerCase();
-	}
+    public PushNotificationResponse(PushNotification pushNotification) {
+        this.pushNotificationId = pushNotification.getId();
+        this.message = pushNotification.getMessage();
+        this.pushTime = pushNotification.getPushTime();
+        this.pathId = pushNotification.getPathId();
+        this.pushCase = pushNotification.getPushCase()
+                .name()
+                .toLowerCase();
+    }
 }

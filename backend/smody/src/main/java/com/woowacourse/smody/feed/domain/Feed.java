@@ -37,4 +37,18 @@ public class Feed {
         this.challengeName = challengeName;
         this.commentCount = commentCount;
     }
+
+    public Feed(
+            Long cycleDetailId, String progressImage, String description, LocalDateTime progressTime,
+            Long memberId, String picture, String nickname,
+            Long challengeId, String challengeName,
+            Long commentCount
+    ) {
+        this(
+                cycleDetailId, progressImage, description, progressTime,
+                memberId, picture, nickname,
+                challengeId, challengeName,
+                Math.toIntExact(commentCount)
+        );
+    }
 }

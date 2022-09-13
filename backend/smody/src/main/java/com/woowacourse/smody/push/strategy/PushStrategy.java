@@ -5,9 +5,9 @@ import com.woowacourse.smody.push.domain.PushNotification;
 
 public interface PushStrategy {
 
-	void push(Object entity);
+    void push(Object entity);
 
-	PushCase getPushCase();
+    PushCase getPushCase();
 
-	PushNotification buildNotification(Object entity);
+    PushNotification buildNotification(Object entity);
 }

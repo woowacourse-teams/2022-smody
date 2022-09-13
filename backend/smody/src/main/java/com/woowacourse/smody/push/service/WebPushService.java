@@ -37,26 +37,26 @@ public class WebPushService {
         this.objectMapper = new ObjectMapper();
     }
 
-	public boolean sendNotification(PushSubscription pushSubscription, PushNotification pushNotification) {
-		PushResponse pushResponse = new PushResponse(pushNotification);
-		HttpResponse httpResponse;
-		try {
-			httpResponse = pushService.send(new Notification(
-				pushSubscription.getEndpoint(),
-				pushSubscription.getP256dh(),
-				pushSubscription.getAuth(),
-				objectMapper.writeValueAsString(pushResponse)
-			));
-		} catch (InterruptedException exception) {
-			log.warn("스레드가 interrupted 되었습니다.");
-			Thread.currentThread().interrupt();
-			throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
-		}  catch (GeneralSecurityException | IOException
-			| JoseException | ExecutionException exception) {
-			throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
-		}
-		return httpResponse != null && httpResponse.getStatusLine().getStatusCode() == 201;
-	}
+    public boolean sendNotification(PushSubscription pushSubscription, PushNotification pushNotification) {
+        PushResponse pushResponse = new PushResponse(pushNotification);
+        HttpResponse httpResponse;
+        try {
+            httpResponse = pushService.send(new Notification(
+                    pushSubscription.getEndpoint(),
+                    pushSubscription.getP256dh(),
+                    pushSubscription.getAuth(),
+                    objectMapper.writeValueAsString(pushResponse)
+            ));
+        } catch (InterruptedException exception) {
+            log.warn("스레드가 interrupted 되었습니다.");
+            Thread.currentThread().interrupt();
+            throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
+        } catch (GeneralSecurityException | IOException
+                | JoseException | ExecutionException exception) {
+            throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
+        }
+        return httpResponse != null && httpResponse.getStatusLine().getStatusCode() == 201;
+    }
 
     public String getPublicKey() {
         return publicKey;

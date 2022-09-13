@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class CycleAcceptanceTest extends AcceptanceTest {
+class CycleAcceptanceTest extends AcceptanceTest {
 
     private static final String EMAIL = "alpha@naver.com";
     private static final String NICKNAME = "손수건";
