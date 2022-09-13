@@ -24,7 +24,7 @@ export const CommentItem = ({
   return (
     <Wrapper flexDirection="column" isSelectedComment={isSelectedComment}>
       <FlexBox alignItems="center">
-        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
+        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
         <CommentInfoWrapper flexDirection="column">
           <FlexBox>
             <Text size={16} color={themeContext.onBackground}>

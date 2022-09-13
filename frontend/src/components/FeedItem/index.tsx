@@ -45,27 +45,32 @@ export const FeedItem = ({
       onClick={handleClickFeed}
       isClickable={isClickable}
     >
-      <FlexBox alignItems="center" flexWrap="wrap">
-        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} />
-        <Nickname size={20} color={themeContext.onBackground}>
-          {nickname}
-        </Nickname>
-        <OfText size={16} color={themeContext.onBackground}>
-          의&nbsp;
-        </OfText>
-        <ChallengeName
-          fontSize={20}
-          fontColor={themeContext.onBackground}
-          underLineColor={themeContext.primary}
-          fontWeight="bold"
-          onClick={handleClickChallengeName}
-        >
-          {renderedChallengeName}
-        </ChallengeName>
+      <FlexBox alignItems="center">
+        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
+        <FlexBox alignItems="center">
+          <Nickname size={20} color={themeContext.onBackground}>
+            {nickname}
+          </Nickname>
+          <OfText size={16} color={themeContext.onBackground}>
+            의&nbsp;
+          </OfText>
+          <UnderLineText
+            fontSize={20}
+            fontColor={themeContext.onBackground}
+            underLineColor={themeContext.primary}
+            fontWeight="bold"
+            onClick={handleClickChallengeName}
+          >
+            {challengeName.length > 9
+              ? `${challengeName.substring(0, 9)}...`
+              : challengeName}
+          </UnderLineText>
+        </FlexBox>
       </FlexBox>
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
+        loading="lazy"
       />
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
