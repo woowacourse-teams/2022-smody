@@ -12,6 +12,7 @@ import useSnackBar from 'hooks/useSnackBar';
 import { CLIENT_PATH } from 'constants/path';
 
 const EMPTY_REGEX_RULE = /\s/g;
+const MAX_VALUE_LENGTH = 30;
 
 export const useSearchPage = () => {
   const isLogin = useRecoilValue(isLoginState);
@@ -44,7 +45,7 @@ export const useSearchPage = () => {
     },
   );
 
-  const { debounce: debounceRefetchAllChallenges } = useDebounce();
+  const { debounce: debounceSetSearchValue } = useDebounce();
   const [savedChallenges, setSavedChallenges] = useState<GetChallengeResponse[]>([]);
 
   useEffect(() => {
@@ -91,29 +92,17 @@ export const useSearchPage = () => {
   };
 
   const handleChangeSearch = () => {
-    if (searchInput.current === null) {
+    const currentValue = searchInput.current?.value;
+
+    if (currentValue === undefined) {
       return;
     }
 
-    const currentValue = searchInput.current.value;
-
-    if (
-      currentValue.length !== 0 &&
-      currentValue.replace(EMPTY_REGEX_RULE, '').length === 0
-    ) {
-      renderSnackBar({
-        status: 'ERROR',
-        message: '검색어를 입력해주세요',
-      });
+    if (!checkSearchValueValid(currentValue)) {
       return;
     }
 
-    if (currentValue.length > 30) {
-      renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
-      return;
-    }
-
-    debounceRefetchAllChallenges(() => {
+    debounceSetSearchValue(() => {
       setSearchValue(currentValue);
     });
   };
@@ -130,6 +119,32 @@ export const useSearchPage = () => {
 
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
+
+  const checkSearchValueValid = (value: string) => {
+    const checkingResult = { isValid: true, message: '' };
+
+    if (checkBlankSpaceValue(value)) {
+      checkingResult.isValid = false;
+      checkingResult.message = '검색어를 입력해주세요.';
+    }
+
+    if (checkValueLength(value)) {
+      checkingResult.isValid = false;
+      checkingResult.message = '검색어는 30자 이내로 입력해주세요.';
+    }
+
+    if (!checkingResult.isValid) {
+      renderSnackBar({ status: 'ERROR', message: checkingResult.message });
+      return false;
+    }
+
+    return true;
+  };
+
+  const checkBlankSpaceValue = (value: string) =>
+    value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
+
+  const checkValueLength = (value: string) => value.length > MAX_VALUE_LENGTH;
 
   return {
     isFetching,
