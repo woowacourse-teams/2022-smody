@@ -1,7 +1,7 @@
 import { useGetAllChallenges } from 'apis';
 import { GetChallengeResponse } from 'apis/challengeApi/type';
 import { indexedDB } from 'pwa/indexedDB';
-import { FormEvent, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
@@ -13,6 +13,23 @@ import { CLIENT_PATH } from 'constants/path';
 
 const EMPTY_REGEX_RULE = /\s/g;
 const MAX_VALUE_LENGTH = 30;
+
+const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number) => {
+  if (pageLength !== 1) {
+    return;
+  }
+
+  indexedDB.clearPost('challenge').then(() => {
+    for (const challenge of challenges) {
+      indexedDB.savePost('challenge', challenge);
+    }
+  });
+};
+
+const checkBlankSpaceValue = (value: string) =>
+  value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
+
+const checkValueLength = (value: string) => value.length > MAX_VALUE_LENGTH;
 
 export const useSearchPage = () => {
   const isLogin = useRecoilValue(isLoginState);
@@ -34,13 +51,7 @@ export const useSearchPage = () => {
     {
       useErrorBoundary: false,
       onSuccess: (data) => {
-        // TODO: 첫 번째 페이지만 존재할 때, indexDB에 데이터를 저장하도록 수정. 즉, 새로운 키워드를 검색했을 때만 indexDB에 데이터 추가
-        const challenges = data.pages[0].data;
-        indexedDB.clearPost('challenge').then(() => {
-          for (const challenge of challenges) {
-            indexedDB.savePost('challenge', challenge);
-          }
-        });
+        saveDataToCache(data.pages[0].data, data.pages.length);
       },
     },
   );
@@ -124,11 +135,6 @@ export const useSearchPage = () => {
 
     return true;
   };
-
-  const checkBlankSpaceValue = (value: string) =>
-    value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
-
-  const checkValueLength = (value: string) => value.length > MAX_VALUE_LENGTH;
 
   return {
     isFetching,
