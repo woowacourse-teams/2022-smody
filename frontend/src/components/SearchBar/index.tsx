@@ -4,11 +4,20 @@ import styled, { css } from 'styled-components';
 
 const horizontalPadding = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
 
-export const SearchBar = ({ search, handleSubmitSearch }: SearchBarProps) => {
+export const SearchBar = ({
+  searchInput,
+  handleSubmitSearch,
+  handleChangeSearch,
+}: SearchBarProps) => {
   return (
     <Background>
       <InputWrapper onSubmit={handleSubmitSearch}>
-        <InputElement type="text" placeholder="챌린지 검색" {...search} />
+        <InputElement
+          ref={searchInput}
+          type="text"
+          placeholder="챌린지 검색"
+          onChange={handleChangeSearch}
+        />
         <button type="submit">
           <Search />
         </button>

@@ -19,8 +19,9 @@ const SearchPage = () => {
     isFetching,
     challengeInfiniteData,
     hasNextPage,
-    search,
+    searchInput,
     handleSubmitSearch,
+    handleChangeSearch,
     fetchNextPage,
     handleCreateChallengeButton,
     isError,
@@ -45,7 +46,11 @@ const SearchPage = () => {
 
   return (
     <Wrapper flexDirection="column">
-      <SearchBar search={search} handleSubmitSearch={handleSubmitSearch} />
+      <SearchBar
+        searchInput={searchInput}
+        handleSubmitSearch={handleSubmitSearch}
+        handleChangeSearch={handleChangeSearch}
+      />
       <InfiniteScroll
         loadMore={fetchNextPage}
         hasMore={hasNextPage}
