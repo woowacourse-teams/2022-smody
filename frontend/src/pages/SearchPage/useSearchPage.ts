@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
+import useDebounce from 'hooks/useDebounce';
 import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -40,6 +41,11 @@ export const useSearchPage = () => {
     },
   );
 
+  const { debounce: debounceRefetchAllChallenges } = useDebounce({
+    callback: () => {
+      refetch();
+    },
+  });
   const [savedChallenges, setSavedChallenges] = useState<GetChallengeResponse[]>([]);
 
   useEffect(() => {
@@ -51,18 +57,17 @@ export const useSearchPage = () => {
     });
   }, [isError]);
 
-  const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const emptyRegexRule = /\s/g;
-
-    if (search.value.replace(emptyRegexRule, '') === '') {
-      renderSnackBar({
-        status: 'ERROR',
-        message: '검색어를 입력해주세요',
-      });
-
+  useEffect(() => {
+    if (search.value.length > 30) {
+      renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
       return;
     }
+
+    debounceRefetchAllChallenges();
+  }, [search.value]);
+
+  const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     if (search.value.length > 30) {
       renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
