@@ -61,30 +61,14 @@ export const useSearchPage = () => {
     refetch();
   }, [searchValue]);
 
-  // TODO: 키워드 입력 시 자동 검색 기능이 구현됐기 때문에, submit event handler는 필요하지 않다. 따라서 해당 함수는 제거할 필요가 있다.
-  // 추가로, 검색 버튼을 클릭했을 때, 검색이 가능하도록 하기 위해 click event handler 구현이 필요하다.
-  const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleClickSearchButton = () => {
+    const currentValue = searchInput.current?.value;
 
-    if (searchInput.current === null) {
+    if (currentValue === undefined) {
       return;
     }
 
-    const currentValue = searchInput.current.value;
-
-    if (
-      currentValue.length !== 0 &&
-      currentValue.replace(EMPTY_REGEX_RULE, '').length === 0
-    ) {
-      renderSnackBar({
-        status: 'ERROR',
-        message: '검색어를 입력해주세요',
-      });
-      return;
-    }
-
-    if (currentValue.length > 30) {
-      renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
+    if (!checkSearchValueValid(currentValue)) {
       return;
     }
 
@@ -151,8 +135,8 @@ export const useSearchPage = () => {
     challengeInfiniteData,
     hasNextPage,
     searchInput,
-    handleSubmitSearch,
     handleChangeSearch,
+    handleClickSearchButton,
     fetchNextPage,
     handleCreateChallengeButton,
     savedChallenges,
