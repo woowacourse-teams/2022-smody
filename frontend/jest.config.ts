@@ -4,6 +4,7 @@ const config: Config.InitialOptions = {
   bail: 1,
   verbose: true,
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'json'],
+  // jest는 기본적으로 node 환경에서 동작한다. transform 설정은 node 환경에서 지원하지 않는 구문(jsx, ts, tsx 등)을 일반 JS로 변환한다.
   transform: {
     '^.+\\.(js|jsx|ts|tsx)?$': 'ts-jest',
     '^.+\\.svg$': 'jest-transformer-svg',

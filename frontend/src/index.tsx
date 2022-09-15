@@ -9,8 +9,13 @@ if (isProd || isLocal) {
 }
 
 if (isDev) {
-  const { mockServiceWorker } = require('./mocks/browser');
-  mockServiceWorker.start();
+  import('./mocks/browser')
+    .then(({ mockServiceWorker }) => {
+      mockServiceWorker.start();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 const rootElement = document.getElementById('root');

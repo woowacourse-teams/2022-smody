@@ -29,6 +29,8 @@ module.exports = {
   },
   module: {
     rules: [
+      // esbuild-loader는 babel-loader와 ts-loader의 대체제이다.
+      // esbuild-loader를 통해 js 및 ts 코드를 target으로 설정한 ECMAScript 문법에 맞게 변환할 수 잇다.
       {
         test: /\.(js|jsx|ts|tsx)$/i,
         exclude: /node_modules/,
