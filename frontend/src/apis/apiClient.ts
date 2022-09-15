@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, HeadersDefaults } from 'axios';
-import { BASE_URL } from 'env';
 
 interface AxiosHeaders extends HeadersDefaults {
   Authorization: string;
@@ -9,7 +8,7 @@ class apiClientClass {
   axios: AxiosInstance;
   constructor() {
     this.axios = axios.create({
-      baseURL: BASE_URL,
+      baseURL: process.env.BASE_URL,
     });
   }
 }

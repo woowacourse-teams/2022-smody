@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "start:prod": "cross-env NODE_ENV=production webpack serve --mode production",
-    "start:local": "cross-env NODE_ENV=local webpack serve --mode production",
+    "start:local": "cross-env NODE_ENV=local webpack serve --mode development",
     "start:dev": "cross-env NODE_ENV=development webpack serve --mode development",
     "build:prod": "cross-env NODE_ENV=production webpack --mode production",
     "build:dev": "webpack --mode development",

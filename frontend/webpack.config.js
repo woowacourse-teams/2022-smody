@@ -2,8 +2,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
-const isProd = process.env.NODE_ENV === 'production';
-const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
@@ -11,8 +9,7 @@ const { ESBuildMinifyPlugin } = require('esbuild-loader');
 dotenv.config({ path: '.env' });
 
 module.exports = {
-  mode: isProd ? 'production' : 'development',
-  devtool: isProd ? false : 'eval',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'eval-source-map',
   performance: {
     hints: false,
   },
@@ -20,7 +17,7 @@ module.exports = {
   output: {
     publicPath: '/',
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.[chunkhash].js',
+    filename: 'bundle.[contenthash].js',
     clean: true,
   },
   resolve: {
@@ -44,7 +41,7 @@ module.exports = {
         test: /\.(png|webp)$/,
         type: 'asset',
         generator: {
-          filename: 'assets/[name][hash][ext]',
+          filename: 'assets/[name][contenthash][ext]',
         },
       },
       // CRA에서는 svg를 자동으로 처리해주지만, CRA를 사용하지 않은 경우 webpack config를 통한 사용 설정이 필요하다.
@@ -80,15 +77,16 @@ module.exports = {
       template: './public/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(
-        isProd ? process.env.PROD_BASE_URL : process.env.DEV_BASE_URL,
-      ),
-      'process.env.CLIENT_ID': isProd ? undefined : JSON.stringify(process.env.CLIENT_ID),
-      'process.env.PUBLIC_KEY': isProd
-        ? undefined
-        : JSON.stringify(process.env.PUBLIC_KEY),
-      'process.env.IS_LOCAL': JSON.stringify(isLocal),
+    new webpack.EnvironmentPlugin({
+      BASE_URL:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PROD_BASE_URL
+          : process.env.LOCAL_BASE_URL,
+      IS_LOCAL: process.env.NODE_ENV === 'local',
+      IS_DEV: process.env.NODE_ENV === 'development' && process.env.NODE_ENV !== 'local',
+      IS_PROD: process.env.NODE_ENV === 'production',
+      CLIENT_ID:
+        process.env.NODE_ENV === 'development' ? process.env.CLIENT_ID : undefined,
     }),
     new CopyWebpackPlugin({
       patterns: [

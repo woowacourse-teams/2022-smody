@@ -2,7 +2,6 @@ import { HeaderProps } from './type';
 import { useHeader } from './useHeader';
 import { useHeaderRightButton } from './useHeaderRightButton';
 import { useLoginButton } from './useLoginButton';
-import { isDev, isLocal } from 'env';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -35,8 +34,8 @@ export const Header = ({ bgColor }: HeaderProps) => {
     <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
-        {isDev && 'DEV'}
-        {isLocal && 'LOCAL'}
+        {process.env.IS_DEV && 'DEV'}
+        {process.env.IS_LOCAL && 'LOCAL'}
         {!navigator.onLine && ' OFFLINE'}
       </Link>
       <FlexBox gap="1rem">

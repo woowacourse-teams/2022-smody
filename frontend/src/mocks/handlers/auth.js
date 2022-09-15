@@ -1,11 +1,10 @@
-import { BASE_URL } from 'env';
 import { userData, accessTokenData } from 'mocks/data';
 import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
 export const auth = [
   // 1. 내 정보 조회(GET)
-  rest.get(`${BASE_URL}/members/me`, (req, res, ctx) => {
+  rest.get(`${process.env.BASE_URL}/members/me`, (req, res, ctx) => {
     if (!checkValidAccessToken(req)) {
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
@@ -14,7 +13,7 @@ export const auth = [
   }),
 
   // 2-1. 구글 링크 조회(GET)
-  rest.get(`${BASE_URL}/oauth/link/google`, (req, res, ctx) => {
+  rest.get(`${process.env.BASE_URL}/oauth/link/google`, (req, res, ctx) => {
     const CLIENT_ID = process.env.CLIENT_ID;
     const REDIRECT_URI = 'http://localhost:3000/cert';
 

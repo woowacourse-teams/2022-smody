@@ -1,14 +1,13 @@
 import App from 'App';
-import { isProd, isDev, isLocal } from 'env';
 import registerPwaServiceWorker from 'pwa/registerPwaServiceWorker';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 
-if (isProd || isLocal) {
+if (process.env.IS_PROD || process.env.IS_LOCAL) {
   registerPwaServiceWorker();
 }
 
-if (isDev) {
+if (process.env.IS_DEV) {
   import('./mocks/browser')
     .then(({ mockServiceWorker }) => {
       mockServiceWorker.start();
