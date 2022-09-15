@@ -95,7 +95,6 @@ const WriteButton = styled.button<WriteButtonProps>`
   ${({ theme, isVisible }) => css`
     min-width: 40px;
     height: 20px;
-    padding: 0;
     font-size: 0.75rem;
     font-weight: bold;
     color: ${theme.primary};
