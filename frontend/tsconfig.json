@@ -7,16 +7,15 @@
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true, // default export가 없는 모듈에서 default imports를 허용합니다. 코드 방출에는 영향을 주지 않으며, 타입 검사만 수행합니다.
+    "strict": true, // 모든 엄격한 타입 검사 옵션을 활성화합니다.
+    "forceConsistentCasingInFileNames": true, // 동일 파일 참조에 대해 일관성 없는 대소문자를 비활성화합니다.
+    "noFallthroughCasesInSwitch": true, // 스위치 문에 fallthrough 케이스에 대한 오류를 보고합니다.
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx"
-    // "strictNullChecks": true
   },
   "include": ["src", "global.d.ts", "public/pwaServiceWorker.js"]
 }

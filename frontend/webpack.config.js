@@ -9,19 +9,17 @@ const { ESBuildMinifyPlugin } = require('esbuild-loader');
 dotenv.config({ path: '.env' });
 
 module.exports = {
+  // prod 외에서 source-map 보여주기
   devtool: process.env.NODE_ENV === 'production' ? false : 'eval-source-map',
-  performance: {
-    hints: false,
-  },
   entry: './src/index.tsx',
   output: {
     publicPath: '/',
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.[contenthash].js',
-    clean: true,
+    clean: true, //이전 빌드 삭제
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules'], // node_modules/보다 우선으로 검색할 디렉터리를 추가하는 것은 다음과 같습니다.
   },
   module: {
@@ -52,15 +50,12 @@ module.exports = {
     ],
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true, // 404일 때 index.html로 fallback
     port: 3000,
     hot: true,
-    open: true,
+    open: true, //브라우저가 바로 열리도록
   },
   optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
     minimizer: [
       '...',
       new ESBuildMinifyPlugin({
@@ -70,13 +65,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.EnvironmentPlugin({
       BASE_URL:
         process.env.NODE_ENV === 'production'
