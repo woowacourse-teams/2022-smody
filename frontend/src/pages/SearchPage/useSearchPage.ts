@@ -116,20 +116,21 @@ export const useSearchPage = () => {
   };
 
   const checkSearchValueValid = (value: string) => {
-    const checkingResult = { isValid: true, message: '' };
-
     if (checkBlankSpaceValue(value)) {
-      checkingResult.isValid = false;
-      checkingResult.message = '검색어를 입력해주세요.';
+      renderSnackBar({
+        status: 'ERROR',
+        message: '검색어를 입력해주세요.',
+      });
+
+      return false;
     }
 
     if (checkValueLength(value)) {
-      checkingResult.isValid = false;
-      checkingResult.message = '검색어는 30자 이내로 입력해주세요.';
-    }
+      renderSnackBar({
+        status: 'ERROR',
+        message: '검색어는 30자 이내로 입력해주세요.',
+      });
 
-    if (!checkingResult.isValid) {
-      renderSnackBar({ status: 'ERROR', message: checkingResult.message });
       return false;
     }
 
