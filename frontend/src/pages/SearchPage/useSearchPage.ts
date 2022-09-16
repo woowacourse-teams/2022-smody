@@ -36,7 +36,7 @@ export const useSearchPage = () => {
   const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
 
-  const searchInput = useRef<null | HTMLInputElement>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
   const [searchValue, setSearchValue] = useState('');
 
   const {
