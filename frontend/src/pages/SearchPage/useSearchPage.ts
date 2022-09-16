@@ -9,10 +9,9 @@ import { isLoginState } from 'recoil/auth/atoms';
 import useDebounce from 'hooks/useDebounce';
 import useSnackBar from 'hooks/useSnackBar';
 
+import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
-
-const EMPTY_REGEX_RULE = /\s/g;
-const MAX_VALUE_LENGTH = 30;
+import { EMPTY_REGEX_RULE } from 'constants/regex';
 
 const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number) => {
   if (pageLength !== 1) {
@@ -29,7 +28,7 @@ const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number)
 const checkBlankSpaceValue = (value: string) =>
   value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
 
-const checkValueLength = (value: string) => value.length > MAX_VALUE_LENGTH;
+const checkValueLength = (value: string) => value.length > MAX_CHALLENGE_NAME_LENGTH;
 
 export const useSearchPage = () => {
   const isLogin = useRecoilValue(isLoginState);
