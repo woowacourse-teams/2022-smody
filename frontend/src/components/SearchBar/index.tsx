@@ -56,7 +56,6 @@ const Background = styled.div`
 
 const InputWrapper = styled(FlexBox)`
   ${({ theme }) => css`
-    display: flex;
     border: 1px solid ${theme.input};
     background-color: ${theme.input};
 
