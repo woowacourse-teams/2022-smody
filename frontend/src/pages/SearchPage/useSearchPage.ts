@@ -28,7 +28,8 @@ const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number)
 const checkBlankSpaceValue = (value: string) =>
   value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
 
-const checkValueLength = (value: string) => value.length > MAX_CHALLENGE_NAME_LENGTH;
+const checkIsExceedMaxLength = (value: string) =>
+  value.length > MAX_CHALLENGE_NAME_LENGTH;
 
 export const useSearchPage = () => {
   const isLogin = useRecoilValue(isLoginState);
@@ -124,7 +125,7 @@ export const useSearchPage = () => {
       return false;
     }
 
-    if (checkValueLength(value)) {
+    if (checkIsExceedMaxLength(value)) {
       renderSnackBar({
         status: 'ERROR',
         message: '검색어는 30자 이내로 입력해주세요.',
