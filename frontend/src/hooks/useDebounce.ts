@@ -1,15 +1,15 @@
 import { useRef } from 'react';
 
 const useDebounce = (delay = 500) => {
-  const timerId = useRef<null | NodeJS.Timeout>(null);
+  const timerId = useRef<null | number>(null);
 
   const debounce = (callback: () => void) => {
-    if (timerId.current !== null) {
+    if (typeof timerId.current === 'number') {
       clearTimeout(timerId.current);
       timerId.current = null;
     }
 
-    timerId.current = setTimeout(callback, delay);
+    timerId.current = window.setTimeout(callback, delay);
   };
 
   return {
