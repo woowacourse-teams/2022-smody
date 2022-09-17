@@ -1,22 +1,26 @@
 package com.woowacourse.smody.cycle.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.FORMATTER;
-import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
@@ -26,19 +30,11 @@ import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
 import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
-import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.domain.Image;
+import com.woowacourse.smody.image.strategy.ImgBBImageStrategy;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class CycleServiceTest extends IntegrationTest {
 
@@ -47,6 +43,9 @@ public class CycleServiceTest extends IntegrationTest {
 
     @Autowired
     private CycleQueryService cycleQueryService;
+
+    @Autowired
+    private ChallengeRepository challengeRepository;
 
     private final LocalDateTime now = LocalDateTime.now();
 
@@ -122,7 +121,7 @@ public class CycleServiceTest extends IntegrationTest {
         // then
         assertAll(
                 () -> assertThat(cycleResponse.getStartTime().format(FORMATTER))
-                        .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
+                    .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
         );
     }
@@ -140,13 +139,16 @@ public class CycleServiceTest extends IntegrationTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(
                 조조그린_ID,
                 스모디_방문하기_ID,
                 progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0)
         );
-        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, MULTIPART_FILE, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
 
         // when
         ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, request);
@@ -335,6 +337,17 @@ public class CycleServiceTest extends IntegrationTest {
             failed = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(120L));
             success = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1000L));
             tokenPayload = new TokenPayload(조조그린_ID);
+        }
+
+        @DisplayName("챌린지들에 해당하는 진행 중인 모든 사이클을 조회")
+        @Test
+        void searchInProgress() {
+            List<Cycle> cycles = cycleService.searchInProgressByChallenges(now, List.of(
+                    challengeRepository.findById(스모디_방문하기_ID).get(),
+                    challengeRepository.findById(미라클_모닝_ID).get())
+            );
+
+            assertThat(cycles).hasSize(2);
         }
 
         @DisplayName("진행 중인 모든 사이클을 남은 인증 시간 기준으로 오름차순 정렬")

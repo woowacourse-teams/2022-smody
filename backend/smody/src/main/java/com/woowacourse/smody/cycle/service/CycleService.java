@@ -126,4 +126,11 @@ public class CycleService {
     public List<Cycle> findAllByMember(Member member, PagingParams pagingParams) {
         return cycleRepository.findAllByMember(member.getId(), pagingParams);
     }
+
+    public List<Cycle> searchInProgressByChallenges(LocalDateTime searchTime, List<Challenge> challenges) {
+        return cycleRepository.findAllByStartTimeIsAfterAndChallengeIn(searchTime.minusDays(Cycle.DAYS), challenges)
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
 }

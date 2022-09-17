@@ -17,6 +17,10 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
 
+    @Query("select c from Cycle c where c.startTime >= :time and c.challenge in :challenges")
+    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(@Param("time") LocalDateTime time,
+                                                        @Param("challenges") List<Challenge> challenges);
+
     @EntityGraph(attributePaths = "challenge")
     @Query("select c from Cycle c where c.member = :member and c.startTime >= :time")
     List<Cycle> findByMemberAfterTime(@Param("member") Member member, @Param("time") LocalDateTime time);
@@ -31,11 +35,6 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
 
     List<Cycle> findByMember(Member member);
-
-    @EntityGraph(attributePaths = "challenge")
-    @Query("select c from Cycle c where c.member = :member and c.progress = 'SUCCESS' " +
-            "order by c.startTime DESC")
-    List<Cycle> findAllSuccessLatest(@Param("member") Member member);
 
     void deleteByMember(Member member);
 
