@@ -341,13 +341,23 @@ public class CycleServiceTest extends IntegrationTest {
 
         @DisplayName("챌린지들에 해당하는 진행 중인 모든 사이클을 조회")
         @Test
-        void searchInProgress() {
+        void searchInProgressByChallenges() {
             List<Cycle> cycles = cycleService.searchInProgressByChallenges(now, List.of(
                     challengeRepository.findById(스모디_방문하기_ID).get(),
                     challengeRepository.findById(미라클_모닝_ID).get())
             );
 
             assertThat(cycles).hasSize(2);
+        }
+
+        @DisplayName("챌린지에 해당하는 진행 중인 모든 사이클을 조회")
+        @Test
+        void serchInProgressByChallenege() {
+            List<Cycle> cycles = cycleService.searchInProgressByChallenge(
+                    now, challengeRepository.findById(스모디_방문하기_ID).get()
+            );
+
+            assertThat(cycles).hasSize(1);
         }
 
         @DisplayName("진행 중인 모든 사이클을 남은 인증 시간 기준으로 오름차순 정렬")

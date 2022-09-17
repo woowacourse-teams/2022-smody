@@ -133,4 +133,11 @@ public class CycleService {
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
     }
+
+    public List<Cycle> searchInProgressByChallenge(LocalDateTime searchTime, Challenge challenge) {
+        return cycleRepository.findAllByStartTimeIsAfterAndChallenge(searchTime.minusDays(Cycle.DAYS), challenge)
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
 }
