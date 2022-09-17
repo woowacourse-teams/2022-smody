@@ -1,26 +1,24 @@
 package com.woowacourse.smody.cycle.repository;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.CycleDetail;
-import com.woowacourse.smody.cycle.domain.Progress;
-import com.woowacourse.smody.feed.domain.Feed;
-import com.woowacourse.smody.feed.repository.FeedRepository;
-import com.woowacourse.smody.image.domain.Image;
-import com.woowacourse.smody.support.RepositoryTest;
-import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.feed.domain.Feed;
+import com.woowacourse.smody.feed.repository.FeedRepository;
+import com.woowacourse.smody.support.RepositoryTest;
+import com.woowacourse.smody.support.ResourceFixture;
 
 class CycleDetailRepositoryTest extends RepositoryTest {
 
@@ -35,14 +33,9 @@ class CycleDetailRepositoryTest extends RepositoryTest {
     void saveWithCycleDetails() {
         // given
         LocalDateTime today = LocalDateTime.now();
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, today);
         // when
-        cycle.increaseProgress(
-                today.plusMinutes(5L), new Image(imageFile, image -> "progressImage.jpg"), "인증"
-        );
+        cycle.increaseProgress(today.plusMinutes(5L),이미지, "인증");
 
         // then
         assertThat(cycleDetailRepository.findAll()).hasSize(1);
@@ -62,13 +55,13 @@ class CycleDetailRepositoryTest extends RepositoryTest {
                 "image.jpg", "인증3"));
         cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(4L),
                 "image.jpg", "인증4"));
-        CycleDetail 인증5 = cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(5L),
+        CycleDetail cycleDetail = cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(5L),
                 "image.jpg", "인증5"));
         cycleDetailRepository.save(new CycleDetail(cycle, today.plusMinutes(6L),
                 "image.jpg", "인증6"));
 
         // when
-        List<Feed> feeds = cycleDetailRepository.searchAll(new PagingParams("latest", 3, 인증5.getId()));
+        List<Feed> feeds = cycleDetailRepository.searchAll(new PagingParams("latest", 3, cycleDetail.getId()));
 
         // then
         assertAll(

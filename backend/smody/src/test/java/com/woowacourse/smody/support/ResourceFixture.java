@@ -1,5 +1,14 @@
 package com.woowacourse.smody.support;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.comment.domain.Comment;
@@ -17,11 +26,6 @@ import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
 
 @Component
 @SuppressWarnings("NonAsciiCharacters")
@@ -59,9 +63,10 @@ public class ResourceFixture {
     public static final Long 알고리즘_풀기_ID = 4L;
     public static final Long JPA_공부_ID = 5L;
 
-    public static final Image 이미지 = new Image(new MockMultipartFile(
-            "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-    ), image -> "image.jpg");
+	public static final MultipartFile MULTIPART_FILE = new MockMultipartFile(
+		"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+	);
+	public static final Image 이미지 = new Image(MULTIPART_FILE, image -> "image.jpg");
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -152,5 +157,11 @@ public class ResourceFixture {
 	public Comment 댓글_등록(CycleDetail cycleDetail, Long memberId, String content) {
 		Comment comment = new Comment(cycleDetail, 회원_조회(memberId), content);
 		return commentRepository.save(comment);
+	}
+
+	@Transactional
+	public void 사이클_인증(Long cycleId, LocalDateTime progressTime) {
+		Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
+		cycle.increaseProgress(progressTime, 이미지, "description");
 	}
 }
