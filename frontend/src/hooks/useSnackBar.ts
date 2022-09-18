@@ -6,7 +6,7 @@ import { SnackBarProps } from 'components/SnackBar/type';
 
 const useSnackBar = () => {
   const setSnackBar = useSetRecoilState(snackBarState);
-  let timeoutId: NodeJS.Timeout | null | number;
+  let timeoutId: null | number;
 
   const renderSnackBar = useCallback(
     ({ status, message, linkText, linkTo }: SnackBarProps) => {
@@ -18,7 +18,7 @@ const useSnackBar = () => {
         });
       }
 
-      timeoutId = setTimeout(() => {
+      timeoutId = window.setTimeout(() => {
         setSnackBar((prev) => {
           return { ...prev, isVisible: false };
         });
