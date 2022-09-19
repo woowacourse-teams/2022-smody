@@ -16,11 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
@@ -30,10 +27,9 @@ import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
 import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.domain.Image;
-import com.woowacourse.smody.image.strategy.ImgBBImageStrategy;
 import com.woowacourse.smody.support.IntegrationTest;
 
 public class CycleServiceTest extends IntegrationTest {
@@ -136,16 +132,13 @@ public class CycleServiceTest extends IntegrationTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
         Cycle cycle = fixture.사이클_생성(
                 조조그린_ID,
                 스모디_방문하기_ID,
                 progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0)
         );
-        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, MULTIPART_FILE, "인증 완료");
 
         // when
         ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, request);
@@ -167,12 +160,9 @@ public class CycleServiceTest extends IntegrationTest {
     void increaseProgress_failWithTime(Progress progress, LocalDateTime invalidTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
-        ProgressRequest request = new ProgressRequest(cycle.getId(), invalidTime, imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), invalidTime, MULTIPART_FILE, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
@@ -188,15 +178,12 @@ public class CycleServiceTest extends IntegrationTest {
             "NOTHING,2022-01-01T00:00:00,2022-01-01T23:59:59",
             "FIRST,2022-01-02T00:00:00,2022-01-02T23:59:59"
     })
-    void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime, LocalDateTime invalidTime) {
+    void increaseProgress_twoTimeInOneDay(Progress progress, LocalDateTime progressTime) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0));
-        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, MULTIPART_FILE, "인증 완료");
         cycleService.increaseProgress(tokenPayload, request);
 
         // when then
@@ -212,10 +199,7 @@ public class CycleServiceTest extends IntegrationTest {
     void increaseProgress_notExistCycle() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
-        ProgressRequest request = new ProgressRequest(1000L, LocalDateTime.now(), imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(1000L, LocalDateTime.now(), MULTIPART_FILE, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
@@ -231,10 +215,7 @@ public class CycleServiceTest extends IntegrationTest {
         // given
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.NOTHING, now);
-        MultipartFile imageFile = new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        );
-        ProgressRequest request = new ProgressRequest(cycle.getId(), now.plusSeconds(1), imageFile, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), now.plusSeconds(1), MULTIPART_FILE, "인증 완료");
 
         // when then
         assertThatThrownBy(() ->
@@ -315,12 +296,9 @@ public class CycleServiceTest extends IntegrationTest {
     void progress_future_time() {
         // given
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
-        Image progressImage = new Image(
-                new MockMultipartFile("progressImage", "image".getBytes()), new ImgBBImageStrategy()
-        );
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now, progressImage, "인증 완료"))
+        assertThatThrownBy(() -> cycle.increaseProgress(now, 이미지, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);

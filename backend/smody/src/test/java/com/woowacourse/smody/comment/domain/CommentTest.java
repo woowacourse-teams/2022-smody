@@ -1,6 +1,12 @@
 package com.woowacourse.smody.comment.domain;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
@@ -8,12 +14,7 @@ import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
-import java.time.LocalDateTime;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockMultipartFile;
 
 class CommentTest {
 
@@ -25,10 +26,7 @@ class CommentTest {
         Member member = new Member("email@email.com", "nickname", "introduction", "picture");
         Challenge challenge = new Challenge("challenge");
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
-        Image image = new Image(new MockMultipartFile(
-                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-        ), i -> "image.jpg");
-        cycle.increaseProgress(LocalDateTime.now().plusMinutes(1), image, "인증1");
+        cycle.increaseProgress(LocalDateTime.now().plusMinutes(1), 이미지, "인증1");
         CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
 
         // when, then

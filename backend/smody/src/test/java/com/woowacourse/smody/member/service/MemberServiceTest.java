@@ -1,12 +1,23 @@
 package com.woowacourse.smody.member.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
@@ -21,18 +32,6 @@ import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.web.multipart.MultipartFile;
 
 class MemberServiceTest extends IntegrationTest {
 
@@ -50,11 +49,6 @@ class MemberServiceTest extends IntegrationTest {
 
     @PersistenceContext
     private EntityManager em;
-
-    private final Image progressImage = new Image(
-            new MockMultipartFile("progressImage", "image".getBytes()),
-            image -> "fakeUrl"
-    );
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
     @Test
@@ -105,7 +99,7 @@ class MemberServiceTest extends IntegrationTest {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        cycle.increaseProgress(LocalDateTime.now(), progressImage, "인증 완료");
+        cycle.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
         fixture.알림_구독(조조그린_ID, "endpoint");
         fixture.발송_예정_알림_생성(조조그린_ID, null, LocalDateTime.now(), PushCase.SUBSCRIPTION);
 
@@ -130,15 +124,12 @@ class MemberServiceTest extends IntegrationTest {
     void updateProfileImage() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MultipartFile profileImage = new MockMultipartFile(
-                "profileImage", "profile.jpg", "image/jpg", "image".getBytes()
-        );
         String expected = "https://www.abc.com/profile.jpg";
         given(imageStrategy.extractUrl(any()))
                 .willReturn(expected);
 
         // when
-        memberService.updateProfileImage(tokenPayload, profileImage);
+        memberService.updateProfileImage(tokenPayload, MULTIPART_FILE);
 
         // then
         assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
@@ -164,8 +155,7 @@ class MemberServiceTest extends IntegrationTest {
         });
 
         service.execute(() -> {
-            MockMultipartFile image = new MockMultipartFile("update-image.jpg", "byte".getBytes());
-            memberService.updateProfileImage(tokenPayload, image);
+            memberService.updateProfileImage(tokenPayload, MULTIPART_FILE);
             latch.countDown();
         });
 
