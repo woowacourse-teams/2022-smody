@@ -112,6 +112,7 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     cursor: pointer;
     pointer-events: ${isDetailPage ? 'none' : 'auto'};
     ${isSuccess &&
+    !isDetailPage &&
     css`
       border-radius: 20px;
       border: 3px solid ${theme.primary};
