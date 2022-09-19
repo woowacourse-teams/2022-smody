@@ -1,26 +1,31 @@
 package com.woowacourse.smody.push.strategy;
 
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.service.PushNotificationService;
-import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
 public class ChallengePushStrategy implements PushStrategy {
 
     private final PushNotificationService pushNotificationService;
+    private final CycleService cycleService;
 
     @Override
     @Transactional
     public void push(Object entity) {
-        Cycle cycle = (Cycle) entity;
+        Cycle cycle = cycleService.search(((Cycle) entity).getId());
         deleteInCompleteNotificationIfSamePathIdPresent(cycle);
         if (cycle.isSuccess()) {
             return;

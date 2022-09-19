@@ -1,6 +1,7 @@
 package com.woowacourse.smody.push.strategy;
 
 import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
@@ -20,19 +21,20 @@ public class CommentPushStrategy implements PushStrategy {
 
     private final PushNotificationService pushNotificationService;
     private final PushSubscriptionService pushSubscriptionService;
+    private final CommentService commentService;
     private final WebPushService webPushService;
 
     @Override
     @Transactional
     public void push(Object entity) {
-        Comment comment = (Comment) entity;
+        Comment comment = commentService.search(((Comment) entity).getId());
         Member cycleDetailWriter = extractDetailWriter(comment);
 
         if (cycleDetailWriter.matchId(comment.getMember().getId())) {
             return;
         }
 
-        PushNotification pushNotification = pushNotificationService.register(buildNotification(entity));
+        PushNotification pushNotification = pushNotificationService.register(buildNotification(comment));
 
         List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(List.of(cycleDetailWriter));
         for (PushSubscription subscription : subscriptions) {
