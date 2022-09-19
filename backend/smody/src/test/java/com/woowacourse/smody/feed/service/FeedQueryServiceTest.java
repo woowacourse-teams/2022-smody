@@ -98,6 +98,9 @@ public class FeedQueryServiceTest extends IntegrationTest {
         FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
 
         // then
-        assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId);
+        assertAll(
+            () -> assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId),
+            () -> assertThat(feedResponse.getProgressCount()).isEqualTo(3)
+        );
     }
 }

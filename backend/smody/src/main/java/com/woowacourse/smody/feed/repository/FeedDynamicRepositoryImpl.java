@@ -28,7 +28,8 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
     );
 
     private static final Expression<?>[] FEED_FIELDS = {
-            cycleDetail.id, cycleDetail.progressImage, cycleDetail.description, cycleDetail.progressTime,
+            cycleDetail.id, cycleDetail.progressImage, cycleDetail.description,
+            cycleDetail.progressTime, cycleDetail.cycle.progress,
             cycleDetail.cycle.member.id, cycleDetail.cycle.member.picture, cycleDetail.cycle.member.nickname,
             cycleDetail.cycle.challenge.id, cycleDetail.cycle.challenge.name,
             COMMENT_COUNT

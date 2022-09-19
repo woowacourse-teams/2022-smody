@@ -1,7 +1,9 @@
 package com.woowacourse.smody.feed.dto;
 
-import com.woowacourse.smody.feed.domain.Feed;
 import java.time.LocalDateTime;
+
+import com.woowacourse.smody.feed.domain.Feed;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +18,9 @@ public class FeedResponse {
     private String picture;
     private String nickname;
     private String progressImage;
-    private String description;
+    private Integer progressCount;
     private LocalDateTime progressTime;
+    private String description;
     private Long challengeId;
     private String challengeName;
     private Integer commentCount;
@@ -28,26 +31,11 @@ public class FeedResponse {
         this.picture = feed.getPicture();
         this.nickname = feed.getNickname();
         this.progressImage = feed.getProgressImage();
+        this.progressCount = feed.getProgress().getCount();
         this.description = feed.getDescription();
         this.progressTime = feed.getProgressTime();
         this.challengeId = feed.getChallengeId();
         this.challengeName = feed.getChallengeName();
         this.commentCount = feed.getCommentCount();
-    }
-
-    @Override
-    public String toString() {
-        return "FeedResponse{" +
-                "cycleDetailId=" + cycleDetailId +
-                ", memberId=" + memberId +
-                ", picture='" + picture + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", progressImage='" + progressImage + '\'' +
-                ", description='" + description + '\'' +
-                ", progressTime=" + progressTime +
-                ", challengeId=" + challengeId +
-                ", challengeName='" + challengeName + '\'' +
-                ", commentCount=" + commentCount +
-                '}';
     }
 }
