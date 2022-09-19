@@ -1,22 +1,43 @@
 import { useGetAllChallenges } from 'apis';
 import { GetChallengeResponse } from 'apis/challengeApi/type';
 import { indexedDB } from 'pwa/indexedDB';
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
-import useInput from 'hooks/useInput';
+import useDebounce from 'hooks/useDebounce';
 import useSnackBar from 'hooks/useSnackBar';
 
+import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
+import { EMPTY_REGEX_RULE } from 'constants/regex';
+
+const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number) => {
+  if (pageLength !== 1) {
+    return;
+  }
+
+  indexedDB.clearPost('challenge').then(() => {
+    for (const challenge of challenges) {
+      indexedDB.savePost('challenge', challenge);
+    }
+  });
+};
+
+const checkBlankSpaceValue = (value: string) =>
+  value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
+
+const checkIsExceedMaxLength = (value: string) =>
+  value.length > MAX_CHALLENGE_NAME_LENGTH;
 
 export const useSearchPage = () => {
   const isLogin = useRecoilValue(isLoginState);
   const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
 
-  const search = useInput('');
+  const searchInput = useRef<HTMLInputElement>(null);
+  const [searchValue, setSearchValue] = useState('');
 
   const {
     isFetching,
@@ -26,20 +47,16 @@ export const useSearchPage = () => {
     refetch,
     isError,
   } = useGetAllChallenges(
-    { searchValue: search.value },
+    { searchValue },
     {
       useErrorBoundary: false,
       onSuccess: (data) => {
-        const challenges = data.pages[0].data;
-        indexedDB.clearPost('challenge').then(() => {
-          for (const challenge of challenges) {
-            indexedDB.savePost('challenge', challenge);
-          }
-        });
+        saveDataToCache(data.pages[0].data, data.pages.length);
       },
     },
   );
 
+  const { debounce: debounceSetSearchValue } = useDebounce();
   const [savedChallenges, setSavedChallenges] = useState<GetChallengeResponse[]>([]);
 
   useEffect(() => {
@@ -51,25 +68,38 @@ export const useSearchPage = () => {
     });
   }, [isError]);
 
-  const handleSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const emptyRegexRule = /\s/g;
+  useEffect(() => {
+    refetch();
+  }, [searchValue]);
 
-    if (search.value.replace(emptyRegexRule, '') === '') {
-      renderSnackBar({
-        status: 'ERROR',
-        message: '검색어를 입력해주세요',
-      });
+  const handleClickSearchButton = () => {
+    const currentValue = searchInput.current?.value;
 
+    if (currentValue === undefined) {
       return;
     }
 
-    if (search.value.length > 30) {
-      renderSnackBar({ status: 'ERROR', message: '검색어는 30자 이내로 입력해주세요' });
+    if (!checkSearchValueValid(currentValue)) {
       return;
     }
 
     refetch();
+  };
+
+  const handleChangeSearch = () => {
+    const currentValue = searchInput.current?.value;
+
+    if (currentValue === undefined) {
+      return;
+    }
+
+    if (!checkSearchValueValid(currentValue)) {
+      return;
+    }
+
+    debounceSetSearchValue(() => {
+      setSearchValue(currentValue);
+    });
   };
 
   const handleCreateChallengeButton = () => {
@@ -85,12 +115,35 @@ export const useSearchPage = () => {
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
 
+  const checkSearchValueValid = (value: string) => {
+    if (checkBlankSpaceValue(value)) {
+      renderSnackBar({
+        status: 'ERROR',
+        message: '검색어를 입력해주세요.',
+      });
+
+      return false;
+    }
+
+    if (checkIsExceedMaxLength(value)) {
+      renderSnackBar({
+        status: 'ERROR',
+        message: '검색어는 30자 이내로 입력해주세요.',
+      });
+
+      return false;
+    }
+
+    return true;
+  };
+
   return {
     isFetching,
     challengeInfiniteData,
     hasNextPage,
-    search,
-    handleSubmitSearch,
+    searchInput,
+    handleChangeSearch,
+    handleClickSearchButton,
     fetchNextPage,
     handleCreateChallengeButton,
     savedChallenges,

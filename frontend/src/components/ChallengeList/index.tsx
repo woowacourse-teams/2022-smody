@@ -1,7 +1,7 @@
 import { ChallengeListProps } from './type';
 import styled from 'styled-components';
 
-import { FlexBox, ChallengeItem, EmptyContent } from 'components';
+import { FlexBox, MemoizedChallengeItem, EmptyContent } from 'components';
 
 export const ChallengeList = ({ challengeInfiniteData }: ChallengeListProps) => {
   if (challengeInfiniteData[0].data.length === 0) {
@@ -20,7 +20,7 @@ export const ChallengeList = ({ challengeInfiniteData }: ChallengeListProps) => 
       {challengeInfiniteData.map((page) =>
         page.data.map((challengeInfo) => (
           <li key={challengeInfo.challengeId}>
-            <ChallengeItem {...challengeInfo} />
+            <MemoizedChallengeItem {...challengeInfo} />
           </li>
         )),
       )}
