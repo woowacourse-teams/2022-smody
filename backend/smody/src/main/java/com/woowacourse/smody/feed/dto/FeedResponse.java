@@ -31,6 +31,7 @@ public class FeedResponse {
         this.picture = feed.getPicture();
         this.nickname = feed.getNickname();
         this.progressImage = feed.getProgressImage();
+        this.progressCount = feed.getProgress().getCount();
         this.description = feed.getDescription();
         this.progressTime = feed.getProgressTime();
         this.challengeId = feed.getChallengeId();
