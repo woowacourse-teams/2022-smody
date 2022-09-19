@@ -1,8 +1,7 @@
-import { FormEvent } from 'react';
-
-import useInput from 'hooks/useInput';
+import { RefObject } from 'react';
 
 export interface SearchBarProps {
-  search: ReturnType<typeof useInput>;
-  handleSubmitSearch: (event: FormEvent<HTMLFormElement>) => void;
+  searchInput: RefObject<HTMLInputElement>;
+  handleChangeSearch: () => void;
+  handleClickSearchButton: () => void;
 }

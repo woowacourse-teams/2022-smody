@@ -2,14 +2,25 @@ import { SearchBarProps } from './type';
 import Search from 'assets/search.svg';
 import styled, { css } from 'styled-components';
 
+import { FlexBox } from 'components';
+
 const horizontalPadding = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
 
-export const SearchBar = ({ search, handleSubmitSearch }: SearchBarProps) => {
+export const SearchBar = ({
+  searchInput,
+  handleChangeSearch,
+  handleClickSearchButton,
+}: SearchBarProps) => {
   return (
     <Background>
-      <InputWrapper onSubmit={handleSubmitSearch}>
-        <InputElement type="text" placeholder="챌린지 검색" {...search} />
-        <button type="submit">
+      <InputWrapper>
+        <InputElement
+          ref={searchInput}
+          type="text"
+          placeholder="챌린지 검색"
+          onChange={handleChangeSearch}
+        />
+        <button type="button" onClick={handleClickSearchButton}>
           <Search />
         </button>
       </InputWrapper>
@@ -43,9 +54,8 @@ const Background = styled.div`
   `}
 `;
 
-const InputWrapper = styled.form`
+const InputWrapper = styled(FlexBox)`
   ${({ theme }) => css`
-    display: flex;
     border: 1px solid ${theme.input};
     background-color: ${theme.input};
 
