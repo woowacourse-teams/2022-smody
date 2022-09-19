@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface FeedRepository extends JpaRepository<CycleDetail, Long>, FeedDynamicRepository {
 
     @Query("select new com.woowacourse.smody.feed.domain.Feed("
-            + "cd.id, cd.progressImage, cd.description, cd.progressTime, "
+            + "cd.id, cd.progressImage, cd.description, "
+            + "cd.progressTime, c.progress, "
             + "m.id, m.picture, m.nickname, "
             + "ch.id, ch.name, cd.comments.size) "
             + "from CycleDetail cd "

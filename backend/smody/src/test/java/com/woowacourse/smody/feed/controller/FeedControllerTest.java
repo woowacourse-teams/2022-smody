@@ -31,11 +31,13 @@ public class FeedControllerTest extends ControllerTest {
         // given
         List<FeedResponse> feedResponses = List.of(
                 new FeedResponse(2L, 1L, "토닉.jpg", "토닉", "인증.jpg",
-                        "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                        1L, "미라클 모닝", 5),
+                    2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+                    "인증설명", 1L, "미라클 모닝", 5
+                ),
                 new FeedResponse(3L, 2L, "빅터.jpg", "빅터", "인증.jpg",
-                        "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                        1L, "미라클 모닝", 4)
+                    3, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+                    "인증설명", 1L, "미라클 모닝", 4
+                )
         );
         BDDMockito.given(feedQueryService.findAll(any(PagingParams.class))).willReturn(feedResponses);
 
@@ -56,6 +58,7 @@ public class FeedControllerTest extends ControllerTest {
                                 fieldWithPath("[].description").type(JsonFieldType.STRING).description("소개글"),
                                 fieldWithPath("[].progressImage").type(JsonFieldType.STRING).description("인증 사진"),
                                 fieldWithPath("[].progressTime").type(JsonFieldType.STRING).description("인증 시간"),
+                                fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("사이클 인증 횟수"),
                                 fieldWithPath("[].challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("[].challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
                                 fieldWithPath("[].commentCount").type(JsonFieldType.NUMBER).description("댓글 수")
@@ -66,9 +69,10 @@ public class FeedControllerTest extends ControllerTest {
     @Test
     void findById() throws Exception {
         // given
-        FeedResponse feedResponse = new FeedResponse(1L, 1L, "토닉.jpg", "토닉", "인증.jpg",
-                "인증설명", LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                1L, "미라클 모닝", 5);
+        FeedResponse feedResponse = new FeedResponse(2L, 1L, "토닉.jpg", "토닉", "인증.jpg",
+            2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+            "인증설명", 1L, "미라클 모닝", 5
+        );
         BDDMockito.given(feedQueryService.searchById(1L)).willReturn(feedResponse);
 
         // when
@@ -86,6 +90,7 @@ public class FeedControllerTest extends ControllerTest {
                                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("소개글"),
                                 fieldWithPath("progressImage").type(JsonFieldType.STRING).description("인증 사진"),
+                                fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 인증 횟수"),
                                 fieldWithPath("progressTime").type(JsonFieldType.STRING).description("인증 시간"),
                                 fieldWithPath("challengeId").type(JsonFieldType.NUMBER).description("Challenge Id"),
                                 fieldWithPath("challengeName").type(JsonFieldType.STRING).description("챌린지 이름"),
