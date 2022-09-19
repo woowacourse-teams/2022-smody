@@ -18,7 +18,7 @@ export const FeedItem = ({
   challengeId,
   challengeName,
   commentCount,
-  isClickable = true,
+  isDetailPage = false,
   isShowBriefChallengeName = true,
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
@@ -47,7 +47,7 @@ export const FeedItem = ({
       flexDirection="column"
       gap="0.4rem"
       onClick={handleClickFeed}
-      isClickable={isClickable}
+      isDetailPage={isDetailPage}
       isSuccess={isSuccess}
     >
       <FlexBox alignItems="center" flexWrap="wrap">
@@ -105,12 +105,12 @@ const CheckSuccessCycle = ({ isSuccess }: CheckSuccessCycleProps) => {
 };
 
 const Wrapper = styled(FlexBox)<WrapperProps>`
-  ${({ theme, isClickable, isSuccess }) => css`
+  ${({ theme, isDetailPage, isSuccess }) => css`
     max-width: 440px;
     min-width: 366px;
     padding: 20px 0;
     cursor: pointer;
-    pointer-events: ${isClickable ? 'auto' : 'none'};
+    pointer-events: ${isDetailPage ? 'none' : 'auto'};
     ${isSuccess &&
     css`
       border-radius: 20px;

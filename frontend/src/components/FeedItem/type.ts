@@ -1,7 +1,7 @@
 import { Feed } from 'commonType';
 
 export interface FeedItemProps extends Feed {
-  isClickable?: boolean;
+  isDetailPage?: boolean;
   isShowBriefChallengeName?: boolean;
 }
 
@@ -15,7 +15,7 @@ export type UseFeedProps = Pick<
   | 'isShowBriefChallengeName'
 >;
 
-export interface WrapperProps extends Pick<FeedItemProps, 'isClickable'> {
+export interface WrapperProps extends Pick<FeedItemProps, 'isDetailPage'> {
   isSuccess: boolean;
 }
 
