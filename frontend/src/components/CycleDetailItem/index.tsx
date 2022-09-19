@@ -70,7 +70,6 @@ const CycleDetailWrapper = styled.div`
 const CycleImg = styled.div<CycleImgProps>`
   ${({ src }) => css`
     width: 40%;
-    height: 100%;
     border-radius: 20px 0 0 20px;
     background-image: url(${src});
     background-size: cover;
@@ -81,17 +80,11 @@ const CycleImg = styled.div<CycleImgProps>`
 
 const DetailContents = styled.div`
   width: 60%;
-  height: 90%;
   padding: 0.7rem 1rem 1rem 1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  overflow-y: auto;
 `;
 
 const MainText = styled(Text)`
-  white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
 `;
