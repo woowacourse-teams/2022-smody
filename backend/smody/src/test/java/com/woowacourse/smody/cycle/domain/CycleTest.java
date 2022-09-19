@@ -1,23 +1,23 @@
 package com.woowacourse.smody.cycle.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
 
-import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.domain.Image;
-import com.woowacourse.smody.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.mock.web.MockMultipartFile;
+
+import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.member.domain.Member;
 
 public class CycleTest {
 
@@ -28,10 +28,6 @@ public class CycleTest {
     private static final Challenge challenge = new Challenge("미라클 모닝");
 
     private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
-
-    private final Image progressImage = new Image(
-            new MockMultipartFile("progressImage", "image".getBytes()), image -> "fakeUrl"
-    );
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
     @ParameterizedTest
@@ -48,7 +44,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when
-        cycle.increaseProgress(progressTime, progressImage, "인증 완료");
+        cycle.increaseProgress(progressTime, 이미지, "인증 완료");
 
         // then
         assertThat(cycle.getProgress()).isEqualTo(expected);
@@ -69,7 +65,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, progressImage, "인증 완료"))
+        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, 이미지, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -85,10 +81,10 @@ public class CycleTest {
         // given
         Cycle cycle = new Cycle(member, challenge, progress, now);
 
-        cycle.increaseProgress(progressTime, progressImage, "인증 완료");
+        cycle.increaseProgress(progressTime, 이미지, "인증 완료");
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, progressImage, "인증 완료"))
+        assertThatThrownBy(() -> cycle.increaseProgress(invalidTime, 이미지, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
@@ -101,7 +97,7 @@ public class CycleTest {
         Cycle cycle = new Cycle(member, challenge, Progress.SUCCESS, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now, progressImage, "인증 완료"))
+        assertThatThrownBy(() -> cycle.increaseProgress(now, 이미지, "인증 완료"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.ALREADY_SUCCESS);

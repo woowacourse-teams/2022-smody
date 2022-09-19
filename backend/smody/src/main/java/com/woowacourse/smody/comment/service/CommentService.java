@@ -54,7 +54,7 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private Comment search(Long commentId) {
+    public Comment search(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_COMMENT));
     }

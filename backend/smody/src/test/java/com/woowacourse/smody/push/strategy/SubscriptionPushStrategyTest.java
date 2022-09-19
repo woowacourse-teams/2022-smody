@@ -28,7 +28,6 @@ class SubscriptionPushStrategyTest extends IntegrationTest {
 		// given
 		PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
 
-
 		// when
 		pushStrategy.push(pushSubscription);
 

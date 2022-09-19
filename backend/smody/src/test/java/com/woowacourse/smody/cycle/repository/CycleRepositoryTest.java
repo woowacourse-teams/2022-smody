@@ -1,25 +1,22 @@
 package com.woowacourse.smody.cycle.repository;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.CycleDetail;
-import com.woowacourse.smody.image.domain.Image;
-import com.woowacourse.smody.support.RepositoryTest;
-import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.mock.web.MockMultipartFile;
+
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.support.RepositoryTest;
+import com.woowacourse.smody.support.ResourceFixture;
 
 class CycleRepositoryTest extends RepositoryTest {
 
@@ -31,10 +28,6 @@ class CycleRepositoryTest extends RepositoryTest {
 
     @Autowired
     private EntityManager em;
-
-    private final Image progressImage = new Image(
-            new MockMultipartFile("progressImage", "image".getBytes()), image -> "fakeUrl"
-    );
 
     @DisplayName("startTime 이 기준시간 이후인 사이클을 조회한다.")
     @Test
@@ -62,7 +55,7 @@ class CycleRepositoryTest extends RepositoryTest {
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
         // when
-        cycle.increaseProgress(now.plusSeconds(60L), progressImage, "인증 완료");
+        cycle.increaseProgress(now.plusSeconds(60L), 이미지, "인증 완료");
         em.flush();
         em.clear();
 
@@ -70,7 +63,7 @@ class CycleRepositoryTest extends RepositoryTest {
         List<CycleDetail> cycleDetails = cycleRepository.findById(cycle.getId()).get().getCycleDetails();
         assertAll(
                 () -> assertThat(cycleDetails.size()).isEqualTo(1),
-                () -> assertThat(cycleDetails.get(0).getProgressImage()).isEqualTo("fakeUrl"),
+                () -> assertThat(cycleDetails.get(0).getProgressImage()).isEqualTo("image.jpg"),
                 () -> assertThat(cycleDetails.get(0).getDescription()).isEqualTo("인증 완료")
         );
     }

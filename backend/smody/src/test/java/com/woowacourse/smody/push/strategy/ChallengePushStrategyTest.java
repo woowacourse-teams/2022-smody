@@ -1,23 +1,22 @@
 package com.woowacourse.smody.push.strategy;
 
 import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 class ChallengePushStrategyTest extends IntegrationTest {
 
@@ -61,11 +60,7 @@ class ChallengePushStrategyTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 		pushStrategy.push(cycle);
-
-		MultipartFile imageFile = new MockMultipartFile(
-			"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-		);
-		cycle.increaseProgress(now.plusMinutes(1L), new Image(imageFile, image -> "fakeUrl"), "인증");
+		fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
 
 		// when
 		pushStrategy.push(cycle);
