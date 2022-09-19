@@ -17,8 +17,6 @@ export type UseFeedProps = Pick<
 
 export type WrapperProps = Pick<FeedItemProps, 'isDetailPage'>;
 
-export interface ProgressImgProps extends Pick<FeedItemProps, 'isDetailPage'> {
+export interface CheckSuccessProps {
   isSuccess: boolean;
 }
-
-export type CheckSuccessCycleProps = Pick<ProgressImgProps, 'isSuccess'>;

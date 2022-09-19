@@ -1,9 +1,4 @@
-import {
-  CheckSuccessCycleProps,
-  FeedItemProps,
-  ProgressImgProps,
-  WrapperProps,
-} from './type';
+import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
 import { FaCrown } from 'react-icons/Fa';
 import styled, { css } from 'styled-components';
@@ -72,15 +67,14 @@ export const FeedItem = ({
           {renderedChallengeName}
         </ChallengeName>
         <CheckSuccessCycle isSuccess={isSuccess} />
-        <CheckCirclesWrapper justifyContent="flex-end">
-          <CheckCircles progressCount={progressCount} />
-        </CheckCirclesWrapper>
       </FlexBox>
+      <CheckCirclesWrapper justifyContent="flex-end">
+        <CheckCircles progressCount={progressCount} />
+      </CheckCirclesWrapper>
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
         loading="lazy"
-        isDetailPage={isDetailPage}
         isSuccess={isSuccess}
       />
       <Text size={14} color={themeContext.mainText}>
@@ -96,7 +90,7 @@ export const FeedItem = ({
   );
 };
 
-const CheckSuccessCycle = ({ isSuccess }: CheckSuccessCycleProps) => {
+const CheckSuccessCycle = ({ isSuccess }: CheckSuccessProps) => {
   const themeContext = useThemeContext();
 
   if (!isSuccess) {
@@ -142,8 +136,8 @@ const ChallengeName = styled(UnderLineText)`
   pointer-events: auto;
 `;
 
-const ProgressImg = styled.img<ProgressImgProps>`
-  ${({ theme, isDetailPage, isSuccess }) => css`
+const ProgressImg = styled.img<CheckSuccessProps>`
+  ${({ theme, isSuccess }) => css`
     width: 100%;
     height: 400px;
     object-fit: cover;
@@ -151,7 +145,6 @@ const ProgressImg = styled.img<ProgressImgProps>`
     background-color: white;
     margin: 0.2rem 0.1rem;
     ${isSuccess &&
-    !isDetailPage &&
     css`
       border: 8px solid transparent;
       background-image: linear-gradient(#fff, #fff),
