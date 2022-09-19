@@ -1,4 +1,5 @@
 import useChallengeItem from './useChallengeItem';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -68,6 +69,8 @@ export const ChallengeItem = ({
     </Wrapper>
   );
 };
+
+export const MemoizedChallengeItem = memo(ChallengeItem);
 
 const Wrapper = styled(FlexBox)`
   div {

@@ -5,3 +5,4 @@ export const CYCLE_UNIT = 1;
 export const CYCLE_SUCCESS_CRITERIA = 3;
 
 export const MAX_TEXTAREA_LENGTH = 255;
+export const MAX_CHALLENGE_NAME_LENGTH = 30;
