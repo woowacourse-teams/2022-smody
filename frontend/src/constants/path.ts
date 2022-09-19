@@ -18,6 +18,7 @@ export const CLIENT_PATH = {
   PROFILE_CHALLENGE_DETAIL_ID: '/profile/challenges/detail/:challengeId',
   CYCLE_DETAIL: '/cycle/detail',
   CYCLE_DETAIL_ID: '/cycle/detail/:cycleId',
+  CYCLE_DETAIL_SHARE: '/cycle/detail/share/:cycleId',
   CHALLENGE_CREATE: '/challenge/create',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',

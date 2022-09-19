@@ -30,7 +30,7 @@ const CycleDetailPage = () => {
 
   return (
     <div>
-      <Title text="인증기록 보기" linkTo={CLIENT_PATH.CERT}>
+      <Title text="인증 기록 보기" linkTo={CLIENT_PATH.CERT}>
         <ShareButton
           text={`${year}년 ${month}월 ${date}일부터 도전한 ${challengeName} 작심삼일 극복 챌린지 기록을 공유해요`}
         />

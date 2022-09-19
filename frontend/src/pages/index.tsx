@@ -14,3 +14,4 @@ export const CertFormPage = lazy(() => import('pages/CertFormPage'));
 export const ChallengeCreatePage = lazy(() => import('pages/ChallengeCreatePage'));
 export const FeedDetailPage = lazy(() => import('pages/FeedDetailPage'));
 export const ChallengeRecordsPage = lazy(() => import('pages/ChallengeRecordsPage'));
+export const CycleDetailSharePage = lazy(() => import('pages/CycleDetailSharePage'));
