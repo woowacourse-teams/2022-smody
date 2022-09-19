@@ -1,16 +1,18 @@
-import { FeedItemProps, WrapperProps } from './type';
+import { CheckSuccessCycleProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
+import { FaCrown } from 'react-icons/Fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, UnderLineText } from 'components';
+import { FlexBox, Text, UnderLineText, CheckCircles } from 'components';
 
 export const FeedItem = ({
   cycleDetailId,
   picture,
   nickname,
   progressImage,
+  progressCount,
   description,
   progressTime,
   challengeId,
@@ -27,6 +29,7 @@ export const FeedItem = ({
     date,
     hours,
     minutes,
+    isSuccess,
     renderedChallengeName,
     handleClickFeed,
     handleClickChallengeName,
@@ -34,6 +37,7 @@ export const FeedItem = ({
     challengeId,
     cycleDetailId,
     progressTime,
+    progressCount,
     challengeName,
     isShowBriefChallengeName,
   });
@@ -44,6 +48,7 @@ export const FeedItem = ({
       gap="0.4rem"
       onClick={handleClickFeed}
       isClickable={isClickable}
+      isSuccess={isSuccess}
     >
       <FlexBox alignItems="center" flexWrap="wrap">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
@@ -62,6 +67,10 @@ export const FeedItem = ({
         >
           {renderedChallengeName}
         </ChallengeName>
+        <CheckSuccessCycle isSuccess={isSuccess} />
+        <CheckCirclesWrapper justifyContent="flex-end">
+          <CheckCircles progressCount={progressCount} />
+        </CheckCirclesWrapper>
       </FlexBox>
       <ProgressImg
         src={progressImage}
@@ -81,13 +90,32 @@ export const FeedItem = ({
   );
 };
 
+const CheckSuccessCycle = ({ isSuccess }: CheckSuccessCycleProps) => {
+  const themeContext = useThemeContext();
+
+  if (!isSuccess) {
+    return null;
+  }
+
+  return (
+    <SuccessIconWrapper>
+      <FaCrown color={themeContext.primary} size={25} />
+    </SuccessIconWrapper>
+  );
+};
+
 const Wrapper = styled(FlexBox)<WrapperProps>`
-  ${({ isClickable }) => css`
+  ${({ theme, isClickable, isSuccess }) => css`
     max-width: 440px;
     min-width: 366px;
     padding: 20px 0;
     cursor: pointer;
     pointer-events: ${isClickable ? 'auto' : 'none'};
+    ${isSuccess &&
+    css`
+      border-radius: 20px;
+      border: 3px solid ${theme.primary};
+    `};
 
     @media all and (max-width: 366px) {
       min-width: auto;
@@ -131,4 +159,12 @@ const MainText = styled(Text)`
 
 const CommentCount = styled(Text)`
   align-self: flex-end;
+`;
+
+const CheckCirclesWrapper = styled(FlexBox)`
+  flex-grow: 1;
+`;
+
+const SuccessIconWrapper = styled.div`
+  margin-left: 5px;
 `;

@@ -10,8 +10,13 @@ export type UseFeedProps = Pick<
   | 'challengeId'
   | 'cycleDetailId'
   | 'progressTime'
+  | 'progressCount'
   | 'challengeName'
   | 'isShowBriefChallengeName'
 >;
 
-export type WrapperProps = Pick<FeedItemProps, 'isClickable'>;
+export interface WrapperProps extends Pick<FeedItemProps, 'isClickable'> {
+  isSuccess: boolean;
+}
+
+export type CheckSuccessCycleProps = Pick<WrapperProps, 'isSuccess'>;
