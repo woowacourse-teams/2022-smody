@@ -1,6 +1,9 @@
 package com.woowacourse.smody.feed.domain;
 
 import java.time.LocalDateTime;
+
+import com.woowacourse.smody.cycle.domain.Progress;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ public class Feed {
     private String progressImage;
     private String description;
     private LocalDateTime progressTime;
+    private Progress progress;
     private Long memberId;
     private String picture;
     private String nickname;
@@ -21,7 +25,8 @@ public class Feed {
     private Integer commentCount;
 
     public Feed(
-            Long cycleDetailId, String progressImage, String description, LocalDateTime progressTime,
+            Long cycleDetailId, String progressImage, String description,
+            LocalDateTime progressTime, Progress progress,
             Long memberId, String picture, String nickname,
             Long challengeId, String challengeName,
             Integer commentCount
@@ -29,6 +34,7 @@ public class Feed {
         this.cycleDetailId = cycleDetailId;
         this.progressImage = progressImage;
         this.description = description;
+        this.progress = progress;
         this.progressTime = progressTime;
         this.memberId = memberId;
         this.picture = picture;
@@ -39,16 +45,17 @@ public class Feed {
     }
 
     public Feed(
-            Long cycleDetailId, String progressImage, String description, LocalDateTime progressTime,
-            Long memberId, String picture, String nickname,
-            Long challengeId, String challengeName,
-            Long commentCount
+        Long cycleDetailId, String progressImage, String description,
+        LocalDateTime progressTime, Progress progress,
+        Long memberId, String picture, String nickname,
+        Long challengeId, String challengeName,
+        Long commentCount
     ) {
-        this(
-                cycleDetailId, progressImage, description, progressTime,
-                memberId, picture, nickname,
-                challengeId, challengeName,
-                Math.toIntExact(commentCount)
+        this(cycleDetailId, progressImage,
+            description, progressTime, progress,
+            memberId, picture, nickname,
+            challengeId, challengeName,
+            Math.toIntExact(commentCount)
         );
     }
 }
