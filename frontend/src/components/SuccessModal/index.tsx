@@ -22,6 +22,7 @@ export const SuccessModal = ({
     isChallengeComplete,
     handleClickClose,
     handleClickCheck,
+    handleClickShare,
     handleClickRetry,
   } = useSuccessModal({
     handleCloseModal,
@@ -64,23 +65,25 @@ export const SuccessModal = ({
         ) : (
           <CheckCircles progressCount={progressCount} />
         )}
-
-        <FlexBox alignItems="center" gap="1rem">
-          {isChallengeComplete ? (
-            <>
+        {isChallengeComplete ? (
+          <FlexBox flexDirection="column" gap="1rem">
+            <FlexBox gap="0.5rem">
               <Button onClick={handleClickCheck} size="medium" isActive={false}>
                 기록 확인
               </Button>
-              <Button onClick={handleClickRetry} size="medium" isActive={true}>
-                재도전
+              <Button onClick={handleClickShare} size="medium" isActive={false}>
+                공유하기
               </Button>
-            </>
-          ) : (
-            <Button autoFocus onClick={handleClickCheck} size="medium" isActive={false}>
-              기록 확인
-            </Button>
-          )}
-        </FlexBox>
+            </FlexBox>
+            <RetryButton onClick={handleClickRetry} size="medium" isActive={true}>
+              재도전
+            </RetryButton>
+          </FlexBox>
+        ) : (
+          <Button autoFocus onClick={handleClickCheck} size="medium" isActive={false}>
+            기록 확인
+          </Button>
+        )}
       </Wrapper>
     </ModalOverlay>
   );
@@ -94,4 +97,8 @@ const Wrapper = styled(FlexBox)`
 const CloseWrapper = styled.div`
   align-self: flex-end;
   cursor: pointer;
+`;
+
+const RetryButton = styled(Button)`
+  width: 100%;
 `;

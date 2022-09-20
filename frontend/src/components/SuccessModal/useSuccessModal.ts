@@ -60,6 +60,10 @@ const useSuccessModal = ({
     navigate(CLIENT_PATH.CERT);
   };
 
+  const handleClickShare = () => {
+    navigate(`${CLIENT_PATH.CYCLE_DETAIL_SHARE}/${cycleId}`);
+  };
+
   const handleClickRetry = () => {
     joinChallenge({ challengeName });
   };
@@ -77,6 +81,7 @@ const useSuccessModal = ({
     isChallengeComplete,
     handleClickClose,
     handleClickCheck,
+    handleClickShare,
     handleClickRetry,
   };
 };

@@ -64,7 +64,7 @@ const Router = () => {
               element={<ChallengeRecordsPage />}
             />
             <Route
-              path={CLIENT_PATH.CYCLE_DETAIL_SHARE}
+              path={CLIENT_PATH.CYCLE_DETAIL_SHARE_ID}
               element={<CycleDetailSharePage />}
             />
           </Route>
