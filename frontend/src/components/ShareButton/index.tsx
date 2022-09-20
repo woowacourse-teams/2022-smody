@@ -1,27 +1,14 @@
 import ShareIcon from 'assets/share_icon.svg';
 import styled from 'styled-components';
 
-import useSnackBar from 'hooks/useSnackBar';
+import useShare from 'hooks/useShare';
+import { ShareLinkProps } from 'hooks/useShare';
 
-export const ShareButton = ({ text }: { text: string }) => {
-  const renderSnackBar = useSnackBar();
+export const ShareButton = ({ text }: ShareLinkProps) => {
+  const { shareLink } = useShare();
 
-  const share = ({ text }: { text: string }) => {
-    if (navigator.share) {
-      navigator.share({
-        title: document.title,
-        text,
-        url: document.location.href,
-      });
-    } else {
-      renderSnackBar({
-        message: '공유 기능은 모바일에서 가능합니다',
-        status: 'ERROR',
-      });
-    }
-  };
   return (
-    <IconWrapper onClick={() => share({ text })}>
+    <IconWrapper onClick={() => shareLink({ text })}>
       <ShareIcon />
     </IconWrapper>
   );
