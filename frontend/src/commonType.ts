@@ -59,9 +59,9 @@ export interface UserStat {
 
 export interface Feed
   extends Pick<User, 'picture' | 'nickname'>,
-    CycleDetail,
+    Pick<Cycle, 'progressCount'>,
+    CycleDetailWithId,
     Pick<Challenge, 'challengeId' | 'challengeName'> {
-  cycleDetailId: number;
   memberId: number;
   commentCount: number;
 }

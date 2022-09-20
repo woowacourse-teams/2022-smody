@@ -1,7 +1,7 @@
 import { Feed } from 'commonType';
 
 export interface FeedItemProps extends Feed {
-  isClickable?: boolean;
+  isDetailPage?: boolean;
   isShowBriefChallengeName?: boolean;
 }
 
@@ -10,8 +10,13 @@ export type UseFeedProps = Pick<
   | 'challengeId'
   | 'cycleDetailId'
   | 'progressTime'
+  | 'progressCount'
   | 'challengeName'
   | 'isShowBriefChallengeName'
 >;
 
-export type WrapperProps = Pick<FeedItemProps, 'isClickable'>;
+export type WrapperProps = Pick<FeedItemProps, 'isDetailPage'>;
+
+export interface CheckSuccessProps {
+  isSuccess: boolean;
+}

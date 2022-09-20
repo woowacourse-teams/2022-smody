@@ -1,22 +1,24 @@
-import { FeedItemProps, WrapperProps } from './type';
+import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
+import { FaCrown } from 'react-icons/Fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, UnderLineText } from 'components';
+import { FlexBox, Text, UnderLineText, CheckCircles } from 'components';
 
 export const FeedItem = ({
   cycleDetailId,
   picture,
   nickname,
   progressImage,
+  progressCount,
   description,
   progressTime,
   challengeId,
   challengeName,
   commentCount,
-  isClickable = true,
+  isDetailPage = false,
   isShowBriefChallengeName = true,
 }: FeedItemProps) => {
   const themeContext = useThemeContext();
@@ -27,6 +29,7 @@ export const FeedItem = ({
     date,
     hours,
     minutes,
+    isSuccess,
     renderedChallengeName,
     handleClickFeed,
     handleClickChallengeName,
@@ -34,6 +37,7 @@ export const FeedItem = ({
     challengeId,
     cycleDetailId,
     progressTime,
+    progressCount,
     challengeName,
     isShowBriefChallengeName,
   });
@@ -43,7 +47,7 @@ export const FeedItem = ({
       flexDirection="column"
       gap="0.4rem"
       onClick={handleClickFeed}
-      isClickable={isClickable}
+      isDetailPage={isDetailPage}
     >
       <FlexBox alignItems="center" flexWrap="wrap">
         <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
@@ -62,11 +66,16 @@ export const FeedItem = ({
         >
           {renderedChallengeName}
         </ChallengeName>
+        <CheckSuccessCycle isSuccess={isSuccess} />
       </FlexBox>
+      <CheckCirclesWrapper justifyContent="flex-end">
+        <CheckCircles progressCount={progressCount} />
+      </CheckCirclesWrapper>
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
         loading="lazy"
+        isSuccess={isSuccess}
       />
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
@@ -81,13 +90,27 @@ export const FeedItem = ({
   );
 };
 
+const CheckSuccessCycle = ({ isSuccess }: CheckSuccessProps) => {
+  const themeContext = useThemeContext();
+
+  if (!isSuccess) {
+    return null;
+  }
+
+  return (
+    <SuccessIconWrapper>
+      <FaCrown color={themeContext.primary} size={25} />
+    </SuccessIconWrapper>
+  );
+};
+
 const Wrapper = styled(FlexBox)<WrapperProps>`
-  ${({ isClickable }) => css`
+  ${({ isDetailPage }) => css`
     max-width: 440px;
     min-width: 366px;
     padding: 20px 0;
     cursor: pointer;
-    pointer-events: ${isClickable ? 'auto' : 'none'};
+    pointer-events: ${isDetailPage ? 'none' : 'auto'};
 
     @media all and (max-width: 366px) {
       min-width: auto;
@@ -113,13 +136,23 @@ const ChallengeName = styled(UnderLineText)`
   pointer-events: auto;
 `;
 
-const ProgressImg = styled.img`
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 20px;
-  background-color: white;
-  margin: 0.5rem 0;
+const ProgressImg = styled.img<CheckSuccessProps>`
+  ${({ theme, isSuccess }) => css`
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 20px;
+    background-color: white;
+    margin: 0.2rem 0.1rem;
+    ${isSuccess &&
+    css`
+      border: 8px solid transparent;
+      background-image: linear-gradient(#fff, #fff),
+        linear-gradient(to bottom right, ${theme.primary}, #ffd700);
+      background-origin: border-box;
+      background-clip: content-box, border-box;
+    `};
+  `}
 `;
 
 const MainText = styled(Text)`
@@ -131,4 +164,12 @@ const MainText = styled(Text)`
 
 const CommentCount = styled(Text)`
   align-self: flex-end;
+`;
+
+const CheckCirclesWrapper = styled(FlexBox)`
+  flex-grow: 1;
+`;
+
+const SuccessIconWrapper = styled.div`
+  margin-left: 5px;
 `;
