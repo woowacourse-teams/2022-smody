@@ -4,6 +4,9 @@ import SmodyIcon from 'assets/smody_icon.png';
 import { useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { parseTime } from 'utils';
+import { dataURLtoBlob } from 'utils';
+
+import useShare from 'hooks/useShare';
 
 import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
 import { emojiList } from 'constants/style';
@@ -12,13 +15,15 @@ const SHARE_IMG_WIDTH = 200;
 const SHARE_IMG_HEIGHT = 600;
 
 const useCycleDetailSharePage = () => {
+  const { shareFile } = useShare();
+
   const { cycleId } = useParams();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { data: cycleDetailData } = useGetCycleById({ cycleId: Number(cycleId) });
 
   // 캔버스에 이미지 추가하기
-  const addToCanvas = ({ image, dx, date, index }: AddToCanvasProps) => {
+  const addToCanvas = ({ image, dx }: AddToCanvasProps) => {
     const ctx = canvasRef.current!.getContext('2d')!;
 
     const img = new Image();
@@ -157,17 +162,26 @@ const useCycleDetailSharePage = () => {
     }
 
     const image = canvasRef.current.toDataURL();
-
     const link = document.createElement('a');
     link.href = image; //주소
-    link.download = '파일이름'; //다운로드될 파일 이름
+    link.download = 'smody-success'; //다운로드될 파일 이름
     link.click(); //링크 클릭(다운로드됨)
+  };
+
+  const handleShareClick = () => {
+    if (canvasRef.current === null) {
+      return;
+    }
+
+    const dataUrl = canvasRef.current.toDataURL('image/png');
+
+    shareFile({ data: dataURLtoBlob(dataUrl) });
   };
 
   return {
     canvasRef,
-    cycleDetailData,
     handleSaveClick,
+    handleShareClick,
   };
 };
 

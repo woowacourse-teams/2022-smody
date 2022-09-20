@@ -4,6 +4,10 @@ export interface ShareLinkProps {
   text: string;
 }
 
+interface ShareFileProps {
+  data: BlobPart;
+}
+
 const useShare = () => {
   const renderSnackBar = useSnackBar();
 
@@ -22,7 +26,21 @@ const useShare = () => {
     }
   };
 
-  return { shareLink };
+  const shareFile = ({ data }: ShareFileProps) => {
+    const file = new File([data], 'smody-success.png', { type: 'image/png' });
+    if (navigator.share) {
+      navigator.share({
+        files: [file],
+      });
+    } else {
+      renderSnackBar({
+        message: '공유 기능은 모바일에서 가능합니다',
+        status: 'ERROR',
+      });
+    }
+  };
+
+  return { shareLink, shareFile };
 };
 
 export default useShare;
