@@ -1,12 +1,13 @@
 import { CycleDetailWithId } from 'commonType';
 
 export interface RecordProps {
+  cycleId: string;
   emojiIndex: number;
   startTime: string;
   cycleDetails: Pick<CycleDetailWithId, 'cycleDetailId' | 'progressImage'>[];
 }
 
-export type UseRecordProps = Pick<RecordProps, 'startTime' | 'cycleDetails'>;
+export type UseRecordProps = Pick<RecordProps, 'cycleId' | 'startTime' | 'cycleDetails'>;
 
 export interface RecordItemProps
   extends Pick<RecordProps, 'emojiIndex' | 'cycleDetails'> {

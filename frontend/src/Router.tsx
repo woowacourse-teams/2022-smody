@@ -16,6 +16,7 @@ import {
   CertFormPage,
   ChallengeCreatePage,
   ChallengeRecordsPage,
+  CycleDetailSharePage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -61,6 +62,10 @@ const Router = () => {
             <Route
               path={CLIENT_PATH.PROFILE_CHALLENGE_DETAIL_ID}
               element={<ChallengeRecordsPage />}
+            />
+            <Route
+              path={CLIENT_PATH.CYCLE_DETAIL_SHARE_ID}
+              element={<CycleDetailSharePage />}
             />
           </Route>
 
