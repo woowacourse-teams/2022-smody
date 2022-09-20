@@ -10,29 +10,34 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text } from 'components';
+import { Button, FlexBox, Text } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { cursorPointer, emojiList } from 'constants/style';
 
 const CyclePeriod = [...Array(CYCLE_SUCCESS_CRITERIA)];
 
-export const Record = ({ emojiIndex, startTime, cycleDetails }: RecordProps) => {
+export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordProps) => {
   const themeContext = useThemeContext();
-  const { currentCycleCertCount, cycleProgressTime } = useRecord({
-    startTime,
-    cycleDetails,
-  });
+  const { currentCycleCertCount, isSuccess, cycleProgressTime, handleClickShare } =
+    useRecord({
+      cycleId,
+      startTime,
+      cycleDetails,
+    });
 
   return (
-    <RecordWrapper
-      flexDirection="column"
-      gap="10px"
-      isSuccess={currentCycleCertCount === CYCLE_SUCCESS_CRITERIA}
-    >
-      <Text color={themeContext.onSurface} fontWeight="bold">
-        {cycleProgressTime}
-      </Text>
+    <RecordWrapper flexDirection="column" gap="10px" isSuccess={isSuccess}>
+      <FlexBox>
+        <CycleProgressTime color={themeContext.onSurface} fontWeight="bold">
+          {cycleProgressTime}
+        </CycleProgressTime>
+        {isSuccess && (
+          <Button onClick={handleClickShare} size="small">
+            공유하기
+          </Button>
+        )}
+      </FlexBox>
       <FlexBox justifyContent="space-between" gap="10px">
         {CyclePeriod.map((_, index) => (
           <RecordItem
@@ -81,6 +86,10 @@ const RecordWrapper = styled(FlexBox)<RecordWrapperProps>`
     margin: 0 auto;
     background-color: ${isSuccess ? theme.secondary : theme.blur};
   `}
+`;
+
+const CycleProgressTime = styled(Text)`
+  flex-grow: 1;
 `;
 
 const RecordItemWrapper = styled(FlexBox)<RecordItemWrapperProps>`
