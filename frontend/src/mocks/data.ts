@@ -650,7 +650,8 @@ export const cycleDetailData = {
       progressImage:
         'https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg',
       progressTime: '2022-07-01T17:00:00',
-      description: '알찼다.',
+      description:
+        'absdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvawabsdvaw',
     },
     {
       progressImage:
@@ -825,6 +826,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://i.ibb.co/mJwjFq1/progress-Image.png',
+    progressCount: 1,
     description:
       '바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
@@ -839,6 +841,7 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
+    progressCount: 2,
     description:
       'Moo https://www.acmicpc.net/problem/5904 https://github.com/tonic523/Algorithm/tree/main/%EB%B6%84%ED%95%A0%20%EC%A0%95%EB%B3%B5/Moo%20%EA%B2%8C%EC%9E%84',
     progressTime: '2022-08-08T10:00:00',
@@ -853,6 +856,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2016/11/18/16/56/book-1835799_1280.jpg',
+    progressCount: 3,
     description: '오늘도 독서 완료!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[2].challengeId,
@@ -867,6 +871,7 @@ export const feedData = [
     nickname: '유저1',
     progressImage:
       'https://cdn.pixabay.com/photo/2015/07/13/16/49/night-table-lamp-843461_1280.jpg',
+    progressCount: 2,
     description: '오늘 일찍 잠~~',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[3].challengeId,
@@ -880,6 +885,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/child-865116_1280.jpg',
+    progressCount: 2,
     description: '오늘도 열심히 공부했어요~~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[1].challengeId,
@@ -893,6 +899,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/03/09/18/34/beach-666122_1280.jpg',
+    progressCount: 2,
     description: '바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -906,6 +913,7 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
+    progressCount: 2,
     description: '오늘 날씨가 너무 좋아요~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -919,6 +927,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2016/11/18/16/56/book-1835799_1280.jpg',
+    progressCount: 2,
     description: '오늘도 독서 완료!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[2].challengeId,
@@ -933,6 +942,7 @@ export const feedData = [
     nickname: '유저1',
     progressImage:
       'https://cdn.pixabay.com/photo/2015/07/13/16/49/night-table-lamp-843461_1280.jpg',
+    progressCount: 2,
     description: '오늘 일찍 잠~~',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[3].challengeId,
@@ -946,6 +956,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/child-865116_1280.jpg',
+    progressCount: 2,
     description: '오늘도 열심히 공부했어요~~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[1].challengeId,
@@ -959,6 +970,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/03/09/18/34/beach-666122_1280.jpg',
+    progressCount: 2,
     description: '바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -972,6 +984,7 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
+    progressCount: 2,
     description: '오늘 날씨가 너무 좋아요~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -985,6 +998,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2016/11/18/16/56/book-1835799_1280.jpg',
+    progressCount: 2,
     description: '오늘도 독서 완료!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[2].challengeId,
@@ -999,6 +1013,7 @@ export const feedData = [
     nickname: '유저1',
     progressImage:
       'https://cdn.pixabay.com/photo/2015/07/13/16/49/night-table-lamp-843461_1280.jpg',
+    progressCount: 2,
     description: '오늘 일찍 잠~~',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[3].challengeId,
@@ -1012,6 +1027,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/child-865116_1280.jpg',
+    progressCount: 2,
     description: '오늘도 열심히 공부했어요~~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[1].challengeId,
@@ -1025,6 +1041,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/03/09/18/34/beach-666122_1280.jpg',
+    progressCount: 2,
     description: '바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -1038,6 +1055,7 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
+    progressCount: 2,
     description: '오늘 날씨가 너무 좋아요~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -1051,6 +1069,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2016/11/18/16/56/book-1835799_1280.jpg',
+    progressCount: 2,
     description: '오늘도 독서 완료!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[2].challengeId,
@@ -1065,6 +1084,7 @@ export const feedData = [
     nickname: '유저1',
     progressImage:
       'https://cdn.pixabay.com/photo/2015/07/13/16/49/night-table-lamp-843461_1280.jpg',
+    progressCount: 2,
     description: '오늘 일찍 잠~~',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[3].challengeId,
@@ -1078,6 +1098,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/child-865116_1280.jpg',
+    progressCount: 2,
     description: '오늘도 열심히 공부했어요~~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[1].challengeId,
@@ -1091,6 +1112,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/03/09/18/34/beach-666122_1280.jpg',
+    progressCount: 2,
     description: '바다가 너무 예쁘네요^_^',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -1104,6 +1126,7 @@ export const feedData = [
     nickname: userData.nickname,
     progressImage:
       'https://cdn.pixabay.com/photo/2019/07/21/13/42/nature-conservation-4352793_1280.jpg',
+    progressCount: 2,
     description: '오늘 날씨가 너무 좋아요~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[0].challengeId,
@@ -1117,6 +1140,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2016/11/18/16/56/book-1835799_1280.jpg',
+    progressCount: 2,
     description: '오늘도 독서 완료!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[2].challengeId,
@@ -1131,6 +1155,7 @@ export const feedData = [
     nickname: '유저1',
     progressImage:
       'https://cdn.pixabay.com/photo/2015/07/13/16/49/night-table-lamp-843461_1280.jpg',
+    progressCount: 2,
     description: '오늘 일찍 잠~~',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[3].challengeId,
@@ -1144,6 +1169,7 @@ export const feedData = [
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
     progressImage: 'https://cdn.pixabay.com/photo/2015/07/28/22/05/child-865116_1280.jpg',
+    progressCount: 2,
     description: '오늘도 열심히 공부했어요~~!',
     progressTime: '2022-08-08T10:00:00',
     challengeId: challengeData[1].challengeId,
