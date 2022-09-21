@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.dto.CycleResponse;
@@ -42,20 +43,40 @@ public class CycleQueryService {
                                                               LocalDateTime searchTime,
                                                               PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload);
-        return searchInProgressByMember(searchTime, member, pagingParams).stream()
-                .map(cycle -> new InProgressCycleResponse(cycle, cycleService.countSuccess(cycle)))
+        Integer size = pagingParams.getDefaultSize();
+        List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
+                LatestSort(findAllChallengingRecordByMember(member), searchTime));
+
+        return challengingRecords.stream()
+                .map(challengingRecord ->new InProgressCycleResponse(
+                        challengingRecord.getCycle(), challengingRecord.getSuccessCount()))
                 .collect(toList());
     }
 
-    private List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member, PagingParams pagingParams) {
-        List<Cycle> sortedInProgressCycles = cycleService.searchInProgressByMember(searchTime, member).stream()
-                .sorted(Comparator.comparing(cycle -> cycle.calculateEndTime(searchTime)))
+    private List<ChallengingRecord> findAllChallengingRecordByMember(Member member) {
+        return cycleRepository.findAllChallengingRecordByMemberAfterTime(
+                member.getId(),
+                LocalDateTime.now().minusDays(Cycle.DAYS)
+        );
+    }
+
+    private List<ChallengingRecord> LatestSort(List<ChallengingRecord> challengingRecords,
+                                                   LocalDateTime searchTime) {
+        return challengingRecords.stream()
+                .filter(challengingRecord -> challengingRecord.isInProgress(searchTime))
+                .sorted(Comparator.comparing(challengingRecord -> challengingRecord.getEndTime(searchTime)))
                 .collect(toList());
-        Integer size = pagingParams.getDefaultSize();
-        return cycleService.findById(pagingParams.getDefaultCursorId())
-                .filter(sortedInProgressCycles::contains)
-                .map(cursor -> CursorPaging.apply(sortedInProgressCycles, cursor, size))
-                .orElse(CursorPaging.apply(sortedInProgressCycles, null, size));
+    }
+
+    private List<ChallengingRecord> cursorPaging(PagingParams pagingParams, Integer size,
+                                                 List<ChallengingRecord> challengingRecords) {
+        Cycle cycle = cycleService.findById(pagingParams.getDefaultCursorId())
+                .orElse(null);
+        return challengingRecords.stream()
+                .filter(challengingRecord -> challengingRecord.match(cycle))
+                .findAny()
+                .map(cursor -> CursorPaging.apply(challengingRecords, cursor, size))
+                .orElse(CursorPaging.apply(challengingRecords, null, size));
     }
 
     public StatResponse searchStat(TokenPayload tokenPayload) {

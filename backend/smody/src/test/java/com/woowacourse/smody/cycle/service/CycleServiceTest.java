@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
+import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -121,7 +122,7 @@ public class CycleServiceTest extends IntegrationTest {
         // then
         assertAll(
                 () -> assertThat(cycleResponse.getStartTime().format(FORMATTER))
-                    .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
+                        .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
                 () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
         );
     }
@@ -239,14 +240,14 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void findAllInProgressOfMine() {
         // given
-        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1)); // 2, 1
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
-        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2)); // 1, 2
         fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(4L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
-        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
+        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L)); // 3, 0
 
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
@@ -255,19 +256,8 @@ public class CycleServiceTest extends IntegrationTest {
                 tokenPayload, now, new PagingParams(null, null, 0L, null));
 
         // then
-        assertAll(
-                () -> assertThat(actual)
-                        .map(InProgressCycleResponse::getCycleId)
-                        .containsAll(List.of(inProgress1.getId(), inProgress2.getId(), future.getId())),
-                () -> assertThat(actual)
-                        .filteredOn(response -> response.getChallengeId().equals(1L))
-                        .map(InProgressCycleResponse::getSuccessCount)
-                        .containsExactly(1, 1),
-                () -> assertThat(actual)
-                        .filteredOn(response -> response.getChallengeId().equals(미라클_모닝_ID))
-                        .map(InProgressCycleResponse::getSuccessCount)
-                        .containsExactly(2)
-        );
+        assertThat(actual).map(InProgressCycleResponse::getSuccessCount)
+                        .containsExactly(2, 1, 0);
     }
 
     @DisplayName("id로 사이클 조회 시 성공")

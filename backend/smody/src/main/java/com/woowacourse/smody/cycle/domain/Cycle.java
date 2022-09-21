@@ -108,10 +108,6 @@ public class Cycle {
                 .collect(Collectors.toList());
     }
 
-    public boolean matchChallenge(Long challengeId) {
-        return this.challenge.getId().equals(challengeId);
-    }
-
     public int getInterval() {
         return progress.getCount() + 1;
     }
