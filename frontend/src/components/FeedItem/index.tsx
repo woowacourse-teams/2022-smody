@@ -1,6 +1,6 @@
 import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
-import { FaCrown } from 'react-icons/Fa';
+import { FaCrown } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
