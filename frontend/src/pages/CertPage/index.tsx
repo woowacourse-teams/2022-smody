@@ -1,8 +1,16 @@
 import useCertPage from './useCertPage';
 import { GetMyCyclesInProgressResponse } from 'apis/cycleApi/type';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { EmptyContent, CertItem, InfiniteScroll, LoadingSpinner } from 'components';
+import {
+  EmptyContent,
+  CertItem,
+  InfiniteScroll,
+  LoadingSpinner,
+  FlexBox,
+  TabButtons,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -44,15 +52,36 @@ const CertPage = () => {
     );
   }
 
+  const [isFirstTab, setIsFirstTab] = useState(true);
+
   return (
-    <div>
-      <InfiniteScroll
-        loadMore={fetchNextPage}
-        hasMore={hasNextPage}
-        isFetching={isFetching}
-        loader={<LoadingSpinner />}
-      >
+    <FlexBox flexDirection="column" alignItems="center" gap="1rem">
+      <TabButtons
+        isFirstTab={isFirstTab}
+        setIsFirstTab={setIsFirstTab}
+        firstTabName="카드 보기"
+        secondTabName="타임라인 보기"
+      />
+      {isFirstTab === true ? (
+        <InfiniteScroll
+          loadMore={fetchNextPage}
+          hasMore={hasNextPage}
+          isFetching={isFetching}
+          loader={<LoadingSpinner />}
+        >
+          <CycleList>
+            {cycleInfiniteData?.pages.map((page) =>
+              page?.data.map((cycleInfo) => (
+                <li key={cycleInfo.cycleId}>
+                  <CertItem {...cycleInfo} />
+                </li>
+              )),
+            )}
+          </CycleList>
+        </InfiniteScroll>
+      ) : (
         <CycleList>
+          <h2>gg</h2>
           {cycleInfiniteData?.pages.map((page) =>
             page?.data.map((cycleInfo) => (
               <li key={cycleInfo.cycleId}>
@@ -61,8 +90,8 @@ const CertPage = () => {
             )),
           )}
         </CycleList>
-      </InfiniteScroll>
-    </div>
+      )}
+    </FlexBox>
   );
 };
 
