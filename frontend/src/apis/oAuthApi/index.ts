@@ -11,9 +11,10 @@ import {
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
-  PatchMyInfoProps,
-  PostProfileImageProps,
+  PatchMyInfoContent,
+  PostProfileImageContent,
   GetIsValidAccessTokenResponse,
+  GetTokenGoogleParams,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import { ErrorResponse } from 'commonType';
@@ -29,7 +30,7 @@ export const useGetLinkGoogle = (
   );
 
 export const useGetTokenGoogle = (
-  code: string,
+  { code }: GetTokenGoogleParams,
   options?: UseQueryOptions<
     AxiosResponse<GetTokenGoogleResponse>,
     AxiosError<ErrorResponse>
@@ -37,7 +38,7 @@ export const useGetTokenGoogle = (
 ) =>
   useQuery<AxiosResponse<GetTokenGoogleResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getTokenGoogle,
-    () => getTokenGoogle(code),
+    () => getTokenGoogle({ code }),
     { ...options, enabled: false, suspense: false },
   );
 
@@ -63,10 +64,10 @@ export const usePatchMyInfo = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PatchMyInfoProps
+    PatchMyInfoContent
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoContent>(
     mutationKeys.patchMyInfo,
     patchMyInfo,
     options,
@@ -85,10 +86,10 @@ export const usePostProfileImage = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostProfileImageProps
+    PostProfileImageContent
   >,
 ) => {
-  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageProps>(
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageContent>(
     mutationKeys.postProfileImage,
     postProfileImage,
     options,
