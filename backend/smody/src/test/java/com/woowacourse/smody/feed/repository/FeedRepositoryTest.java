@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.repository.CommentRepository;
+import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
@@ -51,12 +52,13 @@ class FeedRepositoryTest extends RepositoryTest {
     @Test
     void findByCycleDetailId() {
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(2);
+        CycleDetail cycleDetail = cycle.getCycleDetails().get(1);
         Long id = cycleDetail.getId();
         commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "댓글"));
         entityManager.clear();
 
         Feed feed = feedRepository.findByCycleDetailId(id).get();
         assertThat(feed.getCycleDetailId()).isEqualTo(id);
+        assertThat(feed.getProgress()).isEqualTo(Progress.SECOND);
     }
 }

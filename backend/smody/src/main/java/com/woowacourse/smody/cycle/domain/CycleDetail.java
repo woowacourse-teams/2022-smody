@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,12 +47,22 @@ public class CycleDetail {
     @Column(nullable = false)
     private String description;
 
-    public CycleDetail(Cycle cycle, LocalDateTime progressTime, String progressImage, String description) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Progress progress;
+
+    public CycleDetail(Cycle cycle, LocalDateTime progressTime, String progressImage,
+                       String description, Progress progress) {
         validateDescription(description);
         this.cycle = cycle;
         this.progressTime = progressTime;
         this.progressImage = progressImage;
         this.description = description;
+        this.progress = progress;
+    }
+
+    public CycleDetail(Cycle cycle, LocalDateTime progressTime, String progressImage, String description) {
+        this(cycle, progressTime, progressImage, description, Progress.NOTHING);
     }
 
     private void validateDescription(String description) {
