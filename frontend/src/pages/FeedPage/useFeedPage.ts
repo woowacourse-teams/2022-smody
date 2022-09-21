@@ -13,11 +13,7 @@ export const useFeedPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const feeds = data.pages[0].data;
-      indexedDB.clearPost('feed').then(() => {
-        for (const feed of feeds) {
-          indexedDB.savePost('feed', feed);
-        }
-      });
+      indexedDB.putPost('feed', feeds);
     },
   });
 

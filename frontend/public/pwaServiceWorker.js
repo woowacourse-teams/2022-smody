@@ -1,4 +1,4 @@
-const VERSION = 'v4.2';
+const VERSION = 'v4.3';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -14,7 +14,6 @@ const APP_SHELL = [
   '/image/screenshot-2.png',
   '/image/screenshot-3.png',
   '/image/screenshot-4.png',
-  '/assets/service_example.png',
   '/manifest.json',
   '/index.html',
 ];
@@ -22,13 +21,13 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
   console.log('SMODY service worker - install', VERSION);
 
-  event
-    .waitUntil(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.addAll(APP_SHELL);
-      }),
-    )
-    .then(() => self.skipWaiting()); // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(APP_SHELL);
+    }),
+  );
+
+  self.skipWaiting(); // 제어중인 서비스 워커가 존재해도 대기 상태를 건너뛴다.
 });
 
 self.addEventListener('activate', (event) => {

@@ -18,11 +18,7 @@ const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number)
     return;
   }
 
-  indexedDB.clearPost('challenge').then(() => {
-    for (const challenge of challenges) {
-      indexedDB.savePost('challenge', challenge);
-    }
-  });
+  indexedDB.putPost('challenge', challenges);
 };
 
 const checkBlankSpaceValue = (value: string) =>

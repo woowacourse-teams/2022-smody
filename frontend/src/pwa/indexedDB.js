@@ -112,6 +112,14 @@ class IndexedDB {
         });
     });
   }
+
+  putPost = (name, dataList) => {
+    this.clearPost(name).then(() => {
+      for (const data of dataList) {
+        this.savePost(name, data);
+      }
+    });
+  };
 }
 
 export const indexedDB = new IndexedDB();
