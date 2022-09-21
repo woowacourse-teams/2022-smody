@@ -13,11 +13,7 @@ const useCertPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const cycles = data.pages[0].data;
-      indexedDB.clearPost('cycle').then(() => {
-        for (const cycle of cycles) {
-          indexedDB.savePost('cycle', cycle);
-        }
-      });
+      indexedDB.putPost('cycle', cycles);
     },
   });
 
