@@ -24,5 +24,7 @@ declare module 'styled-components' {
     backdrop: AvailablePickedColor;
     input: AvailablePickedColor;
     onInput: AvailablePickedColor;
+    accent: AvailablePickedColor;
+    onAccent: AvailablePickedColor;
   }
 }

@@ -1,4 +1,4 @@
-import { CertTimelineItemProps } from './type';
+import { CertTimelineItemProps, ItemWrapperProps } from './type';
 import styled, { css } from 'styled-components';
 
 import { Button } from 'components/@shared/Button';
@@ -9,7 +9,7 @@ import { CheckCircles } from 'components/CheckCircles';
 
 import { cursorPointer, emojiList } from 'constants/style';
 
-export const CertTimelineItem = ({ cycleInfo }: CertTimelineItemProps) => {
+export const CertTimelineItem = ({ cycleInfo, time }: CertTimelineItemProps) => {
   const {
     cycleId,
     challengeId,
@@ -34,7 +34,12 @@ export const CertTimelineItem = ({ cycleInfo }: CertTimelineItemProps) => {
     });
 
   return (
-    <ItemWrapper key={cycleId} onClick={handleClickWrapper} style={{ ...cursorPointer }}>
+    <ItemWrapper
+      key={cycleId}
+      time={time}
+      onClick={handleClickWrapper}
+      style={{ ...cursorPointer }}
+    >
       <MainContents>
         <div>{startTimeString}</div>
         {emojiList[emojiIndex]} {challengeName}
@@ -55,8 +60,11 @@ export const CertTimelineItem = ({ cycleInfo }: CertTimelineItemProps) => {
   );
 };
 
-const ItemWrapper = styled.div`
-  ${({ theme }) => css`
+const ItemWrapper = styled.div<ItemWrapperProps>`
+  ${({ theme, time }) => css`
+    background-color: ${time === 'now' && theme.accent};
+    color: ${time === 'now' && theme.onAccent};
+
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;

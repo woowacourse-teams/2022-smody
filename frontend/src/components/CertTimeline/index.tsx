@@ -6,10 +6,30 @@ import { FlexBox } from 'components/@shared/FlexBox';
 import { CertTimelineItem } from 'components/CertTimelineItem';
 
 export const CertTimeline = ({ cyclePages }: CertTimelineProps) => {
+  const itemTimeList = cyclePages.map((cycleInfo, index) => {
+    const thisItemStartDate = new Date(cycleInfo.startTime);
+    const nextItemStartDate = new Date(cyclePages[index + 1]?.startTime);
+
+    const nowDate = new Date();
+
+    if (nowDate < thisItemStartDate) {
+      return 'future';
+    }
+    if (nowDate >= thisItemStartDate && nowDate < nextItemStartDate) {
+      return 'now';
+    }
+    return 'past';
+  });
+  console.log('@@', itemTimeList);
+
   return (
     <Wrapper flexDirection="column" alignItems="flex-start">
-      {cyclePages.map((cycleInfo) => (
-        <CertTimelineItem key={cycleInfo.cycleId} cycleInfo={cycleInfo} />
+      {cyclePages.map((cycleInfo, index) => (
+        <CertTimelineItem
+          key={cycleInfo.cycleId}
+          cycleInfo={cycleInfo}
+          time={itemTimeList[index]}
+        />
       ))}
     </Wrapper>
   );

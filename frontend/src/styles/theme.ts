@@ -31,6 +31,9 @@ export const lightTheme: DefaultTheme = {
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  accent: COLOR.LIGHT_BLUE,
+  onAccent: COLOR.BLACK,
 };
 
 export const darkTheme: DefaultTheme = {
@@ -62,4 +65,7 @@ export const darkTheme: DefaultTheme = {
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  accent: COLOR.DARK_BLUE,
+  onAccent: COLOR.WHITE,
 };

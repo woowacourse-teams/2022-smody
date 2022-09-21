@@ -19,6 +19,9 @@ const COLOR = {
   GREEN: '#2E7D32',
   BLUE: '#0D47A1',
 
+  LIGHT_BLUE: '#D2DAFF',
+  DARK_BLUE: '#6F38C5',
+
   OPAQUE_BLACK: 'rgba(0, 0, 0, 0.4)',
 } as const;
 
