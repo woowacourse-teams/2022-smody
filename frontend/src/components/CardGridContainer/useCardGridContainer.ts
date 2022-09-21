@@ -11,11 +11,7 @@ const useCardGridContainer = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const myChallenges = data.pages[0].data;
-      indexedDB.clearPost('myChallenge').then(() => {
-        for (const myChallenge of myChallenges) {
-          indexedDB.savePost('myChallenge', myChallenge);
-        }
-      });
+      indexedDB.putPost('myChallenge', myChallenges);
     },
   });
 
