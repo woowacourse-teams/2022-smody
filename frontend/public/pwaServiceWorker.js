@@ -1,4 +1,4 @@
-const VERSION = 'v4.3';
+const VERSION = 'v4.4';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -48,22 +48,25 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Cache Only 전략은 특정 버전에서 정적이라고 간주되는 리소스에 대한 캐싱 시 적합하다. request가 있을 경우 캐싱된 리소스만 반환하고 fetch하진 않는다.
+// Cache First 전략은 캐시에서 찾지 못하면 네트워크 요청을 하는 것이다. 서비스 워커는 먼저 캐시에 접근하고 매칭된 리소스를 찾지 못하면, 네트워크에 요청한다.
+// Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
+
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const urlPath = url.pathname.split('?')[0];
 
-  // APP_SHELL, 선 캐시, 후 네트워크 응답
+  // App Shell을 Cache Storage에 캐싱(Cache Only)
   if (APP_SHELL.includes(urlPath)) {
     event.respondWith(
       caches.match(urlPath).then((response) => {
         return response || fetch(event.request);
       }),
     );
-
     return;
   }
 
-  // bundle 자바스크립트 파일, 선 네트워크, 후 캐시 응답
+  // bundle js 파일들을 Cache Storage에 캐싱(Cache First)
   if (event.request.url.includes('bundle')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
@@ -74,8 +77,9 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           })
           .catch(() => {
-            // 네트워크 문제가 발생한 경우 캐시에서 응답
-            return cache.match(event.request);
+            return cache.match(event.request).then((cacheResponse) => {
+              return cacheResponse;
+            });
           });
       }),
     );
@@ -90,27 +94,42 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 게시물 이미지 캐싱
+  // 새로 받는 이미지를 Cache Storage에 캐싱(Cache First)
+  // Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
   if (url.pathname.startsWith('/images')) {
     event.respondWith(
       caches.open(IMAGE_CACHE_NAME).then((cache) => {
-        return cache.match(event.request).then((cacheResponse) => {
-          // 캐시가 존재하는 경우 캐시 응답
-          if (cacheResponse) {
-            return cacheResponse;
-          } else {
-            // 존재하지 않는 경우 최초 1회만 캐싱
-            return fetch(event.request).then((networkResponse) => {
-              // 캐싱하고 네트워크 리소스 응답
-              cache.put(event.request, networkResponse.clone());
-              return networkResponse;
+        return fetch(event.request)
+          .then((networkResponse) => {
+            cache.put(event.request, networkResponse.clone());
+
+            return networkResponse;
+          })
+          .catch(() => {
+            return cache.match(event.request).then((cacheResponse) => {
+              return cacheResponse;
             });
-          }
-        });
+          });
       }),
     );
 
-    return;
+    //   event.respondWith(
+    //     caches.open(IMAGE_CACHE_NAME).then((cache) => {
+    //       return cache.match(event.request).then((cacheResponse) => {
+    //         // 캐시가 존재하는 경우 캐시 응답
+    //         if (cacheResponse) {
+    //           return cacheResponse;
+    //         } else {
+    //           // 존재하지 않는 경우 최초 1회만 캐싱
+    //           return fetch(event.request).then((networkResponse) => {
+    //             // 캐싱하고 네트워크 리소스 응답
+    //             cache.put(event.request, networkResponse.clone());
+    //             return networkResponse;
+    //           });
+    //         }
+    //       });
+    //     }),
+    //   );
   }
 });
 
