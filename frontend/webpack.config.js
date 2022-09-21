@@ -5,7 +5,7 @@ const path = require('path');
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 dotenv.config({ path: '.env' });
@@ -95,6 +95,6 @@ module.exports = {
         { from: 'public/pwaServiceWorker.js', to: '.' },
       ],
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 };
