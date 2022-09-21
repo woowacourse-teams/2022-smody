@@ -1,6 +1,5 @@
 import useCertPage from './useCertPage';
 import { GetMyCyclesInProgressResponse } from 'apis/cycleApi/type';
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import {
@@ -10,6 +9,7 @@ import {
   LoadingSpinner,
   FlexBox,
   TabButtons,
+  CertTimeline,
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
@@ -23,6 +23,8 @@ const CertPage = () => {
     getCycleCount,
     isError,
     savedCycles,
+    isFirstTab,
+    setIsFirstTab,
   } = useCertPage();
 
   if (isError) {
@@ -52,8 +54,6 @@ const CertPage = () => {
     );
   }
 
-  const [isFirstTab, setIsFirstTab] = useState(true);
-
   return (
     <FlexBox flexDirection="column" alignItems="center" gap="1rem">
       <TabButtons
@@ -80,16 +80,11 @@ const CertPage = () => {
           </CycleList>
         </InfiniteScroll>
       ) : (
-        <CycleList>
-          <h2>gg</h2>
-          {cycleInfiniteData?.pages.map((page) =>
-            page?.data.map((cycleInfo) => (
-              <li key={cycleInfo.cycleId}>
-                <CertItem {...cycleInfo} />
-              </li>
-            )),
-          )}
-        </CycleList>
+        <>
+          {cycleInfiniteData?.pages.map((page) => (
+            <CertTimeline key={0} cyclePages={page?.data} />
+          ))}
+        </>
       )}
     </FlexBox>
   );

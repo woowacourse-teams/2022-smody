@@ -55,3 +55,5 @@ export * from 'components/ErrorFallbackSubscriptionButton';
 export * from 'components/ErrorFallbackNotificationMessage';
 export * from 'components/ScrollToTop';
 export * from 'components/TabButtons';
+export * from 'components/CertTimeline';
+export * from 'components/CertTimelineItem';

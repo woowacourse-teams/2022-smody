@@ -36,6 +36,12 @@ const useCertPage = () => {
     return cycleInfiniteData.pages.reduce((acc, page) => acc + page.data.length, 0);
   };
 
+  const selectedTab = JSON.parse(localStorage.getItem('selectedTab') ?? 'true');
+
+  const [isFirstTab, setIsFirstTab] = useState(selectedTab);
+
+  localStorage.setItem('selectedTab', JSON.stringify(isFirstTab));
+
   return {
     cycleInfiniteData,
     isFetching,
@@ -44,6 +50,8 @@ const useCertPage = () => {
     getCycleCount,
     isError,
     savedCycles,
+    isFirstTab,
+    setIsFirstTab,
   };
 };
 

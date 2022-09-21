@@ -1,6 +1,5 @@
 import useCertItem from './useCertItem';
 import styled, { css } from 'styled-components';
-import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 

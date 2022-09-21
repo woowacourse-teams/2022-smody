@@ -7,9 +7,9 @@ import { CheckCircleProps, CheckCirclesProps } from 'components/CheckCircles/typ
 
 const totalCheck = [...Array(3)];
 
-export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
+export const CheckCircles = ({ progressCount, gap }: CheckCirclesProps) => {
   return (
-    <FlexBox gap="1rem">
+    <FlexBox gap={gap ?? '1rem'}>
       {totalCheck.map((_, index) => (
         <CheckCircle key={index} checkCircleCount={index} progressCount={progressCount} />
       ))}
