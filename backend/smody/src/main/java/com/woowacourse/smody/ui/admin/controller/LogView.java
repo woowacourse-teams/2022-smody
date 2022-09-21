@@ -1,21 +1,22 @@
 package com.woowacourse.smody.ui.admin.controller;
 
-import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.woowacourse.smody.ui.admin.LogLevel;
-import com.woowacourse.smody.ui.admin.MenuLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import javax.annotation.security.PermitAll;
+
+import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.woowacourse.smody.ui.admin.MenuLayout;
+
 import lombok.extern.slf4j.Slf4j;
 
 @PageTitle("log")
@@ -62,24 +63,12 @@ public class LogView extends VerticalLayout {
 
     private void convertFileToComponent(File todayLog) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(todayLog))) {
-            bufferedReader.lines().forEach(this::makeSpan);
+            bufferedReader.lines().forEach(logLayout::add);
         } catch (FileNotFoundException e) {
             log.warn("[로그 파일 예외 발생] 읽을 로그 파일이 없습니다.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void makeSpan(String line) {
-        Span span = new Span();
-        span.add(line);
-        for (LogLevel level : LogLevel.values()) {
-            if (line.contains(level.getText())) {
-                span.removeAll();
-                level.setColor(line, span);
-            }
-        }
-        logLayout.add(span);
     }
 
     private void arrangeComponents() {
