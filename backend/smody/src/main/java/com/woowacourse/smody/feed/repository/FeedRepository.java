@@ -11,7 +11,7 @@ public interface FeedRepository extends JpaRepository<CycleDetail, Long>, FeedDy
 
     @Query("select new com.woowacourse.smody.feed.domain.Feed("
             + "cd.id, cd.progressImage, cd.description, "
-            + "cd.progressTime, c.progress, "
+            + "cd.progressTime, cd.progress, "
             + "m.id, m.picture, m.nickname, "
             + "ch.id, ch.name, cd.comments.size) "
             + "from CycleDetail cd "
