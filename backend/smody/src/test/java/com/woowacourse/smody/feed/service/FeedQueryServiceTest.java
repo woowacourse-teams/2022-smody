@@ -1,23 +1,27 @@
 package com.woowacourse.smody.feed.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.feed.dto.FeedResponse;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class FeedQueryServiceTest extends IntegrationTest {
 
@@ -77,6 +81,29 @@ public class FeedQueryServiceTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("모든 피드 조회 시 사이클의 몇 번째 인증인지 알려준다.")
+    @Test
+    void findAllWithProgress() {
+        // given
+        LocalDateTime today = LocalDateTime.now();
+        Cycle cycle1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
+        Cycle cycle2 = fixture.사이클_생성_SUCCESS(조조그린_ID, 오늘의_운동_ID, today);
+        Cycle cycle3 = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, today);
+        Cycle cycle4 = fixture.사이클_생성_SUCCESS(조조그린_ID, 알고리즘_풀기_ID, today);
+
+        // when
+        List<FeedResponse> feedResponses = feedQueryService.findAll(
+                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
+        );
+        // then
+        assertAll(
+                () -> assertThat(feedResponses).hasSize(10),
+                () -> assertThat(feedResponses)
+                        .map(FeedResponse::getProgressCount)
+                        .containsExactly(3, 3, 3, 2, 2, 2, 2, 1, 1, 1)
+        );
+    }
+
     @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
     @Test
     void findById_notExistCycleDetail() {
@@ -94,13 +121,14 @@ public class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
 
         // when
-        Long cycleDetailId = cycle.getCycleDetails().get(0).getId();
+        List<CycleDetail> cycleDetails = cycle.getCycleDetails();
+        Long cycleDetailId = cycleDetails.get(0).getId();
         FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
 
         // then
         assertAll(
-            () -> assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId),
-            () -> assertThat(feedResponse.getProgressCount()).isEqualTo(3)
+                () -> assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId),
+                () -> assertThat(feedResponse.getProgressCount()).isEqualTo(1)
         );
     }
 }
