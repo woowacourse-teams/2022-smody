@@ -70,4 +70,8 @@ public class CycleDetail {
             throw new BusinessException(ExceptionData.INVALID_CYCLE_DETAIL_DESCRIPTION);
         }
     }
+
+    public void setProgress(Progress progress) {
+        this.progress = progress;
+    }
 }
