@@ -1,6 +1,6 @@
 class IndexedDB {
   constructor() {
-    this._VERSION = 1.1;
+    this._VERSION = 1.2;
   }
 
   _openDatabase() {
@@ -111,6 +111,7 @@ class IndexedDB {
 
   putPost = (name, dataList) => {
     this.clearPost(name).then(() => {
+      console.log(name, dataList);
       for (const data of dataList) {
         this.savePost(name, data);
       }
@@ -119,3 +120,11 @@ class IndexedDB {
 }
 
 export const indexedDB = new IndexedDB();
+
+export const saveDataToCache = (name, pageLength, data) => {
+  if (pageLength !== 1) {
+    return;
+  }
+
+  indexedDB.putPost(name, data);
+};
