@@ -1,6 +1,6 @@
 package com.woowacourse.smody.challenge.domain;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
+import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

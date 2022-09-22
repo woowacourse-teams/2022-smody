@@ -18,9 +18,6 @@ import com.woowacourse.smody.support.IntegrationTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

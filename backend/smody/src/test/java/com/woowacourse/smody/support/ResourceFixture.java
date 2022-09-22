@@ -1,14 +1,5 @@
 package com.woowacourse.smody.support;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.comment.domain.Comment;
@@ -26,6 +17,13 @@ import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @SuppressWarnings("NonAsciiCharacters")
