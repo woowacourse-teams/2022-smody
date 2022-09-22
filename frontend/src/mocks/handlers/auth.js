@@ -16,7 +16,7 @@ export const auth = [
   // 2-1. 구글 링크 조회(GET)
   rest.get(`${BASE_URL}/oauth/link/google`, (req, res, ctx) => {
     const CLIENT_ID = process.env.CLIENT_ID;
-    const REDIRECT_URI = 'http://localhost:3000/cert';
+    const REDIRECT_URI = 'http://localhost:3000/feed';
 
     return res(
       ctx.status(200),
