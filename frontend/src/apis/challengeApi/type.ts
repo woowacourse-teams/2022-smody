@@ -1,63 +1,39 @@
-import { Challenge, UserChallenge } from 'commonType';
+import { CursorParam } from 'apis/type';
+import {
+  AdditionalChallengeInfo,
+  Challenge,
+  ChallengeDetail,
+  UserChallengeStat,
+} from 'commonTypes/challenge';
+import { Cycle, CycleDetail } from 'commonTypes/cycle';
+import { Member } from 'commonTypes/member';
 
-export interface GetChallengeProps {
+export type GetChallengeParams = {
   searchValue: string;
-}
+};
 
-export interface GetChallengeResponse {
-  challengeId: number;
-  challengeName: string;
-  challengerCount: number;
-  isInProgress: boolean;
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type GetChallengeResponse = AdditionalChallengeInfo;
 
-export interface GetMyChallengesProps {
-  cursorId: number;
-}
+export type GetMyChallengesParams = CursorParam;
 
-export interface GetMyChallengesResponse extends Omit<Challenge, 'challengerCount'> {
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type GetMyChallengesResponse = Challenge & Pick<UserChallengeStat, 'successCount'>;
 
-export type GetChallengeByIdProps = Pick<Challenge, 'challengeId'>;
+export type GetChallengeByIdParams = Pick<Challenge, 'challengeId'>;
 
-export interface GetChallengeByIdResponse
-  extends Pick<
-    UserChallenge,
-    'challengeId' | 'challengeName' | 'challengerCount' | 'isInProgress'
-  > {
-  emojiIndex: number;
-  colorIndex: number;
-  description: string;
-}
+export type GetChallengeByIdResponse = Challenge &
+  Cycle &
+  Pick<UserChallengeStat, 'successCount'> & {
+    cycleDetails: Omit<CycleDetail, 'cycleDetailId'>[];
+  };
 
-export type GetChallengersByIdProps = Pick<Challenge, 'challengeId'>;
+export type GetChallengersByIdParams = Pick<Challenge, 'challengeId'>;
 
-export interface GetChallengersByIdResponse {
-  memberId: number;
-  nickName: string;
-  progressCount: number;
-  picture: string;
-  introduction: string;
-}
+export type GetChallengersByIdResponse = Omit<Member, 'email'> &
+  Pick<Cycle, 'progressCount'>;
 
-export interface PostChallengeProps {
-  challengeName: string;
-  description: string;
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type PostChallengeContent = Omit<ChallengeDetail, 'challengeId'>;
 
-export type GetMyChallengeByIdProps = Pick<Challenge, 'challengeId'>;
+export type GetMyChallengeByIdParams = Pick<Challenge, 'challengeId'>;
 
-export interface GetMyChallengeByIdResponse {
-  challengeName: string;
-  description: string;
-  emojiIndex: number;
-  colorIndex: number;
-  successCount: number;
-  cycleDetailCount: number;
-}
+export type GetMyChallengeByIdResponse = Omit<ChallengeDetail, 'challengeId'> &
+  Pick<UserChallengeStat, 'successCount'> & { cycleDetailCount: number };
