@@ -1,5 +1,4 @@
 import { useGetMyChallenges } from 'apis';
-import { indexedDB } from 'pwa/indexedDB';
 
 const useCardGridContainer = () => {
   const {
@@ -7,13 +6,7 @@ const useCardGridContainer = () => {
     hasNextPage,
     fetchNextPage,
     isFetching,
-  } = useGetMyChallenges({
-    useErrorBoundary: false,
-    onSuccess: (data) => {
-      const myChallenges = data.pages[0].data;
-      indexedDB.putPost('myChallenge', myChallenges);
-    },
-  });
+  } = useGetMyChallenges();
 
   return {
     myChallengeInfiniteData,
