@@ -13,12 +13,21 @@ import java.util.List;
 
 public class ChallengingRecord {
 
-    private final List<Cycle> cycles;
+    private final List<Cycle> cycles; // 최근 Cycle(member, challenge, 인증 시간), 성공 회수
+    private final Long successCount;
 
     ChallengingRecord(List<Cycle> cycles) {
         validateOnlyMember(cycles);
         validateOnlyChallenge(cycles);
         this.cycles = cycles;
+        this.successCount = cycles.stream()
+                .filter(Cycle::isSuccess)
+                .count();
+    }
+
+    public ChallengingRecord(Cycle cycle, Long successCount) {
+        this.cycles = List.of(cycle);
+        this.successCount = successCount;
     }
 
     public static List<ChallengingRecord> from(List<Cycle> cycles) {
@@ -50,9 +59,7 @@ public class ChallengingRecord {
     }
 
     public int getSuccessCount() {
-        return (int) cycles.stream()
-                .filter(Cycle::isSuccess)
-                .count();
+        return successCount.intValue();
     }
 
     public LocalDateTime getLatestProgressTime() {
@@ -71,5 +78,25 @@ public class ChallengingRecord {
         return cycles.get(0)
                 .getMember()
                 .equals(member);
+    }
+
+    public boolean match(Cycle cycle) {
+        return cycles.get(0)
+                .equals(cycle);
+    }
+
+    public boolean isInProgress(LocalDateTime searchTime) {
+        return cycles.get(0)
+                .isInProgress(searchTime);
+    }
+
+    public long getEndTime(LocalDateTime searchTime) {
+        // 진행중인 사이클이 있는지
+        return cycles.get(0)
+                .calculateEndTime(searchTime);
+    }
+
+    public Cycle getCycle() {
+        return cycles.get(0);
     }
 }

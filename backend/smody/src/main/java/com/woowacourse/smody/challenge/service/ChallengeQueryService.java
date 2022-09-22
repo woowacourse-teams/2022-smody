@@ -39,9 +39,9 @@ public class ChallengeQueryService {
     public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                                  PagingParams pagingParams) {
         Member member = memberService.findMember(tokenPayload);
-        List<Cycle> cycles = cycleService.searchInProgress(searchTime);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         List<Challenge> challenges = challengeService.searchAll(pagingParams);
+        List<Cycle> cycles = cycleService.searchInProgressByChallenges(searchTime, challenges);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         return getChallengeTabResponses(challenges, member, challengingRecords);
     }
 
@@ -63,9 +63,9 @@ public class ChallengeQueryService {
     public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                      Long challengeId) {
         Member member = memberService.findMember(tokenPayload);
-        List<Cycle> cycles = cycleService.searchInProgress(searchTime);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         Challenge challenge = challengeService.search(challengeId);
+        List<Cycle> cycles = cycleService.searchInProgressByChallenge(searchTime, challenge);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         return new ChallengeResponse(
                 challenge,
                 challengingRecords.countChallenger(challenge),
@@ -108,11 +108,8 @@ public class ChallengeQueryService {
 
     public List<ChallengersResponse> findAllChallengers(Long challengeId) {
         Challenge challenge = challengeService.search(challengeId);
-        List<Cycle> inProgressCycle = cycleService.searchInProgress(LocalDateTime.now())
-                .stream()
-                .filter(cycle -> cycle.matchChallenge(challenge.getId()))
-                .collect(toList());
-        return inProgressCycle.stream()
+        List<Cycle> cycles = cycleService.searchInProgressByChallenge(LocalDateTime.now(), challenge);
+        return cycles.stream()
                 .map(cycle -> new ChallengersResponse(
                         cycle.getMember(), cycle.getProgress().getCount()))
                 .collect(toList());

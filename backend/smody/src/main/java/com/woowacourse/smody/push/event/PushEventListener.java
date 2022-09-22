@@ -6,11 +6,8 @@ import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.strategy.PushStrategy;
 import java.util.List;
 import java.util.Map;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component

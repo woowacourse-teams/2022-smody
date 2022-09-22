@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +48,7 @@ public class Cycle {
     private Challenge challenge;
 
     @OneToMany(mappedBy = "cycle", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @BatchSize(size = 10)
     private List<CycleDetail> cycleDetails = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -106,10 +108,6 @@ public class Cycle {
                 .sorted((detail1, detail2) ->
                         (int) ChronoUnit.MILLIS.between(detail2.getProgressTime(), detail1.getProgressTime()))
                 .collect(Collectors.toList());
-    }
-
-    public boolean matchChallenge(Long challengeId) {
-        return this.challenge.getId().equals(challengeId);
     }
 
     public int getInterval() {

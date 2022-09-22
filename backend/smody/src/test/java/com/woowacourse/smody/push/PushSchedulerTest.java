@@ -1,18 +1,11 @@
 package com.woowacourse.smody.push;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.repository.MemberRepository;
@@ -23,6 +16,13 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class PushSchedulerTest extends IntegrationTest {
 

@@ -1,7 +1,9 @@
 package com.woowacourse.smody.cycle.repository;
 
+import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.db_support.PagingParams;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DynamicCycleRepository {
@@ -10,4 +12,5 @@ public interface DynamicCycleRepository {
 
     List<Cycle> findAllByMember(Long memberId, PagingParams pagingParams);
 
+    List<ChallengingRecord> findAllChallengingRecordByMemberAfterTime(Long memberId, LocalDateTime time);
 }

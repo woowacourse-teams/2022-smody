@@ -1,15 +1,8 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.push.domain.PushCase;
@@ -19,6 +12,11 @@ import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 class SubscriptionPushEventListenerTest extends IntegrationTest {
 

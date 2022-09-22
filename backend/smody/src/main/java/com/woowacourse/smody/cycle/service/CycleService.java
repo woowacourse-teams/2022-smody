@@ -97,20 +97,6 @@ public class CycleService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
     }
 
-    public List<Cycle> searchInProgressByMember(LocalDateTime searchTime, Member member) {
-        return cycleRepository.findByMemberAfterTime(member, searchTime.minusDays(Cycle.DAYS))
-                .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
-                .collect(toList());
-    }
-
-    public List<Cycle> searchInProgress(LocalDateTime searchTime) {
-        return cycleRepository.findAllByStartTimeIsAfter(searchTime.minusDays(Cycle.DAYS))
-                .stream()
-                .filter(cycle -> cycle.isInProgress(searchTime))
-                .collect(toList());
-    }
-
     public Optional<Cycle> findById(Long id) {
         return cycleRepository.findById(id);
     }
@@ -125,5 +111,19 @@ public class CycleService {
 
     public List<Cycle> findAllByMember(Member member, PagingParams pagingParams) {
         return cycleRepository.findAllByMember(member.getId(), pagingParams);
+    }
+
+    public List<Cycle> searchInProgressByChallenges(LocalDateTime searchTime, List<Challenge> challenges) {
+        return cycleRepository.findAllByStartTimeIsAfterAndChallengeIn(searchTime.minusDays(Cycle.DAYS), challenges)
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
+
+    public List<Cycle> searchInProgressByChallenge(LocalDateTime searchTime, Challenge challenge) {
+        return cycleRepository.findAllByStartTimeIsAfterAndChallenge(searchTime.minusDays(Cycle.DAYS), challenge)
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
     }
 }
