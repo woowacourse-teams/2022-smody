@@ -27,10 +27,6 @@ class IndexedDB {
         db.createObjectStore('challenge', {
           keyPath: 'challengeId',
         });
-
-        db.createObjectStore('myChallenge', {
-          keyPath: 'challengeId',
-        });
       };
 
       request.onsuccess = () => {
