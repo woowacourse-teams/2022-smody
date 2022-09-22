@@ -22,7 +22,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 public class Member {
 
-    private static final String DEFAULT_INTRODUCTION = "스모디로 작심삼일 시작!";
+    private static final String DEFAULT_INTRODUCTION = "스모디로 작심삼일 극복~!";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
