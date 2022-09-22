@@ -17,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
@@ -39,6 +40,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
 
@@ -47,6 +50,9 @@ public class CycleServiceTest extends IntegrationTest {
 
     @Autowired
     private CycleQueryService cycleQueryService;
+
+    @Autowired
+    private ChallengeRepository challengeRepository;
 
     private final LocalDateTime now = LocalDateTime.now();
 
@@ -140,13 +146,16 @@ public class CycleServiceTest extends IntegrationTest {
     void increaseProgress(Progress progress, LocalDateTime progressTime, int expected) {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
         Cycle cycle = fixture.사이클_생성(
                 조조그린_ID,
                 스모디_방문하기_ID,
                 progress,
                 LocalDateTime.of(2022, 1, 1, 0, 0)
         );
-        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, MULTIPART_FILE, "인증 완료");
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
 
         // when
         ProgressResponse progressResponse = cycleService.increaseProgress(tokenPayload, request);
@@ -237,14 +246,14 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void findAllInProgressOfMine() {
         // given
-        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1)); // 2, 1
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
-        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2)); // 1, 2
         fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(4L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
-        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
+        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L)); // 3, 0
 
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
@@ -253,19 +262,8 @@ public class CycleServiceTest extends IntegrationTest {
                 tokenPayload, now, new PagingParams(null, null, 0L, null));
 
         // then
-        assertAll(
-                () -> assertThat(actual)
-                        .map(InProgressCycleResponse::getCycleId)
-                        .containsAll(List.of(inProgress1.getId(), inProgress2.getId(), future.getId())),
-                () -> assertThat(actual)
-                        .filteredOn(response -> response.getChallengeId().equals(1L))
-                        .map(InProgressCycleResponse::getSuccessCount)
-                        .containsExactly(1, 1),
-                () -> assertThat(actual)
-                        .filteredOn(response -> response.getChallengeId().equals(미라클_모닝_ID))
-                        .map(InProgressCycleResponse::getSuccessCount)
-                        .containsExactly(2)
-        );
+        assertThat(actual).map(InProgressCycleResponse::getSuccessCount)
+                        .containsExactly(2, 1, 0);
     }
 
     @DisplayName("id로 사이클 조회 시 성공")
@@ -335,6 +333,27 @@ public class CycleServiceTest extends IntegrationTest {
             failed = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(120L));
             success = fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1000L));
             tokenPayload = new TokenPayload(조조그린_ID);
+        }
+
+        @DisplayName("챌린지들에 해당하는 진행 중인 모든 사이클을 조회")
+        @Test
+        void searchInProgressByChallenges() {
+            List<Cycle> cycles = cycleService.searchInProgressByChallenges(now, List.of(
+                    challengeRepository.findById(스모디_방문하기_ID).get(),
+                    challengeRepository.findById(미라클_모닝_ID).get())
+            );
+
+            assertThat(cycles).hasSize(2);
+        }
+
+        @DisplayName("챌린지에 해당하는 진행 중인 모든 사이클을 조회")
+        @Test
+        void serchInProgressByChallenege() {
+            List<Cycle> cycles = cycleService.searchInProgressByChallenge(
+                    now, challengeRepository.findById(스모디_방문하기_ID).get()
+            );
+
+            assertThat(cycles).hasSize(1);
         }
 
         @DisplayName("진행 중인 모든 사이클을 남은 인증 시간 기준으로 오름차순 정렬")
@@ -429,6 +448,7 @@ public class CycleServiceTest extends IntegrationTest {
             //given
             PagingParams pagingParams = new PagingParams("startTime", null, 0L, null);
 
+            System.out.println("====");
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);

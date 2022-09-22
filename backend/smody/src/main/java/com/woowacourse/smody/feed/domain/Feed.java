@@ -1,9 +1,7 @@
 package com.woowacourse.smody.feed.domain;
 
-import java.time.LocalDateTime;
-
 import com.woowacourse.smody.cycle.domain.Progress;
-
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

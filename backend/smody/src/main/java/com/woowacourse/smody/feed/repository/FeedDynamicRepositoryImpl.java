@@ -1,7 +1,10 @@
 package com.woowacourse.smody.feed.repository;
 
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 import static com.woowacourse.smody.comment.domain.QComment.comment;
+import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
 import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
+import static com.woowacourse.smody.member.domain.QMember.member;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
@@ -30,8 +33,8 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
     private static final Expression<?>[] FEED_FIELDS = {
             cycleDetail.id, cycleDetail.progressImage, cycleDetail.description,
             cycleDetail.progressTime, cycleDetail.progress,
-            cycleDetail.cycle.member.id, cycleDetail.cycle.member.picture, cycleDetail.cycle.member.nickname,
-            cycleDetail.cycle.challenge.id, cycleDetail.cycle.challenge.name,
+            member.id, member.picture, member.nickname,
+            challenge.id, challenge.name,
             COMMENT_COUNT
     };
 
@@ -48,6 +51,9 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
         return queryFactory
                 .select(Projections.constructor(Feed.class, FEED_FIELDS))
                 .from(cycleDetail)
+                .join(cycleDetail.cycle, cycle)
+                .join(cycle.member, member)
+                .join(cycle.challenge, challenge)
                 .where(DynamicQuery.builder()
                         .and(() -> cycleDetail.id.ne(cycleDetailId))
                         .and(() -> cycleDetail.progressTime.loe(progressTime))

@@ -1,11 +1,20 @@
 package com.woowacourse.smody.cycle.repository;
 
+import static com.querydsl.core.types.ExpressionUtils.count;
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.cycle.domain.QCycle;
 import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
 import java.time.LocalDateTime;
@@ -60,5 +69,39 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                 )
                 .distinct()
                 .fetch();
+    }
+
+    @Override
+    public List<ChallengingRecord> findAllChallengingRecordByMemberAfterTime(Long memberId,
+                                                                             LocalDateTime time) {
+        return queryFactory
+                .select(challengingRecordConstructor())
+                .from(cycle)
+                .join(cycle.challenge, challenge).fetchJoin()
+                .where(DynamicQuery.builder()
+                        .and(() -> cycle.member.id.eq(memberId))
+                        .and(() -> cycle.startTime.after(time.minusDays(Cycle.DAYS)))
+                        .build()
+                ).fetch();
+    }
+
+    private ConstructorExpression<ChallengingRecord> challengingRecordConstructor() {
+        return Projections.constructor(
+                ChallengingRecord.class,
+                cycle,
+                successCountSubQuery());
+    }
+
+    private Expression<Long> successCountSubQuery() {
+        QCycle subCycle = new QCycle("subCycle");
+        return ExpressionUtils.as(
+                JPAExpressions.select(count(cycle.id))
+                        .from(subCycle)
+                        .where(DynamicQuery.builder()
+                                .and(() -> subCycle.challenge.eq(cycle.challenge))
+                                .and(() -> subCycle.progress.eq(Progress.SUCCESS))
+                                .build()
+                        ),
+                "successCount");
     }
 }
