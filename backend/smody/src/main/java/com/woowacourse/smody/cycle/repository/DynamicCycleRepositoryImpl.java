@@ -95,7 +95,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
     private Expression<Long> successCountSubQuery() {
         QCycle subCycle = new QCycle("subCycle");
         return ExpressionUtils.as(
-                JPAExpressions.select(count(cycle.id))
+                JPAExpressions.select(count(subCycle.id))
                         .from(subCycle)
                         .where(DynamicQuery.builder()
                                 .and(() -> subCycle.challenge.eq(cycle.challenge))
