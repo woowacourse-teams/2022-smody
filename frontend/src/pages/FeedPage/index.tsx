@@ -1,11 +1,15 @@
 import { Feed } from 'commonType';
 import styled from 'styled-components';
 
+import useSnackBar from 'hooks/useSnackBar';
+
 import { useFeedPage } from 'pages/FeedPage/useFeedPage';
 
 import { FeedItem, InfiniteScroll, LoadingSpinner } from 'components';
 
 const FeedPage = () => {
+  const renderSnackBar = useSnackBar();
+
   const {
     feedInfiniteData,
     isFetching,
@@ -16,6 +20,14 @@ const FeedPage = () => {
   } = useFeedPage();
 
   if (isError) {
+    const errorMessage = !navigator.onLine
+      ? '네트워크가 오프라인 상태입니다. 이전에 캐싱된 데이터가 표시됩니다.'
+      : '서버 에러가 발생했습니다. 이전에 캐싱된 데이터가 표시됩니다';
+    renderSnackBar({
+      status: 'ERROR',
+      message: errorMessage,
+    });
+
     return (
       <FeedContainer as="ul">
         {savedFeeds.map((feedInfo: Feed) => (
