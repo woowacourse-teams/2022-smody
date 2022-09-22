@@ -2,6 +2,8 @@ import useCertPage from './useCertPage';
 import { GetMyCyclesInProgressResponse } from 'apis/cycleApi/type';
 import styled, { css } from 'styled-components';
 
+import useSnackBar from 'hooks/useSnackBar';
+
 import {
   EmptyContent,
   CertItem,
@@ -15,6 +17,8 @@ import {
 import { CLIENT_PATH } from 'constants/path';
 
 const CertPage = () => {
+  const renderSnackBar = useSnackBar();
+
   const {
     cycleInfiniteData,
     isFetching,
@@ -28,6 +32,14 @@ const CertPage = () => {
   } = useCertPage();
 
   if (isError) {
+    const errorMessage = !navigator.onLine
+      ? '네트워크가 오프라인 상태입니다. 이전에 캐싱된 데이터가 표시됩니다.'
+      : '서버 에러가 발생했습니다. 이전에 캐싱된 데이터가 표시됩니다';
+    renderSnackBar({
+      status: 'ERROR',
+      message: errorMessage,
+    });
+
     return (
       <CycleList>
         {savedCycles.map((cycleInfo: GetMyCyclesInProgressResponse) => (
