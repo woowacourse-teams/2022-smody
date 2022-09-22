@@ -1,17 +1,14 @@
 package com.woowacourse.smody.support.isoloation;
 
+import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.member.domain.Member;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.member.domain.Member;
 
 @Component
 public class SmodyDatabaseManager {

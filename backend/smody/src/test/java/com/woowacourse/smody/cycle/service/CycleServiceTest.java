@@ -1,27 +1,23 @@
 package com.woowacourse.smody.cycle.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.*;
-
-import com.woowacourse.smody.challenge.repository.ChallengeRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
+import static com.woowacourse.smody.support.ResourceFixture.FORMATTER;
+import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
+import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.support.ResourceFixture.이미지;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
@@ -31,11 +27,21 @@ import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
 import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.image.domain.Image;
-import com.woowacourse.smody.image.strategy.ImgBBImageStrategy;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class CycleServiceTest extends IntegrationTest {
 

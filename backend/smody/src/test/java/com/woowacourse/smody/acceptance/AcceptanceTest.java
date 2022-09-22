@@ -1,18 +1,16 @@
 package com.woowacourse.smody.acceptance;
 
+import com.woowacourse.smody.auth.dto.LoginRequest;
+import com.woowacourse.smody.auth.service.OauthService;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
-
-import com.woowacourse.smody.auth.dto.LoginRequest;
-import com.woowacourse.smody.auth.service.OauthService;
-import com.woowacourse.smody.member.domain.Member;
-import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
-
-import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ExtendWith(SmodyTestEnvironmentExtension.class)
