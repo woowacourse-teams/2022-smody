@@ -2,6 +2,7 @@ package com.woowacourse.smody.member.service;
 
 import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
 import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,8 +100,10 @@ class MemberServiceTest extends IntegrationTest {
     void withdraw() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        cycle.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
+        Cycle cycle1 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
+        Cycle cycle2 = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, LocalDateTime.now());
+        cycle1.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
+        cycle2.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
         fixture.알림_구독(조조그린_ID, "endpoint");
         fixture.발송_예정_알림_생성(조조그린_ID, null, LocalDateTime.now(), PushCase.SUBSCRIPTION);
 

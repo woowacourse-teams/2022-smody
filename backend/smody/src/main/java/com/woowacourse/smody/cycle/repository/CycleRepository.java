@@ -10,8 +10,10 @@ import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
 
@@ -25,10 +27,6 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     List<Cycle> findAllByStartTimeIsAfterAndChallenge(@Param("time") LocalDateTime time,
                                                       @Param("challenge") Challenge challenge);
 
-    @EntityGraph(attributePaths = "challenge")
-    @Query("select c from Cycle c where c.member = :member and c.startTime >= :time")
-    List<Cycle> findByMemberAfterTime(@Param("member") Member member, @Param("time") LocalDateTime time);
-
     @Query("select count(c) from Cycle c where c.member = :member and "
             + "c.challenge = :challenge and c.progress = 'SUCCESS'")
     Long countSuccess(@Param("member") Member member, @Param("challenge") Challenge challenge);
@@ -40,7 +38,9 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     List<Cycle> findByMember(Member member);
 
-    void deleteByMember(Member member);
+    @Modifying
+    @Query("delete from Cycle c where c.member = :member")
+    void deleteByMember(@Param("member") Member member);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
     @Query("select c from Cycle c where c.id = :id")
