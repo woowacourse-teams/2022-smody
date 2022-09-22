@@ -26,7 +26,7 @@ const useAuth = () => {
     onSuccess: ({ data: { accessToken } }) => {
       authApiClient.updateAuth(accessToken);
       setIsLogin(true);
-      navigate(CLIENT_PATH.CERT);
+      navigate(CLIENT_PATH.FEED);
       renderSnackBar({
         message: '환영합니다 🎉 오늘 도전도 화이팅!',
         status: 'SUCCESS',
