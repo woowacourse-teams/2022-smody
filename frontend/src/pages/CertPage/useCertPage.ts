@@ -1,5 +1,5 @@
 import { useGetMyCyclesInProgress } from 'apis';
-import { indexedDB } from 'pwa/indexedDB';
+import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState } from 'react';
 
 const useCertPage = () => {
@@ -13,7 +13,7 @@ const useCertPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const cycles = data.pages[0].data;
-      indexedDB.putPost('cycle', cycles);
+      saveDataToCache('cycle', data.pages.length, cycles);
     },
   });
 
