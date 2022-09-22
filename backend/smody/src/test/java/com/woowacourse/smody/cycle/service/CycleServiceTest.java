@@ -448,6 +448,7 @@ public class CycleServiceTest extends IntegrationTest {
             //given
             PagingParams pagingParams = new PagingParams("startTime", null, 0L, null);
 
+            System.out.println("====");
             // when
             List<FilteredCycleHistoryResponse> historyResponses = cycleQueryService.findAllByMemberAndChallenge(
                     tokenPayload, 스모디_방문하기_ID, pagingParams);

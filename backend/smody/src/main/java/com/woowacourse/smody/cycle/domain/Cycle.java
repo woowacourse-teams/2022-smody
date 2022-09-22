@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +48,7 @@ public class Cycle {
     private Challenge challenge;
 
     @OneToMany(mappedBy = "cycle", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @BatchSize(size = 10)
     private List<CycleDetail> cycleDetails = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
