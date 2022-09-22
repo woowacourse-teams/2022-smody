@@ -1,6 +1,6 @@
 import { useGetAllChallenges } from 'apis';
 import { GetChallengeResponse } from 'apis/challengeApi/type';
-import { indexedDB } from 'pwa/indexedDB';
+import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -13,14 +13,6 @@ import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 import { EMPTY_REGEX_RULE } from 'constants/regex';
 
-const saveDataToCache = (challenges: GetChallengeResponse[], pageLength: number) => {
-  if (pageLength !== 1) {
-    return;
-  }
-
-  indexedDB.putPost('challenge', challenges);
-};
-
 const checkBlankSpaceValue = (value: string) =>
   value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
 
@@ -28,6 +20,7 @@ const checkIsExceedMaxLength = (value: string) =>
   value.length > MAX_CHALLENGE_NAME_LENGTH;
 
 export const useSearchPage = () => {
+  const flagCheck = useRef(false);
   const isLogin = useRecoilValue(isLoginState);
   const renderSnackBar = useSnackBar();
   const navigate = useNavigate();
@@ -47,7 +40,8 @@ export const useSearchPage = () => {
     {
       useErrorBoundary: false,
       onSuccess: (data) => {
-        saveDataToCache(data.pages[0].data, data.pages.length);
+        const challenges = data.pages[0].data;
+        saveDataToCache('challenge', data.pages.length, challenges);
       },
     },
   );
@@ -65,6 +59,10 @@ export const useSearchPage = () => {
   }, [isError]);
 
   useEffect(() => {
+    if (!flagCheck.current) {
+      flagCheck.current = true;
+      return;
+    }
     refetch();
   }, [searchValue]);
 

@@ -1,5 +1,5 @@
 import { useGetAllFeeds } from 'apis/feedApi';
-import { indexedDB } from 'pwa/indexedDB';
+import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState } from 'react';
 
 export const useFeedPage = () => {
@@ -13,7 +13,7 @@ export const useFeedPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const feeds = data.pages[0].data;
-      indexedDB.putPost('feed', feeds);
+      saveDataToCache('feed', data.pages.length, feeds);
     },
   });
 

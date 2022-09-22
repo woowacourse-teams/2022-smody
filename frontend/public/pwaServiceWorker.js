@@ -1,4 +1,4 @@
-const VERSION = 'v4.7';
+const VERSION = 'v4.8';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
