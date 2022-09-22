@@ -10,14 +10,14 @@ import {
 } from 'apis/challengeApi/api';
 import {
   GetChallengeResponse,
-  GetChallengeByIdProps,
+  GetChallengeByIdParams,
   GetChallengeByIdResponse,
   GetMyChallengesResponse,
   GetChallengersByIdResponse,
-  GetChallengersByIdProps,
-  PostChallengeProps,
-  GetChallengeProps,
-  GetMyChallengeByIdProps,
+  GetChallengersByIdParams,
+  PostChallengeContent,
+  GetChallengeParams,
+  GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
@@ -34,7 +34,7 @@ import {
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
-  { searchValue }: GetChallengeProps,
+  { searchValue }: GetChallengeParams,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetChallengeResponse[]>,
     AxiosError<ErrorResponse>
@@ -81,7 +81,7 @@ export const useGetMyChallenges = (
 
 // 8. 챌린지 하나 상세 조회(GET)
 export const useGetChallengeById = (
-  { challengeId }: GetChallengeByIdProps,
+  { challengeId }: GetChallengeByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetChallengeByIdResponse>,
     AxiosError<ErrorResponse>
@@ -97,7 +97,7 @@ export const useGetChallengeById = (
 
 // 9. 챌린지 참가자 목록 조회
 export const useGetChallengersById = (
-  { challengeId }: GetChallengersByIdProps,
+  { challengeId }: GetChallengersByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetChallengersByIdResponse[]>,
     AxiosError<ErrorResponse>
@@ -114,17 +114,17 @@ export const usePostChallenge = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostChallengeProps
+    PostChallengeContent
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeContent>(
     postChallenge,
     options,
   );
 
 // 참여한 챌린지 상세 조회 기능
 export const useGetMyChallengeById = (
-  { challengeId }: GetMyChallengeByIdProps,
+  { challengeId }: GetMyChallengeByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetMyChallengeByIdResponse>,
     AxiosError<ErrorResponse>
