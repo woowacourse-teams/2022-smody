@@ -30,7 +30,7 @@ public class DataBatch {
         for (Cycle cycle : cycles) {
             List<CycleDetail> cycleDetails = cycle.getCycleDetails();
             for (int i = 1; i <= cycleDetails.size(); i++) {
-                cycleDetails.get(i).setProgress(Progress.values()[i]);
+                cycleDetails.get(i - 1).setProgress(Progress.values()[i]);
             }
         }
     }
