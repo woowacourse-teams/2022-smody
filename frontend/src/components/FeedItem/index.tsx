@@ -50,7 +50,13 @@ export const FeedItem = ({
       isDetailPage={isDetailPage}
     >
       <FlexBox alignItems="center" flexWrap="wrap">
-        <ProfileImg src={picture} alt={`${nickname}님의 프로필 사진`} loading="lazy" />
+        <ProfileImg
+          src={picture}
+          alt={`${nickname}님의 프로필 사진`}
+          loading="lazy"
+          width="32px"
+          height="32px"
+        />
         <Nickname size={20} color={themeContext.onBackground}>
           {nickname}
         </Nickname>
@@ -74,7 +80,6 @@ export const FeedItem = ({
       <ProgressImg
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
-        loading="lazy"
         isSuccess={isSuccess}
       />
       <Text size={14} color={themeContext.mainText}>

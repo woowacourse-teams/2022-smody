@@ -2,8 +2,8 @@ import imageCompression from 'browser-image-compression';
 import { ChangeEvent, useEffect, useRef, useState, useMemo } from 'react';
 
 const compressionOptions = {
-  maxSizeMB: 0.2,
-  maxWidthOrHeight: 1920,
+  maxSizeMB: 0.1,
+  maxWidthOrHeight: 500,
   useWebWorker: true,
 };
 
