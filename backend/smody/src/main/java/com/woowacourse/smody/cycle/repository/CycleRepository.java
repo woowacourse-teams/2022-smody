@@ -42,7 +42,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Query("delete from Cycle c where c.member = :member")
     void deleteByMember(@Param("member") Member member);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
 
