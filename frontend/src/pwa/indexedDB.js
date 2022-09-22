@@ -1,6 +1,6 @@
 class IndexedDB {
   constructor() {
-    this._VERSION = 1;
+    this._VERSION = 1.1;
   }
 
   _openDatabase() {
