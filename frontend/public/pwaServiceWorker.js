@@ -1,4 +1,4 @@
-const VERSION = 'v4.5';
+const VERSION = 'v4.6';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -112,29 +112,19 @@ self.addEventListener('fetch', (event) => {
           });
       }),
     );
-
-    //   event.respondWith(
-    //     caches.open(IMAGE_CACHE_NAME).then((cache) => {
-    //       return cache.match(event.request).then((cacheResponse) => {
-    //         // 캐시가 존재하는 경우 캐시 응답
-    //         if (cacheResponse) {
-    //           return cacheResponse;
-    //         } else {
-    //           // 존재하지 않는 경우 최초 1회만 캐싱
-    //           return fetch(event.request).then((networkResponse) => {
-    //             // 캐싱하고 네트워크 리소스 응답
-    //             cache.put(event.request, networkResponse.clone());
-    //             return networkResponse;
-    //           });
-    //         }
-    //       });
-    //     }),
-    //   );
   }
 });
 
 // 알림 관련 코드
-const broadcast = new BroadcastChannel('push-channel');
+let getVersionPort;
+
+// 메시지 수신
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'INIT_PORT') {
+    // Port 설정 - 하나의 포트만 전달됐으므로 첫 번째 요소를 가져온다
+    getVersionPort = event.ports[0];
+  }
+});
 
 self.addEventListener('push', (event) => {
   const data = event.data.json();
@@ -165,7 +155,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(self.registration.showNotification(title, options));
 
-  broadcast.postMessage({ message: data.message });
+  getVersionPort.postMessage({ message: data.message });
 });
 
 self.addEventListener('notificationclick', (event) => {
