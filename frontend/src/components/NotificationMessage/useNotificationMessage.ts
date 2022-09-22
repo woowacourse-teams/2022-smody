@@ -12,7 +12,16 @@ import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
-const broadcast = new BroadcastChannel('push-channel');
+const messageChannel = new MessageChannel();
+// 우선 채널 설정 위해 서비스워커에 port2를 전달한다
+if (navigator.serviceWorker.controller) {
+  navigator.serviceWorker.controller.postMessage(
+    {
+      type: 'INIT_PORT',
+    },
+    [messageChannel.port2],
+  );
+}
 
 export const useNotificationMessage = ({
   updateNotificationCount,
@@ -42,7 +51,9 @@ export const useNotificationMessage = ({
     setBadge(badgeNumber);
   }, [setBadge, badgeNumber]);
 
-  broadcast.onmessage = (event) => {
+  // 메시지 수신 - 클라이언트는 port1을 사용하고 있다
+  // 상대 포트인 port2(서비스워커)에서 전달되는 메시지 수신한다
+  messageChannel.port1.onmessage = (event) => {
     const message = event.data.message;
     refetch();
     renderSnackBar({
