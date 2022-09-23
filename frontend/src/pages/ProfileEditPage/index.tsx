@@ -116,12 +116,16 @@ const ProfileEditPage = () => {
   const { email: existingEmail, picture } = dataMyInfo.data;
 
   const profileImgAlt = `${nickname.value}님의 프로필 사진`;
+  const profileImageCompressionOptions = {
+    maxSizeMB: 0.1,
+    maxWidthOrHeight: 300,
+  };
 
   return (
     <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
       <Title text="프로필 수정" linkTo={CLIENT_PATH.PROFILE} />
       <ProfileImg src={previewImageUrl || picture} alt={profileImgAlt} />
-      {renderImageInput()}
+      {renderImageInput(profileImageCompressionOptions)}
       <Button onClick={handleImageInputButtonClick} size="medium" isActive={false}>
         이미지 선택
       </Button>
@@ -190,6 +194,7 @@ const ProfileImg = styled.img`
   height: 5.18rem;
   border-radius: 50%;
   margin-bottom: 1rem;
+  object-fit: cover;
 `;
 
 const ProfileEditForm = styled.form`
