@@ -1,24 +1,21 @@
 package com.woowacourse.smody.cycle.repository;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
-import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class CycleRepositoryTest extends RepositoryTest {
 
@@ -69,21 +66,29 @@ class CycleRepositoryTest extends RepositoryTest {
     @Test
     void findByMemberAfterTimeWithSuccessCount() {
         LocalDateTime now = LocalDateTime.now();
-        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1));
-        fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
-        fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
-        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1));
+        fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(2L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(2L));
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2));
         fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(4L));
-        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
-        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L));
-        Member member = fixture.회원_조회(조조그린_ID);
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L));
+
+        fixture.사이클_생성_SUCCESS(더즈_ID, 오늘의_운동_ID, now.plusSeconds(1L));
 
         // when
-        List<ChallengingRecord> actual = cycleRepository.findAllChallengingRecordByMemberAfterTime(member.getId(), now);
+        List<ChallengingRecord> actual = cycleRepository.findAllChallengingRecordByMemberAfterTime(조조그린_ID, now.minusDays(3));
+
+        for (ChallengingRecord challengingRecord : actual) {
+            String name = challengingRecord.getChallenge().getName();
+            System.out.println(name + challengingRecord.getSuccessCount());
+        }
 
         // then
         assertThat(actual).map(ChallengingRecord::getSuccessCount)
-                .containsExactly(1, 2, 0);
+                .containsExactly(1, 1, 1, 2, 2, 0);
     }
 }
