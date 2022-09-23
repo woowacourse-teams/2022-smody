@@ -111,7 +111,6 @@ class IndexedDB {
 
   putPost = (name, dataList) => {
     this.clearPost(name).then(() => {
-      console.log(name, dataList);
       for (const data of dataList) {
         this.savePost(name, data);
       }
