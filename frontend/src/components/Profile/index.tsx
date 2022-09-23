@@ -98,6 +98,7 @@ const ProfileImg = styled.img`
   width: 5.18rem;
   height: 5.18rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const EditButton = styled(Button).attrs({

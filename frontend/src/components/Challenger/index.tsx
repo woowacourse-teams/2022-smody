@@ -50,4 +50,5 @@ const ProfileImg = styled.img`
   width: 2.56rem;
   height: 2.56rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
