@@ -41,6 +41,11 @@ const CertFormPage = () => {
     handleChangeDescription,
   } = useCertFormPage();
 
+  const certImageCompressionOptions = {
+    maxSizeMB: 0.2,
+    maxWidthOrHeight: 1000,
+  };
+
   return (
     <FlexBox flexDirection="column" alignItems="center">
       <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
@@ -87,7 +92,7 @@ const CertFormPage = () => {
             )}
             <Plus />
           </CertImageWrapper>
-          {renderImageInput()}
+          {renderImageInput(certImageCompressionOptions)}
         </section>
 
         <Section flexDirection="column">
