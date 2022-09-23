@@ -1,10 +1,11 @@
 import imageCompression from 'browser-image-compression';
 import { ChangeEvent, useEffect, useRef, useState, useMemo } from 'react';
 
-interface CompressionOptions {
-  maxSizeMB: number;
-  maxWidthOrHeight: number;
-}
+const compressionOptions = {
+  maxSizeMB: 0.2,
+  maxWidthOrHeight: 1920,
+  useWebWorker: true,
+};
 
 // dataURL을 FormData로 인코딩하는 함수
 const encodeFormData = (dataURL: string, imageName: string): FormData => {
@@ -64,10 +65,7 @@ const useImageInput = (imageName: string) => {
   };
 
   // 이미지 선택 시 이벤트 처리
-  const handleImageInputChange = async (
-    event: ChangeEvent<HTMLInputElement>,
-    compressionOptions: CompressionOptions,
-  ) => {
+  const handleImageInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
     const file = event.currentTarget.files?.[0];
@@ -99,13 +97,13 @@ const useImageInput = (imageName: string) => {
   };
 
   // ref가 부착된 인풋을 render하는 함수
-  const renderImageInput = (compressionOptions: CompressionOptions) => (
+  const renderImageInput = () => (
     <input
       name={imageName}
       type="file"
       accept="image/*"
       hidden
-      onChange={(event) => handleImageInputChange(event, compressionOptions)}
+      onChange={handleImageInputChange}
       ref={imageInputRef}
     />
   );
