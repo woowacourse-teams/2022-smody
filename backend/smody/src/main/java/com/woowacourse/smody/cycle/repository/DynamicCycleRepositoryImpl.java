@@ -5,6 +5,7 @@ import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
@@ -19,6 +20,8 @@ import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -80,9 +83,10 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                 .join(cycle.challenge, challenge).fetchJoin()
                 .where(DynamicQuery.builder()
                         .and(() -> cycle.member.id.eq(memberId))
-                        .and(() -> cycle.startTime.after(time.minusDays(Cycle.DAYS)))
+                        .and(() -> cycle.startTime.after(time))
                         .build()
-                ).fetch();
+                )
+            .fetch();
     }
 
     private ConstructorExpression<ChallengingRecord> challengingRecordConstructor() {
@@ -97,10 +101,10 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         return ExpressionUtils.as(
                 JPAExpressions.select(count(subCycle.id))
                         .from(subCycle)
-                        .where(DynamicQuery.builder()
-                                .and(() -> subCycle.challenge.eq(cycle.challenge))
-                                .and(() -> subCycle.progress.eq(Progress.SUCCESS))
-                                .build()
+                        .where(new BooleanBuilder()
+                            .and(subCycle.challenge.eq(cycle.challenge))
+                            .and(subCycle.progress.eq(Progress.SUCCESS))
+                            .and(subCycle.member.eq(cycle.member))
                         ),
                 "successCount");
     }

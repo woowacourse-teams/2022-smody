@@ -1,15 +1,6 @@
 package com.woowacourse.smody.cycle.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.FORMATTER;
-import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -246,14 +237,18 @@ public class CycleServiceTest extends IntegrationTest {
     @Test
     void findAllInProgressOfMine() {
         // given
-        Cycle inProgress1 = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1)); // 2, 1
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.minusHours(1)); // 2, 1
         fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
-        Cycle inProgress2 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2)); // 1, 2
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now.minusHours(2)); // 1, 2
         fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(4L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
-        Cycle future = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L)); // 3, 0
+
+        fixture.사이클_생성_SUCCESS(더즈_ID, 미라클_모닝_ID, now.minusDays(6L));
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.plusSeconds(1L)); // 3, 0
 
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
