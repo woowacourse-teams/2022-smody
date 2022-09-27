@@ -1,8 +1,10 @@
 {
   "name": "smody-library",
-  "version": "1.0.3",
-  "description": "",
-  "keywords": [],
+  "version": "1.0.4",
+  "description": "스모디의 유용한 메타 타입 모음 라이브러리",
+  "keywords": [
+    "typescript"
+  ],
   "author": "Marco, Ronci, Victor",
   "license": "ISC",
   "main": "",
