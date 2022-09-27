@@ -1,17 +1,17 @@
 {
-  "name": "Smody Util Library",
-  "version": "1.0.0",
+  "name": "smody-library",
+  "version": "1.0.3",
   "description": "",
   "keywords": [],
-  "author": "",
+  "author": "Marco, Ronci, Victor",
   "license": "ISC",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "build": "tsc --build --clean & tsc --build",
     "test:all": "jest & jest -c jest.config.tsd.js",
     "test:api": "jest",
     "test:type": "jest -c jest.config.tsd.js",
-    "prepublishOnly": "tsc -d & npm run test:all"
+    "prepublishOnly": "tsc -d"
   },
   "devDependencies": {
     "@tsd/typescript": "^4.8.3",
@@ -23,8 +23,8 @@
     "tsd": "^0.24.1",
     "typescript": "^4.8.3"
   },
-  "types": "index.d.ts",
-  "typings": "index.d.ts",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "tsd": {
     "directory": "__tests__"
   }
