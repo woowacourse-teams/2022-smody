@@ -18,5 +18,6 @@
     "jsx": "react-jsx"
     // "strictNullChecks": true
   },
-  "include": ["src", "global.d.ts", "public/pwaServiceWorker.js"]
+  "include": ["src", "global.d.ts", "public/pwaServiceWorker.js"],
+  "exclude": ["node_modules"]
 }

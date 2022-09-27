@@ -13,8 +13,6 @@ export interface ErrorResponse {
   message: string;
 }
 
-export type MappedKeyToUnion<T> = T extends { [key: string]: infer K } ? K : never;
-
 export interface User {
   nickname: string;
   introduction: string;
