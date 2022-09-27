@@ -11,13 +11,16 @@ import static org.mockito.BDDMockito.willThrow;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.push.domain.PushNotification;
+import com.woowacourse.smody.push.domain.PushSubscribeEvent;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
@@ -55,12 +58,6 @@ class EventExceptionTest extends IntegrationTest {
 	@MockBean
 	private PushEventListener pushEventListener;
 
-	@BeforeEach
-	void beforeEach() {
-		willThrow(new RuntimeException())
-			.given(pushEventListener).handle(any());
-	}
-
 	@DisplayName("새로운 사이클이 저장된다.")
 	@Test
 	void cycleCreate_pushEventException() throws InterruptedException {
@@ -68,7 +65,7 @@ class EventExceptionTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 
 		willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
-			.given(pushEventListener).handle(any(PushEvent.class));
+			.given(pushEventListener).handleCycleCreate(any(CycleCreateEvent.class));
 
 		// when
 		Long cycleId = cycleService.create(
@@ -94,6 +91,9 @@ class EventExceptionTest extends IntegrationTest {
 		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 		SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
 			"endpoint-link", "p256dh", "auth");
+
+		willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
+			.given(pushEventListener).handlePushSubscribe(any(PushSubscribeEvent.class));
 
 		// when
 		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
@@ -121,6 +121,9 @@ class EventExceptionTest extends IntegrationTest {
 		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
 
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
+
+		willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
+			.given(pushEventListener).handleCommentCreate(any(CommentCreateEvent.class));
 
 		// when
 		Long commentId = commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);

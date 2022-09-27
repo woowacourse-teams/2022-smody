@@ -1,19 +1,21 @@
 package com.woowacourse.smody.push.service;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.member.domain.Member;
-import com.woowacourse.smody.member.service.MemberService;
-import com.woowacourse.smody.push.domain.PushCase;
-import com.woowacourse.smody.push.domain.PushSubscription;
-import com.woowacourse.smody.push.dto.SubscriptionRequest;
-import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
-import com.woowacourse.smody.push.event.PushEvent;
-import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.member.service.MemberService;
+import com.woowacourse.smody.push.domain.PushSubscribeEvent;
+import com.woowacourse.smody.push.domain.PushSubscription;
+import com.woowacourse.smody.push.dto.SubscriptionRequest;
+import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
+import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +33,7 @@ public class PushSubscriptionService {
                 .map(pushSubscription -> pushSubscription.updateMember(member))
                 .orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
 
-        applicationEventPublisher.publishEvent(new PushEvent(subscription, PushCase.SUBSCRIPTION));
+        applicationEventPublisher.publishEvent(new PushSubscribeEvent(subscription));
     }
 
     @Transactional
