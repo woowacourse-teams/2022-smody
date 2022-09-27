@@ -1,6 +1,6 @@
 {
   "name": "smody-library",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "스모디의 유용한 메타 타입 모음 라이브러리",
   "keywords": [
     "typescript"
@@ -10,10 +10,8 @@
   "main": "",
   "scripts": {
     "build": "tsc --build --clean & tsc --build",
-    "test:all": "jest & jest -c jest.config.tsd.js",
-    "test:api": "jest",
-    "test:type": "jest -c jest.config.tsd.js",
-    "prepublishOnly": "tsc -d"
+    "test": "jest -c jest.config.tsd.js",
+    "prepublishOnly": "tsc -d & npm run test"
   },
   "devDependencies": {
     "@tsd/typescript": "^4.8.3",
