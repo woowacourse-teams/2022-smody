@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "node", // 타입스크립트의 모듈 해석 전략
+    "esModuleInterop": true, // ES 모듈 사양을 준수하며 CommonJS 모듈을 가져올 수 있게 한다.
+    "outDir": "", // 컴파일된 파일이 있을 디렉터리
+    // npm 발행을 위해 자주 쓰이는 자바스크립트 환경과 빌드 시스템과의 호환성을 극대화하는 방향으로 설정(아래 4개)
+    "target": "ES5", // TSC가 코드를 컴파일해서 나오는 자바스크립트 버전(output)
+    "declaration": true, // 컴파일 시 d.ts 파일을 출력
+    "module": "UMD",
+    "sourceMap": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "__tests__"]
+}
