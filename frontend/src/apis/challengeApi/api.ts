@@ -6,7 +6,7 @@ import {
   GetChallengeByIdResponse,
   GetChallengersByIdParams,
   GetChallengersByIdResponse,
-  PostChallengeContent,
+  PostChallengePayload,
   GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
   GetMyChallengesParams,
@@ -77,7 +77,7 @@ export const postChallenge = async ({
   description,
   emojiIndex,
   colorIndex,
-}: PostChallengeContent) => {
+}: PostChallengePayload) => {
   return authApiClient.axios.post('/challenges', {
     challengeName,
     description,

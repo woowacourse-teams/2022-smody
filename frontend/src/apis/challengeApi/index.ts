@@ -15,7 +15,7 @@ import {
   GetMyChallengesResponse,
   GetChallengersByIdResponse,
   GetChallengersByIdParams,
-  PostChallengeContent,
+  PostChallengePayload,
   GetChallengeParams,
   GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
@@ -114,10 +114,10 @@ export const usePostChallenge = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostChallengeContent
+    PostChallengePayload
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeContent>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengePayload>(
     postChallenge,
     options,
   );

@@ -11,8 +11,8 @@ import {
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
-  PatchMyInfoContent,
-  PostProfileImageContent,
+  PatchMyInfoPayload,
+  PostProfileImagePayload,
   GetIsValidAccessTokenResponse,
   GetTokenGoogleParams,
 } from 'apis/oAuthApi/type';
@@ -64,10 +64,10 @@ export const usePatchMyInfo = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PatchMyInfoContent
+    PatchMyInfoPayload
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoContent>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoPayload>(
     mutationKeys.patchMyInfo,
     patchMyInfo,
     options,
@@ -86,10 +86,10 @@ export const usePostProfileImage = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostProfileImageContent
+    PostProfileImagePayload
   >,
 ) => {
-  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageContent>(
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImagePayload>(
     mutationKeys.postProfileImage,
     postProfileImage,
     options,

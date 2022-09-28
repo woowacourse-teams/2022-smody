@@ -8,9 +8,9 @@ export type GetTokenGoogleResponse = Pick<LoginMember, 'accessToken'>;
 
 export type GetMyInfoResponse = Omit<Member, 'memberId'>;
 
-export type PatchMyInfoContent = Pick<Member, 'nickname' | 'introduction'>;
+export type PatchMyInfoPayload = Pick<Member, 'nickname' | 'introduction'>;
 
-export type PostProfileImageContent = {
+export type PostProfileImagePayload = {
   formData: FormData;
 };
 

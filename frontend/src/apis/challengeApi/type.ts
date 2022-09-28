@@ -31,7 +31,7 @@ export type GetChallengersByIdParams = Pick<Challenge, 'challengeId'>;
 export type GetChallengersByIdResponse = Omit<Member, 'email'> &
   Pick<Cycle, 'progressCount'>;
 
-export type PostChallengeContent = Omit<ChallengeDetail, 'challengeId'>;
+export type PostChallengePayload = Omit<ChallengeDetail, 'challengeId'>;
 
 export type GetMyChallengeByIdParams = Pick<Challenge, 'challengeId'>;
 
