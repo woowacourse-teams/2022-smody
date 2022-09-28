@@ -10,17 +10,16 @@ import {
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
-  GetFeedByIdProps,
+  GetFeedByIdParams,
   GetFeedByIdResponse,
   UseGetCommentsByIdProps,
   GetCommentsByIdResponse,
   UsePostCommentProps,
   UsePostCommentMutationFunctionProps,
-  PatchCommentsProps,
-  DeleteCommentsProps,
+  PatchCommentsPayload,
+  DeleteCommentsParams,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useMutation,
@@ -29,6 +28,7 @@ import {
   UseMutationOptions,
   UseInfiniteQueryOptions,
 } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 // TODO 3. 커서페이징 처리
 // 1. 피드 전체 조회(GET)
@@ -55,7 +55,7 @@ export const useGetAllFeeds = (
 
 // 2. id로 피드 조회(GET)
 export const useGetFeedById = (
-  { cycleDetailId }: GetFeedByIdProps,
+  { cycleDetailId }: GetFeedByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetFeedByIdResponse>,
     AxiosError<ErrorResponse>
@@ -103,10 +103,10 @@ export const usePatchComments = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PatchCommentsProps
+    PatchCommentsPayload
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchCommentsProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchCommentsPayload>(
     ({ commentId, content }) => patchComments({ commentId, content }),
     options,
   );
@@ -116,10 +116,10 @@ export const useDeleteComments = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    DeleteCommentsProps
+    DeleteCommentsParams
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteCommentsProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteCommentsParams>(
     ({ commentId }) => deleteComments({ commentId }),
     options,
   );

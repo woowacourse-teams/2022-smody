@@ -1,7 +1,7 @@
-import { User } from 'commonType';
+import { Member } from 'types/member';
 
-export interface UserWithdrawalModalProps extends Pick<User, 'email'> {
+export type UserWithdrawalModalProps = Pick<Member, 'email'> & {
   handleCloseModal: () => void;
-}
+};
 
 export type UseUserWithdrawalModalProps = Pick<UserWithdrawalModalProps, 'email'>;

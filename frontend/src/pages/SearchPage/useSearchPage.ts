@@ -1,10 +1,10 @@
 import { useGetAllChallenges } from 'apis';
-import { GetChallengeResponse } from 'apis/challengeApi/type';
 import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
+import { AdditionalChallengeInfo } from 'types/challenge';
 
 import useDebounce from 'hooks/useDebounce';
 import useSnackBar from 'hooks/useSnackBar';
@@ -48,7 +48,7 @@ export const useSearchPage = () => {
   );
 
   const { debounce: debounceSetSearchValue } = useDebounce();
-  const [savedChallenges, setSavedChallenges] = useState<GetChallengeResponse[]>([]);
+  const [savedChallenges, setSavedChallenges] = useState<AdditionalChallengeInfo[]>([]);
 
   useEffect(() => {
     if (!isError) {

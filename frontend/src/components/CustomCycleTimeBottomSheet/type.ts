@@ -1,7 +1,7 @@
 import { JoinChallengeProps } from 'hooks/usePostJoinChallenge';
 
-export interface CustomCycleTimeBottomSheetProps {
+export type CustomCycleTimeBottomSheetProps = {
   challengeName: string;
   joinChallenge: ({ challengeName, startTime }: JoinChallengeProps) => void;
   handleCloseBottomSheet: () => void;
-}
+};

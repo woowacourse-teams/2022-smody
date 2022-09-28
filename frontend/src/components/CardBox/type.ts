@@ -1,9 +1,6 @@
-import { Challenge } from 'commonType';
+import { Challenge, UserChallengeStat } from 'types/challenge';
 
-export interface CardBoxProps extends Omit<Challenge, 'challengerCount'> {
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type CardBoxProps = Challenge & Pick<UserChallengeStat, 'successCount'>;
 
 export type WrapperProps = { bgColor: string };
 

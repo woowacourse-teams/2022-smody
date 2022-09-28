@@ -1,10 +1,5 @@
-export interface ChallengeItemProps {
-  challengeId: number;
-  challengeName: string;
-  challengerCount: number;
-  isInProgress: boolean;
-  emojiIndex: number;
-  colorIndex: number;
-}
+import { AdditionalChallengeInfo } from 'types/challenge';
 
-export type useChallengeItemProps = Pick<ChallengeItemProps, 'challengeId'>;
+export type ChallengeItemProps = AdditionalChallengeInfo;
+
+export type useChallengeItemProps = Pick<AdditionalChallengeInfo, 'challengeId'>;

@@ -1,3 +1,3 @@
-export interface TimerProps {
+export type TimerProps = {
   certEndDate: Date;
-}
+};

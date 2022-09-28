@@ -1,14 +1,19 @@
-import { Cycle } from 'commonType';
+import { Challenge, UserChallengeStat } from 'types/challenge';
+import { Cycle } from 'types/cycle';
 
-export interface SuccessModalProps
-  extends Pick<
-    Cycle,
-    'cycleId' | 'challengeName' | 'successCount' | 'challengeId' | 'progressCount'
-  > {
-  handleCloseModal: () => void;
-  emoji: string;
-}
+export type SuccessModalProps = Pick<Cycle, 'cycleId' | 'progressCount'> &
+  Pick<Challenge, 'challengeId' | 'challengeName'> &
+  Pick<UserChallengeStat, 'successCount'> & {
+    handleCloseModal: () => void;
+    emoji: string;
+  };
 
-export interface UseSuccessModalProps extends Omit<SuccessModalProps, 'successCount'> {
-  emoji: string;
-}
+export type UseSuccessModalProps = Pick<
+  SuccessModalProps,
+  | 'cycleId'
+  | 'progressCount'
+  | 'challengeId'
+  | 'challengeName'
+  | 'handleCloseModal'
+  | 'emoji'
+>;

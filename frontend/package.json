@@ -18,6 +18,7 @@
     }
   ],
   "scripts": {
+    "typecheck": "tsc --build && tsc --build --clean",
     "start:prod": "cross-env NODE_ENV=production webpack serve --mode production",
     "start:local": "cross-env NODE_ENV=local webpack serve --mode production",
     "start:dev": "cross-env NODE_ENV=development webpack serve --mode development",
@@ -88,7 +89,7 @@
     "prettier": "2.7.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-rewards": "^2.0.4",
-    "smody-library": "^1.0.4",
+    "smody-library": "^1.1.0",
     "ts-jest": "^28.0.7",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",

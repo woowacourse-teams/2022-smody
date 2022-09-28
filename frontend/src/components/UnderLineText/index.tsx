@@ -3,8 +3,7 @@ import styled, { css } from 'styled-components';
 import { UnderLineTextProps } from 'components/UnderLineText/type';
 
 import { Z_INDEX } from 'constants/css';
-
-import { FontSizeType } from 'styles/type';
+import { fontSizeMapper } from 'constants/style';
 
 export const UnderLineText = styled.p<UnderLineTextProps>`
   ${({ fontSize, fontColor, fontWeight, underLineColor }) => css`
@@ -31,17 +30,3 @@ export const UnderLineText = styled.p<UnderLineTextProps>`
     }
   `}
 `;
-
-const fontSizeMapper: Record<FontSizeType, number> = {
-  10: 0.625,
-  11: 0.6875,
-  12: 0.75,
-  14: 0.875,
-  16: 1,
-  20: 1.25,
-  24: 1.5,
-  32: 2,
-  40: 2.5,
-  48: 3,
-  70: 4.375,
-};

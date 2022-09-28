@@ -1,4 +1,4 @@
-import { CycleDetail } from 'commonType';
+import { CycleDetailItemProps } from './type';
 
 import { CycleDetailItem } from 'components';
 
@@ -7,7 +7,7 @@ export default {
   component: CycleDetailItem,
 };
 
-export const DefaultCycleDetailItem = (args: CycleDetail) => (
+export const DefaultCycleDetailItem = (args: CycleDetailItemProps) => (
   <CycleDetailItem {...args} />
 );
 

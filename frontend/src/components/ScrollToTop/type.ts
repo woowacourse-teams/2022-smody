@@ -1,3 +1,3 @@
-export interface ScrollToTopProps {
+export type ScrollToTopProps = {
   pathname: string;
-}
+};

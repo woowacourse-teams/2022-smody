@@ -1,4 +1,4 @@
-export interface FlexBoxProps {
+export type FlexBoxProps = {
   flexDirection?: 'row' | 'column';
   justifyContent?:
     | 'flex-start'
@@ -19,4 +19,4 @@ export interface FlexBoxProps {
     | 'initial'
     | 'inherit';
   gap?: string;
-}
+};

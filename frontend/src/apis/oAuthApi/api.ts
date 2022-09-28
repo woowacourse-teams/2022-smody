@@ -1,9 +1,10 @@
 import { apiClient, authApiClient } from 'apis/apiClient';
 import {
   GetMyInfoResponse,
+  GetTokenGoogleParams,
   GetTokenGoogleResponse,
-  PatchMyInfoProps,
-  PostProfileImageProps,
+  PatchMyInfoPayload,
+  PostProfileImagePayload,
 } from 'apis/oAuthApi/type';
 
 // 구글 링크 조회(GET)
@@ -12,7 +13,7 @@ export const getLinkGoogle = async () => {
 };
 
 // 구글 토큰 조회(GET)
-export const getTokenGoogle = async (code: string) => {
+export const getTokenGoogle = async ({ code }: GetTokenGoogleParams) => {
   const params = { code };
 
   return apiClient.axios.get<GetTokenGoogleResponse>('/oauth/login/google', {
@@ -26,7 +27,7 @@ export const getMyInfo = async () => {
 };
 
 // 3. 회원 정보 수정(PATCH)
-export const patchMyInfo = async (updatedUserInfo: PatchMyInfoProps) => {
+export const patchMyInfo = async (updatedUserInfo: PatchMyInfoPayload) => {
   return authApiClient.axios.patch('/members/me', updatedUserInfo);
 };
 
@@ -36,9 +37,9 @@ export const deleteMyInfo = async () => {
 };
 
 // 프로필 이미지 업로드(POST)
-export const postProfileImage = async ({ formData }: PostProfileImageProps) => {
+export const postProfileImage = async ({ formData }: PostProfileImagePayload) => {
   return authApiClient.axios.post('/members/me/profile-image', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+    headers: { 'Payload-Type': 'multipart/form-data' },
   });
 };
 

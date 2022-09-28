@@ -1,3 +1,3 @@
-export interface ChallengerListProps {
+export type ChallengerListProps = {
   challengeId: number;
-}
+};

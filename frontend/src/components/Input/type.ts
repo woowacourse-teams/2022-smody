@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute, ChangeEventHandler } from 'react';
 
-export interface InputProps {
+export type InputProps = {
   type?: HTMLInputTypeAttribute;
   label?: string;
   placeholder: string;
@@ -12,12 +12,12 @@ export interface InputProps {
   isTextArea?: boolean;
   needWordLength?: boolean;
   maxLength?: number;
-}
+};
 
-export interface InputContainerProps extends Pick<InputProps, 'isValidated'> {
+export type InputContainerProps = Pick<InputProps, 'isValidated'> & {
   isFocus: boolean;
-}
+};
 
-export interface WordLengthProps {
+export type WordLengthProps = {
   isMargin: boolean;
-}
+};

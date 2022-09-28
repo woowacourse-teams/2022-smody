@@ -1,15 +1,15 @@
 import { apiClient, authApiClient } from 'apis/apiClient';
 import {
-  GetChallengeResponse,
-  GetChallengeByIdProps,
+  GetAllChallengesResponse,
+  GetChallengeByIdParams,
   GetMyChallengesResponse,
   GetChallengeByIdResponse,
-  GetChallengersByIdProps,
+  GetChallengersByIdParams,
   GetChallengersByIdResponse,
-  PostChallengeProps,
-  GetMyChallengeByIdProps,
+  PostChallengePayload,
+  GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
-  GetMyChallengesProps,
+  GetMyChallengesParams,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
@@ -23,7 +23,7 @@ export const getAllChallenges = async (searchValue: string, cursorId: number) =>
         }
       : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
-  return apiClient.axios.get<GetChallengeResponse[]>(`/challenges`, {
+  return apiClient.axios.get<GetAllChallengesResponse>(`/challenges`, {
     params,
   });
 };
@@ -38,35 +38,35 @@ export const getAllChallengesAuth = async (searchValue: string, cursorId: number
         }
       : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
-  return authApiClient.axios.get<GetChallengeResponse[]>(`/challenges/auth`, {
+  return authApiClient.axios.get<GetAllChallengesResponse>(`/challenges/auth`, {
     params,
   });
 };
 
 // 6. 나의 성공한 챌린지 조회(GET)
-export const getMyChallenges = async ({ cursorId }: GetMyChallengesProps) => {
+export const getMyChallenges = async ({ cursorId }: GetMyChallengesParams) => {
   const params = { size: PAGE_SIZE.SUCCESS_CHALLENGES, cursorId };
 
-  return authApiClient.axios.get<GetMyChallengesResponse[]>(`/challenges/me`, {
+  return authApiClient.axios.get<GetMyChallengesResponse>(`/challenges/me`, {
     params,
   });
 };
 
 // 8. 챌린지 하나 상세 조회(GET) - 비회원용
-export const getChallengeById = async ({ challengeId }: GetChallengeByIdProps) => {
+export const getChallengeById = async ({ challengeId }: GetChallengeByIdParams) => {
   return apiClient.axios.get<GetChallengeByIdResponse>(`/challenges/${challengeId}`);
 };
 
 // 8. 챌린지 하나 상세 조회(GET) - 회원용
-export const getChallengeByIdAuth = async ({ challengeId }: GetChallengeByIdProps) => {
+export const getChallengeByIdAuth = async ({ challengeId }: GetChallengeByIdParams) => {
   return authApiClient.axios.get<GetChallengeByIdResponse>(
     `/challenges/${challengeId}/auth`,
   );
 };
 
 // 9. 챌린지 참가자 목록 조회
-export const getChallengersById = async ({ challengeId }: GetChallengersByIdProps) => {
-  return authApiClient.axios.get<GetChallengersByIdResponse[]>(
+export const getChallengersById = async ({ challengeId }: GetChallengersByIdParams) => {
+  return authApiClient.axios.get<GetChallengersByIdResponse>(
     `/challenges/${challengeId}/challengers`,
   );
 };
@@ -77,7 +77,7 @@ export const postChallenge = async ({
   description,
   emojiIndex,
   colorIndex,
-}: PostChallengeProps) => {
+}: PostChallengePayload) => {
   return authApiClient.axios.post('/challenges', {
     challengeName,
     description,
@@ -87,7 +87,7 @@ export const postChallenge = async ({
 };
 
 // 참여한 챌린지 상세 조회 기능
-export const getMyChallengeById = async ({ challengeId }: GetMyChallengeByIdProps) => {
+export const getMyChallengeById = async ({ challengeId }: GetMyChallengeByIdParams) => {
   return authApiClient.axios.get<GetMyChallengeByIdResponse>(
     `/challenges/me/${challengeId}`,
   );

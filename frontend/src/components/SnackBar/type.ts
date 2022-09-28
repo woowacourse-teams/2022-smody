@@ -1,6 +1,6 @@
-export interface SnackBarProps {
-  message: string;
+export type SnackBarProps = {
+  message: string | null;
   status: 'SUCCESS' | 'ERROR';
   linkText?: string;
   linkTo?: string;
-}
+};

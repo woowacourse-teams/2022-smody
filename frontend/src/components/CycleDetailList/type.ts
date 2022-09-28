@@ -1,5 +1,5 @@
-import { CycleDetail } from 'commonType';
+import { CycleDetail } from 'types/cycle';
 
-export interface CycleDetailListProps {
-  cycleDetails: CycleDetail[];
-}
+export type CycleDetailListProps = {
+  cycleDetails: Pick<CycleDetail, 'progressImage' | 'progressTime' | 'description'>[];
+};

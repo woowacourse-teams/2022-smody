@@ -1,17 +1,17 @@
-export interface InnerWrapperProps {
+export type InnerWrapperProps = {
   isShowLengthWarning: boolean;
-}
+};
 
-export interface WriteButtonProps {
+export type WriteButtonProps = {
   isVisible: boolean;
-}
+};
 
-export interface CommentInputProps {
+export type CommentInputProps = {
   selectedCommentId: number | null;
   editMode: {
     isEditMode: boolean;
     editContent: string;
   };
   turnOffEditMode: () => void;
-}
+};
 export type UseCommentInputProps = CommentInputProps;

@@ -1,4 +1,4 @@
-export interface LandingNavigationProps {
+export type LandingNavigationProps = {
   isLogin: boolean;
   isLoading: boolean;
-}
+};

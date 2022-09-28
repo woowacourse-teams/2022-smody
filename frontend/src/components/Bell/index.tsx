@@ -1,11 +1,9 @@
-import { BellProps } from './type';
+import { BellProps, IconWrapperProps } from './type';
 import BellEmptyIcon from 'assets/bell_empty_icon.svg';
 import BellFilledIcon from 'assets/bell_filled_icon.svg';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
-
-import { AvailablePickedColor } from 'styles/type';
 
 export const Bell = ({ count, isSubscribed }: BellProps) => {
   const themeContext = useThemeContext();
@@ -19,7 +17,7 @@ export const Bell = ({ count, isSubscribed }: BellProps) => {
 };
 
 const IconWrapper = styled.div`
-  ${({ fill }: { fill: AvailablePickedColor }) => css`
+  ${({ fill }: IconWrapperProps) => css`
     cursor: pointer;
 
     & svg path {

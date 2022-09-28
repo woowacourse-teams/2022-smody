@@ -9,8 +9,7 @@ import { Text } from 'components/@shared/Text';
 import { CheckCircles } from 'components/CheckCircles';
 
 export const Challenger = ({
-  memberId,
-  nickName,
+  nickname,
   progressCount,
   picture,
   introduction,
@@ -20,10 +19,10 @@ export const Challenger = ({
   return (
     <Wrapper justifyContent="space-between" alignItems="center">
       <FlexBox gap="17px" alignItems="center">
-        <ProfileImg src={picture} alt={`${nickName} 프로필 사진`} loading="lazy" />
+        <ProfileImg src={picture} alt={`${nickname} 프로필 사진`} loading="lazy" />
         <FlexBox flexDirection="column">
           <Text size={16} color={themeContext.onSurface}>
-            {nickName}
+            {nickname}
           </Text>
           <Text size={12} color={themeContext.mainText}>
             {introduction}
