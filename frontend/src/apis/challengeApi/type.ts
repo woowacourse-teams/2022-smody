@@ -21,8 +21,8 @@ export type GetMyChallengesResponse = (Challenge &
 
 export type GetChallengeByIdParams = Pick<Challenge, 'challengeId'>;
 
-export type GetChallengeByIdResponse = Challenge &
-  Cycle &
+export type GetChallengeByIdResponse = AdditionalChallengeInfo &
+  ChallengeDetail &
   Pick<UserChallengeStat, 'successCount'> & {
     cycleDetails: Omit<CycleDetail, 'cycleDetailId'>[];
   };

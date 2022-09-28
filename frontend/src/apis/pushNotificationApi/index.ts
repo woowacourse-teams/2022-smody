@@ -13,8 +13,8 @@ import {
 } from './type';
 import { mutationKeys, queryKeys } from 'apis/constants';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponse } from 'commonType';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 export const useGetVapidPublicKey = (
   options?: UseQueryOptions<

@@ -19,7 +19,6 @@ import {
   GetMyCyclesByChallengeIdResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useMutation,
@@ -28,6 +27,7 @@ import {
   UseInfiniteQueryOptions,
   useInfiniteQuery,
 } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 // 1. 챌린지 사이클 생성(POST)
 export const usePostCycle = (

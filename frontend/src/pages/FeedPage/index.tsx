@@ -1,5 +1,5 @@
-import { Feed } from 'commonType';
 import styled from 'styled-components';
+import { Feed } from 'types/feed';
 
 import useSnackBar from 'hooks/useSnackBar';
 

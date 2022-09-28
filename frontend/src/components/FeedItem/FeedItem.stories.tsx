@@ -1,4 +1,4 @@
-import { Feed } from 'commonType';
+import { Feed } from 'types/feed';
 
 import { FeedItem } from 'components';
 

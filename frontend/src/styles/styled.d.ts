@@ -1,6 +1,5 @@
 import 'styled-components';
-
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
 declare module 'styled-components' {
   export interface DefaultTheme {

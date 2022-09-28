@@ -1,8 +1,8 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
-export interface BellProps {
+export type BellProps = {
   count?: number;
   isSubscribed: boolean;
-}
+};
 
 export type IconWrapperProps = { fill: AvailablePickedColor };

@@ -1,20 +1,11 @@
 import { ReactNode } from 'react';
+import { ErrorType } from 'types/internal';
 
-type ErrorCode = number | null;
-type ErrorMessage = string | null;
-
-export interface RenderFallbackParamsInterface {
-  errorCode: ErrorCode;
-  errorMessage: string;
-}
-
-export interface ErrorBoundaryProps {
+export type ErrorBoundaryProps = {
   pathname: string;
-  renderFallback: (renderFallbackParams: RenderFallbackParamsInterface) => ReactNode;
-}
+  renderFallback: (renderFallbackParams: ErrorType) => ReactNode;
+};
 
-export interface ErrorBoundaryState {
+export type ErrorBoundaryState = ErrorType & {
   hasError: boolean;
-  errorCode: ErrorCode;
-  errorMessage: ErrorMessage;
-}
+};

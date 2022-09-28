@@ -18,6 +18,7 @@
     }
   ],
   "scripts": {
+    "typecheck": "tsc --build && tsc --build --clean",
     "start:prod": "cross-env NODE_ENV=production webpack serve --mode production",
     "start:local": "cross-env NODE_ENV=local webpack serve --mode production",
     "start:dev": "cross-env NODE_ENV=development webpack serve --mode development",

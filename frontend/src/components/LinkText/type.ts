@@ -1,5 +1,8 @@
-import { TextProps } from 'components/@shared/Text/type';
+import { AvailablePickedColor, FontSizeType } from 'types/style';
 
-export interface LinkTextProps extends TextProps {
+export type LinkTextProps = {
   to: string;
-}
+  size?: FontSizeType;
+  color: AvailablePickedColor;
+  fontWeight?: 'normal' | 'bold';
+};

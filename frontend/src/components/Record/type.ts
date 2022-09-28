@@ -1,26 +1,25 @@
-import { CycleDetailWithId } from 'commonType';
+import { CycleDetail } from 'types/cycle';
 
-export interface RecordProps {
+export type RecordProps = {
   cycleId: number;
   emojiIndex: number;
   startTime: string;
-  cycleDetails: Pick<CycleDetailWithId, 'cycleDetailId' | 'progressImage'>[];
-}
+  cycleDetails: Pick<CycleDetail, 'cycleDetailId' | 'progressImage'>[];
+};
 
 export type UseRecordProps = Pick<RecordProps, 'cycleId' | 'startTime' | 'cycleDetails'>;
 
-export interface RecordItemProps
-  extends Pick<RecordProps, 'emojiIndex' | 'cycleDetails'> {
+export type RecordItemProps = Pick<RecordProps, 'emojiIndex' | 'cycleDetails'> & {
   isBlank: boolean;
   index: number;
-}
+};
 
-export type HandleNavigateFeedDetailProps = Pick<CycleDetailWithId, 'cycleDetailId'>;
+export type HandleNavigateFeedDetailProps = Pick<CycleDetail, 'cycleDetailId'>;
 
-export interface RecordWrapperProps {
+export type RecordWrapperProps = {
   isSuccess: boolean;
-}
+};
 
-export interface RecordItemWrapperProps {
+export type RecordItemWrapperProps = {
   recordImg?: string;
-}
+};

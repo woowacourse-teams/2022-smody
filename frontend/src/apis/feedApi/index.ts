@@ -20,7 +20,6 @@ import {
   DeleteCommentsParams,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useMutation,
@@ -29,6 +28,7 @@ import {
   UseMutationOptions,
   UseInfiniteQueryOptions,
 } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 // TODO 3. 커서페이징 처리
 // 1. 피드 전체 조회(GET)

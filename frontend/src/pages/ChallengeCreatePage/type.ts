@@ -1,15 +1,15 @@
 import { ChangeEvent } from 'react';
 
-export interface ColorDivProps {
+export type ColorDivProps = {
   color: string;
-}
+};
 
-export interface ColorListProps {
+export type ColorListProps = {
   colorSelectedIndex: number;
   handleSelectColor: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
-export interface EmojiListProps {
+export type EmojiListProps = {
   emojiSelectedIndex: number;
   handleSelectEmoji: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+};

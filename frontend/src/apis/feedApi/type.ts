@@ -14,9 +14,9 @@ export type UsePostCommentMutationFunctionProps = Pick<Comment, 'content'>;
 export type PostCommentPayload = UsePostCommentProps &
   UsePostCommentMutationFunctionProps;
 
-export interface UseGetCommentsByIdProps extends Pick<Feed, 'cycleDetailId'> {
+export type UseGetCommentsByIdProps = Pick<Feed, 'cycleDetailId'> & {
   isLogin: boolean;
-}
+};
 
 export type GetCommentsByIdParams = Pick<Feed, 'cycleDetailId'>;
 

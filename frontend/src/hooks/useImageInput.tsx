@@ -1,10 +1,10 @@
 import imageCompression from 'browser-image-compression';
 import { ChangeEvent, useEffect, useRef, useState, useMemo } from 'react';
 
-interface CompressionOptions {
+type CompressionOptions = {
   maxSizeMB: number;
   maxWidthOrHeight: number;
-}
+};
 
 type CompressImageFunc = (
   event: ChangeEvent<HTMLInputElement>,

@@ -1,6 +1,6 @@
-export interface EmptyContentProps {
+export type EmptyContentProps = {
   title: string;
-  description: string;
+  description: string | null;
   linkText?: string;
   linkTo?: string;
-}
+};

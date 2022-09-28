@@ -17,8 +17,8 @@ import {
   GetTokenGoogleParams,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import { useMutation, useQuery, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 export const useGetLinkGoogle = (
   options?: UseQueryOptions<AxiosResponse<string>, AxiosError<ErrorResponse>>,

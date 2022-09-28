@@ -1,6 +1,6 @@
-import { ValidatorFunction } from 'commonType';
 import { useState, useEffect } from 'react';
 import { ChangeEvent } from 'react';
+import { ValidatorFunction } from 'types/internal';
 
 const useInput = (
   initialValue: string,

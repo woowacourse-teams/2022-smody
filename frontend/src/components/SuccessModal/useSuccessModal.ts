@@ -76,6 +76,7 @@ const useSuccessModal = ({
     confettiReward();
     emojiReward();
   }, []);
+
   return {
     successMessage,
     isChallengeComplete,

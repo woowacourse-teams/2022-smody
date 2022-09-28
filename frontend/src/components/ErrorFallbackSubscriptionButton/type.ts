@@ -1,7 +1,5 @@
-export interface ErrorFallbackSubscriptionButtonProps {
-  errorCode: number | null;
-  errorMessage: string;
-}
+import { ErrorType } from 'types/internal';
 
-export type UseErrorFallbackSubscriptionButtonProps =
-  ErrorFallbackSubscriptionButtonProps;
+export type ErrorFallbackSubscriptionButtonProps = ErrorType;
+
+export type UseErrorFallbackSubscriptionButtonProps = ErrorType;

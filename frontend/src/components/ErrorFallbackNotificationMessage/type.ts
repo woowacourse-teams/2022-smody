@@ -1,7 +1,5 @@
-export interface ErrorFallbackNotificationMessageProps {
-  errorCode: number | null;
-  errorMessage: string;
-}
+import { ErrorType } from 'types/internal';
 
-export type UseErrorFallbackNotificationMessageProps =
-  ErrorFallbackNotificationMessageProps;
+export type ErrorFallbackNotificationMessageProps = ErrorType;
+
+export type UseErrorFallbackNotificationMessageProps = ErrorType;

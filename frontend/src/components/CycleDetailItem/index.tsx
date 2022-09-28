@@ -1,5 +1,4 @@
-import { CycleImgProps } from './type';
-import { CycleDetail } from 'commonType';
+import { CycleDetailItemProps, CycleImgProps } from './type';
 import styled, { css } from 'styled-components';
 import { parseTime } from 'utils';
 
@@ -12,7 +11,7 @@ export const CycleDetailItem = ({
   progressImage,
   progressTime,
   description,
-}: CycleDetail) => {
+}: CycleDetailItemProps) => {
   const themeContext = useThemeContext();
 
   const { year, month, date, hours, minutes } = parseTime(progressTime);

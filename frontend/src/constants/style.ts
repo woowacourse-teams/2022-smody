@@ -1,4 +1,4 @@
-import { FontSizeType } from 'styles/type';
+import { FontSizeType } from 'types/style';
 
 export const cursorPointer = {
   cursor: 'pointer',

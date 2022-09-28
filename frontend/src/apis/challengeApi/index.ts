@@ -22,7 +22,6 @@ import {
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useInfiniteQuery,
@@ -31,6 +30,7 @@ import {
   UseMutationOptions,
   useMutation,
 } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
