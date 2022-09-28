@@ -19,7 +19,7 @@ public class DynamicMemberRepositoryImpl implements DynamicMemberRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Member> mentionTo(PagingParams pagingParams) {
+    public List<Member> findAll(PagingParams pagingParams) {
         String searchWord = pagingParams.getFilter();
         BooleanBuilder conditions = DynamicQuery.builder()
                 .and(() -> member.nickname.contains(searchWord))

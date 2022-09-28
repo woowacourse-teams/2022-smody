@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DynamicMemberRepository {
 
-    List<Member> mentionTo(PagingParams pagingParams);
+    List<Member> findAll(PagingParams pagingParams);
 }

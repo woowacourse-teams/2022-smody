@@ -54,8 +54,8 @@ public class MemberController {
 
     @GetMapping
     @RequiredLogin
-    public ResponseEntity<List<MentionResponse>> mentionTo(@LoginMember TokenPayload tokenPayload,
-                                                           @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(memberService.mentionTo(pagingParams));
+    public ResponseEntity<List<MentionResponse>> findAll(@LoginMember TokenPayload tokenPayload,
+                                                         @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(memberService.findAll(pagingParams));
     }
 }

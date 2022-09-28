@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 class MemberServiceTest extends IntegrationTest {
 
@@ -187,12 +186,11 @@ class MemberServiceTest extends IntegrationTest {
 
     @DisplayName("멘션을 할 때")
     @Nested
-    @Transactional
     class mentionTest {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
         @Test
-        void mentionAll() {
+        void findAll() {
             // given
             PagingParams pagingParams = new PagingParams();
             fixture.회원_추가("조그린", "a@naver.com");
@@ -201,7 +199,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -219,7 +217,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크기가 5일때")
         @Test
-        void mentionAll_sizeFive() {
+        void findAll_sizeFive() {
             // given
             PagingParams pagingParams = new PagingParams(null, 5);
             fixture.회원_추가("조그린", "a@naver.com");
@@ -228,7 +226,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -243,7 +241,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 없고 커서 ID는 있고 크기가 10일 때")
         @Test
-        void mentionAll_existCursorId() {
+        void findAll_existCursorId() {
             // given
             PagingParams pagingParams = new PagingParams(null, 0, 알파_ID);
             fixture.회원_추가("조그린", "a@naver.com");
@@ -252,7 +250,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -266,7 +264,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 없고 커서 ID는 있고 크기가 2일 때")
         @Test
-        void mentionAll_existCursorId_sizeTwo() {
+        void findAll_existCursorId_sizeTwo() {
             // given
             PagingParams pagingParams = new PagingParams(null, 2, 알파_ID);
             fixture.회원_추가("조그린", "a@naver.com");
@@ -275,7 +273,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -287,7 +285,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 있고 커서 ID는 없고 크기가 10일 때")
         @Test
-        void mentionOne() {
+        void findAll_existFilter() {
             // given
             PagingParams pagingParams = new PagingParams(null, 0, null, "조");
             fixture.회원_추가("조그린", "a@naver.com");
@@ -296,7 +294,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -311,7 +309,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 있고 커서 ID는 없고 크기가 3일 때")
         @Test
-        void mentionOne_sizeThree() {
+        void findAll_existFilter_sizeThree() {
             // given
             PagingParams pagingParams = new PagingParams(null, 3, null, "조");
             fixture.회원_추가("조그린", "a@naver.com");
@@ -320,7 +318,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -333,7 +331,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 있고 커서 ID는 있고 크기가 10일 때")
         @Test
-        void mentionOne_existCursorId() {
+        void findAll_existFilter_existCursorId() {
             // given
             Member member = fixture.회원_추가("조그린", "a@naver.com");
             fixture.회원_추가("그랑조", "b@naver.com");
@@ -342,7 +340,7 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 0, member.getId(), "조");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
@@ -355,7 +353,7 @@ class MemberServiceTest extends IntegrationTest {
 
         @DisplayName("글자가 있고 커서 ID는 있고 크기가 2일 때")
         @Test
-        void mentionOne_existCursorId_sizeTwo() {
+        void findAll_existFilter_existCursorId_sizeTwo() {
             // given
             Member member = fixture.회원_추가("조그린", "a@naver.com");
             fixture.회원_추가("그랑조", "b@naver.com");
@@ -364,7 +362,7 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 2, member.getId(), "조");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.mentionTo(pagingParams);
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(

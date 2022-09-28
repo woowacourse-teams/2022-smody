@@ -77,8 +77,8 @@ public class MemberService {
         return search(tokenPayload);
     }
 
-    public List<MentionResponse> mentionTo(PagingParams pagingParams) {
-        List<Member> members = memberRepository.mentionTo(pagingParams);
+    public List<MentionResponse> findAll(PagingParams pagingParams) {
+        List<Member> members = memberRepository.findAll(pagingParams);
         return members.stream()
                 .map(MentionResponse::new)
                 .collect(Collectors.toList());

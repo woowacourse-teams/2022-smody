@@ -127,14 +127,14 @@ public class MemberControllerTest extends ControllerTest {
 
     @DisplayName("특정 회원을 멘션한다.")
     @Test
-    void mentionTo() throws Exception {
+    void findAll() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         List<MentionResponse> mentionResponses = List.of(
                 new MentionResponse(3L, "알파", "사진"),
                 new MentionResponse(5L, "알파쿤", "사진")
         );
-        given(memberService.mentionTo(any(PagingParams.class)))
+        given(memberService.findAll(any(PagingParams.class)))
                 .willReturn(mentionResponses);
 
         // when
