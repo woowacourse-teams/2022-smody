@@ -26,10 +26,11 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class CycleView extends DomainView {
 
+    private final static String RESOURCE_NAME = "사이클";
+
     private final SmodyVaddinService<Cycle> cycleVaadinService;
     private final SmodyVaddinService<Challenge> challengeVaadinService;
     private final SmodyVaddinService<Member> memberVaadinService;
-    private final static String RESOURCE_NAME = "사이클";
 
     public CycleView(SmodyVaddinService<Cycle> cycleVaadinService,
                      SmodyVaddinService<Challenge> challengeVaadinService,

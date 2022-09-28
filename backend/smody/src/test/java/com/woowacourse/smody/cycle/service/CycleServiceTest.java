@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-public class CycleServiceTest extends IntegrationTest {
+class CycleServiceTest extends IntegrationTest {
 
     @Autowired
     private CycleService cycleService;
@@ -120,7 +120,7 @@ public class CycleServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(cycleResponse.getStartTime().format(FORMATTER))
                         .isEqualTo(success.getStartTime().plusDays(3L).format(FORMATTER)),
-                () -> assertThat(cycleResponse.getProgressCount()).isEqualTo(0)
+                () -> assertThat(cycleResponse.getProgressCount()).isZero()
         );
     }
 

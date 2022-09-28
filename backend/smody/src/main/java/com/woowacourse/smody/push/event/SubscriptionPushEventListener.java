@@ -1,28 +1,35 @@
-package com.woowacourse.smody.push.strategy;
+package com.woowacourse.smody.push.event;
+
+import java.time.LocalDateTime;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
+import com.woowacourse.smody.push.domain.PushSubscribeEvent;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import com.woowacourse.smody.push.service.WebPushService;
-import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class SubscriptionPushStrategy implements PushStrategy {
+public class SubscriptionPushEventListener {
 
     private final PushNotificationService pushNotificationService;
     private final WebPushService webPushService;
 
-    @Override
     @Transactional
-    public void push(Object entity) {
-        PushSubscription pushSubscription = (PushSubscription) entity;
+    @Async("asyncExecutor")
+    @TransactionalEventListener
+    public void handle(PushSubscribeEvent event) {
+        PushSubscription pushSubscription = event.getPushSubscription();
 
         Member member = pushSubscription.getMember();
         PushNotification pushNotification = pushNotificationService.register(buildNotification(member));
@@ -30,7 +37,6 @@ public class SubscriptionPushStrategy implements PushStrategy {
         webPushService.sendNotification(pushSubscription, pushNotification);
     }
 
-    @Override
     public PushNotification buildNotification(Object entity) {
         Member member = (Member) entity;
         return PushNotification.builder()
@@ -38,12 +44,7 @@ public class SubscriptionPushStrategy implements PushStrategy {
                 .pushTime(LocalDateTime.now())
                 .pushStatus(PushStatus.COMPLETE)
                 .member(member)
-                .pushCase(getPushCase())
+                .pushCase(PushCase.SUBSCRIPTION)
                 .build();
-    }
-
-    @Override
-    public PushCase getPushCase() {
-        return PushCase.SUBSCRIPTION;
     }
 }

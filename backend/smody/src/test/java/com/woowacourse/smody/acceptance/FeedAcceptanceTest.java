@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-public class FeedAcceptanceTest extends AcceptanceTest {
+class FeedAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("피드 전체 조회")
     @Test

@@ -22,9 +22,10 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class CycleDetailView extends DomainView {
 
+    private final static String RESOURCE_NAME = "사이클 상세 정보";
+
     private final SmodyVaddinService<CycleDetail> cycleDetailVaadinService;
     private final SmodyVaddinService<Cycle> cycleVaadinService;
-    private final static String RESOURCE_NAME = "사이클 상세 정보";
 
     public CycleDetailView(SmodyVaddinService<CycleDetail> cycleDetailVaadinService,
                            SmodyVaddinService<Cycle> cycleVaadinService) {

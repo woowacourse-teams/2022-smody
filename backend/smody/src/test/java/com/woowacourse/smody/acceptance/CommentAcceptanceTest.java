@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-public class CommentAcceptanceTest extends AcceptanceTest {
+class CommentAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private ResourceFixture resourceFixture;

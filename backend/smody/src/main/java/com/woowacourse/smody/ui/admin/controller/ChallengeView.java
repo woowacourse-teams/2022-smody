@@ -20,8 +20,9 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ChallengeView extends DomainView {
 
-    private final SmodyVaddinService<Challenge> vaddinChallengeService;
     private final static String RESOURCE_NAME = "챌린지";
+
+    private final SmodyVaddinService<Challenge> vaddinChallengeService;
 
     public ChallengeView(SmodyVaddinService<Challenge> vaddinChallengeService) {
         this.vaddinChallengeService = vaddinChallengeService;

@@ -1,6 +1,7 @@
-package com.woowacourse.smody.push.strategy;
+package com.woowacourse.smody.push.event;
 
 import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushCase;
@@ -12,22 +13,26 @@ import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.service.WebPushService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
-public class CommentPushStrategy implements PushStrategy {
+public class CommentPushEventListener {
 
     private final PushNotificationService pushNotificationService;
     private final PushSubscriptionService pushSubscriptionService;
     private final CommentService commentService;
     private final WebPushService webPushService;
 
-    @Override
     @Transactional
-    public void push(Object entity) {
-        Comment comment = commentService.search(((Comment) entity).getId());
+    @Async("asyncExecutor")
+    @TransactionalEventListener
+    public void handle(CommentCreateEvent event) {
+        Comment comment = commentService.search(event.getComment().getId());
         Member cycleDetailWriter = extractDetailWriter(comment);
 
         if (cycleDetailWriter.matchId(comment.getMember().getId())) {
@@ -42,12 +47,6 @@ public class CommentPushStrategy implements PushStrategy {
         }
     }
 
-    @Override
-    public PushCase getPushCase() {
-        return PushCase.COMMENT;
-    }
-
-    @Override
     public PushNotification buildNotification(Object entity) {
         Comment comment = (Comment) entity;
         Member cycleDetailWriter = extractDetailWriter(comment);
@@ -56,7 +55,7 @@ public class CommentPushStrategy implements PushStrategy {
                 .message(commentWriter.getNickname() + "님께서 회원님의 피드에 댓글을 남겼어요!")
                 .pushTime(comment.getCreatedAt())
                 .pushStatus(PushStatus.COMPLETE)
-                .pushCase(getPushCase())
+                .pushCase(PushCase.COMMENT)
                 .member(cycleDetailWriter)
                 .pathId(comment.getCycleDetail().getId())
                 .build();
