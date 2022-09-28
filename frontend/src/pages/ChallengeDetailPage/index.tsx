@@ -31,7 +31,7 @@ const ChallengeDetailPage = () => {
   return (
     <Wrapper flexDirection="column" gap="2rem">
       <ChallengeDetail {...challengeData.data} />
-      <FlexBox flexDirection="column" gap="30px" style={{ height: '50vh' }}>
+      <FlexBox flexDirection="column" gap="30px">
         <Text size={24} color={themeContext.onBackground} fontWeight="bold">
           챌린지 도전자
         </Text>
