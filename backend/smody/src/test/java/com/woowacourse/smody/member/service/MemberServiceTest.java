@@ -204,14 +204,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(8),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("더즈"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("토닉"),
-                    () -> assertThat(mentionResponse.get(3).getNickname()).isEqualTo("알파"),
-                    () -> assertThat(mentionResponse.get(4).getNickname()).isEqualTo("조그린"),
-                    () -> assertThat(mentionResponse.get(5).getNickname()).isEqualTo("그랑조"),
-                    () -> assertThat(mentionResponse.get(6).getNickname()).isEqualTo("조"),
-                    () -> assertThat(mentionResponse.get(7).getNickname()).isEqualTo("양조장")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린", "그랑조", "조", "양조장")
             );
         }
 
@@ -231,11 +225,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(5),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("더즈"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("토닉"),
-                    () -> assertThat(mentionResponse.get(3).getNickname()).isEqualTo("알파"),
-                    () -> assertThat(mentionResponse.get(4).getNickname()).isEqualTo("조그린")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린")
             );
         }
 
@@ -255,10 +246,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(4),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("그랑조"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("조"),
-                    () -> assertThat(mentionResponse.get(3).getNickname()).isEqualTo("양조장")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조그린", "그랑조", "조", "양조장")
             );
         }
 
@@ -278,8 +267,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(2),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("그랑조")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조그린", "그랑조")
             );
         }
 
@@ -299,11 +288,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(5),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("조그린"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("그랑조"),
-                    () -> assertThat(mentionResponse.get(3).getNickname()).isEqualTo("조"),
-                    () -> assertThat(mentionResponse.get(4).getNickname()).isEqualTo("양조장")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "조그린", "그랑조", "조", "양조장")
             );
         }
 
@@ -323,9 +309,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(3),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("조조그린"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("조그린"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("그랑조")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "조그린", "그랑조")
             );
         }
 
@@ -345,9 +330,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(3),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("그랑조"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("조"),
-                    () -> assertThat(mentionResponse.get(2).getNickname()).isEqualTo("양조장")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("그랑조", "조", "양조장")
             );
         }
 
@@ -367,8 +351,8 @@ class MemberServiceTest extends IntegrationTest {
             // then
             assertAll(
                     () -> assertThat(mentionResponse.size()).isEqualTo(2),
-                    () -> assertThat(mentionResponse.get(0).getNickname()).isEqualTo("그랑조"),
-                    () -> assertThat(mentionResponse.get(1).getNickname()).isEqualTo("조")
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("그랑조", "조")
             );
         }
     }
