@@ -1,4 +1,4 @@
-import { CursorParam } from 'apis/type';
+import { PickType } from 'smody-library';
 import {
   AdditionalChallengeInfo,
   Challenge,
@@ -14,7 +14,7 @@ export type GetChallengeParams = {
 
 export type GetAllChallengesResponse = AdditionalChallengeInfo[];
 
-export type GetMyChallengesParams = CursorParam;
+export type GetMyChallengesParams = { cursorId: PickType<Challenge, 'challengeId'> };
 
 export type GetMyChallengesResponse = (Challenge &
   Pick<UserChallengeStat, 'successCount'>)[];
