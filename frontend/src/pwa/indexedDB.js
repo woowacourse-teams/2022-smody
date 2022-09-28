@@ -1,3 +1,5 @@
+import { INDEXED_DB_NAME, INDEXED_DB } from 'constants/storage';
+
 class IndexedDB {
   constructor() {
     this._VERSION = 1.2;
@@ -5,7 +7,7 @@ class IndexedDB {
 
   _openDatabase() {
     return new Promise((resolve, reject) => {
-      const request = self.indexedDB.open('smody-db', this._VERSION);
+      const request = self.indexedDB.open(INDEXED_DB_NAME, this._VERSION);
 
       request.onerror = (event) => {
         reject(event);
@@ -16,15 +18,15 @@ class IndexedDB {
         console.log('IndexedDB 기존 버전:', event.oldVersion);
         console.log('IndexedDB 최신 버전:', this._VERSION);
 
-        db.createObjectStore('feed', {
+        db.createObjectStore(INDEXED_DB.FEED, {
           keyPath: 'cycleDetailId',
         });
 
-        db.createObjectStore('cycle', {
+        db.createObjectStore(INDEXED_DB.CYCLE, {
           keyPath: 'cycleId',
         });
 
-        db.createObjectStore('challenge', {
+        db.createObjectStore(INDEXED_DB.CHALLENGE, {
           keyPath: 'challengeId',
         });
       };
