@@ -28,7 +28,8 @@ public class AdminSecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
                 "/challenges/**", "/cycles/**", "/members/**", "/oauth/**", "/docs/**", "/images/**",
-                "/feeds/**", "/comments/**", "/web-push/**", "/profile/**", "/h2-console/**", "/push-notifications/**"
+                "/feeds/**", "/comments/**", "/web-push/**", "/profile/**", "/h2-console/**", "/push-notifications/**",
+                "/ranking-periods/**"
         );
     }
 

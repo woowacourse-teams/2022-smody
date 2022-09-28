@@ -4,8 +4,6 @@ import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.concurrent.TimeUnit;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +34,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 			"endpoint-link", "p256dh", "auth");
 
 		// when
-		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);

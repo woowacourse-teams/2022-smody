@@ -18,11 +18,9 @@ import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 
@@ -43,9 +41,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
@@ -69,9 +65,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest);
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
