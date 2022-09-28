@@ -162,4 +162,11 @@ public class ResourceFixture {
 		Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
 		cycle.increaseProgress(progressTime, 이미지, "description");
 	}
+
+	public Member 회원_추가(String nickName, String email) {
+		String picture = 이미지.getUrl();
+		String introduction = "자기소개";
+		Member member = new Member(email, nickName, picture, introduction);
+		return memberRepository.save(member);
+	}
 }

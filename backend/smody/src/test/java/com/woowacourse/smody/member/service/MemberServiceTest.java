@@ -1,10 +1,6 @@
 package com.woowacourse.smody.member.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -14,23 +10,29 @@ import static org.mockito.BDDMockito.given;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
+import com.woowacourse.smody.member.dto.MentionResponse;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import com.woowacourse.smody.support.IntegrationTest;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -178,7 +180,180 @@ class MemberServiceTest extends IntegrationTest {
     private void rollbackToOriginalData(Member result) {
         result.updateNickname("조조그린");
         result.updatePicture(new Image(null,
-            image -> "'https://lh3.googleusercontent.com/a-/AFdZucp2Jil0TsQ_Edr7hFi7RGfyJK48yeffjHgCVI3JNw=s96-c'"));
+                image -> "'https://lh3.googleusercontent.com/a-/AFdZucp2Jil0TsQ_Edr7hFi7RGfyJK48yeffjHgCVI3JNw=s96-c'"));
         result.updateIntroduction(null);
+    }
+
+    @DisplayName("멘션을 할 때")
+    @Nested
+    class mentionTest {
+
+        @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
+        @Test
+        void findAll() {
+            // given
+            PagingParams pagingParams = new PagingParams();
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(8),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린", "그랑조", "조", "양조장")
+            );
+        }
+
+        @DisplayName("글자가 없고 커서 ID도 없고 크기가 5일때")
+        @Test
+        void findAll_sizeFive() {
+            // given
+            PagingParams pagingParams = new PagingParams(null, 5);
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(5),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린")
+            );
+        }
+
+        @DisplayName("글자가 없고 커서 ID는 있고 크기가 10일 때")
+        @Test
+        void findAll_existCursorId() {
+            // given
+            PagingParams pagingParams = new PagingParams(null, 0, 알파_ID);
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(4),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조그린", "그랑조", "조", "양조장")
+            );
+        }
+
+        @DisplayName("글자가 없고 커서 ID는 있고 크기가 2일 때")
+        @Test
+        void findAll_existCursorId_sizeTwo() {
+            // given
+            PagingParams pagingParams = new PagingParams(null, 2, 알파_ID);
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(2),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조그린", "그랑조")
+            );
+        }
+
+        @DisplayName("글자가 있고 커서 ID는 없고 크기가 10일 때")
+        @Test
+        void findAll_existFilter() {
+            // given
+            PagingParams pagingParams = new PagingParams(null, 0, null, "조");
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(5),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "조그린", "그랑조", "조", "양조장")
+            );
+        }
+
+        @DisplayName("글자가 있고 커서 ID는 없고 크기가 3일 때")
+        @Test
+        void findAll_existFilter_sizeThree() {
+            // given
+            PagingParams pagingParams = new PagingParams(null, 3, null, "조");
+            fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(3),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("조조그린", "조그린", "그랑조")
+            );
+        }
+
+        @DisplayName("글자가 있고 커서 ID는 있고 크기가 10일 때")
+        @Test
+        void findAll_existFilter_existCursorId() {
+            // given
+            Member member = fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+            PagingParams pagingParams = new PagingParams(null, 0, member.getId(), "조");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(3),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("그랑조", "조", "양조장")
+            );
+        }
+
+        @DisplayName("글자가 있고 커서 ID는 있고 크기가 2일 때")
+        @Test
+        void findAll_existFilter_existCursorId_sizeTwo() {
+            // given
+            Member member = fixture.회원_추가("조그린", "a@naver.com");
+            fixture.회원_추가("그랑조", "b@naver.com");
+            fixture.회원_추가("조", "c@naver.com");
+            fixture.회원_추가("양조장", "d@naver.com");
+            PagingParams pagingParams = new PagingParams(null, 2, member.getId(), "조");
+
+            // when
+            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+
+            // then
+            assertAll(
+                    () -> assertThat(mentionResponse.size()).isEqualTo(2),
+                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                            .containsExactly("그랑조", "조")
+            );
+        }
     }
 }

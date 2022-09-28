@@ -3,20 +3,17 @@ package com.woowacourse.smody.member.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
+import com.woowacourse.smody.member.dto.MentionResponse;
 import com.woowacourse.smody.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -53,5 +50,11 @@ public class MemberController {
     public ResponseEntity<Void> withdraw(@LoginMember TokenPayload tokenPayload) {
         memberService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @RequiredLogin
+    public ResponseEntity<List<MentionResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(memberService.findAll(pagingParams));
     }
 }

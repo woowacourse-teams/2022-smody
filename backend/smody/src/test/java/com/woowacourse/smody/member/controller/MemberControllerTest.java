@@ -18,8 +18,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
+import com.woowacourse.smody.member.dto.MentionResponse;
 import com.woowacourse.smody.support.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.List;
 
 public class MemberControllerTest extends ControllerTest {
 
@@ -118,6 +122,34 @@ public class MemberControllerTest extends ControllerTest {
         result.andExpect(status().isNoContent())
                 .andDo(document("withdraw", HOST_INFO,
                         preprocessResponse(prettyPrint())
+                ));
+    }
+
+    @DisplayName("특정 회원을 멘션한다.")
+    @Test
+    void findAll() throws Exception {
+        // given
+        String token = jwtTokenProvider.createToken(new TokenPayload(1L));
+        List<MentionResponse> mentionResponses = List.of(
+                new MentionResponse(3L, "알파", "사진"),
+                new MentionResponse(5L, "알파쿤", "사진")
+        );
+        given(memberService.findAll(any(PagingParams.class)))
+                .willReturn(mentionResponses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/members/?filter=알파&cursorId=2")
+                .header("Authorization", "Bearer " + token));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("mention-to", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[]memberId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("[]nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[]picture").type(JsonFieldType.STRING).description("사진")
+                        )
                 ));
     }
 }
