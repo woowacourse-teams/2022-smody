@@ -1,100 +1,86 @@
 package com.woowacourse.smody.push.event;
 
 import static com.woowacourse.smody.support.ResourceFixture.FORMATTER;
-import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
 import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.dto.CycleRequest;
-import com.woowacourse.smody.cycle.dto.ProgressRequest;
-import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
+import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 class ChallengePushEventListenerTest extends IntegrationTest {
 
 	@Autowired
-	private CycleService cycleService;
+	private ChallengePushEventListener pushStrategy;
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
 
-	@Autowired
-	private ThreadPoolTaskExecutor executor;
-
-	@DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
+	@DisplayName("챌린지 인증 임박 알림을 저장한다.")
 	@Test
-	void cycleCreate_pushNotification() throws InterruptedException {
+	void push() throws InterruptedException {
 		// given
 		LocalDateTime now = LocalDateTime.now();
+		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
 		// when
-		Long pathId = cycleService.create(
-			new TokenPayload(조조그린_ID),
-			new CycleRequest(now, 스모디_방문하기_ID)
-		);
+		pushStrategy.handle(new CycleCreateEvent(cycle));
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		LocalDateTime pushTime = now
 			.plusDays(1L)
 			.minusHours(3L);
-		Optional<Cycle> cycle = cycleService.findById(pathId);
-		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
+		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(0);
 		assertAll(
-			() -> assertThat(cycle).isPresent(),
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
 				.isEqualTo(pushTime.format(FORMATTER)),
-			() -> assertThat(pushNotification.getMessage()).isEqualTo("스모디 방문하기 인증까지 얼마 안남았어요~"),
+			() -> assertThat(pushNotification.getMessage()).contains("미라클 모닝 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(pathId)
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
 		);
 	}
 
-	@DisplayName("사이클을 진행하면 발송 예정인 알림이 저장된다.")
+	@DisplayName("사이클을 진행해서 새로운 인증 임박 알림을 만들 때, "
+		+ "같은 사이클의 이전 인증 임박 알림이 보내지지 않았다면 삭제한다.")
 	@Test
-	void increaseProgress_sendNotification() throws InterruptedException {
+	void push_cycleProgress() throws InterruptedException {
 		// given
 		LocalDateTime now = LocalDateTime.now();
-		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now.minusDays(1L));
-
-		given(imageStrategy.extractUrl(any()))
-			.willReturn("fakeUrl");
+		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+		pushStrategy.handle(new CycleCreateEvent(cycle));
+		fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
 
 		// when
-		cycleService.increaseProgress(
-			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
-		);
+		pushStrategy.handle(new CycleProgressEvent(cycle));
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		LocalDateTime pushTime = now
 			.plusDays(2L)
 			.minusHours(3L);
-		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
+		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE);
+		PushNotification pushNotification = results.get(0);
 		assertAll(
+			() -> assertThat(results).hasSize(1),
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
@@ -103,27 +89,5 @@ class ChallengePushEventListenerTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
 		);
-	}
-
-	@DisplayName("사이클을 성공하면 알림이 저장되지 않는다.")
-	@Test
-	void increaseProgressSuccess_sendNotification_no() throws InterruptedException {
-		// given
-		LocalDateTime now = LocalDateTime.now();
-		Cycle cycle = fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
-
-		given(imageStrategy.extractUrl(any()))
-			.willReturn("fakeUrl");
-
-		// when
-		cycleService.increaseProgress(
-			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
-		);
-
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
-
-		// then
-		assertThat(pushNotificationRepository.findAll()).isEmpty();
 	}
 }

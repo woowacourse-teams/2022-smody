@@ -1,14 +1,17 @@
 package com.woowacourse.smody.push.event;
 
+import static com.woowacourse.smody.support.ResourceFixture.FORMATTER;
 import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.comment.dto.CommentRequest;
-import com.woowacourse.smody.comment.service.CommentService;
+import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.push.domain.PushCase;
@@ -19,65 +22,98 @@ import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 class CommentPushEventListenerTest extends IntegrationTest {
 
 	@Autowired
-	private CommentService commentService;
+	private CommentPushEventListener pushStrategy;
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
 
-	@Autowired
-	private ThreadPoolTaskExecutor executor;
+	private CycleDetail cycleDetail;
 
-	@DisplayName("댓글을 작성하면 알림이 저장 된다.")
-	@Test
-	void createComment_push() throws InterruptedException {
-		// given
+	@BeforeEach
+	void init() {
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+		cycleDetail = cycle.getCycleDetails().get(0);
+	}
 
-		CommentRequest commentRequest = new CommentRequest("댓글입니다");
+	@DisplayName("댓글을 남기면 피드 작성자에게 발송 상태의 알림이 저장 된다.")
+	@Test
+	void push() throws InterruptedException {
+		// given
+		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);
+		pushStrategy.handle(new CommentCreateEvent(comment));
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
 			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(comment.getCreatedAt().format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId())
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
+			() -> verify(webPushService, never())
+				.sendNotification(any(), any())
 		);
 	}
 
-	@DisplayName("자신의 댓글을 작성하면 알림이 저장되지 않는다.")
+	@DisplayName("알림을 구독했으면 댓글을 달았을 때 알림 저장에 전송까지 실행된다.")
 	@Test
-	void createComment_notPush() throws InterruptedException {
+	void push_existSubscription() throws InterruptedException {
 		// given
-		LocalDateTime now = LocalDateTime.now();
-		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
-
-		CommentRequest commentRequest = new CommentRequest("댓글입니다");
+		fixture.알림_구독(조조그린_ID, "endpoint");
+		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest);
+		pushStrategy.handle(new CommentCreateEvent(comment));
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+
+		// then
+		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
+		assertAll(
+			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+				.isEqualTo(comment.getCreatedAt().format(FORMATTER)),
+			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
+			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
+			() -> verify(webPushService)
+				.sendNotification(any(), any())
+		);
+	}
+
+	@DisplayName("자신의 게시글에 댓글을 달면 알림이 전송, 저장되지 않는다.")
+	@Test
+	void push_commentMyFeed() {
+		// given
+		Comment comment = fixture.댓글_등록(cycleDetail, 조조그린_ID, "댓글입니다.");
+		fixture.알림_구독(조조그린_ID, "endpoint");
+
+		// when
+		pushStrategy.handle(new CommentCreateEvent(comment));
 
 		// then
 		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-		assertThat(results).isEmpty();
+		assertAll(
+			() -> assertThat(results).isEmpty(),
+			() -> verify(webPushService, never())
+				.sendNotification(any(), any())
+		);
 	}
 }

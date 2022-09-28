@@ -1,7 +1,9 @@
-package com.woowacourse.smody.push.strategy;
+package com.woowacourse.smody.push.event;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
+import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
@@ -9,20 +11,35 @@ import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
-public class ChallengePushStrategy implements PushStrategy {
+public class ChallengePushEventListener {
 
     private final PushNotificationService pushNotificationService;
     private final CycleService cycleService;
 
-    @Override
     @Transactional
-    public void push(Object entity) {
-        Cycle cycle = cycleService.search(((Cycle) entity).getId());
+    @Async("asyncExecutor")
+    @TransactionalEventListener
+    public void handle(CycleCreateEvent event) {
+        executePush(event.getCycle());
+    }
+
+    @Transactional
+    @Async("asyncExecutor")
+    @TransactionalEventListener
+    public void handle(CycleProgressEvent event) {
+        executePush(event.getCycle());
+    }
+
+    private void executePush(Cycle cycle) {
+        cycle = cycleService.search(cycle.getId());
         deleteInCompleteNotificationIfSamePathIdPresent(cycle);
         if (cycle.isSuccess()) {
             return;
@@ -35,7 +52,6 @@ public class ChallengePushStrategy implements PushStrategy {
                 .ifPresent(notification -> pushNotificationService.delete(notification.getId()));
     }
 
-    @Override
     public PushNotification buildNotification(Object entity) {
         Cycle cycle = (Cycle) entity;
         Challenge challenge = cycle.getChallenge();
@@ -45,7 +61,7 @@ public class ChallengePushStrategy implements PushStrategy {
                 .pushTime(pushTime)
                 .pushStatus(PushStatus.IN_COMPLETE)
                 .member(cycle.getMember())
-                .pushCase(getPushCase())
+                .pushCase(PushCase.CHALLENGE)
                 .pathId(cycle.getId())
                 .build();
     }
@@ -54,10 +70,5 @@ public class ChallengePushStrategy implements PushStrategy {
         return cycle.getStartTime()
                 .plusDays(cycle.getInterval())
                 .minusHours(3L);
-    }
-
-    @Override
-    public PushCase getPushCase() {
-        return PushCase.CHALLENGE;
     }
 }
