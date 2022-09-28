@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute, MouseEventHandler } from 'react';
 
-export interface VisibilityIconProps {
+export type VisibilityIconProps = {
   type: HTMLInputTypeAttribute;
   onClick: MouseEventHandler<HTMLDivElement>;
-}
+};

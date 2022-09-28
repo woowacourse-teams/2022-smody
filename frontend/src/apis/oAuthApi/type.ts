@@ -1,17 +1,19 @@
-import { User } from 'commonType';
+import { LoginMember, Member } from 'types/member';
 
-export interface GetTokenGoogleResponse {
-  accessToken: string;
-}
+export type GetTokenGoogleParams = {
+  code: string;
+};
 
-export type GetMyInfoResponse = User;
+export type GetTokenGoogleResponse = Pick<LoginMember, 'accessToken'>;
 
-export type PatchMyInfoProps = Pick<User, 'nickname' | 'introduction'>;
+export type GetMyInfoResponse = Omit<Member, 'memberId'>;
 
-export interface PostProfileImageProps {
+export type PatchMyInfoPayload = Pick<Member, 'nickname' | 'introduction'>;
+
+export type PostProfileImagePayload = {
   formData: FormData;
-}
+};
 
-export interface GetIsValidAccessTokenResponse {
+export type GetIsValidAccessTokenResponse = {
   isValid: boolean;
-}
+};

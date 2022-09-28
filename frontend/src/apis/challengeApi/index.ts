@@ -9,20 +9,19 @@ import {
   getMyChallengeById,
 } from 'apis/challengeApi/api';
 import {
-  GetChallengeResponse,
-  GetChallengeByIdProps,
+  GetAllChallengesResponse,
+  GetChallengeByIdParams,
   GetChallengeByIdResponse,
   GetMyChallengesResponse,
   GetChallengersByIdResponse,
-  GetChallengersByIdProps,
-  PostChallengeProps,
-  GetChallengeProps,
-  GetMyChallengeByIdProps,
+  GetChallengersByIdParams,
+  PostChallengePayload,
+  GetChallengeParams,
+  GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE, queryKeys } from 'apis/constants';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import {
   useQuery,
   useInfiniteQuery,
@@ -31,16 +30,17 @@ import {
   UseMutationOptions,
   useMutation,
 } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
-  { searchValue }: GetChallengeProps,
+  { searchValue }: GetChallengeParams,
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetChallengeResponse[]>,
+    AxiosResponse<GetAllChallengesResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<AxiosResponse<GetAllChallengesResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
       ? ({ pageParam = 0 }) => getAllChallengesAuth(searchValue, pageParam)
@@ -60,11 +60,11 @@ export const useGetAllChallenges = (
 // 6. 내가 참가한 챌린지 조회(GET)
 export const useGetMyChallenges = (
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetMyChallengesResponse[]>,
+    AxiosResponse<GetMyChallengesResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<AxiosResponse<GetMyChallengesResponse[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<AxiosResponse<GetMyChallengesResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getMyChallenges,
     ({ pageParam = 0 }) => getMyChallenges({ cursorId: pageParam }),
     {
@@ -81,7 +81,7 @@ export const useGetMyChallenges = (
 
 // 8. 챌린지 하나 상세 조회(GET)
 export const useGetChallengeById = (
-  { challengeId }: GetChallengeByIdProps,
+  { challengeId }: GetChallengeByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetChallengeByIdResponse>,
     AxiosError<ErrorResponse>
@@ -97,13 +97,13 @@ export const useGetChallengeById = (
 
 // 9. 챌린지 참가자 목록 조회
 export const useGetChallengersById = (
-  { challengeId }: GetChallengersByIdProps,
+  { challengeId }: GetChallengersByIdParams,
   options?: UseQueryOptions<
-    AxiosResponse<GetChallengersByIdResponse[]>,
+    AxiosResponse<GetChallengersByIdResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useQuery<AxiosResponse<GetChallengersByIdResponse[]>, AxiosError<ErrorResponse>>(
+  useQuery<AxiosResponse<GetChallengersByIdResponse>, AxiosError<ErrorResponse>>(
     [queryKeys.getChallengersById, challengeId],
     () => getChallengersById({ challengeId }),
     options,
@@ -114,17 +114,17 @@ export const usePostChallenge = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostChallengeProps
+    PostChallengePayload
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengeProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostChallengePayload>(
     postChallenge,
     options,
   );
 
 // 참여한 챌린지 상세 조회 기능
 export const useGetMyChallengeById = (
-  { challengeId }: GetMyChallengeByIdProps,
+  { challengeId }: GetMyChallengeByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetMyChallengeByIdResponse>,
     AxiosError<ErrorResponse>

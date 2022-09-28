@@ -1,12 +1,12 @@
 import useSnackBar from 'hooks/useSnackBar';
 
-export interface ShareLinkProps {
+export type ShareLinkProps = {
   text: string;
-}
+};
 
-interface ShareFileProps {
+type ShareFileProps = {
   data: BlobPart;
-}
+};
 
 const useShare = () => {
   const renderSnackBar = useSnackBar();

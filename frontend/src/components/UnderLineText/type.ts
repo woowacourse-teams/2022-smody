@@ -1,8 +1,8 @@
-import { AvailablePickedColor, FontSizeType } from 'styles/type';
+import { AvailablePickedColor, FontSizeType } from 'types/style';
 
-export interface UnderLineTextProps {
+export type UnderLineTextProps = {
   fontSize: FontSizeType;
   fontColor: AvailablePickedColor;
   fontWeight?: 'normal' | 'bold';
   underLineColor: AvailablePickedColor;
-}
+};

@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from 'react';
 
-export interface DarkModeButtonProps {
+export type DarkModeButtonProps = {
   checked: boolean;
   handleChange: ChangeEventHandler<HTMLInputElement>;
-}
+};

@@ -22,17 +22,20 @@ const useAuth = () => {
   });
 
   const googleAuthCode = getUrlParameter('code');
-  const { refetch: getTokenGoogle } = useGetTokenGoogle(googleAuthCode, {
-    onSuccess: ({ data: { accessToken } }) => {
-      authApiClient.updateAuth(accessToken);
-      setIsLogin(true);
-      navigate(CLIENT_PATH.FEED);
-      renderSnackBar({
-        message: '환영합니다 🎉 오늘 도전도 화이팅!',
-        status: 'SUCCESS',
-      });
+  const { refetch: getTokenGoogle } = useGetTokenGoogle(
+    { code: googleAuthCode },
+    {
+      onSuccess: ({ data: { accessToken } }) => {
+        authApiClient.updateAuth(accessToken);
+        setIsLogin(true);
+        navigate(CLIENT_PATH.CERT);
+        renderSnackBar({
+          message: '환영합니다 🎉 오늘 도전도 화이팅!',
+          status: 'SUCCESS',
+        });
+      },
     },
-  });
+  );
 
   useEffect(() => {
     if (googleAuthCode.length === 0) {

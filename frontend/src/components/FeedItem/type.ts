@@ -1,9 +1,9 @@
-import { Feed } from 'commonType';
+import { Feed } from 'types/feed';
 
-export interface FeedItemProps extends Feed {
+export type FeedItemProps = Feed & {
   isDetailPage?: boolean;
   isShowBriefChallengeName?: boolean;
-}
+};
 
 export type UseFeedProps = Pick<
   FeedItemProps,
@@ -17,6 +17,6 @@ export type UseFeedProps = Pick<
 
 export type WrapperProps = Pick<FeedItemProps, 'isDetailPage'>;
 
-export interface CheckSuccessProps {
+export type CheckSuccessProps = {
   isSuccess: boolean;
-}
+};

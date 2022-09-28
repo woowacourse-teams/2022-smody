@@ -1,18 +1,14 @@
-import { Cycle } from 'commonType';
+import { Challenge, UserChallengeStat } from 'types/challenge';
+import { Cycle } from 'types/cycle';
 
-export interface CertImageWrapperProps {
+export type CertImageWrapperProps = {
   isSelectImage: boolean;
-}
+};
 
-export interface TextAreaProps {
+export type TextAreaProps = {
   isDark: boolean;
-}
+};
 
-export interface CertFormPageLocationState
-  extends Pick<
-    Cycle,
-    'cycleId' | 'challengeId' | 'challengeName' | 'successCount' | 'progressCount'
-  > {
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type CertFormPageLocationState = Challenge &
+  Pick<UserChallengeStat, 'successCount'> &
+  Pick<Cycle, 'cycleId' | 'progressCount'>;

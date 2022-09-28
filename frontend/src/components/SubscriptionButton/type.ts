@@ -1,3 +1,3 @@
-export interface SubscriptionButtonProps {
+export type SubscriptionButtonProps = {
   updateIsSubscribed: (updatedIsSubscribed: boolean) => void;
-}
+};

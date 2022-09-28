@@ -7,9 +7,9 @@ export default {
   component: FixedButton,
 };
 
-interface FixedButtonProps {
+type FixedButtonProps = {
   children: ReactNode;
-}
+};
 
 export const DefaultFixedButton = ({ children }: FixedButtonProps) => (
   <FixedButton>{children}</FixedButton>

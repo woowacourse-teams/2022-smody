@@ -1,7 +1,7 @@
 import { RefObject } from 'react';
 
-export interface SearchBarProps {
+export type SearchBarProps = {
   searchInput: RefObject<HTMLInputElement>;
   handleChangeSearch: () => void;
   handleClickSearchButton: () => void;
-}
+};

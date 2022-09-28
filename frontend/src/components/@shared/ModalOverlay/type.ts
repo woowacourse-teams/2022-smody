@@ -1,3 +1,3 @@
-export interface ModalOverlayProps {
+export type ModalOverlayProps = {
   handleCloseModal(): void;
-}
+};

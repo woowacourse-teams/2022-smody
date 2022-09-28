@@ -1,20 +1,20 @@
 import { usePostCycle } from 'apis';
-import { Challenge } from 'commonType';
 import { useRef } from 'react';
+import { Challenge } from 'types/challenge';
 import { parseDateToISOString } from 'utils';
 
 import useSnackBar from 'hooks/useSnackBar';
 
 import { CLIENT_PATH } from 'constants/path';
 
-interface PostJoinChallengeProps extends Pick<Challenge, 'challengeId'> {
+type PostJoinChallengeProps = Pick<Challenge, 'challengeId'> & {
   successCallback?: () => void;
-}
+};
 
-export interface JoinChallengeProps {
+export type JoinChallengeProps = {
   challengeName: string;
   startTime?: Date;
-}
+};
 
 const usePostJoinChallenge = ({
   challengeId,

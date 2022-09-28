@@ -23,7 +23,7 @@ import { PrivateOutlet, LandingNavigation } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
-interface LocationState {
+type LocationState = {
   isInCertFormPage: boolean;
   cycleId?: number;
   challengeId?: number;
@@ -32,7 +32,7 @@ interface LocationState {
   successCount?: number;
   emojiIndex?: number;
   colorIndex?: number;
-}
+};
 
 const CertFlowPage = () => {
   const { state } = useLocation();

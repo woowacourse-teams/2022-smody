@@ -1,5 +1,5 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
-export interface HeaderProps {
+export type HeaderProps = {
   bgColor: AvailablePickedColor;
-}
+};
