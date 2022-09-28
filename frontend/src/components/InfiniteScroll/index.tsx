@@ -1,5 +1,5 @@
 import { InfiniteScrollProps } from './type';
-import { RefObject, useMemo, useRef } from 'react';
+import { RefObject, useMemo, useRef, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
 import useIntersect from 'hooks/useIntersect';
@@ -13,7 +13,7 @@ export const InfiniteScroll = ({
   isFetching,
   loader,
   threshold = 0.5,
-}: InfiniteScrollProps) => {
+}: PropsWithChildren<InfiniteScrollProps>) => {
   const rootRef = useRef() as RefObject<HTMLDivElement>;
 
   const options = useMemo(() => ({ root: rootRef.current, threshold }), []);

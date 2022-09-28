@@ -1,4 +1,5 @@
 import useTitle from './useTitle';
+import { PropsWithChildren } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import styled from 'styled-components';
 
@@ -7,7 +8,7 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Text } from 'components';
 import { TitleProps } from 'components/Title/type';
 
-export const Title = ({ text, linkTo, children }: TitleProps) => {
+export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>) => {
   const themeContext = useThemeContext();
   const { backToPreviousPage } = useTitle({ linkTo });
 

@@ -1,12 +1,12 @@
 import { ScrollToTopProps } from './type';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-export class ScrollToTop extends React.Component<ScrollToTopProps> {
-  constructor(props: ScrollToTopProps) {
+export class ScrollToTop extends React.Component<PropsWithChildren<ScrollToTopProps>> {
+  constructor(props: PropsWithChildren<ScrollToTopProps>) {
     super(props);
   }
 
-  componentDidUpdate(prevProps: ScrollToTopProps) {
+  componentDidUpdate(prevProps: PropsWithChildren<ScrollToTopProps>) {
     const { pathname: prevPathname } = prevProps;
     const { pathname: currentPathname } = this.props;
 
@@ -17,6 +17,8 @@ export class ScrollToTop extends React.Component<ScrollToTopProps> {
   }
 
   render() {
-    return this.props.children;
+    const { children } = this.props;
+
+    return children;
   }
 }

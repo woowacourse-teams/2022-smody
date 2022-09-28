@@ -1,10 +1,14 @@
 import { ModalOverlayProps } from './type';
+import { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 
 import { Z_INDEX } from 'constants/css';
 
-export const ModalOverlay = ({ children, handleCloseModal }: ModalOverlayProps) => {
+export const ModalOverlay = ({
+  children,
+  handleCloseModal,
+}: PropsWithChildren<ModalOverlayProps>) => {
   return (
     <>
       {ReactDOM.createPortal(
