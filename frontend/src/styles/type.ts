@@ -1,4 +1,4 @@
-import { MappedKeyToUnion } from 'commonType';
+import { MappedKeyToUnion } from 'smody-library';
 
 import COLOR from 'styles/color';
 
