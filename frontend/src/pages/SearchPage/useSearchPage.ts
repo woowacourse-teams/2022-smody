@@ -12,6 +12,7 @@ import useSnackBar from 'hooks/useSnackBar';
 import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 import { EMPTY_REGEX_RULE } from 'constants/regex';
+import { INDEXED_DB } from 'constants/storage';
 
 const checkBlankSpaceValue = (value: string) =>
   value.length !== 0 && value.replace(EMPTY_REGEX_RULE, '').length === 0;
@@ -41,7 +42,7 @@ export const useSearchPage = () => {
       useErrorBoundary: false,
       onSuccess: (data) => {
         const challenges = data.pages[0].data;
-        saveDataToCache('challenge', data.pages.length, challenges);
+        saveDataToCache(INDEXED_DB.CHALLENGE, data.pages.length, challenges);
       },
     },
   );
@@ -53,7 +54,7 @@ export const useSearchPage = () => {
     if (!isError) {
       return;
     }
-    indexedDB.getPosts('challenge').then((challenges) => {
+    indexedDB.getPosts(INDEXED_DB.CHALLENGE).then((challenges) => {
       setSavedChallenges(challenges);
     });
   }, [isError]);

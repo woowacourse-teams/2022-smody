@@ -2,6 +2,8 @@ import { useGetAllFeeds } from 'apis/feedApi';
 import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState } from 'react';
 
+import { INDEXED_DB } from 'constants/storage';
+
 export const useFeedPage = () => {
   const {
     data: feedInfiniteData,
@@ -13,7 +15,7 @@ export const useFeedPage = () => {
     useErrorBoundary: false,
     onSuccess: (data) => {
       const feeds = data.pages[0].data;
-      saveDataToCache('feed', data.pages.length, feeds);
+      saveDataToCache(INDEXED_DB.FEED, data.pages.length, feeds);
     },
   });
 
@@ -23,7 +25,7 @@ export const useFeedPage = () => {
     if (!isError) {
       return;
     }
-    indexedDB.getPosts('feed').then((feeds) => {
+    indexedDB.getPosts(INDEXED_DB.FEED).then((feeds) => {
       setSavedFeeds(feeds);
     });
   }, [isError]);
