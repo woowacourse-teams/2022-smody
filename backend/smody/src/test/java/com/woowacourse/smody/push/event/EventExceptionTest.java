@@ -50,9 +50,6 @@ class EventExceptionTest extends IntegrationTest {
 	@Autowired
 	private CommentService commentService;
 
-	@Autowired
-	private ThreadPoolTaskExecutor executor;
-
 	@MockBean
 	private ChallengePushEventListener challengePushStrategy;
 
@@ -77,7 +74,7 @@ class EventExceptionTest extends IntegrationTest {
 			new CycleRequest(now, 스모디_방문하기_ID)
 		);
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		Optional<Cycle> cycle = cycleService.findById(cycleId);
@@ -102,7 +99,7 @@ class EventExceptionTest extends IntegrationTest {
 		// when
 		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
@@ -132,7 +129,7 @@ class EventExceptionTest extends IntegrationTest {
 		// when
 		Long commentId = commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);
 
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		// then
 		List<PushNotification> notifications = pushNotificationRepository.findAll();
