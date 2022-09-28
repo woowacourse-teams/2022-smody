@@ -27,28 +27,28 @@ public class PushEventListener {
                 );
     }
 
-    @Async
+    @Async("asyncExecutor")
     @TransactionalEventListener
     public void handlePushSubscribe(PushSubscribeEvent event) {
         pushStrategies.get(PushCase.SUBSCRIPTION)
             .push(event.getPushSubscription());
     }
 
-    @Async
+    @Async("asyncExecutor")
     @TransactionalEventListener
     public void handleCycleCreate(CycleCreateEvent event) {
         pushStrategies.get(PushCase.CHALLENGE)
             .push(event.getCycle());
     }
 
-    @Async
+    @Async("asyncExecutor")
     @TransactionalEventListener
     public void handleCycleProgress(CycleProgressEvent event) {
         pushStrategies.get(PushCase.CHALLENGE)
             .push(event.getCycle());
     }
 
-    @Async
+    @Async("asyncExecutor")
     @TransactionalEventListener
     public void handleCommentCreate(CommentCreateEvent event) {
         pushStrategies.get(PushCase.COMMENT)
