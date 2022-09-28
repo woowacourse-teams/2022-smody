@@ -12,28 +12,19 @@ type MyProgressCycle = Pick<UserChallengeStat, 'successCount'> & Challenge & Cyc
 
 export type GetMyCyclesInProgressResponse = MyProgressCycle[];
 
-// -------------
-
 export type PostCycleProgressPayload = Pick<Cycle, 'cycleId'> & { formData: FormData };
 
 export type GetCycleByIdParams = Pick<Cycle, 'cycleId'>;
 
-export interface PostCycleProgressResponse {
-  progressCount: number;
-}
+export type PostCycleProgressResponse = Pick<Cycle, 'progressCount'>;
 
-export interface GetMyCyclesStatResponse {
-  totalCount: number;
-  successCount: number;
-}
+export type GetMyCyclesStatResponse = UserChallengeStat;
 
-export interface GetCycleByIdResponse extends Cycle {
-  emojiIndex: number;
-  colorIndex: number;
-  cycleDetails: CycleDetail[];
-}
-
-// ---
+export type GetCycleByIdResponse = Challenge &
+  Cycle &
+  Pick<UserChallengeStat, 'successCount'> & {
+    cycleDetails: Omit<CycleDetail, 'cycleDetailId'>[];
+  };
 
 export type GetMyCyclesByChallengeIdParams = Pick<Challenge, 'challengeId'> & {
   filter: string;
@@ -43,7 +34,7 @@ export type GetMyCyclesByChallengeIdAPIParams = GetMyCyclesByChallengeIdParams &
   cursorId: PickType<Challenge, 'challengeId'>;
 };
 
-export type GetMyCyclesByChallengeIdResponse = Pick<Cycle, 'cycleId' | 'startTime'> &
+export type GetMyCyclesByChallengeIdResponse = (Pick<Cycle, 'cycleId' | 'startTime'> &
   Pick<Challenge, 'emojiIndex' | 'colorIndex'> & {
     cycleDetails: Pick<CycleDetail, 'cycleDetailId' | 'progressImage'>[];
-  };
+  })[];

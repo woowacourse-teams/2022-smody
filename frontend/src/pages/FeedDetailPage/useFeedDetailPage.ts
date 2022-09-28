@@ -1,3 +1,4 @@
+import { SelectedCommentIdType } from './type';
 import { useDeleteComments, useGetCommentsById, useGetFeedById } from 'apis/feedApi';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -10,7 +11,7 @@ const useFeedDetailPage = () => {
   const { cycleDetailId } = useParams();
   const isLogin = useRecoilValue(isLoginState);
   const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
-  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [selectedCommentId, setSelectedCommentId] = useState<SelectedCommentIdType>(null);
   const [editMode, setEditMode] = useState({
     isEditMode: false,
     editContent: '',

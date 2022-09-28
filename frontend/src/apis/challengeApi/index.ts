@@ -9,7 +9,7 @@ import {
   getMyChallengeById,
 } from 'apis/challengeApi/api';
 import {
-  GetChallengeResponse,
+  GetAllChallengesResponse,
   GetChallengeByIdParams,
   GetChallengeByIdResponse,
   GetMyChallengesResponse,
@@ -36,11 +36,11 @@ import {
 export const useGetAllChallenges = (
   { searchValue }: GetChallengeParams,
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetChallengeResponse[]>,
+    AxiosResponse<GetAllChallengesResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<AxiosResponse<GetChallengeResponse[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<AxiosResponse<GetAllChallengesResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
       ? ({ pageParam = 0 }) => getAllChallengesAuth(searchValue, pageParam)
@@ -60,11 +60,11 @@ export const useGetAllChallenges = (
 // 6. 내가 참가한 챌린지 조회(GET)
 export const useGetMyChallenges = (
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetMyChallengesResponse[]>,
+    AxiosResponse<GetMyChallengesResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useInfiniteQuery<AxiosResponse<GetMyChallengesResponse[]>, AxiosError<ErrorResponse>>(
+  useInfiniteQuery<AxiosResponse<GetMyChallengesResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getMyChallenges,
     ({ pageParam = 0 }) => getMyChallenges({ cursorId: pageParam }),
     {
@@ -99,11 +99,11 @@ export const useGetChallengeById = (
 export const useGetChallengersById = (
   { challengeId }: GetChallengersByIdParams,
   options?: UseQueryOptions<
-    AxiosResponse<GetChallengersByIdResponse[]>,
+    AxiosResponse<GetChallengersByIdResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
-  useQuery<AxiosResponse<GetChallengersByIdResponse[]>, AxiosError<ErrorResponse>>(
+  useQuery<AxiosResponse<GetChallengersByIdResponse>, AxiosError<ErrorResponse>>(
     [queryKeys.getChallengersById, challengeId],
     () => getChallengersById({ challengeId }),
     options,

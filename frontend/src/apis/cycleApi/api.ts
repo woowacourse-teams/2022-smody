@@ -71,7 +71,7 @@ export const getMyCyclesByChallengeId = async ({
         }
       : { size: PAGE_SIZE.CYCLES, cursorId, filter };
 
-  return authApiClient.axios.get<GetMyCyclesByChallengeIdResponse[]>(
+  return authApiClient.axios.get<GetMyCyclesByChallengeIdResponse>(
     `/cycles/me/${challengeId}`,
     { params },
   );

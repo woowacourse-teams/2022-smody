@@ -1,6 +1,6 @@
-import { GetChallengeResponse } from 'apis/challengeApi/type';
 import { AxiosResponse } from 'axios';
+import { AdditionalChallengeInfo } from 'types/challenge';
 
 export interface ChallengeListProps {
-  challengeInfiniteData: AxiosResponse<GetChallengeResponse[]>[];
+  challengeInfiniteData: AxiosResponse<AdditionalChallengeInfo[]>[];
 }

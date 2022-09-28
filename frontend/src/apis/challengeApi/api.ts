@@ -1,6 +1,6 @@
 import { apiClient, authApiClient } from 'apis/apiClient';
 import {
-  GetChallengeResponse,
+  GetAllChallengesResponse,
   GetChallengeByIdParams,
   GetMyChallengesResponse,
   GetChallengeByIdResponse,
@@ -23,7 +23,7 @@ export const getAllChallenges = async (searchValue: string, cursorId: number) =>
         }
       : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
-  return apiClient.axios.get<GetChallengeResponse[]>(`/challenges`, {
+  return apiClient.axios.get<GetAllChallengesResponse>(`/challenges`, {
     params,
   });
 };
@@ -38,7 +38,7 @@ export const getAllChallengesAuth = async (searchValue: string, cursorId: number
         }
       : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
 
-  return authApiClient.axios.get<GetChallengeResponse[]>(`/challenges/auth`, {
+  return authApiClient.axios.get<GetAllChallengesResponse>(`/challenges/auth`, {
     params,
   });
 };
@@ -47,7 +47,7 @@ export const getAllChallengesAuth = async (searchValue: string, cursorId: number
 export const getMyChallenges = async ({ cursorId }: GetMyChallengesParams) => {
   const params = { size: PAGE_SIZE.SUCCESS_CHALLENGES, cursorId };
 
-  return authApiClient.axios.get<GetMyChallengesResponse[]>(`/challenges/me`, {
+  return authApiClient.axios.get<GetMyChallengesResponse>(`/challenges/me`, {
     params,
   });
 };
@@ -66,7 +66,7 @@ export const getChallengeByIdAuth = async ({ challengeId }: GetChallengeByIdPara
 
 // 9. 챌린지 참가자 목록 조회
 export const getChallengersById = async ({ challengeId }: GetChallengersByIdParams) => {
-  return authApiClient.axios.get<GetChallengersByIdResponse[]>(
+  return authApiClient.axios.get<GetChallengersByIdResponse>(
     `/challenges/${challengeId}/challengers`,
   );
 };

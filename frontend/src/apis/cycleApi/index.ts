@@ -114,12 +114,12 @@ export const useGetCycleById = (
 export const useGetMyCyclesByChallengeId = (
   { challengeId, filter }: GetMyCyclesByChallengeIdParams,
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
+    AxiosResponse<GetMyCyclesByChallengeIdResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
   useInfiniteQuery<
-    AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
+    AxiosResponse<GetMyCyclesByChallengeIdResponse>,
     AxiosError<ErrorResponse>
   >(
     [queryKeys.getMyCyclesByChallengeId, challengeId, filter],

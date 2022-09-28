@@ -6,6 +6,11 @@ interface CompressionOptions {
   maxWidthOrHeight: number;
 }
 
+type CompressImageFunc = (
+  event: ChangeEvent<HTMLInputElement>,
+  compressionOptions: CompressionOptions,
+) => void;
+
 // dataURL을 FormData로 인코딩하는 함수
 const encodeFormData = (dataURL: string, imageName: string): FormData => {
   // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
@@ -64,10 +69,7 @@ const useImageInput = (imageName: string) => {
   };
 
   // 이미지 선택 시 이벤트 처리
-  const handleImageInputChange = async (
-    event: ChangeEvent<HTMLInputElement>,
-    compressionOptions: CompressionOptions,
-  ) => {
+  const compressImage: CompressImageFunc = async (event, compressionOptions) => {
     event.preventDefault();
 
     const file = event.currentTarget.files?.[0];
@@ -105,7 +107,7 @@ const useImageInput = (imageName: string) => {
       type="file"
       accept="image/*"
       hidden
-      onChange={(event) => handleImageInputChange(event, compressionOptions)}
+      onChange={(event) => compressImage(event, compressionOptions)}
       ref={imageInputRef}
     />
   );

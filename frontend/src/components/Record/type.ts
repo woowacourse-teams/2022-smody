@@ -1,7 +1,7 @@
 import { CycleDetailWithId } from 'commonType';
 
 export interface RecordProps {
-  cycleId: string;
+  cycleId: number;
   emojiIndex: number;
   startTime: string;
   cycleDetails: Pick<CycleDetailWithId, 'cycleDetailId' | 'progressImage'>[];

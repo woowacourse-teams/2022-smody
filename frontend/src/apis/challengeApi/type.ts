@@ -12,11 +12,12 @@ export type GetChallengeParams = {
   searchValue: string;
 };
 
-export type GetChallengeResponse = AdditionalChallengeInfo;
+export type GetAllChallengesResponse = AdditionalChallengeInfo[];
 
 export type GetMyChallengesParams = CursorParam;
 
-export type GetMyChallengesResponse = Challenge & Pick<UserChallengeStat, 'successCount'>;
+export type GetMyChallengesResponse = (Challenge &
+  Pick<UserChallengeStat, 'successCount'>)[];
 
 export type GetChallengeByIdParams = Pick<Challenge, 'challengeId'>;
 
@@ -28,8 +29,8 @@ export type GetChallengeByIdResponse = Challenge &
 
 export type GetChallengersByIdParams = Pick<Challenge, 'challengeId'>;
 
-export type GetChallengersByIdResponse = Omit<Member, 'email'> &
-  Pick<Cycle, 'progressCount'>;
+export type GetChallengersByIdResponse = (Omit<Member, 'email'> &
+  Pick<Cycle, 'progressCount'>)[];
 
 export type PostChallengePayload = Omit<ChallengeDetail, 'challengeId'>;
 
