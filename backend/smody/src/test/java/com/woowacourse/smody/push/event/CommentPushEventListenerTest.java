@@ -21,7 +21,6 @@ import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,9 +51,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		pushStrategy.handle(new CommentCreateEvent(comment));
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
@@ -79,9 +76,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		pushStrategy.handle(new CommentCreateEvent(comment));
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);

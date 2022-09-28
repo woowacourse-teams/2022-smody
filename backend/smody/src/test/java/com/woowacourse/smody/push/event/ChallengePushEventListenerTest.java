@@ -16,7 +16,6 @@ import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,9 +37,7 @@ class ChallengePushEventListenerTest extends IntegrationTest {
 		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
 		// when
-		pushStrategy.handle(new CycleCreateEvent(cycle));
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> pushStrategy.handle(new CycleCreateEvent(cycle)));
 
 		// then
 		LocalDateTime pushTime = now
@@ -58,8 +55,8 @@ class ChallengePushEventListenerTest extends IntegrationTest {
 		);
 	}
 
-	@DisplayName("사이클을 진행해서 새로운 인증 임박 알림을 만들 때, "
-		+ "같은 사이클의 이전 인증 임박 알림이 보내지지 않았다면 삭제한다.")
+	@DisplayName("사이클에 대한 새로운 인증 임박 알림을 만들 때, "
+		+ "이전 인증 임박 알림이 보내지지 않았다면 삭제한다.")
 	@Test
 	void push_cycleProgress() throws InterruptedException {
 		// given
@@ -68,10 +65,8 @@ class ChallengePushEventListenerTest extends IntegrationTest {
 		pushStrategy.handle(new CycleCreateEvent(cycle));
 		fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
 
-		// when
-		pushStrategy.handle(new CycleProgressEvent(cycle));
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		// when\
+		syncronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
 
 		// then
 		LocalDateTime pushTime = now

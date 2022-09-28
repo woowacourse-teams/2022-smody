@@ -9,13 +9,12 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
@@ -69,15 +68,17 @@ class EventExceptionTest extends IntegrationTest {
 			.given(challengePushStrategy).handle(any(CycleCreateEvent.class));
 
 		// when
-		Long cycleId = cycleService.create(
-			new TokenPayload(조조그린_ID),
-			new CycleRequest(now, 스모디_방문하기_ID)
-		);
+		AtomicReference<Long> cycleId = new AtomicReference<>();
 
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> {
+			cycleId.set(cycleService.create(
+					new TokenPayload(조조그린_ID),
+					new CycleRequest(now, 스모디_방문하기_ID)
+			));
+		});
 
 		// then
-		Optional<Cycle> cycle = cycleService.findById(cycleId);
+		Optional<Cycle> cycle = cycleService.findById(cycleId.get());
 		List<PushNotification> notifications = pushNotificationRepository.findAll();
 		assertAll(
 			() -> assertThat(cycle).isPresent(),
@@ -97,9 +98,7 @@ class EventExceptionTest extends IntegrationTest {
 			.given(subscriptionPushStrategy).handle(any(PushSubscribeEvent.class));
 
 		// when
-		pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
 
 		// then
 		List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
@@ -127,13 +126,15 @@ class EventExceptionTest extends IntegrationTest {
 			.given(commentPushStrategy).handle(any(CommentCreateEvent.class));
 
 		// when
-		Long commentId = commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);
+		AtomicReference<Long> commentId = new AtomicReference<>();
 
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> {
+			commentId.set(commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
+		});
 
 		// then
 		List<PushNotification> notifications = pushNotificationRepository.findAll();
-		Comment comment = commentService.search(commentId);
+		Comment comment = commentService.search(commentId.get());
 		assertAll(
 			() -> assertThat(comment.getMember().getId()).isEqualTo(더즈_ID),
 			() -> assertThat(notifications).isEmpty()
