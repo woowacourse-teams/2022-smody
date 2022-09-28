@@ -10,7 +10,6 @@ export interface RenderFallbackParamsInterface {
 
 export interface ErrorBoundaryProps {
   pathname: string;
-  children: ReactNode;
   renderFallback: (renderFallbackParams: RenderFallbackParamsInterface) => ReactNode;
 }
 
