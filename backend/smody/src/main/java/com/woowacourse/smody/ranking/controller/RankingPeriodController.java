@@ -18,7 +18,7 @@ public class RankingPeriodController {
 
     @GetMapping
     public ResponseEntity<List<RankingPeriodResponse>> findAll() {
-        List<RankingPeriodResponse> rankingPeriodResponses = rankingPeriodService.findAll();
+        List<RankingPeriodResponse> rankingPeriodResponses = rankingPeriodService.findAllLatestOrder();
         return ResponseEntity.ok(rankingPeriodResponses);
     }
 }

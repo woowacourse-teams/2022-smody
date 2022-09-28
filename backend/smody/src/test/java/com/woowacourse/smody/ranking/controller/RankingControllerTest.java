@@ -37,7 +37,7 @@ public class RankingControllerTest extends ControllerTest {
                         "week"
                 )
         );
-        given(rankingPeriodService.findAll()).willReturn(rankingPeriodResponses);
+        given(rankingPeriodService.findAllLatestOrder()).willReturn(rankingPeriodResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/ranking-periods"));
