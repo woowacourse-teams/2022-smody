@@ -8,14 +8,14 @@ import {
   getMyCyclesByChallengeId,
 } from 'apis/cycleApi/api';
 import {
-  PostCycleProps,
-  PostCycleProgressProps,
+  PostCyclePayload,
+  PostCycleProgressPayload,
   PostCycleProgressResponse,
   GetMyCyclesStatResponse,
   GetCycleByIdResponse,
-  GetCycleByIdProps,
+  GetCycleByIdParams,
   GetMyCyclesInProgressResponse,
-  GetMyCyclesByChallengeIdProps,
+  GetMyCyclesByChallengeIdParams,
   GetMyCyclesByChallengeIdResponse,
 } from 'apis/cycleApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
@@ -31,9 +31,13 @@ import {
 
 // 1. 챌린지 사이클 생성(POST)
 export const usePostCycle = (
-  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>, PostCycleProps>,
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostCyclePayload
+  >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostCycleProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostCyclePayload>(
     postCycle,
     options,
   );
@@ -42,12 +46,12 @@ export const usePostCycle = (
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
 export const useGetMyCyclesInProgress = (
   options?: UseInfiniteQueryOptions<
-    AxiosResponse<GetMyCyclesInProgressResponse[]>,
+    AxiosResponse<GetMyCyclesInProgressResponse>,
     AxiosError<ErrorResponse>
   >,
 ) =>
   useInfiniteQuery<
-    AxiosResponse<GetMyCyclesInProgressResponse[]>,
+    AxiosResponse<GetMyCyclesInProgressResponse>,
     AxiosError<ErrorResponse>
   >(
     queryKeys.getMyCyclesInProgress,
@@ -82,18 +86,18 @@ export const usePostCycleProgress = (
   options?: UseMutationOptions<
     AxiosResponse<PostCycleProgressResponse>,
     AxiosError<ErrorResponse>,
-    PostCycleProgressProps
+    PostCycleProgressPayload
   >,
 ) =>
   useMutation<
     AxiosResponse<PostCycleProgressResponse>,
     AxiosError<ErrorResponse>,
-    PostCycleProgressProps
+    PostCycleProgressPayload
   >(postCycleProgress, options);
 
 // 7. 아이디로 사이클 조회(GET)
 export const useGetCycleById = (
-  { cycleId }: GetCycleByIdProps,
+  { cycleId }: GetCycleByIdParams,
   options?: UseQueryOptions<
     AxiosResponse<GetCycleByIdResponse>,
     AxiosError<ErrorResponse>
@@ -108,7 +112,7 @@ export const useGetCycleById = (
 // TODO 커서페이징은 이거 참고
 // 챌린지에 대한 전체 사이클 상세 조회 기능
 export const useGetMyCyclesByChallengeId = (
-  { challengeId, filter }: GetMyCyclesByChallengeIdProps,
+  { challengeId, filter }: GetMyCyclesByChallengeIdParams,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetMyCyclesByChallengeIdResponse[]>,
     AxiosError<ErrorResponse>

@@ -2,11 +2,11 @@ export interface GetVapidPublicKeyResponse {
   publicKey: string;
 }
 
-export interface PostUnsubscribeProps {
+export interface PostUnsubscribePayload {
   endpoint: string;
 }
 
-export interface DeleteNotificationProps {
+export interface DeleteNotificationParams {
   pushNotificationId: number;
 }
 

@@ -4,9 +4,9 @@ import {
   Challenge,
   ChallengeDetail,
   UserChallengeStat,
-} from 'commonTypes/challenge';
-import { Cycle, CycleDetail } from 'commonTypes/cycle';
-import { Member } from 'commonTypes/member';
+} from 'types/challenge';
+import { Cycle, CycleDetail } from 'types/cycle';
+import { Member } from 'types/member';
 
 export type GetChallengeParams = {
   searchValue: string;

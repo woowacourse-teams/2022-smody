@@ -6,10 +6,10 @@ import {
   postUnsubscribe,
 } from './api';
 import {
-  DeleteNotificationProps,
+  DeleteNotificationParams,
   GetNotificationsResponse,
   GetVapidPublicKeyResponse,
-  PostUnsubscribeProps,
+  PostUnsubscribePayload,
 } from './type';
 import { mutationKeys, queryKeys } from 'apis/constants';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -49,10 +49,10 @@ export const usePostUnsubscribe = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostUnsubscribeProps
+    PostUnsubscribePayload
   >,
 ) => {
-  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostUnsubscribeProps>(
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostUnsubscribePayload>(
     mutationKeys.postUnsubscribe,
     postUnsubscribe,
     options,
@@ -76,10 +76,10 @@ export const useDeleteNotification = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    DeleteNotificationProps
+    DeleteNotificationParams
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteNotificationProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteNotificationParams>(
     mutationKeys.deleteNotification,
     deleteNotification,
     options,

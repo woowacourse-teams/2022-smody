@@ -1,19 +1,22 @@
-import { Challenge, Cycle, CycleDetail, CycleDetailWithId } from 'commonType';
+import { PickType } from 'smody-library';
+import { Challenge, UserChallengeStat } from 'types/challenge';
+import { Cycle, CycleDetail } from 'types/cycle';
 
-export type PostCycleProps = Pick<Cycle, 'challengeId' | 'startTime'>;
+export type PostCyclePayload = Pick<Cycle, 'startTime' | 'challengeId'>;
 
-export interface GetMyCyclesInProgressProps {
-  cursorId: number;
-}
+export type GetMyCyclesInProgressParams = {
+  cursorId: PickType<Cycle, 'cycleId'>;
+};
 
-export interface GetMyCyclesInProgressResponse extends Cycle {
-  emojiIndex: number;
-  colorIndex: number;
-}
+type MyProgressCycle = Pick<UserChallengeStat, 'successCount'> & Challenge & Cycle;
 
-export type PostCycleProgressProps = Pick<Cycle, 'cycleId'> & { formData: FormData };
+export type GetMyCyclesInProgressResponse = MyProgressCycle[];
 
-export type GetCycleByIdProps = Pick<Cycle, 'cycleId'>;
+// -------------
+
+export type PostCycleProgressPayload = Pick<Cycle, 'cycleId'> & { formData: FormData };
+
+export type GetCycleByIdParams = Pick<Cycle, 'cycleId'>;
 
 export interface PostCycleProgressResponse {
   progressCount: number;
@@ -30,18 +33,17 @@ export interface GetCycleByIdResponse extends Cycle {
   cycleDetails: CycleDetail[];
 }
 
-export interface GetMyCyclesByChallengeIdProps extends Pick<Challenge, 'challengeId'> {
+// ---
+
+export type GetMyCyclesByChallengeIdParams = Pick<Challenge, 'challengeId'> & {
   filter: string;
-}
+};
 
-export interface GetMyCyclesByChallengeIdAPIProps extends GetMyCyclesByChallengeIdProps {
-  cursorId: number;
-}
+export type GetMyCyclesByChallengeIdAPIParams = GetMyCyclesByChallengeIdParams & {
+  cursorId: PickType<Challenge, 'challengeId'>;
+};
 
-export interface GetMyCyclesByChallengeIdResponse {
-  cycleId: number;
-  emojiIndex: number;
-  colorIndex: number;
-  startTime: string;
-  cycleDetails: Pick<CycleDetailWithId, 'cycleDetailId' | 'progressImage'>[];
-}
+export type GetMyCyclesByChallengeIdResponse = Pick<Cycle, 'cycleId' | 'startTime'> &
+  Pick<Challenge, 'emojiIndex' | 'colorIndex'> & {
+    cycleDetails: Pick<CycleDetail, 'cycleDetailId' | 'progressImage'>[];
+  };

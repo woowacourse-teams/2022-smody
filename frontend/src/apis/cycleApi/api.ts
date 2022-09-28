@@ -1,31 +1,33 @@
 import { apiClient, authApiClient } from 'apis/apiClient';
 import { PAGE_SIZE } from 'apis/constants';
 import {
-  PostCycleProps,
-  GetMyCyclesInProgressProps,
-  PostCycleProgressProps,
+  PostCyclePayload,
+  GetMyCyclesInProgressParams,
+  PostCycleProgressPayload,
   PostCycleProgressResponse,
-  GetCycleByIdProps,
+  GetCycleByIdParams,
   GetMyCyclesStatResponse,
   GetCycleByIdResponse,
   GetMyCyclesInProgressResponse,
   GetMyCyclesByChallengeIdResponse,
-  GetMyCyclesByChallengeIdAPIProps,
+  GetMyCyclesByChallengeIdAPIParams,
 } from 'apis/cycleApi/type';
 
 // 1. 챌린지 사이클 생성(POST)
-export const postCycle = async ({ challengeId, startTime }: PostCycleProps) => {
+export const postCycle = async ({ challengeId, startTime }: PostCyclePayload) => {
   return authApiClient.axios.post('/cycles', { challengeId, startTime });
 };
 
 // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
-export const getMyCyclesInProgress = async ({ cursorId }: GetMyCyclesInProgressProps) => {
+export const getMyCyclesInProgress = async ({
+  cursorId,
+}: GetMyCyclesInProgressParams) => {
   const params = {
     size: PAGE_SIZE.CYCLES,
     cursorId,
   };
 
-  return authApiClient.axios.get<GetMyCyclesInProgressResponse[]>('/cycles/me', {
+  return authApiClient.axios.get<GetMyCyclesInProgressResponse>('/cycles/me', {
     params,
   });
 };
@@ -39,7 +41,7 @@ export const getMyCyclesStat = async () => {
 export const postCycleProgress = async ({
   cycleId,
   formData,
-}: PostCycleProgressProps) => {
+}: PostCycleProgressPayload) => {
   return authApiClient.axios.post<PostCycleProgressResponse>(
     `/cycles/${cycleId}/progress`,
     formData,
@@ -50,7 +52,7 @@ export const postCycleProgress = async ({
 };
 
 // 7. 아이디로 사이클 조회(GET)
-export const getCycleById = async ({ cycleId }: GetCycleByIdProps) => {
+export const getCycleById = async ({ cycleId }: GetCycleByIdParams) => {
   return apiClient.axios.get<GetCycleByIdResponse>(`/cycles/${cycleId}`);
 };
 
@@ -60,7 +62,7 @@ export const getMyCyclesByChallengeId = async ({
   challengeId,
   cursorId,
   filter,
-}: GetMyCyclesByChallengeIdAPIProps) => {
+}: GetMyCyclesByChallengeIdAPIParams) => {
   const params =
     filter === 'all'
       ? {

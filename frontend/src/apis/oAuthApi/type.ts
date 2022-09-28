@@ -1,4 +1,4 @@
-import { LoginMember, Member } from 'commonTypes/member';
+import { LoginMember, Member } from 'types/member';
 
 export type GetTokenGoogleParams = {
   code: string;
