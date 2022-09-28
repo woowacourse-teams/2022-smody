@@ -31,7 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class CommentControllerTest extends ControllerTest {
+class CommentControllerTest extends ControllerTest {
 
     @DisplayName("댓글을 정상적으로 생성할 때 201을 응답한다.")
     @Test

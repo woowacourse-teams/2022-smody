@@ -200,7 +200,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengersResponse(1L, "조조그린", 1, "picture1.jpg", "조조그린입니다"),
                 new ChallengersResponse(2L, "알파", 0, "picture2.jpg", "알파입니다")
         );
-        given(challengeQueryService.findAllChallengers(eq(1L))
+        given(challengeQueryService.findAllChallengers(1L)
         ).willReturn(challengersResponse);
 
         // when

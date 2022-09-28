@@ -18,7 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class CycleTest {
+class CycleTest {
 
     private static final String EMAIL = "alpha@naver.com";
     private static final String NICKNAME = "손수건";

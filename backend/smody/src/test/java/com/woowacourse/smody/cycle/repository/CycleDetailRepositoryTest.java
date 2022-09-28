@@ -65,7 +65,7 @@ class CycleDetailRepositoryTest extends RepositoryTest {
 
         // then
         assertAll(
-                () -> assertThat(feeds.size()).isEqualTo(3),
+                () -> assertThat(feeds).hasSize(3),
                 () -> assertThat(feeds.stream().map(Feed::getDescription)).containsExactly(
                         "인증4", "인증3", "인증2"
                 )

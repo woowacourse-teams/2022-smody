@@ -1,11 +1,21 @@
 package com.woowacourse.smody.cycle.service;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
+import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
@@ -18,15 +28,8 @@ import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import com.woowacourse.smody.push.domain.PushCase;
-import com.woowacourse.smody.push.event.PushEvent;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,7 +54,7 @@ public class CycleService {
         }
         Cycle save = cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
 
-        applicationEventPublisher.publishEvent(new PushEvent(save, PushCase.CHALLENGE));
+        applicationEventPublisher.publishEvent(new CycleCreateEvent(save));
         return save.getId();
     }
 
@@ -72,7 +75,7 @@ public class CycleService {
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
 
-        applicationEventPublisher.publishEvent(new PushEvent(cycle, PushCase.CHALLENGE));
+        applicationEventPublisher.publishEvent(new CycleProgressEvent(cycle));
         return new ProgressResponse(cycle.getProgress());
     }
 

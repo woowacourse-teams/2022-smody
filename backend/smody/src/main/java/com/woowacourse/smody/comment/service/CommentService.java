@@ -1,7 +1,12 @@
 package com.woowacourse.smody.comment.service;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
 import com.woowacourse.smody.comment.repository.CommentRepository;
@@ -11,12 +16,8 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.feed.repository.FeedRepository;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import com.woowacourse.smody.push.domain.PushCase;
-import com.woowacourse.smody.push.event.PushEvent;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,7 +37,7 @@ public class CommentService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
         Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
 
-        applicationEventPublisher.publishEvent(new PushEvent(comment, PushCase.COMMENT));
+        applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
         return comment.getId();
     }
 
