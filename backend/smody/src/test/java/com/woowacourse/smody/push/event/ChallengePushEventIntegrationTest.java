@@ -8,8 +8,8 @@ import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +40,20 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 
 		// when
-		Long pathId = cycleService.create(
-			new TokenPayload(조조그린_ID),
-			new CycleRequest(now, 스모디_방문하기_ID)
-		);
+		AtomicReference<Long> pathId = new AtomicReference<>();
 
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> {
+			pathId.set(cycleService.create(
+					new TokenPayload(조조그린_ID),
+					new CycleRequest(now, 스모디_방문하기_ID)
+			));
+		});
 
 		// then
 		LocalDateTime pushTime = now
 			.plusDays(1L)
 			.minusHours(3L);
-		Optional<Cycle> cycle = cycleService.findById(pathId);
+		Optional<Cycle> cycle = cycleService.findById(pathId.get());
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
 		assertAll(
 			() -> assertThat(cycle).isPresent(),
@@ -61,7 +63,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 				.isEqualTo(pushTime.format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("스모디 방문하기 인증까지 얼마 안남았어요~"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(pathId)
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(pathId.get())
 		);
 	}
 
@@ -76,12 +78,11 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 			.willReturn("fakeUrl");
 
 		// when
-		cycleService.increaseProgress(
-			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
-		);
 
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> cycleService.increaseProgress(
+				new TokenPayload(조조그린_ID),
+				new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
+		));
 
 		// then
 		LocalDateTime pushTime = now
@@ -110,12 +111,10 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 			.willReturn("fakeUrl");
 
 		// when
-		cycleService.increaseProgress(
-			new TokenPayload(조조그린_ID),
-			new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
-		);
-
-		taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+		syncronize(() -> cycleService.increaseProgress(
+				new TokenPayload(조조그린_ID),
+				new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
+		));
 
 		// then
 		assertThat(pushNotificationRepository.findAll()).isEmpty();
