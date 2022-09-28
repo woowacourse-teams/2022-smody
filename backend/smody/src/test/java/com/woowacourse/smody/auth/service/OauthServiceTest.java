@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-public class OauthServiceTest extends IntegrationTest {
+class OauthServiceTest extends IntegrationTest {
 
     @Autowired
     private OauthService oauthService;

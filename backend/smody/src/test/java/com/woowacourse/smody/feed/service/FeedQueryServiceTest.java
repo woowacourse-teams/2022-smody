@@ -23,7 +23,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class FeedQueryServiceTest extends IntegrationTest {
+class FeedQueryServiceTest extends IntegrationTest {
 
     @Autowired
     private FeedQueryService feedQueryService;

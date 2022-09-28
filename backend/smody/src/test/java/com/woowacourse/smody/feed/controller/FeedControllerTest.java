@@ -23,7 +23,7 @@ import org.mockito.BDDMockito;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class FeedControllerTest extends ControllerTest {
+class FeedControllerTest extends ControllerTest {
 
     @DisplayName("모든 피드를 조회할 때 200을 응답한다.")
     @Test

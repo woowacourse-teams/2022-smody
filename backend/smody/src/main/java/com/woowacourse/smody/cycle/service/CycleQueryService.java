@@ -45,7 +45,7 @@ public class CycleQueryService {
         Member member = memberService.search(tokenPayload);
         Integer size = pagingParams.getDefaultSize();
         List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
-                LatestSort(findAllChallengingRecordByMember(member), searchTime));
+                sortByLatest(findAllChallengingRecordByMember(member), searchTime));
 
         return challengingRecords.stream()
                 .map(challengingRecord ->new InProgressCycleResponse(
@@ -60,7 +60,7 @@ public class CycleQueryService {
         );
     }
 
-    private List<ChallengingRecord> LatestSort(List<ChallengingRecord> challengingRecords,
+    private List<ChallengingRecord> sortByLatest(List<ChallengingRecord> challengingRecords,
                                                    LocalDateTime searchTime) {
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.isInProgress(searchTime))
