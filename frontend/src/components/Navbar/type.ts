@@ -1,4 +1,4 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
 export type NavLinkProps = {
   fill: AvailablePickedColor;

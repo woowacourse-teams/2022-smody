@@ -1,7 +1,7 @@
-import { AvailablePickedColor, FontSizeType } from 'styles/type';
+import { AvailablePickedColor, FontSizeType } from 'types/style';
 
-export interface TextProps {
+export type TextProps = {
   size?: FontSizeType;
   color: AvailablePickedColor;
   fontWeight?: 'normal' | 'bold';
-}
+};

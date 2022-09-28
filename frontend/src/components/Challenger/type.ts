@@ -1,7 +1,8 @@
-export interface ChallengerProps {
-  memberId: number;
-  nickName: string;
-  progressCount: number;
-  picture: string;
-  introduction: string;
-}
+import { Cycle } from 'types/cycle';
+import { Member } from 'types/member';
+
+export type ChallengerProps = Pick<
+  Member,
+  'memberId' | 'nickname' | 'introduction' | 'picture'
+> &
+  Pick<Cycle, 'progressCount'>;

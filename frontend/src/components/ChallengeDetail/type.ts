@@ -1,13 +1,13 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
-export interface ChallengeExplanationTextProps {
+export type ChallengeExplanationTextProps = {
   color: AvailablePickedColor;
-}
+};
 
-export interface ChallengeDetailProps {
+export type ChallengeDetailProps = {
   challengeName: string;
   challengerCount: number;
   emojiIndex: number;
   colorIndex: number;
   description: string;
-}
+};

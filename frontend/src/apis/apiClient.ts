@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, HeadersDefaults } from 'axios';
 import { BASE_URL } from 'env';
 
-interface AxiosHeaders extends HeadersDefaults {
+type AxiosHeaders = HeadersDefaults & {
   Authorization: string;
-}
+};
 
 class apiClientClass {
   axios: AxiosInstance;

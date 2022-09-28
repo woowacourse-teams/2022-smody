@@ -11,13 +11,14 @@ import {
 import {
   GetMyInfoResponse,
   GetTokenGoogleResponse,
-  PatchMyInfoProps,
-  PostProfileImageProps,
+  PatchMyInfoPayload,
+  PostProfileImagePayload,
   GetIsValidAccessTokenResponse,
+  GetTokenGoogleParams,
 } from 'apis/oAuthApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import { useMutation, useQuery, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { ErrorResponse } from 'types/internal';
 
 export const useGetLinkGoogle = (
   options?: UseQueryOptions<AxiosResponse<string>, AxiosError<ErrorResponse>>,
@@ -29,7 +30,7 @@ export const useGetLinkGoogle = (
   );
 
 export const useGetTokenGoogle = (
-  code: string,
+  { code }: GetTokenGoogleParams,
   options?: UseQueryOptions<
     AxiosResponse<GetTokenGoogleResponse>,
     AxiosError<ErrorResponse>
@@ -37,7 +38,7 @@ export const useGetTokenGoogle = (
 ) =>
   useQuery<AxiosResponse<GetTokenGoogleResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getTokenGoogle,
-    () => getTokenGoogle(code),
+    () => getTokenGoogle({ code }),
     { ...options, enabled: false, suspense: false },
   );
 
@@ -63,10 +64,10 @@ export const usePatchMyInfo = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PatchMyInfoProps
+    PatchMyInfoPayload
   >,
 ) =>
-  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoProps>(
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PatchMyInfoPayload>(
     mutationKeys.patchMyInfo,
     patchMyInfo,
     options,
@@ -85,10 +86,10 @@ export const usePostProfileImage = (
   options?: UseMutationOptions<
     AxiosResponse,
     AxiosError<ErrorResponse>,
-    PostProfileImageProps
+    PostProfileImagePayload
   >,
 ) => {
-  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImageProps>(
+  return useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostProfileImagePayload>(
     mutationKeys.postProfileImage,
     postProfileImage,
     options,

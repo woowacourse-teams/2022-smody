@@ -1,7 +1,7 @@
-import { Cycle } from 'commonType';
+import { Cycle } from 'types/cycle';
 
 export type CheckCirclesProps = Pick<Cycle, 'progressCount'>;
 
-export interface CheckCircleProps extends CheckCirclesProps {
+export type CheckCircleProps = Pick<Cycle, 'progressCount'> & {
   checkCircleCount: number;
-}
+};

@@ -1,21 +1,21 @@
-export interface GetVapidPublicKeyResponse {
+export type GetVapidPublicKeyResponse = {
   publicKey: string;
-}
+};
 
-export interface PostUnsubscribeProps {
+export type PostUnsubscribePayload = {
   endpoint: string;
-}
+};
 
-export interface DeleteNotificationProps {
+export type DeleteNotificationParams = {
   pushNotificationId: number;
-}
+};
 
-interface CustomNotification {
+type CustomNotification = {
   pushNotificationId: number;
   message: string;
   pushTime: string;
   pathId: number;
   pushCase: string;
-}
+};
 
 export type GetNotificationsResponse = CustomNotification[];

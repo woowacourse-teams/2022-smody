@@ -1,6 +1,6 @@
-import { Cycle } from 'commonType';
+import { Challenge, UserChallengeStat } from 'types/challenge';
+import { Cycle } from 'types/cycle';
 
-export interface CertItemProps extends Omit<Cycle, 'challengerCount'> {
-  emojiIndex: number;
-  colorIndex: number;
-}
+export type CertItemProps = Challenge &
+  Pick<UserChallengeStat, 'successCount'> &
+  Pick<Cycle, 'cycleId' | 'progressCount' | 'startTime'>;

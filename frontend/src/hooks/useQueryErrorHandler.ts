@@ -1,8 +1,8 @@
 import { authApiClient } from 'apis/apiClient';
 import { AxiosError } from 'axios';
-import { ErrorResponse } from 'commonType';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
+import { ErrorResponse } from 'types/internal';
 
 import useSnackBar from 'hooks/useSnackBar';
 

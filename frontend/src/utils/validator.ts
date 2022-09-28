@@ -1,4 +1,4 @@
-import { ValidatorFunction } from 'commonType';
+import { ValidatorFunction } from 'types/internal';
 
 type checkFormatFunction = (value: string, optionalValue?: string) => boolean;
 

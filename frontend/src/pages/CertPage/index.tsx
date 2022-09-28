@@ -1,5 +1,5 @@
+import { CycleInfoItem } from './type';
 import useCertPage from './useCertPage';
-import { GetMyCyclesInProgressResponse } from 'apis/cycleApi/type';
 import styled, { css } from 'styled-components';
 
 import useSnackBar from 'hooks/useSnackBar';
@@ -32,7 +32,7 @@ const CertPage = () => {
 
     return (
       <CycleList>
-        {savedCycles.map((cycleInfo: GetMyCyclesInProgressResponse) => (
+        {savedCycles.map((cycleInfo: CycleInfoItem) => (
           <li key={cycleInfo.cycleId}>
             <CertItem {...cycleInfo} />
           </li>

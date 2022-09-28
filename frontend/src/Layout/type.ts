@@ -1,11 +1,11 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
-export interface horizontalPadding {
+export type horizontalPadding = {
   pc: string;
   tablet: string;
   mobile: string;
-}
-export interface OutletWrapperProps {
+};
+export type OutletWrapperProps = {
   bgColor: AvailablePickedColor;
   horizontalPadding: horizontalPadding;
-}
+};

@@ -17,6 +17,11 @@ import { SuccessModal } from 'components/SuccessModal';
 import { CLIENT_PATH } from 'constants/path';
 import { colorList, emojiList } from 'constants/style';
 
+const certImageCompressionOptions = {
+  maxSizeMB: 0.2,
+  maxWidthOrHeight: 1000,
+};
+
 const CertFormPage = () => {
   const {
     themeContext,
@@ -40,11 +45,6 @@ const CertFormPage = () => {
     handleCloseModal,
     handleChangeDescription,
   } = useCertFormPage();
-
-  const certImageCompressionOptions = {
-    maxSizeMB: 0.2,
-    maxWidthOrHeight: 1000,
-  };
 
   return (
     <FlexBox flexDirection="column" alignItems="center">

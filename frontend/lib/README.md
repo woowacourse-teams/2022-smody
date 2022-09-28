@@ -7,7 +7,7 @@
 - 소개
 
   - 스모디 프로젝트에서 사용되는 범용 타입 모듈입니다.
-  - `MappedKeyToUnion` 타입을 제공합니다.
+  - `MappedKeyToUnion`, `PickType` 메타 타입을 제공합니다.
 
 - 설치
 

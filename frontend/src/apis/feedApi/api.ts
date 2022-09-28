@@ -2,13 +2,13 @@ import { authApiClient, apiClient } from 'apis/apiClient';
 import { PAGE_SIZE, SORT } from 'apis/constants';
 import {
   GetAllFeedsResponse,
-  GetFeedByIdProps,
+  GetFeedByIdParams,
   GetFeedByIdResponse,
-  GetCommentsByIdProps,
+  GetCommentsByIdParams,
   GetCommentsByIdResponse,
-  PostCommentProps,
-  PatchCommentsProps,
-  DeleteCommentsProps,
+  PostCommentPayload,
+  PatchCommentsPayload,
+  DeleteCommentsParams,
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
@@ -25,37 +25,37 @@ export const getAllFeeds = async (cursorId: number) => {
 };
 
 // 2. id로 피드 조회(GET)
-export const getFeedById = async ({ cycleDetailId }: GetFeedByIdProps) => {
+export const getFeedById = async ({ cycleDetailId }: GetFeedByIdParams) => {
   return apiClient.axios.get<GetFeedByIdResponse>(`/feeds/${cycleDetailId}`);
 };
 
 // 3. 댓글 생성(POST)
-export const postComments = async ({ cycleDetailId, content }: PostCommentProps) => {
+export const postComments = async ({ cycleDetailId, content }: PostCommentPayload) => {
   return authApiClient.axios.post(`/feeds/${cycleDetailId}/comments`, {
     content,
   });
 };
 
 // 4. 댓글 조회(GET) - 비회원용
-export const getCommentsById = ({ cycleDetailId }: GetCommentsByIdProps) => {
+export const getCommentsById = ({ cycleDetailId }: GetCommentsByIdParams) => {
   return apiClient.axios.get<GetCommentsByIdResponse>(`/feeds/${cycleDetailId}/comments`);
 };
 
 // 4. 댓글 조회(GET) - 회원용
-export const getCommentsByIdAuth = ({ cycleDetailId }: GetCommentsByIdProps) => {
+export const getCommentsByIdAuth = ({ cycleDetailId }: GetCommentsByIdParams) => {
   return authApiClient.axios.get<GetCommentsByIdResponse>(
     `/feeds/${cycleDetailId}/comments/auth`,
   );
 };
 
 // 5. 댓글 수정(PATCH)
-export const patchComments = async ({ commentId, content }: PatchCommentsProps) => {
+export const patchComments = async ({ commentId, content }: PatchCommentsPayload) => {
   return authApiClient.axios.patch(`comments/${commentId}`, {
     content,
   });
 };
 
 // 6. 댓글 삭제(DELETE)
-export const deleteComments = async ({ commentId }: DeleteCommentsProps) => {
+export const deleteComments = async ({ commentId }: DeleteCommentsParams) => {
   return authApiClient.axios.delete(`comments/${commentId}`);
 };

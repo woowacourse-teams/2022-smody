@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
 
-export interface ToggleButtonProps {
+export type ToggleButtonProps = {
   checked: boolean;
   handleChange: ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
-}
+};

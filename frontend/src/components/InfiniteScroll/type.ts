@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-export interface InfiniteScrollProps {
+export type InfiniteScrollProps = {
   loadMore: () => void;
   hasMore?: boolean;
   isFetching: boolean;
   loader?: ReactNode;
   threshold?: number;
-}
+};

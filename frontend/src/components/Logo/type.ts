@@ -1,7 +1,7 @@
-import { AvailablePickedColor } from 'styles/type';
+import { AvailablePickedColor } from 'types/style';
 
-export interface LogoProps {
+export type LogoProps = {
   width: string;
   color: AvailablePickedColor;
   isAnimated: boolean;
-}
+};

@@ -1,4 +1,3 @@
-export interface ErrorFallbackMainProps {
-  errorCode: number | null;
-  errorMessage: string;
-}
+import { ErrorType } from 'types/internal';
+
+export type ErrorFallbackMainProps = ErrorType;

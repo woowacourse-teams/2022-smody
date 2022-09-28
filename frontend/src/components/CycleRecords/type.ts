@@ -1,5 +1,5 @@
 export type SelectOptions = 'all' | 'success';
 
-export interface CycleRecordListProps {
+export type CycleRecordListProps = {
   selectOption: SelectOptions;
-}
+};
