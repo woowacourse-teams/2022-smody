@@ -1,5 +1,6 @@
 import { ErrorBoundaryProps, ErrorBoundaryState } from './type';
 import { AxiosError } from 'axios';
+import { PropsWithChildren } from 'react';
 import React from 'react';
 
 import { ERROR_MESSAGE } from 'constants/message';
@@ -11,16 +12,16 @@ const OFFLINE_ERROR_MESSAGE =
 const INITIAL_STATE = { hasError: false, errorCode: null, errorMessage: null };
 
 export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
+  PropsWithChildren<ErrorBoundaryProps>,
   ErrorBoundaryState
 > {
-  constructor(props: ErrorBoundaryProps) {
+  constructor(props: PropsWithChildren<ErrorBoundaryProps>) {
     super(props);
 
     this.state = INITIAL_STATE;
   }
 
-  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+  componentDidUpdate(prevProps: PropsWithChildren<ErrorBoundaryProps>) {
     const { pathname: currentPathname } = this.props;
     const { pathname: prevPathname } = prevProps;
 

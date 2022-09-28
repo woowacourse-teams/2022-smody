@@ -1,4 +1,5 @@
 import { BottomSheetContentProps, BottomSheetProps } from './type';
+import { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css, keyframes } from 'styled-components';
 
@@ -8,7 +9,7 @@ export const BottomSheet = ({
   children,
   height,
   handleCloseBottomSheet,
-}: BottomSheetProps) => {
+}: PropsWithChildren<BottomSheetProps>) => {
   return (
     <>
       {ReactDOM.createPortal(

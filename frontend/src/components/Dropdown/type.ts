@@ -4,7 +4,6 @@ export interface DropdownProps {
   disabled?: boolean;
   button: ReactNode;
   nonLinkableElement?: ReactNode;
-  children?: ReactNode;
   updateIsSubscribed: (updatedIsSubscribed: boolean) => void;
   updateNotificationCount: (updatedNotificationCount: number) => void;
 }

@@ -1,5 +1,6 @@
 import { DropdownProps } from './type';
 import { useDropdown } from './useDropdown';
+import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 
 export const Dropdown = ({
@@ -9,7 +10,7 @@ export const Dropdown = ({
   children,
   updateNotificationCount,
   updateIsSubscribed,
-}: DropdownProps) => {
+}: PropsWithChildren<DropdownProps>) => {
   const { isDropdownToggled, showDropdownMenu, hideDropdownMenu, onSelectMenu } =
     useDropdown({ updateNotificationCount, updateIsSubscribed });
 
