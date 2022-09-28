@@ -2,6 +2,7 @@ package com.woowacourse.smody.member.service;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
@@ -9,6 +10,7 @@ import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
+import com.woowacourse.smody.member.dto.MentionResponse;
 import com.woowacourse.smody.member.repository.MemberRepository;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
@@ -16,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -70,5 +75,12 @@ public class MemberService {
             return NOT_LOGIN_MEMBER;
         }
         return search(tokenPayload);
+    }
+
+    public List<MentionResponse> findAll(PagingParams pagingParams) {
+        List<Member> members = memberRepository.findAll(pagingParams);
+        return members.stream()
+                .map(MentionResponse::new)
+                .collect(Collectors.toList());
     }
 }
