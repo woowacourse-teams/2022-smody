@@ -2,6 +2,8 @@ import { useGetMyCyclesInProgress } from 'apis';
 import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState } from 'react';
 
+import { INDEXED_DB } from 'constants/storage';
+
 const useCertPage = () => {
   const {
     data: cycleInfiniteData,
@@ -23,7 +25,7 @@ const useCertPage = () => {
     if (!isError) {
       return;
     }
-    indexedDB.getPosts('cycle').then((cycles) => {
+    indexedDB.getPosts(INDEXED_DB.CYCLE).then((cycles) => {
       setSavedCycles(cycles);
     });
   }, [isError]);
