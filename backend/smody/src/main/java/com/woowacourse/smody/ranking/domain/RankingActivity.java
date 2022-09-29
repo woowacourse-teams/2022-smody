@@ -1,5 +1,6 @@
 package com.woowacourse.smody.ranking.domain;
 
+import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.member.domain.Member;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,15 +10,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                name = "unique_column_in_ranking_activity",
+                columnNames = {"member_id", "ranking_period_id"}
+        )
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class RankingActivity {
 
+    private static final int DEFAULT_POINT = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ranking_activity_id")
@@ -40,7 +50,12 @@ public class RankingActivity {
         this.point = point;
     }
 
-    public boolean isDraw(RankingActivity other) {
-        return this.point.equals(other.getPoint());
+    public static RankingActivity zero(Member member, RankingPeriod period) {
+        return new RankingActivity(member, period, DEFAULT_POINT);
+    }
+
+    public void active(Progress progress) {
+        Point point = Point.valueOf(progress.name());
+        this.point += point.getValue();
     }
 }

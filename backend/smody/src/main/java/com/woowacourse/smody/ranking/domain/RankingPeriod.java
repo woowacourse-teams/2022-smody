@@ -33,4 +33,9 @@ public class RankingPeriod {
         this.startDate = startDate;
         this.duration = duration;
     }
+
+    public boolean isBeforeEndTime(LocalDateTime time) {
+        LocalDateTime endTime = startDate.plusDays(duration.getDays());
+        return time.isBefore(endTime);
+    }
 }

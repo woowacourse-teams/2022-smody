@@ -95,4 +95,22 @@ public class RankingServiceTest extends IntegrationTest {
                 () -> assertThat(actual.getRanking()).isEqualTo(4)
         );
     }
+
+    @DisplayName("지금 진행 중인 랭킹 기간을 조회한다.")
+    @Test
+    void findInProgressPeriod() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(2), Duration.WEEK));
+        RankingPeriod expected = rankingPeriodRepository.save(new RankingPeriod(now.minusDays(6), Duration.WEEK));
+        rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(1).minusSeconds(1), Duration.WEEK));
+
+        // when
+        List<RankingPeriod> actual = rankingService.findInProgressPeriod(now);
+
+        // then
+        assertThat(actual)
+                .map(RankingPeriod::getId)
+                .containsExactly(expected.getId());
+    }
 }
