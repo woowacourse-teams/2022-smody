@@ -1,5 +1,5 @@
-import { PickType } from 'smody-library';
 import { Feed, Comment } from 'types/feed';
+import { Member } from 'types/member';
 
 export type GetAllFeedsResponse = Feed[];
 
@@ -25,3 +25,9 @@ export type GetCommentsByIdResponse = Comment[];
 export type PatchCommentsPayload = Pick<Comment, 'commentId' | 'content'>;
 
 export type DeleteCommentsParams = Pick<Comment, 'commentId'>;
+
+export type GetMembersParams = {
+  filterValue: string;
+};
+
+export type GetMembersResponse = Pick<Member, 'memberId' | 'nickname' | 'picture'>[];

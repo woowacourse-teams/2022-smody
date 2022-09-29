@@ -1,5 +1,6 @@
 export const PAGE_SIZE = {
   ALL_CHALLENGES: 10,
+  ALL_MEMBERS: 20,
   SUCCESS_CHALLENGES: 10,
   CYCLES: 10,
   FEEDS: 10,
@@ -34,6 +35,7 @@ export const queryKeys = {
   getMyChallengeById: 'getMyChallengeById',
   getMyCyclesByChallengeId: 'getMyCyclesByChallengeId',
   getIsValidAccessToken: 'getIsValidAccessToken',
+  getMembers: 'getMembers',
 };
 
 export const mutationKeys = {

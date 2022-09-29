@@ -1328,3 +1328,66 @@ export const myCyclesByChallengeID = [
     ],
   },
 ];
+
+export const memberData = [
+  {
+    memberId: 1,
+    nickname: '마르코',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 2,
+    nickname: '마르코2',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 3,
+    nickname: '마르코3',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 4,
+    nickname: '마르쿠',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 5,
+    nickname: '마로코',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 6,
+    nickname: '빅터',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 7,
+    nickname: '우연',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 8,
+    nickname: 'jojogreen',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 9,
+    nickname: 'tonic^^',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 10,
+    nickname: 'alphaF',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 11,
+    nickname: 'marco',
+    picture: 'marco.jpg',
+  },
+  {
+    memberId: 12,
+    nickname: 'marco',
+    picture: 'marco.jpg',
+  },
+];
