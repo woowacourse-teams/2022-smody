@@ -81,3 +81,12 @@ export const dataURLtoBlob = (dataURL: string) => {
   const blob = new Blob([ab], { type: mimeString });
   return blob;
 };
+
+export const getCursorPosition = () => {
+  const selection = window.getSelection();
+  if (!selection) {
+    return 0;
+  }
+
+  return selection.anchorOffset;
+};
