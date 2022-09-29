@@ -1,5 +1,6 @@
 package com.woowacourse.smody.ranking.service;
 
+import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.ranking.domain.RankManager;
@@ -42,5 +43,9 @@ public class RankingService {
     private RankingPeriod search(Long rankingPeriodId) {
         return rankingPeriodRepository.findById(rankingPeriodId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_RANKING_PERIOD));
+    }
+
+    public RankingActivityResponse findActivityOfMine(TokenPayload payload, Long rankingPeriodId) {
+        return null;
     }
 }

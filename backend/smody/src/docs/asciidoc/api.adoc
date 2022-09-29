@@ -269,17 +269,24 @@ include::{snippets}/delete-notification/http-response.adoc[]
 
 == 랭킹 기간 조회
 === Request
-include::{snippets}/get-all-rankManager-periods/http-request.adoc[]
+include::{snippets}/get-all-ranking-periods/http-request.adoc[]
 === Response
-include::{snippets}/get-all-rankManager-periods/http-response.adoc[]
+include::{snippets}/get-all-ranking-periods/http-response.adoc[]
 === Response 필드
-include::{snippets}/get-all-rankManager-periods/response-fields.adoc[]
+include::{snippets}/get-all-ranking-periods/response-fields.adoc[]
 
 == 랭킹 활동 조회
 === Request
-include::{snippets}/get-rankManager-activities/http-request.adoc[]
+include::{snippets}/get-ranking-activities/http-request.adoc[]
 === Response
-include::{snippets}/get-rankManager-activities/http-response.adoc[]
+include::{snippets}/get-ranking-activities/http-response.adoc[]
 === Response 필드
-include::{snippets}/get-rankManager-activities/response-fields.adoc[]
+include::{snippets}/get-ranking-activities/response-fields.adoc[]
 
+== 나의 랭킹 활동 조회
+=== Request
+include::{snippets}/get-ranking-activity-of-mine/http-request.adoc[]
+=== Response
+include::{snippets}/get-ranking-activity-of-mine/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-ranking-activity-of-mine/response-fields.adoc[]
