@@ -59,10 +59,15 @@ export const Navbar = () => {
               to={CLIENT_PATH.CERT}
               fill={certColor}
             >
-              <Plus />
-              <Text size={11} color={certColor}>
-                인증
-              </Text>
+              <CenterWrapper>
+                <CenterBackground />
+                <CenterIconWrapper>
+                  <Plus />
+                </CenterIconWrapper>
+                <Text size={11} color={certColor}>
+                  인증
+                </Text>
+              </CenterWrapper>
             </NavLink>
           </li>
           <li>
@@ -116,17 +121,41 @@ const Footer = styled.footer`
 const NavItemsContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  margin: 0.8rem 0;
-  overflow-y: hidden;
+  margin-top: -7px;
 `;
 
 const NavLink = styled(FlexBox)`
   ${({ fill }: NavLinkProps) => css`
     cursor: pointer;
 
-    & svg path {
-      fill: ${fill};
-      stroke: none;
+    & svg {
+      path {
+        fill: ${fill};
+        stroke: none;
+      }
     }
   `}
+`;
+
+const CenterWrapper = styled.div`
+  position: relative;
+  top: -20px;
+
+  ${Text} {
+    position: relative;
+    left: 22px;
+  }
+`;
+
+const CenterBackground = styled.div`
+  width: 70px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: white;
+`;
+
+const CenterIconWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
 `;
