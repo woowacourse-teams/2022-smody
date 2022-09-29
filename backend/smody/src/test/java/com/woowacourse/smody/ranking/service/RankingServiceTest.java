@@ -13,10 +13,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RankingPeriodServiceTest extends IntegrationTest {
+public class RankingServiceTest extends IntegrationTest {
 
     @Autowired
-    private RankingPeriodService rankingPeriodService;
+    private RankingService rankingService;
 
     @Autowired
     private RankingPeriodRepository rankingPeriodRepository;
@@ -31,7 +31,7 @@ public class RankingPeriodServiceTest extends IntegrationTest {
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(3), Duration.WEEK));
 
         // when
-        List<RankingPeriodResponse> rankingPeriodResponses = rankingPeriodService.findAllLatestOrder();
+        List<RankingPeriodResponse> rankingPeriodResponses = rankingService.findAllPeriodLatest();
 
         // then
         assertThat(rankingPeriodResponses).map(RankingPeriodResponse::getStartDate)

@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
 import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.support.ControllerTest;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class RankingControllerTest extends ControllerTest {
                         "week"
                 )
         );
-        given(rankingPeriodService.findAllLatestOrder()).willReturn(rankingPeriodResponses);
+        given(rankingService.findAllPeriodLatest()).willReturn(rankingPeriodResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/ranking-periods"));
@@ -53,6 +54,41 @@ public class RankingControllerTest extends ControllerTest {
                                         .description("RankingPeriod Id"),
                                 fieldWithPath("[].startDate").type(JsonFieldType.STRING).description("시작 날짜"),
                                 fieldWithPath("[].duration").type(JsonFieldType.STRING).description("기간")
+                        )));
+    }
+
+    @DisplayName("전체 랭킹 활동 조회")
+    @Test
+    void findAllRankingActivities() throws Exception {
+        // given
+        List<RankingActivityResponse> responses = List.of(
+                new RankingActivityResponse(
+                        1, 1L, "조조그린", "안녕하세요", "picture.png", 100
+                ),
+                new RankingActivityResponse(
+                        2, 2L, "더즈", "안녕하세요", "picture.png", 99
+                )
+        );
+
+        given(rankingService.findAllActivity(1L))
+                .willReturn(responses);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/ranking-periods/1/ranking-activities"));
+
+        // then
+        String jsonContent = objectMapper.writeValueAsString(responses);
+        result.andExpect(status().isOk())
+                .andExpect(content().json(jsonContent))
+                .andDo(document("get-ranking-activities", HOST_INFO,
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].ranking").type(JsonFieldType.NUMBER).description("순위"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("member ID"),
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[].introduction").type(JsonFieldType.STRING).description("회원 소개글"),
+                                fieldWithPath("[].picture").type(JsonFieldType.STRING).description("회원 프로필 사진"),
+                                fieldWithPath("[].point").type(JsonFieldType.NUMBER).description("점수")
                         )));
     }
 }
