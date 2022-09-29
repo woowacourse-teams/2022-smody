@@ -19,11 +19,13 @@ export const useNavBar = () => {
     CLIENT_PATH.SIGN_UP,
     CLIENT_PATH.PROFILE,
   ]);
+  const rankColor = getPathMatchResult([CLIENT_PATH.RANK]);
 
   return {
     certColor,
     searchColor,
     feedColor,
     profileColor,
+    rankColor,
   };
 };
