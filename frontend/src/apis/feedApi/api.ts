@@ -9,6 +9,7 @@ import {
   PostCommentPayload,
   PatchCommentsPayload,
   DeleteCommentsParams,
+  GetMembersResponse,
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
@@ -58,4 +59,15 @@ export const patchComments = async ({ commentId, content }: PatchCommentsPayload
 // 6. 댓글 삭제(DELETE)
 export const deleteComments = async ({ commentId }: DeleteCommentsParams) => {
   return authApiClient.axios.delete(`comments/${commentId}`);
+};
+
+// 7. 댓글에서 @를 눌렀을 때
+export const getMembers = async (filterValue: string, cursorId: number) => {
+  const params = {
+    cursorId,
+    filterValue,
+  };
+  return authApiClient.axios.get<GetMembersResponse>(`members/`, {
+    params,
+  });
 };
