@@ -17,6 +17,7 @@ import {
   ChallengeCreatePage,
   ChallengeRecordsPage,
   CycleDetailSharePage,
+  RankPage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -78,6 +79,9 @@ const Router = () => {
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
             element={<ChallengeDetailPage />}
           />
+
+          <Route path={CLIENT_PATH.RANK} element={<RankPage />} />
+
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
 
           <Route path={CLIENT_PATH.NOT_FOUND} element={<NotFoundPage />} />
