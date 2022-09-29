@@ -1,11 +1,12 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
+import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
 import useSnackBar from 'hooks/useSnackBar';
@@ -21,11 +22,27 @@ const useCommentInput = ({
   editMode,
   turnOffEditMode,
 }: UseCommentInputProps) => {
+  const detectMentionSymbol = (text: string) => {
+    const cursorPosition = getCursorPosition();
+
+    // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
+    if (text[cursorPosition - 1] !== '@') {
+      return;
+    }
+
+    // 2. 그런데 호출하려는 @의 앞이 공백이 아니면 호출하지 않는다.
+    if (cursorPosition !== 1 && text.length >= 2 && text[cursorPosition - 2] !== ' ') {
+      return;
+    }
+
+    // 멤버 조회 API 요청
+  };
+
   const inputChangeHandler: MutationCallback = (mutations) => {
     const commentInputElement = commentInputRef.current!;
     resizeHeight(commentInputElement);
     const { innerText } = commentInputElement;
-
+    detectMentionSymbol(innerText);
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
   };
 
