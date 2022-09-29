@@ -6,32 +6,28 @@ import java.util.Map;
 
 public class RankManager {
 
-    public final Map<RankingActivity, Integer> activityRanks;
+    public final Map<Integer, Integer> activityRanks;
 
-    private RankManager(Map<RankingActivity, Integer> activityRanks) {
+    private RankManager(Map<Integer, Integer> activityRanks) {
         this.activityRanks = activityRanks;
     }
 
     public static RankManager rank(List<RankingActivity> activities) {
-        Map<RankingActivity, Integer> activityRanks = new HashMap<>();
-        int ranking = 1;
-        for (int i = 0; i < activities.size(); i++) {
-            RankingActivity now = activities.get(i);
-            ranking = determineRank(activities, ranking, i);
-            activityRanks.put(now, ranking);
+        Map<Integer, Integer> cache = new HashMap<>();
+        for (int ranking = 0; ranking < activities.size(); ranking++) {
+            add(cache, ranking, activities.get(ranking));
         }
-        return new RankManager(activityRanks);
+        return new RankManager(cache);
     }
 
-    private static int determineRank(List<RankingActivity> rankingActivities, int ranking, int i) {
-        RankingActivity now = rankingActivities.get(i);
-        if (i != 0 && !rankingActivities.get(i - 1).isDraw(now)) {
-            ranking++;
+    private static void add(Map<Integer, Integer> cache, int ranking, RankingActivity activity) {
+        Integer point = activity.getPoint();
+        if (!cache.containsKey(point)) {
+            cache.put(point, ranking + 1);
         }
-        return ranking;
     }
 
     public Integer getRanking(RankingActivity rankingActivity) {
-        return activityRanks.get(rankingActivity);
+        return activityRanks.get(rankingActivity.getPoint());
     }
 }

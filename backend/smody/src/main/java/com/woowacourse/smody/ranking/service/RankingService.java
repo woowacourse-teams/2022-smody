@@ -46,6 +46,9 @@ public class RankingService {
     }
 
     public RankingActivityResponse findActivityOfMine(TokenPayload payload, Long rankingPeriodId) {
-        return null;
+        return findAllActivity(rankingPeriodId).stream()
+                .filter(activity -> activity.getMemberId().equals(payload.getId()))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_RANKING_ACTIVITY));
     }
 }

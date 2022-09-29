@@ -27,6 +27,7 @@ public enum ExceptionData {
     NOT_FOUND_CYCLE_DETAIL(4004, "존재하지 않는 피드입니다.", 404),
     NOT_FOUND_COMMENT(4005, "존재하지 않는 댓글입니다.", 404),
     NOT_FOUND_RANKING_PERIOD(4006, "존재하지 않는 랭킹 기간입니다.", 404),
+    NOT_FOUND_RANKING_ACTIVITY(4007, "존재하지 않는 랭킹 활동입니다.", 404),
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다.", 400),
 

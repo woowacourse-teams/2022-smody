@@ -4,6 +4,7 @@ import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.ranking.domain.Duration;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
@@ -55,9 +56,9 @@ public class RankingServiceTest extends IntegrationTest {
         RankingPeriod rankingPeriod = rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(1), Duration.WEEK));
 
         rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(조조그린_ID), rankingPeriod, 100));
-        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(더즈_ID), rankingPeriod, 300));
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(더즈_ID), rankingPeriod, 200));
         rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(토닉_ID), rankingPeriod, 200));
-        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(알파_ID), rankingPeriod, 200));
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(알파_ID), rankingPeriod, 300));
 
         // when
         List<RankingActivityResponse> actual = rankingService.findAllActivity(rankingPeriod.getId());
@@ -65,9 +66,33 @@ public class RankingServiceTest extends IntegrationTest {
         // then
         assertAll(
                 () -> assertThat(actual).map(RankingActivityResponse::getMemberId)
-                        .containsExactly(더즈_ID, 토닉_ID, 알파_ID, 조조그린_ID),
+                        .containsExactly(알파_ID, 더즈_ID, 토닉_ID, 조조그린_ID),
                 () -> assertThat(actual).map(RankingActivityResponse::getRanking)
-                        .containsExactly(1, 2, 2, 3)
+                        .containsExactly(1, 2, 2, 4)
+        );
+    }
+
+    @DisplayName("나의 랭킹 활동을 조회한다.")
+    @Test
+    void findActivityOfMine() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        RankingPeriod rankingPeriod = rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(1), Duration.WEEK));
+
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(조조그린_ID), rankingPeriod, 100));
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(더즈_ID), rankingPeriod, 300));
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(토닉_ID), rankingPeriod, 200));
+        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(알파_ID), rankingPeriod, 200));
+
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
+        // when
+        RankingActivityResponse actual = rankingService.findActivityOfMine(tokenPayload, rankingPeriod.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(actual.getMemberId()).isEqualTo(조조그린_ID),
+                () -> assertThat(actual.getRanking()).isEqualTo(4)
         );
     }
 }
