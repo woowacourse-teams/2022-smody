@@ -15,12 +15,18 @@ import { CLIENT_PATH } from 'constants/path';
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
 const INITIAL_CONTENT = '';
 
+const config = {
+  subtree: true,
+  characterData: true,
+  childList: true,
+};
+
 const useCommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
 }: UseCommentInputProps) => {
-  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const commentInputRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState(INITIAL_CONTENT);
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
@@ -63,17 +69,28 @@ const useCommentInput = ({
   });
 
   useEffect(() => {
+    const observer = new MutationObserver(inputChangeHandler);
+
+    observer.observe(commentInputRef.current!, config);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     setContent(editMode.editContent);
   }, [editMode]);
 
   const isVisibleWriteButton = content.length !== 0;
-  const isShowLengthWarning = content.length >= MAX_TEXTAREA_LENGTH - 1;
+  const isMaxLengthOver = content.length >= MAX_TEXTAREA_LENGTH - 1;
 
-  const handleChangeInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const { target } = event;
+  const inputChangeHandler: MutationCallback = (mutations) => {
+    const commentInputElement = commentInputRef.current!;
+    resizeHeight(commentInputElement);
+    const { innerText } = commentInputElement;
 
-    resizeHeight(target);
-    setContent(target.value.slice(0, MAX_TEXTAREA_LENGTH));
+    setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
   };
 
   const handleClickWrite = () => {
@@ -100,7 +117,7 @@ const useCommentInput = ({
     queryClient.invalidateQueries(queryKeys.getCommentsById);
   };
 
-  const resizeHeight = (element: HTMLTextAreaElement) => {
+  const resizeHeight = (element: HTMLDivElement) => {
     // 입력 값을 지웠을 때, 댓글 입력창의 높이를 줄이기 위한 코드
     element.style.height = DEFAULT_INPUT_HEIGHT;
     element.style.height = element.scrollHeight + 'px';
@@ -118,10 +135,9 @@ const useCommentInput = ({
     commentInputRef,
     content,
     isVisibleWriteButton,
-    isShowLengthWarning,
+    isMaxLengthOver,
     isLoadingPostComment,
     isLoadingPatchComment,
-    handleChangeInput,
     handleClickWrite,
   };
 };
