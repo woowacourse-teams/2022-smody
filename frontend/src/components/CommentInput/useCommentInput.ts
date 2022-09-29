@@ -1,12 +1,13 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
-import { useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
+import useMutationObserver from 'hooks/useMutationObserver';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
@@ -15,18 +16,20 @@ import { CLIENT_PATH } from 'constants/path';
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
 const INITIAL_CONTENT = '';
 
-const config = {
-  subtree: true,
-  characterData: true,
-  childList: true,
-};
-
 const useCommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
 }: UseCommentInputProps) => {
-  const commentInputRef = useRef<HTMLDivElement>(null);
+  const inputChangeHandler: MutationCallback = (mutations) => {
+    const commentInputElement = commentInputRef.current!;
+    resizeHeight(commentInputElement);
+    const { innerText } = commentInputElement;
+
+    setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
+  };
+
+  const commentInputRef = useMutationObserver<HTMLDivElement>(inputChangeHandler);
   const [content, setContent] = useState(INITIAL_CONTENT);
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
@@ -69,29 +72,11 @@ const useCommentInput = ({
   });
 
   useEffect(() => {
-    const observer = new MutationObserver(inputChangeHandler);
-
-    observer.observe(commentInputRef.current!, config);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
     setContent(editMode.editContent);
   }, [editMode]);
 
   const isVisibleWriteButton = content.length !== 0;
   const isMaxLengthOver = content.length >= MAX_TEXTAREA_LENGTH - 1;
-
-  const inputChangeHandler: MutationCallback = (mutations) => {
-    const commentInputElement = commentInputRef.current!;
-    resizeHeight(commentInputElement);
-    const { innerText } = commentInputElement;
-
-    setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
-  };
 
   const handleClickWrite = () => {
     if (!isLogin) {
