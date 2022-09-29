@@ -4,8 +4,6 @@ import styled, { css } from 'styled-components';
 
 import { FlexBox, ValidationMessage } from 'components';
 
-import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
-
 export const CommentInput = ({
   selectedCommentId,
   editMode,
@@ -15,27 +13,22 @@ export const CommentInput = ({
     commentInputRef,
     content,
     isVisibleWriteButton,
-    isShowLengthWarning,
+    isMaxLengthOver,
     isLoadingPostComment,
     isLoadingPatchComment,
-    handleChangeInput,
     handleClickWrite,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <InnerWrapper alignItems="center" isShowLengthWarning={isShowLengthWarning}>
-        <CommentInputElement
-          ref={commentInputRef}
-          value={content}
-          placeholder="다른 사용자와 소통해보세요!"
-          rows={1}
-          maxLength={MAX_TEXTAREA_LENGTH - 1}
-          onChange={handleChangeInput}
-        />
+      <InnerWrapper alignItems="center" isShowLengthWarning={isMaxLengthOver}>
+        <CommentInputElement contentEditable={true} ref={commentInputRef} />
         <WriteButton
           disabled={
-            !isVisibleWriteButton || isLoadingPostComment || isLoadingPatchComment
+            !isVisibleWriteButton ||
+            isLoadingPostComment ||
+            isLoadingPatchComment ||
+            isMaxLengthOver
           }
           isVisible={isVisibleWriteButton}
           onClick={handleClickWrite}
@@ -43,7 +36,7 @@ export const CommentInput = ({
           {editMode.isEditMode ? '수정' : '작성'}
         </WriteButton>
       </InnerWrapper>
-      {isShowLengthWarning && (
+      {isMaxLengthOver && (
         <ValidationMessageWrapper>
           <ValidationMessage
             isValidated={false}
@@ -78,7 +71,7 @@ const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`
   `}
 `;
 
-const CommentInputElement = styled.textarea`
+const CommentInputElement = styled.div`
   ${({ theme }) => css`
     flex-grow: 1;
     max-height: 60px;
@@ -88,6 +81,10 @@ const CommentInputElement = styled.textarea`
     resize: none;
     font-size: 1rem;
     color: ${theme.onInput};
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-y: scroll;
   `}
 `;
 
