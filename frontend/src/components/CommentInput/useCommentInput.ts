@@ -1,7 +1,7 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { useGetMembers, usePatchComments, usePostComment } from 'apis/feedApi';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, KeyboardEvent, KeyboardEventHandler } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -57,14 +57,34 @@ const useCommentInput = ({
       flagCheck.current = true;
       return;
     }
-    // if (filterValue === '$') {
-    //   return;
-    // }
     if (flagInitFilterValue.current === true) {
       return;
     }
     refetchMembers();
   }, [filterValue]);
+
+  useEffect(() => {
+    const handleKeydown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+      console.log('나 키키키', event.key);
+
+      // Backspace
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        // refetch
+        detectMentionSymbolWhenTextDeleted();
+      }
+
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        // closePopover
+      }
+      // ArrowRight
+      // ArrowLeft
+    };
+    commentInputRef.current?.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      commentInputRef.current?.removeEventListener('keydown', handleKeydown);
+    };
+  }, []);
 
   const inputChangeHandler: MutationCallback = (mutations) => {
     const hasSymbolPosition =
@@ -144,6 +164,37 @@ const useCommentInput = ({
     console.log('####$#$#$#$');
     refetchMembers();
     handleOpenPopover();
+  };
+
+  const detectMentionSymbolWhenTextDeleted = () => {
+    const cursorPosition = getCursorPosition();
+
+    const { innerText } = commentInputRef.current!;
+
+    if (!innerText.includes('@')) {
+      return;
+    }
+    const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
+    const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
+
+    console.log(
+      'innerText[mentionSymbolPosition - 1]',
+      innerText[mentionSymbolPosition - 1],
+    );
+    // 슬라이스 한 문자열 내부에 공백이 있나
+    if (targetText.includes(' ')) {
+      console.log('###1');
+      return;
+    }
+
+    // mentionSymbolPosition 앞에 공백이 있나 && mentionSymbolPosition 위치가 첫번째이다.
+    if (mentionSymbolPosition !== 0 && innerText[mentionSymbolPosition - 1] !== ' ') {
+      console.log('###2');
+      return;
+    }
+
+    console.log('@@@@targetText@@@', targetText);
+    setFilterValue(targetText);
   };
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
