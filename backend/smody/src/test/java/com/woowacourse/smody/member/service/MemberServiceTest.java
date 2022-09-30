@@ -203,7 +203,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(8),
+                    () -> assertThat(searchedMemberResponse).hasSize(8),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린", "그랑조", "조", "양조장")
             );
@@ -224,7 +224,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(5),
+                    () -> assertThat(searchedMemberResponse).hasSize(5),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린")
             );
@@ -245,7 +245,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(4),
+                    () -> assertThat(searchedMemberResponse).hasSize(4),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조그린", "그랑조", "조", "양조장")
             );
@@ -266,7 +266,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(2),
+                    () -> assertThat(searchedMemberResponse).hasSize(2),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조그린", "그랑조")
             );
@@ -287,7 +287,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(5),
+                    () -> assertThat(searchedMemberResponse).hasSize(5),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조", "조", "양조장")
             );
@@ -308,7 +308,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(3),
+                    () -> assertThat(searchedMemberResponse).hasSize(3),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조")
             );
@@ -329,7 +329,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(3),
+                    () -> assertThat(searchedMemberResponse).hasSize(3),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("그랑조", "조", "양조장")
             );
@@ -350,7 +350,7 @@ class MemberServiceTest extends IntegrationTest {
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse.size()).isEqualTo(2),
+                    () -> assertThat(searchedMemberResponse).hasSize(2),
                     () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("그랑조", "조")
             );

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class RankingControllerTest extends ControllerTest {
+class RankingControllerTest extends ControllerTest {
 
     @DisplayName("전체 랭킹 기간 조회")
     @Test

@@ -26,7 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RankingPointIntegrationTest extends IntegrationTest {
+class RankingPointIntegrationTest extends IntegrationTest {
 
     @Autowired
     private CycleService cycleService;

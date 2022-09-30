@@ -55,7 +55,7 @@ public class RankingActivity {
     }
 
     public void active(Progress progress) {
-        Point point = Point.valueOf(progress.name());
-        this.point += point.getValue();
+        this.point += Point.valueOf(progress.name())
+                .getValue();
     }
 }

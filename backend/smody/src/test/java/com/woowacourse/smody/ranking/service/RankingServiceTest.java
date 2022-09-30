@@ -25,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class RankingServiceTest extends IntegrationTest {
+class RankingServiceTest extends IntegrationTest {
 
     @Autowired
     private RankingService rankingService;

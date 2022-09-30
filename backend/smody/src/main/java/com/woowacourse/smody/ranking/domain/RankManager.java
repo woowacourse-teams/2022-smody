@@ -15,16 +15,10 @@ public class RankManager {
     public static RankManager rank(List<RankingActivity> activities) {
         Map<Integer, Integer> cache = new HashMap<>();
         for (int ranking = 0; ranking < activities.size(); ranking++) {
-            add(cache, ranking, activities.get(ranking));
+            RankingActivity rankingActivity = activities.get(ranking);
+            cache.putIfAbsent(rankingActivity.getPoint(), ranking + 1);
         }
         return new RankManager(cache);
-    }
-
-    private static void add(Map<Integer, Integer> cache, int ranking, RankingActivity activity) {
-        Integer point = activity.getPoint();
-        if (!cache.containsKey(point)) {
-            cache.put(point, ranking + 1);
-        }
     }
 
     public Integer getRanking(RankingActivity rankingActivity) {
