@@ -81,3 +81,8 @@ export const dataURLtoBlob = (dataURL: string) => {
   const blob = new Blob([ab], { type: mimeString });
   return blob;
 };
+
+export const dateYMDFormatParsing = (dateString: string) => {
+  const { year, month, date } = parseTime(dateString);
+  return `${year}.${month}.${date}`;
+};
