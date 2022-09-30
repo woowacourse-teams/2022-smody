@@ -10,6 +10,7 @@ import {
   PatchCommentsPayload,
   DeleteCommentsParams,
   GetMembersResponse,
+  PostMentionNotificationsPayload,
 } from 'apis/feedApi/type';
 
 // 1. 피드 전체 조회(GET)
@@ -69,5 +70,18 @@ export const getMembers = async (filter: string, cursorId: number) => {
   };
   return authApiClient.axios.get<GetMembersResponse>(`members`, {
     params,
+  });
+};
+
+// 8. 댓글 멘션에서 알림 보내기
+export const postMentionNotifications = async ({
+  memberIds,
+  pathId,
+  pushCase,
+}: PostMentionNotificationsPayload) => {
+  return authApiClient.axios.post(`push-notifications`, {
+    memberIds,
+    pathId,
+    pushCase,
   });
 };

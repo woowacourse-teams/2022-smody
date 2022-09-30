@@ -8,6 +8,7 @@ import {
   patchComments,
   deleteComments,
   getMembers,
+  postMentionNotifications,
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
@@ -21,6 +22,7 @@ import {
   DeleteCommentsParams,
   GetMembersParams,
   GetMembersResponse,
+  PostMentionNotificationsPayload,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import {
@@ -148,4 +150,18 @@ export const useGetMembers = (
           : currentPage.data[currentDataLength - 1].memberId;
       },
     },
+  );
+
+// 8. 댓글 멘션에서 알림 보내기
+export const usePostMentionNotifications = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostMentionNotificationsPayload
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostMentionNotificationsPayload>(
+    ({ memberIds, pathId, pushCase }) =>
+      postMentionNotifications({ memberIds, pathId, pushCase }),
+    options,
   );

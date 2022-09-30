@@ -1,6 +1,11 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
-import { useGetMembers, usePatchComments, usePostComment } from 'apis/feedApi';
+import {
+  useGetMembers,
+  usePatchComments,
+  usePostComment,
+  usePostMentionNotifications,
+} from 'apis/feedApi';
 import { useState, useEffect, useRef, KeyboardEventHandler } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -26,6 +31,7 @@ const useCommentInput = ({
   // ------- 멘션 알림 기능 ------------------------
   const flagCheck = useRef(false);
   const [filterValue, setFilterValue] = useState('');
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Set<number>>(new Set([]));
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const flagInitFilterValue = useRef(false);
   const {
@@ -50,6 +56,11 @@ const useCommentInput = ({
       staleTime: 600000, // 10분
     },
   );
+
+  const {
+    mutate: postMentionNotifications,
+    isLoading: isLoadingPostMentionNotifications,
+  } = usePostMentionNotifications();
 
   useEffect(() => {
     if (!flagCheck.current) {
@@ -212,6 +223,10 @@ const useCommentInput = ({
     setIsPopoverOpen(true);
   };
 
+  const selectMember = (memberId: number) => {
+    setMentionedMemberIds(mentionedMemberIds.add(memberId));
+  };
+
   // ---------- 댓글 작성 및 수정하여 db에 보내는 관련 로직 ----------------
 
   const [content, setContent] = useState(INITIAL_CONTENT);
@@ -279,6 +294,11 @@ const useCommentInput = ({
       return;
     }
     postComment({ content });
+    postMentionNotifications({
+      memberIds: Array.from(mentionedMemberIds),
+      pathId: Number(cycleDetailId),
+      pushCase: 'mention',
+    });
   };
 
   const invalidateQueries = () => {
@@ -314,6 +334,8 @@ const useCommentInput = ({
     fetchNextMembersPage,
     isPopoverOpen,
     handleClosePopover,
+    selectMember,
+    isLoadingPostMentionNotifications,
   };
 };
 
