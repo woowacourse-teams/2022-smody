@@ -44,7 +44,20 @@ public enum SortSelection {
         public OrderSpecifier<?>[] getOrderSpecifiers() {
             return new OrderSpecifier[0];
         }
-    };
+    },
+
+    RANKING_PERIOD("startDate:desc") {
+        @Override
+        public Sort getSort() {
+            return Sort.by("startDate").descending();
+        }
+
+        @Override
+        public OrderSpecifier<?>[] getOrderSpecifiers() {
+            return new OrderSpecifier[0];
+        }
+    }
+    ;
 
     private final String parameter;
 

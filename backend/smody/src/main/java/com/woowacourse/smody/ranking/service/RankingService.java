@@ -1,6 +1,8 @@
 package com.woowacourse.smody.ranking.service;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.db_support.SortSelection;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +31,9 @@ public class RankingService {
     private final RankingPeriodRepository rankingPeriodRepository;
     private final RankingActivityRepository rankingActivityRepository;
 
-    public List<RankingPeriodResponse> findAllPeriodLatest() {
-        List<RankingPeriod> rankingPeriods = rankingPeriodRepository.findAllByOrderByStartDateDesc();
+    public List<RankingPeriodResponse> findAllPeriod(PagingParams pagingParams) {
+        Sort sort = SortSelection.findByParameter(pagingParams.getSort()).getSort();
+        List<RankingPeriod> rankingPeriods = rankingPeriodRepository.findAll(sort);
         return rankingPeriods.stream()
                 .map(RankingPeriodResponse::new)
                 .collect(Collectors.toList());

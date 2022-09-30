@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
 import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.support.ControllerTest;
@@ -40,10 +41,11 @@ public class RankingControllerTest extends ControllerTest {
                         "week"
                 )
         );
-        given(rankingService.findAllPeriodLatest()).willReturn(rankingPeriodResponses);
+        given(rankingService.findAllPeriod(new PagingParams("startDate:desc", 10)))
+                .willReturn(rankingPeriodResponses);
 
         // when
-        ResultActions result = mockMvc.perform(get("/ranking-periods"));
+        ResultActions result = mockMvc.perform(get("/ranking-periods?sort=startDate:desc&size=10"));
 
         // then
         String jsonContent = objectMapper.writeValueAsString(rankingPeriodResponses);

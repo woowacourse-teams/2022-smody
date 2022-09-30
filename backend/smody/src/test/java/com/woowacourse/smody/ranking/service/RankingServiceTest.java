@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.ranking.domain.Duration;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
@@ -45,7 +46,9 @@ public class RankingServiceTest extends IntegrationTest {
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(3), Duration.WEEK));
 
         // when
-        List<RankingPeriodResponse> rankingPeriodResponses = rankingService.findAllPeriodLatest();
+        List<RankingPeriodResponse> rankingPeriodResponses = rankingService.findAllPeriod(
+                new PagingParams("startDate:desc", 10)
+        );
 
         // then
         assertThat(rankingPeriodResponses).map(RankingPeriodResponse::getStartDate)
