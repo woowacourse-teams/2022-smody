@@ -148,10 +148,13 @@ const CenterWrapper = styled.div`
 `;
 
 const CenterBackground = styled.div`
-  width: 70px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: white;
+  ${({ theme }) => css`
+    width: 70px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: white;
+    border-top: 1px solid ${theme.border};
+  `}
 `;
 
 const CenterIconWrapper = styled.div`
