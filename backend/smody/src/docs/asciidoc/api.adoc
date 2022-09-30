@@ -219,6 +219,14 @@ include::{snippets}/withdraw/http-request.adoc[]
 === Response
 include::{snippets}/withdraw/http-response.adoc[]
 
+== 모든 회원 조회
+=== Request
+include::{snippets}/get-all-members/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-members/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-members/response-fields.adoc[]
+
 == 토큰 확인
 === Request
 include::{snippets}/validate_auth/http-request.adoc[]
