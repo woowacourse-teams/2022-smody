@@ -23,22 +23,22 @@ export const RankingPeriodsList = () => {
   }
 
   return (
-    <div>
+    <FlexBox justifyContent="center">
       <SelectPeriod as="button" onClick={handleSelectBox} alignItems="center">
         {startDateString} ~ {endDateString}&nbsp;
         <BsFillCaretDownFill />
+        <SelectList show={showSelectBox}>
+          {rankingPeriodsData.data.map((rankingPeriod, index) => (
+            <RankingPeriodItem
+              key={rankingPeriod.rankingPeriodId}
+              selected={selectedPeriodIndex === index}
+              handleChooseRankingPeriod={() => handleChooseRankingPeriod(index)}
+              {...rankingPeriod}
+            />
+          ))}
+        </SelectList>
       </SelectPeriod>
-      <SelectList show={showSelectBox}>
-        {rankingPeriodsData.data.map((rankingPeriod, index) => (
-          <RankingPeriodItem
-            key={rankingPeriod.rankingPeriodId}
-            selected={selectedPeriodIndex === index}
-            handleChooseRankingPeriod={() => handleChooseRankingPeriod(index)}
-            {...rankingPeriod}
-          />
-        ))}
-      </SelectList>
-    </div>
+    </FlexBox>
   );
 };
 
@@ -54,6 +54,7 @@ const SelectPeriod = styled(FlexBox)`
     background-color: ${theme.surface};
     color: ${theme.primary};
     padding: 0 0.8rem;
+    position: relative;
   `}
 `;
 
@@ -63,7 +64,8 @@ const SelectList = styled.ul`
     width: fit-content;
     height: 10rem;
     overflow-y: scroll;
-    position: relative;
-    right: -0.5rem;
+    position: absolute;
+    top: 2.5rem;
+    right: 0.5rem;
   `}
 `;
