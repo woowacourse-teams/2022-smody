@@ -28,12 +28,30 @@ const useCommentInput = ({
   const [filterValue, setFilterValue] = useState('');
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
 
+  const {
+    isFetching,
+    data: membersData,
+    hasNextPage,
+    fetchNextPage,
+    refetch: refetchMembers,
+    isError,
+  } = useGetMembers(
+    { filter: filterValue },
+    {
+      onSuccess: (data) => {
+        console.log('@@멤버 조회 데이터: ', data);
+      },
+      enabled: false,
+      suspense: false,
+    },
+  );
+
   useEffect(() => {
     if (!flagCheck.current) {
       flagCheck.current = true;
       return;
     }
-    refetch();
+    refetchMembers();
   }, [filterValue]);
 
   const inputChangeHandler: MutationCallback = (mutations) => {
@@ -67,23 +85,6 @@ const useCommentInput = ({
   };
 
   const commentInputRef = useMutationObserver<HTMLDivElement>(inputChangeHandler);
-
-  const {
-    isFetching,
-    data: membersData,
-    hasNextPage,
-    fetchNextPage,
-    refetch,
-    isError,
-  } = useGetMembers(
-    { filterValue },
-    {
-      onSuccess: (data) => {
-        console.log('@@멤버 조회 데이터: ', data);
-      },
-      enabled: false,
-    },
-  );
 
   const detectMentionSymbol = (text: string) => {
     const cursorPosition = getCursorPosition();
