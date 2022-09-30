@@ -2,7 +2,7 @@ import Feed from 'assets/feed.svg';
 import Plus from 'assets/plus.svg';
 import Profile from 'assets/profile.svg';
 import { BsTrophyFill } from 'react-icons/bs';
-import { RiCalendarTodoFill } from 'react-icons/ri';
+import { ImFire } from 'react-icons/im';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -28,7 +28,7 @@ export const Navbar = () => {
               as={Link}
               to={CLIENT_PATH.SEARCH}
             >
-              <RiCalendarTodoFill size={23} color={challengeColor} />
+              <ImFire size={23} color={challengeColor} />
               <Text size={11} color={challengeColor}>
                 챌린지
               </Text>
