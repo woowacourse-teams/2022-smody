@@ -1,5 +1,4 @@
 import { MembersPopoverProps } from './type';
-import { useState } from 'react';
 
 import { Popover, InfiniteScroll, LoadingSpinner } from 'components';
 
@@ -8,6 +7,7 @@ export const MembersPopover = ({
   hasNextMembersPage,
   handleClosePopover,
   membersData,
+  selectMember,
 }: MembersPopoverProps) => {
   return (
     <Popover handleClosePopover={handleClosePopover}>
@@ -17,26 +17,19 @@ export const MembersPopover = ({
         loader={<LoadingSpinner />}
       >
         {membersData?.pages.map((page) =>
-          page?.data.map((member) => <h2 key={member.memberId}>{member.nickname}</h2>),
+          page?.data.map((member) => (
+            <h2
+              key={member.memberId}
+              onClick={() => {
+                selectMember(member.memberId);
+                handleClosePopover();
+              }}
+            >
+              {member.nickname}
+            </h2>
+          )),
         )}
       </InfiniteScroll>
     </Popover>
   );
 };
-
-// <InfiniteScroll
-//   loadMore={fetchNextPageMyCycles}
-//   hasMore={hasNextPageMyCycles}
-//   isFetching={isFetchingMyCycles}
-//   loader={<LoadingSpinner />}
-// >
-//   <FlexBox as="ul" flexDirection="column" alignItems="center" gap="1rem">
-//     {myCyclesInfiniteData?.pages.map((page) =>
-//       page?.data.map((cycle) => (
-//         <RecordList key={cycle.cycleId}>
-//           <Record {...cycle} />
-//         </RecordList>
-//       )),
-//     )}
-//   </FlexBox>
-// </InfiniteScroll>
