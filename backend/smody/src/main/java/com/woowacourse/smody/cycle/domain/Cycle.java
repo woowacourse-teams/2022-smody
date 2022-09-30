@@ -118,6 +118,10 @@ public class Cycle {
         if (this.cycleDetails.isEmpty()) {
             return this.startTime;
         }
-        return getCycleDetails().get(0).getProgressTime();
+        return getLatestCycleDetail().getProgressTime();
+    }
+
+    public CycleDetail getLatestCycleDetail() {
+        return getCycleDetails().get(this.cycleDetails.size() - 1);
     }
 }

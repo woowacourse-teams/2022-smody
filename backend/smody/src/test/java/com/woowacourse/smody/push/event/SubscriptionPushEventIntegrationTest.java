@@ -34,7 +34,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 			"endpoint-link", "p256dh", "auth");
 
 		// when
-		syncronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
+		synchronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);

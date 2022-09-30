@@ -51,7 +51,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		syncronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
+		synchronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
@@ -76,7 +76,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 		Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
 		// when
-		syncronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
+		synchronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);

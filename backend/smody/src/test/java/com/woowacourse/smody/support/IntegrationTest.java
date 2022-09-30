@@ -3,6 +3,7 @@ package com.woowacourse.smody.support;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.push.service.WebPushService;
 import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class IntegrationTest {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
     
-    protected void syncronize(Runnable consumer) throws InterruptedException {
-        taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
-        consumer.run();
-        taskExecutor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
+    protected void synchronize(Runnable runnable) throws InterruptedException {
+        ThreadPoolExecutor threadPoolExecutor = taskExecutor.getThreadPoolExecutor();
+        runnable.run();
+        threadPoolExecutor.awaitTermination(500, TimeUnit.MILLISECONDS);
     }
 }

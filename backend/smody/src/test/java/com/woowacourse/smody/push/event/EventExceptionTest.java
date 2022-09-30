@@ -70,7 +70,7 @@ class EventExceptionTest extends IntegrationTest {
 		// when
 		AtomicReference<Long> cycleId = new AtomicReference<>();
 
-		syncronize(() -> {
+		synchronize(() -> {
 			cycleId.set(cycleService.create(
 					new TokenPayload(조조그린_ID),
 					new CycleRequest(now, 스모디_방문하기_ID)
@@ -98,7 +98,7 @@ class EventExceptionTest extends IntegrationTest {
 			.given(subscriptionPushStrategy).handle(any(PushSubscribeEvent.class));
 
 		// when
-		syncronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
+		synchronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
 
 		// then
 		List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
@@ -128,7 +128,7 @@ class EventExceptionTest extends IntegrationTest {
 		// when
 		AtomicReference<Long> commentId = new AtomicReference<>();
 
-		syncronize(() -> {
+		synchronize(() -> {
 			commentId.set(commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 		});
 

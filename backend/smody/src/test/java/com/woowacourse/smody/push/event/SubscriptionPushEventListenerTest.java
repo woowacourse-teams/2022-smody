@@ -30,7 +30,7 @@ public class SubscriptionPushEventListenerTest extends IntegrationTest {
 		PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
 
 		// when
-		syncronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
+		synchronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);

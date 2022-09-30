@@ -42,7 +42,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 		// when
 		AtomicReference<Long> pathId = new AtomicReference<>();
 
-		syncronize(() -> {
+		synchronize(() -> {
 			pathId.set(cycleService.create(
 					new TokenPayload(조조그린_ID),
 					new CycleRequest(now, 스모디_방문하기_ID)
@@ -79,7 +79,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 
 		// when
 
-		syncronize(() -> cycleService.increaseProgress(
+		synchronize(() -> cycleService.increaseProgress(
 				new TokenPayload(조조그린_ID),
 				new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
 		));
@@ -111,7 +111,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 			.willReturn("fakeUrl");
 
 		// when
-		syncronize(() -> cycleService.increaseProgress(
+		synchronize(() -> cycleService.increaseProgress(
 				new TokenPayload(조조그린_ID),
 				new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
 		));
