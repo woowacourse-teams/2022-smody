@@ -27,7 +27,7 @@ export type PatchCommentsPayload = Pick<Comment, 'commentId' | 'content'>;
 export type DeleteCommentsParams = Pick<Comment, 'commentId'>;
 
 export type GetMembersParams = {
-  filterValue: string;
+  filter: string;
 };
 
 export type GetMembersResponse = Pick<Member, 'memberId' | 'nickname' | 'picture'>[];
