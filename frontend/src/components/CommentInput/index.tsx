@@ -18,12 +18,13 @@ export const CommentInput = ({
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
-    isFetchingMembers,
     membersData,
     hasNextMembersPage,
     fetchNextMembersPage,
     isPopoverOpen,
     handleClosePopover,
+    selectMember,
+    isLoadingPostMentionNotifications,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
@@ -35,7 +36,8 @@ export const CommentInput = ({
             !isVisibleWriteButton ||
             isLoadingPostComment ||
             isLoadingPatchComment ||
-            isMaxLengthOver
+            isMaxLengthOver ||
+            isLoadingPostMentionNotifications
           }
           isVisible={isVisibleWriteButton}
           onClick={handleClickWrite}
@@ -55,10 +57,10 @@ export const CommentInput = ({
       {isPopoverOpen && (
         <MembersPopover
           handleClosePopover={handleClosePopover}
-          isFetchingMembers={isFetchingMembers}
           membersData={membersData}
           hasNextMembersPage={hasNextMembersPage}
           fetchNextMembersPage={fetchNextMembersPage}
+          selectMember={selectMember}
         />
       )}
     </Wrapper>
