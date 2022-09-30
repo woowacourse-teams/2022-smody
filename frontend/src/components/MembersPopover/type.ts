@@ -13,3 +13,5 @@ export type MembersPopoverProps = {
     | undefined;
   selectMember: (memberId: number) => void;
 };
+
+export type MemberItemProps = Pick<Member, 'nickname' | 'picture'>;
