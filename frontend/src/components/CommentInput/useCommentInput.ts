@@ -103,8 +103,19 @@ const useCommentInput = ({
 
     if (hasSymbolPosition) {
       setNicknameAfterMentionSymbol(innerText);
+      console.log('1', getCursorPosition());
+      if (getCursorPosition() === 0) {
+        handleClosePopover();
+      }
     } else {
-      detectMentionSymbol(innerText);
+      // 심볼 없을 때
+      // detectMentionSymbolWhenTextDeleted
+      //   if () { // 백스페이스
+      //     ~~~
+      //     return;
+      //   }
+      detectMentionSymbolWhenTextAdded(innerText);
+      console.log('2');
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
@@ -112,7 +123,8 @@ const useCommentInput = ({
 
   const commentInputRef = useMutationObserver<HTMLDivElement>(inputChangeHandler);
 
-  const detectMentionSymbol = (text: string) => {
+  // 문자열 새로 입력됐을 때
+  const detectMentionSymbolWhenTextAdded = (text: string) => {
     const cursorPosition = getCursorPosition();
     const currentCharacter = text[cursorPosition - 1];
 
