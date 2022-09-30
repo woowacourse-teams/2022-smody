@@ -27,28 +27,40 @@ const useCommentInput = ({
   const flagCheck = useRef(false);
   const [filterValue, setFilterValue] = useState('');
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
-
+  const flagInitFilterValue = useRef(false);
   const {
-    isFetching,
+    isFetching: isFetchingMembers,
     data: membersData,
-    hasNextPage,
-    fetchNextPage,
+    hasNextPage: hasNextMembersPage,
+    fetchNextPage: fetchNextMembersPage,
     refetch: refetchMembers,
-    isError,
   } = useGetMembers(
     { filter: filterValue },
     {
       onSuccess: (data) => {
+        if (data.pages[0].data.length === 0) {
+          handleClosePopover();
+          return;
+        }
+
+        handleOpenPopover();
         console.log('@@멤버 조회 데이터: ', data);
       },
       enabled: false,
       suspense: false,
+      staleTime: 600000, // 10분
     },
   );
 
   useEffect(() => {
     if (!flagCheck.current) {
       flagCheck.current = true;
+      return;
+    }
+    // if (filterValue === '$') {
+    //   return;
+    // }
+    if (flagInitFilterValue.current === true) {
       return;
     }
     refetchMembers();
@@ -61,15 +73,29 @@ const useCommentInput = ({
     const isCurrentCharacterWhiteSpace = (text: string) =>
       text[getCursorPosition() - 1] === ' ';
 
+    if (flagInitFilterValue.current === true) {
+      flagInitFilterValue.current = false;
+    }
+
     const setNicknameAfterMentionSymbol = (text: string) => {
       if (isCurrentCharacterWhiteSpace(text)) {
         lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+        setFilterValue(''); // 초기화
+        flagInitFilterValue.current = true;
+
+        handleClosePopover();
+        console.log('여기', getCursorPosition());
       } else {
         setFilterValue(
           text.slice(lastMentionSymbolPositionRef.current, getCursorPosition()),
         );
       }
     };
+
+    console.log(
+      '@@현재 lastMentionSymbolPositionRef.current',
+      lastMentionSymbolPositionRef.current,
+    );
 
     const commentInputElement = commentInputRef.current!;
     resizeHeight(commentInputElement);
@@ -92,6 +118,8 @@ const useCommentInput = ({
 
     // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
     if (currentCharacter !== '@') {
+      handleClosePopover();
+      console.log('hi', cursorPosition);
       return;
     }
 
@@ -101,6 +129,17 @@ const useCommentInput = ({
     }
 
     lastMentionSymbolPositionRef.current = cursorPosition;
+    console.log('####$#$#$#$');
+    refetchMembers();
+    handleOpenPopover();
+  };
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const handleClosePopover = () => {
+    setIsPopoverOpen(false);
+  };
+  const handleOpenPopover = () => {
+    setIsPopoverOpen(true);
   };
 
   // ---------- 댓글 작성 및 수정하여 db에 보내는 관련 로직 ----------------
@@ -199,6 +238,12 @@ const useCommentInput = ({
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
+    isFetchingMembers,
+    membersData,
+    hasNextMembersPage,
+    fetchNextMembersPage,
+    isPopoverOpen,
+    handleClosePopover,
   };
 };
 

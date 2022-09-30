@@ -1,18 +1,18 @@
-import { ModalOverlayProps } from './type';
+import { PopoverProps } from './type';
 import { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 
 import { Z_INDEX } from 'constants/css';
 
-export const ModalOverlay = ({
+export const Popover = ({
   children,
-  handleCloseModal,
-}: PropsWithChildren<ModalOverlayProps>) => {
+  handleClosePopover,
+}: PropsWithChildren<PopoverProps>) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop onClick={handleCloseModal} />,
+        <Backdrop onClick={handleClosePopover} />,
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(

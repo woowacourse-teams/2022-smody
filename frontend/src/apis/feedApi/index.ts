@@ -136,7 +136,7 @@ export const useGetMembers = (
   >,
 ) =>
   useInfiniteQuery<AxiosResponse<GetMembersResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getMembers,
+    [queryKeys.getMembers, filter],
     ({ pageParam = 0 }) => getMembers(filter, pageParam),
     {
       ...options,
