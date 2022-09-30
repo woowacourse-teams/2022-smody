@@ -1,8 +1,8 @@
 import Feed from 'assets/feed.svg';
 import Plus from 'assets/plus.svg';
 import Profile from 'assets/profile.svg';
-import Search from 'assets/search.svg';
 import { BsTrophyFill } from 'react-icons/bs';
+import { RiCalendarTodoFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -14,7 +14,7 @@ import { Z_INDEX } from 'constants/css';
 import { CLIENT_PATH } from 'constants/path';
 
 export const Navbar = () => {
-  const { certColor, searchColor, feedColor, profileColor, rankColor } = useNavBar();
+  const { certColor, challengeColor, feedColor, profileColor, rankColor } = useNavBar();
 
   return (
     <Footer>
@@ -27,11 +27,10 @@ export const Navbar = () => {
               gap="6px"
               as={Link}
               to={CLIENT_PATH.SEARCH}
-              fill={searchColor}
             >
-              <Search />
-              <Text size={11} color={searchColor}>
-                검색
+              <RiCalendarTodoFill size={23} color={challengeColor} />
+              <Text size={11} color={challengeColor}>
+                챌린지
               </Text>
             </NavLink>
           </li>

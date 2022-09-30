@@ -8,7 +8,7 @@ export const useNavBar = () => {
   const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
 
   const certColor = getPathMatchResult([CLIENT_PATH.CERT, CLIENT_PATH.CYCLE_DETAIL]);
-  const searchColor = getPathMatchResult([
+  const challengeColor = getPathMatchResult([
     CLIENT_PATH.SEARCH,
     CLIENT_PATH.CHALLENGE_DETAIL,
     CLIENT_PATH.CHALLENGE_CREATE,
@@ -23,7 +23,7 @@ export const useNavBar = () => {
 
   return {
     certColor,
-    searchColor,
+    challengeColor,
     feedColor,
     profileColor,
     rankColor,
