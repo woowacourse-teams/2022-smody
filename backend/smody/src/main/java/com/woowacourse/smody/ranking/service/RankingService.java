@@ -4,6 +4,7 @@ import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.ranking.domain.Duration;
 import com.woowacourse.smody.ranking.domain.RankManager;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
@@ -11,10 +12,10 @@ import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
 import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,12 +56,29 @@ public class RankingService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_RANKING_ACTIVITY));
     }
 
+    // 진행중인 랭킹 기간이 없으면 생성하는 로직 포함
+    @Transactional
     public List<RankingPeriod> findInProgressPeriod(LocalDateTime time) {
-        return rankingPeriodRepository.findAllByStartDateBefore(time).stream()
+        List<RankingPeriod> inProgressPeriods = rankingPeriodRepository.findAllByStartDateBefore(time).stream()
                 .filter(period -> period.isBeforeEndTime(time))
                 .collect(Collectors.toList());
+        return checkInProgressWeekPeriod(time, inProgressPeriods);
     }
 
+    private List<RankingPeriod> checkInProgressWeekPeriod(LocalDateTime time, List<RankingPeriod> inProgressPeriods) {
+        if (inProgressPeriods.isEmpty()) {
+            inProgressPeriods.add(rankingPeriodRepository.save(new RankingPeriod(getMonday(time), Duration.WEEK)));
+        }
+        return inProgressPeriods;
+    }
+
+    private LocalDateTime getMonday(LocalDateTime time) {
+        return time.with(DayOfWeek.MONDAY)
+                .toLocalDate()
+                .atTime(0, 0, 0);
+    }
+
+    // 진행중인 랭킹 활동이 없으면 생성하는 로직 포함
     @Transactional
     public List<RankingActivity> findInProgressActivity(LocalDateTime time, Member member) {
         List<RankingPeriod> periods = findInProgressPeriod(time);

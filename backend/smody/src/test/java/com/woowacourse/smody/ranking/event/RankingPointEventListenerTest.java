@@ -1,5 +1,6 @@
 package com.woowacourse.smody.ranking.event;
 
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +19,7 @@ import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +87,29 @@ class RankingPointEventListenerTest extends IntegrationTest {
                         .containsExactly(activity.getId()),
                 () -> assertThat(activities).map(RankingActivity::getPoint)
                         .containsExactly(expected)
+        );
+    }
+
+    @DisplayName("똑같은 날에 똑같은 기간으로 기간을 생성하지 못한다.")
+    @Test
+    void unique() throws InterruptedException {
+        // given
+        LocalDateTime startTime = LocalDateTime.now().minusDays(1);
+        Cycle cycle1 = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, startTime);
+        Cycle cycle2 = fixture.사이클_생성(더즈_ID, 미라클_모닝_ID, Progress.FIRST, startTime);
+
+        CycleProgressEvent event1 = new CycleProgressEvent(cycle1);
+        CycleProgressEvent event2 = new CycleProgressEvent(cycle2);
+
+        // when
+        synchronize(() -> {
+            eventListener.handle(event1);
+            eventListener.handle(event2);
+        });
+
+        assertAll(
+                () -> assertThat(rankingPeriodRepository.findAll()).hasSize(1),
+                () -> assertThat(rankingActivityRepository.findAll()).hasSize(2)
         );
     }
 }

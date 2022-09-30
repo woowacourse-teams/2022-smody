@@ -1,10 +1,14 @@
 package com.woowacourse.smody.ranking.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.*;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.ranking.domain.Duration;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
@@ -13,7 +17,7 @@ import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import com.woowacourse.smody.support.ResourceFixture;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -96,6 +100,26 @@ public class RankingServiceTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("현재 진행 중인 랭킹 활동이 없으면 생성해서 조회한다.")
+    @Test
+    void findInProgressActivity() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Member member = fixture.회원_조회(조조그린_ID);
+
+        // when
+        List<RankingActivity> activities = rankingService.findInProgressActivity(now, member);
+
+        // then
+        assertAll(
+                () -> assertThat(activities).isNotEmpty(),
+                () -> assertThat(activities)
+                        .map(RankingActivity::getRankingPeriod)
+                        .map(RankingPeriod::getId)
+                        .isNotEmpty()
+        );
+    }
+
     @DisplayName("지금 진행 중인 랭킹 기간을 조회한다.")
     @Test
     void findInProgressPeriod() {
@@ -112,5 +136,21 @@ public class RankingServiceTest extends IntegrationTest {
         assertThat(actual)
                 .map(RankingPeriod::getId)
                 .containsExactly(expected.getId());
+    }
+
+    @DisplayName("현재 진행 중인 랭킹 기간이 없으면 그 주 월요일에 시작하는 주간 랭킹 기간을 생성한다.")
+    @Test
+    void findInProgressPeriodIsEmpty_createThisWeekPeriod() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        RankingPeriod actual = rankingService.findInProgressPeriod(now).get(0);
+        LocalDateTime expected = now.with(DayOfWeek.MONDAY).toLocalDate().atTime(0, 0, 0);
+        // then
+        assertAll(
+                () -> assertThat(actual.getStartDate()).isEqualTo(expected),
+                () -> assertThat(actual.getDuration()).isEqualTo(Duration.WEEK)
+        );
     }
 }
