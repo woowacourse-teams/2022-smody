@@ -25,18 +25,39 @@ export const Popover = ({
 
 const Modal = styled.div`
   ${({ theme }) => css`
-    min-height: 347px;
-    width: 366px;
+    height: 200px;
+    overflow-y: scroll;
+    padding: 0.5rem 0rem;
+    width: 96%;
     position: fixed;
-    top: 50%;
+    bottom: 128px;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%);
     margin: 0;
     background-color: ${theme.surface};
-    border-radius: 20px;
+    border-radius: 20px 0 0 20px;
     display: flex;
     justify-content: center;
     z-index: ${Z_INDEX.MODAL};
+
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
+    }
   `}
 `;
 
@@ -47,7 +68,6 @@ const Backdrop = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: ${theme.backdrop};
     z-index: ${Z_INDEX.MODAL};
   `}
 `;
