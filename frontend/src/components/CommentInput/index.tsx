@@ -1,8 +1,9 @@
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage } from 'components';
+import { FlexBox, ValidationMessage, MembersPopover } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
@@ -17,6 +18,12 @@ export const CommentInput = ({
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
+    isFetchingMembers,
+    membersData,
+    hasNextMembersPage,
+    fetchNextMembersPage,
+    isPopoverOpen,
+    handleClosePopover,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
@@ -44,6 +51,15 @@ export const CommentInput = ({
             message={'댓글은 최대 255자까지 입력할 수 있습니다.'}
           />
         </ValidationMessageWrapper>
+      )}
+      {isPopoverOpen && (
+        <MembersPopover
+          handleClosePopover={handleClosePopover}
+          isFetchingMembers={isFetchingMembers}
+          membersData={membersData}
+          hasNextMembersPage={hasNextMembersPage}
+          fetchNextMembersPage={fetchNextMembersPage}
+        />
       )}
     </Wrapper>
   );
