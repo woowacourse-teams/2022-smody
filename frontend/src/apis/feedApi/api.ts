@@ -62,12 +62,12 @@ export const deleteComments = async ({ commentId }: DeleteCommentsParams) => {
 };
 
 // 7. 댓글에서 @를 눌렀을 때
-export const getMembers = async (filterValue: string, cursorId: number) => {
-  const params = {
+export const getMembers = async (filter: string, cursorId: number) => {
+  const params = filter !== '' && {
     cursorId,
-    filterValue,
+    filter: filter,
   };
-  return authApiClient.axios.get<GetMembersResponse>(`members/`, {
+  return authApiClient.axios.get<GetMembersResponse>(`members`, {
     params,
   });
 };

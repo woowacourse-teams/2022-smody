@@ -129,7 +129,7 @@ export const useDeleteComments = (
 
 // 7. 댓글에서 @를 눌렀을 때
 export const useGetMembers = (
-  { filterValue }: GetMembersParams,
+  { filter }: GetMembersParams,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetMembersResponse>,
     AxiosError<ErrorResponse>
@@ -137,7 +137,7 @@ export const useGetMembers = (
 ) =>
   useInfiniteQuery<AxiosResponse<GetMembersResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getMembers,
-    ({ pageParam = 0 }) => getMembers(filterValue, pageParam),
+    ({ pageParam = 0 }) => getMembers(filter, pageParam),
     {
       ...options,
       getNextPageParam: (currentPage) => {
