@@ -1,7 +1,7 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { useGetMembers, usePatchComments, usePostComment } from 'apis/feedApi';
-import { useState, useEffect, useRef, KeyboardEvent, KeyboardEventHandler } from 'react';
+import { useState, useEffect, useRef, KeyboardEventHandler } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -44,7 +44,6 @@ const useCommentInput = ({
         }
 
         handleOpenPopover();
-        console.log('@@멤버 조회 데이터: ', data);
       },
       enabled: false,
       suspense: false,
@@ -65,19 +64,22 @@ const useCommentInput = ({
 
   useEffect(() => {
     const handleKeydown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-      console.log('나 키키키', event.key);
-
-      // Backspace
       if (event.key === 'Backspace' || event.key === 'Delete') {
         // refetch
         detectMentionSymbolWhenTextDeleted();
+        return;
       }
 
-      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      if (event.key === 'ArrowLeft') {
         // closePopover
+        detectLeftEscapingMentionArea();
+        return;
       }
-      // ArrowRight
-      // ArrowLeft
+
+      if (event.key === 'ArrowRight') {
+        detectRightEscapingMentionArea();
+        return;
+      }
     };
     commentInputRef.current?.addEventListener('keydown', handleKeydown);
 
@@ -104,7 +106,6 @@ const useCommentInput = ({
         flagInitFilterValue.current = true;
 
         handleClosePopover();
-        console.log('여기', getCursorPosition());
       } else {
         setFilterValue(
           text.slice(lastMentionSymbolPositionRef.current, getCursorPosition()),
@@ -112,30 +113,18 @@ const useCommentInput = ({
       }
     };
 
-    console.log(
-      '@@현재 lastMentionSymbolPositionRef.current',
-      lastMentionSymbolPositionRef.current,
-    );
-
     const commentInputElement = commentInputRef.current!;
     resizeHeight(commentInputElement);
     const { innerText } = commentInputElement;
 
     if (hasSymbolPosition) {
       setNicknameAfterMentionSymbol(innerText);
-      console.log('1', getCursorPosition());
+
       if (getCursorPosition() === 0) {
         handleClosePopover();
       }
     } else {
-      // 심볼 없을 때
-      // detectMentionSymbolWhenTextDeleted
-      //   if () { // 백스페이스
-      //     ~~~
-      //     return;
-      //   }
       detectMentionSymbolWhenTextAdded(innerText);
-      console.log('2');
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
@@ -151,7 +140,6 @@ const useCommentInput = ({
     // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
     if (currentCharacter !== '@') {
       handleClosePopover();
-      console.log('hi', cursorPosition);
       return;
     }
 
@@ -161,7 +149,6 @@ const useCommentInput = ({
     }
 
     lastMentionSymbolPositionRef.current = cursorPosition;
-    console.log('####$#$#$#$');
     refetchMembers();
     handleOpenPopover();
   };
@@ -177,24 +164,44 @@ const useCommentInput = ({
     const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
 
-    console.log(
-      'innerText[mentionSymbolPosition - 1]',
-      innerText[mentionSymbolPosition - 1],
-    );
     // 슬라이스 한 문자열 내부에 공백이 있나
     if (targetText.includes(' ')) {
-      console.log('###1');
       return;
     }
 
     // mentionSymbolPosition 앞에 공백이 있나 && mentionSymbolPosition 위치가 첫번째이다.
     if (mentionSymbolPosition !== 0 && innerText[mentionSymbolPosition - 1] !== ' ') {
-      console.log('###2');
       return;
     }
 
-    console.log('@@@@targetText@@@', targetText);
     setFilterValue(targetText);
+  };
+
+  const detectLeftEscapingMentionArea = () => {
+    const cursorPosition = getCursorPosition();
+    const { innerText } = commentInputRef.current!;
+
+    if (innerText[cursorPosition - 2] === ' ') {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+      setFilterValue('');
+      flagInitFilterValue.current = true;
+
+      handleClosePopover();
+    }
+  };
+
+  const detectRightEscapingMentionArea = () => {
+    const cursorPosition = getCursorPosition();
+    const { innerText } = commentInputRef.current!;
+
+    if (innerText[cursorPosition] === ' ') {
+      // init 3종 세트
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+      setFilterValue('');
+      flagInitFilterValue.current = true;
+
+      handleClosePopover();
+    }
   };
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
