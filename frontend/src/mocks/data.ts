@@ -1328,3 +1328,41 @@ export const myCyclesByChallengeID = [
     ],
   },
 ];
+
+export const rankingPeriodsData = [
+  {
+    rankingPeriodId: 1,
+    startDate: '2022-07-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 2,
+    startDate: '2022-06-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 3,
+    startDate: '2022-05-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 4,
+    startDate: '2022-04-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 5,
+    startDate: '2022-03-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 6,
+    startDate: '2022-02-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 7,
+    startDate: '2022-01-01T17:00:00',
+    duration: 'week',
+  },
+];
