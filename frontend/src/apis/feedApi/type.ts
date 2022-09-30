@@ -1,3 +1,4 @@
+import { PickType } from 'smody-library';
 import { Feed, Comment } from 'types/feed';
 import { Member } from 'types/member';
 
@@ -31,3 +32,9 @@ export type GetMembersParams = {
 };
 
 export type GetMembersResponse = Pick<Member, 'memberId' | 'nickname' | 'picture'>[];
+
+export type PostMentionNotificationsPayload = {
+  memberIds: PickType<Member, 'memberId'>[];
+  pathId: PickType<Feed, 'cycleDetailId'>;
+  pushCase: 'mention';
+};

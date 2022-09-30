@@ -162,4 +162,19 @@ export const feed = [
 
     return res(ctx.status(200), ctx.json(filteredData));
   }),
+
+  // 8. 댓글 멘션에서 알림 보내기
+  rest.post(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
+    const { memberIds, pathId, pushCase } = req.body;
+    const resultMembers = [];
+
+    memberData.forEach(({ memberId, nickname }) => {
+      if (memberIds.includes(memberId)) {
+        resultMembers.push(nickname);
+      }
+    });
+
+    console.log('8. 댓글 멘션에서 알림 보내기', resultMembers, pathId, pushCase);
+    return res(ctx.status(200));
+  }),
 ];
