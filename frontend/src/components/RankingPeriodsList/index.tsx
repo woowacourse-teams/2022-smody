@@ -1,40 +1,26 @@
 import { SelectListProps } from './type';
-import { useGetRankingPeriods } from 'apis/rankingApi';
-import { useState } from 'react';
+import useRankingPeriodsList from './useRankingPeriodsList';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import styled, { css } from 'styled-components';
-import { addDays, dateYMDFormatParsing } from 'utils';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
 import { RankingPeriodItem } from 'components/RankingPeriodItem';
 
-import { RANKING_DURATION } from 'constants/domain';
-
 export const RankingPeriodsList = () => {
-  const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(0);
-  const [showSelectBox, setShowSelectBox] = useState(false);
-  const { data: rankingPeriodsData } = useGetRankingPeriods();
-
-  const handleSelectBox = () => {
-    setShowSelectBox((prev) => !prev);
-  };
-
-  const handleChooseRankingPeriod = (id: number) => {
-    setSelectedPeriodIndex(id);
-    handleSelectBox();
-  };
+  const {
+    selectedPeriodIndex,
+    showSelectBox,
+    rankingPeriodsData,
+    handleSelectBox,
+    handleChooseRankingPeriod,
+    startDateString,
+    endDateString,
+  } = useRankingPeriodsList();
 
   if (typeof rankingPeriodsData?.data === 'undefined') {
     return null;
   }
-
-  const { startDate, duration } = rankingPeriodsData.data[selectedPeriodIndex];
-
-  const startDateString = dateYMDFormatParsing(startDate);
-  const endDateString = dateYMDFormatParsing(
-    String(addDays(new Date(Date.parse(startDate)), RANKING_DURATION[duration])),
-  );
 
   return (
     <div>
