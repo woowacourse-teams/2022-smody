@@ -35,6 +35,7 @@ export const queryKeys = {
   getMyCyclesByChallengeId: 'getMyCyclesByChallengeId',
   getIsValidAccessToken: 'getIsValidAccessToken',
   getRankingPeriods: 'getRankingPeriods',
+  getMyRanking: 'getMyRanking',
 };
 
 export const mutationKeys = {
