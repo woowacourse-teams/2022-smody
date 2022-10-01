@@ -31,7 +31,7 @@ export const useGetMyRanking = (
   >,
 ) =>
   useQuery<AxiosResponse<GetMyRankingResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getMyRanking,
+    [queryKeys.getMyRanking, rankingPeriodId],
     () => getMyRanking({ rankingPeriodId }),
     options,
   );
