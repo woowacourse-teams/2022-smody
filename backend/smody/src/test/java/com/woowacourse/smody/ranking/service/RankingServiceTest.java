@@ -19,6 +19,7 @@ import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,7 @@ class RankingServiceTest extends IntegrationTest {
     @Test
     void findAllPeriodLatest() {
         // given
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDate.now().atTime(0, 0, 0);
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(2), Duration.WEEK));
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(1), Duration.WEEK));
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(3), Duration.WEEK));
