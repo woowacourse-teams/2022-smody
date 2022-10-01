@@ -1,5 +1,9 @@
-import { getRankingPeriods } from './api';
-import { GetRankingPeriodsResponse } from './type';
+import { getMyRanking, getRankingPeriods } from './api';
+import {
+  GetMyRankingParams,
+  GetMyRankingResponse,
+  GetRankingPeriodsResponse,
+} from './type';
 import { queryKeys } from 'apis/constants';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useQuery, UseQueryOptions } from 'react-query';
@@ -13,7 +17,21 @@ export const useGetRankingPeriods = (
   >,
 ) =>
   useQuery<AxiosResponse<GetRankingPeriodsResponse>, AxiosError<ErrorResponse>>(
-    [queryKeys.getRankingPeriods],
+    queryKeys.getRankingPeriods,
     () => getRankingPeriods(),
+    options,
+  );
+
+// 나의 랭킹
+export const useGetMyRanking = (
+  { rankingPeriodId }: GetMyRankingParams,
+  options?: UseQueryOptions<
+    AxiosResponse<GetMyRankingResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetMyRankingResponse>, AxiosError<ErrorResponse>>(
+    queryKeys.getMyRanking,
+    () => getMyRanking({ rankingPeriodId }),
     options,
   );
