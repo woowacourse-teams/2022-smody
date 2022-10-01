@@ -56,3 +56,5 @@ export * from 'components/ErrorFallbackNotificationMessage';
 export * from 'components/ScrollToTop';
 export * from 'components/RankingPeriodItem';
 export * from 'components/RankingPeriodsList';
+export * from 'components/UserRanking';
+export * from 'components/RankingItem';

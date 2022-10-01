@@ -1,4 +1,4 @@
-import { SelectListProps } from './type';
+import { RankingPeriodsListProps, SelectListProps } from './type';
 import useRankingPeriodsList from './useRankingPeriodsList';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import styled, { css } from 'styled-components';
@@ -7,7 +7,9 @@ import { FlexBox } from 'components/@shared/FlexBox';
 
 import { RankingPeriodItem } from 'components/RankingPeriodItem';
 
-export const RankingPeriodsList = () => {
+export const RankingPeriodsList = ({
+  handleRankingPeriodId,
+}: RankingPeriodsListProps) => {
   const {
     selectedPeriodIndex,
     showSelectBox,
@@ -16,7 +18,7 @@ export const RankingPeriodsList = () => {
     handleChooseRankingPeriod,
     startDateString,
     endDateString,
-  } = useRankingPeriodsList();
+  } = useRankingPeriodsList({ handleRankingPeriodId });
 
   if (typeof rankingPeriodsData?.data === 'undefined') {
     return null;
@@ -24,7 +26,7 @@ export const RankingPeriodsList = () => {
 
   return (
     <FlexBox justifyContent="center">
-      <SelectPeriod as="button" onClick={handleSelectBox} alignItems="center">
+      <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
         {startDateString} ~ {endDateString}&nbsp;
         <BsFillCaretDownFill />
         <SelectList show={showSelectBox}>
@@ -32,7 +34,12 @@ export const RankingPeriodsList = () => {
             <RankingPeriodItem
               key={rankingPeriod.rankingPeriodId}
               selected={selectedPeriodIndex === index}
-              handleChooseRankingPeriod={() => handleChooseRankingPeriod(index)}
+              handleChooseRankingPeriod={() =>
+                handleChooseRankingPeriod({
+                  index,
+                  rankingPeriodId: rankingPeriod.rankingPeriodId,
+                })
+              }
               {...rankingPeriod}
             />
           ))}
@@ -55,6 +62,7 @@ const SelectPeriod = styled(FlexBox)`
     color: ${theme.primary};
     padding: 0 0.8rem;
     position: relative;
+    cursor: pointer;
   `}
 `;
 
