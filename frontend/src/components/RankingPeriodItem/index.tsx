@@ -15,8 +15,8 @@ export const RankingPeriodItem = ({
   });
 
   return (
-    <SelectListItem selected={selected} onClick={handleChooseRankingPeriod}>
-      <button>
+    <SelectListItem selected={selected}>
+      <button onClick={handleChooseRankingPeriod}>
         {startDateString} ~ {endDateString}
       </button>
     </SelectListItem>
