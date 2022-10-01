@@ -12,7 +12,10 @@ export const ranking = [
   rest.get(
     `${BASE_URL}/ranking-periods/:rankingPeriodId/ranking-activities/me`,
     (req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(myRanking));
+      const { rankingPeriodId } = req.params;
+      const data = myRanking;
+      data.ranking = rankingPeriodId;
+      return res(ctx.status(200), ctx.json(data));
     },
   ),
 ];
