@@ -151,7 +151,7 @@ const CenterBackground = styled.div`
     width: 70px;
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: white;
+    background-color: ${theme.background};
     border-top: 1px solid ${theme.border};
   `}
 `;
