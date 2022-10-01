@@ -18,6 +18,10 @@ public class PagingParams {
     private Long cursorId;
     private String filter;
 
+    public PagingParams(String sort) {
+        this.sort = sort;
+    }
+
     public PagingParams(String sort, int size) {
         this.sort = sort;
         this.size = size;
