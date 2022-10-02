@@ -15,7 +15,10 @@ export const ranking = [
       const { rankingPeriodId } = req.params;
       const data = myRanking;
       data.ranking = rankingPeriodId;
-      return res(ctx.status(200), ctx.json(data));
+      if (rankingPeriodId === '1') {
+        return res(ctx.delay(1000), ctx.status(404));
+      }
+      return res(ctx.delay(1000), ctx.status(200), ctx.json(data));
     },
   ),
 ];
