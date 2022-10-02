@@ -10,3 +10,5 @@ export const MAX_CHALLENGE_NAME_LENGTH = 30;
 export const RANKING_DURATION = {
   week: 7,
 };
+
+export const INIT_RANKING_PERIOD_ID = -1;
