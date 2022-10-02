@@ -24,6 +24,7 @@ export const RankingItem = ({
         aria-label="프로필 이미지"
         src={picture}
         alt={`${nickname} 프로필 사진`}
+        loading="lazy"
       />
       <UserInfoWrapper flexDirection="column" gap="0.4rem">
         <Text
