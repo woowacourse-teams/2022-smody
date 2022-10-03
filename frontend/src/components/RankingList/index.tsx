@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text } from 'components';
+import { FlexBox, Text, RankingItem } from 'components';
 
 export const RankingList = () => {
   const themeContext = useThemeContext();
@@ -36,7 +36,13 @@ export const RankingList = () => {
       <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         전체 랭킹
       </Text>
-      {/* <RankingItem {...myRankingData.data} /> */}
+      <FlexBox as="ol" flexDirection="column" gap="0.5rem">
+        {allRankingData.data.map((rankingData) => (
+          <li key={rankingData.memberId}>
+            <RankingItem {...rankingData} />
+          </li>
+        ))}
+      </FlexBox>
     </Wrapper>
   );
 };
