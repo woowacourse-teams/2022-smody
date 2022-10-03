@@ -1,5 +1,5 @@
 import { BASE_URL } from 'env';
-import { myRanking, rankingPeriodsData, userData } from 'mocks/data';
+import { allRanking, myRanking, rankingPeriodsData, userData } from 'mocks/data';
 import { rest } from 'msw';
 
 export const ranking = [
@@ -22,6 +22,18 @@ export const ranking = [
         return res(ctx.delay(1000), ctx.status(404));
       }
       return res(ctx.delay(1000), ctx.status(200), ctx.json(data));
+    },
+  ),
+
+  // 전체 랭킹 활동 조회
+  rest.get(
+    `${BASE_URL}/ranking-periods/:rankingPeriodId/ranking-activities`,
+    (req, res, ctx) => {
+      const { rankingPeriodId } = req.params;
+      if (rankingPeriodId === '1') {
+        return res(ctx.delay(1000), ctx.status(404));
+      }
+      return res(ctx.delay(1000), ctx.status(200), ctx.json(allRanking));
     },
   ),
 ];
