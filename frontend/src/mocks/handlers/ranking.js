@@ -31,7 +31,7 @@ export const ranking = [
     (req, res, ctx) => {
       const { rankingPeriodId } = req.params;
       if (rankingPeriodId === '1') {
-        return res(ctx.delay(1000), ctx.status(404));
+        return res(ctx.delay(1000), ctx.status(200), ctx.json([]));
       }
       return res(ctx.delay(1000), ctx.status(200), ctx.json(allRanking));
     },
