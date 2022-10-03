@@ -1,12 +1,13 @@
 import { useGetMyRanking } from 'apis';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
+import { myMemberIdState, selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 
-import { INIT_RANKING_PERIOD_ID } from 'constants/domain';
+import { INIT_MY_MEMBER_ID, INIT_RANKING_PERIOD_ID } from 'constants/domain';
 
 const useUserRanking = () => {
+  const [myMemberId, setMyMemberId] = useRecoilState(myMemberIdState);
   const rankingPeriodId = useRecoilValue(selectedRankingPeriodIdState);
   const isLogin = useRecoilValue(isLoginState);
   const [notFoundInRanking, setNotFoundInRanking] = useState(false);
@@ -29,9 +30,20 @@ const useUserRanking = () => {
           setNotFoundInRanking(true);
         }
       },
+      onSuccess: ({ data }) => {
+        if (myMemberId !== data.memberId) {
+          setMyMemberId(data.memberId);
+        }
+      },
     },
   );
   let needSkeleton = !isSuccessMyRanking || rankingPeriodId === INIT_RANKING_PERIOD_ID;
+
+  useEffect(() => {
+    if (!isLogin && myMemberId !== INIT_MY_MEMBER_ID) {
+      setMyMemberId(INIT_MY_MEMBER_ID);
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     if (rankingPeriodId !== INIT_RANKING_PERIOD_ID && isLogin) {

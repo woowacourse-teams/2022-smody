@@ -1,4 +1,5 @@
-import { MedalProps, RankingItemProps } from './type';
+import { MedalProps, RankingItemProps, WrapperProps } from './type';
+import useRankingItem from './useRankingItem';
 import { FaMedal } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
@@ -13,12 +14,13 @@ export const RankingItem = ({
   introduction,
   picture,
   point,
+  myRanking = false,
 }: RankingItemProps) => {
-  const themeContext = useThemeContext();
+  const { surfaceColor, onSurfaceColor, pointColor } = useRankingItem({ myRanking });
 
   return (
-    <Wrapper alignItems="center" gap="1rem">
-      <Text size={24} color={themeContext.onSurface} fontWeight="bold">
+    <Wrapper surfaceColor={surfaceColor} alignItems="center" gap="1rem">
+      <Text size={24} color={onSurfaceColor} fontWeight="bold">
         {ranking}
       </Text>
       <ProfileImg
@@ -28,25 +30,20 @@ export const RankingItem = ({
         loading="lazy"
       />
       <UserInfoWrapper flexDirection="column" gap="0.4rem">
-        <Text
-          aria-label="닉네임"
-          size={16}
-          color={themeContext.onSurface}
-          fontWeight="bold"
-        >
+        <Text aria-label="닉네임" size={16} color={onSurfaceColor} fontWeight="bold">
           {nickname}
         </Text>
-        <Text aria-label="자기소개" size={12} color={themeContext.onSurface}>
+        <Text aria-label="자기소개" size={12} color={onSurfaceColor}>
           {introduction}
         </Text>
       </UserInfoWrapper>
       <PointWrapper gap="1rem" alignItems="center">
         <Medal ranking={ranking} />
         <FlexBox flexDirection="row">
-          <Text size={20} color={themeContext.primary} fontWeight="bold">
+          <Text size={20} color={pointColor} fontWeight="bold">
             {point}
           </Text>
-          <Text size={20} color={themeContext.onSurface} fontWeight="bold">
+          <Text size={20} color={onSurfaceColor} fontWeight="bold">
             p
           </Text>
         </FlexBox>
@@ -73,10 +70,10 @@ const Medal = ({ ranking }: MedalProps) => {
   return <FaMedal size={25} color={themeContext.third} />;
 };
 
-const Wrapper = styled(FlexBox)`
-  ${({ theme }) => css`
+const Wrapper = styled(FlexBox)<WrapperProps>`
+  ${({ surfaceColor }) => css`
     border-radius: 1rem;
-    background-color: ${theme.surface};
+    background-color: ${surfaceColor};
     padding: 0.5rem 1rem;
   `}
 `;
