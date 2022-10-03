@@ -1,3 +1,4 @@
+import { RankingItemSkeletonProps } from './type';
 import useUserRanking from './useUserRanking';
 import styled, { css } from 'styled-components';
 
@@ -7,7 +8,21 @@ import { Text, RankingItem, FlexBox } from 'components';
 
 export const UserRanking = () => {
   const themeContext = useThemeContext();
-  const { myRankingData, needSkeleton, notFoundInRanking } = useUserRanking();
+  const { myRankingData, needSkeleton, notFoundInRanking, isLogin } = useUserRanking();
+
+  if (!isLogin) {
+    return (
+      <FlexBox flexDirection="column" gap="0.5rem">
+        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+          나의 순위
+        </Text>
+        <RankingItemSkeleton
+          title="로그인이 필요합니다 :)"
+          description="로그인 후 순위를 확인해 주세요"
+        />
+      </FlexBox>
+    );
+  }
 
   if (notFoundInRanking) {
     return (
@@ -15,18 +30,25 @@ export const UserRanking = () => {
         <Text size={24} color={themeContext.onBackground} fontWeight="bold">
           나의 순위
         </Text>
-        <NotFoundUserRankingItem />
+        <RankingItemSkeleton
+          title="참가하지 않은 랭킹입니다 :)"
+          description="인증하고 랭킹에 도전해보아요!! 🏆"
+        />
       </FlexBox>
     );
   }
 
   if (needSkeleton || typeof myRankingData?.data === 'undefined') {
+    console.log('inSkeleton');
     return (
       <FlexBox flexDirection="column" gap="0.5rem">
         <Text size={24} color={themeContext.onBackground} fontWeight="bold">
           나의 순위
         </Text>
-        <UserRankingItemSkeleton />
+        <RankingItemSkeleton
+          title="순위를 불러오는 중입니다..."
+          description="잠시만 기다려주세요!"
+        />
       </FlexBox>
     );
   }
@@ -41,7 +63,7 @@ export const UserRanking = () => {
   );
 };
 
-const UserRankingItemSkeleton = () => {
+const RankingItemSkeleton = ({ title, description }: RankingItemSkeletonProps) => {
   const themeContext = useThemeContext();
 
   return (
@@ -52,30 +74,10 @@ const UserRankingItemSkeleton = () => {
       gap="1rem"
     >
       <Text size={16} color={themeContext.onSurface} fontWeight="bold">
-        순위를 불러오는 중입니다...
+        {title}
       </Text>
       <Text size={12} color={themeContext.onSurface}>
-        잠시만 기다려주세요!
-      </Text>
-    </Wrapper>
-  );
-};
-
-const NotFoundUserRankingItem = () => {
-  const themeContext = useThemeContext();
-
-  return (
-    <Wrapper
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      gap="1rem"
-    >
-      <Text size={16} color={themeContext.onSurface} fontWeight="bold">
-        참가하지 않은 랭킹입니다 :)
-      </Text>
-      <Text size={12} color={themeContext.onSurface}>
-        인증하고 랭킹에 도전해보아요!! 🏆
+        {description}
       </Text>
     </Wrapper>
   );
