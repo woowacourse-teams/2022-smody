@@ -1,12 +1,19 @@
-import { FlexBox, RankingPeriodsList, UserRanking } from 'components';
+import styled from 'styled-components';
+
+import { FlexBox, RankingPeriodsList, UserRanking, RankingList } from 'components';
 
 const RankingPage = () => {
   return (
-    <FlexBox flexDirection="column" gap="1rem">
+    <Wrapper flexDirection="column" gap="1rem">
       <UserRanking />
       <RankingPeriodsList />
-    </FlexBox>
+      <RankingList />
+    </Wrapper>
   );
 };
 
 export default RankingPage;
+
+const Wrapper = styled(FlexBox)`
+  flex: 1 1 auto;
+`;

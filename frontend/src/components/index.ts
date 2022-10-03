@@ -58,3 +58,4 @@ export * from 'components/RankingPeriodItem';
 export * from 'components/RankingPeriodsList';
 export * from 'components/UserRanking';
 export * from 'components/RankingItem';
+export * from 'components/RankingList';
