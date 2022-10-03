@@ -36,6 +36,7 @@ export const queryKeys = {
   getIsValidAccessToken: 'getIsValidAccessToken',
   getRankingPeriods: 'getRankingPeriods',
   getMyRanking: 'getMyRanking',
+  getAllRanking: 'getAllRanking',
 };
 
 export const mutationKeys = {

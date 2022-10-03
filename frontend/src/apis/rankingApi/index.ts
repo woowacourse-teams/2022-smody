@@ -1,5 +1,7 @@
-import { getMyRanking, getRankingPeriods } from './api';
+import { getAllRanking, getMyRanking, getRankingPeriods } from './api';
 import {
+  GetAllRankingParams,
+  GetAllRankingResponse,
   GetMyRankingParams,
   GetMyRankingResponse,
   GetRankingPeriodsResponse,
@@ -33,5 +35,19 @@ export const useGetMyRanking = (
   useQuery<AxiosResponse<GetMyRankingResponse>, AxiosError<ErrorResponse>>(
     [queryKeys.getMyRanking, rankingPeriodId],
     () => getMyRanking({ rankingPeriodId }),
+    options,
+  );
+
+// 전체 랭킹 활동 조회
+export const useGetAllRanking = (
+  { rankingPeriodId }: GetAllRankingParams,
+  options?: UseQueryOptions<
+    AxiosResponse<GetAllRankingResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useQuery<AxiosResponse<GetAllRankingResponse>, AxiosError<ErrorResponse>>(
+    [queryKeys.getAllRanking, rankingPeriodId],
+    () => getAllRanking({ rankingPeriodId }),
     options,
   );
