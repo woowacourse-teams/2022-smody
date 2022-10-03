@@ -1,11 +1,14 @@
-import { HandleChooseRankingPeriodFunc, UseRankingPeriodsListProps } from './type';
+import { HandleChooseRankingPeriodFunc } from './type';
 import { useGetRankingPeriods } from 'apis/rankingApi';
 import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 import { addDays, dateYMDFormatParsing } from 'utils';
 
 import { RANKING_DURATION } from 'constants/domain';
 
-const useRankingPeriodsList = ({ handleRankingPeriodId }: UseRankingPeriodsListProps) => {
+const useRankingPeriodsList = () => {
+  const setRankingPeriodId = useSetRecoilState(selectedRankingPeriodIdState);
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(0);
   const [showSelectBox, setShowSelectBox] = useState(false);
   const { data: rankingPeriodsData } = useGetRankingPeriods();
@@ -14,9 +17,7 @@ const useRankingPeriodsList = ({ handleRankingPeriodId }: UseRankingPeriodsListP
     if (typeof rankingPeriodsData?.data === 'undefined') {
       return;
     }
-    handleRankingPeriodId({
-      rankingPeriodId: rankingPeriodsData.data[selectedPeriodIndex].rankingPeriodId,
-    });
+    setRankingPeriodId(rankingPeriodsData.data[selectedPeriodIndex].rankingPeriodId);
   }, [selectedPeriodIndex]);
 
   const handleSelectBox = () => {
@@ -27,7 +28,7 @@ const useRankingPeriodsList = ({ handleRankingPeriodId }: UseRankingPeriodsListP
     index,
     rankingPeriodId,
   }: HandleChooseRankingPeriodFunc) => {
-    handleRankingPeriodId({ rankingPeriodId });
+    setRankingPeriodId(rankingPeriodId);
     setSelectedPeriodIndex(index);
   };
 
