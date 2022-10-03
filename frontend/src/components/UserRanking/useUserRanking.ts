@@ -1,6 +1,7 @@
-import { UseUserRankingProps } from './type';
 import { useGetMyRanking } from 'apis';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 
 import { INIT_RANKING_PERIOD_ID } from 'constants/domain';
 
@@ -15,7 +16,8 @@ const MockData = {
   },
 };
 
-const useUserRanking = ({ rankingPeriodId }: UseUserRankingProps) => {
+const useUserRanking = () => {
+  const rankingPeriodId = useRecoilValue(selectedRankingPeriodIdState);
   const [notFoundInRanking, setNotFoundInRanking] = useState(false);
   const {
     isSuccess: isSuccessMyRanking,

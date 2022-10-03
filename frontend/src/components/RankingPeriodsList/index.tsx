@@ -1,4 +1,4 @@
-import { RankingPeriodsListProps, SelectListProps } from './type';
+import { SelectListProps } from './type';
 import useRankingPeriodsList from './useRankingPeriodsList';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import styled, { css } from 'styled-components';
@@ -7,9 +7,7 @@ import { FlexBox } from 'components/@shared/FlexBox';
 
 import { RankingPeriodItem } from 'components/RankingPeriodItem';
 
-export const RankingPeriodsList = ({
-  handleRankingPeriodId,
-}: RankingPeriodsListProps) => {
+export const RankingPeriodsList = () => {
   const {
     selectedPeriodIndex,
     showSelectBox,
@@ -18,7 +16,7 @@ export const RankingPeriodsList = ({
     handleChooseRankingPeriod,
     startDateString,
     endDateString,
-  } = useRankingPeriodsList({ handleRankingPeriodId });
+  } = useRankingPeriodsList();
 
   if (typeof rankingPeriodsData?.data === 'undefined') {
     return null;

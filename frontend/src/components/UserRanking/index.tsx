@@ -1,4 +1,3 @@
-import { UserRankingProps } from './type';
 import useUserRanking from './useUserRanking';
 import styled, { css } from 'styled-components';
 
@@ -6,11 +5,9 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { Text, RankingItem, FlexBox } from 'components';
 
-export const UserRanking = ({ rankingPeriodId }: UserRankingProps) => {
+export const UserRanking = () => {
   const themeContext = useThemeContext();
-  const { myRankingData, needSkeleton, notFoundInRanking } = useUserRanking({
-    rankingPeriodId,
-  });
+  const { myRankingData, needSkeleton, notFoundInRanking } = useUserRanking();
 
   if (notFoundInRanking) {
     return (
