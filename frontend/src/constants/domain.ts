@@ -12,3 +12,4 @@ export const RANKING_DURATION = {
 };
 
 export const INIT_RANKING_PERIOD_ID = -1;
+export const INIT_MY_MEMBER_ID = -1;

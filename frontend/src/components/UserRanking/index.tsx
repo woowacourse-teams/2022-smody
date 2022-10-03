@@ -39,7 +39,6 @@ export const UserRanking = () => {
   }
 
   if (needSkeleton || typeof myRankingData?.data === 'undefined') {
-    console.log('inSkeleton');
     return (
       <FlexBox flexDirection="column" gap="0.5rem">
         <Text size={24} color={themeContext.onBackground} fontWeight="bold">

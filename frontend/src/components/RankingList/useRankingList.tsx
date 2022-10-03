@@ -1,12 +1,14 @@
 import { useGetAllRanking } from 'apis';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
+import { myMemberIdState, selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 
 import { INIT_RANKING_PERIOD_ID } from 'constants/domain';
 
 const useRankingList = () => {
   const rankingPeriodId = useRecoilValue(selectedRankingPeriodIdState);
+  const myMemberId = useRecoilValue(myMemberIdState);
+
   const {
     isSuccess: isSuccessAllRanking,
     data: allRankingData,
@@ -28,9 +30,9 @@ const useRankingList = () => {
   }, [rankingPeriodId]);
 
   if (rankingPeriodId !== INIT_RANKING_PERIOD_ID) {
-    return { allRankingData, needSkeleton };
+    return { allRankingData, needSkeleton, myMemberId };
   }
-  return { allRankingData, needSkeleton: true };
+  return { allRankingData, needSkeleton: true, myMemberId };
 };
 
 export default useRankingList;
