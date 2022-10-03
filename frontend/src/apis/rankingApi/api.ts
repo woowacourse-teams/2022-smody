@@ -1,4 +1,6 @@
 import {
+  GetAllRankingParams,
+  GetAllRankingResponse,
   GetMyRankingParams,
   GetMyRankingResponse,
   GetRankingPeriodsResponse,
@@ -18,5 +20,12 @@ export const getRankingPeriods = async () => {
 export const getMyRanking = async ({ rankingPeriodId }: GetMyRankingParams) => {
   return authApiClient.axios.get<GetMyRankingResponse>(
     `/ranking-periods/${rankingPeriodId}/ranking-activities/me`,
+  );
+};
+
+// 전체 랭킹 활동 조회
+export const getAllRanking = async ({ rankingPeriodId }: GetAllRankingParams) => {
+  return authApiClient.axios.get<GetAllRankingResponse>(
+    `/ranking-periods/${rankingPeriodId}/ranking-activities`,
   );
 };
