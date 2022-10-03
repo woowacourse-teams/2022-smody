@@ -1,4 +1,5 @@
-import { RankingItemProps } from './type';
+import { MedalProps, RankingItemProps } from './type';
+import { FaMedal } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -39,16 +40,37 @@ export const RankingItem = ({
           {introduction}
         </Text>
       </UserInfoWrapper>
-      <PointWrapper>
-        <Text size={20} color={themeContext.primary} fontWeight="bold">
-          {point}
-        </Text>
-        <Text size={20} color={themeContext.onSurface} fontWeight="bold">
-          p
-        </Text>
+      <PointWrapper gap="1rem" alignItems="center">
+        <Medal ranking={ranking} />
+        <FlexBox flexDirection="row">
+          <Text size={20} color={themeContext.primary} fontWeight="bold">
+            {point}
+          </Text>
+          <Text size={20} color={themeContext.onSurface} fontWeight="bold">
+            p
+          </Text>
+        </FlexBox>
       </PointWrapper>
     </Wrapper>
   );
+};
+
+const Medal = ({ ranking }: MedalProps) => {
+  const themeContext = useThemeContext();
+
+  if (ranking > 3) {
+    return null;
+  }
+
+  if (ranking === 1) {
+    return <FaMedal size={25} color={themeContext.first} />;
+  }
+
+  if (ranking === 2) {
+    return <FaMedal size={25} color={themeContext.second} />;
+  }
+
+  return <FaMedal size={25} color={themeContext.third} />;
 };
 
 const Wrapper = styled(FlexBox)`

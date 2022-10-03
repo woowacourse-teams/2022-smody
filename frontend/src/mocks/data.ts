@@ -1368,7 +1368,7 @@ export const rankingPeriodsData = [
 ];
 
 export const myRanking = {
-  ranking: 4,
+  ranking: 3,
   memberId: 4,
   nickname: '마르코',
   introduction: '안녕하세요 마르코입니다.',

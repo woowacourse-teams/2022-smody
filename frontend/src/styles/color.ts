@@ -20,6 +20,10 @@ const COLOR = {
   BLUE: '#0D47A1',
 
   OPAQUE_BLACK: 'rgba(0, 0, 0, 0.4)',
+
+  GOLD: '#ffcf40',
+  SILVER: '#c0c0c0',
+  COPPER: '#cd7f32',
 } as const;
 
 export default COLOR;
