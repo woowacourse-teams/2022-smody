@@ -142,7 +142,7 @@ const CenterWrapper = styled.div`
 
   ${Text} {
     position: relative;
-    left: 22px;
+    text-align: center;
   }
 `;
 
