@@ -1,5 +1,5 @@
 import { BASE_URL } from 'env';
-import { myRanking, rankingPeriodsData } from 'mocks/data';
+import { myRanking, rankingPeriodsData, userData } from 'mocks/data';
 import { rest } from 'msw';
 
 export const ranking = [
@@ -15,6 +15,9 @@ export const ranking = [
       const { rankingPeriodId } = req.params;
       const data = myRanking;
       data.ranking = rankingPeriodId;
+      data.nickname = userData.nickname;
+      data.introduction = userData.introduction;
+      data.picture = userData.picture;
       if (rankingPeriodId === '1') {
         return res(ctx.delay(1000), ctx.status(404));
       }
