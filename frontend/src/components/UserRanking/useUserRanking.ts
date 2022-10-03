@@ -5,17 +5,6 @@ import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 
 import { INIT_RANKING_PERIOD_ID } from 'constants/domain';
 
-const MockData = {
-  data: {
-    ranking: -1,
-    memberId: -1,
-    nickname: '',
-    introduction: '',
-    picture: '',
-    point: -1,
-  },
-};
-
 const useUserRanking = () => {
   const rankingPeriodId = useRecoilValue(selectedRankingPeriodIdState);
   const [notFoundInRanking, setNotFoundInRanking] = useState(false);
@@ -55,7 +44,7 @@ const useUserRanking = () => {
   if (rankingPeriodId !== INIT_RANKING_PERIOD_ID) {
     return { myRankingData, needSkeleton, notFoundInRanking };
   }
-  return { myRankingData: MockData, needSkeleton: true, notFoundInRanking: false };
+  return { myRankingData, needSkeleton: true, notFoundInRanking: false };
 };
 
 export default useUserRanking;
