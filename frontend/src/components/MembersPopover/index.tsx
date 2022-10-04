@@ -23,7 +23,7 @@ export const MembersPopover = ({
               <li
                 key={member.memberId}
                 onClick={() => {
-                  selectMember(member.memberId);
+                  selectMember(member.memberId, member.nickname);
                   handleClosePopover();
                 }}
               >
