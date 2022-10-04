@@ -1,7 +1,6 @@
 package com.woowacourse.smody.push.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

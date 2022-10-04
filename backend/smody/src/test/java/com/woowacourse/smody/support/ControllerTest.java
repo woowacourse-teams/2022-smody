@@ -1,9 +1,5 @@
 package com.woowacourse.smody.support;
 
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.api.GoogleApi;
 import com.woowacourse.smody.auth.controller.OauthController;
@@ -37,6 +33,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @WebMvcTest(controllers = {
         MemberController.class,

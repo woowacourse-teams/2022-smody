@@ -227,6 +227,14 @@ include::{snippets}/validate_auth/http-response.adoc[]
 === Response 필드
 include::{snippets}/validate_auth/response-fields.adoc[]
 
+== 이름으로 회원 조회
+=== Request
+include::{snippets}/mention-to/http-request.adoc[]
+=== Response
+include::{snippets}/mention-to/http-response.adoc[]
+=== Response 필드
+include::{snippets}/mention-to/response-fields.adoc[]
+
 = 웹 푸시 알림
 
 == public key 조회
@@ -265,3 +273,10 @@ include::{snippets}/delete-notification/http-request.adoc[]
 === Response
 include::{snippets}/delete-notification/http-response.adoc[]
 
+== 멘션 알림 추기
+=== Request
+include::{snippets}/save-mention-notification/http-request.adoc[]
+=== Request 필드
+include::{snippets}/save-mention-notification/request-fields.adoc[]
+=== Response
+include::{snippets}/save-mention-notification/http-response.adoc[]
