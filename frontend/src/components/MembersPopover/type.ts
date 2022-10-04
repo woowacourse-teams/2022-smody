@@ -11,7 +11,7 @@ export type MembersPopoverProps = {
         AxiosResponse<Pick<Member, 'memberId' | 'nickname' | 'picture'>[], any>
       >
     | undefined;
-  selectMember: (memberId: number) => void;
+  selectMember: (memberId: number, nickname: string) => void;
 };
 
 export type MemberItemProps = Pick<Member, 'nickname' | 'picture'>;
