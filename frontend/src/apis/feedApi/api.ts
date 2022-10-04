@@ -77,11 +77,9 @@ export const getMembers = async (filter: string, cursorId: number) => {
 export const postMentionNotifications = async ({
   memberIds,
   pathId,
-  pushCase,
 }: PostMentionNotificationsPayload) => {
   return authApiClient.axios.post(`push-notifications`, {
     memberIds,
     pathId,
-    pushCase,
   });
 };

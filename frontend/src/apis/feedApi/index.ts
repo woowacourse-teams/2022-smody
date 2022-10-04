@@ -161,7 +161,6 @@ export const usePostMentionNotifications = (
   >,
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostMentionNotificationsPayload>(
-    ({ memberIds, pathId, pushCase }) =>
-      postMentionNotifications({ memberIds, pathId, pushCase }),
+    ({ memberIds, pathId }) => postMentionNotifications({ memberIds, pathId }),
     options,
   );
