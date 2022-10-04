@@ -5,7 +5,9 @@ import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.ranking.service.RankingService;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 @RequiredArgsConstructor
 public class RankingPointEventListener {
 
+    @Value("#{${admin.staff}}")
+    private List<Long> staffs;
+
     private final RankingService rankingService;
     private final TransactionTemplate transactionTemplate;
     
@@ -25,7 +30,10 @@ public class RankingPointEventListener {
     @Async("asyncExecutor")
     public void handle(CycleProgressEvent event) {
         Cycle cycle = event.getCycle();
-
+        Long memberId = cycle.getMember().getId();
+        if (staffs.contains(memberId)) {
+            return;
+        }
         try {
             applyRankingPointWithTransaction(cycle);
         } catch (DataIntegrityViolationException e) {
