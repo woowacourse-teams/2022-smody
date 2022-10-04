@@ -50,12 +50,11 @@ public class RankingActivity {
         this.point = point;
     }
 
-    public static RankingActivity zero(Member member, RankingPeriod period) {
+    public static RankingActivity zeroPoint(Member member, RankingPeriod period) {
         return new RankingActivity(member, period, DEFAULT_POINT);
     }
 
     public void active(Progress progress) {
-        this.point += Point.valueOf(progress.name())
-                .getValue();
+        this.point += Point.calculate(progress);
     }
 }

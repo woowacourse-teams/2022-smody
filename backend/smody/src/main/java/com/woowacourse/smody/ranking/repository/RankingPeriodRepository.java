@@ -10,5 +10,5 @@ public interface RankingPeriodRepository extends JpaRepository<RankingPeriod, Lo
 
     List<RankingPeriod> findAll(Sort sort);
 
-    List<RankingPeriod> findAllByStartDateBefore(LocalDateTime time);
+    List<RankingPeriod> findAllByStartDateBefore(LocalDateTime startDate);
 }

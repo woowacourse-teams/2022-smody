@@ -35,7 +35,30 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @Autowired
     private RankingPeriodRepository rankingPeriodRepository;
 
-    @DisplayName("랭킹 기간에 처음 인증했을 때 progress에 따라 점수를 얻는다.")
+    @DisplayName("랭킹 기간이 없고 처음 인증했을 때 progress에 따라 점수를 얻는다.")
+    @ParameterizedTest
+    @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
+    void handle_firstRank_notPeriod(Progress progress, Integer expected) throws InterruptedException {
+        // given
+        LocalDateTime startTime = LocalDateTime.now().minusDays(1);
+        Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, progress, startTime);
+        CycleProgressEvent event = new CycleProgressEvent(cycle);
+
+        // when
+        synchronize(() -> eventListener.handle(event));
+
+        // then
+        List<RankingActivity> activities = rankingActivityRepository.findAll();
+
+        assertAll(
+                () -> assertThat(activities).map(rankingActivity -> rankingActivity.getMember().getId())
+                        .containsExactly(조조그린_ID),
+                () -> assertThat(activities).map(RankingActivity::getPoint)
+                        .containsExactly(expected)
+        );
+    }
+
+    @DisplayName("랭킹 기간이 존재하고 처음 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
     void handle_firstRank(Progress progress, Integer expected) throws InterruptedException {
@@ -59,7 +82,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("랭킹 기간에 처음 인증했을 때 progress에 따라 점수를 얻는다.")
+    @DisplayName("랭킹 기간이 있고 두번째 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,110", "SECOND,130", "SUCCESS,160"})
     void handle_secondRank(Progress progress, Integer expected) throws InterruptedException {

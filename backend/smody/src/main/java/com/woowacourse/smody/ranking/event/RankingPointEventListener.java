@@ -3,9 +3,14 @@ package com.woowacourse.smody.ranking.event;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
+import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.ranking.domain.RankingActivity;
+import com.woowacourse.smody.ranking.domain.RankingPeriod;
 import com.woowacourse.smody.ranking.service.RankingService;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -49,11 +54,54 @@ public class RankingPointEventListener {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
-                CycleDetail cycleDetail = cycle.getLatestCycleDetail();
-                LocalDateTime progressTime = cycleDetail.getProgressTime();
-                rankingService.findInProgressActivity(progressTime, cycle.getMember())
-                        .forEach(activity -> activity.active(cycleDetail.getProgress()));
+                List<RankingActivity> activities = findTargetActivities(cycle);
+                updateActivities(cycle.getLatestCycleDetail(), activities);
             }
         });
+    }
+
+    private List<RankingActivity> findTargetActivities(Cycle cycle) {
+        LocalDateTime progressTime = cycle.getLatestProgressTime();
+        List<RankingPeriod> periods = rankingService.findInProgressPeriod(progressTime);
+        addPeriodIfAbsent(periods, progressTime);
+        Member member = cycle.getMember();
+        List<RankingActivity> activities = rankingService.findAllActivity(periods, member);
+        addActivityIfAbsent(periods, member, activities);
+        return activities;
+    }
+
+    private void addPeriodIfAbsent(List<RankingPeriod> periods, LocalDateTime progressTime) {
+        if (periods.isEmpty()) {
+            periods.add(rankingService.createWeeklyPeriod(getMonday(progressTime)));
+        }
+    }
+
+    private void addActivityIfAbsent(List<RankingPeriod> periods, Member member, List<RankingActivity> activities) {
+        List<RankingPeriod> myPeriods = activities.stream()
+                .map(RankingActivity::getRankingPeriod)
+                .collect(Collectors.toList());
+        for (RankingPeriod period : periods) {
+            addActivity(member, activities, myPeriods, period);
+        }
+    }
+
+    private void updateActivities(CycleDetail cycleDetail, List<RankingActivity> activities) {
+        for (RankingActivity activity : activities) {
+            activity.active(cycleDetail.getProgress());
+        }
+    }
+
+    private LocalDateTime getMonday(LocalDateTime time) {
+        return time.with(DayOfWeek.MONDAY)
+                .toLocalDate()
+                .atTime(0, 0, 0);
+    }
+
+    private void addActivity(Member member, List<RankingActivity> activities,
+                             List<RankingPeriod> myPeriods,
+                             RankingPeriod period) {
+        if (!myPeriods.contains(period)) {
+            activities.add(rankingService.createFirstActivity(member, period));
+        }
     }
 }

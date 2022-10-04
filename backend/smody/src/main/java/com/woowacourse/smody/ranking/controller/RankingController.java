@@ -30,7 +30,7 @@ public class RankingController {
 
     @GetMapping("/{rankingPeriodId}/ranking-activities")
     public ResponseEntity<List<RankingActivityResponse>> findAllActivity(@PathVariable Long rankingPeriodId) {
-        return ResponseEntity.ok(rankingService.findAllActivity(rankingPeriodId));
+        return ResponseEntity.ok(rankingService.findAllRankedActivity(rankingPeriodId));
     }
     @GetMapping("/{rankingPeriodId}/ranking-activities/me")
     @RequiredLogin

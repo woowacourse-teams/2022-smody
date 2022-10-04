@@ -74,7 +74,7 @@ class RankingControllerTest extends ControllerTest {
                 )
         );
 
-        given(rankingService.findAllActivity(1L))
+        given(rankingService.findAllRankedActivity(1L))
                 .willReturn(responses);
 
         // when

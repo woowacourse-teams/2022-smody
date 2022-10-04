@@ -122,6 +122,7 @@ public class Cycle {
     }
 
     public CycleDetail getLatestCycleDetail() {
-        return getCycleDetails().get(this.cycleDetails.size() - 1);
+        int lastIndex = this.cycleDetails.size() - 1;
+        return getCycleDetails().get(lastIndex);
     }
 }
