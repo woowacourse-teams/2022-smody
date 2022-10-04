@@ -83,4 +83,8 @@ public class MemberService {
                 .map(SearchedMemberResponse::new)
                 .collect(Collectors.toList());
     }
+
+    public List<Member> findByIdIn(List<Long> ids) {
+        return memberRepository.findByIdIn(ids);
+    }
 }

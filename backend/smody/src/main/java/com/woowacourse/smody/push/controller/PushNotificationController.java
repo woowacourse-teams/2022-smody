@@ -3,16 +3,13 @@ package com.woowacourse.smody.push.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
+import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/push-notifications")
@@ -33,5 +30,13 @@ public class PushNotificationController {
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
         pushNotificationService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    @RequiredLogin
+    public ResponseEntity<Void> saveMentionNotification(@LoginMember TokenPayload tokenPayload,
+                                                        @RequestBody MentionNotificationRequest mentionNotificationRequest) {
+        pushNotificationService.publishMentionEvent(tokenPayload, mentionNotificationRequest);
+        return ResponseEntity.ok().build();
     }
 }

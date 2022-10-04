@@ -2,6 +2,8 @@ package com.woowacourse.smody.push.service;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.MentionCreateEvent;
+import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.member.service.MemberService;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PushNotificationService {
 
     private final PushNotificationRepository pushNotificationRepository;
+
+    private final ApplicationEventPublisher publisher;
     private final MemberService memberService;
 
     @Transactional
@@ -42,5 +47,13 @@ public class PushNotificationService {
 
     public Optional<PushNotification> searchSamePathAndStatus(Long pathId, PushStatus status) {
         return pushNotificationRepository.findByPathIdAndPushStatus(pathId, status);
+    }
+
+    public void publishMentionEvent(TokenPayload tokenPayload,
+                                    MentionNotificationRequest mentionNotificationRequest) {
+        List<Long> mentionedIds = mentionNotificationRequest.getMemberIds();
+        Long mentioningId = tokenPayload.getId();
+        Long cycleDetailId = mentionNotificationRequest.getPathId();
+        publisher.publishEvent(new MentionCreateEvent(mentionedIds, mentioningId, cycleDetailId));
     }
 }
