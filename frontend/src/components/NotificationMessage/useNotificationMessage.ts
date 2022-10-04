@@ -14,7 +14,7 @@ import { CLIENT_PATH } from 'constants/path';
 
 const messageChannel = new MessageChannel();
 // 우선 채널 설정 위해 서비스워커에 port2를 전달한다
-if (navigator.serviceWorker.controller) {
+if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
   navigator.serviceWorker.controller.postMessage(
     {
       type: 'INIT_PORT',
