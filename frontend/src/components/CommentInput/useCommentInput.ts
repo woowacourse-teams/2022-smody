@@ -31,7 +31,7 @@ const useCommentInput = ({
   // ------- 멘션 알림 기능 ------------------------
   const isFirstRendered = useRef(true);
   const [filterValue, setFilterValue] = useState('');
-  const [mentionedMemberIds, setMentionedMemberIds] = useState<Set<number>>(new Set([]));
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiated = useRef(false);
   const {
@@ -238,20 +238,17 @@ const useCommentInput = ({
       return;
     }
 
-    setMentionedMemberIds(mentionedMemberIds.add(memberId));
+    mentionedMemberIds.push(memberId);
+    setMentionedMemberIds(mentionedMemberIds);
 
-    console.log('currentCursorPosition', getCursorPosition());
     const text = commentInputRef.current.textContent;
 
-    // 건들지 마시오
+    // // 건들지 마시오
     const result = ((text?.slice(0, lastMentionSymbolPositionRef.current - 1) as string) +
       `@${nickname}` +
       text?.slice(
         lastMentionSymbolPositionRef.current + filterValue.length + 1,
       )) as string;
-
-    console.log('현재 lastSymbolPos: ', lastMentionSymbolPositionRef.current);
-    console.log('현재 filterValue 길이: ', filterValue.length);
 
     commentInputRef.current.innerHTML = result;
 
@@ -335,9 +332,8 @@ const useCommentInput = ({
     }
     postComment({ content });
     postMentionNotifications({
-      memberIds: Array.from(mentionedMemberIds),
+      memberIds: mentionedMemberIds,
       pathId: Number(cycleDetailId),
-      pushCase: 'mention',
     });
   };
 
