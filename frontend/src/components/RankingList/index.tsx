@@ -8,7 +8,7 @@ import { FlexBox, Text, RankingItem } from 'components';
 
 export const RankingList = () => {
   const themeContext = useThemeContext();
-  const { allRankingData, needSkeleton, myMemberId } = useRankingList();
+  const { allRankingData, needSkeleton } = useRankingList();
 
   if (needSkeleton || typeof allRankingData?.data === 'undefined') {
     return (
@@ -46,10 +46,7 @@ export const RankingList = () => {
       <FlexBox as="ol" flexDirection="column" gap="0.5rem">
         {allRankingData.data.map((rankingData) => (
           <li key={rankingData.memberId}>
-            <RankingItem
-              {...rankingData}
-              myRanking={myMemberId === rankingData.memberId}
-            />
+            <RankingItem {...rankingData} />
           </li>
         ))}
       </FlexBox>

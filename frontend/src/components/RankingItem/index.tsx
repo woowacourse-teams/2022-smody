@@ -14,9 +14,8 @@ export const RankingItem = ({
   introduction,
   picture,
   point,
-  myRanking = false,
 }: RankingItemProps) => {
-  const { surfaceColor, onSurfaceColor, pointColor } = useRankingItem({ myRanking });
+  const { surfaceColor, onSurfaceColor, pointColor } = useRankingItem({ memberId });
 
   return (
     <Wrapper surfaceColor={surfaceColor} alignItems="center" gap="1rem">
