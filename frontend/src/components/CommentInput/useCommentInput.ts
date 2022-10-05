@@ -108,6 +108,39 @@ const useCommentInput = ({
   }, []);
 
   const inputChangeHandler: MutationCallback = (mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        if (
+          mutation.removedNodes.length > 0 &&
+          mutation.removedNodes[0].nodeName === 'SPAN'
+        ) {
+          console.log('@!@!@!@!@@', mutation.removedNodes[0]);
+          const targetNode = mutation.removedNodes[0] as HTMLElement;
+          const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
+          const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
+          if (deletedIndex > -1) {
+            console.log('삭제');
+            mentionedMemberIds.splice(deletedIndex, 1);
+          }
+
+          setMentionedMemberIds((prevMentionMemberIds) => {
+            const copiedMentionMembersId = [...prevMentionMemberIds];
+
+            const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
+
+            if (deletedIndex > -1) {
+              copiedMentionMembersId.splice(deletedIndex, 1);
+            }
+
+            return copiedMentionMembersId;
+          });
+          console.log('mentionedMemberIds', mentionedMemberIds);
+          console.log('deletedIndex', deletedIndex);
+          console.log('배고파', targetNode.getAttribute('data-member-id'));
+          console.log('속성 node: .', targetNode.ATTRIBUTE_NODE);
+        }
+      }
+    });
     const hasSymbolPosition =
       lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
 
@@ -330,6 +363,7 @@ const useCommentInput = ({
     nicknameSpan.style.backgroundColor = '#7b61fe';
     nicknameSpan.style.color = '#fff';
     nicknameSpan.style.borderRadius = '5px';
+    nicknameSpan.setAttribute('data-member-id', String(memberId));
 
     const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
 
@@ -381,6 +415,9 @@ const useCommentInput = ({
 
         commentInputRef.current!.textContent = '';
 
+        setMentionedMemberIds([]);
+        console.log('@@@@usePostComment@@@초기화');
+
         resizeToInitialHeight();
 
         renderSnackBar({
@@ -398,6 +435,9 @@ const useCommentInput = ({
       setContent(INITIAL_CONTENT);
 
       commentInputRef.current!.textContent = '';
+
+      setMentionedMemberIds([]);
+      console.log('@@@@usePostComment@@@초기화');
 
       resizeToInitialHeight();
 
@@ -434,8 +474,10 @@ const useCommentInput = ({
       return;
     }
     postComment({ content });
+
+    console.log('현재 mentionedMemberIds: ', Array.from(new Set(mentionedMemberIds)));
     postMentionNotifications({
-      memberIds: mentionedMemberIds,
+      memberIds: Array.from(new Set(mentionedMemberIds)),
       pathId: Number(cycleDetailId),
     });
   };
