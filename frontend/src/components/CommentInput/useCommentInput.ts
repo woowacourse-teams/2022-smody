@@ -192,7 +192,13 @@ const useCommentInput = ({
 
     const { innerText } = commentInputRef.current!;
 
-    if (isPrevPressBackspace.current && prevCursorPosition.current === cursorPosition) {
+    // 지우려는 element 첫 번째 자식인 경우 contentEditable 부모에서 해당 element를 삭제할 수 없는 이슈 때문에
+    // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
+    if (
+      commentInputRef.current?.childNodes.length === 3 &&
+      commentInputRef.current?.childNodes[1].nodeName &&
+      commentInputRef.current?.childNodes[0].textContent === ''
+    ) {
       // init 3종 세트
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       isFilterValueInitiated.current = true;
