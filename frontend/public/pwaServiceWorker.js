@@ -1,4 +1,4 @@
-const VERSION = 'v4.9.1';
+const VERSION = 'v4.9.2';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -155,7 +155,9 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(self.registration.showNotification(title, options));
 
-  getVersionPort.postMessage({ message: data.message });
+  if (getVersionPort) {
+    getVersionPort.postMessage({ message: data.message });
+  }
 });
 
 self.addEventListener('notificationclick', (event) => {
