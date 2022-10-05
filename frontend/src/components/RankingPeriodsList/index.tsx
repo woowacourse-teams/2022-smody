@@ -70,14 +70,33 @@ const SelectPeriod = styled(FlexBox)`
   `}
 `;
 
-const SelectList = styled.ul`
-  ${({ show }: SelectListProps) => css`
+const SelectList = styled.ul<SelectListProps>`
+  ${({ theme, show }) => css`
     display: ${!show && 'none'};
     width: fit-content;
     height: 10rem;
     overflow-y: scroll;
     position: absolute;
     top: 2.5rem;
-    right: 0.5rem;
+    right: 1.2rem;
+
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
+    }
   `}
 `;
