@@ -1,5 +1,6 @@
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, ValidationMessage, MembersPopover } from 'components';
