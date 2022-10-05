@@ -8,7 +8,21 @@ import { FlexBox, Text, RankingItem } from 'components';
 
 export const RankingList = () => {
   const themeContext = useThemeContext();
-  const { allRankingData, needSkeleton } = useRankingList();
+  const { allRankingData, isEmpty, needSkeleton } = useRankingList();
+
+  if (isEmpty) {
+    return (
+      <Wrapper flexDirection="column" gap="0.5rem">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
+          전체 랭킹
+        </Text>
+        <RankingListSkeleton
+          title="아직 참여자가 없는 랭킹입니다 :)"
+          description="인증하고 랭킹 1등 자리를 차지해보아요!! 🏆"
+        />
+      </Wrapper>
+    );
+  }
 
   if (needSkeleton || typeof allRankingData?.data === 'undefined') {
     return (
@@ -19,20 +33,6 @@ export const RankingList = () => {
         <RankingListSkeleton
           title="전체 랭킹을 불러오는 중입니다..."
           description="잠시만 기다려주세요!"
-        />
-      </Wrapper>
-    );
-  }
-
-  if (allRankingData.data.length === 0) {
-    return (
-      <Wrapper flexDirection="column" gap="0.5rem">
-        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
-          전체 랭킹
-        </Text>
-        <RankingListSkeleton
-          title="아직 참여자가 없는 랭킹입니다 :)"
-          description="인증하고 랭킹 1등 자리를 차지해보아요!! 🏆"
         />
       </Wrapper>
     );

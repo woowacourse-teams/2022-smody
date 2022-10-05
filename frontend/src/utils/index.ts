@@ -99,3 +99,9 @@ export const getWeekNumber = (dateString: string) => {
   // ((요일 - 1) + 해당 날짜) / 7일로 나누기 = N 주차
   return parseInt(`${(weekDay - 1 + currentDate) / 7}`) + 1;
 };
+
+export const getCurrentStartDateString = () => {
+  const currentDate = new Date();
+  const weekDay = currentDate.getDay();
+  return parseDateToISOString(addDays(currentDate, 1 - weekDay));
+};

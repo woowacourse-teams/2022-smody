@@ -4,7 +4,11 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 import { myMemberIdState, selectedRankingPeriodIdState } from 'recoil/ranking/atom';
 
-import { INIT_MY_MEMBER_ID, INIT_RANKING_PERIOD_ID } from 'constants/domain';
+import {
+  EMPTY_RANKING_PERIOD_ID,
+  INIT_MY_MEMBER_ID,
+  INIT_RANKING_PERIOD_ID,
+} from 'constants/domain';
 
 const useUserRanking = () => {
   const [myMemberId, setMyMemberId] = useRecoilState(myMemberIdState);
@@ -46,19 +50,22 @@ const useUserRanking = () => {
   }, [isLogin]);
 
   useEffect(() => {
-    if (rankingPeriodId !== INIT_RANKING_PERIOD_ID && isLogin) {
+    if (rankingPeriodId > INIT_RANKING_PERIOD_ID && isLogin) {
       if (notFoundInRanking) {
         setNotFoundInRanking(false);
       }
       refetchMyRanking();
-      needSkeleton = !isSuccessMyRanking || rankingPeriodId === INIT_RANKING_PERIOD_ID;
+      needSkeleton = !isSuccessMyRanking || rankingPeriodId == INIT_RANKING_PERIOD_ID;
     }
   }, [rankingPeriodId]);
 
-  if (rankingPeriodId !== INIT_RANKING_PERIOD_ID) {
-    return { myRankingData, needSkeleton, notFoundInRanking, isLogin };
+  if (rankingPeriodId === INIT_RANKING_PERIOD_ID) {
+    return { myRankingData, needSkeleton: true, notFoundInRanking: false, isLogin };
   }
-  return { myRankingData, needSkeleton: true, notFoundInRanking: false, isLogin };
+  if (rankingPeriodId === EMPTY_RANKING_PERIOD_ID) {
+    return { myRankingData, needSkeleton: false, notFoundInRanking: true, isLogin };
+  }
+  return { myRankingData, needSkeleton, notFoundInRanking, isLogin };
 };
 
 export default useUserRanking;

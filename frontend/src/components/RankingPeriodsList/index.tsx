@@ -1,6 +1,6 @@
 import { SelectListProps } from './type';
 import useRankingPeriodsList from './useRankingPeriodsList';
-import { BsFillCaretDownFill } from 'react-icons/bs';
+import { BsFillCaretDownFill, BsFillCaretUpFill } from 'react-icons/bs';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -26,7 +26,7 @@ export const RankingPeriodsList = () => {
   }
 
   return (
-    <div>
+    <FlexBox flexDirection="column" gap="0.5rem">
       <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         {titleDate}
       </Text>
@@ -34,7 +34,7 @@ export const RankingPeriodsList = () => {
         <div></div>
         <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
           {detailDate}&nbsp;
-          <BsFillCaretDownFill />
+          {showSelectBox ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />}
           <SelectList show={showSelectBox}>
             {rankingPeriodsData.data.map((rankingPeriod, index) => (
               <RankingPeriodItem
@@ -52,7 +52,7 @@ export const RankingPeriodsList = () => {
           </SelectList>
         </SelectPeriod>
       </FlexBox>
-    </div>
+    </FlexBox>
   );
 };
 
@@ -77,7 +77,7 @@ const SelectList = styled.ul<SelectListProps>`
   ${({ theme, show }) => css`
     display: ${!show && 'none'};
     width: fit-content;
-    height: 10rem;
+    max-height: 10rem;
     overflow-y: scroll;
     position: absolute;
     top: 2.5rem;
