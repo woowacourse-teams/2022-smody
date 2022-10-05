@@ -6,7 +6,7 @@ import com.woowacourse.smody.auth.login.RequiredLogin;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
-import com.woowacourse.smody.member.dto.MentionResponse;
+import com.woowacourse.smody.member.dto.SearchedMemberResponse;
 import com.woowacourse.smody.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +54,7 @@ public class MemberController {
 
     @GetMapping
     @RequiredLogin
-    public ResponseEntity<List<MentionResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
+    public ResponseEntity<List<SearchedMemberResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(memberService.findAll(pagingParams));
     }
 }

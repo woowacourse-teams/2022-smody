@@ -41,7 +41,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		syncronize(() -> commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
+		synchronize(() -> commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
@@ -65,7 +65,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		syncronize(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest));
+		synchronize(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);

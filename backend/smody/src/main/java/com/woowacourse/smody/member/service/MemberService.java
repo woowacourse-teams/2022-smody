@@ -10,7 +10,7 @@ import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
-import com.woowacourse.smody.member.dto.MentionResponse;
+import com.woowacourse.smody.member.dto.SearchedMemberResponse;
 import com.woowacourse.smody.member.repository.MemberRepository;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
@@ -77,10 +77,10 @@ public class MemberService {
         return search(tokenPayload);
     }
 
-    public List<MentionResponse> findAll(PagingParams pagingParams) {
+    public List<SearchedMemberResponse> findAll(PagingParams pagingParams) {
         List<Member> members = memberRepository.findAll(pagingParams);
         return members.stream()
-                .map(MentionResponse::new)
+                .map(SearchedMemberResponse::new)
                 .collect(Collectors.toList());
     }
 }

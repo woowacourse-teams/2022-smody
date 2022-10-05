@@ -26,6 +26,8 @@ public enum ExceptionData {
     NOT_FOUND_CYCLE(4003, "존재하지 않는 사이클입니다.", 404),
     NOT_FOUND_CYCLE_DETAIL(4004, "존재하지 않는 피드입니다.", 404),
     NOT_FOUND_COMMENT(4005, "존재하지 않는 댓글입니다.", 404),
+    NOT_FOUND_RANKING_PERIOD(4006, "존재하지 않는 랭킹 기간입니다.", 404),
+    NOT_FOUND_RANKING_ACTIVITY(4007, "존재하지 않는 랭킹 활동입니다.", 404),
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다.", 400),
 
@@ -41,7 +43,9 @@ public enum ExceptionData {
 
     AUTHORIZATION_SERVER_ERROR(9001, "인가 관련 서버 내부의 오류입니다.", 500),
     IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500),
-    DATA_INTEGRITY_ERROR(9003, "데이터 정합성 관련 서버 내부의 오류입니다.", 500);
+    DATA_INTEGRITY_ERROR(9003, "데이터 정합성 관련 서버 내부의 오류입니다.", 500)
+
+    ;
 
     private final int code;
     private final String message;

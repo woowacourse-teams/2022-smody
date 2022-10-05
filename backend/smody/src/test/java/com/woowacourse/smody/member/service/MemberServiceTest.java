@@ -17,7 +17,7 @@ import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
-import com.woowacourse.smody.member.dto.MentionResponse;
+import com.woowacourse.smody.member.dto.SearchedMemberResponse;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
@@ -184,9 +184,9 @@ class MemberServiceTest extends IntegrationTest {
         result.updateIntroduction(null);
     }
 
-    @DisplayName("멘션을 할 때")
+    @DisplayName("회원을 조회할 때")
     @Nested
-    class mentionTest {
+    class findMembersTest {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
         @Test
@@ -199,12 +199,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(8),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(8),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린", "그랑조", "조", "양조장")
             );
         }
@@ -220,12 +220,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(5),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(5),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린")
             );
         }
@@ -241,12 +241,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(4),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(4),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조그린", "그랑조", "조", "양조장")
             );
         }
@@ -262,12 +262,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(2),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(2),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조그린", "그랑조")
             );
         }
@@ -283,12 +283,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(5),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(5),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조", "조", "양조장")
             );
         }
@@ -304,12 +304,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(3),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(3),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조")
             );
         }
@@ -325,12 +325,12 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 0, member.getId(), "조");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(3),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(3),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("그랑조", "조", "양조장")
             );
         }
@@ -346,12 +346,12 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 2, member.getId(), "조");
 
             // when
-            List<MentionResponse> mentionResponse = memberService.findAll(pagingParams);
+            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(mentionResponse.size()).isEqualTo(2),
-                    () -> assertThat(mentionResponse).map(MentionResponse::getNickname)
+                    () -> assertThat(searchedMemberResponse).hasSize(2),
+                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
                             .containsExactly("그랑조", "조")
             );
         }
