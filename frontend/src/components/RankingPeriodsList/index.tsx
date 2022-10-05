@@ -79,6 +79,7 @@ const SelectList = styled.ul<SelectListProps>`
     position: absolute;
     top: 2.5rem;
     right: 1.2rem;
+    border-radius: 0 0 10px 10px;
 
     // 스크롤바
     /* 스크롤바 설정*/
