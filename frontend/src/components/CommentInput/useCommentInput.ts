@@ -106,7 +106,7 @@ const useCommentInput = ({
       lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
 
     const isCurrentCharacterWhiteSpace = (text: string) =>
-      text[getCursorPosition() - 1] === ' ';
+      text[getCursorPosition(commentInputRef.current)! - 1] === ' ';
 
     if (isFilterValueInitiated.current === true) {
       isFilterValueInitiated.current = false;
@@ -122,7 +122,10 @@ const useCommentInput = ({
       } else {
         // 건들지 마시오
         setFilterValue(
-          text.slice(lastMentionSymbolPositionRef.current + 1, getCursorPosition()),
+          text.slice(
+            lastMentionSymbolPositionRef.current + 1,
+            getCursorPosition(commentInputRef.current)!,
+          ),
         );
       }
     };
@@ -131,10 +134,11 @@ const useCommentInput = ({
     resizeHeight(commentInputElement);
     const { innerText } = commentInputElement;
 
+    console.log('현재 cursorPosition: ', getCursorPosition(commentInputRef.current)!);
     if (hasSymbolPosition) {
       setNicknameAfterMentionSymbol(innerText);
 
-      if (getCursorPosition() === 0) {
+      if (getCursorPosition(commentInputRef.current)! === 0) {
         console.log('1');
         handleClosePopover();
       }
@@ -149,7 +153,7 @@ const useCommentInput = ({
 
   // 문자열 새로 입력됐을 때
   const detectMentionSymbolWhenTextAdded = (text: string) => {
-    const cursorPosition = getCursorPosition();
+    const cursorPosition = getCursorPosition(commentInputRef.current)!;
     const currentCharacter = text[cursorPosition - 1];
 
     // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
@@ -170,7 +174,7 @@ const useCommentInput = ({
   };
 
   const detectMentionSymbolWhenTextDeleted = () => {
-    const cursorPosition = getCursorPosition();
+    const cursorPosition = getCursorPosition(commentInputRef.current)!;
 
     const { innerText } = commentInputRef.current!;
 
@@ -199,7 +203,7 @@ const useCommentInput = ({
   };
 
   const detectLeftEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition();
+    const cursorPosition = getCursorPosition(commentInputRef.current)!;
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition - 2] === ' ') {
@@ -212,7 +216,7 @@ const useCommentInput = ({
   };
 
   const detectRightEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition();
+    const cursorPosition = getCursorPosition(commentInputRef.current)!;
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition] === ' ') {
@@ -245,7 +249,7 @@ const useCommentInput = ({
 
     // // 건들지 마시오
     const result = ((text?.slice(0, lastMentionSymbolPositionRef.current - 1) as string) +
-      `@${nickname}` +
+      `<span contentEditable='false'>@${nickname}</span>` +
       text?.slice(
         lastMentionSymbolPositionRef.current + filterValue.length + 1,
       )) as string;

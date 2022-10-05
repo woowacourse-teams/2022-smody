@@ -82,11 +82,16 @@ export const dataURLtoBlob = (dataURL: string) => {
   return blob;
 };
 
-export const getCursorPosition = () => {
-  const selection = window.getSelection();
-  if (!selection) {
-    return 0;
-  }
+export const getCursorPosition = (element: any) => {
+  let selectionStart;
+  const isSupported = typeof window.getSelection !== 'undefined';
 
-  return selection.anchorOffset;
+  if (isSupported) {
+    const range = window.getSelection()!.getRangeAt(0);
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(element);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    selectionStart = preSelectionRange.toString().length;
+  }
+  return selectionStart;
 };
