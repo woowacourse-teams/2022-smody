@@ -3,7 +3,7 @@ import { useGetRankingPeriods } from 'apis/rankingApi';
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
-import { addDays, dateYMDFormatParsing } from 'utils';
+import { addDays, dateYMDFormatParsing, getWeekNumber, parseTime } from 'utils';
 
 import { RANKING_DURATION } from 'constants/domain';
 
@@ -48,14 +48,18 @@ const useRankingPeriodsList = () => {
     String(addDays(new Date(Date.parse(startDate)), RANKING_DURATION[duration])),
   );
 
+  const { year, month } = parseTime(startDate);
+  const titleDate = `${year}년 ${month}월 ${getWeekNumber(startDate)}주차`;
+  const detailDate = `${startDateString} ~ ${endDateString}`;
+
   return {
     selectedPeriodIndex,
     showSelectBox,
     rankingPeriodsData,
     handleSelectBox,
     handleChooseRankingPeriod,
-    startDateString,
-    endDateString,
+    titleDate,
+    detailDate,
   };
 };
 

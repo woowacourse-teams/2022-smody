@@ -3,19 +3,22 @@ import useRankingPeriodsList from './useRankingPeriodsList';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import styled, { css } from 'styled-components';
 
+import useThemeContext from 'hooks/useThemeContext';
+
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { RankingPeriodItem } from 'components/RankingPeriodItem';
+import { RankingPeriodItem, Text } from 'components';
 
 export const RankingPeriodsList = () => {
+  const themeContext = useThemeContext();
   const {
     selectedPeriodIndex,
     showSelectBox,
     rankingPeriodsData,
     handleSelectBox,
     handleChooseRankingPeriod,
-    startDateString,
-    endDateString,
+    titleDate,
+    detailDate,
   } = useRankingPeriodsList();
 
   if (typeof rankingPeriodsData?.data === 'undefined') {
@@ -23,9 +26,12 @@ export const RankingPeriodsList = () => {
   }
 
   return (
-    <FlexBox justifyContent="center">
+    <FlexBox justifyContent="space-between" alignItems="center">
+      <Text size={32} color={themeContext.onBackground} fontWeight="bold">
+        {titleDate}
+      </Text>
       <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
-        {startDateString} ~ {endDateString}&nbsp;
+        {detailDate}&nbsp;
         <BsFillCaretDownFill />
         <SelectList show={showSelectBox}>
           {rankingPeriodsData.data.map((rankingPeriod, index) => (
@@ -53,7 +59,7 @@ const SelectPeriod = styled(FlexBox)`
     height: 2.5rem;
     line-height: 2.5rem;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-align: center;
     border-radius: 20px;
     background-color: ${theme.surface};

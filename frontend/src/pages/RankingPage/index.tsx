@@ -5,8 +5,8 @@ import { FlexBox, RankingPeriodsList, UserRanking, RankingList } from 'component
 const RankingPage = () => {
   return (
     <Wrapper flexDirection="column" gap="1rem">
-      <UserRanking />
       <RankingPeriodsList />
+      <UserRanking />
       <RankingList />
     </Wrapper>
   );

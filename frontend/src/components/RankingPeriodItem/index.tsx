@@ -32,7 +32,7 @@ const SelectListItem = styled.li<SelectListItemProps>`
     background-color: ${theme.surface};
     border: 1px solid ${theme.border};
     button {
-      font-size: 1.2rem;
+      font-size: 1rem;
       ${
         selected &&
         css`
