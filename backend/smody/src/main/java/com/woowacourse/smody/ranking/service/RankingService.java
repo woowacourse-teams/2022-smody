@@ -77,6 +77,6 @@ public class RankingService {
 
     @Transactional
     public RankingActivity createFirstActivity(Member member, RankingPeriod period) {
-        return rankingActivityRepository.save(RankingActivity.zeroPoint(member, period));
+        return rankingActivityRepository.save(RankingActivity.ofZeroPoint(member, period));
     }
 }

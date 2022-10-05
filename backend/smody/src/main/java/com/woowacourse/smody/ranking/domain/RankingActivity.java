@@ -50,7 +50,7 @@ public class RankingActivity {
         this.point = point;
     }
 
-    public static RankingActivity zeroPoint(Member member, RankingPeriod period) {
+    public static RankingActivity ofZeroPoint(Member member, RankingPeriod period) {
         return new RankingActivity(member, period, DEFAULT_POINT);
     }
 
