@@ -64,7 +64,7 @@ const SelectPeriod = styled(FlexBox)`
     font-weight: bold;
     font-size: 1rem;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: ${theme.surface};
     color: ${theme.primary};
     padding: 0 0.8rem;
@@ -81,7 +81,7 @@ const SelectList = styled.ul<SelectListProps>`
     overflow-y: scroll;
     position: absolute;
     top: 2.5rem;
-    right: 1.2rem;
+    right: 0.75rem;
     border-radius: 0 0 10px 10px;
 
     // 스크롤바

@@ -8,8 +8,9 @@ const useRankingPeriodItem = ({ startDate, duration }: UseRankingPeriodItemProps
   const endDateString = dateYMDFormatParsing(
     String(addDays(new Date(Date.parse(startDate)), RANKING_DURATION[duration])),
   );
+  const detailDateString = `${startDateString} ~ ${endDateString}`;
 
-  return { startDateString, endDateString };
+  return { detailDateString };
 };
 
 export default useRankingPeriodItem;

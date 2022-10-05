@@ -9,16 +9,14 @@ export const RankingPeriodItem = ({
   selected,
   handleChooseRankingPeriod,
 }: RankingPeriodItemProps) => {
-  const { startDateString, endDateString } = useRankingPeriodItem({
+  const { detailDateString } = useRankingPeriodItem({
     startDate,
     duration,
   });
 
   return (
     <SelectListItem selected={selected} onClick={handleChooseRankingPeriod}>
-      <button type="button">
-        {startDateString} ~ {endDateString}
-      </button>
+      <button type="button">{detailDateString}</button>
     </SelectListItem>
   );
 };
@@ -31,6 +29,7 @@ const SelectListItem = styled.li<SelectListItemProps>`
     text-align: center;
     background-color: ${theme.surface};
     border: 1px solid ${theme.border};
+
     &:hover {
       background-color: ${theme.primary};
       button {
@@ -39,6 +38,7 @@ const SelectListItem = styled.li<SelectListItemProps>`
     }
 
     button {
+      padding: 0 0.8rem;
       font-size: 1rem;
       color: ${theme.onSurface};
       ${selected &&
