@@ -351,6 +351,8 @@ const useCommentInput = ({
 
         setContent(INITIAL_CONTENT);
 
+        commentInputRef.current!.textContent = '';
+
         resizeToInitialHeight();
 
         renderSnackBar({
@@ -366,6 +368,8 @@ const useCommentInput = ({
       invalidateQueries();
 
       setContent(INITIAL_CONTENT);
+
+      commentInputRef.current!.textContent = '';
 
       resizeToInitialHeight();
 
