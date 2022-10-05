@@ -3,9 +3,15 @@ import { useGetRankingPeriods } from 'apis/rankingApi';
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { selectedRankingPeriodIdState } from 'recoil/ranking/atom';
-import { addDays, dateYMDFormatParsing, getWeekNumber, parseTime } from 'utils';
+import {
+  addDays,
+  dateYMDFormatParsing,
+  getCurrentStartDateString,
+  getWeekNumber,
+  parseTime,
+} from 'utils';
 
-import { RANKING_DURATION } from 'constants/domain';
+import { EMPTY_RANKING_PERIOD_ID, RANKING_DURATION } from 'constants/domain';
 
 const useRankingPeriodsList = () => {
   const setRankingPeriodId = useSetRecoilState(selectedRankingPeriodIdState);
@@ -15,6 +21,10 @@ const useRankingPeriodsList = () => {
 
   useEffect(() => {
     if (typeof rankingPeriodsData?.data === 'undefined') {
+      return;
+    }
+    if (rankingPeriodsData.data.length === 0) {
+      setRankingPeriodId(EMPTY_RANKING_PERIOD_ID);
       return;
     }
     setRankingPeriodId(rankingPeriodsData.data[selectedPeriodIndex].rankingPeriodId);
@@ -41,11 +51,15 @@ const useRankingPeriodsList = () => {
       handleChooseRankingPeriod,
     };
   }
-  const { startDate, duration } = rankingPeriodsData.data[selectedPeriodIndex];
+
+  const { startDate, duration } =
+    rankingPeriodsData.data.length === 0
+      ? { startDate: getCurrentStartDateString(), duration: 'week' as const }
+      : rankingPeriodsData.data[selectedPeriodIndex];
 
   const startDateString = dateYMDFormatParsing(startDate);
   const endDateString = dateYMDFormatParsing(
-    String(addDays(new Date(Date.parse(startDate)), RANKING_DURATION[duration])),
+    String(addDays(new Date(Date.parse(startDate)), RANKING_DURATION[duration] - 1)),
   );
 
   const { year, month } = parseTime(startDate);
