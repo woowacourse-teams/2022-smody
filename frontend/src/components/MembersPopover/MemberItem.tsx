@@ -28,6 +28,9 @@ const Wrapper = styled(FlexBox)`
     cursor: pointer;
     &:hover {
       background-color: ${theme.primary};
+      & p {
+        color: ${theme.onPrimary};
+      }
     }
   `}
 `;

@@ -363,6 +363,8 @@ const useCommentInput = ({
     nicknameSpan.style.backgroundColor = '#7b61fe';
     nicknameSpan.style.color = '#fff';
     nicknameSpan.style.borderRadius = '5px';
+    nicknameSpan.style.lineHeight = '2';
+    nicknameSpan.style.padding = '2px 4px';
     nicknameSpan.setAttribute('data-member-id', String(memberId));
 
     const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);

@@ -35,6 +35,8 @@ const Modal = styled.div`
     transform: translateX(-50%);
     margin: 0;
     background-color: ${theme.surface};
+    border: 1px solid ${theme.primary};
+
     border-radius: 20px 0 0 20px;
     display: flex;
     justify-content: center;
