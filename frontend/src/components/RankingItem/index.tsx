@@ -29,7 +29,7 @@ export const RankingItem = ({
         alt={`${nickname} 프로필 사진`}
         loading="lazy"
       />
-      <UserInfoWrapper flexDirection="column" gap="0.4rem">
+      <UserInfoWrapper flexDirection="column">
         <Text aria-label="닉네임" size={16} color={onSurfaceColor} fontWeight="bold">
           {nickname}
         </Text>
