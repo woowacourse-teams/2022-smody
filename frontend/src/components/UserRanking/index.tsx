@@ -13,7 +13,7 @@ export const UserRanking = () => {
   if (!isLogin) {
     return (
       <FlexBox flexDirection="column" gap="0.5rem">
-        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
           나의 순위
         </Text>
         <RankingItemSkeleton
@@ -27,7 +27,7 @@ export const UserRanking = () => {
   if (notFoundInRanking) {
     return (
       <FlexBox flexDirection="column" gap="0.5rem">
-        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
           나의 순위
         </Text>
         <RankingItemSkeleton
@@ -41,7 +41,7 @@ export const UserRanking = () => {
   if (needSkeleton || typeof myRankingData?.data === 'undefined') {
     return (
       <FlexBox flexDirection="column" gap="0.5rem">
-        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
           나의 순위
         </Text>
         <RankingItemSkeleton
@@ -54,7 +54,7 @@ export const UserRanking = () => {
 
   return (
     <FlexBox flexDirection="column" gap="0.5rem">
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+      <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         나의 순위
       </Text>
       <RankingItem {...myRankingData.data} />

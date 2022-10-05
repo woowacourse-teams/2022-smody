@@ -27,7 +27,7 @@ export const RankingPeriodsList = () => {
 
   return (
     <FlexBox justifyContent="space-between" alignItems="center">
-      <Text size={32} color={themeContext.onBackground} fontWeight="bold">
+      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         {titleDate}
       </Text>
       <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
