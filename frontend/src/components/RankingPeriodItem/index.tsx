@@ -23,7 +23,7 @@ export const RankingPeriodItem = ({
 
 const SelectListItem = styled.li<SelectListItemProps>`
   ${({ theme, selected }) => css`
-    width: fit-content;
+    width: 13rem;
     height: 2.5rem;
     line-height: 2.5rem;
     text-align: center;
@@ -38,7 +38,6 @@ const SelectListItem = styled.li<SelectListItemProps>`
     }
 
     button {
-      padding: 0 0.8rem;
       font-size: 1rem;
       color: ${theme.onSurface};
       ${selected &&

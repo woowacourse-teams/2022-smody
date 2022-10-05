@@ -1342,7 +1342,7 @@ export const rankingPeriodsData = [
   },
   {
     rankingPeriodId: 3,
-    startDate: '2022-05-01T17:00:00',
+    startDate: '2021-10-10T17:00:00',
     duration: 'week',
   },
   {
