@@ -1,13 +1,9 @@
 import { Ranking } from 'types/ranking';
 import { AvailablePickedColor } from 'types/style';
 
-export type RankingItemProps = Ranking & {
-  myRanking?: boolean;
-};
+export type RankingItemProps = Ranking;
 
-export type UseRankingItemProps = {
-  myRanking: boolean;
-};
+export type UseRankingItemProps = Pick<Ranking, 'memberId'>;
 
 export type MedalProps = Pick<RankingItemProps, 'ranking'>;
 
