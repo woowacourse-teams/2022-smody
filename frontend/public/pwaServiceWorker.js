@@ -142,6 +142,9 @@ self.addEventListener('push', (event) => {
   if (pushCase === 'challenge') {
     path = `/cycle/detail/${pathId}`;
   }
+  if (pushCase === 'mention') {
+    path = `/feed/detail/${pathId}`;
+  }
 
   const options = {
     body: data.message,
