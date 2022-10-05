@@ -10,14 +10,12 @@ const useRankingItem = ({ memberId }: UseRankingItemProps) => {
 
   let surfaceColor = themeContext.surface;
   let onSurfaceColor = themeContext.onSurface;
-  let pointColor = themeContext.primary;
   if (myMemberId === memberId) {
     surfaceColor = themeContext.primary;
     onSurfaceColor = themeContext.onPrimary;
-    pointColor = themeContext.onPrimary;
   }
 
-  return { surfaceColor, onSurfaceColor, pointColor };
+  return { surfaceColor, onSurfaceColor };
 };
 
 export default useRankingItem;

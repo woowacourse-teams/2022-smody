@@ -15,7 +15,7 @@ export const RankingItem = ({
   picture,
   point,
 }: RankingItemProps) => {
-  const { surfaceColor, onSurfaceColor, pointColor } = useRankingItem({ memberId });
+  const { surfaceColor, onSurfaceColor } = useRankingItem({ memberId });
 
   return (
     <Wrapper surfaceColor={surfaceColor} alignItems="center" gap="1rem">
@@ -38,14 +38,9 @@ export const RankingItem = ({
       </UserInfoWrapper>
       <PointWrapper gap="1rem" alignItems="center">
         <Medal ranking={ranking} />
-        <FlexBox flexDirection="row">
-          <Text size={20} color={pointColor} fontWeight="bold">
-            {point}
-          </Text>
-          <Text size={20} color={onSurfaceColor} fontWeight="bold">
-            p
-          </Text>
-        </FlexBox>
+        <Text size={16} color={onSurfaceColor}>
+          {point}점
+        </Text>
       </PointWrapper>
     </Wrapper>
   );
