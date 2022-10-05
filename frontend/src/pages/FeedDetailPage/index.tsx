@@ -43,7 +43,7 @@ const FeedDetailPage = () => {
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <Title text="피드 상세보기" linkTo={CLIENT_PATH.FEED}>
+      <Title text="피드 상세보기">
         <ShareButton
           text={`${feedData.data.nickname}의 ${feedData.data.challengeName} 챌린지 피드를 공유해요`}
         />
