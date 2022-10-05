@@ -34,9 +34,9 @@ public class PushNotificationController {
 
     @PostMapping
     @RequiredLogin
-    public ResponseEntity<Void> saveMentionNotification(@LoginMember TokenPayload tokenPayload,
-                                                        @RequestBody MentionNotificationRequest mentionNotificationRequest) {
-        pushNotificationService.publishMentionEvent(tokenPayload, mentionNotificationRequest);
+    public ResponseEntity<Void> saveNotification(@LoginMember TokenPayload tokenPayload,
+                                                 @RequestBody MentionNotificationRequest mentionNotificationRequest) {
+        pushNotificationService.saveNotification(tokenPayload, mentionNotificationRequest);
         return ResponseEntity.ok().build();
     }
 }

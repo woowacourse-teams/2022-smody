@@ -80,7 +80,7 @@ class PushNotificationControllerTest extends ControllerTest {
 			));
 	}
 
-	@DisplayName("멘션 알람을 저장하면 200 응답을 반환한다.")
+	@DisplayName("알람을 저장하면 200 응답을 반환한다.")
 	@Test
 	void saveMentionNotification() throws Exception {
 		// given

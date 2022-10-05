@@ -70,7 +70,7 @@ public class MemberService {
         member.updatePicture(new Image(profileImage, imageStrategy));
     }
 
-    public Member findMember(TokenPayload tokenPayload) {
+    public Member searchMember(TokenPayload tokenPayload) {
         if (tokenPayload.equals(NOT_LOGIN)) {
             return NOT_LOGIN_MEMBER;
         }
@@ -84,7 +84,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public List<Member> findByIdIn(List<Long> ids) {
+    public List<Member> searchByIdIn(List<Long> ids) {
         return memberRepository.findByIdIn(ids);
     }
 }
