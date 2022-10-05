@@ -32,7 +32,12 @@ export const RankingPeriodsList = () => {
       </Text>
       <FlexBox justifyContent="flex-end">
         <div></div>
-        <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
+        <SelectPeriod
+          role="button"
+          onClick={handleSelectBox}
+          justifyContent="center"
+          alignItems="center"
+        >
           {detailDate}&nbsp;
           {showSelectBox ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />}
           <SelectList show={showSelectBox}>
@@ -58,7 +63,7 @@ export const RankingPeriodsList = () => {
 
 const SelectPeriod = styled(FlexBox)`
   ${({ theme }) => css`
-    width: fit-content;
+    width: 15rem;
     height: 2.5rem;
     line-height: 2.5rem;
     font-weight: bold;
@@ -67,8 +72,8 @@ const SelectPeriod = styled(FlexBox)`
     border-radius: 15px;
     background-color: ${theme.surface};
     color: ${theme.primary};
-    padding: 0 0.8rem;
     position: relative;
+    padding: 0 auto;
     cursor: pointer;
   `}
 `;

@@ -8,6 +8,7 @@ import {
   dateYMDFormatParsing,
   getCurrentStartDateString,
   getWeekNumber,
+  isSameDate,
   parseTime,
 } from 'utils';
 
@@ -52,10 +53,21 @@ const useRankingPeriodsList = () => {
     };
   }
 
-  const { startDate, duration } =
-    rankingPeriodsData.data.length === 0
-      ? { startDate: getCurrentStartDateString(), duration: 'week' as const }
-      : rankingPeriodsData.data[selectedPeriodIndex];
+  const currentStartDate = getCurrentStartDateString();
+  const currentRankingPeriodData = {
+    rankingPeriodId: EMPTY_RANKING_PERIOD_ID,
+    startDate: currentStartDate,
+    duration: 'week' as const,
+  };
+
+  if (
+    rankingPeriodsData.data.length === 0 ||
+    !isSameDate(rankingPeriodsData.data[0].startDate, currentStartDate)
+  ) {
+    rankingPeriodsData.data.unshift(currentRankingPeriodData);
+  }
+
+  const { startDate, duration } = rankingPeriodsData.data[selectedPeriodIndex];
 
   const startDateString = dateYMDFormatParsing(startDate);
   const endDateString = dateYMDFormatParsing(

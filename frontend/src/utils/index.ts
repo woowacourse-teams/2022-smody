@@ -1,8 +1,8 @@
 import { TIMEZONE_OFFSET } from 'constants/domain';
 
-type addDaysFunction = (date: Date, days: number) => Date;
+type AddDaysFunction = (date: Date, days: number) => Date;
 
-export const addDays: addDaysFunction = (date, days) => {
+export const addDays: AddDaysFunction = (date, days) => {
   const newDate = new Date(date.getTime());
   newDate.setDate(date.getDate() + days);
   return newDate;
@@ -103,5 +103,14 @@ export const getWeekNumber = (dateString: string) => {
 export const getCurrentStartDateString = () => {
   const currentDate = new Date();
   const weekDay = currentDate.getDay();
-  return parseDateToISOString(addDays(currentDate, 1 - weekDay));
+  const startData = addDays(currentDate, 1 - weekDay);
+  return parseDateToISOString(startData);
+};
+
+type IsSameDateFunction = (dateString1: string, dateString2: string) => boolean;
+
+export const isSameDate: IsSameDateFunction = (dateString1, dateString2) => {
+  const { year: year1, month: month1, date: date1 } = parseTime(dateString1);
+  const { year: year2, month: month2, date: date2 } = parseTime(dateString2);
+  return year1 === year2 && month1 === month2 && date1 === date2;
 };
