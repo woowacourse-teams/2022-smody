@@ -48,7 +48,6 @@ const useCommentInput = ({
     {
       onSuccess: (data) => {
         if (data.pages[0].data.length === 0) {
-          console.log('6');
           handleClosePopover();
           return;
         }
@@ -74,7 +73,7 @@ const useCommentInput = ({
     if (isFilterValueInitiated.current === true) {
       return;
     }
-    console.log('#####filterValue', filterValue);
+
     refetchMembers();
   }, [filterValue]);
 
@@ -114,12 +113,10 @@ const useCommentInput = ({
           mutation.removedNodes.length > 0 &&
           mutation.removedNodes[0].nodeName === 'SPAN'
         ) {
-          console.log('@!@!@!@!@@', mutation.removedNodes[0]);
           const targetNode = mutation.removedNodes[0] as HTMLElement;
           const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
           const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
           if (deletedIndex > -1) {
-            console.log('삭제');
             mentionedMemberIds.splice(deletedIndex, 1);
           }
 
@@ -134,10 +131,6 @@ const useCommentInput = ({
 
             return copiedMentionMembersId;
           });
-          console.log('mentionedMemberIds', mentionedMemberIds);
-          console.log('deletedIndex', deletedIndex);
-          console.log('배고파', targetNode.getAttribute('data-member-id'));
-          console.log('속성 node: .', targetNode.ATTRIBUTE_NODE);
         }
       }
     });
@@ -145,7 +138,7 @@ const useCommentInput = ({
       lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
 
     const isCurrentCharacterWhiteSpace = (text: string) =>
-      text[getCursorPosition(commentInputRef.current)! - 1] === ' ';
+      text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
 
     if (isFilterValueInitiated.current === true) {
       isFilterValueInitiated.current = false;
@@ -156,21 +149,14 @@ const useCommentInput = ({
         lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
         setFilterValue(''); // 초기화
         isFilterValueInitiated.current = true;
-        console.log('2');
+
         handleClosePopover();
       } else {
         // 건들지 마시오
         setFilterValue(
           text.slice(
             lastMentionSymbolPositionRef.current,
-            getCursorPosition(commentInputRef.current)!,
-          ),
-        );
-        console.log(
-          'inputChangeHandler에서 @가 앞에 있을 때 setNicknameAfterMentionSymbol에서 filterValue 넣어주는 값',
-          text.slice(
-            lastMentionSymbolPositionRef.current,
-            getCursorPosition(commentInputRef.current)!,
+            getCursorPosition(commentInputRef.current!)!,
           ),
         );
       }
@@ -183,8 +169,7 @@ const useCommentInput = ({
     if (hasSymbolPosition) {
       setNicknameAfterMentionSymbol(innerText);
 
-      if (getCursorPosition(commentInputRef.current)! === 0) {
-        console.log('1');
+      if (getCursorPosition(commentInputRef.current!)! === 0) {
         handleClosePopover();
       }
     } else {
@@ -192,19 +177,17 @@ const useCommentInput = ({
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
-    console.log('***********');
   };
 
   const commentInputRef = useMutationObserver<HTMLDivElement>(inputChangeHandler);
 
   // 문자열 새로 입력됐을 때
   const detectMentionSymbolWhenTextAdded = (text: string) => {
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
+    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const currentCharacter = text[cursorPosition - 1];
 
     // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
     if (currentCharacter !== '@') {
-      console.log('3');
       handleClosePopover();
       return;
     }
@@ -217,11 +200,10 @@ const useCommentInput = ({
     lastMentionSymbolPositionRef.current = cursorPosition;
     refetchMembers();
     handleOpenPopover();
-    console.log('들어왔니?', text);
   };
 
   const detectMentionSymbolWhenTextDeleted = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
+    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
 
     const { innerText } = commentInputRef.current!;
 
@@ -252,9 +234,6 @@ const useCommentInput = ({
     const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
 
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
-    console.log('@cursorPosition', cursorPosition);
-    console.log('mentionSymbolPosition', mentionSymbolPosition);
-    console.log('@targetText', targetText);
     // 슬라이스 한 문자열 내부에 공백이 있나
     if (cursorPosition - 1 === mentionSymbolPosition) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
@@ -275,26 +254,22 @@ const useCommentInput = ({
     lastMentionSymbolPositionRef.current = mentionSymbolPosition + 1;
     isPrevPressBackspace.current = true;
     prevCursorPosition.current = cursorPosition;
-
-    console.log('삭제할 때 filterValue 넣어주는 값', targetText);
-    // setFilterValue(targetText);
   };
 
   const detectLeftEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
+    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition - 2] === ' ') {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       setFilterValue('');
       isFilterValueInitiated.current = true;
-      console.log('4');
       handleClosePopover();
     }
   };
 
   const detectRightEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
+    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition] === ' ') {
@@ -302,7 +277,6 @@ const useCommentInput = ({
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       setFilterValue('');
       isFilterValueInitiated.current = true;
-      console.log('5');
       handleClosePopover();
     }
   };
@@ -326,13 +300,7 @@ const useCommentInput = ({
     const cursorPosition = getCursorPosition(commentInputRef.current)!;
     const childNodes = commentInputRef.current.childNodes;
 
-    console.log(childNodes);
     let accLength = 0;
-
-    console.log(
-      '현재 lastMentionSymbolPositionRef.current: ',
-      lastMentionSymbolPositionRef.current,
-    );
 
     const currentNodeIndex = Array.from(childNodes).findIndex((childNode) => {
       const text = childNode.textContent!;
@@ -343,8 +311,6 @@ const useCommentInput = ({
       accLength += text.length;
       return false;
     });
-
-    console.log('현재 currentNodeIndex: ', currentNodeIndex);
 
     const currentNode = childNodes[currentNodeIndex];
     const currentText = currentNode.textContent;
@@ -418,7 +384,6 @@ const useCommentInput = ({
         commentInputRef.current!.textContent = '';
 
         setMentionedMemberIds([]);
-        console.log('@@@@usePostComment@@@초기화');
 
         resizeToInitialHeight();
 
@@ -439,7 +404,6 @@ const useCommentInput = ({
       commentInputRef.current!.textContent = '';
 
       setMentionedMemberIds([]);
-      console.log('@@@@usePostComment@@@초기화');
 
       resizeToInitialHeight();
 
@@ -477,7 +441,6 @@ const useCommentInput = ({
     }
     postComment({ content });
 
-    console.log('현재 mentionedMemberIds: ', Array.from(new Set(mentionedMemberIds)));
     postMentionNotifications({
       memberIds: Array.from(new Set(mentionedMemberIds)),
       pathId: Number(cycleDetailId),
