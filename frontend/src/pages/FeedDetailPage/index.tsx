@@ -12,7 +12,11 @@ import {
   CommentInput,
   FeedItem,
   BottomSheet,
+  Title,
+  ShareButton,
 } from 'components';
+
+import { CLIENT_PATH } from 'constants/path';
 
 const FeedDetailPage = () => {
   const {
@@ -39,6 +43,11 @@ const FeedDetailPage = () => {
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
+      <Title text="피드 상세보기" linkTo={CLIENT_PATH.FEED}>
+        <ShareButton
+          text={`${feedData.data.nickname}의 ${feedData.data.challengeName} 챌린지 피드를 공유해요`}
+        />
+      </Title>
       <FeedItem isDetailPage={true} isShowBriefChallengeName={false} {...feedData.data} />
       <CommentList as="ul" flexDirection="column" gap="1.563rem">
         {commentsData?.data.map((comment) => (
