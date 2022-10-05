@@ -26,30 +26,33 @@ export const RankingPeriodsList = () => {
   }
 
   return (
-    <FlexBox justifyContent="space-between" alignItems="center">
+    <div>
       <Text size={24} color={themeContext.onBackground} fontWeight="bold">
         {titleDate}
       </Text>
-      <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
-        {detailDate}&nbsp;
-        <BsFillCaretDownFill />
-        <SelectList show={showSelectBox}>
-          {rankingPeriodsData.data.map((rankingPeriod, index) => (
-            <RankingPeriodItem
-              key={rankingPeriod.rankingPeriodId}
-              selected={selectedPeriodIndex === index}
-              handleChooseRankingPeriod={() =>
-                handleChooseRankingPeriod({
-                  index,
-                  rankingPeriodId: rankingPeriod.rankingPeriodId,
-                })
-              }
-              {...rankingPeriod}
-            />
-          ))}
-        </SelectList>
-      </SelectPeriod>
-    </FlexBox>
+      <FlexBox justifyContent="flex-end">
+        <div></div>
+        <SelectPeriod role="button" onClick={handleSelectBox} alignItems="center">
+          {detailDate}&nbsp;
+          <BsFillCaretDownFill />
+          <SelectList show={showSelectBox}>
+            {rankingPeriodsData.data.map((rankingPeriod, index) => (
+              <RankingPeriodItem
+                key={rankingPeriod.rankingPeriodId}
+                selected={selectedPeriodIndex === index}
+                handleChooseRankingPeriod={() =>
+                  handleChooseRankingPeriod({
+                    index,
+                    rankingPeriodId: rankingPeriod.rankingPeriodId,
+                  })
+                }
+                {...rankingPeriod}
+              />
+            ))}
+          </SelectList>
+        </SelectPeriod>
+      </FlexBox>
+    </div>
   );
 };
 
