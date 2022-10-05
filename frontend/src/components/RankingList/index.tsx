@@ -13,7 +13,7 @@ export const RankingList = () => {
   if (needSkeleton || typeof allRankingData?.data === 'undefined') {
     return (
       <Wrapper flexDirection="column" gap="0.5rem">
-        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
           전체 랭킹
         </Text>
         <RankingListSkeleton
@@ -27,7 +27,7 @@ export const RankingList = () => {
   if (allRankingData.data.length === 0) {
     return (
       <Wrapper flexDirection="column" gap="0.5rem">
-        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+        <Text size={20} color={themeContext.onBackground} fontWeight="bold">
           전체 랭킹
         </Text>
         <RankingListSkeleton
@@ -40,7 +40,7 @@ export const RankingList = () => {
 
   return (
     <Wrapper flexDirection="column" gap="0.5rem">
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+      <Text size={20} color={themeContext.onBackground} fontWeight="bold">
         전체 랭킹
       </Text>
       <FlexBox as="ol" flexDirection="column" gap="0.5rem">
