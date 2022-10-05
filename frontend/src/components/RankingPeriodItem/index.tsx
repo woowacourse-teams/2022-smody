@@ -31,13 +31,20 @@ const SelectListItem = styled.li<SelectListItemProps>`
     text-align: center;
     background-color: ${theme.surface};
     border: 1px solid ${theme.border};
+    &:hover {
+      background-color: ${theme.primary};
+      button {
+        color: ${theme.onPrimary};
+      }
+    }
+
     button {
       font-size: 1rem;
-      ${
-        selected &&
-        css`
-          color: ${theme.primary};
-        `
-      }
+      color: ${theme.onSurface};
+      ${selected &&
+      css`
+        color: ${theme.primary};
+      `}
+    }
   `}
 `;
