@@ -34,6 +34,9 @@ const useCommentInput = ({
   const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiated = useRef(false);
+  const isPrevPressBackspace = useRef(false);
+  const prevCursorPosition = useRef(0);
+
   const {
     isFetching: isFetchingMembers,
     data: membersData,
@@ -82,6 +85,9 @@ const useCommentInput = ({
         detectMentionSymbolWhenTextDeleted();
         return;
       }
+
+      isPrevPressBackspace.current = false;
+      prevCursorPosition.current = 0;
 
       if (event.key === 'ArrowLeft') {
         // closePopover
@@ -186,7 +192,21 @@ const useCommentInput = ({
 
     const { innerText } = commentInputRef.current!;
 
+    if (isPrevPressBackspace.current && prevCursorPosition.current === cursorPosition) {
+      // init 3종 세트
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+      isFilterValueInitiated.current = true;
+      setFilterValue('');
+      handleClosePopover();
+
+      commentInputRef.current!.textContent = ' ';
+
+      return;
+    }
+
     if (!innerText.includes('@')) {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+
       return;
     }
 
@@ -214,6 +234,8 @@ const useCommentInput = ({
     }
 
     lastMentionSymbolPositionRef.current = mentionSymbolPosition + 1;
+    isPrevPressBackspace.current = true;
+    prevCursorPosition.current = cursorPosition;
 
     console.log('삭제할 때 filterValue 넣어주는 값', targetText);
     // setFilterValue(targetText);
