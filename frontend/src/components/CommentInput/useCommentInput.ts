@@ -123,7 +123,7 @@ const useCommentInput = ({
         // 건들지 마시오
         setFilterValue(
           text.slice(
-            lastMentionSymbolPositionRef.current + 1,
+            lastMentionSymbolPositionRef.current,
             getCursorPosition(commentInputRef.current)!,
           ),
         );
@@ -134,7 +134,6 @@ const useCommentInput = ({
     resizeHeight(commentInputElement);
     const { innerText } = commentInputElement;
 
-    console.log('현재 cursorPosition: ', getCursorPosition(commentInputRef.current)!);
     if (hasSymbolPosition) {
       setNicknameAfterMentionSymbol(innerText);
 
@@ -147,6 +146,7 @@ const useCommentInput = ({
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
+    console.log('***********');
   };
 
   const commentInputRef = useMutationObserver<HTMLDivElement>(inputChangeHandler);
@@ -171,6 +171,7 @@ const useCommentInput = ({
     lastMentionSymbolPositionRef.current = cursorPosition;
     refetchMembers();
     handleOpenPopover();
+    console.log('들어왔니?', text);
   };
 
   const detectMentionSymbolWhenTextDeleted = () => {
@@ -200,6 +201,7 @@ const useCommentInput = ({
     lastMentionSymbolPositionRef.current = mentionSymbolPosition;
 
     setFilterValue(targetText);
+    console.log('    setFilterValue(targetText)', targetText);
   };
 
   const detectLeftEscapingMentionArea = () => {
@@ -255,6 +257,12 @@ const useCommentInput = ({
       )) as string;
 
     commentInputRef.current.innerHTML = result;
+
+    // init 삼형제
+    lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+    setFilterValue('');
+    isFilterValueInitiated.current = true;
+    console.log('5');
 
     // contenteditable div에서 cursor position에 focus 하기
     const element = commentInputRef.current;
