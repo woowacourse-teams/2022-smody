@@ -7,10 +7,6 @@ import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
 import com.woowacourse.smody.ranking.service.RankingService;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +16,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

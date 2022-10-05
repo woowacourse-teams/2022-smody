@@ -1,33 +1,13 @@
 package com.woowacourse.smody.challenge.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
-import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeRequest;
-import com.woowacourse.smody.challenge.dto.ChallengeResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
-import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.challenge.dto.*;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,6 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ChallengeServiceTest extends IntegrationTest {
 

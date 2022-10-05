@@ -14,13 +14,14 @@ import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
 import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)

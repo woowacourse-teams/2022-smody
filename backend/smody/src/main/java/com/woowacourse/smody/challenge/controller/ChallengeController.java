@@ -3,27 +3,17 @@ package com.woowacourse.smody.challenge.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
-import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeRequest;
-import com.woowacourse.smody.challenge.dto.ChallengeResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
-import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.challenge.dto.*;
 import com.woowacourse.smody.challenge.service.ChallengeQueryService;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.db_support.PagingParams;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/challenges")

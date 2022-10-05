@@ -1,27 +1,24 @@
 package com.woowacourse.smody.challenge.service;
 
-import static java.util.stream.Collectors.toList;
-
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.domain.ChallengingRecords;
-import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
-import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.challenge.dto.*;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.db_support.CursorPaging;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)

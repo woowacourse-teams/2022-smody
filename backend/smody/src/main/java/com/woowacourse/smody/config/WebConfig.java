@@ -4,7 +4,6 @@ import com.woowacourse.smody.auth.login.AuthInterceptor;
 import com.woowacourse.smody.auth.login.LoginMemberArgumentResolver;
 import com.woowacourse.smody.auth.token.TokenChekcerArgumentResolver;
 import com.woowacourse.smody.logging.LogInterceptor;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor

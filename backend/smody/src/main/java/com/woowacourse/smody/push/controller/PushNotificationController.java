@@ -6,10 +6,11 @@ import com.woowacourse.smody.auth.login.RequiredLogin;
 import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.push.service.PushNotificationService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/push-notifications")
