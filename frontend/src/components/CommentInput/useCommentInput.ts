@@ -11,7 +11,7 @@ import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
-import { getCursorPosition } from 'utils';
+import { getCursorPosition, insertAfter } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
 import useSnackBar from 'hooks/useSnackBar';
@@ -127,6 +127,13 @@ const useCommentInput = ({
             getCursorPosition(commentInputRef.current)!,
           ),
         );
+        console.log(
+          'inputChangeHandler에서 @가 앞에 있을 때 setNicknameAfterMentionSymbol에서 filterValue 넣어주는 값',
+          text.slice(
+            lastMentionSymbolPositionRef.current,
+            getCursorPosition(commentInputRef.current)!,
+          ),
+        );
       }
     };
 
@@ -184,24 +191,32 @@ const useCommentInput = ({
     }
 
     const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
+
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
     console.log('@cursorPosition', cursorPosition);
     console.log('mentionSymbolPosition', mentionSymbolPosition);
     console.log('@targetText', targetText);
     // 슬라이스 한 문자열 내부에 공백이 있나
+    if (cursorPosition - 1 === mentionSymbolPosition) {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+      return;
+    }
+
     if (targetText.includes(' ')) {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
     // mentionSymbolPosition 앞에 공백이 있나 && mentionSymbolPosition 위치가 첫번째이다.
     if (mentionSymbolPosition !== 0 && innerText[mentionSymbolPosition - 1] !== ' ') {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
-    lastMentionSymbolPositionRef.current = mentionSymbolPosition;
+    lastMentionSymbolPositionRef.current = mentionSymbolPosition + 1;
 
-    setFilterValue(targetText);
-    console.log('    setFilterValue(targetText)', targetText);
+    console.log('삭제할 때 filterValue 넣어주는 값', targetText);
+    // setFilterValue(targetText);
   };
 
   const detectLeftEscapingMentionArea = () => {
@@ -247,22 +262,67 @@ const useCommentInput = ({
     mentionedMemberIds.push(memberId);
     setMentionedMemberIds(mentionedMemberIds);
 
-    const text = commentInputRef.current.textContent;
+    const cursorPosition = getCursorPosition(commentInputRef.current)!;
+    const childNodes = commentInputRef.current.childNodes;
 
-    // // 건들지 마시오
-    const result = ((text?.slice(0, lastMentionSymbolPositionRef.current - 1) as string) +
-      `<span contentEditable='false'>@${nickname}</span>` +
-      text?.slice(
-        lastMentionSymbolPositionRef.current + filterValue.length + 1,
-      )) as string;
+    console.log(childNodes);
+    let accLength = 0;
 
-    commentInputRef.current.innerHTML = result;
+    console.log(
+      '현재 lastMentionSymbolPositionRef.current: ',
+      lastMentionSymbolPositionRef.current,
+    );
+
+    const currentNodeIndex = Array.from(childNodes).findIndex((childNode) => {
+      const text = childNode.textContent!;
+      if (lastMentionSymbolPositionRef.current <= accLength + text.length) {
+        return true;
+      }
+
+      accLength += text.length;
+      return false;
+    });
+
+    console.log('현재 currentNodeIndex: ', currentNodeIndex);
+
+    const currentNode = childNodes[currentNodeIndex];
+    const currentText = currentNode.textContent;
+
+    const targetStart = lastMentionSymbolPositionRef.current - accLength - 1;
+    const targetEnd =
+      lastMentionSymbolPositionRef.current - accLength + filterValue.length;
+
+    const frontTextNode = document.createTextNode(
+      currentText!.substring(0, targetStart)!,
+    );
+
+    const nicknameSpan = document.createElement('span');
+    nicknameSpan.innerText = `@${nickname}`;
+    nicknameSpan.setAttribute('contenteditable', 'false');
+    nicknameSpan.style.backgroundColor = '#7b61fe';
+    nicknameSpan.style.color = '#fff';
+    nicknameSpan.style.borderRadius = '5px';
+
+    const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
+
+    if (currentNodeIndex === 0) {
+      commentInputRef.current.appendChild(frontTextNode);
+      commentInputRef.current.appendChild(nicknameSpan);
+      commentInputRef.current.appendChild(backTextNode);
+    } else {
+      const prevNode = childNodes[currentNodeIndex - 1];
+
+      insertAfter(prevNode, frontTextNode);
+      insertAfter(frontTextNode, nicknameSpan);
+      insertAfter(nicknameSpan, backTextNode);
+    }
+
+    commentInputRef.current.removeChild(currentNode);
 
     // init 삼형제
     lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
     setFilterValue('');
     isFilterValueInitiated.current = true;
-    console.log('5');
 
     // contenteditable div에서 cursor position에 focus 하기
     const element = commentInputRef.current;
@@ -271,7 +331,6 @@ const useCommentInput = ({
     selection!.removeAllRanges();
     range.selectNodeContents(element);
     range.collapse(false);
-    console.log(range);
     selection!.addRange(range);
     element.focus();
   };

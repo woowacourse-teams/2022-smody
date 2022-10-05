@@ -82,7 +82,7 @@ export const dataURLtoBlob = (dataURL: string) => {
   return blob;
 };
 
-export const getCursorPosition = (element: any) => {
+export const getCursorPosition = (element: HTMLElement) => {
   let selectionStart;
   const isSupported = typeof window.getSelection !== 'undefined';
 
@@ -94,4 +94,12 @@ export const getCursorPosition = (element: any) => {
     selectionStart = preSelectionRange.toString().length;
   }
   return selectionStart;
+};
+
+export const insertAfter = (referenceNode: Node, newNode: Node) => {
+  if (referenceNode.nextSibling) {
+    referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
+  } else {
+    referenceNode.parentNode!.appendChild(newNode);
+  }
 };
