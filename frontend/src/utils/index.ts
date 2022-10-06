@@ -82,7 +82,6 @@ export const dataURLtoBlob = (dataURL: string) => {
   return blob;
 };
 
-
 export const getCursorPosition = (element: HTMLElement) => {
   let selectionStart;
   const isSupported = typeof window.getSelection !== 'undefined';
@@ -103,7 +102,7 @@ export const insertAfter = (referenceNode: Node, newNode: Node) => {
   } else {
     referenceNode.parentNode!.appendChild(newNode);
   }
-
+};
 export const dateYMDFormatParsing = (dateString: string) => {
   const { year, month, date } = parseTime(dateString);
   return `${year}.${month}.${date}`;
