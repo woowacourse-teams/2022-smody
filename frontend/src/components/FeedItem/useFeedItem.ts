@@ -19,8 +19,8 @@ const useFeedItem = ({
   const isSuccess = progressCount == CYCLE_SUCCESS_CRITERIA;
 
   const renderedChallengeName =
-    isShowBriefChallengeName && challengeName.length > 9
-      ? `${challengeName.substring(0, 9)}...`
+    isShowBriefChallengeName && challengeName.length > 12
+      ? `${challengeName.substring(0, 12)}...`
       : challengeName;
 
   const handleClickFeed: MouseEventHandler<HTMLDivElement> = () => {
