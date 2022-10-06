@@ -1,5 +1,8 @@
 import { UseTitleProps } from './type';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import useScrollDirection from 'hooks/useScrollDirection';
 
 const useTitle = ({ linkTo }: UseTitleProps) => {
   const navigate = useNavigate();
@@ -11,7 +14,26 @@ const useTitle = ({ linkTo }: UseTitleProps) => {
 
     navigate(-1);
   };
-  return { backToPreviousPage };
+  const TitleRef = useRef<HTMLDivElement>(null);
+  const scrollDirection = useScrollDirection();
+
+  useEffect(() => {
+    if (!TitleRef || !TitleRef.current) {
+      return;
+    }
+    if (scrollDirection === 'up') {
+      TitleRef.current.style.top = '3rem';
+
+      return;
+    }
+    if (scrollDirection === 'down') {
+      TitleRef.current.style.top = '0rem';
+
+      return;
+    }
+  }, [scrollDirection]);
+
+  return { backToPreviousPage, TitleRef };
 };
 
 export default useTitle;
