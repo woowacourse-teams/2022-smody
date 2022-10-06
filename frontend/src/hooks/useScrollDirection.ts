@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-export enum ScrollDirection {
+enum ScrollDirection {
   up = 'up',
   down = 'down',
 }
 
 const useScrollDirection = () => {
-  const threshold = 100;
+  const threshold = 10;
   const [scrollDir, setScrollDir] = useState(ScrollDirection.up);
 
   useEffect(() => {
