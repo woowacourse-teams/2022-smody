@@ -23,6 +23,7 @@ export const CLIENT_PATH = {
   CHALLENGE_CREATE: '/challenge/create',
   CHALLENGE_DETAIL: '/challenge/detail',
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
+  RANK: '/ranks',
   VOC: '/voc',
   NOT_FOUND: '/not_found',
   WILD_CARD: '*',

@@ -31,6 +31,10 @@ export const lightTheme: DefaultTheme = {
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  first: COLOR.GOLD,
+  second: COLOR.SILVER,
+  third: COLOR.COPPER,
 };
 
 export const darkTheme: DefaultTheme = {
@@ -62,4 +66,8 @@ export const darkTheme: DefaultTheme = {
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  first: COLOR.GOLD,
+  second: COLOR.SILVER,
+  third: COLOR.COPPER,
 };
