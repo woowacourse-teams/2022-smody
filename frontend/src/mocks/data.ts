@@ -1440,6 +1440,26 @@ export const myRanking = {
   point: 100,
 };
 
+export const myPreviousRank = {
+  ranking: 3,
+  memberId: 4,
+  nickname: '마르코',
+  introduction: '안녕하세요 마르코입니다.',
+  picture:
+    'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+  point: 100,
+};
+
+export const myCurrentRank = {
+  ranking: 2,
+  memberId: 4,
+  nickname: '마르코',
+  introduction: '안녕하세요 마르코입니다.',
+  picture:
+    'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+  point: 103,
+};
+
 export const allRanking = [
   {
     ranking: 1,

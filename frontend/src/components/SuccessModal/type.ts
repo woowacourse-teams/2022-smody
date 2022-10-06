@@ -6,7 +6,7 @@ export type SuccessModalProps = Pick<Cycle, 'cycleId' | 'progressCount'> &
   Pick<UserChallengeStat, 'successCount'> & {
     handleCloseModal: () => void;
     emoji: string;
-  };
+  } & { myPreviousRank: { point?: number; ranking?: number } };
 
 export type UseSuccessModalProps = Pick<
   SuccessModalProps,

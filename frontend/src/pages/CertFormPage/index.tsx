@@ -44,6 +44,7 @@ const CertFormPage = () => {
     handleSubmitCert,
     handleCloseModal,
     handleChangeDescription,
+    myPreviousRank,
   } = useCertFormPage();
 
   return (
@@ -138,6 +139,7 @@ const CertFormPage = () => {
           successCount={successCount}
           progressCount={progressCount + 1}
           emoji={emojiList[emojiIndex]}
+          myPreviousRank={myPreviousRank}
         />
       )}
     </FlexBox>

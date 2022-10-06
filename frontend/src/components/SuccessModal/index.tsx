@@ -1,10 +1,19 @@
 import useSuccessModal from './useSuccessModal';
+import { useGetMyRanking } from 'apis';
 import Close from 'assets/close.svg';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
+import {
+  Button,
+  FlexBox,
+  ModalOverlay,
+  Text,
+  CheckCircles,
+  ChangedNumberItem,
+  UnderLineText,
+} from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 export const SuccessModal = ({
@@ -15,6 +24,7 @@ export const SuccessModal = ({
   challengeId,
   progressCount,
   emoji,
+  myPreviousRank,
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
   const {
@@ -33,6 +43,12 @@ export const SuccessModal = ({
     emoji,
   });
 
+  const { data: myRankingData } = useGetMyRanking({ rankingPeriodId: 0 });
+  const myCurrentRank = {
+    point: myRankingData?.data.point,
+    ranking: myRankingData?.data.ranking,
+  };
+
   return (
     <ModalOverlay handleCloseModal={handleClickClose}>
       <Wrapper
@@ -44,14 +60,32 @@ export const SuccessModal = ({
         <CloseWrapper onClick={handleClickClose}>
           <Close />
         </CloseWrapper>
-        <Text color={themeContext.onSurface} size={70} fontWeight="normal">
-          {emoji}
-          <span id="confettiRewardId" />
-          <span id="emojiRewardId" />
-        </Text>
-        <Text color={themeContext.onSurface} size={20} fontWeight="bold">
+        <FlexBox>
+          <ChangedNumberItem
+            from={myPreviousRank.ranking ?? 0}
+            to={myCurrentRank.ranking!}
+            isReverse={true}
+            unit="위"
+          />
+          <Text color={themeContext.onSurface} size={70} fontWeight="normal">
+            {emoji}
+            <span id="confettiRewardId" />
+            <span id="emojiRewardId" />
+          </Text>
+          <ChangedNumberItem
+            from={myPreviousRank.point ?? 0}
+            to={myCurrentRank.point!}
+            unit="점"
+          />
+        </FlexBox>
+        <UnderLineText
+          fontColor={themeContext.onSurface}
+          fontSize={24}
+          underLineColor={themeContext.primary}
+          fontWeight="bold"
+        >
           {challengeName}
-        </Text>
+        </UnderLineText>
         <Text color={themeContext.primary} size={20} fontWeight="bold">
           {isChallengeComplete ? '🎉 챌린지 성공 🎉' : '오늘의 인증 완료'}
         </Text>

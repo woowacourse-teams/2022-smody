@@ -1,4 +1,4 @@
-import { usePostCycleProgress } from 'apis';
+import { useGetMyRanking, usePostCycleProgress } from 'apis';
 import { useState, useMemo, FormEventHandler, ChangeEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -16,6 +16,7 @@ const useCertFormPage = () => {
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const { data: myRankingData } = useGetMyRanking({ rankingPeriodId: 0 });
 
   const {
     previewImageUrl,
@@ -93,6 +94,10 @@ const useCertFormPage = () => {
     handleSubmitCert,
     handleCloseModal,
     handleChangeDescription,
+    myPreviousRank: {
+      point: myRankingData?.data.point,
+      ranking: myRankingData?.data.ranking,
+    },
   };
 };
 
