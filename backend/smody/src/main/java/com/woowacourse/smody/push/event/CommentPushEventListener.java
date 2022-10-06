@@ -1,5 +1,10 @@
 package com.woowacourse.smody.push.event;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
+
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.service.CommentService;
@@ -7,26 +12,16 @@ import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
-import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
-import com.woowacourse.smody.push.service.PushSubscriptionService;
-import com.woowacourse.smody.push.service.WebPushService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class CommentPushEventListener {
 
     private final PushNotificationService pushNotificationService;
-    private final PushSubscriptionService pushSubscriptionService;
     private final CommentService commentService;
-    private final WebPushService webPushService;
 
     @Transactional
     @Async("asyncExecutor")
@@ -35,16 +30,19 @@ public class CommentPushEventListener {
         Comment comment = commentService.search(event.getComment().getId());
         Member cycleDetailWriter = extractDetailWriter(comment);
 
-        if (cycleDetailWriter.matchId(comment.getMember().getId())) {
+        if (isSelfCommented(comment, cycleDetailWriter)) {
             return;
         }
 
-        PushNotification pushNotification = pushNotificationService.register(buildNotification(comment));
+        pushNotificationService.register(buildNotification(comment));
+    }
 
-        List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(List.of(cycleDetailWriter));
-        for (PushSubscription subscription : subscriptions) {
-            webPushService.sendNotification(subscription, pushNotification);
-        }
+    private Member extractDetailWriter(Comment comment) {
+        return comment.getCycleDetail().getCycle().getMember();
+    }
+
+    private boolean isSelfCommented(Comment comment, Member cycleDetailWriter) {
+        return cycleDetailWriter.matchId(comment.getMember().getId());
     }
 
     public PushNotification buildNotification(Object entity) {
@@ -59,9 +57,5 @@ public class CommentPushEventListener {
                 .member(cycleDetailWriter)
                 .pathId(comment.getCycleDetail().getId())
                 .build();
-    }
-
-    private Member extractDetailWriter(Comment comment) {
-        return comment.getCycleDetail().getCycle().getMember();
     }
 }

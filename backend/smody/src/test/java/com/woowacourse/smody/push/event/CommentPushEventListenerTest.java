@@ -1,5 +1,19 @@
 package com.woowacourse.smody.push.event;
 
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.cycle.domain.Cycle;
@@ -9,20 +23,6 @@ import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 class CommentPushEventListenerTest extends IntegrationTest {
 
@@ -84,9 +84,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 				.isEqualTo(comment.getCreatedAt().format(FORMATTER)),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
-			() -> verify(webPushService)
-				.sendNotification(any(), any())
+			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId())
 		);
 	}
 
