@@ -1,5 +1,5 @@
 import { BASE_URL } from 'env';
-import { userData, feedData, commentData } from 'mocks/data';
+import { userData, feedData, commentData, memberData } from 'mocks/data';
 import { checkValidAccessToken } from 'mocks/utils';
 import { rest } from 'msw';
 
@@ -145,5 +145,36 @@ export const feed = [
     commentData.splice(commentDataIndex, 1);
 
     return res(ctx.delay(2000), ctx.status(204));
+  }),
+
+  // 7. 댓글에서 @를 눌렀을 때
+  rest.get(`${BASE_URL}/members`, (req, res, ctx) => {
+    const filterValue = req.url.searchParams.get('filter');
+    const cursorId = req.url.searchParams.get('cursorId');
+
+    if (filterValue === null) {
+      return res(ctx.status(200), ctx.json(memberData));
+    }
+
+    const filteredData = memberData.filter((member) =>
+      member.nickname.includes(filterValue),
+    );
+
+    return res(ctx.status(200), ctx.json(filteredData));
+  }),
+
+  // 8. 댓글 멘션에서 알림 보내기
+  rest.post(`${BASE_URL}/push-notifications`, (req, res, ctx) => {
+    const { memberIds, pathId, pushCase } = req.body;
+    const resultMembers = [];
+
+    memberData.forEach(({ memberId, nickname }) => {
+      if (memberIds.includes(memberId)) {
+        resultMembers.push(nickname);
+      }
+    });
+
+    console.log('8. 댓글 멘션에서 알림 보내기', resultMembers, pathId, pushCase);
+    return res(ctx.status(200));
   }),
 ];

@@ -68,7 +68,7 @@ const useCertFormPage = () => {
     setIsSuccessModalOpen(false);
   };
 
-  const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeDescription = (event: ChangeEvent<HTMLDivElement>) => {
     setDescription(event.target.value);
   };
 

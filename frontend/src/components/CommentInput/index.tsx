@@ -1,10 +1,9 @@
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage } from 'components';
-
-import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
+import { FlexBox, ValidationMessage, MembersPopover } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
@@ -15,27 +14,30 @@ export const CommentInput = ({
     commentInputRef,
     content,
     isVisibleWriteButton,
-    isShowLengthWarning,
+    isMaxLengthOver,
     isLoadingPostComment,
     isLoadingPatchComment,
-    handleChangeInput,
     handleClickWrite,
+    membersData,
+    hasNextMembersPage,
+    fetchNextMembersPage,
+    isPopoverOpen,
+    handleClosePopover,
+    selectMember,
+    isLoadingPostMentionNotifications,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <InnerWrapper alignItems="center" isShowLengthWarning={isShowLengthWarning}>
-        <CommentInputElement
-          ref={commentInputRef}
-          value={content}
-          placeholder="다른 사용자와 소통해보세요!"
-          rows={1}
-          maxLength={MAX_TEXTAREA_LENGTH - 1}
-          onChange={handleChangeInput}
-        />
+      <InnerWrapper alignItems="center" isShowLengthWarning={isMaxLengthOver}>
+        <CommentInputElement contentEditable={true} ref={commentInputRef} />
         <WriteButton
           disabled={
-            !isVisibleWriteButton || isLoadingPostComment || isLoadingPatchComment
+            !isVisibleWriteButton ||
+            isLoadingPostComment ||
+            isLoadingPatchComment ||
+            isMaxLengthOver ||
+            isLoadingPostMentionNotifications
           }
           isVisible={isVisibleWriteButton}
           onClick={handleClickWrite}
@@ -43,7 +45,7 @@ export const CommentInput = ({
           {editMode.isEditMode ? '수정' : '작성'}
         </WriteButton>
       </InnerWrapper>
-      {isShowLengthWarning && (
+      {isMaxLengthOver && (
         <ValidationMessageWrapper>
           <ValidationMessage
             isValidated={false}
@@ -51,6 +53,15 @@ export const CommentInput = ({
             message={'댓글은 최대 255자까지 입력할 수 있습니다.'}
           />
         </ValidationMessageWrapper>
+      )}
+      {isPopoverOpen && (
+        <MembersPopover
+          handleClosePopover={handleClosePopover}
+          membersData={membersData}
+          hasNextMembersPage={hasNextMembersPage}
+          fetchNextMembersPage={fetchNextMembersPage}
+          selectMember={selectMember}
+        />
       )}
     </Wrapper>
   );
@@ -78,7 +89,7 @@ const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`
   `}
 `;
 
-const CommentInputElement = styled.textarea`
+const CommentInputElement = styled.div`
   ${({ theme }) => css`
     flex-grow: 1;
     max-height: 60px;
@@ -88,6 +99,10 @@ const CommentInputElement = styled.textarea`
     resize: none;
     font-size: 1rem;
     color: ${theme.onInput};
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-y: scroll;
   `}
 `;
 

@@ -1329,6 +1329,67 @@ export const myCyclesByChallengeID = [
   },
 ];
 
+export const memberData = [
+  {
+    memberId: 1,
+    nickname: '마르코',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 2,
+    nickname: '마르코2',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 3,
+    nickname: '마르코3',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 4,
+    nickname: '마르쿠',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 5,
+    nickname: '마로코',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 6,
+    nickname: '빅터',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 7,
+    nickname: '우연',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 8,
+    nickname: 'jojogreen',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 9,
+    nickname: 'tonic^^',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 10,
+    nickname: 'alphaF',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 11,
+    nickname: 'marco',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+  {
+    memberId: 12,
+    nickname: 'marco',
+    picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+
 export const rankingPeriodsData = [
   {
     rankingPeriodId: 1,
