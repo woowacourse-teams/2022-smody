@@ -1,6 +1,5 @@
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, ValidationMessage, MembersPopover } from 'components';
@@ -18,13 +17,13 @@ export const CommentInput = ({
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
+    isLoadingPostMentionNotifications,
+    isPopoverOpen,
+    handleClosePopover,
     membersData,
     hasNextMembersPage,
     fetchNextMembersPage,
-    isPopoverOpen,
-    handleClosePopover,
     selectMember,
-    isLoadingPostMentionNotifications,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
