@@ -77,6 +77,9 @@ export const useNotificationMessage = ({
     if (pushCase === 'challenge') {
       navigate(`${CLIENT_PATH.CYCLE_DETAIL}/${pathId}`);
     }
+    if (pushCase === 'mention') {
+      navigate(`${CLIENT_PATH.FEED_DETAIL}/${pathId}`);
+    }
   };
 
   return { notifications, handleClickNotification };

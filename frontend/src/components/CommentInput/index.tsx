@@ -103,14 +103,33 @@ const CommentInputElement = styled.div`
     word-wrap: break-word;
     word-break: break-all;
     overflow-y: scroll;
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
+    }
   `}
 `;
 
 const WriteButton = styled.button<WriteButtonProps>`
   ${({ theme, isVisible }) => css`
-    min-width: 40px;
+    min-width: 50px;
     height: 20px;
-    font-size: 0.75rem;
+    font-size: 0.83rem;
+    letter-spacing: 0.6px;
     font-weight: bold;
     color: ${theme.primary};
     visibility: ${isVisible ? 'visible' : 'hidden'};
