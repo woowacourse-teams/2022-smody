@@ -1,11 +1,5 @@
 package com.woowacourse.smody.push.service;
 
-import java.util.List;
-
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
@@ -14,8 +8,12 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

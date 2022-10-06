@@ -18,10 +18,14 @@ declare module 'styled-components' {
     disabled: AvailablePickedColor;
     disabledInput: AvailablePickedColor;
     border: AvailablePickedColor;
+    successBorder: AvailablePickedColor;
     blur: AvailablePickedColor;
     mainText: AvailablePickedColor;
     backdrop: AvailablePickedColor;
     input: AvailablePickedColor;
     onInput: AvailablePickedColor;
+    first: AvailablePickedColor;
+    second: AvailablePickedColor;
+    third: AvailablePickedColor;
   }
 }

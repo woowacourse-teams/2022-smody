@@ -1,8 +1,8 @@
 import { TIMEZONE_OFFSET } from 'constants/domain';
 
-type addDaysFunction = (date: Date, days: number) => Date;
+type AddDaysFunction = (date: Date, days: number) => Date;
 
-export const addDays: addDaysFunction = (date, days) => {
+export const addDays: AddDaysFunction = (date, days) => {
   const newDate = new Date(date.getTime());
   newDate.setDate(date.getDate() + days);
   return newDate;
@@ -82,6 +82,7 @@ export const dataURLtoBlob = (dataURL: string) => {
   return blob;
 };
 
+
 export const getCursorPosition = (element: HTMLElement) => {
   let selectionStart;
   const isSupported = typeof window.getSelection !== 'undefined';
@@ -102,4 +103,36 @@ export const insertAfter = (referenceNode: Node, newNode: Node) => {
   } else {
     referenceNode.parentNode!.appendChild(newNode);
   }
+
+export const dateYMDFormatParsing = (dateString: string) => {
+  const { year, month, date } = parseTime(dateString);
+  return `${year}.${month}.${date}`;
+};
+
+export const getWeekNumber = (dateString: string) => {
+  const dateFrom = new Date(Date.parse(dateString));
+  // 해당 날짜 (일)
+  const currentDate = dateFrom.getDate();
+  // 이번 달 1일로 지정
+  const startOfMonth = new Date(dateFrom.setDate(1));
+  // 이번 달 1일이 무슨 요일인지 확인
+  const weekDay = startOfMonth.getDay(); // 0: Sun ~ 6: Sat
+
+  // ((요일 - 1) + 해당 날짜) / 7일로 나누기 = N 주차
+  return parseInt(`${(weekDay - 1 + currentDate) / 7}`) + 1;
+};
+
+export const getCurrentStartDateString = () => {
+  const currentDate = new Date();
+  const weekDay = currentDate.getDay();
+  const startData = addDays(currentDate, 1 - weekDay);
+  return parseDateToISOString(startData);
+};
+
+type IsSameDateFunction = (dateString1: string, dateString2: string) => boolean;
+
+export const isSameDate: IsSameDateFunction = (dateString1, dateString2) => {
+  const { year: year1, month: month1, date: date1 } = parseTime(dateString1);
+  const { year: year2, month: month2, date: date2 } = parseTime(dateString2);
+  return year1 === year2 && month1 === month2 && date1 === date2;
 };

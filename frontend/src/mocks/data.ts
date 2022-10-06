@@ -1389,5 +1389,261 @@ export const memberData = [
     memberId: 12,
     nickname: 'marco',
     picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+
+export const rankingPeriodsData = [
+  {
+    rankingPeriodId: 1,
+    startDate: '2022-07-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 2,
+    startDate: '2022-06-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 3,
+    startDate: '2021-10-10T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 4,
+    startDate: '2022-04-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 5,
+    startDate: '2022-03-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 6,
+    startDate: '2022-02-01T17:00:00',
+    duration: 'week',
+  },
+  {
+    rankingPeriodId: 7,
+    startDate: '2022-01-01T17:00:00',
+    duration: 'week',
+  },
+];
+
+export const myRanking = {
+  ranking: 3,
+  memberId: 4,
+  nickname: '마르코',
+  introduction: '안녕하세요 마르코입니다.',
+  picture:
+    'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+  point: 100,
+};
+
+export const allRanking = [
+  {
+    ranking: 1,
+    memberId: 1,
+    nickname: '유저1',
+    introduction: '안녕하세요 유저1입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 2,
+    memberId: 2,
+    nickname: '유저2',
+    introduction: '안녕하세요 유저2입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 3,
+    memberId: 3,
+    nickname: '유저3',
+    introduction: '안녕하세요 유저3입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 4,
+    memberId: 4,
+    nickname: '마르코',
+    introduction: '안녕하세요 마르코입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 5,
+    memberId: 5,
+    nickname: '유저5',
+    introduction: '안녕하세요 유저5입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 6,
+    memberId: 6,
+    nickname: '유저6',
+    introduction: '안녕하세요 유저6입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 7,
+    memberId: 7,
+    nickname: '유저7',
+    introduction: '안녕하세요 유저7입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 8,
+    memberId: 8,
+    nickname: '유저8',
+    introduction: '안녕하세요 유저8입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 9,
+    memberId: 9,
+    nickname: '유저9',
+    introduction: '안녕하세요 유저9입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 10,
+    memberId: 10,
+    nickname: '유저10',
+    introduction: '안녕하세요 유저10입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 11,
+    memberId: 11,
+    nickname: '유저11',
+    introduction: '안녕하세요 유저11입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 12,
+    memberId: 12,
+    nickname: '유저12',
+    introduction: '안녕하세요 유저12입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 13,
+    memberId: 13,
+    nickname: '유저13',
+    introduction: '안녕하세요 유저13입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 14,
+    memberId: 14,
+    nickname: '유저14',
+    introduction: '안녕하세요 유저14입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 15,
+    memberId: 15,
+    nickname: '유저15',
+    introduction: '안녕하세요 유저15입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 16,
+    memberId: 16,
+    nickname: '유저16',
+    introduction: '안녕하세요 유저16입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 17,
+    memberId: 17,
+    nickname: '유저17',
+    introduction: '안녕하세요 유저17입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 18,
+    memberId: 18,
+    nickname: '유저18',
+    introduction: '안녕하세요 유저18입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 19,
+    memberId: 19,
+    nickname: '유저19',
+    introduction: '안녕하세요 유저19입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 20,
+    memberId: 20,
+    nickname: '유저20',
+    introduction: '안녕하세요 유저20입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 21,
+    memberId: 21,
+    nickname: '유저21',
+    introduction: '안녕하세요 유저21입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 22,
+    memberId: 22,
+    nickname: '유저22',
+    introduction: '안녕하세요 유저22입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
+  },
+  {
+    ranking: 23,
+    memberId: 23,
+    nickname: '마지막 유저23',
+    introduction: '안녕하세요 마지막 유저23입니다.',
+    picture:
+      'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
+    point: 100,
   },
 ];

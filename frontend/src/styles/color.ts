@@ -2,6 +2,8 @@ const COLOR = {
   LIGHT_PURPLE: '#F5F3FF',
   PURPLE: '#7B61FF',
   DARK_PURPLE: '#7054FE',
+  SUBTLE_PURPLE: '#cfc5ff',
+  DARKEST_PURPLE: '#3b2d81',
 
   LIGHT_GRAY: '#F3F4F6',
   GRAY: '#909598',
@@ -20,6 +22,10 @@ const COLOR = {
   BLUE: '#0D47A1',
 
   OPAQUE_BLACK: 'rgba(0, 0, 0, 0.4)',
+
+  GOLD: '#ffcf40',
+  SILVER: '#c0c0c0',
+  COPPER: '#cd7f32',
 } as const;
 
 export default COLOR;

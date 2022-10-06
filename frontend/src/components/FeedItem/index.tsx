@@ -1,11 +1,16 @@
 import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
-import { FaCrown } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, UnderLineText, CheckCircles } from 'components';
+import {
+  FlexBox,
+  Text,
+  UnderLineText,
+  CheckCircles,
+  CheckSuccessCycle,
+} from 'components';
 
 export const FeedItem = ({
   cycleDetailId,
@@ -95,20 +100,6 @@ export const FeedItem = ({
   );
 };
 
-const CheckSuccessCycle = ({ isSuccess }: CheckSuccessProps) => {
-  const themeContext = useThemeContext();
-
-  if (!isSuccess) {
-    return null;
-  }
-
-  return (
-    <SuccessIconWrapper>
-      <FaCrown color={themeContext.primary} size={25} />
-    </SuccessIconWrapper>
-  );
-};
-
 const Wrapper = styled(FlexBox)<WrapperProps>`
   ${({ isDetailPage }) => css`
     max-width: 440px;
@@ -174,8 +165,4 @@ const CommentCount = styled(Text)`
 
 const CheckCirclesWrapper = styled(FlexBox)`
   flex-grow: 1;
-`;
-
-const SuccessIconWrapper = styled.div`
-  margin-left: 5px;
 `;

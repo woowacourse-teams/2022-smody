@@ -2,10 +2,11 @@ package com.woowacourse.smody.feed.repository;
 
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.feed.domain.Feed;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 
 public interface FeedRepository extends JpaRepository<CycleDetail, Long>, FeedDynamicRepository {
 

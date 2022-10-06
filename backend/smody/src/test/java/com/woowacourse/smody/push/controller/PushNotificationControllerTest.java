@@ -13,14 +13,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PushNotificationControllerTest extends ControllerTest {
 
@@ -77,5 +92,30 @@ class PushNotificationControllerTest extends ControllerTest {
 			.andDo(document("delete-notification", HOST_INFO,
 				preprocessResponse(prettyPrint())
 			));
+	}
+
+	@DisplayName("알람을 저장하면 200 응답을 반환한다.")
+	@Test
+	void saveMentionNotification() throws Exception {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(1L);
+		String token = jwtTokenProvider.createToken(tokenPayload);
+		MentionNotificationRequest mentionNotificationRequest =
+				new MentionNotificationRequest(List.of(1L, 2L), 1L);
+
+		// when
+		ResultActions result = mockMvc.perform(post("/push-notifications")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Bearer " + token)
+				.content(objectMapper.writeValueAsString(mentionNotificationRequest)));
+
+		// then
+		result.andExpect(status().isOk())
+				.andDo(document("save-mention-notification", HOST_INFO,
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("memberIds").type(JsonFieldType.ARRAY).description("멘션대상 회원들의 id"),
+								fieldWithPath("pathId").type(JsonFieldType.NUMBER).description("피드 id")
+						)));
 	}
 }

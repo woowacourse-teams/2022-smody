@@ -27,10 +27,15 @@ export const lightTheme: DefaultTheme = {
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
   border: COLOR.LIGHT_GRAY,
+  successBorder: COLOR.SUBTLE_PURPLE,
   blur: COLOR.LIGHT_GRAY,
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  first: COLOR.GOLD,
+  second: COLOR.SILVER,
+  third: COLOR.COPPER,
 };
 
 export const darkTheme: DefaultTheme = {
@@ -58,8 +63,13 @@ export const darkTheme: DefaultTheme = {
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
   border: COLOR.LIGHTEST_BLACK,
+  successBorder: COLOR.DARKEST_PURPLE,
   blur: COLOR.LIGHT_GRAY,
   mainText: COLOR.GRAY,
 
   backdrop: COLOR.OPAQUE_BLACK,
+
+  first: COLOR.GOLD,
+  second: COLOR.SILVER,
+  third: COLOR.COPPER,
 };
