@@ -1,5 +1,18 @@
 package com.woowacourse.smody.push.service;
 
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
@@ -10,19 +23,6 @@ import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 class PushNotificationServiceTest extends IntegrationTest {
 
@@ -97,6 +97,7 @@ class PushNotificationServiceTest extends IntegrationTest {
 		List<Long> ids = List.of(토닉_ID, 더즈_ID);
 		MentionNotificationRequest mentionNotificationRequest =
 				new MentionNotificationRequest(ids, cycleDetail.getId());
+
 		// when
 		pushNotificationService.saveNotification(tokenPayload, mentionNotificationRequest);
 
@@ -120,5 +121,49 @@ class PushNotificationServiceTest extends IntegrationTest {
 				() -> verify(webPushService, never())
 						.sendNotification(any(), any())
 		);
+	}
+
+	@DisplayName("발송 가능한 알림을 조회한다.")
+	@Test
+	void searchPushable() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+
+		fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION);
+		fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE);
+
+		fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.plusMinutes(2L), PushCase.CHALLENGE);
+		fixture.발송된_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE);
+
+		// when
+		List<PushNotification> actual = pushNotificationService.searchPushable();
+
+		// then
+		assertThat(actual)
+			.map(PushNotification::getPathId)
+			.containsOnly(1L, 2L);
+	}
+
+	@DisplayName("알림들을 모두 발송 완료 상태로 변경한다.")
+	@Test
+	void completeAll() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+
+		List<PushNotification> notifications = List.of(
+			fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION),
+			fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE),
+
+			fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.minusMinutes(2L), PushCase.CHALLENGE),
+			fixture.발송_예정_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE)
+		);
+
+		// when
+		pushNotificationService.completeAll(notifications);
+
+		// then
+		assertThat(pushNotificationRepository.findAll())
+			.map(PushNotification::getPushStatus)
+			.containsExactly(PushStatus.COMPLETE, PushStatus.COMPLETE, PushStatus.COMPLETE, PushStatus.COMPLETE);
 	}
 }
