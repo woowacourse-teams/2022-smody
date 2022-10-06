@@ -50,6 +50,7 @@ const Wrapper = styled(FlexBox)`
     border: 0;
     width: 128px;
     height: 128px;
+    border-radius: 5px;
     cursor: pointer;
   `}
 `;
