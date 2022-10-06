@@ -16,8 +16,6 @@ import {
   ShareButton,
 } from 'components';
 
-import { CLIENT_PATH } from 'constants/path';
-
 const FeedDetailPage = () => {
   const {
     feedData,
@@ -115,6 +113,7 @@ const MenuBottomSheet = ({
 };
 
 const Wrapper = styled(FlexBox)`
+  margin-top: 2rem;
   padding-bottom: 8.625rem;
 `;
 
