@@ -418,6 +418,7 @@ const useCommentInput = ({
 
   useEffect(() => {
     setContent(editMode.editContent);
+    commentInputRef!.current!.innerText = editMode.editContent;
   }, [editMode]);
 
   const isVisibleWriteButton = content.length !== 0;
