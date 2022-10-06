@@ -1,10 +1,11 @@
 package com.woowacourse.smody.feed.dto;
 
 import com.woowacourse.smody.feed.domain.Feed;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor

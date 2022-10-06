@@ -1,16 +1,17 @@
 package com.woowacourse.smody.challenge.domain;
 
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.member.domain.Member;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.woowacourse.smody.support.ResourceFixture.이미지;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ChallengingRecordsTest {
 

@@ -1,10 +1,11 @@
 package com.woowacourse.smody.db_support;
 
-import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
-
 import com.querydsl.core.types.OrderSpecifier;
-import java.util.Arrays;
 import org.springframework.data.domain.Sort;
+
+import java.util.Arrays;
+
+import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
 
 public enum SortSelection {
 
