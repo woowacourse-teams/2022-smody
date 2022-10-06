@@ -3,7 +3,14 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { CardBox, Text, EmptyContent, LoadingSpinner, InfiniteScroll } from 'components';
+import {
+  CardBox,
+  Text,
+  EmptyContent,
+  LoadingSpinner,
+  InfiniteScroll,
+  FlexBox,
+} from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -24,11 +31,10 @@ export const CardGridContainer = () => {
   }
 
   return (
-    <div>
+    <FlexBox flexDirection="column" gap="0.4rem">
       <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
         참가한 챌린지
       </Text>
-      <Line />
       <InfiniteScroll
         loadMore={fetchNextPage}
         hasMore={hasNextPage}
@@ -43,7 +49,7 @@ export const CardGridContainer = () => {
           )}
         </Grid>
       </InfiniteScroll>
-    </div>
+    </FlexBox>
   );
 };
 

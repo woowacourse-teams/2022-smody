@@ -23,12 +23,10 @@ export const RankingPeriodItem = ({
 
 const SelectListItem = styled.li<SelectListItemProps>`
   ${({ theme, selected }) => css`
-    width: 13rem;
+    width: 15rem;
     height: 2.5rem;
     line-height: 2.5rem;
     text-align: center;
-    background-color: ${theme.surface};
-    border: 1px solid ${theme.border};
 
     &:hover {
       background-color: ${theme.primary};
