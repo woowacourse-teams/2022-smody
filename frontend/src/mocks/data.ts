@@ -1389,6 +1389,8 @@ export const memberData = [
     memberId: 12,
     nickname: 'marco',
     picture: 'https://images.smody.co.kr/images/651d3b1c-8096-4e21-9909-6f95a3d22775.jpg',
+  },
+];
 
 export const rankingPeriodsData = [
   {
