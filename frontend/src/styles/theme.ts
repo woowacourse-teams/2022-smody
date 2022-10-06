@@ -27,6 +27,7 @@ export const lightTheme: DefaultTheme = {
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
   border: COLOR.LIGHT_GRAY,
+  successBorder: COLOR.SUBTLE_PURPLE,
   blur: COLOR.LIGHT_GRAY,
   mainText: COLOR.GRAY,
 
@@ -62,6 +63,7 @@ export const darkTheme: DefaultTheme = {
   disabled: COLOR.GRAY,
   disabledInput: COLOR.DARKER_GRAY,
   border: COLOR.LIGHTEST_BLACK,
+  successBorder: COLOR.DARKEST_PURPLE,
   blur: COLOR.LIGHT_GRAY,
   mainText: COLOR.GRAY,
 

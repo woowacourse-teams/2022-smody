@@ -10,7 +10,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, Text } from 'components';
+import { Button, FlexBox, Text, CheckSuccessCycle } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { cursorPointer, emojiList } from 'constants/style';
@@ -28,10 +28,13 @@ export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordP
 
   return (
     <RecordWrapper flexDirection="column" gap="10px" isSuccess={isSuccess}>
-      <FlexBox>
-        <CycleProgressTime color={themeContext.onSurface} fontWeight="bold">
-          {cycleProgressTime}
-        </CycleProgressTime>
+      <FlexBox justifyContent="space-between">
+        <FlexBox>
+          <CycleProgressTime color={themeContext.onSurface} fontWeight="bold">
+            {cycleProgressTime}
+          </CycleProgressTime>
+          <CheckSuccessCycle isSuccess={isSuccess} />
+        </FlexBox>
         {isSuccess && (
           <Button onClick={handleClickShare} size="small">
             공유하기
@@ -84,11 +87,18 @@ const RecordWrapper = styled(FlexBox)<RecordWrapperProps>`
     border-radius: 20px;
     padding: 10px 15px 15px;
     margin: 0 auto;
-    background-color: ${isSuccess ? theme.secondary : theme.blur};
+    background-color: ${theme.secondary};
+
+    ${isSuccess &&
+    css`
+      border: 3px solid ${theme.successBorder};
+    `};
   `}
 `;
 
 const CycleProgressTime = styled(Text)`
+  margin: 0 0.4rem;
+  line-height: 1.8;
   flex-grow: 1;
 `;
 
@@ -97,10 +107,15 @@ const RecordItemWrapper = styled(FlexBox)<RecordItemWrapperProps>`
     position: relative;
     width: 30%;
     border-radius: 20px;
-    background-color: ${theme.disabled};
+    background-color: ${theme.surface};
     ${recordImg &&
     css`
       background: url(${recordImg}) no-repeat center / cover;
+      transition: all 0.2s linear;
+      opacity: 0.8;
+      &:hover {
+        opacity: 1;
+      }
     `};
 
     &:after {
