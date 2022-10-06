@@ -20,11 +20,7 @@ export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>)
       gap="10px"
     >
       <IconWrapper>
-        <MdArrowBackIosNew
-          size={20}
-          onClick={backToPreviousPage}
-          // style={{ position: 'absolute', left: '0', top: '0', cursor: 'pointer' }}
-        />
+        <MdArrowBackIosNew size={20} onClick={backToPreviousPage} />
       </IconWrapper>
       <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
         {text}
@@ -37,7 +33,7 @@ export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>)
 const TitleWrapper = styled(FlexBox)`
   position: relative;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `;
 
 const IconWrapper = styled.div`
