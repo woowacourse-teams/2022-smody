@@ -2,6 +2,7 @@ import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
 import useFeedItem from './useFeedItem';
 import styled, { css } from 'styled-components';
 
+import useScrollDirection from 'hooks/useScrollDirection';
 import useThemeContext from 'hooks/useThemeContext';
 
 import {
@@ -46,6 +47,8 @@ export const FeedItem = ({
     challengeName,
     isShowBriefChallengeName,
   });
+  const scrollDir = useScrollDirection();
+  console.log('scrollDir', scrollDir);
 
   return (
     <Wrapper
