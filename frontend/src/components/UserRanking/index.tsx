@@ -66,12 +66,7 @@ const RankingItemSkeleton = ({ title, description }: RankingItemSkeletonProps) =
   const themeContext = useThemeContext();
 
   return (
-    <Wrapper
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      gap="1rem"
-    >
+    <Wrapper flexDirection="column" justifyContent="center" alignItems="center">
       <Text size={16} color={themeContext.onSurface} fontWeight="bold">
         {title}
       </Text>
