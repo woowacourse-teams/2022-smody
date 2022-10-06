@@ -1,13 +1,5 @@
 package com.woowacourse.smody.ranking.service;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
@@ -20,12 +12,18 @@ import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RankingServiceTest extends IntegrationTest {
 

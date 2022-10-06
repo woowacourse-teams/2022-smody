@@ -7,5 +7,6 @@ public enum PushCase {
 
     SUBSCRIPTION,
     CHALLENGE,
-    COMMENT
+    COMMENT,
+    MENTION
 }

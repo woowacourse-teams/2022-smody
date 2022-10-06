@@ -13,6 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.ui.admin.MenuLayout;
 import com.woowacourse.smody.ui.admin.service.SmodyVaddinService;
+
 import javax.annotation.security.PermitAll;
 
 @PageTitle("challenge")
