@@ -82,6 +82,28 @@ export const dataURLtoBlob = (dataURL: string) => {
   return blob;
 };
 
+
+export const getCursorPosition = (element: HTMLElement) => {
+  let selectionStart;
+  const isSupported = typeof window.getSelection !== 'undefined';
+
+  if (isSupported) {
+    const range = window.getSelection()!.getRangeAt(0);
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(element);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    selectionStart = preSelectionRange.toString().length;
+  }
+  return selectionStart;
+};
+
+export const insertAfter = (referenceNode: Node, newNode: Node) => {
+  if (referenceNode.nextSibling) {
+    referenceNode.parentNode!.insertBefore(newNode, referenceNode.nextSibling);
+  } else {
+    referenceNode.parentNode!.appendChild(newNode);
+  }
+
 export const dateYMDFormatParsing = (dateString: string) => {
   const { year, month, date } = parseTime(dateString);
   return `${year}.${month}.${date}`;

@@ -7,6 +7,8 @@ import {
   postComments,
   patchComments,
   deleteComments,
+  getMembers,
+  postMentionNotifications,
 } from 'apis/feedApi/api';
 import {
   GetAllFeedsResponse,
@@ -18,6 +20,9 @@ import {
   UsePostCommentMutationFunctionProps,
   PatchCommentsPayload,
   DeleteCommentsParams,
+  GetMembersParams,
+  GetMembersResponse,
+  PostMentionNotificationsPayload,
 } from 'apis/feedApi/type';
 import { AxiosResponse, AxiosError } from 'axios';
 import {
@@ -121,5 +126,41 @@ export const useDeleteComments = (
 ) =>
   useMutation<AxiosResponse, AxiosError<ErrorResponse>, DeleteCommentsParams>(
     ({ commentId }) => deleteComments({ commentId }),
+    options,
+  );
+
+// 7. 댓글에서 @를 눌렀을 때
+export const useGetMembers = (
+  { filter }: GetMembersParams,
+  options?: UseInfiniteQueryOptions<
+    AxiosResponse<GetMembersResponse>,
+    AxiosError<ErrorResponse>
+  >,
+) =>
+  useInfiniteQuery<AxiosResponse<GetMembersResponse>, AxiosError<ErrorResponse>>(
+    [queryKeys.getMembers, filter],
+    ({ pageParam = 0 }) => getMembers(filter, pageParam),
+    {
+      ...options,
+      getNextPageParam: (currentPage) => {
+        const currentDataLength = currentPage.data.length;
+
+        return currentDataLength < PAGE_SIZE.ALL_MEMBERS
+          ? undefined
+          : currentPage.data[currentDataLength - 1].memberId;
+      },
+    },
+  );
+
+// 8. 댓글 멘션에서 알림 보내기
+export const usePostMentionNotifications = (
+  options?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError<ErrorResponse>,
+    PostMentionNotificationsPayload
+  >,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>, PostMentionNotificationsPayload>(
+    ({ memberIds, pathId }) => postMentionNotifications({ memberIds, pathId }),
     options,
   );
