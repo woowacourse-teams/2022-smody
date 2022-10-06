@@ -219,14 +219,6 @@ include::{snippets}/withdraw/http-request.adoc[]
 === Response
 include::{snippets}/withdraw/http-response.adoc[]
 
-== 모든 회원 조회
-=== Request
-include::{snippets}/get-all-members/http-request.adoc[]
-=== Response
-include::{snippets}/get-all-members/http-response.adoc[]
-=== Response 필드
-include::{snippets}/get-all-members/response-fields.adoc[]
-
 == 토큰 확인
 === Request
 include::{snippets}/validate_auth/http-request.adoc[]
@@ -234,6 +226,14 @@ include::{snippets}/validate_auth/http-request.adoc[]
 include::{snippets}/validate_auth/http-response.adoc[]
 === Response 필드
 include::{snippets}/validate_auth/response-fields.adoc[]
+
+== 이름으로 회원 조회
+=== Request
+include::{snippets}/mention-to/http-request.adoc[]
+=== Response
+include::{snippets}/mention-to/http-response.adoc[]
+=== Response 필드
+include::{snippets}/mention-to/response-fields.adoc[]
 
 = 웹 푸시 알림
 
@@ -273,6 +273,38 @@ include::{snippets}/delete-notification/http-request.adoc[]
 === Response
 include::{snippets}/delete-notification/http-response.adoc[]
 
+= 랭킹
+
+== 랭킹 기간 조회
+=== Request
+include::{snippets}/get-all-ranking-periods/http-request.adoc[]
+=== Response
+include::{snippets}/get-all-ranking-periods/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-all-ranking-periods/response-fields.adoc[]
+
+== 랭킹 활동 조회
+=== Request
+include::{snippets}/get-ranking-activities/http-request.adoc[]
+=== Response
+include::{snippets}/get-ranking-activities/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-ranking-activities/response-fields.adoc[]
+
+== 나의 랭킹 활동 조회
+=== Request
+include::{snippets}/get-ranking-activity-of-mine/http-request.adoc[]
+=== Response
+include::{snippets}/get-ranking-activity-of-mine/http-response.adoc[]
+=== Response 필드
+include::{snippets}/get-ranking-activity-of-mine/response-fields.adoc[]
+== 멘션 알림 추기
+=== Request
+include::{snippets}/save-mention-notification/http-request.adoc[]
+=== Request 필드
+include::{snippets}/save-mention-notification/request-fields.adoc[]
+=== Response
+include::{snippets}/save-mention-notification/http-response.adoc[]
 = 랭킹
 
 == 랭킹 기간 조회

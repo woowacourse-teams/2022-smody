@@ -38,6 +38,7 @@ export const Layout = () => {
     CLIENT_PATH.CERT,
     CLIENT_PATH.HOME,
     CLIENT_PATH.CYCLE_DETAIL,
+    CLIENT_PATH.RANK,
   ]);
 
   const horizontalPadding = getPathMatchHorizontalPadding(

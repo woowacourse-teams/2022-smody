@@ -2,12 +2,13 @@ package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter

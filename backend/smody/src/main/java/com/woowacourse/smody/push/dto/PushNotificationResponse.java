@@ -1,10 +1,11 @@
 package com.woowacourse.smody.push.dto;
 
 import com.woowacourse.smody.push.domain.PushNotification;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor

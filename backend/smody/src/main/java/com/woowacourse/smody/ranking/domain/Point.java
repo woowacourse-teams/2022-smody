@@ -1,8 +1,9 @@
 package com.woowacourse.smody.ranking.domain;
 
 import com.woowacourse.smody.cycle.domain.Progress;
-import java.util.Arrays;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum Point {

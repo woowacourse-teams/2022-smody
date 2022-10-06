@@ -1,9 +1,5 @@
 package com.woowacourse.smody.acceptance;
 
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
 import com.woowacourse.smody.comment.repository.CommentRepository;
@@ -12,11 +8,16 @@ import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.ResourceFixture;
 import io.restassured.RestAssured;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.time.LocalDateTime;
+
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CommentAcceptanceTest extends AcceptanceTest {
 

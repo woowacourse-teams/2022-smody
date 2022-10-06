@@ -1,15 +1,16 @@
 package com.woowacourse.smody.acceptance;
 
-import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_생성_요청;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import com.woowacourse.smody.member.domain.Member;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+
+import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.사이클_생성_요청;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SuppressWarnings("NonAsciiCharacters")
 class CycleAcceptanceTest extends AcceptanceTest {

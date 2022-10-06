@@ -1,11 +1,6 @@
 package com.woowacourse.smody.cycle.repository;
 
-import static com.querydsl.core.types.ExpressionUtils.count;
-import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
-import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
-
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
@@ -18,11 +13,14 @@ import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.domain.QCycle;
 import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
+import static com.querydsl.core.types.ExpressionUtils.count;
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
+import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
 
 @RequiredArgsConstructor
 public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
