@@ -27,7 +27,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 	private CommentService commentService;
 
 	@Autowired
-	private PushNotificationRepository pushNotificationRepository;;
+	private PushNotificationRepository pushNotificationRepository;
 
 	@DisplayName("댓글을 작성하면 알림이 저장 된다.")
 	@Test
@@ -43,10 +43,10 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		synchronize(() -> commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 
 		// then
-		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
+		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId())

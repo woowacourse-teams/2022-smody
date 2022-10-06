@@ -19,7 +19,7 @@ class SubscriptionPushEventListenerTest extends IntegrationTest {
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
 
-	@DisplayName("알림 구독에 대한 알림을 전송한다.")
+	@DisplayName("알림 구독에 대한 알림을 저장한다")
 	@Test
 	void push() throws InterruptedException {
 		// given
@@ -29,10 +29,10 @@ class SubscriptionPushEventListenerTest extends IntegrationTest {
 		synchronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
 
 		// then
-		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE).get(0);
+		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getMessage()).contains("조조그린님 스모디 알림이 구독되었습니다."),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
 			() -> assertThat(pushNotification.getPathId()).isNull()

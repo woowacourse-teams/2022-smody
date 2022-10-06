@@ -52,7 +52,7 @@ public class CommentPushEventListener {
         return PushNotification.builder()
                 .message(commentWriter.getNickname() + "님께서 회원님의 피드에 댓글을 남겼어요!")
                 .pushTime(comment.getCreatedAt())
-                .pushStatus(PushStatus.COMPLETE)
+                .pushStatus(PushStatus.IN_COMPLETE)
                 .pushCase(PushCase.COMMENT)
                 .member(cycleDetailWriter)
                 .pathId(comment.getCycleDetail().getId())

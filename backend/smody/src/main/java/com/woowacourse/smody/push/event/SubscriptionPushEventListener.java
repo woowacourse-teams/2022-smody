@@ -37,7 +37,7 @@ public class SubscriptionPushEventListener {
         return PushNotification.builder()
                 .message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
                 .pushTime(LocalDateTime.now())
-                .pushStatus(PushStatus.COMPLETE)
+                .pushStatus(PushStatus.IN_COMPLETE)
                 .member(member)
                 .pushCase(PushCase.SUBSCRIPTION)
                 .build();

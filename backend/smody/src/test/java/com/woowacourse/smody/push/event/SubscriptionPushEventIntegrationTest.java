@@ -39,7 +39,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
 		assertAll(
 			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.COMPLETE),
+			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("조조그린님 스모디 알림이 구독되었습니다."),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
 			() -> assertThat(pushNotification.getPathId()).isNull()
