@@ -63,14 +63,15 @@ export const RankingPeriodsList = () => {
 
 const SelectPeriod = styled(FlexBox)`
   ${({ theme }) => css`
-    width: 15rem;
+    width: calc(15rem + 6px);
     height: 2.5rem;
     line-height: 2.5rem;
     font-weight: bold;
     font-size: 1rem;
     text-align: center;
-    border-radius: 15px;
-    background-color: ${theme.surface};
+    background-color: ${theme.background};
+    border: 1px solid ${theme.primary};
+    border-radius: 4px;
     color: ${theme.primary};
     position: relative;
     padding: 0 auto;
@@ -85,9 +86,10 @@ const SelectList = styled.ul<SelectListProps>`
     max-height: 10rem;
     overflow-y: scroll;
     position: absolute;
-    top: 2.5rem;
-    right: 0.75rem;
-    border-radius: 0 0 10px 10px;
+    top: 2.4rem;
+    border-radius: 4px;
+    background-color: ${theme.background};
+    border: 1px solid ${theme.primary};
 
     // 스크롤바
     /* 스크롤바 설정*/
