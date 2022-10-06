@@ -48,6 +48,7 @@ public class PushNotificationService {
         return pushNotificationRepository.findByPathIdAndPushStatus(pathId, status);
     }
 
+    @Transactional
     public void saveNotification(TokenPayload tokenPayload,
                                  MentionNotificationRequest mentionNotificationRequest) {
         List<Long> mentionedIds = mentionNotificationRequest.getMemberIds();
