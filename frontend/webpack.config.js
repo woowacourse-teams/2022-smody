@@ -20,7 +20,8 @@ module.exports = {
   output: {
     publicPath: '/',
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.[chunkhash].js',
+    filename: `bundle.[name].[id].[fullhash].${new Date().getTime()}.js`,
+    chunkFilename: `bundle.[name].[id].[fullhash].${new Date().getTime()}.chunk.js`,
     clean: true,
   },
   resolve: {
