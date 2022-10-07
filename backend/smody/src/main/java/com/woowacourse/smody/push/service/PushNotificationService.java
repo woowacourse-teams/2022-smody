@@ -1,5 +1,13 @@
 package com.woowacourse.smody.push.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
@@ -9,14 +17,8 @@ import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,8 +29,8 @@ public class PushNotificationService {
     private final MemberService memberService;
 
     @Transactional
-    public PushNotification register(PushNotification pushNotification) {
-        return pushNotificationRepository.save(pushNotification);
+    public void register(PushNotification pushNotification) {
+        pushNotificationRepository.save(pushNotification);
     }
 
     public List<PushNotificationResponse> searchNotificationsOfMine(TokenPayload tokenPayload) {
@@ -80,5 +82,18 @@ public class PushNotificationService {
                 .member(mentioned)
                 .pathId(pathId)
                 .build();
+    }
+
+    public List<PushNotification> searchPushable() {
+        LocalDateTime now = LocalDateTime.now();
+        return pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
+            .stream()
+            .filter(notification -> notification.isPushable(now))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void completeAll(List<PushNotification> notifications) {
+        pushNotificationRepository.updatePushStatusIn(notifications, PushStatus.COMPLETE);
     }
 }
