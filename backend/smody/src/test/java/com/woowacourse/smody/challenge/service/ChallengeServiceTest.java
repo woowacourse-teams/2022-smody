@@ -457,7 +457,7 @@ class ChallengeServiceTest extends IntegrationTest {
                 () -> assertThat(challengersResponse).hasSize(2),
                 () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getMemberId))
                         .containsExactly(member1.getId(), member2.getId()),
-                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getNickName))
+                () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getNickname))
                         .containsExactly(member1.getNickname(), member2.getNickname()),
                 () -> assertThat(challengersResponse.stream().map(ChallengersResponse::getProgressCount))
                         .containsExactly(0, 1),
