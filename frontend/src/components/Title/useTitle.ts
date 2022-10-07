@@ -27,7 +27,7 @@ const useTitle = ({ linkTo }: UseTitleProps) => {
       return;
     }
     if (scrollDirection === 'down') {
-      TitleRef.current.style.top = '0rem';
+      TitleRef.current.style.top = '0';
 
       return;
     }
