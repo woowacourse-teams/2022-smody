@@ -24,4 +24,9 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
     @Query("select pn from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus "
             + "order by pn.pushTime desc")
     List<PushNotification> findAllLatest(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
+
+    @Modifying
+    @Query("update PushNotification pn set pn.pushStatus = :pushStatus where pn in :notifications")
+	void updatePushStatusIn(@Param("notifications") List<PushNotification> notifications,
+                            @Param("pushStatus")  PushStatus pushStatus);
 }

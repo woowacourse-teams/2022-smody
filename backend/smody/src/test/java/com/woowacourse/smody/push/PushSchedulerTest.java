@@ -1,7 +1,20 @@
 package com.woowacourse.smody.push;
 
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.woowacourse.smody.member.domain.Member;
-import com.woowacourse.smody.member.repository.MemberRepository;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
@@ -9,19 +22,6 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.support.IntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 
 class PushSchedulerTest extends IntegrationTest {
 
@@ -37,15 +37,8 @@ class PushSchedulerTest extends IntegrationTest {
     private Member member1;
     private Member member2;
 
-    @Autowired
-	private MemberRepository memberRepository;
-
 	@BeforeEach
 	void init() {
-		List<Member> members = memberRepository.findAll();
-		for (Member member : members) {
-			System.out.println(member.getId() + member.getNickname());
-		}
 		member1 = fixture.회원_조회(조조그린_ID);
 		member2 = fixture.회원_조회(더즈_ID);
 
@@ -60,11 +53,12 @@ class PushSchedulerTest extends IntegrationTest {
 		fixture.발송_예정_알림_생성(토닉_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
 	}
 
-    @DisplayName("발송 안 된 알림들을 모두 전송한다.")
+    @DisplayName("발송 안 된 알림들을 모두 전송하고, "
+		+ "구독 정보가 없으면 완료 상태로만 만든다.")
     @Test
     void sendPushNotifications() {
         // given
-        BDDMockito.given(webPushService.sendNotification(any(), any()))
+        given(webPushService.sendNotification(any(), any()))
                 .willReturn(true);
 
         // when
@@ -72,14 +66,37 @@ class PushSchedulerTest extends IntegrationTest {
 
 		// then
 		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-		assertThat(result).hasSize(2);
+		assertAll(
+			() -> assertThat(result).hasSize(2),
+			() -> verify(webPushService, times(1))
+				.sendNotification(any(), any())
+		);
+	}
+
+	@DisplayName("알림을 전송할 때 전송에 실패하면 상태를 완료로 바꾸지 않는다.")
+	@Test
+	void sendPushNotifications_notComplete() {
+		// given
+		given(webPushService.sendNotification(any(), any()))
+			.willReturn(false);
+
+		// when
+		pushScheduler.sendPushNotifications();
+
+		// then
+		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
+		assertAll(
+			() -> assertThat(result).hasSize(1),
+			() -> verify(webPushService, times(1))
+				.sendNotification(any(), any())
+		);
 	}
 
     @DisplayName("알림을 전송할 때 적절하지 않는 구독 정보는 삭제한다.")
     @Test
     void sendPushNotifications_deleteSubscriptions() {
         // given
-        BDDMockito.given(webPushService.sendNotification(any(), any()))
+        given(webPushService.sendNotification(any(), any()))
                 .willReturn(false);
 
         // when
@@ -93,6 +110,5 @@ class PushSchedulerTest extends IntegrationTest {
                 () -> assertThat(subscriptions).hasSize(1),
                 () -> assertThat(subscriptions.get(0).getMember().getId()).isEqualTo(member2.getId())
         );
-
     }
 }
