@@ -11,8 +11,58 @@ type CompressImageFunc = (
   compressionOptions: CompressionOptions,
 ) => void;
 
+/**
+ * Load the mime type based on the signature of the first bytes of the file
+ */
+function loadMime(file, callback) {
+  //List of known mimes
+  const mimes = [
+    {
+      mime: 'image/jpeg',
+      pattern: [0xff, 0xd8, 0xff],
+      mask: [0xff, 0xff, 0xff],
+    },
+    {
+      mime: 'image/png',
+      pattern: [0x89, 0x50, 0x4e, 0x47],
+      mask: [0xff, 0xff, 0xff, 0xff],
+    },
+    {
+      mime: 'image/gif',
+      pattern: [0x47, 0x49, 0x46, 0x38],
+      mask: [0xff, 0xff, 0xff, 0xff],
+    },
+    // you can expand this list @see https://mimesniff.spec.whatwg.org/#matching-an-image-type-pattern
+  ];
+
+  function check(bytes, mime) {
+    for (let i = 0, l = mime.mask.length; i < l; ++i) {
+      if ((bytes[i] & mime.mask[i]) - mime.pattern[i] !== 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const blob = file.slice(0, 4); //read the first 4 bytes of the file
+
+  const reader = new FileReader();
+  reader.onloadend = function (e) {
+    if (e.target.readyState === FileReader.DONE) {
+      const bytes = new Uint8Array(e.target.result);
+
+      for (let i = 0, l = mimes.length; i < l; ++i) {
+        if (check(bytes, mimes[i])) return callback(file.type);
+      }
+
+      return callback(file.type);
+    }
+  };
+  reader.readAsArrayBuffer(blob);
+}
+
 // dataURL을 FormData로 인코딩하는 함수
-const encodeFormData = (dataURL: string, imageName: string): FormData => {
+const encodeFormData = (dataURL: string, imageName: string, mime: string): FormData => {
   // dataURL 값이 data:image/jpeg:base64,~~이므로 ','를 기점으로 잘라서 ~~인 부분만 다시 인코딩
   const byteString = atob(dataURL.split(',')[1]);
 
@@ -23,7 +73,16 @@ const encodeFormData = (dataURL: string, imageName: string): FormData => {
     ia[i] = byteString.charCodeAt(i);
   }
   const blob = new Blob([ia]);
+  if (mime === 'image/gif') {
+    // Blob을 File로 만든다
+    const file = new File([blob], `${imageName}.gif`, { type: 'image/gif' });
 
+    // File을 FormData로 만든다
+    const formData = new FormData();
+    formData.append(imageName, file);
+
+    return formData;
+  }
   // Blob을 File로 만든다
   const file = new File([blob], `${imageName}.jpg`, { type: 'image/jpeg' });
 
@@ -38,6 +97,7 @@ const useImageInput = (imageName: string) => {
   const [formData, setFormData] = useState(new FormData());
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState('');
+  const [mime, setMime] = useState('image/jpeg');
   const imageInputRef = useRef<HTMLInputElement>(null);
   const reader = useMemo(() => new FileReader(), []);
 
@@ -63,7 +123,7 @@ const useImageInput = (imageName: string) => {
     }
 
     // dataUrl을 File로 encode하여 FormData에 추가
-    const formData = encodeFormData(dataURL, imageName);
+    const formData = encodeFormData(dataURL, imageName, mime);
     setFormData(formData);
     setIsImageLoading(false);
   };
@@ -77,6 +137,11 @@ const useImageInput = (imageName: string) => {
     if (!file) {
       return;
     }
+
+    loadMime(file, (mime: string) => {
+      console.log(mime);
+      setMime(mime);
+    });
 
     setIsImageLoading(true);
 
