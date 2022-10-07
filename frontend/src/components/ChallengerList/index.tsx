@@ -26,7 +26,6 @@ export const ChallengerList = ({ challengeId }: ChallengerListProps) => {
           <Challenger {...challenger} />
         </li>
       ))}
-      <div style={{ height: '130px' }}></div>
     </FlexBox>
   );
 };
