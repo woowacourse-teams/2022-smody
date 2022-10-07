@@ -205,7 +205,7 @@ class ChallengeControllerTest extends ControllerTest {
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("멤버 ID"),
-                                fieldWithPath("[].nickName").type(JsonFieldType.STRING).description("멤버 닉네임"),
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("멤버 닉네임"),
                                 fieldWithPath("[].progressCount").type(JsonFieldType.NUMBER).description("인증 횟수"),
                                 fieldWithPath("[].picture").type(JsonFieldType.STRING).description("프로필 사진"),
                                 fieldWithPath("[].introduction").type(JsonFieldType.STRING).description("자기 소개")
