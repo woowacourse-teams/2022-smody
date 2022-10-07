@@ -16,7 +16,7 @@ export const ChallengeList = ({ challengeInfiniteData }: ChallengeListProps) => 
   }
 
   return (
-    <FlexBox as="ul" flexDirection="column" gap="27px">
+    <FlexBox as="ul" flexDirection="column" gap="27px" style={{ paddingBottom: '4rem' }}>
       {challengeInfiniteData.map((page) =>
         page.data.map((challengeInfo) => (
           <li key={challengeInfo.challengeId}>
