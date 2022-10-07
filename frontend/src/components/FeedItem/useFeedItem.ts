@@ -6,6 +6,7 @@ import { parseTime } from 'utils';
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
+const MAX_NAME_LENGTH = 12;
 const useFeedItem = ({
   challengeId,
   cycleDetailId,
@@ -19,8 +20,8 @@ const useFeedItem = ({
   const isSuccess = progressCount == CYCLE_SUCCESS_CRITERIA;
 
   const renderedChallengeName =
-    isShowBriefChallengeName && challengeName.length > 9
-      ? `${challengeName.substring(0, 9)}...`
+    isShowBriefChallengeName && challengeName.length > MAX_NAME_LENGTH
+      ? `${challengeName.substring(0, MAX_NAME_LENGTH)}...`
       : challengeName;
 
   const handleClickFeed: MouseEventHandler<HTMLDivElement> = () => {

@@ -54,6 +54,5 @@ const ChallengeDetailPage = () => {
 export default ChallengeDetailPage;
 
 const Wrapper = styled(FlexBox)`
-  margin: 0 1.25rem;
-  padding-bottom: 90px;
+  margin: 4rem 1.25rem;
 `;
