@@ -124,7 +124,9 @@ export const getWeekNumber = (dateString: string) => {
 export const getCurrentStartDateString = () => {
   const currentDate = new Date();
   const weekDay = currentDate.getDay();
-  const startData = addDays(currentDate, 1 - weekDay);
+  const startData =
+    weekDay === 0 ? addDays(currentDate, -6) : addDays(currentDate, 1 - weekDay);
+
   return parseDateToISOString(startData);
 };
 
