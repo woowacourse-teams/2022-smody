@@ -37,7 +37,7 @@ public class MemberControllerTest extends ControllerTest {
         MemberResponse memberResponse = new MemberResponse(
                 "alpha@naver.com", "손수건", "사진", "안녕하세요"
         );
-        given(memberService.searchMyInfo(any(TokenPayload.class)))
+        given(memberApiService.searchMyInfo(any(TokenPayload.class)))
                 .willReturn(memberResponse);
 
         // when
@@ -129,7 +129,7 @@ public class MemberControllerTest extends ControllerTest {
                 new SearchedMemberResponse(3L, "알파", "사진"),
                 new SearchedMemberResponse(5L, "알파쿤", "사진")
         );
-        given(memberService.findAll(any(PagingParams.class)))
+        given(memberApiService.findAll(any(PagingParams.class)))
                 .willReturn(searchedMemberRespons);
 
         // when

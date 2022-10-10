@@ -1,5 +1,7 @@
 package com.woowacourse.smody.cycle.service;
 
+import static java.util.stream.Collectors.toList;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
@@ -14,15 +16,12 @@ import com.woowacourse.smody.db_support.CursorPaging;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,7 +42,7 @@ public class CycleQueryService {
     public List<InProgressCycleResponse> findInProgressOfMine(TokenPayload tokenPayload,
                                                               LocalDateTime searchTime,
                                                               PagingParams pagingParams) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         Integer size = pagingParams.getDefaultSize();
         List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
                 sortByLatest(findAllChallengingRecordByMember(member), searchTime));
@@ -81,7 +80,7 @@ public class CycleQueryService {
     }
 
     public StatResponse searchStat(TokenPayload tokenPayload) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         List<Cycle> cycles = cycleService.searchByMember(member);
         int successCount = (int) cycles.stream()
                 .filter(Cycle::isSuccess)

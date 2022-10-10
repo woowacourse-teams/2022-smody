@@ -7,7 +7,7 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
 import com.woowacourse.smody.member.dto.SearchedMemberResponse;
-import com.woowacourse.smody.member.service.MemberService;
+import com.woowacourse.smody.member.service.MemberApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberApiService memberApiService;
 
     @GetMapping("/me")
     @RequiredLogin
     public ResponseEntity<MemberResponse> searchMyInfo(@LoginMember TokenPayload tokenPayload) {
-        MemberResponse memberResponse = memberService.searchMyInfo(tokenPayload);
+        MemberResponse memberResponse = memberApiService.searchMyInfo(tokenPayload);
         return ResponseEntity.ok(memberResponse);
     }
 
@@ -33,7 +33,7 @@ public class MemberController {
     @RequiredLogin
     public ResponseEntity<Void> updateMyInfo(@LoginMember TokenPayload tokenPayload,
                                              @RequestBody MemberUpdateRequest updateRequest) {
-        memberService.updateMyInfo(tokenPayload, updateRequest);
+        memberApiService.updateMyInfo(tokenPayload, updateRequest);
         return ResponseEntity.noContent().build();
     }
 
@@ -41,20 +41,20 @@ public class MemberController {
     @RequiredLogin
     public ResponseEntity<Void> updateMyProfileImage(@LoginMember TokenPayload tokenPayload,
                                                      @RequestPart MultipartFile profileImage) {
-        memberService.updateProfileImage(tokenPayload, profileImage);
+        memberApiService.updateProfileImage(tokenPayload, profileImage);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/me")
     @RequiredLogin
     public ResponseEntity<Void> withdraw(@LoginMember TokenPayload tokenPayload) {
-        memberService.withdraw(tokenPayload);
+        memberApiService.withdraw(tokenPayload);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     @RequiredLogin
     public ResponseEntity<List<SearchedMemberResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(memberService.findAll(pagingParams));
+        return ResponseEntity.ok(memberApiService.findAll(pagingParams));
     }
 }

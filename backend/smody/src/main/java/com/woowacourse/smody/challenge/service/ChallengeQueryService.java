@@ -35,7 +35,7 @@ public class ChallengeQueryService {
 
     public List<ChallengeTabResponse> findAllWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                                  PagingParams pagingParams) {
-        Member member = memberService.searchMember(tokenPayload);
+        Member member = memberService.searchLoginMember(tokenPayload.getId());
         List<Challenge> challenges = challengeService.searchAll(pagingParams);
         List<Cycle> cycles = cycleService.searchInProgressByChallenges(searchTime, challenges);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
@@ -59,7 +59,7 @@ public class ChallengeQueryService {
 
     public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload, LocalDateTime searchTime,
                                                      Long challengeId) {
-        Member member = memberService.searchMember(tokenPayload);
+        Member member = memberService.searchLoginMember(tokenPayload.getId());
         Challenge challenge = challengeService.search(challengeId);
         List<Cycle> cycles = cycleService.searchInProgressByChallenge(searchTime, challenge);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
@@ -72,7 +72,7 @@ public class ChallengeQueryService {
 
     public List<ChallengeOfMineResponse> searchOfMine(TokenPayload tokenPayload,
                                                       PagingParams pagingParams) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         ChallengingRecords challengingRecords = ChallengingRecords.from(
                 cycleService.findAllByMember(member, pagingParams)
         );

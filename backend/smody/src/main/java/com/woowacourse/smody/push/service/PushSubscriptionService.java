@@ -8,12 +8,11 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,7 +25,7 @@ public class PushSubscriptionService {
 
     @Transactional
     public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         PushSubscription subscription = pushSubscriptionRepository.findByEndpoint(subscriptionRequest.endpoint)
                 .map(pushSubscription -> pushSubscription.updateMember(member))
                 .orElseGet(() -> pushSubscriptionRepository.save(subscriptionRequest.toEntity(member)));
@@ -36,7 +35,7 @@ public class PushSubscriptionService {
 
     @Transactional
     public void unSubscribe(TokenPayload tokenPayload, UnSubscriptionRequest unSubscription) {
-        memberService.search(tokenPayload);
+        memberService.search(tokenPayload.getId());
         pushSubscriptionRepository.deleteByEndpoint(unSubscription.getEndpoint());
     }
 

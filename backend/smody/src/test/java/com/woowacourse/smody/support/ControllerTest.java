@@ -74,7 +74,7 @@ public class ControllerTest {
     protected RestTemplate restTemplate;
 
     @MockBean
-    protected MemberService memberService;
+    protected MemberApiService memberApiService;
 
     @MockBean
     protected CycleService cycleService;

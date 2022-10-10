@@ -1,5 +1,7 @@
 package com.woowacourse.smody.cycle.service;
 
+import static java.util.stream.Collectors.toList;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.service.ChallengeService;
@@ -18,16 +20,13 @@ import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,7 +41,7 @@ public class CycleService {
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         Challenge challenge = challengeService.search(cycleRequest.getChallengeId());
         Optional<Cycle> optionalCycle = cycleRepository.findRecent(member, challenge);
 

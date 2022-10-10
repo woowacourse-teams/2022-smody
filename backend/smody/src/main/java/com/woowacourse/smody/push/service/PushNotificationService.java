@@ -1,13 +1,5 @@
 package com.woowacourse.smody.push.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
@@ -17,8 +9,13 @@ import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.dto.MentionNotificationRequest;
 import com.woowacourse.smody.push.dto.PushNotificationResponse;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,7 +31,7 @@ public class PushNotificationService {
     }
 
     public List<PushNotificationResponse> searchNotificationsOfMine(TokenPayload tokenPayload) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         return pushNotificationRepository.findAllLatest(member, PushStatus.COMPLETE)
                 .stream()
                 .map(PushNotificationResponse::new)
@@ -61,7 +58,7 @@ public class PushNotificationService {
         }
 
         List<Member> mentionedMembers = memberService.searchByIdIn(mentionedIds);
-        Member mentioningMember = memberService.searchMember(tokenPayload);
+        Member mentioningMember = memberService.searchLoginMember(tokenPayload.getId());
         List<PushNotification> pushNotifications = generatePushNotifications(
                 mentionedMembers, mentioningMember, cycleDetailId);
         pushNotifications.forEach(this::register);

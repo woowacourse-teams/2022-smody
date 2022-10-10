@@ -29,7 +29,7 @@ public class CommentService {
 
     @Transactional
     public Long create(TokenPayload tokenPayload, long cycleDetailId, CommentRequest commentRequest) {
-        Member member = memberService.search(tokenPayload);
+        Member member = memberService.search(tokenPayload.getId());
         String content = commentRequest.getContent();
         CycleDetail cycleDetail = feedRepository.findById(cycleDetailId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
