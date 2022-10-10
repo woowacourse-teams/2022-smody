@@ -1,17 +1,15 @@
 package com.woowacourse.smody.challenge.service;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,12 +40,12 @@ public class ChallengeService {
     }
 
     @Transactional
-    public Long create(ChallengeRequest challengeRequest) {
-        validateDuplicatedName(challengeRequest.getChallengeName());
-        validateNameFormat(challengeRequest.getChallengeName());
-        Challenge challenge = challengeRepository.save(new Challenge(
-                challengeRequest.getChallengeName(), challengeRequest.getDescription(),
-                challengeRequest.getEmojiIndex(), challengeRequest.getColorIndex()));
+    public Long create(String challengeName, String description, Integer emojiIndex, Integer colorIndex) {
+        validateDuplicatedName(challengeName);
+        validateNameFormat(challengeName);
+        Challenge challenge = challengeRepository.save(
+                new Challenge(challengeName, description, emojiIndex, colorIndex)
+        );
         return challenge.getId();
     }
 

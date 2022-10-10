@@ -3,39 +3,47 @@ package com.woowacourse.smody.challenge.controller;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.auth.login.LoginMember;
 import com.woowacourse.smody.auth.login.RequiredLogin;
-import com.woowacourse.smody.challenge.dto.*;
-import com.woowacourse.smody.challenge.service.ChallengeQueryService;
-import com.woowacourse.smody.challenge.service.ChallengeService;
+import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeRequest;
+import com.woowacourse.smody.challenge.dto.ChallengeResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
+import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.challenge.service.ChallengeApiService;
 import com.woowacourse.smody.db_support.PagingParams;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/challenges")
 @RequiredArgsConstructor
 public class ChallengeController {
 
-    private final ChallengeQueryService challengeQueryService;
-
-    private final ChallengeService challengeService;
+    private final ChallengeApiService challengeApiService;
 
     @GetMapping
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(
-            @ModelAttribute PagingParams pagingParams) {
+            @ModelAttribute PagingParams pagingParams
+    ) {
         return ResponseEntity.ok(
-                challengeQueryService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
+                challengeApiService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/auth")
     @RequiredLogin
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
                                                                                  @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(challengeQueryService.findAllWithChallengerCount(
+        return ResponseEntity.ok(challengeApiService.findAllWithChallengerCount(
                 tokenPayload, LocalDateTime.now(), pagingParams)
         );
     }
@@ -44,32 +52,32 @@ public class ChallengeController {
     @RequiredLogin
     public ResponseEntity<List<ChallengeOfMineResponse>> searchOfMineWithFilter(@LoginMember TokenPayload tokenPayload,
                                                                                 @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(challengeQueryService.searchOfMine(tokenPayload, pagingParams));
+        return ResponseEntity.ok(challengeApiService.searchOfMine(tokenPayload, pagingParams));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ChallengeResponse> findWithChallengerCount(@PathVariable Long id) {
-        return ResponseEntity.ok(challengeQueryService.findWithChallengerCount(LocalDateTime.now(), id));
+        return ResponseEntity.ok(challengeApiService.findWithChallengerCount(LocalDateTime.now(), id));
     }
 
     @GetMapping(value = "/{id}/auth")
     @RequiredLogin
     public ResponseEntity<ChallengeResponse> findWithChallengerCount(@LoginMember TokenPayload tokenPayload,
                                                                      @PathVariable Long id) {
-        return ResponseEntity.ok(challengeQueryService.findWithChallengerCount(
+        return ResponseEntity.ok(challengeApiService.findWithChallengerCount(
                 tokenPayload, LocalDateTime.now(), id)
         );
     }
 
     @GetMapping(value = "/{id}/challengers")
     public ResponseEntity<List<ChallengersResponse>> findAllChallengers(@PathVariable Long id) {
-        return ResponseEntity.ok(challengeQueryService.findAllChallengers(id));
+        return ResponseEntity.ok(challengeApiService.findAllChallengers(id));
     }
 
     @PostMapping
     @RequiredLogin
     public ResponseEntity<Void> create(@RequestBody ChallengeRequest challengeRequest) {
-        Long challengeId = challengeService.create(challengeRequest);
+        Long challengeId = challengeApiService.create(challengeRequest);
         return ResponseEntity.created(URI.create("/challenges/" + challengeId)).build();
     }
 
@@ -77,6 +85,6 @@ public class ChallengeController {
     @RequiredLogin
     public ResponseEntity<ChallengeHistoryResponse> findWithMine(@LoginMember TokenPayload tokenPayload,
                                                                  @PathVariable Long challengeId) {
-        return ResponseEntity.ok(challengeQueryService.findWithMine(tokenPayload, challengeId));
+        return ResponseEntity.ok(challengeApiService.findWithMine(tokenPayload, challengeId));
     }
 }

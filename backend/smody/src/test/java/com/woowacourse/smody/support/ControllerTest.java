@@ -7,7 +7,7 @@ import com.woowacourse.smody.auth.service.OauthService;
 import com.woowacourse.smody.auth.token.JwtTokenExtractor;
 import com.woowacourse.smody.auth.token.JwtTokenProvider;
 import com.woowacourse.smody.challenge.controller.ChallengeController;
-import com.woowacourse.smody.challenge.service.ChallengeQueryService;
+import com.woowacourse.smody.challenge.service.ChallengeApiService;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.comment.controller.CommentController;
 import com.woowacourse.smody.comment.service.CommentQueryService;
@@ -83,7 +83,7 @@ public class ControllerTest {
     protected ChallengeService challengeService;
 
     @MockBean
-    protected ChallengeQueryService challengeQueryService;
+    protected ChallengeApiService challengeApiService;
 
     @MockBean
     protected CycleQueryService cycleQueryService;

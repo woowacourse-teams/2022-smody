@@ -35,7 +35,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
 
-        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(PagingParams.class)))
+        given(challengeApiService.findAllWithChallengerCount(any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
         // when
@@ -67,7 +67,7 @@ class ChallengeControllerTest extends ControllerTest {
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
-        given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
+        given(challengeApiService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
                 any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
@@ -102,7 +102,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchOfMine(any(TokenPayload.class), any(PagingParams.class)))
+        given(challengeApiService.searchOfMine(any(TokenPayload.class), any(PagingParams.class)))
                 .willReturn(challengeOfMineRespons);
 
         // when
@@ -131,7 +131,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+        given(challengeApiService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
@@ -160,7 +160,7 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findWithChallengerCount(
+        given(challengeApiService.findWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
 
@@ -192,7 +192,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengersResponse(1L, "조조그린", 1, "picture1.jpg", "조조그린입니다"),
                 new ChallengersResponse(2L, "알파", 0, "picture2.jpg", "알파입니다")
         );
-        given(challengeQueryService.findAllChallengers(1L)
+        given(challengeApiService.findAllChallengers(1L)
         ).willReturn(challengersResponse);
 
         // when
@@ -218,7 +218,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         Long challengeId = 1L;
         ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 하기", "1일 1포스팅을 실천하는 챌린지입니다", 0, 1);
-        given(challengeService.create(any(ChallengeRequest.class))).willReturn(challengeId);
+        given(challengeApiService.create(any(ChallengeRequest.class))).willReturn(challengeId);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         // when
@@ -252,7 +252,7 @@ class ChallengeControllerTest extends ControllerTest {
                         5L, "외국어 공부하기", 7, false, 1, 2
                 )
         );
-        given(challengeQueryService.findAllWithChallengerCount
+        given(challengeApiService.findAllWithChallengerCount
                 (any(LocalDateTime.class), any(PagingParams.class))).willReturn(challengeTabResponse);
 
         // when
@@ -286,7 +286,7 @@ class ChallengeControllerTest extends ControllerTest {
                 )
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.findAllWithChallengerCount(
+        given(challengeApiService.findAllWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabResponse);
 
@@ -317,7 +317,7 @@ class ChallengeControllerTest extends ControllerTest {
                 "알고리즘 풀기", "알고리즘 풀기 챌린지입니다", 0, 1,
                 10, 40);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.findWithMine(
+        given(challengeApiService.findWithMine(
                 any(TokenPayload.class), eq(1L)))
                 .willReturn(challengeHistoryResponse);
 
