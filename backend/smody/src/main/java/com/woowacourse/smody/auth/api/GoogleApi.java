@@ -5,6 +5,8 @@ import com.woowacourse.smody.auth.dto.GoogleTokenResponse;
 import com.woowacourse.smody.auth.dto.LoginRequest;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import java.util.Base64;
+import java.util.Objects;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

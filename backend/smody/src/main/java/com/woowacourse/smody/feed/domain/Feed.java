@@ -1,11 +1,10 @@
 package com.woowacourse.smody.feed.domain;
 
 import com.woowacourse.smody.cycle.domain.Progress;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

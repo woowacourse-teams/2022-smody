@@ -1,16 +1,15 @@
 package com.woowacourse.smody.challenge.repository;
 
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,5 +1,9 @@
 package com.woowacourse.smody.support;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.api.GoogleApi;
 import com.woowacourse.smody.auth.controller.OauthController;
@@ -15,11 +19,10 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleQueryService;
 import com.woowacourse.smody.cycle.service.CycleService;
-import com.woowacourse.smody.exception.GithubApi;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedQueryService;
 import com.woowacourse.smody.member.controller.MemberController;
-import com.woowacourse.smody.member.service.MemberService;
+import com.woowacourse.smody.member.service.MemberApiService;
 import com.woowacourse.smody.push.controller.PushNotificationController;
 import com.woowacourse.smody.push.controller.PushSubscriptionController;
 import com.woowacourse.smody.push.service.PushNotificationService;
@@ -35,9 +38,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
-
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @WebMvcTest(controllers = {
         MemberController.class,
@@ -113,7 +113,7 @@ public class ControllerTest {
     protected PushNotificationService pushNotificationService;
 
     @MockBean
-    protected RankingService rankingService;
+    protected RankingApiService rankingApiService;
 
     @MockBean
     protected GithubApi githubApi;

@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
-import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;

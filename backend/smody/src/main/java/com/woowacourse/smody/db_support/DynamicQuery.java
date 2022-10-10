@@ -2,7 +2,6 @@ package com.woowacourse.smody.db_support;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-
 import java.util.function.Supplier;
 
 public class DynamicQuery {
