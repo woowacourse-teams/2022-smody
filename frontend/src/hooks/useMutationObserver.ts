@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect } from 'react';
 
 const DEFAULT_CONFIG = {
   subtree: true,
@@ -7,11 +7,10 @@ const DEFAULT_CONFIG = {
 } as const;
 
 const useMutationObserver = <T extends HTMLElement>(
+  ref: RefObject<T>,
   onMutate: MutationCallback,
   config: MutationObserverInit = DEFAULT_CONFIG,
 ) => {
-  const ref = useRef<T>(null);
-
   useEffect(() => {
     const observer = new MutationObserver(onMutate);
 
@@ -21,8 +20,6 @@ const useMutationObserver = <T extends HTMLElement>(
       observer.disconnect();
     };
   }, []);
-
-  return ref;
 };
 
 export default useMutationObserver;
