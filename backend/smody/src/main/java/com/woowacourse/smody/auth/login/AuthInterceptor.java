@@ -26,8 +26,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        RequiredLogin requiredLogin = handlerMethod.getMethodAnnotation(RequiredLogin.class);
+        if (handler instanceof HandlerMethod) {
+            return handleHandlerMethod(request, (HandlerMethod)handler);
+        }
+        return true;
+    }
+
+    private boolean handleHandlerMethod(HttpServletRequest request, HandlerMethod handler) {
+        RequiredLogin requiredLogin = handler.getMethodAnnotation(RequiredLogin.class);
         if (Objects.isNull(requiredLogin)) {
             return true;
         }
