@@ -26,7 +26,6 @@ import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.service.WebPushService;
 import com.woowacourse.smody.ranking.controller.RankingController;
 import com.woowacourse.smody.ranking.service.RankingService;
-import com.woowacourse.smody.ui.admin.controller.AdminSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -49,7 +48,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
         PushNotificationController.class,
         RankingController.class
 })
-@Import({JwtTokenProvider.class, JwtTokenExtractor.class, AdminSecurityConfig.class, SecurityTestConfig.class})
+@Import({JwtTokenProvider.class, JwtTokenExtractor.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class ControllerTest {
