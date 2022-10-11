@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.BatchSize;
 
 @Entity
@@ -99,11 +101,11 @@ public class Cycle {
         return now.isBefore(this.getStartTime().plusDays(DAYS));
     }
 
-    public long calculateEndTime(LocalDateTime searchTime) {
-        return this.progress.calculateEndTime(this.startTime, searchTime);
+    public long calculateDeadLineToMillis(LocalDateTime searchTime) {
+        return this.progress.calculateDeadLineToMillis(this.startTime, searchTime);
     }
 
-    public List<CycleDetail> getCycleDetails() {
+    public List<CycleDetail> getCycleDetailsOrderByProgress() {
         return cycleDetails.stream()
                 .sorted((detail1, detail2) ->
                         (int) ChronoUnit.MILLIS.between(detail2.getProgressTime(), detail1.getProgressTime()))
@@ -123,6 +125,23 @@ public class Cycle {
 
     public CycleDetail getLatestCycleDetail() {
         int lastIndex = this.cycleDetails.size() - 1;
-        return getCycleDetails().get(lastIndex);
+        return getCycleDetailsOrderByProgress().get(lastIndex);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        Cycle cycle = (Cycle) o;
+        return id != null && Objects.equals(id, cycle.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

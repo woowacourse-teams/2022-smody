@@ -59,7 +59,7 @@ class FeedQueryServiceTest extends IntegrationTest {
 
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(
-                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
+                new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
         assertAll(
@@ -67,16 +67,16 @@ class FeedQueryServiceTest extends IntegrationTest {
                 () -> assertThat(feedResponses.stream()
                         .map(FeedResponse::getCycleDetailId)
                         .collect(Collectors.toList())).containsExactly(
-                        cycle4.getCycleDetails().get(2).getId(),
-                        cycle3.getCycleDetails().get(2).getId(),
-                        cycle2.getCycleDetails().get(2).getId(),
-                        cycle4.getCycleDetails().get(1).getId(),
-                        cycle3.getCycleDetails().get(1).getId(),
-                        cycle2.getCycleDetails().get(1).getId(),
-                        cycle1.getCycleDetails().get(1).getId(),
-                        cycle4.getCycleDetails().get(0).getId(),
-                        cycle3.getCycleDetails().get(0).getId(),
-                        cycle2.getCycleDetails().get(0).getId()
+                        cycle4.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle4.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle1.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle4.getCycleDetailsOrderByProgress().get(0).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(0).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(0).getId()
                 )
         );
     }
@@ -93,7 +93,7 @@ class FeedQueryServiceTest extends IntegrationTest {
 
         // when
         List<FeedResponse> feedResponses = feedQueryService.findAll(
-                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
+                new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
         assertAll(
@@ -121,7 +121,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
 
         // when
-        List<CycleDetail> cycleDetails = cycle.getCycleDetails();
+        List<CycleDetail> cycleDetails = cycle.getCycleDetailsOrderByProgress();
         Long cycleDetailId = cycleDetails.get(0).getId();
         FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
 

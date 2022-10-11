@@ -39,7 +39,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
         Long commentId = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
@@ -55,7 +55,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
         Long commentId = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
@@ -80,7 +80,7 @@ class CommentServiceTest extends IntegrationTest {
         Long invalidMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
         assertThatThrownBy(() -> commentService.create(new TokenPayload(invalidMemberId), cycleDetail.getId(),
@@ -97,7 +97,7 @@ class CommentServiceTest extends IntegrationTest {
         String invalidContent = "1234567890".repeat(25) + "123456";
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
         assertThatThrownBy(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
@@ -113,7 +113,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
@@ -142,7 +142,7 @@ class CommentServiceTest extends IntegrationTest {
         Long unauthorizedMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
@@ -160,7 +160,7 @@ class CommentServiceTest extends IntegrationTest {
         String invalidContent = "1234567890".repeat(25) + "123456";
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when then
@@ -177,7 +177,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
         commentRepository.save(comment);
         Long commentId = comment.getId();
@@ -196,7 +196,7 @@ class CommentServiceTest extends IntegrationTest {
         Long unauthorizedMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
         commentRepository.save(comment);
         Long commentId = comment.getId();
@@ -215,7 +215,7 @@ class CommentServiceTest extends IntegrationTest {
         Long notFoundCommentId = 0L;
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         assertThatThrownBy(() -> commentService.delete(new TokenPayload(조조그린_ID), notFoundCommentId))
                 .isInstanceOf(BusinessException.class)

@@ -39,7 +39,7 @@ class FeedRepositoryTest extends RepositoryTest {
     @Test
     void findAll() {
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(2);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(2);
         commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "댓글"));
         entityManager.clear();
 
@@ -52,7 +52,7 @@ class FeedRepositoryTest extends RepositoryTest {
     @Test
     void findByCycleDetailId() {
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(1);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(1);
         Long id = cycleDetail.getId();
         commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "댓글"));
         entityManager.clear();

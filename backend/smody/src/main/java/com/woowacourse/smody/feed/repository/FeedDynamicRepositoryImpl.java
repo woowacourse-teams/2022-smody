@@ -45,7 +45,7 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
         OrderSpecifier<?>[] orders = SortSelection.findByParameter(pagingParams.getSort())
                 .getOrderSpecifiers();
 
-        Long cycleDetailId = pagingParams.getDefaultCursorId();
+        Long cycleDetailId = pagingParams.getCursorId();
         LocalDateTime progressTime = getCursorProgressTime(cycleDetailId);
 
         return queryFactory

@@ -95,7 +95,7 @@ class PushNotificationServiceTest extends IntegrationTest {
 		LocalDateTime now = LocalDateTime.now();
 		TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+		CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 		List<Long> ids = List.of(토닉_ID, 더즈_ID);
 		MentionNotificationRequest mentionNotificationRequest =
 				new MentionNotificationRequest(ids, cycleDetail.getId());

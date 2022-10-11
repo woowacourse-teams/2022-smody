@@ -27,10 +27,10 @@ public class ChallengeService {
         return challengeRepository.findById(challengeId);
     }
 
-    public List<Challenge> searchAll(PagingParams pagingParams) {
+    public List<Challenge> findAllByFilter(PagingParams pagingParams) {
         String searchWord = pagingParams.getFilter();
         validateSearchWord(searchWord);
-        return challengeRepository.searchAll(pagingParams);
+        return challengeRepository.findAllByFilter(pagingParams);
     }
 
     private void validateSearchWord(String searchWord) {
@@ -42,7 +42,6 @@ public class ChallengeService {
     @Transactional
     public Long create(String challengeName, String description, Integer emojiIndex, Integer colorIndex) {
         validateDuplicatedName(challengeName);
-        validateNameFormat(challengeName);
         Challenge challenge = challengeRepository.save(
                 new Challenge(challengeName, description, emojiIndex, colorIndex)
         );
@@ -52,18 +51,6 @@ public class ChallengeService {
     private void validateDuplicatedName(String name) {
         if (challengeRepository.findByName(name).isPresent()) {
             throw new BusinessException(ExceptionData.DUPLICATE_NAME);
-        }
-    }
-
-    private void validateNameFormat(String name) {
-        if (name.isBlank() || name.isEmpty()) {
-            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
-        }
-        if (name.length() > 30) {
-            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
-        }
-        if (name.trim().length() != name.length()) {
-            throw new BusinessException(ExceptionData.INVALID_CHALLENGE_NAME);
         }
     }
 }

@@ -32,7 +32,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                 .selectFrom(cycle)
                 .where(buildDynamicQuery(memberId, challengeId, pagingParams))
                 .orderBy(cycle.startTime.desc())
-                .limit(pagingParams.getDefaultSize())
+                .limit(pagingParams.getSize())
                 .fetch();
     }
 
@@ -40,7 +40,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         return DynamicQuery.builder()
                 .and(() -> cycle.member.id.eq(memberId))
                 .and(() -> cycle.challenge.id.eq(challengeId))
-                .and(() -> cycle.id.ne(pagingParams.getDefaultCursorId()))
+                .and(() -> cycle.id.ne(pagingParams.getCursorId()))
                 .and(() -> cycle.startTime.loe(findCursorStartTime(pagingParams)))
                 .and(() -> cycle.progress.eq(Progress.from(pagingParams.getFilter())
                         .orElse(null)))
@@ -51,12 +51,12 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
         return queryFactory
                 .select(cycle.startTime)
                 .from(cycle)
-                .where(cycle.id.eq(pagingParams.getDefaultCursorId()))
+                .where(cycle.id.eq(pagingParams.getCursorId()))
                 .fetchOne();
     }
 
     @Override
-    public List<Cycle> findAllByMember(Long memberId, PagingParams pagingParams) {
+    public List<Cycle> findAllByMemberAndFilter(Long memberId, PagingParams pagingParams) {
         return queryFactory
                 .selectFrom(cycle)
                 .join(cycle.challenge).fetchJoin()

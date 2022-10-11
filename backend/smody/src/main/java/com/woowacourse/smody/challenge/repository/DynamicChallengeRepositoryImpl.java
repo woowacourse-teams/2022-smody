@@ -18,7 +18,7 @@ public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepositor
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Challenge> searchAll(PagingParams pagingParams) {
+    public List<Challenge> findAllByFilter(PagingParams pagingParams) {
         String searchWord = pagingParams.getFilter();
         BooleanBuilder conditions = DynamicQuery.builder()
                 .and(() -> challenge.name.contains(searchWord))
@@ -28,7 +28,7 @@ public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepositor
         return queryFactory
                 .selectFrom(challenge)
                 .where(conditions)
-                .limit(pagingParams.getDefaultSize())
+                .limit(pagingParams.getSize())
                 .fetch();
     }
 }

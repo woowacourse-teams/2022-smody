@@ -28,7 +28,7 @@ public class DynamicMemberRepositoryImpl implements DynamicMemberRepository {
         return queryFactory
                 .selectFrom(member)
                 .where(conditions)
-                .limit(pagingParams.getDefaultSize())
+                .limit(pagingParams.getSize())
                 .fetch();
     }
 }

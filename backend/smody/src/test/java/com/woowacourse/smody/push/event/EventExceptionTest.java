@@ -119,7 +119,7 @@ class EventExceptionTest extends IntegrationTest {
 		// given
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+		CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 

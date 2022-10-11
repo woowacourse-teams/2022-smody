@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DynamicChallengeRepository {
 
-    List<Challenge> searchAll(PagingParams pagingParams);
+    List<Challenge> findAllByFilter(PagingParams pagingParams);
 }

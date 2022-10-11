@@ -35,7 +35,7 @@ class CommentQueryServiceTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Long 댓글1 = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
                 new CommentRequest("댓글1"));
         Long 댓글2 = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),

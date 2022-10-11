@@ -69,12 +69,12 @@ class RankingEventExceptionTest extends IntegrationTest {
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
-        Cycle actual = cycleService.findAllByMember(fixture.회원_조회(조조그린_ID), new PagingParams()).get(0);
+        Cycle actual = cycleService.findAllByMemberAndFilter(fixture.회원_조회(조조그린_ID), new PagingParams()).get(0);
 
         assertAll(
                 () -> assertThat(activities).isEmpty(),
                 () -> assertThat(actual.getProgress()).isEqualTo(Progress.FIRST),
-                () -> assertThat(actual.getCycleDetails()).hasSize(1)
+                () -> assertThat(actual.getCycleDetailsOrderByProgress()).hasSize(1)
         );
     }
 }

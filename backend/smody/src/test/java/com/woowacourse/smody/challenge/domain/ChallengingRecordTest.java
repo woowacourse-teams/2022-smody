@@ -23,7 +23,7 @@ class ChallengingRecordTest {
     void newMemberChallenge() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Challenge challenge = new Challenge("미라클 모닝");
+        Challenge challenge = new Challenge("미라클 모닝", "설명", 1, 1);
         Member member = new Member("does@mail.com", "does", "picture");
         List<Cycle> cycles = List.of(
                 new Cycle(member, challenge, Progress.NOTHING, now),
@@ -42,7 +42,7 @@ class ChallengingRecordTest {
     void newMemberChallenge_member_exception() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Challenge challenge = new Challenge("미라클 모닝");
+        Challenge challenge = new Challenge("미라클 모닝", "설명", 1, 1);
         Member member1 = new Member("does@mail.com", "does", "picture");
         Member member2 = new Member("tonic@mail.com", "tonic", "picture");
         List<Cycle> cycles = List.of(
@@ -65,8 +65,8 @@ class ChallengingRecordTest {
     void newMemberChallenge_challenge_exception() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Challenge challenge1 = new Challenge("미라클 모닝");
-        Challenge challenge2 = new Challenge("운동하기");
+        Challenge challenge1 = new Challenge("미라클 모닝", "설명", 1, 1);
+        Challenge challenge2 = new Challenge("운동하기", "설명", 1, 1);
         Member member1 = new Member("does@mail.com", "does", "picture");
         List<Cycle> cycles = List.of(
                 new Cycle(member1, challenge1, Progress.NOTHING, now),
@@ -101,7 +101,7 @@ class ChallengingRecordTest {
     void getSuccessCount() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Challenge challenge = new Challenge("미라클 모닝");
+        Challenge challenge = new Challenge("미라클 모닝", "설명", 1, 1);
         Member member = new Member("does@mail.com", "does", "picture");
         List<Cycle> cycles = List.of(
                 new Cycle(member, challenge, Progress.NOTHING, now),
@@ -124,7 +124,7 @@ class ChallengingRecordTest {
     void getLatestProgressTime() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Challenge challenge = new Challenge("미라클 모닝");
+        Challenge challenge = new Challenge("미라클 모닝", "설명", 1, 1);
         Member member = new Member("does@mail.com", "does", "picture");
         Cycle cycle1 = new Cycle(member, challenge, Progress.NOTHING, now);
         Cycle cycle2 = new Cycle(member, challenge, Progress.FIRST, now.minusDays(1L));

@@ -1,5 +1,9 @@
 package com.woowacourse.smody.cycle.domain;
 
+import static com.woowacourse.smody.cycle.domain.Progress.FIRST;
+import static com.woowacourse.smody.cycle.domain.Progress.NOTHING;
+import static com.woowacourse.smody.cycle.domain.Progress.SECOND;
+import static com.woowacourse.smody.cycle.domain.Progress.SUCCESS;
 import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.mock.web.MockMultipartFile;
 
 class CycleTest {
 
@@ -24,7 +30,7 @@ class CycleTest {
     private static final String NICKNAME = "손수건";
     private static final String PICTURE = "사진";
     private static final Member member = new Member(EMAIL, NICKNAME, PICTURE);
-    private static final Challenge challenge = new Challenge("미라클 모닝");
+    private static final Challenge challenge = new Challenge("미라클 모닝", "설명", 1, 1);
 
     private final LocalDateTime now = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
 
@@ -136,20 +142,41 @@ class CycleTest {
     void sort_cycle() {
         // given
         Cycle inProgress1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusHours(43L));
-        Cycle inProgress2 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(5L));
-        Cycle inProgress3 = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
+        Cycle inProgress2 = new Cycle(member, challenge, NOTHING, LocalDateTime.now().minusHours(5L));
+        Cycle inProgress3 = new Cycle(member, challenge, NOTHING, LocalDateTime.now());
         Cycle proceed1 = new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now());
         Cycle proceed2 = new Cycle(member, challenge, Progress.SECOND, LocalDateTime.now().minusHours(36L));
-        Cycle failed = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now().minusHours(120));
+        Cycle failed = new Cycle(member, challenge, NOTHING, LocalDateTime.now().minusHours(120));
         Cycle success = new Cycle(member, challenge, Progress.SUCCESS, LocalDateTime.now().minusHours(1000));
         List<Cycle> cycles = new ArrayList<>(
                 List.of(inProgress1, inProgress2, inProgress3, proceed1, proceed2, success, failed));
 
         // when
-        cycles.sort(Comparator.comparingLong(cycle -> cycle.calculateEndTime(LocalDateTime.now())));
+        cycles.sort(Comparator.comparingLong(cycle -> cycle.calculateDeadLineToMillis(LocalDateTime.now())));
 
         // then
         assertThat(cycles)
                 .containsExactly(success, failed, inProgress1, inProgress2, inProgress3, proceed2, proceed1);
+    }
+
+    @DisplayName("인증 시간 순으로 CycleDetail 을 조회한다.")
+    @Test
+    void getCycleDetailsOrderByProgress() {
+        // given
+        LocalDateTime createdAt = LocalDateTime.now().minusDays(5);
+        Cycle cycle = new Cycle(member, challenge, NOTHING, createdAt);
+        Image image = new Image(new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        ), i -> "image.png");
+        cycle.increaseProgress(createdAt.plusMinutes(1), image, "인증1");
+        cycle.increaseProgress(createdAt.plusDays(1).plusMinutes(1), image, "인증2");
+        cycle.increaseProgress(createdAt.plusDays(2).plusMinutes(1), image, "인증3");
+
+        // when
+        List<CycleDetail> actual = cycle.getCycleDetailsOrderByProgress();
+
+        // then
+        assertThat(actual).map(CycleDetail::getProgress)
+                .containsExactly(FIRST, SECOND, SUCCESS);
     }
 }

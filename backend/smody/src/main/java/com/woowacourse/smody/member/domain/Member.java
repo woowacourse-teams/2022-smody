@@ -3,6 +3,7 @@ package com.woowacourse.smody.member.domain;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -73,5 +74,24 @@ public class Member {
 
     public boolean matchId(Long id) {
         return this.id.equals(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Member member = (Member) o;
+        return Objects.equals(id, member.id) && Objects.equals(email, member.email)
+                && Objects.equals(nickname, member.nickname) && Objects.equals(introduction,
+                member.introduction) && Objects.equals(picture, member.picture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, nickname, introduction, picture);
     }
 }

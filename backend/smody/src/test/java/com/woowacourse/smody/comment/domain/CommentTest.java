@@ -22,10 +22,10 @@ class CommentTest {
         // given
         String invalidContent = "1234567890".repeat(25) + "123456";
         Member member = new Member("email@email.com", "nickname", "introduction", "picture");
-        Challenge challenge = new Challenge("challenge");
+        Challenge challenge = new Challenge("challenge", "설명", 1, 1);
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
         cycle.increaseProgress(LocalDateTime.now().plusMinutes(1), 이미지, "인증1");
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
         assertThatThrownBy(() -> new Comment(cycleDetail, member, invalidContent))

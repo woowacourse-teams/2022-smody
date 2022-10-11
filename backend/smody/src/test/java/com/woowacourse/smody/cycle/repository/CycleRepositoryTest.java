@@ -57,7 +57,7 @@ class CycleRepositoryTest extends RepositoryTest {
         cycle.increaseProgress(now.plusSeconds(60L), 이미지, "인증 완료");
 
         // then
-        List<CycleDetail> cycleDetails = cycleRepository.findById(cycle.getId()).get().getCycleDetails();
+        List<CycleDetail> cycleDetails = cycleRepository.findById(cycle.getId()).get().getCycleDetailsOrderByProgress();
         assertAll(
                 () -> assertThat(cycleDetails.size()).isEqualTo(1),
                 () -> assertThat(cycleDetails.get(0).getProgressImage()).isEqualTo("image.jpg"),

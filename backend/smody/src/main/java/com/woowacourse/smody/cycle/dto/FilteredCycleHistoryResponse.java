@@ -25,7 +25,7 @@ public class FilteredCycleHistoryResponse {
         this.emojiIndex = challenge.getEmojiIndex();
         this.colorIndex = challenge.getColorIndex();
         this.startTime = cycle.getStartTime();
-        this.cycleDetails = cycle.getCycleDetails().stream()
+        this.cycleDetails = cycle.getCycleDetailsOrderByProgress().stream()
                 .map(FilteredCycleDetailResponse::new)
                 .collect(Collectors.toList());
     }

@@ -43,13 +43,14 @@ public class CycleQueryService {
                                                               LocalDateTime searchTime,
                                                               PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload.getId());
-        Integer size = pagingParams.getDefaultSize();
+        Integer size = pagingParams.getSize();
         List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
                 sortByLatest(findAllChallengingRecordByMember(member), searchTime));
 
         return challengingRecords.stream()
-                .map(challengingRecord ->new InProgressCycleResponse(
-                        challengingRecord.getCycle(), challengingRecord.getSuccessCount()))
+                .map(challengingRecord -> new InProgressCycleResponse(
+                        challengingRecord.getLatestCycle(), challengingRecord.getSuccessCount()
+                ))
                 .collect(toList());
     }
 
@@ -61,19 +62,19 @@ public class CycleQueryService {
     }
 
     private List<ChallengingRecord> sortByLatest(List<ChallengingRecord> challengingRecords,
-                                                   LocalDateTime searchTime) {
+                                                 LocalDateTime searchTime) {
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.isInProgress(searchTime))
-                .sorted(Comparator.comparing(challengingRecord -> challengingRecord.getEndTime(searchTime)))
+                .sorted(Comparator.comparing(challengingRecord -> challengingRecord.getDeadLineToMillis(searchTime)))
                 .collect(toList());
     }
 
     private List<ChallengingRecord> cursorPaging(PagingParams pagingParams, Integer size,
                                                  List<ChallengingRecord> challengingRecords) {
-        Cycle cycle = cycleService.findById(pagingParams.getDefaultCursorId())
+        Cycle cycle = cycleService.findById(pagingParams.getCursorId())
                 .orElse(null);
         return challengingRecords.stream()
-                .filter(challengingRecord -> challengingRecord.match(cycle))
+                .filter(challengingRecord -> challengingRecord.contains(cycle))
                 .findAny()
                 .map(cursor -> CursorPaging.apply(challengingRecords, cursor, size))
                 .orElse(CursorPaging.apply(challengingRecords, null, size));

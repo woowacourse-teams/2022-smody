@@ -343,7 +343,7 @@ class CycleServiceTest extends IntegrationTest {
         @DisplayName("챌린지들에 해당하는 진행 중인 모든 사이클을 조회")
         @Test
         void searchInProgressByChallenges() {
-            List<Cycle> cycles = cycleService.searchInProgressByChallenges(now, List.of(
+            List<Cycle> cycles = cycleService.findInProgressByChallenges(now, List.of(
                     challengeRepository.findById(스모디_방문하기_ID).get(),
                     challengeRepository.findById(미라클_모닝_ID).get())
             );
@@ -354,7 +354,7 @@ class CycleServiceTest extends IntegrationTest {
         @DisplayName("챌린지에 해당하는 진행 중인 모든 사이클을 조회")
         @Test
         void serchInProgressByChallenege() {
-            List<Cycle> cycles = cycleService.searchInProgressByChallenge(
+            List<Cycle> cycles = cycleService.findInProgressByChallenge(
                     now, challengeRepository.findById(스모디_방문하기_ID).get()
             );
 

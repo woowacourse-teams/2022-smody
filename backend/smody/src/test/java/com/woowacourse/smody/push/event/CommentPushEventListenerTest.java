@@ -40,7 +40,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 	void init() {
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		cycleDetail = cycle.getCycleDetails().get(0);
+		cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 	}
 
 	@DisplayName("댓글을 남기면 피드 작성자에게 미발송 상태의 알림이 저장 된다.")

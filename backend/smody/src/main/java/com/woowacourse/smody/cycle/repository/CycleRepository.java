@@ -15,14 +15,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
 
-    List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
+    List<Cycle> findAllByStartTimeIsAfter(LocalDateTime startTime);
 
-    @Query("select c from Cycle c where c.startTime >= :time and c.challenge in :challenges")
-    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(@Param("time") LocalDateTime time,
+    @Query("select c from Cycle c where c.startTime >= :startTime and c.challenge in :challenges")
+    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(@Param("startTime") LocalDateTime startTime,
                                                         @Param("challenges") List<Challenge> challenges);
 
-    @Query("select c from Cycle c where c.startTime >= :time and c.challenge = :challenge")
-    List<Cycle> findAllByStartTimeIsAfterAndChallenge(@Param("time") LocalDateTime time,
+    @Query("select c from Cycle c where c.startTime >= :startTime and c.challenge = :challenge")
+    List<Cycle> findAllByStartTimeIsAfterAndChallenge(@Param("startTime") LocalDateTime startTime,
                                                       @Param("challenge") Challenge challenge);
 
     @Query("select count(c) from Cycle c where c.member = :member and "

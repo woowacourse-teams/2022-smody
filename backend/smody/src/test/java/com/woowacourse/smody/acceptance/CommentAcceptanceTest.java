@@ -32,7 +32,7 @@ class CommentAcceptanceTest extends AcceptanceTest {
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         Member member = cycle.getMember();
         String token = 로그인_혹은_회원가입(member);
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, member, "수정전");
         commentRepository.save(comment);
         RestAssured.given().log().all()

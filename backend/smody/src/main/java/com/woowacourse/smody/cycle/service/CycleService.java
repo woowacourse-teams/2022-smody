@@ -109,18 +109,18 @@ public class CycleService {
         return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
     }
 
-    public List<Cycle> findAllByMember(Member member, PagingParams pagingParams) {
-        return cycleRepository.findAllByMember(member.getId(), pagingParams);
+    public List<Cycle> findAllByMemberAndFilter(Member member, PagingParams pagingParams) {
+        return cycleRepository.findAllByMemberAndFilter(member.getId(), pagingParams);
     }
 
-    public List<Cycle> searchInProgressByChallenges(LocalDateTime searchTime, List<Challenge> challenges) {
+    public List<Cycle> findInProgressByChallenges(LocalDateTime searchTime, List<Challenge> challenges) {
         return cycleRepository.findAllByStartTimeIsAfterAndChallengeIn(searchTime.minusDays(Cycle.DAYS), challenges)
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))
                 .collect(toList());
     }
 
-    public List<Cycle> searchInProgressByChallenge(LocalDateTime searchTime, Challenge challenge) {
+    public List<Cycle> findInProgressByChallenge(LocalDateTime searchTime, Challenge challenge) {
         return cycleRepository.findAllByStartTimeIsAfterAndChallenge(searchTime.minusDays(Cycle.DAYS), challenge)
                 .stream()
                 .filter(cycle -> cycle.isInProgress(searchTime))

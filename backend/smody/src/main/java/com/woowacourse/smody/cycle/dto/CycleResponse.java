@@ -37,7 +37,7 @@ public class CycleResponse {
         this.description = cycle.getChallenge().getDescription();
         this.emojiIndex = cycle.getChallenge().getEmojiIndex();
         this.colorIndex = cycle.getChallenge().getColorIndex();
-        this.cycleDetails = cycle.getCycleDetails().stream()
+        this.cycleDetails = cycle.getCycleDetailsOrderByProgress().stream()
                 .map(CycleDetailResponse::new)
                 .collect(Collectors.toList());
     }

@@ -32,27 +32,27 @@ public class ChallengeController {
     private final ChallengeApiService challengeApiService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCountByFilter(
             @ModelAttribute PagingParams pagingParams
     ) {
         return ResponseEntity.ok(
-                challengeApiService.findAllWithChallengerCount(LocalDateTime.now(), pagingParams));
+                challengeApiService.findAllWithChallengerCountByFilter(LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/auth")
     @RequiredLogin
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                                 @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(challengeApiService.findAllWithChallengerCount(
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCountByFilter(@LoginMember TokenPayload tokenPayload,
+                                                                                         @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, LocalDateTime.now(), pagingParams)
         );
     }
 
     @GetMapping(value = "/me")
     @RequiredLogin
-    public ResponseEntity<List<ChallengeOfMineResponse>> searchOfMineWithFilter(@LoginMember TokenPayload tokenPayload,
-                                                                                @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(challengeApiService.searchOfMine(tokenPayload, pagingParams));
+    public ResponseEntity<List<ChallengeOfMineResponse>> findAllByMeAndFilter(@LoginMember TokenPayload tokenPayload,
+                                                                              @ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(challengeApiService.findAllByMeAndFilter(tokenPayload, pagingParams));
     }
 
     @GetMapping(value = "/{id}")
@@ -83,8 +83,8 @@ public class ChallengeController {
 
     @GetMapping("/me/{challengeId}")
     @RequiredLogin
-    public ResponseEntity<ChallengeHistoryResponse> findWithMine(@LoginMember TokenPayload tokenPayload,
-                                                                 @PathVariable Long challengeId) {
-        return ResponseEntity.ok(challengeApiService.findWithMine(tokenPayload, challengeId));
+    public ResponseEntity<ChallengeHistoryResponse> findByMeAndChallenge(@LoginMember TokenPayload tokenPayload,
+                                                                         @PathVariable Long challengeId) {
+        return ResponseEntity.ok(challengeApiService.findByMeAndChallenge(tokenPayload, challengeId));
     }
 }

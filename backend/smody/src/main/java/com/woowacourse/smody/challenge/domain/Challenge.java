@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Challenge {
 
-    private static final String DEFAULT_INTRODUCTION = " 입니다";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "challenge_id")
@@ -35,12 +34,6 @@ public class Challenge {
 
     @Column(nullable = false)
     private String description;
-
-    public Challenge(String name) {
-        validateDescription(name + DEFAULT_INTRODUCTION);
-        validateName(name);
-        this.name = name;
-    }
 
     public Challenge(String name, String description, Integer emojiIndex, Integer colorIndex) {
         validateDescription(description);

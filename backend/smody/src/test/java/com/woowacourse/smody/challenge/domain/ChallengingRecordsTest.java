@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class ChallengingRecordsTest {
 
     private ChallengingRecords challengingRecords;
-    private final Challenge challenge1 = new Challenge("미라클 모닝");
+    private final Challenge challenge1 = new Challenge("미라클 모닝", "설명", 1, 1);
     private final Member member1 = new Member("does@mail.com", "does", "picture");
     private final Member member2 = new Member("tonic@mail.com", "tonic", "picture");
     private final LocalDateTime now = LocalDateTime.now();
@@ -24,7 +24,7 @@ class ChallengingRecordsTest {
     // 각 챌린지 인증 시간을 기준으로 정렬할 수 있다.
     @BeforeEach
     void setUp() {
-        Challenge challenge2 = new Challenge("운동하기");
+        Challenge challenge2 = new Challenge("운동하기", "설명", 1, 1);
         Cycle cycle = new Cycle(member1, challenge1, Progress.NOTHING, now);
         cycle.increaseProgress(now.plusMinutes(1L), 이미지, "인증");
         List<Cycle> cycles = List.of(
