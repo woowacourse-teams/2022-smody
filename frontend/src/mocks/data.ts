@@ -210,16 +210,15 @@ const [startTime, _] = date.toISOString().split('.');
 const twoDaysAgo = new Date();
 twoDaysAgo.setHours(twoDaysAgo.getHours() + 9 - 48);
 const [twoDaysAgoStartTime, __] = twoDaysAgo.toISOString().split('.');
-
 export const cycleData = [
   {
     cycleId: 1,
     challengeId: 1,
-    challengeName: '미라클 모닝',
+    challengeName: '테스트',
     emojiIndex: 1,
     colorIndex: 1,
     progressCount: 2,
-    startTime: twoDaysAgoStartTime,
+    startTime: '2022-09-21T01:10:10',
     successCount: 3,
   },
   {
@@ -229,7 +228,7 @@ export const cycleData = [
     emojiIndex: 5,
     colorIndex: 5,
     progressCount: 0,
-    startTime,
+    startTime: '2022-09-22T02:45:10',
     successCount: 3,
   },
   {
@@ -239,7 +238,7 @@ export const cycleData = [
     emojiIndex: 6,
     colorIndex: 6,
     progressCount: 0,
-    startTime,
+    startTime: '2022-09-22T02:49:10',
     successCount: 3,
   },
   {
@@ -249,17 +248,17 @@ export const cycleData = [
     emojiIndex: 4,
     colorIndex: 4,
     progressCount: 0,
-    startTime,
+    startTime: '2022-09-22T02:50:10',
     successCount: 3,
   },
   {
     cycleId: 5,
     challengeId: 5,
-    challengeName: '화이팅',
+    challengeName: '미라클 모닝',
     emojiIndex: 7,
     colorIndex: 7,
     progressCount: 0,
-    startTime,
+    startTime: '2022-09-22T05:10:10',
     successCount: 3,
   },
   {
@@ -269,7 +268,7 @@ export const cycleData = [
     progressCount: 0,
     emojiIndex: 8,
     colorIndex: 8,
-    startTime,
+    startTime: '2022-09-22T12:30:10',
     successCount: 3,
   },
   {
@@ -279,7 +278,7 @@ export const cycleData = [
     progressCount: 0,
     emojiIndex: 9,
     colorIndex: 9,
-    startTime,
+    startTime: '2022-09-22T15:10:10',
     successCount: 3,
   },
   {
@@ -289,7 +288,7 @@ export const cycleData = [
     progressCount: 0,
     emojiIndex: 10,
     colorIndex: 0,
-    startTime,
+    startTime: '2022-09-22T19:10:10',
     successCount: 3,
   },
   {
@@ -299,17 +298,17 @@ export const cycleData = [
     progressCount: 0,
     emojiIndex: 11,
     colorIndex: 1,
-    startTime,
+    startTime: '2022-09-22T23:10:10',
     successCount: 3,
   },
   {
     cycleId: 10,
     challengeId: 10,
-    challengeName: '우린 멋져',
+    challengeName: '고양이 사진 찍기',
     progressCount: 0,
     emojiIndex: 12,
     colorIndex: 2,
-    startTime,
+    startTime: '2022-09-22T23:30:10',
     successCount: 3,
   },
 ];

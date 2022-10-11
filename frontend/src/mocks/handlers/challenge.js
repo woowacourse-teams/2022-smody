@@ -27,10 +27,10 @@ export const challenge = [
     return res(ctx.json(201));
   }),
   // 2. 나의 모든 진행 중인 챌린지 사이클 조회(GET)
-  rest.get(`${BASE_URL}/cycles/me`, (req, res, ctx) => {
-    if (!checkValidAccessToken(req)) {
-      return res(ctx.status(403), ctx.json({ code: 2002 }));
-    }
+  rest.get(`${BASE_URL}/cycles/me?size=10&cursorId=0`, (req, res, ctx) => {
+    // if (!checkValidAccessToken(req)) {
+    //   return res(ctx.status(403), ctx.json({ code: 2002 }));
+    // }
 
     return res(ctx.status(200), ctx.json(cycleData));
   }),
