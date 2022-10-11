@@ -27,16 +27,19 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
         if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            RequiredLogin requiredLogin = handlerMethod.getMethodAnnotation(RequiredLogin.class);
-            if (Objects.isNull(requiredLogin)) {
-                return true;
-            }
-            String token = jwtTokenExtractor.extract(request);
-            validateToken(token);
-            request.setAttribute("payload", jwtTokenProvider.getPayload(token));
+            return handleHandlerMethod(request, (HandlerMethod)handler);
+        }
+        return true;
+    }
+
+    private boolean handleHandlerMethod(HttpServletRequest request, HandlerMethod handler) {
+        RequiredLogin requiredLogin = handler.getMethodAnnotation(RequiredLogin.class);
+        if (Objects.isNull(requiredLogin)) {
             return true;
         }
+        String token = jwtTokenExtractor.extract(request);
+        validateToken(token);
+        request.setAttribute("payload", jwtTokenProvider.getPayload(token));
         return true;
     }
 
