@@ -41,7 +41,6 @@ ${({ theme }) => css`
   sup,
   tt,
   var,
-  b,
   u,
   i,
   center,
