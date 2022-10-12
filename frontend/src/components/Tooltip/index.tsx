@@ -11,6 +11,8 @@ export const Tooltip = ({
   title,
   isOpenTooltip,
   toggleTooltip,
+  xPosition = 'middle',
+  yPosition = 'bottom',
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
 
@@ -25,7 +27,12 @@ export const Tooltip = ({
       >
         {children ?? <BsQuestionCircleFill color={themeContext.primary} size={27} />}
       </TooltipButton>
-      <HelpToggleMessage role="dialog" hidden={!isOpenTooltip}>
+      <HelpToggleMessage
+        role="dialog"
+        hidden={!isOpenTooltip}
+        xPosition={xPosition}
+        yPosition={yPosition}
+      >
         <span role="tooltip" id="tooltip-label">
           {title}
         </span>
@@ -39,23 +46,23 @@ export const Tooltip = ({
 
 const Wrapper = styled.div`
   position: relative;
-  top: 50%;
 `;
 
 const TooltipButton = styled.button``;
 
-const HelpToggleMessage = styled.div`
-  ${({ theme }) => css`
+const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
+  ${({ theme, xPosition, yPosition }) => css`
     position: absolute;
     width: 300px;
-    top: 30px;
-    left: -150px;
-    padding: 16px 12px 12px;
+    padding: 10px 26px 10px 10px;
     font-size: 14px;
+    line-height: 1.3;
     border-radius: 10px;
     border: 1px solid ${theme.primary};
     background-color: ${theme.surface}
     color: ${theme.onSurface};
+    top:  ${yPosition === 'top' ? '-43px' : '32px'};
+    left: ${xPosition === 'middle' ? '-150px' : xPosition === 'left' ? '-265px' : '0'};
   `}
 `;
 
