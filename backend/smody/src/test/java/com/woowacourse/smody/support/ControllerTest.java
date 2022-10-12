@@ -15,6 +15,7 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleQueryService;
 import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.exception.GithubIssueGenerator;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedQueryService;
 import com.woowacourse.smody.member.controller.MemberController;
@@ -48,7 +49,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
         PushNotificationController.class,
         RankingController.class
 })
-@Import({JwtTokenProvider.class, JwtTokenExtractor.class})
+@Import({JwtTokenProvider.class, JwtTokenExtractor.class, GithubIssueGenerator.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class ControllerTest {

@@ -29,14 +29,15 @@ public class GithubIssueGenerator {
 
 	@Value("${github.access.token}")
 	private String accessToken;
-
 	private final ObjectMapper objectMapper;
 
 	public void create(Exception exception) {
-		HttpEntity<String> httpEntity = new HttpEntity<>(createRequestJson(exception), setAuthorization());
-
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.exchange(REPO_URL, HttpMethod.POST, httpEntity, String.class);
+		new RestTemplate().exchange(
+			REPO_URL,
+			HttpMethod.POST,
+			new HttpEntity<>(createRequestJson(exception), setAuthorization()),
+			String.class
+		);
 	}
 
 	private String createRequestJson(Exception exception) {
@@ -48,26 +49,24 @@ public class GithubIssueGenerator {
 		));
 	}
 
-	private HttpHeaders setAuthorization() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("Authorization", "token " + accessToken);
-		httpHeaders.setContentType(JSON_MEDIA_TYPE);
-		return httpHeaders;
-	}
-
 	private String parseJsonString(IssueCreateRequest request) {
-		String jsonData;
 		try {
-			jsonData = objectMapper.writeValueAsString(request);
+			return objectMapper.writeValueAsString(request);
 		} catch (JsonProcessingException e) {
 			throw new BusinessException(ExceptionData.DATA_INTEGRITY_ERROR);
 		}
-		return jsonData;
 	}
 
 	private String createIssueBody(Exception exception) {
 		StringWriter stringWriter = new StringWriter();
 		exception.printStackTrace(new PrintWriter(stringWriter));
 		return "```\n" + stringWriter + "\n```";
+	}
+
+	private HttpHeaders setAuthorization() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "token " + accessToken);
+		httpHeaders.setContentType(JSON_MEDIA_TYPE);
+		return httpHeaders;
 	}
 }
