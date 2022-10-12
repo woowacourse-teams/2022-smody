@@ -7,7 +7,8 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { RankingPeriodItem, Text } from 'components';
+import { RankingPeriodItem, Text, Tooltip } from 'components';
+import useTooltip from 'components/Tooltip/useTooltip';
 
 export const RankingPeriodsList = () => {
   const themeContext = useThemeContext();
@@ -24,12 +25,25 @@ export const RankingPeriodsList = () => {
   if (typeof rankingPeriodsData?.data === 'undefined') {
     return null;
   }
+  const { isOpenToolTip, openTooltip, closeTooltip, closeTooltipOnBg } = useTooltip();
 
   return (
     <FlexBox flexDirection="column" gap="0.5rem">
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
-        {titleDate}
-      </Text>
+      <FlexBox justifyContent="space-between">
+        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+          {titleDate}
+        </Text>
+        <Tooltip
+          ariaLabel="아리아라벨"
+          isOpenTooltip={isOpenToolTip}
+          openTooltip={openTooltip}
+          closeTooltip={closeTooltip}
+          closeTooltipOnBg={closeTooltipOnBg}
+          xPosition="left"
+        >
+          툴팁 내용
+        </Tooltip>
+      </FlexBox>
       <FlexBox justifyContent="flex-end">
         <div></div>
         <SelectPeriod
