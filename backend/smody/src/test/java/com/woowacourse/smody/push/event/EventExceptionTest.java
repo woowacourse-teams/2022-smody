@@ -13,6 +13,7 @@ import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.dto.CommentRequest;
+import com.woowacourse.smody.comment.service.CommentApiService;
 import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
@@ -50,6 +51,9 @@ class EventExceptionTest extends IntegrationTest {
 
 	@Autowired
 	private PushSubscriptionService pushSubscriptionService;
+
+	@Autowired
+	private CommentApiService commentApiService;
 
 	@Autowired
 	private CommentService commentService;
@@ -134,7 +138,7 @@ class EventExceptionTest extends IntegrationTest {
 		AtomicReference<Long> commentId = new AtomicReference<>();
 
 		synchronize(() -> {
-			commentId.set(commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
+			commentId.set(commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 		});
 
 		// then

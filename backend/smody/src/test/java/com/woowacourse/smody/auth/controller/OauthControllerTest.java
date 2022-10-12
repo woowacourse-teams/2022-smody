@@ -32,7 +32,7 @@ class OauthControllerTest extends ControllerTest {
         LoginRequest loginRequest = new LoginRequest("email", "nickname", "picture");
         given(googleApi.requestToken(any(String.class)))
                 .willReturn(loginRequest);
-        given(oauthService.login(any(LoginRequest.class)))
+        given(oauthApiService.login(any(LoginRequest.class)))
                 .willReturn(loginResponse);
 
         // when
@@ -55,7 +55,7 @@ class OauthControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ValidAuthResponse validAuthResponse = new ValidAuthResponse(true);
-        given(oauthService.isValidAuth(any(PreTokenPayLoad.class)))
+        given(oauthApiService.isValidAuth(any(PreTokenPayLoad.class)))
                 .willReturn(validAuthResponse);
 
         // when

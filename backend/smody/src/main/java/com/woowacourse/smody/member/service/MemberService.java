@@ -10,6 +10,7 @@ import com.woowacourse.smody.member.repository.MemberRepository;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,5 +68,13 @@ public class MemberService {
         pushNotificationRepository.deleteByMember(member);
         pushSubscriptionRepository.deleteByMember(member);
         memberRepository.delete(member);
+    }
+
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    public Member create(Member member) {
+        return memberRepository.save(member);
     }
 }

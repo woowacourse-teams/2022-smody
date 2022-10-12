@@ -41,7 +41,7 @@ class CommentControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         Map<String, String> param = Map.of("content", "화이팅!");
 
-        given(commentService.create(any(TokenPayload.class), eq(1L), any(CommentRequest.class)))
+        given(commentApiService.create(any(TokenPayload.class), eq(1L), any(CommentRequest.class)))
                 .willReturn(commentId);
 
         // when
@@ -70,7 +70,7 @@ class CommentControllerTest extends ControllerTest {
                 new CommentResponse(1L, "토닉", "토닉.jpg", 2L, "화이팅2",
                         LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
         );
-        given(commentQueryService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
+        given(commentApiService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
                 .willReturn(responses);
 
         // when
@@ -105,7 +105,7 @@ class CommentControllerTest extends ControllerTest {
                         LocalDateTime.of(2022, 1, 1, 1, 0, 0), false)
         );
 
-        given(commentQueryService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
+        given(commentApiService.findAllByCycleDetailId(any(TokenPayload.class), eq(1L)))
                 .willReturn(responses);
 
         // when

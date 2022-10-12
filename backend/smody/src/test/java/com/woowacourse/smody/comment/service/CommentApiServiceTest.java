@@ -18,13 +18,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CommentQueryServiceTest extends IntegrationTest {
+class CommentApiServiceTest extends IntegrationTest {
 
     @Autowired
-    private CommentQueryService commentQueryService;
-
-    @Autowired
-    private CommentService commentService;
+    private CommentApiService commentApiService;
 
     @Autowired
     private ResourceFixture resourceFixture;
@@ -36,12 +33,12 @@ class CommentQueryServiceTest extends IntegrationTest {
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
-        Long 댓글1 = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
+        Long 댓글1 = commentApiService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
                 new CommentRequest("댓글1"));
-        Long 댓글2 = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
+        Long 댓글2 = commentApiService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
                 new CommentRequest("댓글2"));
         // when
-        List<CommentResponse> commentResponses = commentQueryService.findAllByCycleDetailId(
+        List<CommentResponse> commentResponses = commentApiService.findAllByCycleDetailId(
                 new TokenPayload(0L), cycleDetail.getId());
         // then
         assertThat(commentResponses.stream()

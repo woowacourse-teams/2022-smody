@@ -7,14 +7,14 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.auth.api.GoogleApi;
 import com.woowacourse.smody.auth.controller.OauthController;
-import com.woowacourse.smody.auth.service.OauthService;
+import com.woowacourse.smody.auth.service.OauthApiService;
 import com.woowacourse.smody.auth.token.JwtTokenExtractor;
 import com.woowacourse.smody.auth.token.JwtTokenProvider;
 import com.woowacourse.smody.challenge.controller.ChallengeController;
 import com.woowacourse.smody.challenge.service.ChallengeApiService;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.comment.controller.CommentController;
-import com.woowacourse.smody.comment.service.CommentQueryService;
+import com.woowacourse.smody.comment.service.CommentApiService;
 import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleApiService;
@@ -92,7 +92,7 @@ public class ControllerTest {
     protected FeedQueryService feedQueryService;
 
     @MockBean
-    protected CommentQueryService commentQueryService;
+    protected CommentApiService commentApiService;
 
     @MockBean
     protected CommentService commentService;
@@ -101,7 +101,7 @@ public class ControllerTest {
     protected GoogleApi googleApi;
 
     @MockBean
-    protected OauthService oauthService;
+    protected OauthApiService oauthApiService;
 
     @MockBean
     protected PushSubscriptionService pushSubscriptionService;

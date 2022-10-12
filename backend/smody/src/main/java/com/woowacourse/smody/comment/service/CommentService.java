@@ -12,6 +12,7 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.feed.repository.FeedRepository;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -28,28 +29,27 @@ public class CommentService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public Long create(TokenPayload tokenPayload, long cycleDetailId, CommentRequest commentRequest) {
-        Member member = memberService.search(tokenPayload.getId());
-        String content = commentRequest.getContent();
+    public Comment create(Long memberId, Long cycleDetailId, String content) {
+        Member member = memberService.search(memberId);
         CycleDetail cycleDetail = feedRepository.findById(cycleDetailId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
         Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
 
         applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
-        return comment.getId();
+        return comment;
     }
 
     @Transactional
-    public void update(TokenPayload tokenPayload, Long commentId, CommentUpdateRequest commentUpdateRequest) {
+    public void update(Long memberId, Long commentId, String content) {
         Comment comment = search(commentId);
-        validateMember(tokenPayload.getId(), comment);
-        comment.updateContent(commentUpdateRequest.getContent());
+        validateMember(memberId, comment);
+        comment.updateContent(content);
     }
 
     @Transactional
-    public void delete(TokenPayload tokenPayload, Long commentId) {
+    public void delete(Long memberId, Long commentId) {
         Comment comment = search(commentId);
-        validateMember(tokenPayload.getId(), comment);
+        validateMember(memberId, comment);
         commentRepository.delete(comment);
     }
 
@@ -62,5 +62,9 @@ public class CommentService {
         if (!comment.isCommentByMemberId(memberId)) {
             throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
         }
+    }
+
+    public List<Comment> findAllByCycleDetailId(Long cycleDetailId) {
+        return commentRepository.findAllByCycleDetailId(cycleDetailId);
     }
 }

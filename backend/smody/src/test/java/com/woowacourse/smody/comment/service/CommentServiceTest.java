@@ -42,11 +42,10 @@ class CommentServiceTest extends IntegrationTest {
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
-        Long commentId = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
-                new CommentRequest("댓글"));
+        Comment comment = commentService.create(조조그린_ID, cycleDetail.getId(), "댓글");
 
         // then
-        assertThat(commentRepository.findById(commentId).get().getContent()).isEqualTo("댓글");
+        assertThat(commentRepository.findById(comment.getId()).get().getContent()).isEqualTo("댓글");
     }
 
     @DisplayName("댓글 생성 시 생성된 시간을 가진다.")
@@ -58,16 +57,16 @@ class CommentServiceTest extends IntegrationTest {
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
-        Long commentId = commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
-                new CommentRequest("댓글"));
-        assertThat(commentRepository.findById(commentId).get().getCreatedAt()).isNotNull();
+        Comment comment = commentService.create(조조그린_ID, cycleDetail.getId(), "댓글");
+
+        // then
+        assertThat(commentRepository.findById(comment.getId()).get().getCreatedAt()).isNotNull();
     }
 
     @DisplayName("댓글 생성 시 cycleDetail을 찾을 수 없으면 예외를 발생시킨다.")
     @Test
     void create_notFoundCycleDetail() {
-        assertThatThrownBy(() -> commentService.create(new TokenPayload(조조그린_ID), 1L,
-                new CommentRequest("댓글")))
+        assertThatThrownBy(() -> commentService.create(조조그린_ID, 1L, "댓글"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
@@ -83,8 +82,7 @@ class CommentServiceTest extends IntegrationTest {
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
-        assertThatThrownBy(() -> commentService.create(new TokenPayload(invalidMemberId), cycleDetail.getId(),
-                new CommentRequest("댓글")))
+        assertThatThrownBy(() -> commentService.create(invalidMemberId, cycleDetail.getId(), "댓글"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
@@ -100,8 +98,7 @@ class CommentServiceTest extends IntegrationTest {
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
-        assertThatThrownBy(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(),
-                new CommentRequest(invalidContent)))
+        assertThatThrownBy(() -> commentService.create(조조그린_ID, cycleDetail.getId(), invalidContent))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);
@@ -117,8 +114,7 @@ class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
-        commentService.update(new TokenPayload(조조그린_ID), comment.getId(),
-                new CommentUpdateRequest("수정후"));
+        commentService.update(조조그린_ID, comment.getId(), "수정후");
 
         // then
         Optional<Comment> findComment = commentRepository.findById(comment.getId());
@@ -128,8 +124,7 @@ class CommentServiceTest extends IntegrationTest {
     @DisplayName("댓글 수정 시 댓글을 찾을 수 없으면 예외를 발생시킨다.")
     @Test
     void updateComment_notFound() {
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID), 1L,
-                new CommentUpdateRequest("수정후")))
+        assertThatThrownBy(() -> commentService.update(조조그린_ID, 1L, "수정후"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_COMMENT);
@@ -146,8 +141,7 @@ class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(unauthorizedMemberId), comment.getId(),
-                new CommentUpdateRequest("수정후")))
+        assertThatThrownBy(() -> commentService.update(unauthorizedMemberId, comment.getId(), "수정후"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
@@ -164,8 +158,7 @@ class CommentServiceTest extends IntegrationTest {
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
         // when then
-        assertThatThrownBy(() -> commentService.update(new TokenPayload(조조그린_ID), comment.getId(),
-                new CommentUpdateRequest(invalidContent)))
+        assertThatThrownBy(() -> commentService.update(조조그린_ID, comment.getId(), invalidContent))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_COMMENT_CONTENT);
@@ -183,7 +176,7 @@ class CommentServiceTest extends IntegrationTest {
         Long commentId = comment.getId();
 
         // when
-        commentService.delete(new TokenPayload(조조그린_ID), commentId);
+        commentService.delete(조조그린_ID, commentId);
 
         // then
         assertThat(commentRepository.findById(commentId)).isEmpty();
@@ -202,7 +195,7 @@ class CommentServiceTest extends IntegrationTest {
         Long commentId = comment.getId();
 
         // when then
-        assertThatThrownBy(() -> commentService.delete(new TokenPayload(unauthorizedMemberId), commentId))
+        assertThatThrownBy(() -> commentService.delete(unauthorizedMemberId, commentId))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.UNAUTHORIZED_MEMBER);
@@ -214,10 +207,9 @@ class CommentServiceTest extends IntegrationTest {
         // given
         Long notFoundCommentId = 0L;
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
+        resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
 
-        assertThatThrownBy(() -> commentService.delete(new TokenPayload(조조그린_ID), notFoundCommentId))
+        assertThatThrownBy(() -> commentService.delete(조조그린_ID, notFoundCommentId))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_COMMENT);
