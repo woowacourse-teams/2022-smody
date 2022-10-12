@@ -8,24 +8,27 @@ import useThemeContext from 'hooks/useThemeContext';
 
 export const Tooltip = ({
   children,
-  title,
+  icon,
+  ariaLabel,
   isOpenTooltip,
-  toggleTooltip,
+  openTooltip,
+  closeTooltip,
+  closeTooltipOnBg,
   xPosition = 'middle',
   yPosition = 'bottom',
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
 
   return (
-    <Wrapper>
+    <Wrapper isOpenTooltip={isOpenTooltip} onClick={closeTooltipOnBg}>
       <TooltipButton
-        onClick={toggleTooltip}
+        onClick={openTooltip}
         type="button"
         aria-expanded={isOpenTooltip}
-        aria-label={title}
+        aria-label={ariaLabel}
         aria-labelledby="tooltip-label"
       >
-        {children ?? <BsQuestionCircleFill color={themeContext.primary} size={27} />}
+        {icon ?? <BsQuestionCircleFill color={themeContext.onInput} size={24} />}
       </TooltipButton>
       <HelpToggleMessage
         role="dialog"
@@ -34,34 +37,53 @@ export const Tooltip = ({
         yPosition={yPosition}
       >
         <span role="tooltip" id="tooltip-label">
-          {title}
+          {children}
         </span>
-        <HelpToggleCloseButton type="button" onClick={toggleTooltip} aria-label="닫기">
-          <AiOutlineCloseCircle color={themeContext.primary} size={20} />
+        <HelpToggleCloseButton type="button" onClick={closeTooltip} aria-label="닫기">
+          <AiOutlineCloseCircle color={themeContext.onInput} size={20} />
         </HelpToggleCloseButton>
       </HelpToggleMessage>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isOpenTooltip: boolean }>`
   position: relative;
+
+  ${({ isOpenTooltip }) => isOpenTooltip && EntireBackground}
+`;
+
+const EntireBackground = css`
+  &:before {
+    z-index: 80;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    cursor: default;
+    content: ' ';
+    background: transparent;
+  }
 `;
 
 const TooltipButton = styled.button``;
 
 const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
   ${({ theme, xPosition, yPosition }) => css`
+    z-index: 90;
     position: absolute;
     width: 300px;
+    min-height: 40px;
     padding: 10px 26px 10px 10px;
     font-size: 14px;
     line-height: 1.3;
     border-radius: 10px;
-    border: 1px solid ${theme.primary};
-    background-color: ${theme.surface}
+    border: 1px solid ${theme.onInput};
+    background-color: ${theme.surface};
     color: ${theme.onSurface};
-    top:  ${yPosition === 'top' ? '-43px' : '32px'};
+    top: ${yPosition === 'top' ? '-43px' : '32px'};
     left: ${xPosition === 'middle' ? '-150px' : xPosition === 'left' ? '-265px' : '0'};
   `}
 `;
@@ -72,4 +94,5 @@ const HelpToggleCloseButton = styled.button`
   right: 0;
   padding: 8px;
   text-align: end;
+  /* cursor: pointer; */
 `;
