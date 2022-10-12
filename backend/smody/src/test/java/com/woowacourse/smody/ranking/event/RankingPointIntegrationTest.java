@@ -12,7 +12,7 @@ import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
-import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.ranking.domain.Duration;
 import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 class RankingPointIntegrationTest extends IntegrationTest {
 
     @Autowired
-    private CycleService cycleService;
+    private CycleApiService cycleApiService;
 
     @Autowired
     private RankingActivityRepository rankingActivityRepository;
@@ -50,7 +50,7 @@ class RankingPointIntegrationTest extends IntegrationTest {
                 .willReturn("fakeUrl");
 
         // when
-        synchronize(() -> cycleService.increaseProgress(
+        synchronize(() -> cycleApiService.increaseProgress(
                 new TokenPayload(조조그린_ID),
                 new ProgressRequest(cycle.getId(), now.plusDays(day).plusMinutes(1L), MULTIPART_FILE, "인증")
         ));

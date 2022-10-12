@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DynamicCycleRepository {
 
-    List<Cycle> findAllByMemberAndChallenge(Long memberId, Long challengeId, PagingParams pagingParams);
+    List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId, PagingParams pagingParams);
 
     List<Cycle> findAllByMemberAndFilter(Long memberId, PagingParams pagingParams);
 

@@ -14,6 +14,7 @@ import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
+import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.ranking.domain.Duration;
@@ -24,7 +25,6 @@ import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,10 @@ class RankingEventExceptionTest extends IntegrationTest {
     private RankingActivityRepository rankingActivityRepository;
 
     @Autowired
-    private CycleService cycleService;
+    private CycleApiService cycleApiService;
 
-    private EntityManager em;
+    @Autowired
+    private CycleService cycleService;
 
     @MockBean
     private RankingPointEventListener rankingPointEventListener;
@@ -62,7 +63,7 @@ class RankingEventExceptionTest extends IntegrationTest {
                 .when(rankingPointEventListener).handle(any(CycleProgressEvent.class));
 
         // when
-        synchronize(() -> cycleService.increaseProgress(
+        synchronize(() -> cycleApiService.increaseProgress(
                 new TokenPayload(조조그린_ID),
                 new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
         ));

@@ -27,7 +27,7 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Cycle> findAllByMemberAndChallenge(Long memberId, Long challengeId, PagingParams pagingParams) {
+    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
         return queryFactory
                 .selectFrom(cycle)
                 .where(buildDynamicQuery(memberId, challengeId, pagingParams))

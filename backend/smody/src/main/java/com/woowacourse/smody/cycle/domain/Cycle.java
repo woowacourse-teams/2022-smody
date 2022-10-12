@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +25,6 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.BatchSize;
 
 @Entity
@@ -126,22 +124,5 @@ public class Cycle {
     public CycleDetail getLatestCycleDetail() {
         int lastIndex = this.cycleDetails.size() - 1;
         return getCycleDetailsOrderByProgress().get(lastIndex);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-            return false;
-        }
-        Cycle cycle = (Cycle) o;
-        return id != null && Objects.equals(id, cycle.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

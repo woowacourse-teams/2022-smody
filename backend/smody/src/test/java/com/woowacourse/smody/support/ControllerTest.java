@@ -17,7 +17,7 @@ import com.woowacourse.smody.comment.controller.CommentController;
 import com.woowacourse.smody.comment.service.CommentQueryService;
 import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
-import com.woowacourse.smody.cycle.service.CycleQueryService;
+import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedQueryService;
@@ -86,7 +86,7 @@ public class ControllerTest {
     protected ChallengeApiService challengeApiService;
 
     @MockBean
-    protected CycleQueryService cycleQueryService;
+    protected CycleApiService cycleApiService;
 
     @MockBean
     protected FeedQueryService feedQueryService;

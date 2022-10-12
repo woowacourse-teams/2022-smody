@@ -18,6 +18,7 @@ import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
+import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscribeEvent;
@@ -37,6 +38,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("알림 이벤트에 예외가 발생해도 ")
 class EventExceptionTest extends IntegrationTest {
+
+	@Autowired
+	private CycleApiService cycleApiService;
 
 	@Autowired
 	private CycleService cycleService;
@@ -72,7 +76,7 @@ class EventExceptionTest extends IntegrationTest {
 		AtomicReference<Long> cycleId = new AtomicReference<>();
 
 		synchronize(() -> {
-			cycleId.set(cycleService.create(
+			cycleId.set(cycleApiService.create(
 					new TokenPayload(조조그린_ID),
 					new CycleRequest(now, 스모디_방문하기_ID)
 			));
