@@ -43,12 +43,12 @@ public class ChallengePushEventListener {
         if (cycle.isSuccess()) {
             return;
         }
-        pushNotificationService.register(buildNotification(cycle));
+        pushNotificationService.create(buildNotification(cycle));
     }
 
     private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
         pushNotificationService.searchSamePathAndStatus(cycle.getId(), PushStatus.IN_COMPLETE)
-                .ifPresent(notification -> pushNotificationService.delete(notification.getId()));
+                .ifPresent(notification -> pushNotificationService.deleteById(notification.getId()));
     }
 
     public PushNotification buildNotification(Object entity) {

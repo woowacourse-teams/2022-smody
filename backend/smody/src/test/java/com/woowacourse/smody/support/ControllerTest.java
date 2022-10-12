@@ -25,7 +25,7 @@ import com.woowacourse.smody.member.controller.MemberController;
 import com.woowacourse.smody.member.service.MemberApiService;
 import com.woowacourse.smody.push.controller.PushNotificationController;
 import com.woowacourse.smody.push.controller.PushSubscriptionController;
-import com.woowacourse.smody.push.service.PushNotificationService;
+import com.woowacourse.smody.push.service.PushNotificationApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.service.WebPushService;
 import com.woowacourse.smody.ranking.controller.RankingController;
@@ -110,7 +110,7 @@ public class ControllerTest {
     protected WebPushService webPushService;
 
     @MockBean
-    protected PushNotificationService pushNotificationService;
+    protected PushNotificationApiService pushNotificationApiService;
 
     @MockBean
     protected RankingApiService rankingApiService;

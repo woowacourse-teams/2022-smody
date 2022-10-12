@@ -26,7 +26,7 @@ public class SubscriptionPushEventListener {
     public void handle(PushSubscribeEvent event) {
         PushSubscription pushSubscription = event.getPushSubscription();
         Member member = pushSubscription.getMember();
-        pushNotificationService.register(buildNotification(member));
+        pushNotificationService.create(buildNotification(member));
     }
 
     public PushNotification buildNotification(Object entity) {

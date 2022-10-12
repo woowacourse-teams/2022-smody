@@ -32,7 +32,7 @@ public class CommentPushEventListener {
             return;
         }
 
-        pushNotificationService.register(buildNotification(comment));
+        pushNotificationService.create(buildNotification(comment));
     }
 
     private Member extractDetailWriter(Comment comment) {
