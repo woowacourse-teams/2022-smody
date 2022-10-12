@@ -761,11 +761,11 @@ class ChallengeServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("알고리즘 풀기"),
                 () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(2),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(8)
+                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(9)
         );
     }
 
-    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
+    @DisplayName("회원이 참가하지 않은 챌린지를 조회하는 경우 예외를 던진다.")
     @Test
     void findOneWithMine_notParticipate() {
         //given
@@ -776,14 +776,10 @@ class ChallengeServiceTest extends IntegrationTest {
 
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
-        // when
-        ChallengeHistoryResponse challengeHistoryResponse = challengeApiService.findByMeAndChallenge(tokenPayload, 오늘의_운동_ID);
-
-        // then
-        assertAll(
-                () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("오늘의 운동"),
-                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isZero(),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isZero()
-        );
+        // when, then
+        assertThatThrownBy(() -> challengeApiService.findByMeAndChallenge(tokenPayload, 오늘의_운동_ID))
+                .isInstanceOf(BusinessException.class)
+                .extracting("ExceptionData")
+                .isEqualTo(ExceptionData.DATA_INTEGRITY_ERROR);
     }
 }

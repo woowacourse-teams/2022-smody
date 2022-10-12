@@ -17,13 +17,9 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     List<Cycle> findAllByStartTimeIsAfter(LocalDateTime startTime);
 
-    @Query("select c from Cycle c where c.startTime >= :startTime and c.challenge in :challenges")
-    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(@Param("startTime") LocalDateTime startTime,
-                                                        @Param("challenges") List<Challenge> challenges);
+    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(LocalDateTime startTime, List<Challenge> challenges);
 
-    @Query("select c from Cycle c where c.startTime >= :startTime and c.challenge = :challenge")
-    List<Cycle> findAllByStartTimeIsAfterAndChallenge(@Param("startTime") LocalDateTime startTime,
-                                                      @Param("challenge") Challenge challenge);
+    List<Cycle> findAllByStartTimeIsAfterAndChallenge(LocalDateTime startTime, Challenge challenge);
 
     @Query("select count(c) from Cycle c where c.member = :member and "
             + "c.challenge = :challenge and c.progress = 'SUCCESS'")

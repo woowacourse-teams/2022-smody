@@ -55,23 +55,23 @@ public class ChallengeController {
         return ResponseEntity.ok(challengeApiService.findAllByMeAndFilter(tokenPayload, pagingParams));
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ChallengeResponse> findWithChallengerCount(@PathVariable Long id) {
-        return ResponseEntity.ok(challengeApiService.findWithChallengerCount(LocalDateTime.now(), id));
+    @GetMapping(value = "/{challengeId}")
+    public ResponseEntity<ChallengeResponse> findWithChallengerCount(@PathVariable Long challengeId) {
+        return ResponseEntity.ok(challengeApiService.findWithChallengerCount(LocalDateTime.now(), challengeId));
     }
 
-    @GetMapping(value = "/{id}/auth")
+    @GetMapping(value = "/{challengeId}/auth")
     @RequiredLogin
     public ResponseEntity<ChallengeResponse> findWithChallengerCount(@LoginMember TokenPayload tokenPayload,
-                                                                     @PathVariable Long id) {
+                                                                     @PathVariable Long challengeId) {
         return ResponseEntity.ok(challengeApiService.findWithChallengerCount(
-                tokenPayload, LocalDateTime.now(), id)
+                tokenPayload, LocalDateTime.now(), challengeId)
         );
     }
 
-    @GetMapping(value = "/{id}/challengers")
-    public ResponseEntity<List<ChallengersResponse>> findAllChallengers(@PathVariable Long id) {
-        return ResponseEntity.ok(challengeApiService.findAllChallengers(id));
+    @GetMapping(value = "/{challengeId}/challengers")
+    public ResponseEntity<List<ChallengersResponse>> findAllChallengers(@PathVariable Long challengeId) {
+        return ResponseEntity.ok(challengeApiService.findAllChallengers(challengeId));
     }
 
     @PostMapping

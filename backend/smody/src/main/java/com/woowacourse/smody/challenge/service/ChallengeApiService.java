@@ -119,17 +119,12 @@ public class ChallengeApiService {
     }
 
     public ChallengeHistoryResponse findByMeAndChallenge(TokenPayload tokenPayload, Long challengeId) {
-        List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId()).stream()
-                .filter(cycle -> !cycle.isInProgress(LocalDateTime.now()))
-                .collect(toList());
-        Challenge challenge = challengeService.search(challengeId);
-        int successCount = (int) cycles.stream()
-                .filter(Cycle::isSuccess)
-                .count();
-        int cycleDetailCount = cycles.stream()
-                .mapToInt(cycle -> cycle.getCycleDetailsOrderByProgress().size())
-                .sum();
-        return new ChallengeHistoryResponse(challenge, successCount, cycleDetailCount);
+        List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId());
+        ChallengingRecord challengingRecord = new ChallengingRecord(cycles);
+        return new ChallengeHistoryResponse(
+                challengingRecord.getChallenge(), challengingRecord.getSuccessCount(),
+                challengingRecord.getCycleDetailCount()
+        );
     }
 
     @Transactional

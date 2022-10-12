@@ -101,4 +101,10 @@ public class ChallengingRecord {
                 .collect(toList());
         return sortedCycles.get(FIRST_INDEX);
     }
+
+    public Integer getCycleDetailCount() {
+        return cycles.stream()
+                .mapToInt(cycle -> cycle.getCycleDetailsOrderByProgress().size())
+                .sum();
+    }
 }
