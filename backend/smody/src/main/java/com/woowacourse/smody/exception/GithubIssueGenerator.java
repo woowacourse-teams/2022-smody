@@ -30,9 +30,10 @@ public class GithubIssueGenerator {
 	@Value("${github.access.token}")
 	private String accessToken;
 	private final ObjectMapper objectMapper;
+	private final RestTemplate restTemplate;
 
 	public void create(Exception exception) {
-		new RestTemplate().exchange(
+		restTemplate.exchange(
 			REPO_URL,
 			HttpMethod.POST,
 			new HttpEntity<>(createRequestJson(exception), setAuthorization()),
