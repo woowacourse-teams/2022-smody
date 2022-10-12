@@ -90,6 +90,11 @@ const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
     &::after {
       top: -14px;
       right: 10px;
+      right: ${xPosition === 'middle'
+        ? '150px'
+        : xPosition === 'left'
+        ? '10px'
+        : '273px'};
       content: '';
       border: 7px solid transparent;
       border-bottom-color: ${theme.surface};
@@ -98,7 +103,7 @@ const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
 
     &::before {
       top: -16px;
-      right: 9px;
+      right: ${xPosition === 'middle' ? '149px' : xPosition === 'left' ? '9px' : '272px'};
       content: '';
       border: 8px solid transparent;
       border-bottom-color: ${theme.onInput};
