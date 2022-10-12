@@ -99,6 +99,14 @@ const useCommentInput = ({
 
   const isVisibleWriteButton = content.length !== 0;
   const isMaxLengthOver = content.length >= MAX_TEXTAREA_LENGTH - 1;
+  const isEmptyContent = content.length !== 0 && content.trim() === '';
+
+  const isCommentError = isMaxLengthOver || isEmptyContent;
+  const commentErrorMessage = isMaxLengthOver
+    ? '댓글은 최대 255자까지 입력할 수 있습니다.'
+    : isEmptyContent
+    ? '빈 댓글은 입력할 수 없습니다.'
+    : '';
 
   const handleClickWrite = () => {
     if (!isLogin) {
@@ -141,7 +149,8 @@ const useCommentInput = ({
     commentInputRef,
     content,
     isVisibleWriteButton,
-    isMaxLengthOver,
+    isCommentError,
+    commentErrorMessage,
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
