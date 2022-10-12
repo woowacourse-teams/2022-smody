@@ -1274,6 +1274,55 @@ export const notifications = [
     pathId: 3,
     type: 'comment',
   },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
+  {
+    pushNotificationId: 3,
+    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    pushTime: '2022-08-12T14:15:00',
+    pathId: 3,
+    type: 'comment',
+  },
 ];
 
 export const myChallenge = {

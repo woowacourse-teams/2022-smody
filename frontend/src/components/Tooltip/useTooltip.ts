@@ -1,23 +1,23 @@
 import { useState, MouseEventHandler } from 'react';
 
 const useTooltip = () => {
-  const [isOpenToolTip, setIsOpenToolTip] = useState(false);
+  const [isOpenTooltip, setIsOpenTooltip] = useState(false);
 
   const openTooltip = () => {
-    setIsOpenToolTip(true);
+    setIsOpenTooltip(true);
   };
 
   const closeTooltip: MouseEventHandler<HTMLButtonElement> = () => {
-    setIsOpenToolTip(false);
+    setIsOpenTooltip(false);
   };
 
   const closeTooltipOnBg: MouseEventHandler<HTMLDivElement> = (event) => {
     if (event.currentTarget === event.target) {
-      setIsOpenToolTip(false);
+      setIsOpenTooltip(false);
     }
   };
 
-  return { isOpenToolTip, openTooltip, closeTooltip, closeTooltipOnBg };
+  return { isOpenTooltip, openTooltip, closeTooltip, closeTooltipOnBg };
 };
 
 export default useTooltip;

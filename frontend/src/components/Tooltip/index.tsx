@@ -1,4 +1,5 @@
 import { TooltipProps } from './type';
+import useTooltip from './useTooltip';
 import { PropsWithChildren } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { BsQuestionCircleFill } from 'react-icons/bs';
@@ -6,18 +7,17 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
+import { Z_INDEX } from 'constants/css';
+
 export const Tooltip = ({
   children,
   icon,
   ariaLabel,
-  isOpenTooltip,
-  openTooltip,
-  closeTooltip,
-  closeTooltipOnBg,
   xPosition = 'middle',
   yPosition = 'bottom',
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
+  const { isOpenTooltip, openTooltip, closeTooltip, closeTooltipOnBg } = useTooltip();
 
   return (
     <Wrapper isOpenTooltip={isOpenTooltip} onClick={closeTooltipOnBg}>
@@ -55,7 +55,7 @@ const Wrapper = styled.div<{ isOpenTooltip: boolean }>`
 
 const EntireBackground = css`
   &:before {
-    z-index: 80;
+    z-index: ${Z_INDEX.CSS_MODAL_BG};
     position: fixed;
     top: 0;
     right: 0;
@@ -72,7 +72,7 @@ const TooltipButton = styled.button``;
 
 const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
   ${({ theme, xPosition, yPosition }) => css`
-    z-index: 90;
+    z-index: ${Z_INDEX.CSS_MODAL};
     position: absolute;
     width: 300px;
     min-height: 40px;
@@ -83,8 +83,27 @@ const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
     border: 1px solid ${theme.onInput};
     background-color: ${theme.surface};
     color: ${theme.onSurface};
-    top: ${yPosition === 'top' ? '-43px' : '32px'};
+    top: ${yPosition === 'top' ? '-43px' : '38px'};
     left: ${xPosition === 'middle' ? '-150px' : xPosition === 'left' ? '-265px' : '0'};
+
+    // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
+    &::after {
+      top: -14px;
+      right: 10px;
+      content: '';
+      border: 7px solid transparent;
+      border-bottom-color: ${theme.surface};
+      position: absolute;
+    }
+
+    &::before {
+      top: -16px;
+      right: 9px;
+      content: '';
+      border: 8px solid transparent;
+      border-bottom-color: ${theme.onInput};
+      position: absolute;
+    }
   `}
 `;
 
@@ -94,5 +113,5 @@ const HelpToggleCloseButton = styled.button`
   right: 0;
   padding: 8px;
   text-align: end;
-  /* cursor: pointer; */
+  cursor: pointer;
 `;
