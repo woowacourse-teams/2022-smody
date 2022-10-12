@@ -31,8 +31,18 @@ export const RankingPeriodsList = () => {
         <Text size={24} color={themeContext.onBackground} fontWeight="bold">
           {titleDate}
         </Text>
-        <Tooltip ariaLabel="아리아라벨" xPosition="left">
-          툴팁 내용
+        <Tooltip ariaLabel="점수 기준 툴팁" xPosition="left" icon="점수 기준">
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7B61FF' }}>
+            점수 기준
+          </h3>
+          <ul style={{ fontSize: '12px' }}>
+            <li>
+              챌린지 인증 시 <b>10점</b> 추가
+            </li>
+            <li>
+              챌린지 성공 시(=3회 인증) <b>30점</b> 추가
+            </li>
+          </ul>
         </Tooltip>
       </FlexBox>
       <FlexBox justifyContent="flex-end">
