@@ -17,10 +17,7 @@ public enum Progress {
     NOTHING(0) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 1L)) {
-                return FIRST;
-            }
-            throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+            return FIRST;
         }
 
         @Override
@@ -38,10 +35,7 @@ public enum Progress {
     FIRST(1) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 2L)) {
-                return SECOND;
-            }
-            throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+            return SECOND;
         }
 
         @Override
@@ -59,10 +53,7 @@ public enum Progress {
     SECOND(2) {
         @Override
         public Progress increase(LocalDateTime startTime, LocalDateTime progressTime) {
-            if (isBetween(startTime, progressTime, 3L)) {
-                return SUCCESS;
-            }
-            throw new BusinessException(ExceptionData.INVALID_PROGRESS_TIME);
+            return SUCCESS;
         }
 
         @Override

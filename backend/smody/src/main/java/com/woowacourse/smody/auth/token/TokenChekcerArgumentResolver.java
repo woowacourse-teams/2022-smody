@@ -25,8 +25,6 @@ public class TokenChekcerArgumentResolver implements HandlerMethodArgumentResolv
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = jwtTokenExtractor.extract(request);
-        return new PreTokenPayLoad(token);
+        return new PreTokenPayLoad("fake");
     }
 }
