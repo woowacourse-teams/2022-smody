@@ -24,7 +24,13 @@ export const useErrorFallbackNotificationMessage = ({
     });
 
     // 로그아웃 처리
-    if (errorCode === 2002 || errorCode === 2003 || errorCode === 4001) {
+    if (
+      errorCode === 2002 ||
+      errorCode === 2003 ||
+      errorCode === 4001 ||
+      errorCode === 9001 ||
+      errorCode === null
+    ) {
       authApiClient.deleteAuth();
       setIsLogin(false);
     }
