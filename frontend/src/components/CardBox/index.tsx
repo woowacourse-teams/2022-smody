@@ -33,9 +33,12 @@ export const CardBox = ({
       >
         {challengeName}
       </TitleWrapper>
-      <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
-        {emojiList[emojiIndex]}
-      </ChallengeIcon>
+      <ChallengeIcon
+        emojiIndex={emojiIndex}
+        challengeId={challengeId}
+        size="medium"
+        bgColor={colorList[colorIndex]}
+      />
       <TextWrapper size={14} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         <Count color={COLOR.PURPLE}>{successCount}</Count>회 성공
       </TextWrapper>

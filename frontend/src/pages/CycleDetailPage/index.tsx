@@ -14,7 +14,7 @@ import {
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-import { emojiList, colorList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 const CycleDetailPage = () => {
   const themeContext = useThemeContext();
@@ -24,7 +24,7 @@ const CycleDetailPage = () => {
     return null;
   }
 
-  const { challengeName, startTime, cycleDetails, emojiIndex, colorIndex } =
+  const { challengeName, startTime, cycleDetails, emojiIndex, colorIndex, challengeId } =
     cycleDetailData.data;
   const { year, month, date } = parseTime(startTime);
 
@@ -49,9 +49,12 @@ const CycleDetailPage = () => {
             {year}년 {month}월 {date}일부터 작심삼일 극복 도전
           </Text>
         </FlexBox>
-        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ChallengeIcon>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </ChallengeDetailWrapper>
       <CycleDetailListWrapper>
         <CycleDetailList cycleDetails={cycleDetails} />

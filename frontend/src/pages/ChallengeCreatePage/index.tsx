@@ -60,12 +60,13 @@ const ChallengeCreatePage = () => {
         <EmojiChooseBox gap="2rem">
           <PreviewWrapper flexDirection="column" gap="1.5rem">
             <Label as="p">이모지 미리 보기</Label>
-            <ChallengeIcon
-              size="large"
-              bgColor={colorSelectedIndex === -1 ? 'gray' : colorList[colorSelectedIndex]}
-            >
-              {emojiSelectedIndex !== -1 && emojiList[emojiSelectedIndex]}
-            </ChallengeIcon>
+            {emojiSelectedIndex !== -1 && (
+              <ChallengeIcon
+                emojiIndex={emojiSelectedIndex}
+                size="large"
+                bgColor={colorList[colorSelectedIndex]}
+              />
+            )}
           </PreviewWrapper>
           <EmojiSelectWrapper flexDirection="column" gap="1.5rem">
             <Label>색상 선택</Label>

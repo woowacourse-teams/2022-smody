@@ -68,9 +68,12 @@ const CertFormPage = () => {
           <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
-        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ChallengeIcon>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
         <section>

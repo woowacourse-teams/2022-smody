@@ -5,6 +5,7 @@ export type ChallengeExplanationTextProps = {
 };
 
 export type ChallengeDetailProps = {
+  challengeId: number;
   challengeName: string;
   challengerCount: number;
   emojiIndex: number;

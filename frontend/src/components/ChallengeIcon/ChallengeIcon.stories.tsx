@@ -7,10 +7,11 @@ export default {
 };
 
 export const DefaultChallengeIcon = (args: ChallengeIconProps) => (
-  <ChallengeIcon {...args}>🎁</ChallengeIcon>
+  <ChallengeIcon {...args} />
 );
 
-ChallengeIcon.args = {
+DefaultChallengeIcon.args = {
   size: 'medium',
   bgColor: 'gray',
+  emojiIndex: '1',
 };

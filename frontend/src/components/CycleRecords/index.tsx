@@ -75,7 +75,7 @@ const CycleRecordList = ({ selectOption }: CycleRecordListProps) => {
         {myCyclesInfiniteData?.pages.map((page) =>
           page?.data.map((cycle) => (
             <RecordList key={cycle.cycleId}>
-              <Record {...cycle} />
+              <Record {...cycle} challengeId={challengeId} />
             </RecordList>
           )),
         )}

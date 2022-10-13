@@ -6,9 +6,10 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, ChallengeIcon, Title, Text, ShareButton } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-import { emojiList, colorList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 export const ChallengeDetail = ({
+  challengeId,
   challengeName,
   challengerCount,
   emojiIndex,
@@ -37,9 +38,12 @@ export const ChallengeDetail = ({
             {description}
           </ChallengeExplanationText>
         </FlexBox>
-        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ChallengeIcon>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </ChallengeDetailWrapper>
     </FlexBox>
   );

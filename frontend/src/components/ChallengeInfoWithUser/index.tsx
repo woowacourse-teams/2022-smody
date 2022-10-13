@@ -1,4 +1,5 @@
 import useChallengeInfoWithUser from './useChallengeInfoWithUser';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -6,11 +7,13 @@ import useThemeContext from 'hooks/useThemeContext';
 import { FlexBox, Title, Text, ShareButton, ChallengeIcon } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 export const ChallengeInfoWithUser = () => {
   const themeContext = useThemeContext();
-  const challengeData = useChallengeInfoWithUser();
+  const { challengeIdString } = useParams();
+  const challengeId = Number(challengeIdString);
+  const challengeData = useChallengeInfoWithUser(challengeId);
 
   if (typeof challengeData?.data === 'undefined') {
     return null;
@@ -63,9 +66,12 @@ export const ChallengeInfoWithUser = () => {
             <Text color={themeContext.onBackground}>{description}</Text>
           </ChallengeExplanationWrapper>
         </ChallengeDescriptionWrapper>
-        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ChallengeIcon>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </ChallengeDetailWrapper>
     </FlexBox>
   );
