@@ -96,7 +96,8 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
+    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId,
+                                                            PagingParams pagingParams) {
         return cycleRepository.findAllByMemberAndChallengeAndFilter(memberId, challengeId, pagingParams);
     }
 

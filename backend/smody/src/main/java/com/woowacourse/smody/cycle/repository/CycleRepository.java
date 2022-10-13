@@ -32,7 +32,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     List<Cycle> findByMember(Member member);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("delete from Cycle c where c.member = :member")
     void deleteByMember(@Param("member") Member member);
 
@@ -40,5 +40,10 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
 
-    List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId);
+    @Query("select distinct c from Cycle c "
+            + "join fetch c.challenge join fetch c.member "
+            + "where c.challenge.id = :challengeId and c.member.id = :memberId")
+    List<Cycle> findAllByChallengeIdAndMemberId(@Param("challengeId") Long challengeId,
+                                                @Param("memberId") Long memberId);
+
 }

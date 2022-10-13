@@ -41,8 +41,9 @@ public class ChallengeController {
 
     @GetMapping("/auth")
     @RequiredLogin
-    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCountByFilter(@LoginMember TokenPayload tokenPayload,
-                                                                                         @ModelAttribute PagingParams pagingParams) {
+    public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCountByFilter(
+            @LoginMember TokenPayload tokenPayload,
+            @ModelAttribute PagingParams pagingParams) {
         return ResponseEntity.ok(challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, LocalDateTime.now(), pagingParams)
         );

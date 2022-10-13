@@ -17,7 +17,7 @@ public interface PushSubscriptionRepository extends JpaRepository<PushSubscripti
 
     List<PushSubscription> findByMemberIn(List<Member> members);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("delete from PushSubscription ps where ps.member = :member")
     void deleteByMember(@Param("member") Member member);
 }

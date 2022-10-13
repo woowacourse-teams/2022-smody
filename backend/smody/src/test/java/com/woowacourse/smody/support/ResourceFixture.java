@@ -29,26 +29,26 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings("NonAsciiCharacters")
 public class ResourceFixture {
 
-	private final MemberRepository memberRepository;
-	private final ChallengeRepository challengeRepository;
-	private final CycleRepository cycleRepository;
-	private final PushNotificationRepository pushNotificationRepository;
-	private final PushSubscriptionRepository pushSubscriptionRepository;
-	private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository;
+    private final ChallengeRepository challengeRepository;
+    private final CycleRepository cycleRepository;
+    private final PushNotificationRepository pushNotificationRepository;
+    private final PushSubscriptionRepository pushSubscriptionRepository;
+    private final CommentRepository commentRepository;
 
-	public ResourceFixture(MemberRepository memberRepository,
-		ChallengeRepository challengeRepository,
-		CycleRepository cycleRepository,
-		PushNotificationRepository pushNotificationRepository,
-		PushSubscriptionRepository pushSubscriptionRepository,
-		CommentRepository commentRepository) {
-		this.memberRepository = memberRepository;
-		this.challengeRepository = challengeRepository;
-		this.cycleRepository = cycleRepository;
-		this.pushNotificationRepository = pushNotificationRepository;
-		this.pushSubscriptionRepository = pushSubscriptionRepository;
-		this.commentRepository = commentRepository;
-	}
+    public ResourceFixture(MemberRepository memberRepository,
+                           ChallengeRepository challengeRepository,
+                           CycleRepository cycleRepository,
+                           PushNotificationRepository pushNotificationRepository,
+                           PushSubscriptionRepository pushSubscriptionRepository,
+                           CommentRepository commentRepository) {
+        this.memberRepository = memberRepository;
+        this.challengeRepository = challengeRepository;
+        this.cycleRepository = cycleRepository;
+        this.pushNotificationRepository = pushNotificationRepository;
+        this.pushSubscriptionRepository = pushSubscriptionRepository;
+        this.commentRepository = commentRepository;
+    }
 
     public static final Long 조조그린_ID = 1L;
     public static final Long 더즈_ID = 2L;
@@ -61,12 +61,12 @@ public class ResourceFixture {
     public static final Long 알고리즘_풀기_ID = 4L;
     public static final Long JPA_공부_ID = 5L;
 
-	public static final MultipartFile MULTIPART_FILE = new MockMultipartFile(
-		"progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
-	);
-	public static final Image 이미지 = new Image(MULTIPART_FILE, image -> "image.jpg");
+    public static final MultipartFile MULTIPART_FILE = new MockMultipartFile(
+            "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+    );
+    public static final Image 이미지 = new Image(MULTIPART_FILE, image -> "image.jpg");
 
-	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Member 회원_조회(Long id) {
         return memberRepository.findById(id).orElseThrow();
@@ -119,54 +119,54 @@ public class ResourceFixture {
         return cycleRepository.save(cycle);
     }
 
-	public PushNotification 발송된_알림_생성(Long memberId, Long pathId, LocalDateTime pushTime, PushCase pushCase) {
-		PushNotification notification = PushNotification.builder()
-			.member(회원_조회(memberId))
-			.pathId(pathId)
-			.pushTime(pushTime)
-			.pushStatus(PushStatus.COMPLETE)
-			.pushCase(pushCase)
-			.message("알림 전송")
-			.build();
-		return pushNotificationRepository.save(notification);
-	}
+    public PushNotification 발송된_알림_생성(Long memberId, Long pathId, LocalDateTime pushTime, PushCase pushCase) {
+        PushNotification notification = PushNotification.builder()
+                .member(회원_조회(memberId))
+                .pathId(pathId)
+                .pushTime(pushTime)
+                .pushStatus(PushStatus.COMPLETE)
+                .pushCase(pushCase)
+                .message("알림 전송")
+                .build();
+        return pushNotificationRepository.save(notification);
+    }
 
-	public PushNotification 발송_예정_알림_생성(Long memberId, Long pathId, LocalDateTime pushTime, PushCase pushCase) {
-		PushNotification notification = PushNotification.builder()
-			.member(회원_조회(memberId))
-			.pathId(pathId)
-			.pushTime(pushTime)
-			.pushStatus(PushStatus.IN_COMPLETE)
-			.pushCase(pushCase)
-			.message("알림 전송")
-			.build();
-		return pushNotificationRepository.save(notification);
-	}
+    public PushNotification 발송_예정_알림_생성(Long memberId, Long pathId, LocalDateTime pushTime, PushCase pushCase) {
+        PushNotification notification = PushNotification.builder()
+                .member(회원_조회(memberId))
+                .pathId(pathId)
+                .pushTime(pushTime)
+                .pushStatus(PushStatus.IN_COMPLETE)
+                .pushCase(pushCase)
+                .message("알림 전송")
+                .build();
+        return pushNotificationRepository.save(notification);
+    }
 
-	public PushSubscription 알림_구독(Long memberId, String endpoint) {
-		return pushSubscriptionRepository.save(new PushSubscription(
-			endpoint,
-			"p256dh",
-			"auth",
-			회원_조회(memberId)
-		));
-	}
+    public PushSubscription 알림_구독(Long memberId, String endpoint) {
+        return pushSubscriptionRepository.save(new PushSubscription(
+                endpoint,
+                "p256dh",
+                "auth",
+                회원_조회(memberId)
+        ));
+    }
 
-	public Comment 댓글_등록(CycleDetail cycleDetail, Long memberId, String content) {
-		Comment comment = new Comment(cycleDetail, 회원_조회(memberId), content);
-		return commentRepository.save(comment);
-	}
+    public Comment 댓글_등록(CycleDetail cycleDetail, Long memberId, String content) {
+        Comment comment = new Comment(cycleDetail, 회원_조회(memberId), content);
+        return commentRepository.save(comment);
+    }
 
-	@Transactional
-	public void 사이클_인증(Long cycleId, LocalDateTime progressTime) {
-		Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
-		cycle.increaseProgress(progressTime, 이미지, "description");
-	}
+    @Transactional
+    public void 사이클_인증(Long cycleId, LocalDateTime progressTime) {
+        Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
+        cycle.increaseProgress(progressTime, 이미지, "description");
+    }
 
-	public Member 회원_추가(String nickName, String email) {
-		String picture = 이미지.getUrl();
-		String introduction = "자기소개";
-		Member member = new Member(email, nickName, picture, introduction);
-		return memberRepository.save(member);
-	}
+    public Member 회원_추가(String nickName, String email) {
+        String picture = 이미지.getUrl();
+        String introduction = "자기소개";
+        Member member = new Member(email, nickName, picture, introduction);
+        return memberRepository.save(member);
+    }
 }

@@ -33,7 +33,8 @@ public class ChallengeApiService {
     private final MemberService memberService;
     private final CycleService cycleService;
 
-    public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime, PagingParams pagingParams) {
+    public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime,
+                                                                         PagingParams pagingParams) {
         return findAllWithChallengerCountByFilter(new TokenPayload(0L), searchTime, pagingParams);
     }
 
@@ -122,7 +123,8 @@ public class ChallengeApiService {
         List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId());
         ChallengingRecord challengingRecord = new ChallengingRecord(cycles);
         return new ChallengeHistoryResponse(
-                challengingRecord.getChallenge(), challengingRecord.getSuccessCount(),
+                challengingRecord.getChallenge(),
+                challengingRecord.getSuccessCount(),
                 challengingRecord.getCycleDetailCount()
         );
     }
