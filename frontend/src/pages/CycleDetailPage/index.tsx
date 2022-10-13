@@ -6,7 +6,7 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import {
   Text,
-  ThumbnailWrapper,
+  ChallengeIcon,
   CycleDetailList,
   FlexBox,
   Title,
@@ -49,9 +49,9 @@ const CycleDetailPage = () => {
             {year}년 {month}월 {date}일부터 작심삼일 극복 도전
           </Text>
         </FlexBox>
-        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
           {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        </ChallengeIcon>
       </ChallengeDetailWrapper>
       <CycleDetailListWrapper>
         <CycleDetailList cycleDetails={cycleDetails} />

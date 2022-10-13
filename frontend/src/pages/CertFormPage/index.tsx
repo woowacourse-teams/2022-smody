@@ -9,7 +9,7 @@ import {
   Text,
   CheckCircles,
   Title,
-  ThumbnailWrapper,
+  ChallengeIcon,
   LoadingButton,
 } from 'components';
 import { SuccessModal } from 'components/SuccessModal';
@@ -68,9 +68,9 @@ const CertFormPage = () => {
           <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
-        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
           {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        </ChallengeIcon>
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
         <section>

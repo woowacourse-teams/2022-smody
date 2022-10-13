@@ -1,4 +1,4 @@
-export type ThumbnailWrapperProps = {
+export type ChallengeIconProps = {
   size: 'small' | 'medium' | 'large';
   bgColor: string;
 };

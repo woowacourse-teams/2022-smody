@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Title, Text, ShareButton, ThumbnailWrapper } from 'components';
+import { FlexBox, Title, Text, ShareButton, ChallengeIcon } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 import { colorList, emojiList } from 'constants/style';
@@ -63,9 +63,9 @@ export const ChallengeInfoWithUser = () => {
             <Text color={themeContext.onBackground}>{description}</Text>
           </ChallengeExplanationWrapper>
         </ChallengeDescriptionWrapper>
-        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
+        <ChallengeIcon size="medium" bgColor={colorList[colorIndex]}>
           {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        </ChallengeIcon>
       </ChallengeDetailWrapper>
     </FlexBox>
   );

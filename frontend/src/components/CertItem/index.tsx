@@ -4,7 +4,7 @@ import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, Button, CheckCircles, Timer, ThumbnailWrapper } from 'components';
+import { FlexBox, Text, Button, CheckCircles, Timer, ChallengeIcon } from 'components';
 import { CertItemProps } from 'components/CertItem/type';
 
 import { colorList, cursorPointer, emojiList } from 'constants/style';
@@ -60,9 +60,9 @@ export const CertItem = ({
           해당 챌린지를 총 {successCount}회 성공하셨어요.
         </Text>
       </FlexBox>
-      <ThumbnailWrapper size="large" bgColor={colorList[colorIndex]}>
+      <ChallengeIcon size="large" bgColor={colorList[colorIndex]}>
         {emojiList[emojiIndex]}
-      </ThumbnailWrapper>
+      </ChallengeIcon>
       <FlexBox flexDirection="column" justifyContent="center" alignItems="center">
         <Text color={themeContext.mainText} size={16}>
           매일 <Circle>{startTimeString}</Circle>에 시작되는 챌린지

@@ -10,7 +10,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, Text, CheckSuccessCycle, ThumbnailWrapper } from 'components';
+import { Button, FlexBox, Text, CheckSuccessCycle, ChallengeIcon } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { cursorPointer, emojiList } from 'constants/style';
@@ -62,9 +62,9 @@ const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProp
   if (isBlank) {
     return (
       <RecordItemWrapper justifyContent="center" alignItems="center">
-        <ThumbnailWrapper size="medium" bgColor="transparent">
+        <ChallengeIcon size="medium" bgColor="transparent">
           {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        </ChallengeIcon>
       </RecordItemWrapper>
     );
   }

@@ -8,7 +8,7 @@ import {
   FlexBox,
   Input,
   LoadingButton,
-  ThumbnailWrapper,
+  ChallengeIcon,
   Title,
   ValidationMessage,
 } from 'components';
@@ -60,12 +60,12 @@ const ChallengeCreatePage = () => {
         <EmojiChooseBox gap="2rem">
           <PreviewWrapper flexDirection="column" gap="1.5rem">
             <Label as="p">이모지 미리 보기</Label>
-            <ThumbnailWrapper
+            <ChallengeIcon
               size="large"
               bgColor={colorSelectedIndex === -1 ? 'gray' : colorList[colorSelectedIndex]}
             >
               {emojiSelectedIndex !== -1 && emojiList[emojiSelectedIndex]}
-            </ThumbnailWrapper>
+            </ChallengeIcon>
           </PreviewWrapper>
           <EmojiSelectWrapper flexDirection="column" gap="1.5rem">
             <Label>색상 선택</Label>
