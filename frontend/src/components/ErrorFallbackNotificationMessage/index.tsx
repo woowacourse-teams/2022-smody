@@ -1,6 +1,6 @@
 import { ErrorFallbackNotificationMessageProps } from './type';
-import { useErrorFallbackNotificationMessage } from './useErrorFallbackNotificationMessage';
 
+import { useErrorFallbackLogic } from 'hooks/useErrorFallbackLogic';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, Text } from 'components';
@@ -10,7 +10,7 @@ export const ErrorFallbackNotificationMessage = ({
   errorMessage,
 }: ErrorFallbackNotificationMessageProps) => {
   const themeContext = useThemeContext();
-  useErrorFallbackNotificationMessage({
+  useErrorFallbackLogic({
     errorCode,
     errorMessage,
   });
