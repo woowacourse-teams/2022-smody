@@ -1,30 +1,51 @@
 package com.woowacourse.smody.exception;
 
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.env.MockEnvironment;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.support.ControllerTest;
+class UnexpectedErrorGithubIssueTest {
 
-class UnexpectedErrorGithubIssueTest extends ControllerTest {
+	private ControllerAdvice controllerAdvice;
+	private MockEnvironment environment;
+	private GithubApi githubApi;
+	private Exception exception;
+
+	@BeforeEach
+	void init() {
+		githubApi = mock(GithubApi.class);
+		environment = new MockEnvironment();
+		controllerAdvice = new ControllerAdvice(githubApi, environment);
+
+		exception = new RuntimeException("예상치 못한 예외 발생");
+	}
 
 	@DisplayName("local 환경에서는 깃헙 이슈를 생성하지 않는다.")
 	@Test
-	void unexpectedException() throws Exception {
+	void handleUnexpectedException_local() {
 		// given
-		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-		RuntimeException exception = new RuntimeException("예상치 못한 예외");
-		given(memberService.searchMyInfo(any(TokenPayload.class)))
-			.willThrow(exception);
+		environment.setActiveProfiles("local");
 
 		// when
-		mockMvc.perform(get("/members/me")
-			.header("Authorization", "Bearer " + token));
+		controllerAdvice.handleUnExpectedException(exception);
 
 		// then
 		verify(githubApi, never()).create(exception);
+	}
+
+	@DisplayName("prod 환경에서는 깃헙 이슈를 생성한다.")
+	@Test
+	void handleUnexpectedException_prod() {
+		// given
+		environment.setActiveProfiles("prod");
+
+		// when
+		controllerAdvice.handleUnExpectedException(exception);
+
+		// then
+		verify(githubApi).create(exception);
 	}
 }
