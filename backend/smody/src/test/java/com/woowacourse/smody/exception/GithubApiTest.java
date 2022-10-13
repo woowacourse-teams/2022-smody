@@ -10,12 +10,12 @@ import org.springframework.http.HttpMethod;
 
 import com.woowacourse.smody.support.IntegrationTest;
 
-class GithubIssueGeneratorTest extends IntegrationTest {
+class GithubApiTest extends IntegrationTest {
 
 	private static final String REPO_URL = "https://api.github.com/repos/woowacourse-teams/2022-smody/issues";
 
 	@Autowired
-	private GithubIssueGenerator githubIssueGenerator;
+	private GithubApi githubApi;
 
 	@DisplayName("Exception에 따라 깃헙 이슈 생성 api를 보낸다.")
 	@Test
@@ -24,7 +24,7 @@ class GithubIssueGeneratorTest extends IntegrationTest {
 		RuntimeException exception = new RuntimeException("Unexpected Error");
 
 		// when
-		githubIssueGenerator.create(exception);
+		githubApi.create(exception);
 
 		// then
 		verify(restTemplate).exchange(

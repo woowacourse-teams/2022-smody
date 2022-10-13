@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class GithubIssueGenerator {
+public class GithubApi {
 
 	private static final String REPO_URL = "https://api.github.com/repos/woowacourse-teams/2022-smody/issues";
 	private static final List<String> ASSIGNEES = List.of("ldk980130", "bcc0830", "jojogreen91", "tonic523");

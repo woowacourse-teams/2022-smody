@@ -25,6 +25,6 @@ class UnexpectedErrorGithubIssueTest extends ControllerTest {
 			.header("Authorization", "Bearer " + token));
 
 		// then
-		verify(githubIssueGenerator, never()).create(exception);
+		verify(githubApi, never()).create(exception);
 	}
 }

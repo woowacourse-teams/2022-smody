@@ -15,7 +15,7 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleQueryService;
 import com.woowacourse.smody.cycle.service.CycleService;
-import com.woowacourse.smody.exception.GithubIssueGenerator;
+import com.woowacourse.smody.exception.GithubApi;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedQueryService;
 import com.woowacourse.smody.member.controller.MemberController;
@@ -31,9 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
@@ -118,5 +116,5 @@ public class ControllerTest {
     protected RankingService rankingService;
 
     @MockBean
-    protected GithubIssueGenerator githubIssueGenerator;
+    protected GithubApi githubApi;
 }

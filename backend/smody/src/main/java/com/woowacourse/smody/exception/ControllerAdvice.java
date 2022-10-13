@@ -17,7 +17,7 @@ public class ControllerAdvice {
 
     private static final String ISSUE_CREATE_ENV = "prod";
 
-    private final GithubIssueGenerator githubIssueGenerator;
+    private final GithubApi githubApi;
     private final Environment environment;
 
     @ExceptionHandler
@@ -33,7 +33,7 @@ public class ControllerAdvice {
     public void handleUnExpectedException(Exception exception) {
         log.error("[예상치 못한 예외 발생] ", exception);
         if (isProd(environment.getActiveProfiles())) {
-            githubIssueGenerator.create(exception);
+            githubApi.create(exception);
         }
     }
 
