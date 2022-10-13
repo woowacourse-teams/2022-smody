@@ -57,7 +57,7 @@ const ChallengeCreatePage = () => {
           placeholder="챌린지 설명을 입력해주세요"
           {...challengeDescription}
         />
-        <EmojiWrapper gap="2rem">
+        <EmojiChooseBox gap="2rem">
           <PreviewWrapper flexDirection="column" gap="1.5rem">
             <Label as="p">이모지 미리 보기</Label>
             <ThumbnailWrapper
@@ -89,7 +89,7 @@ const ChallengeCreatePage = () => {
               <ValidationMessage value="value" {...EmojiSelectValidateMessage} />
             )}
           </EmojiSelectWrapper>
-        </EmojiWrapper>
+        </EmojiChooseBox>
         <ButtonWrapper justifyContent="center">
           <LoadingButton
             isDisabled={!isAllValidated}
@@ -176,7 +176,7 @@ const Label = styled.label`
   `}
 `;
 
-const EmojiWrapper = styled(FlexBox)`
+const EmojiChooseBox = styled(FlexBox)`
   /* PC (해상도 1024px)*/
   /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
   @media all and (min-width: 768px) {

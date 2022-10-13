@@ -63,8 +63,6 @@ const TitleWrapper = styled(Text)`
   white-space: nowrap;
 `;
 
-const EmojiWrapper = styled(Text).attrs((props) => ({ ...props }))``;
-
 const TextWrapper = styled(Text).attrs((props) => ({ ...props }))`
   word-break: keep-all;
   text-align: center;
