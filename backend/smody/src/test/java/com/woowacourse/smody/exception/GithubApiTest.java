@@ -37,7 +37,7 @@ class GithubApiTest {
 		);
 	}
 
-	@DisplayName("Exception에 따라 깃헙 이슈 생성 api를 보낸다.")
+	@DisplayName("accessToken이 일치하지 않으면 Github에서 401 응답 코드를 반환한다")
 	@Test
 	void create_fail() {
 		// given
