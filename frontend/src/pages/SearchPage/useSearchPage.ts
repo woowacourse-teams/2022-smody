@@ -110,6 +110,10 @@ export const useSearchPage = () => {
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
 
+  const handleEventPageButton = () => {
+    navigate(CLIENT_PATH.EVENT);
+  };
+
   const checkSearchValueValid = (value: string) => {
     if (checkBlankSpaceValue(value)) {
       renderSnackBar({
@@ -141,6 +145,7 @@ export const useSearchPage = () => {
     handleClickSearchButton,
     fetchNextPage,
     handleCreateChallengeButton,
+    handleEventPageButton,
     savedChallenges,
     isError,
   };

@@ -27,6 +27,7 @@ const SearchPage = () => {
     handleClickSearchButton,
     fetchNextPage,
     handleCreateChallengeButton,
+    handleEventPageButton,
     isError,
     savedChallenges,
   } = useSearchPage();
@@ -58,7 +59,9 @@ const SearchPage = () => {
   return (
     <FlexBox flexDirection="column">
       <TabWrapper alignItems="center">
-        <EventButton size="small">이벤트 페이지</EventButton>
+        <EventButton size="small" onClick={handleEventPageButton}>
+          이벤트 페이지
+        </EventButton>
       </TabWrapper>
       <SearchContentWrapper flexDirection="column">
         <SearchBar

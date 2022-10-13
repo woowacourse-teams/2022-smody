@@ -16,3 +16,4 @@ export const FeedDetailPage = lazy(() => import('pages/FeedDetailPage'));
 export const ChallengeRecordsPage = lazy(() => import('pages/ChallengeRecordsPage'));
 export const CycleDetailSharePage = lazy(() => import('pages/CycleDetailSharePage'));
 export const RankingPage = lazy(() => import('pages/RankingPage'));
+export const EventPage = lazy(() => import('pages/EventPage'));
