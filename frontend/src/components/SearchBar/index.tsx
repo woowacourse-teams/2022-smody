@@ -31,7 +31,7 @@ export const SearchBar = ({
 const Background = styled.div`
   ${({ theme }) => css`
     position: fixed;
-    top: 60px;
+    top: 110px;
     background-color: ${theme.background};
     padding: 8px 0 15px;
 
