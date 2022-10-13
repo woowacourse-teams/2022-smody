@@ -31,10 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
@@ -47,9 +50,9 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
         FeedController.class,
         PushSubscriptionController.class,
         PushNotificationController.class,
-        RankingController.class
+        RankingController.class,
 })
-@Import({JwtTokenProvider.class, JwtTokenExtractor.class, GithubIssueGenerator.class})
+@Import({JwtTokenProvider.class, JwtTokenExtractor.class})
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class ControllerTest {
@@ -68,6 +71,9 @@ public class ControllerTest {
 
     @Autowired
     protected JwtTokenProvider jwtTokenProvider;
+
+    @MockBean
+    protected RestTemplate restTemplate;
 
     @MockBean
     protected MemberService memberService;
@@ -110,4 +116,7 @@ public class ControllerTest {
 
     @MockBean
     protected RankingService rankingService;
+
+    @MockBean
+    protected GithubIssueGenerator githubIssueGenerator;
 }

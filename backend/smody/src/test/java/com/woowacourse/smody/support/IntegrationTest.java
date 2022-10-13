@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,9 @@ public class IntegrationTest {
 
     @MockBean
     protected WebPushService webPushService;
+
+    @MockBean
+    protected RestTemplate restTemplate;
 
     @Autowired
     protected ResourceFixture fixture;
