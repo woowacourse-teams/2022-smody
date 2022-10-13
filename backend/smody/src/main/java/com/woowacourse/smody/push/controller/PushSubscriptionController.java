@@ -6,7 +6,7 @@ import com.woowacourse.smody.auth.login.RequiredLogin;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.dto.VapidPublicKeyResponse;
-import com.woowacourse.smody.push.service.PushSubscriptionService;
+import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.push.service.WebPushService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PushSubscriptionController {
 
-    private final PushSubscriptionService pushSubscriptionService;
+    private final PushSubscriptionApiService pushSubscriptionApiService;
     private final WebPushService webPushService;
 
     @GetMapping("/public-key")
@@ -33,7 +33,7 @@ public class PushSubscriptionController {
     @RequiredLogin
     public ResponseEntity<Void> subscribe(@LoginMember TokenPayload tokenPayload,
                                           @RequestBody SubscriptionRequest subscription) {
-        pushSubscriptionService.subscribe(tokenPayload, subscription);
+        pushSubscriptionApiService.subscribe(tokenPayload, subscription);
         return ResponseEntity.ok().build();
     }
 
@@ -41,7 +41,7 @@ public class PushSubscriptionController {
     @RequiredLogin
     public ResponseEntity<Void> unSubscribe(@LoginMember TokenPayload tokenPayload,
                                             @RequestBody UnSubscriptionRequest unSubscription) {
-        pushSubscriptionService.unSubscribe(tokenPayload, unSubscription);
+        pushSubscriptionApiService.unSubscribe(tokenPayload, unSubscription);
         return ResponseEntity.noContent().build();
     }
 }

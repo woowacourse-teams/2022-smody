@@ -10,7 +10,7 @@ import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
-import com.woowacourse.smody.push.service.PushSubscriptionService;
+import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.support.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 	private PushNotificationRepository pushNotificationRepository;
 
 	@Autowired
-	private PushSubscriptionService pushSubscriptionService;
+	private PushSubscriptionApiService pushSubscriptionApiService;
 
 	@DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")
 	@Test
@@ -33,7 +33,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 			"endpoint-link", "p256dh", "auth");
 
 		// when
-		synchronize(() -> pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest));
+		synchronize(() -> pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);

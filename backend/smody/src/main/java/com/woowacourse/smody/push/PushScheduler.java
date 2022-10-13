@@ -6,6 +6,7 @@ import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
+import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.service.WebPushService;
 import java.util.ArrayList;

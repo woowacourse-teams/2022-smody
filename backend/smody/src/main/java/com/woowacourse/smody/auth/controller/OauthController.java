@@ -1,6 +1,6 @@
 package com.woowacourse.smody.auth.controller;
 
-import com.woowacourse.smody.auth.api.GoogleApi;
+import com.woowacourse.smody.auth.service.GoogleApiService;
 import com.woowacourse.smody.auth.dto.LoginRequest;
 import com.woowacourse.smody.auth.dto.LoginResponse;
 import com.woowacourse.smody.auth.dto.PreTokenPayLoad;
@@ -21,16 +21,16 @@ public class OauthController {
 
     private final OauthApiService oauthApiService;
 
-    private final GoogleApi googleApi;
+    private final GoogleApiService googleApiService;
 
     @GetMapping("/link/google")
     public ResponseEntity<String> linkGoogle() {
-        return ResponseEntity.ok(googleApi.generateLoginLink());
+        return ResponseEntity.ok(googleApiService.generateLoginLink());
     }
 
     @GetMapping("/login/google")
     public ResponseEntity<LoginResponse> loginGoogle(@RequestParam String code) {
-        LoginRequest loginRequest = googleApi.requestToken(code);
+        LoginRequest loginRequest = googleApiService.requestToken(code);
         return ResponseEntity.ok(oauthApiService.login(loginRequest));
     }
 

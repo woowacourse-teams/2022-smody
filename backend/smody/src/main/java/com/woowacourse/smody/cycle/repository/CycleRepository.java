@@ -21,18 +21,19 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     List<Cycle> findAllByStartTimeIsAfterAndChallenge(LocalDateTime startTime, Challenge challenge);
 
-    @Query("select count(c) from Cycle c where c.member = :member and "
-            + "c.challenge = :challenge and c.progress = 'SUCCESS'")
+    @Query("select count(c) from Cycle c "
+            + "where c.member = :member and c.challenge = :challenge and c.progress = 'SUCCESS'")
     Long countSuccess(@Param("member") Member member, @Param("challenge") Challenge challenge);
 
-    @Query(value = "select * from cycle c where c.member_id = :memberId and c.challenge_id = :challengeId " +
+    @Query(value = "select * from cycle c "
+            + "where c.member_id = :memberId and c.challenge_id = :challengeId " +
             "order by c.start_time DESC limit 1",
             nativeQuery = true)
     Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
 
     List<Cycle> findByMember(Member member);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Cycle c where c.member = :member")
     void deleteByMember(@Param("member") Member member);
 
@@ -40,7 +41,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
 
-    @Query("select distinct c from Cycle c "
+    @Query("select c from Cycle c "
             + "join fetch c.challenge join fetch c.member "
             + "where c.challenge.id = :challengeId and c.member.id = :memberId")
     List<Cycle> findAllByChallengeIdAndMemberId(@Param("challengeId") Long challengeId,

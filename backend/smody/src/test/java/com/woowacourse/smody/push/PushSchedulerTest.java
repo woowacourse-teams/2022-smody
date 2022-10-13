@@ -39,24 +39,24 @@ class PushSchedulerTest extends IntegrationTest {
     private Member member1;
     private Member member2;
 
-	@BeforeEach
-	void init() {
-		member1 = fixture.회원_조회(조조그린_ID);
-		member2 = fixture.회원_조회(더즈_ID);
+    @BeforeEach
+    void init() {
+        member1 = fixture.회원_조회(조조그린_ID);
+        member2 = fixture.회원_조회(더즈_ID);
 
         LocalDateTime now = LocalDateTime.now();
 
-		fixture.알림_구독(조조그린_ID, "endpoint1");
-		fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
+        fixture.알림_구독(조조그린_ID, "endpoint1");
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
 
-		fixture.알림_구독(더즈_ID, "endpoint2");
-		fixture.발송_예정_알림_생성(더즈_ID, 1L, now.plusHours(1L), PushCase.SUBSCRIPTION);
+        fixture.알림_구독(더즈_ID, "endpoint2");
+        fixture.발송_예정_알림_생성(더즈_ID, 1L, now.plusHours(1L), PushCase.SUBSCRIPTION);
 
-		fixture.발송_예정_알림_생성(토닉_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
-	}
+        fixture.발송_예정_알림_생성(토닉_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE);
+    }
 
     @DisplayName("발송 안 된 알림들을 모두 전송하고, "
-		+ "구독 정보가 없으면 완료 상태로만 만든다.")
+            + "구독 정보가 없으면 완료 상태로만 만든다.")
     @Test
     void sendPushNotifications() {
         // given
@@ -66,33 +66,33 @@ class PushSchedulerTest extends IntegrationTest {
         // when
         pushScheduler.sendPushNotifications();
 
-		// then
-		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-		assertAll(
-			() -> assertThat(result).hasSize(2),
-			() -> verify(webPushService, times(1))
-				.sendNotification(any(), any())
-		);
-	}
+        // then
+        List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
+        assertAll(
+                () -> assertThat(result).hasSize(2),
+                () -> verify(webPushService, times(1))
+                        .sendNotification(any(), any())
+        );
+    }
 
-	@DisplayName("알림을 전송할 때 전송에 실패하면 상태를 완료로 바꾸지 않는다.")
-	@Test
-	void sendPushNotifications_notComplete() {
-		// given
-		given(webPushService.sendNotification(any(), any()))
-			.willReturn(false);
+    @DisplayName("알림을 전송할 때 전송에 실패하면 상태를 완료로 바꾸지 않는다.")
+    @Test
+    void sendPushNotifications_notComplete() {
+        // given
+        given(webPushService.sendNotification(any(), any()))
+                .willReturn(false);
 
-		// when
-		pushScheduler.sendPushNotifications();
+        // when
+        pushScheduler.sendPushNotifications();
 
-		// then
-		List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
-		assertAll(
-			() -> assertThat(result).hasSize(1),
-			() -> verify(webPushService, times(1))
-				.sendNotification(any(), any())
-		);
-	}
+        // then
+        List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
+        assertAll(
+                () -> assertThat(result).hasSize(1),
+                () -> verify(webPushService, times(1))
+                        .sendNotification(any(), any())
+        );
+    }
 
     @DisplayName("알림을 전송할 때 적절하지 않는 구독 정보는 삭제한다.")
     @Test
@@ -108,6 +108,7 @@ class PushSchedulerTest extends IntegrationTest {
         List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
                 List.of(member1, member2)
         );
+
         assertAll(
                 () -> assertThat(subscriptions).hasSize(1),
                 () -> assertThat(subscriptions.get(0).getMember().getId()).isEqualTo(member2.getId())
