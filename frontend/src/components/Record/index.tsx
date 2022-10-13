@@ -10,7 +10,7 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, Text, CheckSuccessCycle } from 'components';
+import { Button, FlexBox, Text, CheckSuccessCycle, ThumbnailWrapper } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
 import { cursorPointer, emojiList } from 'constants/style';
@@ -57,15 +57,14 @@ export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordP
 };
 
 const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProps) => {
-  const themeContext = useThemeContext();
   const handleNavigateFeedDetail = useRecordItem();
 
   if (isBlank) {
     return (
       <RecordItemWrapper justifyContent="center" alignItems="center">
-        <Text size={32} color={themeContext.onSurface}>
+        <ThumbnailWrapper size="medium" bgColor="transparent">
           {emojiList[emojiIndex]}
-        </Text>
+        </ThumbnailWrapper>
       </RecordItemWrapper>
     );
   }

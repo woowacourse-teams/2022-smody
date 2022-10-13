@@ -1,7 +1,7 @@
 import { useCardBox } from './useCardBox';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, Text } from 'components';
+import { FlexBox, Text, ThumbnailWrapper } from 'components';
 import { CardBoxProps, WrapperProps } from 'components/CardBox/type';
 
 import { colorList, emojiList } from 'constants/style';
@@ -33,9 +33,9 @@ export const CardBox = ({
       >
         {challengeName}
       </TitleWrapper>
-      <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
+      <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
         {emojiList[emojiIndex]}
-      </EmojiWrapper>
+      </ThumbnailWrapper>
       <TextWrapper size={14} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         <Count color={COLOR.PURPLE}>{successCount}</Count>회 성공
       </TextWrapper>
