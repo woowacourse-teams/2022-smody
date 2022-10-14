@@ -27,5 +27,4 @@ class ChallengeRepositoryTest extends RepositoryTest {
         // then
         assertThat(actual).hasSize(2);
     }
-
 }

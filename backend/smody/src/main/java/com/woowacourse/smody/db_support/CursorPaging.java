@@ -15,10 +15,10 @@ public class CursorPaging {
     }
 
     private static <T> int getStartIndex(List<T> list, T cursor) {
-        if (cursor != null) {
-            return list.indexOf(cursor) + 1;
+        if (cursor == null) {
+            return 0;
         }
-        return 0;
+        return list.indexOf(cursor) + 1;
     }
 
     private static int getLastIndex(Integer totalSize, Integer lastIndex) {

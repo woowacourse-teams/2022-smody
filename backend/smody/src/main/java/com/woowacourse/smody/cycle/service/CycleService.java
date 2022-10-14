@@ -107,4 +107,11 @@ public class CycleService {
                 LocalDateTime.now().minusDays(Cycle.DAYS)
         );
     }
+
+    public List<Cycle> findInProgress(LocalDateTime searchTime) {
+        return cycleRepository.findAllByStartTimeIsAfter(searchTime.minusDays(Cycle.DAYS))
+                .stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .collect(toList());
+    }
 }
