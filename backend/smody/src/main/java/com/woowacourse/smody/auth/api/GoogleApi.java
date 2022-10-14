@@ -13,7 +13,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 import java.util.Objects;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class GoogleApi {
 
     private static final String GOOGLE_LOGIN_URL = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -26,6 +29,8 @@ public class GoogleApi {
     private String clientSecret;
     @Value("${oauth.redirect-uri}")
     private String redirectUri;
+
+    private final RestTemplate restTemplate;
 
     public String generateLoginLink() {
         return GOOGLE_LOGIN_URL + "?"
@@ -41,7 +46,7 @@ public class GoogleApi {
         GoogleTokenRequest googleTokenRequest = new GoogleTokenRequest(
                 authorizationCode, clientId, clientSecret, redirectUri, GRANT_TYPE
         );
-        GoogleTokenResponse googleTokenResponse = new RestTemplate().postForObject(
+        GoogleTokenResponse googleTokenResponse = restTemplate.postForObject(
                 GOOGLE_TOKEN_REQUEST_URI,
                 googleTokenRequest,
                 GoogleTokenResponse.class

@@ -15,6 +15,7 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleQueryService;
 import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.exception.GithubApi;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedQueryService;
 import com.woowacourse.smody.member.controller.MemberController;
@@ -34,6 +35,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
@@ -46,7 +48,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
         FeedController.class,
         PushSubscriptionController.class,
         PushNotificationController.class,
-        RankingController.class
+        RankingController.class,
 })
 @Import({JwtTokenProvider.class, JwtTokenExtractor.class})
 @MockBean(JpaMetamodelMappingContext.class)
@@ -67,6 +69,9 @@ public class ControllerTest {
 
     @Autowired
     protected JwtTokenProvider jwtTokenProvider;
+
+    @MockBean
+    protected RestTemplate restTemplate;
 
     @MockBean
     protected MemberService memberService;
@@ -109,4 +114,7 @@ public class ControllerTest {
 
     @MockBean
     protected RankingService rankingService;
+
+    @MockBean
+    protected GithubApi githubApi;
 }
