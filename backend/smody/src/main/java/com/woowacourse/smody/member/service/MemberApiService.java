@@ -24,29 +24,29 @@ public class MemberApiService {
     private final MemberService memberService;
     private final ImageStrategy imageStrategy;
 
-    public MemberResponse searchMyInfo(TokenPayload tokenPayload) {
+    public MemberResponse findByMe(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
         return new MemberResponse(member);
     }
 
-    public List<SearchedMemberResponse> findAll(PagingParams pagingParams) {
-        List<Member> members = memberService.findAll(pagingParams);
+    public List<SearchedMemberResponse> findAllByFilter(PagingParams pagingParams) {
+        List<Member> members = memberService.findAllByFilter(pagingParams);
         return members.stream()
                 .map(SearchedMemberResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void updateMyInfo(TokenPayload tokenPayload, MemberUpdateRequest updateRequest) {
-        memberService.updateMyInfo(
+    public void updateByMe(TokenPayload tokenPayload, MemberUpdateRequest updateRequest) {
+        memberService.updateByMe(
                 tokenPayload.getId(), updateRequest.getNickname(), updateRequest.getIntroduction()
         );
     }
 
     @Transactional
-    public void updateProfileImage(TokenPayload tokenPayload, MultipartFile profileImage) {
+    public void updateProfileImageByMe(TokenPayload tokenPayload, MultipartFile profileImage) {
         Image image = new Image(profileImage, imageStrategy);
-        memberService.updateProfileImage(tokenPayload.getId(), image);
+        memberService.updateProfileImageByMe(tokenPayload.getId(), image);
     }
 
     @Transactional

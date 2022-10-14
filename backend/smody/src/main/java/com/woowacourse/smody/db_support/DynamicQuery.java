@@ -20,8 +20,10 @@ public class DynamicQuery {
         try {
             booleanBuilder.and(expressionSupplier.get());
         } catch (IllegalArgumentException | NullPointerException ignored) {
-            // 위의 예외가 터지면 null이 들어왔다는 뜻이다.
-            // null이면 where 쿼리에 and 조건을 넣지 않기 위해 예외를 무시했다.
+            /*
+             * 위의 예외가 터지면 null이 들어왔다는 뜻이다.
+             * null이면 where 쿼리에 and 조건을 넣지 않기 위해 예외를 무시했다.
+             */
         }
         return this;
     }

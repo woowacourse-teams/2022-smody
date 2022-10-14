@@ -31,24 +31,24 @@ public class MemberController {
 
     @GetMapping("/me")
     @RequiredLogin
-    public ResponseEntity<MemberResponse> searchMyInfo(@LoginMember TokenPayload tokenPayload) {
-        MemberResponse memberResponse = memberApiService.searchMyInfo(tokenPayload);
+    public ResponseEntity<MemberResponse> findByMe(@LoginMember TokenPayload tokenPayload) {
+        MemberResponse memberResponse = memberApiService.findByMe(tokenPayload);
         return ResponseEntity.ok(memberResponse);
     }
 
     @PatchMapping("/me")
     @RequiredLogin
-    public ResponseEntity<Void> updateMyInfo(@LoginMember TokenPayload tokenPayload,
-                                             @RequestBody MemberUpdateRequest updateRequest) {
-        memberApiService.updateMyInfo(tokenPayload, updateRequest);
+    public ResponseEntity<Void> updateByMe(@LoginMember TokenPayload tokenPayload,
+                                           @RequestBody MemberUpdateRequest updateRequest) {
+        memberApiService.updateByMe(tokenPayload, updateRequest);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/me/profile-image")
     @RequiredLogin
-    public ResponseEntity<Void> updateMyProfileImage(@LoginMember TokenPayload tokenPayload,
-                                                     @RequestPart MultipartFile profileImage) {
-        memberApiService.updateProfileImage(tokenPayload, profileImage);
+    public ResponseEntity<Void> updateProfileImageByMe(@LoginMember TokenPayload tokenPayload,
+                                                       @RequestPart MultipartFile profileImage) {
+        memberApiService.updateProfileImageByMe(tokenPayload, profileImage);
         return ResponseEntity.noContent().build();
     }
 
@@ -61,7 +61,7 @@ public class MemberController {
 
     @GetMapping
     @RequiredLogin
-    public ResponseEntity<List<SearchedMemberResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(memberApiService.findAll(pagingParams));
+    public ResponseEntity<List<SearchedMemberResponse>> findAllByFilter(@ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(memberApiService.findAllByFilter(pagingParams));
     }
 }

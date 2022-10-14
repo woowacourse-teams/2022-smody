@@ -30,7 +30,7 @@ class OauthControllerTest extends ControllerTest {
         // given
         LoginResponse loginResponse = new LoginResponse("smodyAccessToken", true);
         LoginRequest loginRequest = new LoginRequest("email", "nickname", "picture");
-        given(googleApiService.requestToken(any(String.class)))
+        given(googleApi.requestToken(any(String.class)))
                 .willReturn(loginRequest);
         given(oauthApiService.login(any(LoginRequest.class)))
                 .willReturn(loginResponse);

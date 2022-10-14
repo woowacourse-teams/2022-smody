@@ -2,7 +2,7 @@ package com.woowacourse.smody.feed.controller;
 
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.feed.dto.FeedResponse;
-import com.woowacourse.smody.feed.service.FeedQueryService;
+import com.woowacourse.smody.feed.service.FeedApiService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FeedController {
 
-    private final FeedQueryService feedQueryService;
+    private final FeedApiService feedApiService;
 
     @GetMapping
     public ResponseEntity<List<FeedResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
-        List<FeedResponse> feedResponses = feedQueryService.findAll(pagingParams);
+        List<FeedResponse> feedResponses = feedApiService.findAll(pagingParams);
         return ResponseEntity.ok(feedResponses);
     }
 
     @GetMapping("/{cycleDetailId}")
     public ResponseEntity<FeedResponse> findById(@PathVariable Long cycleDetailId) {
-        FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
+        FeedResponse feedResponse = feedApiService.searchById(cycleDetailId);
         return ResponseEntity.ok(feedResponse);
     }
 }

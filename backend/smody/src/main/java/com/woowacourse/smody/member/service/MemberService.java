@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private static final Long NOT_LOGIN = 0L;
+    private static final Long NOT_LOGIN_ID = 0L;
     private static final Member NOT_LOGIN_MEMBER = new Member("email", "비회원", "없는 이미지");
 
     private final MemberRepository memberRepository;
@@ -34,14 +34,14 @@ public class MemberService {
     }
 
     public Member searchLoginMember(Long memberId) {
-        if (memberId.equals(NOT_LOGIN)) {
+        if (memberId.equals(NOT_LOGIN_ID)) {
             return NOT_LOGIN_MEMBER;
         }
         return search(memberId);
     }
 
-    public List<Member> findAll(PagingParams pagingParams) {
-        return memberRepository.findAll(pagingParams);
+    public List<Member> findAllByFilter(PagingParams pagingParams) {
+        return memberRepository.findAllByFilter(pagingParams);
     }
 
     public List<Member> searchByIdIn(List<Long> ids) {
@@ -49,14 +49,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMyInfo(Long memberId, String nickname, String introduction) {
+    public void updateByMe(Long memberId, String nickname, String introduction) {
         Member member = search(memberId);
         member.updateNickname(nickname);
         member.updateIntroduction(introduction);
     }
 
     @Transactional
-    public void updateProfileImage(Long memberId, Image image) {
+    public void updateProfileImageByMe(Long memberId, Image image) {
         Member member = search(memberId);
         member.updatePicture(image);
     }

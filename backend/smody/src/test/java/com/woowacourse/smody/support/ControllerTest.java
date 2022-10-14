@@ -5,7 +5,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.smody.auth.service.GoogleApiService;
+import com.woowacourse.smody.auth.api.GoogleApi;
 import com.woowacourse.smody.auth.controller.OauthController;
 import com.woowacourse.smody.auth.service.OauthApiService;
 import com.woowacourse.smody.auth.token.JwtTokenExtractor;
@@ -19,8 +19,9 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
+import com.woowacourse.smody.exception.GithubApi;
 import com.woowacourse.smody.feed.controller.FeedController;
-import com.woowacourse.smody.feed.service.FeedQueryService;
+import com.woowacourse.smody.feed.service.FeedApiService;
 import com.woowacourse.smody.member.controller.MemberController;
 import com.woowacourse.smody.member.service.MemberApiService;
 import com.woowacourse.smody.push.controller.PushNotificationController;
@@ -29,7 +30,7 @@ import com.woowacourse.smody.push.service.PushNotificationApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.push.service.WebPushService;
 import com.woowacourse.smody.ranking.controller.RankingController;
-import com.woowacourse.smody.ranking.service.RankingService;
+import com.woowacourse.smody.ranking.service.RankingApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -71,9 +72,6 @@ public class ControllerTest {
     protected JwtTokenProvider jwtTokenProvider;
 
     @MockBean
-    protected RestTemplate restTemplate;
-
-    @MockBean
     protected MemberApiService memberApiService;
 
     @MockBean
@@ -89,7 +87,7 @@ public class ControllerTest {
     protected CycleApiService cycleApiService;
 
     @MockBean
-    protected FeedQueryService feedQueryService;
+    protected FeedApiService feedApiService;
 
     @MockBean
     protected CommentApiService commentApiService;
@@ -98,7 +96,7 @@ public class ControllerTest {
     protected CommentService commentService;
 
     @MockBean
-    protected GoogleApiService googleApiService;
+    protected GoogleApi googleApi;
 
     @MockBean
     protected OauthApiService oauthApiService;

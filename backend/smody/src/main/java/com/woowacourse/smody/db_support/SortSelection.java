@@ -6,6 +6,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import java.util.Arrays;
 import org.springframework.data.domain.Sort;
 
+// TODO: 파라미터 네임 컨벤션 통일화
 public enum SortSelection {
 
     DEFAULT("") {
@@ -19,6 +20,7 @@ public enum SortSelection {
             return new OrderSpecifier[0];
         }
     },
+
     FEED_LATEST("latest") {
         @Override
         public Sort getSort() {
@@ -56,8 +58,7 @@ public enum SortSelection {
         public OrderSpecifier<?>[] getOrderSpecifiers() {
             return new OrderSpecifier[0];
         }
-    }
-    ;
+    };
 
     private final String parameter;
 

@@ -82,7 +82,7 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void updateMyInfo() {
         // when
-        memberService.updateMyInfo(조조그린_ID, "쬬그린", "나는 쬬그린");
+        memberService.updateByMe(조조그린_ID, "쬬그린", "나는 쬬그린");
 
         // then
         Member findMember = fixture.회원_조회(조조그린_ID);
@@ -128,7 +128,7 @@ class MemberServiceTest extends IntegrationTest {
                 .willReturn(expected);
 
         // when
-        memberService.updateProfileImage(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
+        memberService.updateProfileImageByMe(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
 
         // then
         assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
@@ -147,12 +147,12 @@ class MemberServiceTest extends IntegrationTest {
 
         // when
         service.execute(() -> {
-            memberService.updateMyInfo(조조그린_ID, "쬬그린", "HI");
+            memberService.updateByMe(조조그린_ID, "쬬그린", "HI");
             latch.countDown();
         });
 
         service.execute(() -> {
-            memberService.updateProfileImage(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
+            memberService.updateProfileImageByMe(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
             latch.countDown();
         });
 
@@ -190,7 +190,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -211,7 +211,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -232,7 +232,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -253,7 +253,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -274,7 +274,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -295,7 +295,7 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -316,7 +316,7 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 0, member.getId(), "조");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
@@ -337,7 +337,7 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 2, member.getId(), "조");
 
             // when
-            List<Member> members = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(

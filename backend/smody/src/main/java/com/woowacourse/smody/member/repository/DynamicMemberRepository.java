@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DynamicMemberRepository {
 
-    List<Member> findAll(PagingParams pagingParams);
+    List<Member> findAllByFilter(PagingParams pagingParams);
 }

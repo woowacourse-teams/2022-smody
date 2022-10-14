@@ -13,13 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class FeedQueryService {
+public class FeedApiService {
 
-    private final FeedRepository feedRepository;
     private final FeedService feedService;
 
     public List<FeedResponse> findAll(PagingParams pagingParams) {
-        List<Feed> feeds = feedRepository.searchAll(pagingParams);
+        List<Feed> feeds = feedService.searchAll(pagingParams);
         return feeds.stream()
                 .map(FeedResponse::new)
                 .collect(Collectors.toList());

@@ -23,10 +23,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class FeedQueryServiceTest extends IntegrationTest {
+class FeedApiServiceTest extends IntegrationTest {
 
     @Autowired
-    private FeedQueryService feedQueryService;
+    private FeedApiService feedApiService;
 
     @DisplayName("id 값이 null로 들어오면 가장 최신순으로 조회한다")
     @Test
@@ -36,7 +36,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(new PagingParams("latest", 10));
+        List<FeedResponse> feedResponses = feedApiService.findAll(new PagingParams("latest", 10));
 
         //then
         assertAll(
@@ -58,7 +58,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle4 = fixture.사이클_생성_SUCCESS(조조그린_ID, 알고리즘_풀기_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(
+        List<FeedResponse> feedResponses = feedApiService.findAll(
                 new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
@@ -92,7 +92,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle4 = fixture.사이클_생성_SUCCESS(조조그린_ID, 알고리즘_풀기_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(
+        List<FeedResponse> feedResponses = feedApiService.findAll(
                 new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
@@ -107,7 +107,7 @@ class FeedQueryServiceTest extends IntegrationTest {
     @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
     @Test
     void findById_notExistCycleDetail() {
-        assertThatThrownBy(() -> feedQueryService.searchById(1L))
+        assertThatThrownBy(() -> feedApiService.searchById(1L))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
@@ -123,7 +123,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         // when
         List<CycleDetail> cycleDetails = cycle.getCycleDetailsOrderByProgress();
         Long cycleDetailId = cycleDetails.get(0).getId();
-        FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
+        FeedResponse feedResponse = feedApiService.searchById(cycleDetailId);
 
         // then
         assertAll(
