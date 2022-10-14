@@ -33,6 +33,13 @@ public class PagingParams {
         this.cursorId = cursorId;
     }
 
+    public String getSort() {
+        if (this.sort == null) {
+            return "";
+        }
+        return sort;
+    }
+
     public Integer getSize() {
         if (this.size == null || this.size <= 0) {
             return 10;
