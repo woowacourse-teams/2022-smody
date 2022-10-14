@@ -1,24 +1,26 @@
 package com.woowacourse.smody.push;
 
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
-import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.service.WebPushService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class PushScheduler {
+public class WebPushBatch {
 
     private final PushNotificationService pushNotificationService;
     private final PushSubscriptionService pushSubscriptionService;
