@@ -39,10 +39,24 @@ const TitleWrapper = styled(FlexBox)<TitleWrapperProps>`
     left: 0;
     width: 100%;
     height: ${TITLE_HEIGHT};
-    padding: 0 1.5rem;
     z-index: ${Z_INDEX.TITLE};
     background-color: ${bgColor};
     transition: top 0.4s;
+
+    /* PC (해상도 1024px)*/
+    @media all and (min-width: 1024px) {
+      padding: 1rem 10rem;
+    }
+
+    /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
+    @media all and (min-width: 768px) and (max-width: 1023px) {
+      padding: 1rem 7rem;
+    }
+
+    /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
+    @media all and (max-width: 767px) {
+      padding: 1rem 1.25rem;
+    }
   `}
 `;
 
