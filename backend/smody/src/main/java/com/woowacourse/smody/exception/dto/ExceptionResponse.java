@@ -1,4 +1,6 @@
-package com.woowacourse.smody.exception;
+package com.woowacourse.smody.exception.dto;
+
+import com.woowacourse.smody.exception.ExceptionData;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
