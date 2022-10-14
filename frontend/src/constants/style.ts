@@ -1,5 +1,7 @@
 import { FontSizeType } from 'types/style';
 
+export const TITLE_HEIGHT = '65.5px';
+
 export const cursorPointer = {
   cursor: 'pointer',
 };
