@@ -1,9 +1,10 @@
-import { ChallengeIconProps, ImgIconListIndexSignature } from './type';
+import { ChallengeIconProps } from './type';
 import projectIcons from 'assets/project_icons.png';
 import styled, { css } from 'styled-components';
 
 import { FlexBox } from 'components';
 
+import { EVENT_CHALLENGES } from 'constants/event';
 import { emojiList } from 'constants/style';
 
 const ratio = 0.7;
@@ -20,37 +21,19 @@ const SIZES = {
   large: { width: '7.5rem', fontSize: '4.375rem' },
 };
 
-const ImgIconList: ImgIconListIndexSignature = {
-  1: 'f12',
-  2: 'checkmate',
-  3: 'dallok',
-  4: 'ducks',
-  5: 'gongcheck',
-  6: 'gongseek',
-  7: 'jupjup',
-  8: 'kkogkkog',
-  9: 'moamoa',
-  10: 'momo',
-  11: 'morak',
-  12: 'smody',
-  13: 'sokdaksokdak',
-  14: 'teatime',
-  15: 'ternoko',
-};
-
 export const ChallengeIcon = ({
   size,
-  bgColor,
-  emojiIndex,
+  bgColor = '#fff',
+  emojiIndex = 0,
   challengeId,
 }: ChallengeIconProps) => {
   if (
     typeof challengeId !== 'undefined' &&
-    Object.keys(ImgIconList).includes(String(challengeId))
+    Object.keys(EVENT_CHALLENGES).includes(String(challengeId))
   ) {
     return (
       <ProjectIcon size={size} justifyContent="center" alignItems="center">
-        <Icon className={ImgIconList[challengeId]} />
+        <Icon className={EVENT_CHALLENGES[challengeId].name} />
       </ProjectIcon>
     );
   }
@@ -94,13 +77,16 @@ const ProjectIcon = styled(FlexBox)<Pick<ChallengeIconProps, 'size'>>`
     .gongseek,
     .jupjup,
     .kkogkkog,
+    .levellog,
     .moamoa,
     .momo,
     .morak,
+    .naepyeon,
     .smody,
     .sokdaksokdak,
     .teatime,
-    .ternoko {
+    .ternoko,
+    .thankoo {
       display: inline-block;
       background: url(${projectIcons}) no-repeat;
       overflow: hidden;
@@ -110,66 +96,77 @@ const ProjectIcon = styled(FlexBox)<Pick<ChallengeIconProps, 'size'>>`
       border-radius: 50%;
       zoom: ${IMG_SIZES[size]};
     }
-
     .f12 {
-      background-position: 0 0;
+      background-position: -0px -0px;
       background-color: rgb(254, 232, 232);
     }
     .checkmate {
-      background-position: -200px 0;
+      background-position: -200px -0px;
       background-color: #fcead4;
     }
     .dallok {
-      background-position: -400px 0;
+      background-position: -400px -0px;
       background-color: #fff5db;
     }
     .ducks {
-      background-position: 0 -200px;
+      background-position: -600px -0px;
       background-color: #ffffff;
     }
     .gongcheck {
-      background-position: -200px -200px;
+      background-position: -0px -200px;
       background-color: #e1f3fe;
     }
     .gongseek {
-      background-position: -400px -200px;
+      background-position: -200px -200px;
       background-color: #f6f1ff;
     }
     .jupjup {
-      background-position: 0 -400px;
+      background-position: -400px -200px;
       background-color: #ffe6c1;
     }
     .kkogkkog {
-      background-position: -200px -400px;
+      background-position: -600px -200px;
       background-color: #fff5ef;
     }
+    .levellog {
+      background-position: -0px -400px;
+      background-color: #ffffff;
+    }
     .moamoa {
-      background-position: -400px -400px;
+      background-position: -200px -400px;
       background-color: #d0ccff;
     }
     .momo {
-      background-position: 0 -600px;
+      background-position: -400px -400px;
       background-color: #ffffff;
     }
     .morak {
-      background-position: -200px -600px;
+      background-position: -600px -400px;
       background-color: #f6f1ff;
     }
+    .naepyeon {
+      background-position: -0px -600px;
+      background-color: #98daff;
+    }
     .smody {
-      background-position: -400px -600px;
+      background-position: -200px -600px;
       background-color: #ffffff;
     }
     .sokdaksokdak {
-      background-position: 0 -800px;
+      background-position: -400px -600px;
       background-color: #ceffe6;
     }
     .teatime {
-      background-position: -200px -800px;
+      background-position: -600px -600px;
       background-color: #ffffff;
     }
     .ternoko {
-      background-position: -400px -800px;
+      background-position: -0px -800px;
       background-color: rgb(255, 232, 232);
+    }
+    .thankoo {
+      background-position: -200px -800px;
+      background-color: #ffffff;
     }
   `}
 `;
