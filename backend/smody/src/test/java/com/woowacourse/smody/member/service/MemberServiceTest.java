@@ -1,6 +1,17 @@
 package com.woowacourse.smody.member.service;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
+import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.support.ResourceFixture.이미지;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
@@ -8,33 +19,22 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
-import com.woowacourse.smody.member.dto.MemberResponse;
-import com.woowacourse.smody.member.dto.MemberUpdateRequest;
-import com.woowacourse.smody.member.dto.SearchedMemberResponse;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 class MemberServiceTest extends IntegrationTest {
 
@@ -57,14 +57,14 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void searchMyInfo() {
         // when
-        Member member = fixture.회원_조회(조조그린_ID);
-        MemberResponse memberResponse = memberService.searchMyInfo(new TokenPayload(조조그린_ID));
+        Member expected = fixture.회원_조회(조조그린_ID);
+        Member actual = memberService.search(조조그린_ID);
 
         // then
         assertAll(
-                () -> assertThat(memberResponse.getEmail()).isEqualTo(member.getEmail()),
-                () -> assertThat(memberResponse.getNickname()).isEqualTo(member.getNickname()),
-                () -> assertThat(memberResponse.getPicture()).isEqualTo(member.getPicture())
+                () -> assertThat(actual.getEmail()).isEqualTo(expected.getEmail()),
+                () -> assertThat(actual.getNickname()).isEqualTo(expected.getNickname()),
+                () -> assertThat(actual.getPicture()).isEqualTo(expected.getPicture())
         );
     }
 
@@ -72,7 +72,7 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void searchMyInfo_notExist() {
         // when then
-        assertThatThrownBy(() -> memberService.searchMyInfo(new TokenPayload(Long.MAX_VALUE)))
+        assertThatThrownBy(() -> memberService.search(Long.MAX_VALUE))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
@@ -81,18 +81,14 @@ class MemberServiceTest extends IntegrationTest {
     @DisplayName("자신의 회원 정보를 수정한다.")
     @Test
     void updateMyInfo() {
-        // given
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        MemberUpdateRequest updateRequest = new MemberUpdateRequest("쬬그린", "나는 쬬그린");
-
         // when
-        memberService.updateMyInfo(tokenPayload, updateRequest);
+        memberService.updateByMe(조조그린_ID, "쬬그린", "나는 쬬그린");
 
         // then
         Member findMember = fixture.회원_조회(조조그린_ID);
         assertAll(
-                () -> assertThat(findMember.getNickname()).isEqualTo(updateRequest.getNickname()),
-                () -> assertThat(findMember.getIntroduction()).isEqualTo(updateRequest.getIntroduction())
+                () -> assertThat(findMember.getNickname()).isEqualTo("쬬그린"),
+                () -> assertThat(findMember.getIntroduction()).isEqualTo("나는 쬬그린")
         );
     }
 
@@ -100,7 +96,6 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void withdraw() {
         // given
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         Cycle cycle1 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         Cycle cycle2 = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, LocalDateTime.now());
         cycle1.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
@@ -109,11 +104,11 @@ class MemberServiceTest extends IntegrationTest {
         fixture.발송_예정_알림_생성(조조그린_ID, null, LocalDateTime.now(), PushCase.SUBSCRIPTION);
 
         // when
-        memberService.withdraw(tokenPayload);
+        memberService.withdraw(조조그린_ID);
 
         // then
         assertAll(
-                () -> assertThatThrownBy(() -> memberService.searchMyInfo(tokenPayload))
+                () -> assertThatThrownBy(() -> memberService.search(조조그린_ID))
                         .isInstanceOf(BusinessException.class),
                 () -> assertThat(cycleRepository.findAll())
                         .isEmpty(),
@@ -128,46 +123,43 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void updateProfileImage() {
         // given
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         String expected = "https://www.abc.com/profile.jpg";
         given(imageStrategy.extractUrl(any()))
                 .willReturn(expected);
 
         // when
-        memberService.updateProfileImage(tokenPayload, MULTIPART_FILE);
+        memberService.updateProfileImageByMe(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
 
         // then
         assertThat(fixture.회원_조회(조조그린_ID).getPicture()).isEqualTo(expected);
     }
 
-    @DisplayName("회원을 프로필 이미지와 닉네임, 소개를 다른 스레드에서 각각 수정하면 "
-        + "전체가 다 수정되어야 한다.")
+    @DisplayName("회원을 프로필 이미지와 닉네임, 소개를 다른 스레드에서 각각 수정하면 전체가 다 수정되어야 한다.")
     @Test
     @Rollback(value = false)
     void updateMember_multiThread() throws InterruptedException {
         // given
         ExecutorService service = Executors.newFixedThreadPool(2);
         CountDownLatch latch = new CountDownLatch(2);
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
         given(imageStrategy.extractUrl(any()))
             .willReturn("update-image-url");
 
         // when
         service.execute(() -> {
-            memberService.updateMyInfo(tokenPayload, new MemberUpdateRequest("쬬그린", "HI"));
+            memberService.updateByMe(조조그린_ID, "쬬그린", "HI");
             latch.countDown();
         });
 
         service.execute(() -> {
-            memberService.updateProfileImage(tokenPayload, MULTIPART_FILE);
+            memberService.updateProfileImageByMe(조조그린_ID, new Image(MULTIPART_FILE, imageStrategy));
             latch.countDown();
         });
 
         latch.await();
 
         // then
-        Member result = memberService.search(tokenPayload);
+        Member result = memberService.search(조조그린_ID);
         assertAll(
             () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
             () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
@@ -185,7 +177,7 @@ class MemberServiceTest extends IntegrationTest {
 
     @DisplayName("회원을 조회할 때")
     @Nested
-    class findMembersTest {
+    class FindMembersTest {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
         @Test
@@ -198,12 +190,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(8),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(8),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린", "그랑조", "조", "양조장")
             );
         }
@@ -219,12 +211,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(5),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(5),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조조그린", "더즈", "토닉", "알파", "조그린")
             );
         }
@@ -240,12 +232,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(4),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(4),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조그린", "그랑조", "조", "양조장")
             );
         }
@@ -261,12 +253,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(2),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(2),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조그린", "그랑조")
             );
         }
@@ -282,12 +274,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(5),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(5),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조", "조", "양조장")
             );
         }
@@ -303,12 +295,12 @@ class MemberServiceTest extends IntegrationTest {
             fixture.회원_추가("양조장", "d@naver.com");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(3),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(3),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("조조그린", "조그린", "그랑조")
             );
         }
@@ -324,12 +316,12 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 0, member.getId(), "조");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(3),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(3),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("그랑조", "조", "양조장")
             );
         }
@@ -345,12 +337,12 @@ class MemberServiceTest extends IntegrationTest {
             PagingParams pagingParams = new PagingParams(null, 2, member.getId(), "조");
 
             // when
-            List<SearchedMemberResponse> searchedMemberResponse = memberService.findAll(pagingParams);
+            List<Member> members = memberService.findAllByFilter(pagingParams);
 
             // then
             assertAll(
-                    () -> assertThat(searchedMemberResponse).hasSize(2),
-                    () -> assertThat(searchedMemberResponse).map(SearchedMemberResponse::getNickname)
+                    () -> assertThat(members).hasSize(2),
+                    () -> assertThat(members).map(Member::getNickname)
                             .containsExactly("그랑조", "조")
             );
         }

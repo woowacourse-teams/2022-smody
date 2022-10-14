@@ -2,13 +2,12 @@ package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
@@ -30,7 +29,7 @@ public enum Progress {
         }
 
         @Override
-        public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
+        public long calculateDeadLineToMillis(LocalDateTime startTime, LocalDateTime nowTime) {
             LocalDateTime toTime = startTime.plusDays(1L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
         }
@@ -51,7 +50,7 @@ public enum Progress {
         }
 
         @Override
-        public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
+        public long calculateDeadLineToMillis(LocalDateTime startTime, LocalDateTime nowTime) {
             LocalDateTime toTime = startTime.plusDays(2L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
         }
@@ -72,7 +71,7 @@ public enum Progress {
         }
 
         @Override
-        public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
+        public long calculateDeadLineToMillis(LocalDateTime startTime, LocalDateTime nowTime) {
             LocalDateTime toTime = startTime.plusDays(3L);
             return ChronoUnit.MILLIS.between(nowTime, toTime);
         }
@@ -89,7 +88,7 @@ public enum Progress {
         }
 
         @Override
-        public long calculateEndTime(LocalDateTime startTime, LocalDateTime nowTime) {
+        public long calculateDeadLineToMillis(LocalDateTime startTime, LocalDateTime nowTime) {
             return -1L * Long.MAX_VALUE;
         }
     };
@@ -100,7 +99,7 @@ public enum Progress {
 
     public abstract boolean isInProgress(LocalDateTime startTime, LocalDateTime now);
 
-    public abstract long calculateEndTime(LocalDateTime startTime, LocalDateTime testTime);
+    public abstract long calculateDeadLineToMillis(LocalDateTime startTime, LocalDateTime testTime);
 
     public static Optional<Progress> from(String name) {
         return Arrays.stream(values())

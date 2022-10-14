@@ -1,10 +1,20 @@
 package com.woowacourse.smody.ranking.event;
 
+import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleProgressEvent;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
+import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.ranking.domain.Duration;
@@ -13,21 +23,12 @@ import com.woowacourse.smody.ranking.domain.RankingPeriod;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
 
 class RankingEventExceptionTest extends IntegrationTest {
 
@@ -38,9 +39,10 @@ class RankingEventExceptionTest extends IntegrationTest {
     private RankingActivityRepository rankingActivityRepository;
 
     @Autowired
-    private CycleService cycleService;
+    private CycleApiService cycleApiService;
 
-    private EntityManager em;
+    @Autowired
+    private CycleService cycleService;
 
     @MockBean
     private RankingPointEventListener rankingPointEventListener;
@@ -61,19 +63,19 @@ class RankingEventExceptionTest extends IntegrationTest {
                 .when(rankingPointEventListener).handle(any(CycleProgressEvent.class));
 
         // when
-        synchronize(() -> cycleService.increaseProgress(
+        synchronize(() -> cycleApiService.increaseProgress(
                 new TokenPayload(조조그린_ID),
                 new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
         ));
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
-        Cycle actual = cycleService.findAllByMember(fixture.회원_조회(조조그린_ID), new PagingParams()).get(0);
+        Cycle actual = cycleService.findAllByMemberAndFilter(fixture.회원_조회(조조그린_ID), new PagingParams()).get(0);
 
         assertAll(
                 () -> assertThat(activities).isEmpty(),
                 () -> assertThat(actual.getProgress()).isEqualTo(Progress.FIRST),
-                () -> assertThat(actual.getCycleDetails()).hasSize(1)
+                () -> assertThat(actual.getCycleDetailsOrderByProgress()).hasSize(1)
         );
     }
 }

@@ -1,5 +1,14 @@
 package com.woowacourse.smody.feed.service;
 
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.db_support.PagingParams;
@@ -7,23 +16,17 @@ import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.feed.dto.FeedResponse;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-class FeedQueryServiceTest extends IntegrationTest {
+class FeedApiServiceTest extends IntegrationTest {
 
     @Autowired
-    private FeedQueryService feedQueryService;
+    private FeedApiService feedApiService;
 
     @DisplayName("id 값이 null로 들어오면 가장 최신순으로 조회한다")
     @Test
@@ -33,7 +36,7 @@ class FeedQueryServiceTest extends IntegrationTest {
         fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(new PagingParams("latest", 10));
+        List<FeedResponse> feedResponses = feedApiService.findAll(new PagingParams("latest", 10));
 
         //then
         assertAll(
@@ -55,8 +58,8 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle4 = fixture.사이클_생성_SUCCESS(조조그린_ID, 알고리즘_풀기_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(
-                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
+        List<FeedResponse> feedResponses = feedApiService.findAll(
+                new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
         assertAll(
@@ -64,16 +67,16 @@ class FeedQueryServiceTest extends IntegrationTest {
                 () -> assertThat(feedResponses.stream()
                         .map(FeedResponse::getCycleDetailId)
                         .collect(Collectors.toList())).containsExactly(
-                        cycle4.getCycleDetails().get(2).getId(),
-                        cycle3.getCycleDetails().get(2).getId(),
-                        cycle2.getCycleDetails().get(2).getId(),
-                        cycle4.getCycleDetails().get(1).getId(),
-                        cycle3.getCycleDetails().get(1).getId(),
-                        cycle2.getCycleDetails().get(1).getId(),
-                        cycle1.getCycleDetails().get(1).getId(),
-                        cycle4.getCycleDetails().get(0).getId(),
-                        cycle3.getCycleDetails().get(0).getId(),
-                        cycle2.getCycleDetails().get(0).getId()
+                        cycle4.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(2).getId(),
+                        cycle4.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle1.getCycleDetailsOrderByProgress().get(1).getId(),
+                        cycle4.getCycleDetailsOrderByProgress().get(0).getId(),
+                        cycle3.getCycleDetailsOrderByProgress().get(0).getId(),
+                        cycle2.getCycleDetailsOrderByProgress().get(0).getId()
                 )
         );
     }
@@ -89,8 +92,8 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle4 = fixture.사이클_생성_SUCCESS(조조그린_ID, 알고리즘_풀기_ID, today);
 
         // when
-        List<FeedResponse> feedResponses = feedQueryService.findAll(
-                new PagingParams("latest", 10, cycle1.getCycleDetails().get(2).getId())
+        List<FeedResponse> feedResponses = feedApiService.findAll(
+                new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
         // then
         assertAll(
@@ -104,7 +107,7 @@ class FeedQueryServiceTest extends IntegrationTest {
     @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
     @Test
     void findById_notExistCycleDetail() {
-        assertThatThrownBy(() -> feedQueryService.searchById(1L))
+        assertThatThrownBy(() -> feedApiService.searchById(1L))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
@@ -118,9 +121,9 @@ class FeedQueryServiceTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
 
         // when
-        List<CycleDetail> cycleDetails = cycle.getCycleDetails();
+        List<CycleDetail> cycleDetails = cycle.getCycleDetailsOrderByProgress();
         Long cycleDetailId = cycleDetails.get(0).getId();
-        FeedResponse feedResponse = feedQueryService.searchById(cycleDetailId);
+        FeedResponse feedResponse = feedApiService.searchById(cycleDetailId);
 
         // then
         assertAll(

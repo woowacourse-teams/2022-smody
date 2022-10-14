@@ -1,5 +1,9 @@
 package com.woowacourse.smody.auth.service;
 
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.auth.dto.LoginRequest;
 import com.woowacourse.smody.auth.dto.LoginResponse;
 import com.woowacourse.smody.auth.dto.TokenPayload;
@@ -13,16 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 @SpringBootTest
 @Transactional
-class OauthServiceTest extends IntegrationTest {
+class OauthApiServiceTest extends IntegrationTest {
 
     @Autowired
-    private OauthService oauthService;
+    private OauthApiService oauthApiService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -37,7 +37,7 @@ class OauthServiceTest extends IntegrationTest {
         Member member = fixture.회원_조회(조조그린_ID);
 
         // when
-        LoginResponse loginResponse = oauthService.login(new LoginRequest(member));
+        LoginResponse loginResponse = oauthApiService.login(new LoginRequest(member));
         TokenPayload payload = jwtTokenProvider.getPayload(loginResponse.getAccessToken());
 
         // then
@@ -52,7 +52,7 @@ class OauthServiceTest extends IntegrationTest {
     void login_enroll() {
         // when
         String email = "alpha@naver.com";
-        LoginResponse loginResponse = oauthService.login(
+        LoginResponse loginResponse = oauthApiService.login(
                 new LoginRequest(email, "손수건", "사진")
         );
         TokenPayload payload = jwtTokenProvider.getPayload(loginResponse.getAccessToken());

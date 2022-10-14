@@ -1,18 +1,5 @@
 package com.woowacourse.smody.ranking.controller;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
-import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
-import com.woowacourse.smody.support.ControllerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -23,6 +10,18 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.ranking.dto.RankingActivityResponse;
+import com.woowacourse.smody.ranking.dto.RankingPeriodResponse;
+import com.woowacourse.smody.support.ControllerTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 class RankingControllerTest extends ControllerTest {
 
@@ -42,7 +41,7 @@ class RankingControllerTest extends ControllerTest {
                         "week"
                 )
         );
-        given(rankingService.findAllPeriod(new PagingParams("startDate:desc", 10)))
+        given(rankingApiService.findAllPeriod(new PagingParams("startDate:desc", 10)))
                 .willReturn(rankingPeriodResponses);
 
         // when
@@ -75,7 +74,7 @@ class RankingControllerTest extends ControllerTest {
                 )
         );
 
-        given(rankingService.findAllRankedActivity(1L))
+        given(rankingApiService.findAllRankedActivityByPeriodId(1L))
                 .willReturn(responses);
 
         // when
@@ -107,7 +106,7 @@ class RankingControllerTest extends ControllerTest {
 
         TokenPayload payload = new TokenPayload(조조그린_ID);
         String token = jwtTokenProvider.createToken(payload);
-        given(rankingService.findActivityOfMine(payload, 1L))
+        given(rankingApiService.findActivityOfMine(payload, 1L))
                 .willReturn(response);
 
         // when

@@ -1,20 +1,24 @@
 package com.woowacourse.smody.challenge.domain;
 
-import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.member.domain.Member;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.member.domain.Member;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 public class ChallengingRecords {
 
-    private final Map<Challenge, List<ChallengingRecord>> value;
+    private final Map<Challenge, List<ChallengingRecord>> challengingRecords;
 
-    private ChallengingRecords(Map<Challenge, List<ChallengingRecord>> value) {
-        this.value = value;
+    private ChallengingRecords(Map<Challenge, List<ChallengingRecord>> challengingRecords) {
+        this.challengingRecords = challengingRecords;
     }
 
     public static ChallengingRecords from(List<Cycle> cycles) {
@@ -41,7 +45,7 @@ public class ChallengingRecords {
     }
 
     private List<ChallengingRecord> findByChallenge(Challenge challenge) {
-        return Optional.ofNullable(value.get(challenge))
+        return Optional.ofNullable(challengingRecords.get(challenge))
                 .orElse(List.of());
     }
 
@@ -51,10 +55,10 @@ public class ChallengingRecords {
     }
 
     public List<ChallengingRecord> sortByLatestProgressTime() {
-        return value.values().stream()
+        return challengingRecords.values().stream()
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(ChallengingRecord::getLatestProgressTime).reversed()
-                        .thenComparing(memberChallenge -> memberChallenge.getChallenge().getId()))
+                        .thenComparing(challengingRecord -> challengingRecord.getChallenge().getId()))
                 .collect(toList());
     }
 }

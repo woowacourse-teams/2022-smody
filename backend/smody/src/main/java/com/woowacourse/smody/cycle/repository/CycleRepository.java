@@ -3,41 +3,37 @@ package com.woowacourse.smody.cycle.repository;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.member.domain.Member;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.LockModeType;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
 public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
 
-    List<Cycle> findAllByStartTimeIsAfter(LocalDateTime time);
+    List<Cycle> findAllByStartTimeIsAfter(LocalDateTime startTime);
 
-    @Query("select c from Cycle c where c.startTime >= :time and c.challenge in :challenges")
-    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(@Param("time") LocalDateTime time,
-                                                        @Param("challenges") List<Challenge> challenges);
+    List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(LocalDateTime startTime, List<Challenge> challenges);
 
-    @Query("select c from Cycle c where c.startTime >= :time and c.challenge = :challenge")
-    List<Cycle> findAllByStartTimeIsAfterAndChallenge(@Param("time") LocalDateTime time,
-                                                      @Param("challenge") Challenge challenge);
+    List<Cycle> findAllByStartTimeIsAfterAndChallenge(LocalDateTime startTime, Challenge challenge);
 
-    @Query("select count(c) from Cycle c where c.member = :member and "
-            + "c.challenge = :challenge and c.progress = 'SUCCESS'")
+    @Query("select count(c) from Cycle c "
+            + "where c.member = :member and c.challenge = :challenge and c.progress = 'SUCCESS'")
     Long countSuccess(@Param("member") Member member, @Param("challenge") Challenge challenge);
 
-    @Query(value = "select * from cycle c where c.member_id = :memberId and c.challenge_id = :challengeId " +
+    @Query(value = "select * from cycle c "
+            + "where c.member_id = :memberId and c.challenge_id = :challengeId " +
             "order by c.start_time DESC limit 1",
             nativeQuery = true)
     Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
 
     List<Cycle> findByMember(Member member);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Cycle c where c.member = :member")
     void deleteByMember(@Param("member") Member member);
 
@@ -45,5 +41,10 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     @Query("select c from Cycle c where c.id = :id")
     Optional<Cycle> findByIdWithLock(@Param("id") Long id);
 
-    List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId);
+    @Query("select c from Cycle c "
+            + "join fetch c.challenge join fetch c.member "
+            + "where c.challenge.id = :challengeId and c.member.id = :memberId")
+    List<Cycle> findAllByChallengeIdAndMemberId(@Param("challengeId") Long challengeId,
+                                                @Param("memberId") Long memberId);
+
 }

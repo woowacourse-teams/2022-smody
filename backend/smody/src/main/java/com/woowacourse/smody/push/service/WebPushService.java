@@ -6,6 +6,10 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.dto.PushResponse;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.Security;
+import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
@@ -14,11 +18,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.Security;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j

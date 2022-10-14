@@ -1,7 +1,7 @@
 package com.woowacourse.smody.acceptance;
 
 import com.woowacourse.smody.auth.dto.LoginRequest;
-import com.woowacourse.smody.auth.service.OauthService;
+import com.woowacourse.smody.auth.service.OauthApiService;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
 import io.restassured.RestAssured;
@@ -17,7 +17,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 class AcceptanceTest {
 
     @Autowired
-    protected OauthService oauthService;
+    protected OauthApiService oauthApiService;
 
     @LocalServerPort
     private int port;
@@ -28,7 +28,7 @@ class AcceptanceTest {
     }
 
     protected String 로그인_혹은_회원가입(Member member) {
-        return oauthService.login(new LoginRequest(member))
+        return oauthApiService.login(new LoginRequest(member))
                 .getAccessToken();
     }
 }

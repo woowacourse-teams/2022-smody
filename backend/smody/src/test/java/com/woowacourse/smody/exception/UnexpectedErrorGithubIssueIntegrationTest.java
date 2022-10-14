@@ -17,7 +17,7 @@ class UnexpectedErrorGithubIssueIntegrationTest extends ControllerTest {
 		// given
 		String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 		RuntimeException exception = new RuntimeException("예상치 못한 예외");
-		given(memberService.searchMyInfo(any(TokenPayload.class)))
+		given(memberApiService.findByMe(any(TokenPayload.class)))
 			.willThrow(exception);
 
 		// when

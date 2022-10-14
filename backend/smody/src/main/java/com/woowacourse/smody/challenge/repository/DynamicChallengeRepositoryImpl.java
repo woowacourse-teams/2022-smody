@@ -1,16 +1,15 @@
 package com.woowacourse.smody.challenge.repository;
 
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepositor
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Challenge> searchAll(PagingParams pagingParams) {
+    public List<Challenge> findAllByFilter(PagingParams pagingParams) {
         String searchWord = pagingParams.getFilter();
         BooleanBuilder conditions = DynamicQuery.builder()
                 .and(() -> challenge.name.contains(searchWord))
@@ -29,7 +28,7 @@ public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepositor
         return queryFactory
                 .selectFrom(challenge)
                 .where(conditions)
-                .limit(pagingParams.getDefaultSize())
+                .limit(pagingParams.getSize())
                 .fetch();
     }
 }

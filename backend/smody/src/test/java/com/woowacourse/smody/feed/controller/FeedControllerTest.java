@@ -1,19 +1,5 @@
 package com.woowacourse.smody.feed.controller;
 
-import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.feed.dto.FeedResponse;
-import com.woowacourse.smody.support.ControllerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -23,6 +9,19 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.feed.dto.FeedResponse;
+import com.woowacourse.smody.support.ControllerTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 class FeedControllerTest extends ControllerTest {
 
@@ -40,7 +39,7 @@ class FeedControllerTest extends ControllerTest {
                     "인증설명", 1L, "미라클 모닝", 4
                 )
         );
-        BDDMockito.given(feedQueryService.findAll(any(PagingParams.class))).willReturn(feedResponses);
+        BDDMockito.given(feedApiService.findAll(any(PagingParams.class))).willReturn(feedResponses);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds?size=10&cursorId=2&sort=latest"));
@@ -74,7 +73,7 @@ class FeedControllerTest extends ControllerTest {
             2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
             "인증설명", 1L, "미라클 모닝", 5
         );
-        BDDMockito.given(feedQueryService.searchById(1L)).willReturn(feedResponse);
+        BDDMockito.given(feedApiService.searchById(1L)).willReturn(feedResponse);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds/1"));
@@ -103,7 +102,7 @@ class FeedControllerTest extends ControllerTest {
     @Test
     void findById_404() throws Exception {
         // given
-        BDDMockito.given(feedQueryService.searchById(1L))
+        BDDMockito.given(feedApiService.searchById(1L))
                 .willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
 
         // when

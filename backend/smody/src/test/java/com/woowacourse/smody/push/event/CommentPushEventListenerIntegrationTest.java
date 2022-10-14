@@ -1,8 +1,14 @@
 package com.woowacourse.smody.push.event;
 
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.dto.CommentRequest;
-import com.woowacourse.smody.comment.service.CommentService;
+import com.woowacourse.smody.comment.service.CommentApiService;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.push.domain.PushCase;
@@ -10,21 +16,16 @@ import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 
 	@Autowired
-	private CommentService commentService;
+	private CommentApiService commentApiService;
 
 	@Autowired
 	private PushNotificationRepository pushNotificationRepository;
@@ -35,12 +36,12 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		// given
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+		CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		synchronize(() -> commentService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
+		synchronize(() -> commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
@@ -59,12 +60,12 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 		// given
 		LocalDateTime now = LocalDateTime.now();
 		Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-		CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+		CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
 		CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
 		// when
-		synchronize(() -> commentService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest));
+		synchronize(() -> commentApiService.create(new TokenPayload(조조그린_ID), cycleDetail.getId(), commentRequest));
 
 		// then
 		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);

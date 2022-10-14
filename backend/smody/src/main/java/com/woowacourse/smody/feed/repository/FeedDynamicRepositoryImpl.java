@@ -1,5 +1,11 @@
 package com.woowacourse.smody.feed.repository;
 
+import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
+import static com.woowacourse.smody.comment.domain.QComment.comment;
+import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
+import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
+import static com.woowacourse.smody.member.domain.QMember.member;
+
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.OrderSpecifier;
@@ -10,16 +16,9 @@ import com.woowacourse.smody.db_support.DynamicQuery;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.db_support.SortSelection;
 import com.woowacourse.smody.feed.domain.Feed;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
-import static com.woowacourse.smody.comment.domain.QComment.comment;
-import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
-import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
-import static com.woowacourse.smody.member.domain.QMember.member;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
@@ -46,7 +45,7 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
         OrderSpecifier<?>[] orders = SortSelection.findByParameter(pagingParams.getSort())
                 .getOrderSpecifiers();
 
-        Long cycleDetailId = pagingParams.getDefaultCursorId();
+        Long cycleDetailId = pagingParams.getCursorId();
         LocalDateTime progressTime = getCursorProgressTime(cycleDetailId);
 
         return queryFactory

@@ -1,25 +1,24 @@
 package com.woowacourse.smody.push.service;
 
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-
-class PushSubscriptionServiceTest extends IntegrationTest {
+class PushSubscriptionApiServiceTest extends IntegrationTest {
 
     @Autowired
-    private PushSubscriptionService pushSubscriptionService;
+    private PushSubscriptionApiService pushSubscriptionApiService;
 
     @Autowired
     private PushSubscriptionRepository pushSubscriptionRepository;
@@ -33,7 +32,7 @@ class PushSubscriptionServiceTest extends IntegrationTest {
                 "endpoint-link", "p256dh", "auth");
 
         // when
-        pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
+        pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest);
 
         // then
         Optional<PushSubscription> findSubscription = pushSubscriptionRepository.findByEndpoint("endpoint-link");
@@ -50,10 +49,10 @@ class PushSubscriptionServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
                 "endpoint-link", "p256dh", "auth");
-        pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
+        pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest);
 
         // when
-        pushSubscriptionService.subscribe(new TokenPayload(더즈_ID), subscriptionRequest);
+        pushSubscriptionApiService.subscribe(new TokenPayload(더즈_ID), subscriptionRequest);
 
         // then
         Optional<PushSubscription> findSubscription = pushSubscriptionRepository.findByEndpoint("endpoint-link");
@@ -70,11 +69,11 @@ class PushSubscriptionServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
                 "endpoint-link", "p256dh", "auth");
-        pushSubscriptionService.subscribe(tokenPayload, subscriptionRequest);
+        pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest);
         UnSubscriptionRequest unSubscriptionRequest = new UnSubscriptionRequest("endpoint-link");
 
         // when
-        pushSubscriptionService.unSubscribe(tokenPayload, unSubscriptionRequest);
+        pushSubscriptionApiService.unSubscribe(tokenPayload, unSubscriptionRequest);
 
         // then
         Optional<PushSubscription> findSubscription = pushSubscriptionRepository.findByEndpoint("endpoint-link");

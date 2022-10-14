@@ -25,13 +25,4 @@ public class ChallengeTabResponse {
         this.emojiIndex = challenge.getEmojiIndex();
         this.colorIndex = challenge.getColorIndex();
     }
-
-    public ChallengeTabResponse(Challenge challenge, Integer challengerCount) {
-        this(challenge, challengerCount, false);
-    }
-
-    public ChallengeTabResponse changeInProgress(Boolean inProgress) {
-        return new ChallengeTabResponse(challengeId, challengeName, challengerCount, inProgress, emojiIndex,
-                colorIndex);
-    }
 }

@@ -1,13 +1,12 @@
 package com.woowacourse.smody.cycle.dto;
 
 import com.woowacourse.smody.cycle.domain.Cycle;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,7 +37,7 @@ public class CycleResponse {
         this.description = cycle.getChallenge().getDescription();
         this.emojiIndex = cycle.getChallenge().getEmojiIndex();
         this.colorIndex = cycle.getChallenge().getColorIndex();
-        this.cycleDetails = cycle.getCycleDetails().stream()
+        this.cycleDetails = cycle.getCycleDetailsOrderByProgress().stream()
                 .map(CycleDetailResponse::new)
                 .collect(Collectors.toList());
     }

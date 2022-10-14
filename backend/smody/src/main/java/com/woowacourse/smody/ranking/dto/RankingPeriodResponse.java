@@ -1,11 +1,10 @@
 package com.woowacourse.smody.ranking.dto;
 
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor

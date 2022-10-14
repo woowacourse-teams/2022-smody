@@ -1,5 +1,7 @@
 package com.woowacourse.smody.image;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
@@ -9,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SmodyImageStrategyTest {
 
