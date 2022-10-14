@@ -1,4 +1,4 @@
-package com.woowacourse.smody.exception;
+package com.woowacourse.smody.exception.dto;
 
 import java.util.List;
 

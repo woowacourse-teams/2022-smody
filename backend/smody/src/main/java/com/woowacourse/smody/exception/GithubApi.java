@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.smody.exception.dto.IssueCreateRequest;
 
 import lombok.RequiredArgsConstructor;
 

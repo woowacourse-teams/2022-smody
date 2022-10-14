@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ControllerAdvice {
 
-    private static final String ISSUE_CREATE_ENV = "prod";
+    private static final String ISSUE_CREATE_PROFILE = "prod";
 
     private final GithubApi githubApi;
     private final Environment environment;
@@ -39,6 +39,6 @@ public class ControllerAdvice {
 
     private boolean isProd(String[] activeProfiles) {
         return Arrays.stream(activeProfiles)
-            .anyMatch(env -> env.equalsIgnoreCase(ISSUE_CREATE_ENV));
+            .anyMatch(env -> env.equalsIgnoreCase(ISSUE_CREATE_PROFILE));
     }
 }
