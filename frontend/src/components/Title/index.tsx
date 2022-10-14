@@ -41,7 +41,7 @@ const TitleWrapper = styled(FlexBox)`
     width: 100%;
     height: 65.5px;
     padding: 0 1.5rem;
-    z-index: ${Z_INDEX.FIXED_NAVBAR};
+    z-index: ${Z_INDEX.TITLE};
     background-color: ${theme.background};
     transition: top 0.4s;
   `}
