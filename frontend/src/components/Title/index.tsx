@@ -3,17 +3,14 @@ import { PropsWithChildren } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import styled, { css } from 'styled-components';
 
-import useThemeContext from 'hooks/useThemeContext';
-
 import { FlexBox, Text } from 'components';
-import { TitleProps } from 'components/Title/type';
+import { TitleProps, TitleWrapperProps } from 'components/Title/type';
 
 import { Z_INDEX } from 'constants/css';
 import { TITLE_HEIGHT } from 'constants/style';
 
 export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>) => {
-  const themeContext = useThemeContext();
-  const { backToPreviousPage, TitleRef } = useTitle({ linkTo });
+  const { backToPreviousPage, TitleRef, themeContext, bgColor } = useTitle({ linkTo });
 
   return (
     <TitleWrapper
@@ -22,6 +19,7 @@ export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>)
       justifyContent="space-between"
       alignItems="center"
       gap="10px"
+      bgColor={bgColor}
     >
       <IconWrapper>
         <MdArrowBackIosNew size={20} onClick={backToPreviousPage} />
@@ -34,8 +32,8 @@ export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>)
   );
 };
 
-const TitleWrapper = styled(FlexBox)`
-  ${({ theme }) => css`
+const TitleWrapper = styled(FlexBox)<TitleWrapperProps>`
+  ${({ bgColor }) => css`
     position: fixed;
     top: 3rem;
     left: 0;
@@ -43,7 +41,7 @@ const TitleWrapper = styled(FlexBox)`
     height: ${TITLE_HEIGHT};
     padding: 0 1.5rem;
     z-index: ${Z_INDEX.TITLE};
-    background-color: ${theme.background};
+    background-color: ${bgColor};
     transition: top 0.4s;
   `}
 `;
