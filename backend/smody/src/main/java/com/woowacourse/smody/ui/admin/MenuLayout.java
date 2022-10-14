@@ -35,7 +35,6 @@ public class MenuLayout extends AppLayout {
                 createTab(VaadinIcon.SWORD, "challenge", ChallengeView.class),
                 createTab(VaadinIcon.RECYCLE, "cycle", CycleView.class),
                 createTab(VaadinIcon.AIRPLANE, "cycleDetail", CycleDetailView.class),
-                createTab(VaadinIcon.ALARM, "pushNotification", PushNotificationView.class),
                 createTab(VaadinIcon.BUG, "log", LogView.class)
         );
         return tabs;

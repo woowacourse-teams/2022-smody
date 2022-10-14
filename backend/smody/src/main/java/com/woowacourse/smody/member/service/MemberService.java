@@ -12,8 +12,6 @@ import com.woowacourse.smody.member.dto.MemberResponse;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
 import com.woowacourse.smody.member.dto.SearchedMemberResponse;
 import com.woowacourse.smody.member.repository.MemberRepository;
-import com.woowacourse.smody.push.repository.PushNotificationRepository;
-import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,10 +32,6 @@ public class MemberService {
     private final CycleRepository cycleRepository;
     private final ImageStrategy imageStrategy;
 
-    private final PushSubscriptionRepository pushSubscriptionRepository;
-
-    private final PushNotificationRepository pushNotificationRepository;
-
     public MemberResponse searchMyInfo(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
         return new MemberResponse(member);
@@ -54,8 +48,6 @@ public class MemberService {
     public void withdraw(TokenPayload tokenPayload) {
         Member member = search(tokenPayload);
         cycleRepository.deleteByMember(member);
-        pushNotificationRepository.deleteByMember(member);
-        pushSubscriptionRepository.deleteByMember(member);
         memberRepository.delete(member);
     }
 
