@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { FlexBox } from 'components';
 
-import { EVENT_CHALLENGES } from 'constants/event';
+import { EVENT_CHALLENGES, EVENT_CHALLENGE_ID_LIST } from 'constants/event';
 import { emojiList } from 'constants/style';
 
 const ratio = 0.7;
@@ -29,7 +29,7 @@ export const ChallengeIcon = ({
 }: ChallengeIconProps) => {
   if (
     typeof challengeId !== 'undefined' &&
-    Object.keys(EVENT_CHALLENGES).includes(String(challengeId))
+    EVENT_CHALLENGE_ID_LIST.includes(challengeId)
   ) {
     return (
       <ProjectIcon size={size} justifyContent="center" alignItems="center">

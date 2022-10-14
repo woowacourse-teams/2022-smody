@@ -7,7 +7,9 @@ import usePostJoinChallenge from 'hooks/usePostJoinChallenge';
 import { UseSuccessModalProps } from 'components/SuccessModal/type';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
+import { EVENT_CHALLENGE_ID_LIST } from 'constants/event';
 import { CLIENT_PATH } from 'constants/path';
+import { emojiList } from 'constants/style';
 
 const getMessageByProgressCount = (progressCount: number) => {
   switch (progressCount) {
@@ -29,14 +31,17 @@ const useSuccessModal = ({
   challengeName,
   challengeId,
   progressCount,
-  emoji,
+  emojiIndex,
 }: UseSuccessModalProps) => {
   const navigate = useNavigate();
+
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti', {
     elementSize: 17,
   });
+
+  const isEvent = EVENT_CHALLENGE_ID_LIST.includes(challengeId);
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
-    emoji: [emoji],
+    emoji: isEvent ? ['❤️', '🧡', '💛', '💚', '💙', '💜'] : [emojiList[emojiIndex]],
     elementSize: 35,
   });
 

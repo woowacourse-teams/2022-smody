@@ -15,7 +15,7 @@ import {
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 const certImageCompressionOptions = {
   maxSizeMB: 0.2,
@@ -140,7 +140,7 @@ const CertFormPage = () => {
           challengeName={challengeName}
           successCount={successCount}
           progressCount={progressCount + 1}
-          emoji={emojiList[emojiIndex]}
+          emojiIndex={emojiIndex}
         />
       )}
     </FlexBox>
