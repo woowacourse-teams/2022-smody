@@ -107,4 +107,22 @@ class PushNotificationControllerTest extends ControllerTest {
 								fieldWithPath("pathId").type(JsonFieldType.NUMBER).description("피드 id")
 						)));
 	}
+
+	@DisplayName("나의 보낸 알림을 모두 삭제하면 204 응답을 반환한다.")
+	@Test
+	void deleteAll() throws Exception {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(1L);
+		String token = jwtTokenProvider.createToken(tokenPayload);
+
+		// when
+		ResultActions result = mockMvc.perform(delete("/push-notifications/me")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Bearer " + token));
+
+		// then
+		result.andExpect(status().isNoContent())
+			.andDo(document("delete-my-notifications", HOST_INFO,
+				preprocessResponse(prettyPrint())));
+	}
 }
