@@ -19,7 +19,7 @@ import {
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-import { TITLE_HEIGHT } from 'constants/style';
+import { TITLE_HEIGHT, TITLE_USING_PAGE } from 'constants/style';
 
 const PROFILE_PATH_PADDING = { pc: '0', tablet: '0', mobile: '0' };
 const OTHER_PATH_PADDING = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
@@ -55,15 +55,7 @@ export const Layout = () => {
     [CLIENT_PATH.PROFILE_CHALLENGE_DETAIL],
   );
 
-  const topPadding = getPathMatchTopPadding([
-    CLIENT_PATH.CHALLENGE_DETAIL,
-    CLIENT_PATH.PROFILE_CHALLENGE_DETAIL,
-    CLIENT_PATH.CHALLENGE_CREATE,
-    CLIENT_PATH.CYCLE_DETAIL,
-    CLIENT_PATH.CYCLE_DETAIL_SHARE,
-    CLIENT_PATH.FEED_DETAIL,
-    CLIENT_PATH.PROFILE_EDIT,
-  ]);
+  const topPadding = getPathMatchTopPadding(TITLE_USING_PAGE);
 
   return (
     <Wrapper>

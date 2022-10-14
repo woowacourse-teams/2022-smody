@@ -1,5 +1,6 @@
 import { Layout } from 'Layout';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { LocationState } from 'types/internal';
 
 import {
   FeedPage,
@@ -23,17 +24,6 @@ import {
 import { PrivateOutlet, LandingNavigation } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
-
-type LocationState = {
-  isInCertFormPage: boolean;
-  cycleId?: number;
-  challengeId?: number;
-  challengeName?: string;
-  progressCount?: number;
-  successCount?: number;
-  emojiIndex?: number;
-  colorIndex?: number;
-};
 
 const CertFlowPage = () => {
   const { state } = useLocation();
