@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 enum ScrollDirection {
   up = 'up',
   down = 'down',
+  initial = 'initial',
 }
 
 const useScrollDirection = () => {
   const threshold = 10;
-  const [scrollDir, setScrollDir] = useState(ScrollDirection.up);
+  const [scrollDir, setScrollDir] = useState(ScrollDirection.initial);
 
   useEffect(() => {
     let previousScrollYPosition = window.scrollY;
