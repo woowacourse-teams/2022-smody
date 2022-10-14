@@ -58,7 +58,6 @@ export const Layout = () => {
   const topPadding = getPathMatchTopPadding([
     CLIENT_PATH.CHALLENGE_DETAIL,
     CLIENT_PATH.PROFILE_CHALLENGE_DETAIL,
-    CLIENT_PATH.CERT,
     CLIENT_PATH.CHALLENGE_CREATE,
     CLIENT_PATH.CYCLE_DETAIL,
     CLIENT_PATH.CYCLE_DETAIL_SHARE,
@@ -101,7 +100,7 @@ const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`
   ${({ bgColor, horizontalPadding, topPadding }) => css`
     min-height: 100vh;
     background-color: ${bgColor};
-    padding-top: ${topPadding}px;
+    padding-top: ${topPadding};
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {

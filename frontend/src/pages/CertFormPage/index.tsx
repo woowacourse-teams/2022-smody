@@ -15,7 +15,7 @@ import {
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { TITLE_HEIGHT, colorList, emojiList } from 'constants/style';
 
 const certImageCompressionOptions = {
   maxSizeMB: 0.2,
@@ -47,7 +47,7 @@ const CertFormPage = () => {
   } = useCertFormPage();
 
   return (
-    <FlexBox flexDirection="column" alignItems="center">
+    <Wrapper flexDirection="column" alignItems="center">
       <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
 
       <CertInfoWrapper
@@ -140,11 +140,15 @@ const CertFormPage = () => {
           emoji={emojiList[emojiIndex]}
         />
       )}
-    </FlexBox>
+    </Wrapper>
   );
 };
 
 export default CertFormPage;
+
+const Wrapper = styled(FlexBox)`
+  padding-top: ${TITLE_HEIGHT};
+`;
 
 const CertInfoWrapper = styled(FlexBox)`
   width: 100%;
