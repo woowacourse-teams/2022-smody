@@ -11,12 +11,12 @@ export const useHeader = () => {
 
   useEffect(() => {
     if (scrollDirection === 'up') {
-      wrapperRef.current!.style.top = '0rem';
+      wrapperRef.current!.style.transform = 'translateY(0rem)';
 
       return;
     }
     if (scrollDirection === 'down') {
-      wrapperRef.current!.style.top = '-3rem';
+      wrapperRef.current!.style.transform = 'translateY(-3rem)';
 
       return;
     }
