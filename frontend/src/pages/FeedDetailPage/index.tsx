@@ -113,7 +113,6 @@ const MenuBottomSheet = ({
 };
 
 const Wrapper = styled(FlexBox)`
-  margin-top: 2rem;
   padding-bottom: 8.625rem;
 `;
 

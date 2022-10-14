@@ -9,6 +9,7 @@ import { FlexBox, Text } from 'components';
 import { TitleProps } from 'components/Title/type';
 
 import { Z_INDEX } from 'constants/css';
+import { TITLE_HEIGHT } from 'constants/style';
 
 export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>) => {
   const themeContext = useThemeContext();
@@ -39,7 +40,7 @@ const TitleWrapper = styled(FlexBox)`
     top: 3rem;
     left: 0;
     width: 100%;
-    height: 65.5px;
+    height: ${TITLE_HEIGHT};
     padding: 0 1.5rem;
     z-index: ${Z_INDEX.TITLE};
     background-color: ${theme.background};
