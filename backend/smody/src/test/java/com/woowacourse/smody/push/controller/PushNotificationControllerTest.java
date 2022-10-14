@@ -110,7 +110,7 @@ class PushNotificationControllerTest extends ControllerTest {
 
 	@DisplayName("나의 보낸 알림을 모두 삭제하면 204 응답을 반환한다.")
 	@Test
-	void deleteAll() throws Exception {
+	void deleteMyCompleteNotifications() throws Exception {
 		// given
 		TokenPayload tokenPayload = new TokenPayload(1L);
 		String token = jwtTokenProvider.createToken(tokenPayload);

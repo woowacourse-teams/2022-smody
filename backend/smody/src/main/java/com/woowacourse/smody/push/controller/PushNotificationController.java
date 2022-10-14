@@ -49,7 +49,7 @@ public class PushNotificationController {
 
     @DeleteMapping("/me")
     @RequiredLogin
-    public ResponseEntity<Void> deleteAll(@LoginMember TokenPayload tokenPayload) {
+    public ResponseEntity<Void> deleteMyCompleteNotifications(@LoginMember TokenPayload tokenPayload) {
         pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
         return ResponseEntity.noContent().build();
     }
