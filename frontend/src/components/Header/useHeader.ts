@@ -17,13 +17,13 @@ export const useHeader = () => {
     }
 
     if (scrollDirection === 'up') {
-      wrapperRef.current!.style.transform = 'translateY(0rem)';
+      wrapperRef.current!.style.top = '0rem';
 
       return;
     }
 
     if (scrollDirection === 'down') {
-      wrapperRef.current!.style.transform = 'translateY(-3rem)';
+      wrapperRef.current!.style.top = '-3rem';
 
       return;
     }
