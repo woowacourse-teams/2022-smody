@@ -57,9 +57,7 @@ public class ChallengeApiService {
                                                                            Member member) {
         List<Cycle> cycles = cycleService.findInProgress(searchTime);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
-        List<Challenge> challenges = challengingRecords.getChallenges().stream()
-                .sorted(Comparator.comparing(challengingRecords::countChallenger).reversed())
-                .collect(toList());
+        List<Challenge> challenges = challengingRecords.getChallengesOrderByChallenger();
         List<Challenge> pagedChallenges = CursorPaging.apply(challenges, null, pagingParams.getSize());
         return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
     }

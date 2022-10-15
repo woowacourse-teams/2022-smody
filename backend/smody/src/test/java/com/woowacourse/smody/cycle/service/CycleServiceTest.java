@@ -157,4 +157,44 @@ class CycleServiceTest extends IntegrationTest {
             assertThat(cycles).hasSize(1);
         }
     }
+
+    @DisplayName("진행중인 사이클을 조회한다.")
+    @Test
+    void findInProgress() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now);
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.minusDays(1).minusMinutes(1));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 오늘의_운동_ID, now.minusDays(3));
+
+        // when
+        List<Cycle> actual = cycleService.findInProgress(now);
+
+        // then
+        assertThat(actual).map(cycle -> cycle.getChallenge().getId())
+                .containsExactly(미라클_모닝_ID, 스모디_방문하기_ID, 오늘의_운동_ID);
+    }
+
+    @DisplayName("진행중인 사이클을 조회할 때 챌린지도 같이 조회한다.")
+    @Test
+    void findInProgressWithChallenge() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now);
+
+        fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, now.minusDays(1).minusMinutes(1));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 오늘의_운동_ID, now.minusDays(3));
+
+        // when
+        List<Cycle> actual = cycleService.findInProgress(now);
+
+        // then
+        assertThat(actual).map(cycle -> cycle.getChallenge().getName())
+                .containsExactly("미라클 모닝", "스모디 방문하기", "오늘의 운동");
+    }
 }

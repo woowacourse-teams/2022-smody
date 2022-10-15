@@ -5,8 +5,6 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.member.domain.Member;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -64,7 +62,10 @@ public class ChallengingRecords {
                 .collect(toList());
     }
 
-    public List<Challenge> getChallenges() {
-        return new ArrayList<>(challengingRecords.keySet());
+    public List<Challenge> getChallengesOrderByChallenger() {
+        return challengingRecords.keySet()
+                .stream()
+                .sorted(Comparator.comparing(challenge -> challengingRecords.get(challenge).size()).reversed())
+                .collect(toList());
     }
 }
