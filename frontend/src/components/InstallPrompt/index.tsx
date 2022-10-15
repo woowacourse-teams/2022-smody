@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { setCookie, getCookie } from 'utils';
 
 import useInstallApp from 'hooks/useInstallApp';
 import useThemeContext from 'hooks/useThemeContext';
@@ -12,15 +13,28 @@ export const InstallPrompt = () => {
   const { installApp, isInstallPromptDeferred, isNotInstalledInIOS } = useInstallApp();
   const isAbleInstall = isNotInstalledInIOS || isInstallPromptDeferred;
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
+  const [isInstallPromptHide, setIsInstallPromptHide] = useState('show');
 
   const handleCloseBottomSheet = () => {
     setIsBottomSheetOpen(false);
   };
 
+  const hideInstallPrompt = () => {
+    setIsBottomSheetOpen(false);
+    setCookie('isInstallPromptHide', 'hide', 604800); // 1주일
+  };
+
+  useEffect(() => {
+    const isHide = getCookie('isInstallPromptHide');
+    if (isHide) {
+      setIsInstallPromptHide(isHide);
+    }
+  }, []);
+
   return (
     <>
-      {isBottomSheetOpen && isAbleInstall && (
-        <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet} height="220px">
+      {isInstallPromptHide === 'show' && isBottomSheetOpen && isAbleInstall && (
+        <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet} height="225px">
           <FlexBox flexDirection="column" gap="1rem" style={{ width: '80%' }}>
             {isInstallPromptDeferred && (
               <FlexBox flexDirection="column" alignItems="center" gap="0.7rem">
@@ -55,6 +69,19 @@ export const InstallPrompt = () => {
                 </p>
               </FlexBox>
             )}
+            <Text
+              onClick={hideInstallPrompt}
+              size={14}
+              color={themeContext.onSecondary}
+              style={{
+                cursor: 'pointer',
+                textAlign: 'center',
+                textDecoration: 'underline',
+                marginTop: '1rem',
+              }}
+            >
+              1주일 동안 보지 않기
+            </Text>
           </FlexBox>
         </BottomSheet>
       )}
