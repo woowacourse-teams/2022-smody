@@ -15,19 +15,17 @@ export const useHeader = () => {
   const { pathname, state } = useLocation();
 
   useEffect(() => {
-    if (isNotNeedScrollAnimation) {
+    if (isNotNeedScrollAnimation || wrapperRef.current === null) {
       return;
     }
 
     if (scrollDirection === 'up') {
-      wrapperRef.current!.style.top = '0rem';
-
+      wrapperRef.current.style.top = '0';
       return;
     }
 
     if (scrollDirection === 'down') {
-      wrapperRef.current!.style.top = '-3rem';
-
+      wrapperRef.current.style.top = '-3rem';
       return;
     }
   }, [scrollDirection]);
