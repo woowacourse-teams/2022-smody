@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import useSnackBar from 'hooks/useSnackBar';
 
@@ -11,8 +11,6 @@ import {
   SearchBar,
   ChallengeList,
   ChallengeItem,
-  Button,
-  FixedButton,
 } from 'components';
 
 const SearchPage = () => {
@@ -26,8 +24,7 @@ const SearchPage = () => {
     handleChangeSearch,
     handleClickSearchButton,
     fetchNextPage,
-    handleCreateChallengeButton,
-    handleEventPageButton,
+
     isError,
     savedChallenges,
   } = useSearchPage();
@@ -57,49 +54,26 @@ const SearchPage = () => {
   }
 
   return (
-    <FlexBox flexDirection="column">
-      <TabWrapper alignItems="center">
-        <EventButton size="small" onClick={handleEventPageButton}>
-          이벤트 페이지
-        </EventButton>
-      </TabWrapper>
-      <SearchContentWrapper flexDirection="column">
-        <SearchBar
-          searchInput={searchInput}
-          handleChangeSearch={handleChangeSearch}
-          handleClickSearchButton={handleClickSearchButton}
-        />
-        <InfiniteScroll
-          loadMore={fetchNextPage}
-          hasMore={hasNextPage}
-          isFetching={isFetching}
-          loader={<LoadingSpinner />}
-        >
-          <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />
-        </InfiniteScroll>
-      </SearchContentWrapper>
-      <FixedButton onClick={handleCreateChallengeButton}>챌린지 생성하기</FixedButton>
-    </FlexBox>
+    <SearchContentWrapper flexDirection="column">
+      <SearchBar
+        searchInput={searchInput}
+        handleChangeSearch={handleChangeSearch}
+        handleClickSearchButton={handleClickSearchButton}
+      />
+      <InfiniteScroll
+        loadMore={fetchNextPage}
+        hasMore={hasNextPage}
+        isFetching={isFetching}
+        loader={<LoadingSpinner />}
+      >
+        <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />
+      </InfiniteScroll>
+    </SearchContentWrapper>
   );
 };
 
 export default SearchPage;
 
-const TabWrapper = styled(FlexBox)`
-  ${({ theme }) => css`
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    background-color: ${theme.background};
-    margin-top: -7px;
-  `}
-`;
-
 const SearchContentWrapper = styled(FlexBox)`
-  margin-top: 110px;
-  padding-bottom: 65px;
-`;
-
-const EventButton = styled(Button)`
-  background-image: linear-gradient(to bottom right, #ffd700, orange);
+  margin-top: 50px;
 `;

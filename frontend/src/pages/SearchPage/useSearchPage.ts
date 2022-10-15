@@ -1,16 +1,12 @@
 import { useGetAllChallenges } from 'apis';
 import { indexedDB, saveDataToCache } from 'pwa/indexedDB';
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { isLoginState } from 'recoil/auth/atoms';
 import { AdditionalChallengeInfo } from 'types/challenge';
 
 import useDebounce from 'hooks/useDebounce';
 import useSnackBar from 'hooks/useSnackBar';
 
 import { MAX_CHALLENGE_NAME_LENGTH } from 'constants/domain';
-import { CLIENT_PATH } from 'constants/path';
 import { EMPTY_REGEX_RULE } from 'constants/regex';
 import { INDEXED_DB } from 'constants/storage';
 
@@ -22,9 +18,7 @@ const checkIsExceedMaxLength = (value: string) =>
 
 export const useSearchPage = () => {
   const flagCheck = useRef(false);
-  const isLogin = useRecoilValue(isLoginState);
   const renderSnackBar = useSnackBar();
-  const navigate = useNavigate();
 
   const searchInput = useRef<HTMLInputElement>(null);
   const [searchValue, setSearchValue] = useState('');
@@ -97,23 +91,6 @@ export const useSearchPage = () => {
     });
   };
 
-  const handleCreateChallengeButton = () => {
-    if (!isLogin) {
-      renderSnackBar({
-        message: '로그인이 필요한 서비스입니다.',
-        status: 'ERROR',
-      });
-
-      return;
-    }
-
-    navigate(CLIENT_PATH.CHALLENGE_CREATE);
-  };
-
-  const handleEventPageButton = () => {
-    navigate(CLIENT_PATH.EVENT);
-  };
-
   const checkSearchValueValid = (value: string) => {
     if (checkBlankSpaceValue(value)) {
       renderSnackBar({
@@ -144,8 +121,7 @@ export const useSearchPage = () => {
     handleChangeSearch,
     handleClickSearchButton,
     fetchNextPage,
-    handleCreateChallengeButton,
-    handleEventPageButton,
+
     savedChallenges,
     isError,
   };

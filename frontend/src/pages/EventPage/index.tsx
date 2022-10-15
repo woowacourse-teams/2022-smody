@@ -1,14 +1,21 @@
 import { EventChallengeItem } from './components';
+import styled from 'styled-components';
 
-import { FlexBox, Title } from 'components';
+import useThemeContext from 'hooks/useThemeContext';
+
+import { FlexBox, Text } from 'components';
 
 import { EVENT_CHALLENGE_ID_LIST, EVENT_CHALLENGES } from 'constants/event';
-import { CLIENT_PATH } from 'constants/path';
 
 const EventPage = () => {
+  const themeContext = useThemeContext();
+
   return (
     <FlexBox flexDirection="column">
-      <Title text="⭐ 우테코 팀프로젝트 이벤트 ⭐" linkTo={CLIENT_PATH.SEARCH} />
+      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
+        ⭐ 우테코 팀프로젝트 이벤트 ⭐
+      </TitleText>
+
       <FlexBox as="ul" flexDirection="column" gap="27px">
         {EVENT_CHALLENGE_ID_LIST.map((challengeId: number) => (
           <li key={challengeId}>
@@ -25,3 +32,8 @@ const EventPage = () => {
 };
 
 export default EventPage;
+
+const TitleText = styled(Text)`
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
