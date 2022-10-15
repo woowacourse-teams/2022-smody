@@ -17,9 +17,7 @@ const useScrollDirection = () => {
       Math.abs(currentScrollYPosition - previousScrollYPosition) > threshold;
 
     const isScrollingUp = (currentScrollYPosition: number) =>
-      currentScrollYPosition > previousScrollYPosition &&
-      !(previousScrollYPosition > 0 && currentScrollYPosition === 0) &&
-      !(currentScrollYPosition > 0 && previousScrollYPosition === 0);
+      currentScrollYPosition > previousScrollYPosition && previousScrollYPosition !== 0;
 
     const updateScrollDirection = () => {
       const currentScrollYPosition = window.scrollY;
