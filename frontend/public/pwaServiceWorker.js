@@ -6,8 +6,6 @@ const APP_SHELL = [
   '/image/android-chrome-192x192.png',
   '/image/android-chrome-512x512.png',
   '/image/apple-touch-icon.png',
-  '/image/favicon-16x16.png',
-  '/image/favicon-32x32.png',
   '/image/favicon.ico',
   '/image/screenshot-0.png',
   '/image/screenshot-1.png',
