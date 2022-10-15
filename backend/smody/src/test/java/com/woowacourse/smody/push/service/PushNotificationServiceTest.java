@@ -83,7 +83,7 @@ class PushNotificationServiceTest extends IntegrationTest {
         fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
 
         // when
-        pushNotificationService.deleteCompleted(member);
+        pushNotificationService.deleteCompletedByMember(member);
 
         // then
         assertThat(pushNotificationRepository.findAll()).hasSize(2);

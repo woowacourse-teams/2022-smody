@@ -76,6 +76,6 @@ public class PushNotificationApiService {
     @Transactional
     public void deleteMyCompleteNotifications(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
-        pushNotificationService.deleteCompleted(member);
+        pushNotificationService.deleteCompletedByMember(member);
     }
 }

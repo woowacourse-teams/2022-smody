@@ -51,7 +51,7 @@ public class PushNotificationService {
     }
 
     @Transactional
-    public void deleteCompleted(Member member) {
+    public void deleteCompletedByMember(Member member) {
         pushNotificationRepository.deleteByMemberAndPushStatus(member, PushStatus.COMPLETE);
     }
 }
