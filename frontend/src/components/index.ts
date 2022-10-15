@@ -62,3 +62,4 @@ export * from 'components/UserRanking';
 export * from 'components/RankingItem';
 export * from 'components/RankingList';
 export * from 'components/CheckSuccessCycle';
+export * from 'components/InstallPrompt';

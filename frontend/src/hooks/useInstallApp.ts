@@ -1,27 +1,57 @@
-import useSnackBar from 'hooks/useSnackBar';
+import { useState, useEffect } from 'react';
 
 let deferredPrompt: any; // 비표준 API라서 any로 선언
 
-window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
-  deferredPrompt = event;
-});
-
 const useInstallApp = () => {
-  const renderSnackBar = useSnackBar();
+  const [isInstallPromptDeferred, setIsInstallPromptDeferred] = useState(false);
+  const [pwaMode, setPwaMode] = useState('browser');
 
-  const installApp = () => {
-    if (!deferredPrompt) {
-      renderSnackBar({
-        message: '이미 앱이 설치되어 있거나 앱을 설치할 수 없는 환경입니다.',
-        status: 'ERROR',
-      });
-      return;
-    }
-
-    deferredPrompt.prompt();
+  const deferInstall = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    setIsInstallPromptDeferred(!!deferredPrompt);
   };
-  return { installApp };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener('beforeinstallprompt', deferInstall);
+    })();
+
+    setPwaMode(getPWADisplayMode());
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', deferInstall);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (pwaMode !== 'browser') {
+      setIsInstallPromptDeferred(false);
+    }
+  }, [pwaMode]);
+
+  const installApp = async () => {
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+  };
+
+  function getPWADisplayMode() {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    if (document.referrer.startsWith('android-app://')) {
+      return 'twa';
+    } else if (navigator.standalone || isStandalone) {
+      return 'standalone';
+    }
+    return 'browser';
+  }
+
+  const isIOS =
+    (/iPad|iPhone|iPod/.test(navigator.platform) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
+    !window.MSStream;
+
+  const isNotInstalledInIOS = pwaMode === 'browser' && isIOS;
+  return { installApp, isInstallPromptDeferred, isNotInstalledInIOS };
 };
 
 export default useInstallApp;
