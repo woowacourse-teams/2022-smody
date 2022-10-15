@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';
 import { LocationState } from 'types/internal';
 
+import useDetectPageChange from 'hooks/useDetectPageChange';
 import useScrollDirection from 'hooks/useScrollDirection';
 
 import { TITLE_USING_PAGE } from 'constants/style';
@@ -29,6 +30,15 @@ export const useHeader = () => {
       return;
     }
   }, [scrollDirection]);
+
+  const resetHeader = () => {
+    if (wrapperRef.current === null) {
+      return;
+    }
+    wrapperRef.current.style.top = '0';
+  };
+
+  useDetectPageChange(resetHeader);
 
   const locationState = state as LocationState;
 
