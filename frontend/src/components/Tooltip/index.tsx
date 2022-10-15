@@ -15,6 +15,7 @@ export const Tooltip = ({
   ariaLabel,
   xPosition = 'middle',
   yPosition = 'bottom',
+  left,
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
   const { isOpenTooltip, openTooltip, closeTooltip, closeTooltipOnBg } = useTooltip();
@@ -37,6 +38,7 @@ export const Tooltip = ({
         hidden={!isOpenTooltip}
         xPosition={xPosition}
         yPosition={yPosition}
+        left={left}
       >
         <span role="tooltip" id="tooltip-label">
           {children}
@@ -92,8 +94,12 @@ const ButtonWrapper = styled.div<{ icon: ReactNode }>`
   ${({ icon }) => icon && StringIconStyle}
 `;
 
-const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
-  ${({ theme, xPosition, yPosition }) => css`
+const HelpToggleMessage = styled.div<{
+  xPosition: string;
+  yPosition: string;
+  left?: string;
+}>`
+  ${({ theme, xPosition, yPosition, left }) => css`
     z-index: ${Z_INDEX.CSS_MODAL};
     position: absolute;
     width: 250px;
@@ -106,7 +112,13 @@ const HelpToggleMessage = styled.div<{ xPosition: string; yPosition: string }>`
     background-color: ${theme.surface};
     color: ${theme.onSurface};
     top: ${yPosition === 'top' ? '-43px' : '38px'};
-    left: ${xPosition === 'middle' ? '-113px' : xPosition === 'left' ? '-213px' : '0'};
+    left: ${left
+      ? left
+      : xPosition === 'middle'
+      ? '-113px'
+      : xPosition === 'left'
+      ? '-213px'
+      : '0'};
 
     // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
     &::after {
