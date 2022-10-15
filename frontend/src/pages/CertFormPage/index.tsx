@@ -91,14 +91,16 @@ const CertFormPage = () => {
           <MiniTitle size={14} color={themeContext.mainText}>
             기록
           </MiniTitle>
-          <TextArea
-            cols={50}
-            rows={5}
-            maxLength={MAX_TEXTAREA_LENGTH - 1}
-            value={description}
-            onChange={handleChangeDescription}
-            isDark={isDark}
-          />
+          <TextAreaWrapper isDark={isDark}>
+            <TextArea
+              cols={50}
+              rows={5}
+              maxLength={MAX_TEXTAREA_LENGTH - 1}
+              value={description}
+              onChange={handleChangeDescription}
+              isDark={isDark}
+            />
+          </TextAreaWrapper>
           <TextLength as="span" size={12} color={themeContext.mainText}>
             {description.length}/{MAX_TEXTAREA_LENGTH}
           </TextLength>
@@ -182,23 +184,45 @@ const CertImage = styled.img`
   object-fit: cover;
 `;
 
+const TextAreaWrapper = styled.div<TextAreaProps>`
+  ${({ theme, isDark }) => css`
+    padding: 1rem 0 1rem 1rem;
+    border-radius: 20px;
+    background-color: ${isDark ? theme.input : theme.background};
+
+    &:focus-within {
+      outline: ${theme.primary} 2px solid;
+    }
+  `}
+`;
+
 const TextArea = styled.textarea<TextAreaProps>`
   ${({ theme, isDark }) => css`
-    border-radius: 20px;
-    padding: 1rem;
-    width: 100%;
+    padding-right: 1rem;
     border: none;
     resize: none;
+    width: 100%;
     font-size: 1rem;
     background-color: ${isDark ? theme.input : theme.background};
     color: ${theme.onInput};
+    outline: none;
 
-    &:focus {
-      outline: ${theme.primary} 2px solid;
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
     }
 
-    &::-webkit-scrollbar {
-      display: none;
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
     }
   `}
 `;
