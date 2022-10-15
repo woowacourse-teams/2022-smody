@@ -19,9 +19,9 @@ export const RankingItem = ({
 
   return (
     <Wrapper surfaceColor={surfaceColor} alignItems="center" gap="1rem">
-      <Text size={24} color={onSurfaceColor} fontWeight="bold">
+      <RankingText size={24} color={onSurfaceColor} fontWeight="bold">
         {ranking}
-      </Text>
+      </RankingText>
       <ProfileImg
         aria-label="프로필 이미지"
         src={picture}
@@ -70,6 +70,11 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     background-color: ${surfaceColor};
     padding: 0.5rem 1rem;
   `}
+`;
+
+const RankingText = styled(Text)`
+  width: 1.8rem;
+  text-align: center;
 `;
 
 const ProfileImg = styled.img`
