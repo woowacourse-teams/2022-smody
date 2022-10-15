@@ -196,6 +196,10 @@ const TextArea = styled.textarea<TextAreaProps>`
     &:focus {
       outline: ${theme.primary} 2px solid;
     }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `}
 `;
 
