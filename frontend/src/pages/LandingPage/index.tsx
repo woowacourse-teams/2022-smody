@@ -2,14 +2,15 @@ import ServiceExamplePng from 'assets/service_example.png';
 import ServiceExampleWebp from 'assets/service_example.webp';
 import styled, { keyframes } from 'styled-components';
 
-import useInstallApp from 'hooks/useInstallApp';
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, FixedButton, Logo } from 'components';
+import { FlexBox, Text, Logo, InstallPrompt, FixedButton } from 'components';
 
 const LandingPage = () => {
   const themeContext = useThemeContext();
-  const { installApp } = useInstallApp();
+  const handleLink = (url: string) => {
+    window.open(url, '_blank');
+  };
 
   return (
     <Wrapper
@@ -49,7 +50,17 @@ const LandingPage = () => {
         <source type="image/webp" srcSet={ServiceExampleWebp} />
         <ServiceExample src={ServiceExamplePng} alt="서비스 예시 이미지" />
       </picture>
-      <FixedButton onClick={installApp}>앱 설치하기</FixedButton>
+      <FixedButton
+        onClick={() => {
+          handleLink(
+            'https://sites.google.com/woowahan.com/woowacourse-demo-4th/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EC%8A%A4%EB%AA%A8%EB%94%94',
+          );
+        }}
+      >
+        사용 매뉴얼 살펴보기
+      </FixedButton>
+
+      <InstallPrompt />
     </Wrapper>
   );
 };
