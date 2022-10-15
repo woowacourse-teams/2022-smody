@@ -5,4 +5,5 @@ export type TooltipProps = {
   yPosition?: 'top' | 'bottom';
   icon?: ReactNode;
   ariaLabel: string;
+  left?: string;
 };
