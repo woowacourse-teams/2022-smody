@@ -6,6 +6,6 @@ export const Z_INDEX = {
   MODAL: 3,
   UNDER_TEXT: 0,
   UNDER_LINE: -1,
-  CSS_MODAL: 5,
-  CSS_MODAL_BG: 4,
+  CSS_MODAL: 2,
+  CSS_MODAL_BG: 1,
 };
