@@ -1,9 +1,13 @@
+import { PickType } from 'smody-library';
+
+type TabType = { path: string; tabName: string };
+
 export type TabsProps = {
-  tabList: { path: string; tabName: string }[];
+  tabList: TabType[];
 };
 
 export type TabProps = {
   isSelected: boolean;
-  onClick: () => void;
-  tabName: string;
 };
+
+export type HandleClickTabFunc = (path: PickType<TabType, 'path'>) => void;
