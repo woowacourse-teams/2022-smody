@@ -1,15 +1,12 @@
-import { PickType } from 'smody-library';
-import { Challenge } from 'types/challenge';
-
 type EventChallengeListIndexSignature = {
-  [key: PickType<Challenge, 'challengeId'>]: {
+  [key: number]: {
     name: string;
     link: string;
     challengeName: string;
   };
 };
 
-export const EVENT_CHALLENGE_ID_LIST = [1, 2, 3, 4, 5, 6, 7, 8];
+export const EVENT_CHALLENGE_ID_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 16];
 
 export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
   1: {
@@ -20,17 +17,17 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
   2: {
     name: 'gongseek',
     link: 'https://gongseek.site/',
-    challengeName: '공식으로 질문 & 토론하기',
+    challengeName: '공식에서 질문과 토론하기',
   },
   3: {
     name: 'dallok',
     link: 'https://dallog.me/',
-    challengeName: '달록에 우테코 카테고리 구독하고 일정 확인하기',
+    challengeName: '달록에서 우테코 일정 확인하기',
   },
   4: {
     name: 'ducks',
     link: 'https://ducks.kr/',
-    challengeName: '회고덕 템플릿을 활용해서 회고해보기',
+    challengeName: '회고덕에서 템플릿을 활용하여 회고해보기',
   },
   5: {
     name: 'kkogkkog',
@@ -45,7 +42,7 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
   7: {
     name: 'teatime',
     link: 'https://teatime.pe.kr/',
-    challengeName: '티타임을 활용해 면담 신청하기',
+    challengeName: '티타임에서 면담 신청하기',
   },
   8: {
     name: 'checkmate',
@@ -71,7 +68,11 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
     challengeName: '챌린지명',
   },
   15: { name: 'morak', link: 'https://mo-rak.com/', challengeName: '챌린지명' },
-  16: { name: 'smody', link: 'https://www.smody.co.kr/', challengeName: '챌린지명' },
+  16: {
+    name: 'smody',
+    link: 'https://www.smody.co.kr/',
+    challengeName: '스모디에서 챌린지 인증하기',
+  },
 
   17: { name: 'moamoa', link: 'https://moamoa.space/', challengeName: '챌린지명' },
 

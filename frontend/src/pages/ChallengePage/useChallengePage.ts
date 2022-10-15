@@ -25,16 +25,7 @@ export const useChallengePage = () => {
     navigate(CLIENT_PATH.CHALLENGE_CREATE);
   };
 
-  const handleEventPageButton = () => {
-    navigate(CLIENT_PATH.EVENT);
-  };
-
-  const handleSearchPageButton = () => {
-    navigate(CLIENT_PATH.SEARCH);
-  };
   return {
     handleCreateChallengeButton,
-    handleEventPageButton,
-    handleSearchPageButton,
   };
 };

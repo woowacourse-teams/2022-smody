@@ -1,27 +1,38 @@
 import { useChallengePage } from './useChallengePage';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { EventPage, SearchPage } from 'pages';
 
-import { FlexBox, Button, FixedButton } from 'components';
+import { FlexBox, Button, FixedButton, Tabs } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
+const tabList = [
+  {
+    path: CLIENT_PATH.EVENT,
+    tabName: '[우테코]이벤트',
+  },
+  //   {
+  //     path: '/popular',
+  //     tabName: '인기',
+  //   },
+  //   {
+  //     path: '/random',
+  //     tabName: '랜덤',
+  //   },
+  {
+    path: CLIENT_PATH.SEARCH,
+    tabName: '전체검색',
+  },
+];
+
 const ChallengePage = () => {
-  const { handleCreateChallengeButton, handleEventPageButton, handleSearchPageButton } =
-    useChallengePage();
+  const { handleCreateChallengeButton } = useChallengePage();
 
   return (
     <FlexBox flexDirection="column">
-      <TabWrapper alignItems="center" gap="0.5rem">
-        <EventButton size="small" onClick={handleEventPageButton}>
-          [이벤트] 우테코 프로젝트 챌린지
-        </EventButton>
-        <Button size="small" onClick={handleSearchPageButton}>
-          검색
-        </Button>
-      </TabWrapper>
+      <Tabs tabList={tabList} />
       <ContentWrapper>
         <ContentPage />
       </ContentWrapper>
@@ -33,12 +44,7 @@ const ChallengePage = () => {
 export default ChallengePage;
 
 const ContentPage = () => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  if (pathname === CLIENT_PATH.CHALLENGE) {
-    navigate(CLIENT_PATH.EVENT);
-  }
 
   if (pathname === CLIENT_PATH.EVENT) {
     return <EventPage />;
@@ -50,21 +56,12 @@ const ContentPage = () => {
   return <h2>not found</h2>;
 };
 
-const TabWrapper = styled(FlexBox)`
-  ${({ theme }) => css`
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    background-color: ${theme.background};
-    margin-top: -7px;
-  `}
+const ContentWrapper = styled.div`
+  margin-top: 74px;
+  padding-bottom: 65px;
 `;
 
+// 나중에 언젠가 활용?
 const EventButton = styled(Button)`
   background-image: linear-gradient(to bottom right, #ffd700, orange);
-`;
-
-const ContentWrapper = styled.div`
-  margin-top: 60px;
-  padding-bottom: 65px;
 `;

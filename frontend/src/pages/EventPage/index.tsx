@@ -13,7 +13,7 @@ const EventPage = () => {
   return (
     <FlexBox flexDirection="column">
       <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
-        ⭐ 우테코 팀프로젝트 이벤트 ⭐
+        ⭐ 우테코 팀프로젝트 사용 챌린지 이벤트 ⭐
       </TitleText>
 
       <FlexBox as="ul" flexDirection="column" gap="27px">
