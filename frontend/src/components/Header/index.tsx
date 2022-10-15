@@ -124,7 +124,7 @@ const Wrapper = styled(FlexBox)<HeaderProps>`
     right: 0;
     background-color: ${bgColor};
     z-index: ${Z_INDEX.HEADER};
-    transition: transform 0.4s;
+    transition: top 0.4s;
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
