@@ -137,3 +137,14 @@ export const isSameDate: IsSameDateFunction = (dateString1, dateString2) => {
   const { year: year2, month: month2, date: date2 } = parseTime(dateString2);
   return year1 === year2 && month1 === month2 && date1 === date2;
 };
+
+export const getCookie = (name: string): string | undefined => {
+  const matches = document.cookie.match(new RegExp(`${name}=([^;]*)`));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+};
+
+export const setCookie = (name: string, value: string, maxAge: number) => {
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(
+    value,
+  )}; max-age=${maxAge}`;
+};
