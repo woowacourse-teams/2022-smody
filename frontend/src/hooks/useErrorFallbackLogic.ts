@@ -25,8 +25,7 @@ export const useErrorFallbackLogic = ({ errorCode, errorMessage }: ErrorType) =>
       errorCode === 2002 ||
       errorCode === 2003 ||
       errorCode === 4001 ||
-      errorCode === 9001 ||
-      errorCode === null
+      errorCode === 9001
     ) {
       authApiClient.deleteAuth();
       setIsLogin(false);
