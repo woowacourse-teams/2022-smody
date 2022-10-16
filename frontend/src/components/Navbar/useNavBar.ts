@@ -8,7 +8,10 @@ export const useNavBar = () => {
   const getPathMatchResult = useMatchPath(themeContext.primary, themeContext.disabled);
 
   const certColor = getPathMatchResult([CLIENT_PATH.CERT, CLIENT_PATH.CYCLE_DETAIL]);
-  const challengeColor = getPathMatchResult([CLIENT_PATH.CHALLENGE]);
+  const challengeColor = getPathMatchResult(
+    [CLIENT_PATH.CHALLENGE],
+    [CLIENT_PATH.PROFILE_CHALLENGE_DETAIL],
+  );
   const feedColor = getPathMatchResult([CLIENT_PATH.FEED]);
   const profileColor = getPathMatchResult([
     CLIENT_PATH.LOGIN,
