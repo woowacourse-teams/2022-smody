@@ -1497,7 +1497,7 @@ export const allRanking = [
     introduction: '안녕하세요 유저1입니다.',
     picture:
       'https://post-phinf.pstatic.net/MjAyMDA2MDlfMjEw/MDAxNTkxNjk1MTM4OTI4.LvldwiT0_pjrP8xtQeJUifXhtvO4WFXeEz6xwJmz0J8g.k9LyAkihXYNAGlO-LNG2aDh4MHT1uEw7jdZmssrRddsg.JPEG/documentTitle_8515930031591694382355.jpg?type=w1200',
-    point: 100,
+    point: 1000,
   },
   {
     ranking: 2,
