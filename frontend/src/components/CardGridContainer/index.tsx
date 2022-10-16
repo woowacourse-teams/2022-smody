@@ -25,7 +25,7 @@ export const CardGridContainer = () => {
         title="아직 참가한 챌린지가 없습니다 :)"
         description="챌린지에 참가해보세요💪💪"
         linkText="챌린지 검색 페이지로 이동하기"
-        linkTo={CLIENT_PATH.SEARCH}
+        linkTo={CLIENT_PATH.CHALLENGE_SEARCH}
       />
     );
   }

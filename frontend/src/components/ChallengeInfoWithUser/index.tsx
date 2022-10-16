@@ -11,9 +11,9 @@ import { colorList } from 'constants/style';
 
 export const ChallengeInfoWithUser = () => {
   const themeContext = useThemeContext();
-  const { challengeIdString } = useParams();
-  const challengeId = Number(challengeIdString);
-  const challengeData = useChallengeInfoWithUser(challengeId);
+  const { challengeId } = useParams();
+
+  const challengeData = useChallengeInfoWithUser(Number(challengeId));
 
   if (typeof challengeData?.data === 'undefined') {
     return null;
@@ -68,7 +68,7 @@ export const ChallengeInfoWithUser = () => {
         </ChallengeDescriptionWrapper>
         <ChallengeIcon
           emojiIndex={emojiIndex}
-          challengeId={challengeId}
+          challengeId={Number(challengeId)}
           size="medium"
           bgColor={colorList[colorIndex]}
         />
