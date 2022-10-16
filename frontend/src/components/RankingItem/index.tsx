@@ -38,9 +38,9 @@ export const RankingItem = ({
       </UserInfoWrapper>
       <PointWrapper gap="1rem" alignItems="center">
         <Medal ranking={ranking} />
-        <Text size={16} color={onSurfaceColor}>
+        <PointText size={16} color={onSurfaceColor}>
           {point}점
-        </Text>
+        </PointText>
       </PointWrapper>
     </Wrapper>
   );
@@ -74,6 +74,11 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
 
 const RankingText = styled(Text)`
   width: 1.8rem;
+  text-align: center;
+`;
+
+const PointText = styled(Text)`
+  width: 3.3rem;
   text-align: center;
 `;
 
