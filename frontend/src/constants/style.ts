@@ -1,5 +1,19 @@
 import { FontSizeType } from 'types/style';
 
+import { CLIENT_PATH } from 'constants/path';
+
+export const TITLE_HEIGHT = '65.5px';
+
+export const TITLE_USING_PAGE = [
+  CLIENT_PATH.CHALLENGE_DETAIL,
+  CLIENT_PATH.PROFILE_CHALLENGE_DETAIL,
+  CLIENT_PATH.CHALLENGE_CREATE,
+  CLIENT_PATH.CYCLE_DETAIL,
+  CLIENT_PATH.CYCLE_DETAIL_SHARE,
+  CLIENT_PATH.FEED_DETAIL,
+  CLIENT_PATH.PROFILE_EDIT,
+];
+
 export const cursorPointer = {
   cursor: 'pointer',
 };

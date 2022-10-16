@@ -29,7 +29,7 @@ const TabList = styled(FlexBox)`
     height: 64px;
     position: fixed;
     background-color: ${theme.background};
-    margin-top: -7px;
+    margin-top: -10px;
     width: 100%;
   `}
 `;

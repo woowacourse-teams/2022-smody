@@ -15,7 +15,7 @@ export const Button = styled.button<ButtonProps>`
     width: fit-content;
     vertical-align: middle;
     text-align: center;
-    padding: 0rem 1rem;
+    padding: 0 1rem;
     background-color: transparent;
     border: none;
     cursor: pointer;

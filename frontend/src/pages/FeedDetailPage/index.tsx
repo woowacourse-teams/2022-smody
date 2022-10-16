@@ -16,8 +16,6 @@ import {
   ShareButton,
 } from 'components';
 
-import { CLIENT_PATH } from 'constants/path';
-
 const FeedDetailPage = () => {
   const {
     feedData,

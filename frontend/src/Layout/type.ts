@@ -8,4 +8,5 @@ export type horizontalPadding = {
 export type OutletWrapperProps = {
   bgColor: AvailablePickedColor;
   horizontalPadding: horizontalPadding;
+  topPadding: string;
 };

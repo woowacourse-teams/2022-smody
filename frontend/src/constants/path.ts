@@ -8,6 +8,7 @@ export const CLIENT_PATH = {
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',
+  CHALLENGE: '/challenge',
   CHALLENGE_SEARCH: '/challenge/search',
   CHALLENGE_EVENT: '/challenge/event',
   FEED: '/feed',

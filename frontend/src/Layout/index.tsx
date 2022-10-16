@@ -19,9 +19,13 @@ import {
 } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
+import { TITLE_HEIGHT, TITLE_USING_PAGE } from 'constants/style';
 
 const PROFILE_PATH_PADDING = { pc: '0', tablet: '0', mobile: '0' };
 const OTHER_PATH_PADDING = { pc: '10rem', tablet: '7rem', mobile: '1.25rem' };
+
+const TITLE_USING_PATH_PADDING_TOP = TITLE_HEIGHT;
+const TITLE_NOT_USING_PATH_PADDING_TOP = '0px';
 
 export const Layout = () => {
   const themeContext = useThemeContext();
@@ -32,6 +36,11 @@ export const Layout = () => {
   const getPathMatchHorizontalPadding = useMatchPath(
     PROFILE_PATH_PADDING,
     OTHER_PATH_PADDING,
+  );
+
+  const getPathMatchTopPadding = useMatchPath(
+    TITLE_USING_PATH_PADDING_TOP,
+    TITLE_NOT_USING_PATH_PADDING_TOP,
   );
 
   const bgColor = getPathMatchColor([
@@ -46,6 +55,8 @@ export const Layout = () => {
     [CLIENT_PATH.PROFILE_CHALLENGE_DETAIL],
   );
 
+  const topPadding = getPathMatchTopPadding(TITLE_USING_PAGE);
+
   return (
     <Wrapper>
       <Header bgColor={bgColor} />
@@ -54,6 +65,7 @@ export const Layout = () => {
         flexDirection="column"
         bgColor={bgColor}
         horizontalPadding={horizontalPadding}
+        topPadding={topPadding}
       >
         <ErrorBoundary
           pathname={pathname}
@@ -77,23 +89,24 @@ export const Layout = () => {
 const Wrapper = styled.div``;
 
 const OutletWrapper = styled(FlexBox)<OutletWrapperProps>`
-  ${({ bgColor, horizontalPadding }) => css`
+  ${({ bgColor, horizontalPadding, topPadding }) => css`
     min-height: 100vh;
     background-color: ${bgColor};
+    padding-top: ${topPadding};
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {
-      padding: 4.5rem ${horizontalPadding.pc} 4.625rem;
+      padding: calc(4.5rem + ${topPadding}) ${horizontalPadding.pc} 4.625rem;
     }
 
     /* 테블릿 가로, 테블릿 세로 (해상도 768px ~ 1023px)*/
     @media all and (min-width: 768px) and (max-width: 1023px) {
-      padding: 4.5rem ${horizontalPadding.tablet} 4.625rem;
+      padding: calc(4.5rem + ${topPadding}) ${horizontalPadding.tablet} 4.625rem;
     }
 
     /* 모바일 가로, 모바일 세로 (해상도 480px ~ 767px)*/
     @media all and (max-width: 767px) {
-      padding: 4.5rem ${horizontalPadding.mobile} 4.625rem;
+      padding: calc(4.5rem + ${topPadding}) ${horizontalPadding.mobile} 4.625rem;
     }
   `}
 `;

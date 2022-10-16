@@ -27,7 +27,7 @@ const Modal = styled.div`
   ${({ theme }) => css`
     height: 200px;
     overflow-y: scroll;
-    padding: 0.5rem 0rem;
+    padding: 0.5rem 0;
     width: 96%;
     position: fixed;
     bottom: 128px;
