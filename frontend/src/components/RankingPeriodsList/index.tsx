@@ -7,7 +7,7 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { RankingPeriodItem, Text } from 'components';
+import { RankingPeriodItem, Text, Tooltip } from 'components';
 
 export const RankingPeriodsList = () => {
   const themeContext = useThemeContext();
@@ -27,9 +27,32 @@ export const RankingPeriodsList = () => {
 
   return (
     <FlexBox flexDirection="column" gap="0.5rem">
-      <Text size={24} color={themeContext.onBackground} fontWeight="bold">
-        {titleDate}
-      </Text>
+      <FlexBox justifyContent="space-between">
+        <Text size={24} color={themeContext.onBackground} fontWeight="bold">
+          {titleDate}
+        </Text>
+        <Tooltip
+          icon="점수기준"
+          ariaLabel="점수 기준 툴팁"
+          xPosition="left"
+          left="-172px"
+        >
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7B61FF' }}>
+            점수 기준
+          </h3>
+          <ul style={{ fontSize: '12px' }}>
+            <li>
+              챌린지 인증 첫 번째, <b>10점</b> 부여
+            </li>
+            <li>
+              챌린지 인증 두 번째, <b>30점</b> 부여
+            </li>
+            <li>
+              챌린지 인증 세 번째, <b>60점</b> 부여
+            </li>
+          </ul>
+        </Tooltip>
+      </FlexBox>
       <FlexBox justifyContent="flex-end">
         <div></div>
         <SelectPeriod
