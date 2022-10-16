@@ -112,10 +112,6 @@ const useMention = <T extends HTMLElement>({
       }
     };
     commentInputRef.current!.addEventListener('keydown', handleKeydown);
-
-    return () => {
-      commentInputRef.current!.removeEventListener('keydown', handleKeydown);
-    };
   }, []);
 
   // inputChangeHandler 시작
