@@ -9,13 +9,13 @@ import {
   Text,
   CheckCircles,
   Title,
-  ThumbnailWrapper,
+  ChallengeIcon,
   LoadingButton,
 } from 'components';
 import { SuccessModal } from 'components/SuccessModal';
 
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 const certImageCompressionOptions = {
   maxSizeMB: 0.2,
@@ -68,9 +68,12 @@ const CertFormPage = () => {
           <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
-        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
         <section>
@@ -137,7 +140,7 @@ const CertFormPage = () => {
           challengeName={challengeName}
           successCount={successCount}
           progressCount={progressCount + 1}
-          emoji={emojiList[emojiIndex]}
+          emojiIndex={emojiIndex}
         />
       )}
     </FlexBox>

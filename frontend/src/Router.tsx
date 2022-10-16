@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import {
   FeedPage,
   FeedDetailPage,
-  SearchPage,
   ChallengeDetailPage,
   NotFoundPage,
   CertPage,
@@ -18,6 +17,7 @@ import {
   ChallengeRecordsPage,
   CycleDetailSharePage,
   RankingPage,
+  ChallengePage,
 } from 'pages';
 
 import { PrivateOutlet, LandingNavigation } from 'components';
@@ -73,7 +73,6 @@ const Router = () => {
           <Route path={CLIENT_PATH.HOME} element={<LandingPage />} />
           <Route path={CLIENT_PATH.FEED} element={<FeedPage />} />
           <Route path={CLIENT_PATH.FEED_DETAIL_ID} element={<FeedDetailPage />} />
-          <Route path={CLIENT_PATH.SEARCH} element={<SearchPage />} />
           <Route path={CLIENT_PATH.CYCLE_DETAIL_ID} element={<CycleDetailPage />} />
           <Route
             path={CLIENT_PATH.CHALLENGE_DETAIL_ID}
@@ -81,6 +80,9 @@ const Router = () => {
           />
 
           <Route path={CLIENT_PATH.RANK} element={<RankingPage />} />
+
+          <Route path={CLIENT_PATH.CHALLENGE_EVENT} element={<ChallengePage />} />
+          <Route path={CLIENT_PATH.CHALLENGE_SEARCH} element={<ChallengePage />} />
 
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
 

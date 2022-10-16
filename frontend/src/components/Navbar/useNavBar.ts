@@ -9,9 +9,8 @@ export const useNavBar = () => {
 
   const certColor = getPathMatchResult([CLIENT_PATH.CERT, CLIENT_PATH.CYCLE_DETAIL]);
   const challengeColor = getPathMatchResult([
-    CLIENT_PATH.SEARCH,
-    CLIENT_PATH.CHALLENGE_DETAIL,
-    CLIENT_PATH.CHALLENGE_CREATE,
+    CLIENT_PATH.CHALLENGE_EVENT,
+    CLIENT_PATH.CHALLENGE_SEARCH,
   ]);
   const feedColor = getPathMatchResult([CLIENT_PATH.FEED]);
   const profileColor = getPathMatchResult([

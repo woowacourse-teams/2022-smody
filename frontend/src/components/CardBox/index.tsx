@@ -1,7 +1,7 @@
 import { useCardBox } from './useCardBox';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, Text } from 'components';
+import { FlexBox, Text, ChallengeIcon } from 'components';
 import { CardBoxProps, WrapperProps } from 'components/CardBox/type';
 
 import { colorList, emojiList } from 'constants/style';
@@ -33,9 +33,12 @@ export const CardBox = ({
       >
         {challengeName}
       </TitleWrapper>
-      <EmojiWrapper size={40} color={COLOR.BLACK} fontWeight="normal">
-        {emojiList[emojiIndex]}
-      </EmojiWrapper>
+      <ChallengeIcon
+        emojiIndex={emojiIndex}
+        challengeId={challengeId}
+        size="medium"
+        bgColor={colorList[colorIndex]}
+      />
       <TextWrapper size={14} color={COLOR.DARKEST_GRAY} fontWeight="bold">
         <Count color={COLOR.PURPLE}>{successCount}</Count>회 성공
       </TextWrapper>
@@ -62,8 +65,6 @@ const TitleWrapper = styled(Text)`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-
-const EmojiWrapper = styled(Text).attrs((props) => ({ ...props }))``;
 
 const TextWrapper = styled(Text).attrs((props) => ({ ...props }))`
   word-break: keep-all;

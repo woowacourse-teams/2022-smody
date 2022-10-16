@@ -9,13 +9,13 @@ import {
   Text,
   FlexBox,
   Button,
-  ThumbnailWrapper,
+  ChallengeIcon,
   CustomCycleTimeBottomSheet,
 } from 'components';
 import { ChallengeItemProps } from 'components/ChallengeItem/type';
 
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { colorList } from 'constants/style';
 
 export const ChallengeItem = ({
   challengeId,
@@ -38,9 +38,12 @@ export const ChallengeItem = ({
       <div>
         <Link to={`${CLIENT_PATH.CHALLENGE_DETAIL}/${challengeId}`}>
           <FlexBox gap="17px" alignItems="center">
-            <ThumbnailWrapper size="small" bgColor={colorList[colorIndex]}>
-              {emojiList[emojiIndex]}
-            </ThumbnailWrapper>
+            <ChallengeIcon
+              emojiIndex={emojiIndex}
+              challengeId={challengeId}
+              size="small"
+              bgColor={colorList[colorIndex]}
+            />
             <FlexBox flexDirection="column">
               <Text aria-label="challenge-name" color={themeContext.onSurface} size={16}>
                 {challengeName}
