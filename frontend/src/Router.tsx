@@ -81,9 +81,8 @@ const Router = () => {
 
           <Route path={CLIENT_PATH.RANK} element={<RankingPage />} />
 
-          <Route path={CLIENT_PATH.CHALLENGE} element={<ChallengePage />} />
-          <Route path={CLIENT_PATH.EVENT} element={<ChallengePage />} />
-          <Route path={CLIENT_PATH.SEARCH} element={<ChallengePage />} />
+          <Route path={CLIENT_PATH.CHALLENGE_EVENT} element={<ChallengePage />} />
+          <Route path={CLIENT_PATH.CHALLENGE_SEARCH} element={<ChallengePage />} />
 
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
 

@@ -26,7 +26,7 @@ export const Navbar = () => {
               alignItems="center"
               gap="6px"
               as={Link}
-              to={CLIENT_PATH.CHALLENGE}
+              to={CLIENT_PATH.CHALLENGE_EVENT}
             >
               <ImFire size={23} color={challengeColor} />
               <Text size={11} color={challengeColor}>

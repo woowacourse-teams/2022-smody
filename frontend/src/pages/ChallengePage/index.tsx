@@ -10,7 +10,7 @@ import { CLIENT_PATH } from 'constants/path';
 
 const tabList = [
   {
-    path: CLIENT_PATH.EVENT,
+    path: CLIENT_PATH.CHALLENGE_EVENT,
     tabName: '[우테코]이벤트',
   },
   //   {
@@ -22,14 +22,13 @@ const tabList = [
   //     tabName: '랜덤',
   //   },
   {
-    path: CLIENT_PATH.SEARCH,
+    path: CLIENT_PATH.CHALLENGE_SEARCH,
     tabName: '전체검색',
   },
 ];
 
 const ChallengePage = () => {
   const { handleCreateChallengeButton } = useChallengePage();
-
   return (
     <FlexBox flexDirection="column">
       <Tabs tabList={tabList} />
@@ -46,11 +45,11 @@ export default ChallengePage;
 const ContentPage = () => {
   const { pathname } = useLocation();
 
-  if (pathname === CLIENT_PATH.EVENT) {
+  if (pathname === CLIENT_PATH.CHALLENGE_EVENT) {
     return <EventPage />;
   }
 
-  if (pathname === CLIENT_PATH.SEARCH) {
+  if (pathname === CLIENT_PATH.CHALLENGE_SEARCH) {
     return <SearchPage />;
   }
   return <h2>not found</h2>;
