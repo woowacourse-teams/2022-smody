@@ -9,7 +9,7 @@ import { Cycle, CycleDetail } from 'types/cycle';
 import { Member } from 'types/member';
 
 export type GetChallengeParams = {
-  searchValue: string;
+  searchValue?: string;
   sort?: 'random';
 };
 

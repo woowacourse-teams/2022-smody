@@ -26,7 +26,7 @@ export const getAllChallenges = async ({
     size: PAGE_SIZE.ALL_CHALLENGES,
   };
 
-  if (searchValue !== '') {
+  if (typeof searchValue !== 'undefined' && searchValue !== '') {
     params.filter = searchValue;
   }
   if (typeof sort !== 'undefined') {
@@ -49,7 +49,7 @@ export const getAllChallengesAuth = async ({
     size: PAGE_SIZE.ALL_CHALLENGES,
   };
 
-  if (searchValue !== '') {
+  if (typeof searchValue !== 'undefined' && searchValue !== '') {
     params.filter = searchValue;
   }
   if (typeof sort !== 'undefined') {
