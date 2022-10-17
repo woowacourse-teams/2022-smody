@@ -72,4 +72,10 @@ public class PushNotificationApiService {
                 .pathId(pathId)
                 .build();
     }
+
+    @Transactional
+    public void deleteMyCompleteNotifications(TokenPayload tokenPayload) {
+        Member member = memberService.search(tokenPayload.getId());
+        pushNotificationService.deleteCompletedByMember(member);
+    }
 }

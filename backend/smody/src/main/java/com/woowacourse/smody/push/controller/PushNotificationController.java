@@ -46,4 +46,11 @@ public class PushNotificationController {
         pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/me")
+    @RequiredLogin
+    public ResponseEntity<Void> deleteMyCompleteNotifications(@LoginMember TokenPayload tokenPayload) {
+        pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+        return ResponseEntity.noContent().build();
+    }
 }

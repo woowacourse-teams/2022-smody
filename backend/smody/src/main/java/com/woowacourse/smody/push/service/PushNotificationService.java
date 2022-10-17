@@ -49,4 +49,9 @@ public class PushNotificationService {
     public void deleteById(Long pushNotificationId) {
         pushNotificationRepository.deleteById(pushNotificationId);
     }
+
+    @Transactional
+    public void deleteCompletedByMember(Member member) {
+        pushNotificationRepository.deleteByMemberAndPushStatus(member, PushStatus.COMPLETE);
+    }
 }

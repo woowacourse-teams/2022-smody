@@ -125,4 +125,23 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("회원의 보낸 상태의 알림을 모두 삭제한다.")
+    @Test
+    void deleteMyCompleteNotifications() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.COMMENT);
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.CHALLENGE);
+
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+        fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+
+        // when
+        pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+
+        // then
+        assertThat(pushNotificationRepository.findAll()).hasSize(2);
+    }
 }

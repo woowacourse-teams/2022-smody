@@ -20,6 +20,10 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
     @Query("delete from PushNotification pn where pn.member = :member")
     void deleteByMember(@Param("member") Member member);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("delete from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus")
+    void deleteByMemberAndPushStatus(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
+
     @Query("select pn from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus "
             + "order by pn.pushTime desc")
     List<PushNotification> findAllLatest(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
