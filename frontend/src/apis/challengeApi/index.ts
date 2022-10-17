@@ -34,7 +34,7 @@ import { ErrorResponse } from 'types/internal';
 
 // 5. 모든 챌린지 조회(GET)
 export const useGetAllChallenges = (
-  { searchValue }: GetChallengeParams,
+  { searchValue, sort }: GetChallengeParams,
   options?: UseInfiniteQueryOptions<
     AxiosResponse<GetAllChallengesResponse>,
     AxiosError<ErrorResponse>
@@ -43,8 +43,10 @@ export const useGetAllChallenges = (
   useInfiniteQuery<AxiosResponse<GetAllChallengesResponse>, AxiosError<ErrorResponse>>(
     queryKeys.getAllChallenges,
     localStorage.getItem('accessToken')
-      ? ({ pageParam = 0 }) => getAllChallengesAuth(searchValue, pageParam)
-      : ({ pageParam = 0 }) => getAllChallenges(searchValue, pageParam),
+      ? ({ pageParam = 0 }) =>
+          getAllChallengesAuth({ searchValue, sort, cursorId: pageParam })
+      : ({ pageParam = 0 }) =>
+          getAllChallenges({ searchValue, sort, cursorId: pageParam }),
     {
       ...options,
       getNextPageParam: (currentPage) => {

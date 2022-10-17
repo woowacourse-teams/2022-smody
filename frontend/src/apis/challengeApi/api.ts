@@ -10,18 +10,28 @@ import {
   GetMyChallengeByIdParams,
   GetMyChallengeByIdResponse,
   GetMyChallengesParams,
+  GetAllChallengesParams,
+  GetAllChallengesParamsObject,
 } from 'apis/challengeApi/type';
 import { PAGE_SIZE } from 'apis/constants';
 
 // 5. 모든 챌린지 조회(GET)- 비회원용
-export const getAllChallenges = async (searchValue: string, cursorId: number) => {
-  const params =
-    searchValue === ''
-      ? {
-          cursorId,
-          size: PAGE_SIZE.ALL_CHALLENGES,
-        }
-      : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
+export const getAllChallenges = async ({
+  searchValue,
+  sort,
+  cursorId,
+}: GetAllChallengesParams) => {
+  const params: GetAllChallengesParamsObject = {
+    cursorId,
+    size: PAGE_SIZE.ALL_CHALLENGES,
+  };
+
+  if (searchValue !== '') {
+    params.filter = searchValue;
+  }
+  if (typeof sort !== 'undefined') {
+    params.sort = sort;
+  }
 
   return apiClient.axios.get<GetAllChallengesResponse>(`/challenges`, {
     params,
@@ -29,14 +39,22 @@ export const getAllChallenges = async (searchValue: string, cursorId: number) =>
 };
 
 // 5. 모든 챌린지 조회(GET) - 회원용
-export const getAllChallengesAuth = async (searchValue: string, cursorId: number) => {
-  const params =
-    searchValue === ''
-      ? {
-          cursorId,
-          size: PAGE_SIZE.ALL_CHALLENGES,
-        }
-      : { filter: searchValue, cursorId, size: PAGE_SIZE.ALL_CHALLENGES };
+export const getAllChallengesAuth = async ({
+  searchValue,
+  sort,
+  cursorId,
+}: GetAllChallengesParams) => {
+  const params: GetAllChallengesParamsObject = {
+    cursorId,
+    size: PAGE_SIZE.ALL_CHALLENGES,
+  };
+
+  if (searchValue !== '') {
+    params.filter = searchValue;
+  }
+  if (typeof sort !== 'undefined') {
+    params.sort = sort;
+  }
 
   return authApiClient.axios.get<GetAllChallengesResponse>(`/challenges/auth`, {
     params,
