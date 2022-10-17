@@ -19,6 +19,7 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,27 @@ public class ChallengeApiService {
         return findAllWithChallengerCountByFilter(new TokenPayload(0L), searchTime, pagingParams);
     }
 
-    public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(
-            TokenPayload tokenPayload, LocalDateTime searchTime, PagingParams pagingParams
-    ) {
+    public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(TokenPayload tokenPayload,
+                                                                         LocalDateTime searchTime,
+                                                                         PagingParams pagingParams) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
+        if (pagingParams.getSort().equals("popular")) {
+            return getChallengeTabResponsesWhenPopular(searchTime, pagingParams, member);
+        }
         List<Challenge> challenges = challengeService.findAllByFilter(pagingParams);
         List<Cycle> cycles = cycleService.findInProgressByChallenges(searchTime, challenges);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         return getChallengeTabResponses(challenges, member, challengingRecords);
+    }
+
+    private List<ChallengeTabResponse> getChallengeTabResponsesWhenPopular(LocalDateTime searchTime,
+                                                                           PagingParams pagingParams,
+                                                                           Member member) {
+        List<Cycle> cycles = cycleService.findInProgress(searchTime);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
+        List<Challenge> challenges = challengingRecords.getChallengesOrderByChallenger();
+        List<Challenge> pagedChallenges = CursorPaging.apply(challenges, null, pagingParams.getSize());
+        return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
     }
 
     private List<ChallengeTabResponse> getChallengeTabResponses(List<Challenge> challenges,

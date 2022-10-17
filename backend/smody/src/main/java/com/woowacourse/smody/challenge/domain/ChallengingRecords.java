@@ -61,4 +61,11 @@ public class ChallengingRecords {
                         .thenComparing(challengingRecord -> challengingRecord.getChallenge().getId()))
                 .collect(toList());
     }
+
+    public List<Challenge> getChallengesOrderByChallenger() {
+        return challengingRecords.keySet()
+                .stream()
+                .sorted(Comparator.comparing(challenge -> challengingRecords.get(challenge).size()).reversed())
+                .collect(toList());
+    }
 }

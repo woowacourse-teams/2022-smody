@@ -15,7 +15,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
 
-    List<Cycle> findAllByStartTimeIsAfter(LocalDateTime startTime);
+    @Query("select c from Cycle c "
+            + "join fetch c.challenge "
+            + "where c.startTime > :startTime")
+    List<Cycle> findAllByStartTimeIsAfter(@Param("startTime") LocalDateTime startTime);
 
     List<Cycle> findAllByStartTimeIsAfterAndChallengeIn(LocalDateTime startTime, List<Challenge> challenges);
 
