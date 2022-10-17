@@ -6,45 +6,45 @@ type EventChallengeListIndexSignature = {
   };
 };
 
-export const EVENT_CHALLENGE_ID_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 16];
+export const EVENT_CHALLENGE_ID_LIST = [78, 79, 80, 81, 82, 83, 84, 85];
 
 export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
-  1: {
+  78: {
     name: 'naepyeon',
     link: 'https://www.naepyeon.site/',
     challengeName: '내편에서 메세지 쓰기',
   },
-  2: {
+  79: {
     name: 'gongseek',
     link: 'https://gongseek.site/',
     challengeName: '공식에서 질문과 토론하기',
   },
-  3: {
+  80: {
     name: 'dallok',
     link: 'https://dallog.me/',
     challengeName: '달록에서 우테코 일정 확인하기',
   },
-  4: {
+  81: {
     name: 'ducks',
     link: 'https://ducks.kr/',
     challengeName: '회고덕에서 템플릿을 활용하여 회고해보기',
   },
-  5: {
+  82: {
     name: 'kkogkkog',
     link: 'https://kkogkkog.com/',
     challengeName: '꼭꼭으로 고마움 표현하기',
   },
-  6: {
+  83: {
     name: 'momo',
     link: 'https://www.moyeora.site/',
     challengeName: '모모에서 모임 생성하기',
   },
-  7: {
+  84: {
     name: 'teatime',
     link: 'https://teatime.pe.kr/',
     challengeName: '티타임에서 면담 신청하기',
   },
-  8: {
+  85: {
     name: 'checkmate',
     link: 'https://checkmate.today/',
     challengeName: '체크메이트에서 출석 체크하기',
