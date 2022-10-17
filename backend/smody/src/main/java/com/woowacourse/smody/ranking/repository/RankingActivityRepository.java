@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RankingActivityRepository extends JpaRepository<RankingActivity, Long> {
 
+    // TODO-fetch join 말고 엔티티그래프를 사용한 이유는? 컨벤션으로 위해 바꿔야 할까?
     @EntityGraph(attributePaths = "member")
     List<RankingActivity> findAllByRankingPeriodOrderByPointDesc(RankingPeriod rankingPeriod);
 

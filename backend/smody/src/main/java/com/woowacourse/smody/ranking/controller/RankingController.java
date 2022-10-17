@@ -24,19 +24,19 @@ public class RankingController {
     private final RankingApiService rankingApiService;
 
     @GetMapping
-    public ResponseEntity<List<RankingPeriodResponse>> findAll(@ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(rankingApiService.findAllPeriod(pagingParams));
+    public ResponseEntity<List<RankingPeriodResponse>> findAllRankingPeriod(@ModelAttribute PagingParams pagingParams) {
+        return ResponseEntity.ok(rankingApiService.findAllRankingPeriod(pagingParams));
     }
 
     @GetMapping("/{rankingPeriodId}/ranking-activities")
-    public ResponseEntity<List<RankingActivityResponse>> findAllActivity(@PathVariable Long rankingPeriodId) {
-        return ResponseEntity.ok(rankingApiService.findAllRankedActivityByPeriodId(rankingPeriodId));
+    public ResponseEntity<List<RankingActivityResponse>> findAllRankingActivity(@PathVariable Long rankingPeriodId) {
+        return ResponseEntity.ok(rankingApiService.findAllRankingActivityByPeriodId(rankingPeriodId));
     }
 
     @GetMapping("/{rankingPeriodId}/ranking-activities/me")
     @RequiredLogin
-    public ResponseEntity<RankingActivityResponse> findActivityOfMine(@LoginMember TokenPayload tokenPayload,
-                                                                      @PathVariable Long rankingPeriodId) {
+    public ResponseEntity<RankingActivityResponse> findRankingActivityOfMine(@LoginMember TokenPayload tokenPayload,
+                                                                             @PathVariable Long rankingPeriodId) {
         return ResponseEntity.ok(rankingApiService.findActivityOfMine(tokenPayload, rankingPeriodId));
     }
 }

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(uniqueConstraints = {
         @UniqueConstraint(
                 name = "unique_column_in_ranking_period",
-                columnNames = {"startDate", "duration"}
+                columnNames = {"startDate", "duration"} // TODO-이거 두개 합쳐서 유니크 라는건가? 아님 각각 유니크?
         )
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

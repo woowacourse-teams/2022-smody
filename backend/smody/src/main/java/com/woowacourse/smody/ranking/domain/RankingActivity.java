@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(uniqueConstraints = {
         @UniqueConstraint(
                 name = "unique_column_in_ranking_activity",
-                columnNames = {"member_id", "ranking_period_id"}
+                columnNames = {"member_id", "ranking_period_id"} // TODO-유니크 조건 2개 엮은 이유는?
         )
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class RankingActivity {
 
     private static final int DEFAULT_POINT = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ranking_activity_id")
@@ -54,7 +55,7 @@ public class RankingActivity {
         return new RankingActivity(member, period, DEFAULT_POINT);
     }
 
-    public void active(Progress progress) {
+    public void doActivity(Progress progress) {
         this.point += Point.calculate(progress);
     }
 }
