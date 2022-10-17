@@ -24,7 +24,7 @@ public class SmodyDatabaseManager {
     private List<String> extractTableNames(EntityManager entityManager) {
         return entityManager.getMetamodel().getEntities().stream()
                 .filter(this::isEntity)
-                .map(this::convertCamelToUnderscore)
+                .map(this::convertCamelToSnake)
                 .collect(Collectors.toList());
     }
 
@@ -32,7 +32,7 @@ public class SmodyDatabaseManager {
         return entityType.getJavaType().getAnnotation(Entity.class) != null;
     }
 
-    private String convertCamelToUnderscore(EntityType<?> entityType) {
+    private String convertCamelToSnake(EntityType<?> entityType) {
         String regex = "([a-z])([A-Z]+)";
         String replacement = "$1_$2";
         return entityType.getName()
@@ -78,31 +78,31 @@ public class SmodyDatabaseManager {
         entityManager.persist(new Challenge(
                 "스모디 방문하기",
                 "스모디 방문하기 챌린지입니다",
-                0,
+                1,
                 1
         ));
         entityManager.persist(new Challenge(
                 "미라클 모닝",
                 "미라클 모닝 챌린지입니다",
-                0,
+                1,
                 1
         ));
         entityManager.persist(new Challenge(
                 "오늘의 운동",
                 "오늘의 운동 챌린지입니다",
-                0,
+                1,
                 1
         ));
         entityManager.persist(new Challenge(
                 "알고리즘 풀기",
                 "알고리즘 풀기 챌린지입니다",
-                0,
+                1,
                 1
         ));
         entityManager.persist(new Challenge(
                 "JPA 공부",
                 "JPA 공부 챌린지입니다",
-                0,
+                1,
                 1
         ));
     }

@@ -19,7 +19,6 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -99,7 +98,7 @@ public class ChallengeApiService {
         );
         List<ChallengingRecord> sortedRecords = challengingRecords.sortByLatestProgressTime();
 
-        ChallengingRecord cursorChallengingRecord = getCursorMemberChallenge(pagingParams, sortedRecords);
+        ChallengingRecord cursorChallengingRecord = getCursorChallengeRecord(pagingParams, sortedRecords);
         List<ChallengingRecord> pagedMyChallengeHistories = CursorPaging.apply(
                 sortedRecords, cursorChallengingRecord, pagingParams.getSize()
         );
@@ -109,7 +108,7 @@ public class ChallengeApiService {
                 .collect(toList());
     }
 
-    private ChallengingRecord getCursorMemberChallenge(PagingParams pagingParams,
+    private ChallengingRecord getCursorChallengeRecord(PagingParams pagingParams,
                                                        List<ChallengingRecord> myChallengeHistories) {
         return challengeService.findById(pagingParams.getCursorId())
                 .map(cursor -> extractMatchChallenge(myChallengeHistories, cursor))
@@ -134,7 +133,7 @@ public class ChallengeApiService {
     }
 
     public ChallengeHistoryResponse findByMeAndChallenge(TokenPayload tokenPayload, Long challengeId) {
-        List<Cycle> cycles = cycleService.findAllByChallengeIdAndMemberId(challengeId, tokenPayload.getId());
+        List<Cycle> cycles = cycleService.findAllByChallengeAndMember(challengeId, tokenPayload.getId());
         ChallengingRecord challengingRecord = new ChallengingRecord(cycles);
         return new ChallengeHistoryResponse(
                 challengingRecord.getChallenge(),

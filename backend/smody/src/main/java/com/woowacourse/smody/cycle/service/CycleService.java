@@ -34,7 +34,6 @@ public class CycleService {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
         Optional<Cycle> optionalCycle = cycleRepository.findRecent(member, challenge);
-
         if (optionalCycle.isPresent()) {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
@@ -45,14 +44,18 @@ public class CycleService {
         if (cycle.isInProgress(startTime)) {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }
-        if (cycle.isSuccess() && cycle.isInDays(startTime)) {
+        if (isRetry(startTime, cycle)) {
             return cycle.getStartTime().plusDays(Cycle.DAYS);
         }
         return startTime;
     }
 
-    public int countSuccess(Cycle cycle) {
-        return cycleRepository.countSuccess(cycle.getMember(), cycle.getChallenge())
+    private boolean isRetry(final LocalDateTime startTime, final Cycle cycle) {
+        return cycle.isSuccess() && cycle.isInDays(startTime);
+    }
+
+    public int countSuccess(Member member, Challenge challenge) {
+        return cycleRepository.countSuccess(member, challenge)
                 .intValue();
     }
 
@@ -70,12 +73,12 @@ public class CycleService {
         return cycleRepository.findById(id);
     }
 
-    public List<Cycle> searchByMember(Member member) {
+    public List<Cycle> findByMember(Member member) {
         return cycleRepository.findByMember(member);
     }
 
-    public List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId) {
-        return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
+    public List<Cycle> findAllByChallengeAndMember(Long challengeId, Long memberId) {
+        return cycleRepository.findAllByChallengeAndMember(challengeId, memberId);
     }
 
     public List<Cycle> findAllByMemberAndFilter(Member member, PagingParams pagingParams) {
@@ -96,7 +99,8 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId,
+    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId,
+                                                            Long challengeId,
                                                             PagingParams pagingParams) {
         return cycleRepository.findAllByMemberAndChallengeAndFilter(memberId, challengeId, pagingParams);
     }

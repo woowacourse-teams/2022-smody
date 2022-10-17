@@ -6,24 +6,20 @@ import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
 import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
 import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
-import com.woowacourse.smody.cycle.dto.FilteredCycleHistoryResponse;
-import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
-import com.woowacourse.smody.cycle.dto.StatResponse;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -98,17 +94,69 @@ class CycleServiceTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("미래 시점의 사이클은 현재 시점으로 인증 불가")
+    @DisplayName("특정 멤버의 특정 챌린지에 대한 성공한 사이클 개수를 조회한다.")
     @Test
-    void progress_future_time() {
+    void countSuccess() {
         // given
-        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now.plusSeconds(1L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
         // when then
-        assertThatThrownBy(() -> cycle.increaseProgress(now, 이미지, "인증 완료"))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.INVALID_PROGRESS_TIME);
+        Member member = fixture.회원_조회(조조그린_ID);
+        Challenge challenge = fixture.챌린지_조회(미라클_모닝_ID);
+        assertThat(cycleService.countSuccess(member, challenge)).isEqualTo(2);
+    }
+
+    @DisplayName("특정 챌린지와 특정 멤버의 사이클을 모두 조회한다.")
+    @Test
+    void findAllByChallengeAndMember() {
+        // given
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+
+        // when
+        List<Cycle> actual = cycleService.findAllByChallengeAndMember(미라클_모닝_ID, 조조그린_ID);
+
+        // then
+        assertAll(
+                () -> assertThat(actual.size()).isEqualTo(3),
+                () -> assertThat((int) actual.stream()
+                        .filter(c -> c.getProgress().equals(Progress.SUCCESS)).count())
+                        .isEqualTo(2)
+        );
+    }
+
+    @DisplayName("특정 멤버의 모든 사이클 중 특정 PROGRESS 에 해당하는 사이클만 조회한다.")
+    @Test
+    void findAllByMemberAndFilter() {
+        // given
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 스모디_방문하기_ID, now.minusDays(3L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+
+        // when
+        PagingParams pagingParams = new PagingParams();
+        pagingParams.setFilter("SUCCESS");
+        List<Cycle> actual = cycleService.findAllByMemberAndFilter(fixture.회원_조회(조조그린_ID), pagingParams);
+
+        // then
+        assertAll(
+                () -> assertThat(actual.size()).isEqualTo(3),
+                () -> assertThat(actual.stream()
+                        .filter(c -> c.getChallenge().getId().equals(미라클_모닝_ID)).count())
+                        .isEqualTo(2),
+                () -> assertThat(actual.stream()
+                        .filter(c -> c.getChallenge().getId().equals(스모디_방문하기_ID)).count())
+                        .isEqualTo(1)
+        );
     }
 
     @DisplayName("나의 사이클 중")
@@ -156,6 +204,47 @@ class CycleServiceTest extends IntegrationTest {
 
             assertThat(cycles).hasSize(1);
         }
+    }
+
+    @DisplayName("특정 챌린지의 현재 진행중인 사이클을 조회한다.")
+    @Test
+    void findInProgressByChallenge() {
+        // given
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+
+        fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(1L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+
+        // when
+        List<Cycle> actual = cycleService.findInProgressByChallenge(now, fixture.챌린지_조회(미라클_모닝_ID));
+
+        // then
+        assertThat(actual.size()).isEqualTo(2);
+    }
+
+    @DisplayName("특정 멤버의 특정 챌린지에 대한 사이클 중 특정 PROGRESS 에 해당하는 것들만 모두 조회한다.")
+    @Test
+    void findAllByMemberAndChallengeAndFilter() {
+        // given
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(3L));
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now.minusDays(6L));
+        fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+
+        fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now.minusDays(1L));
+        fixture.사이클_생성_NOTHING(조조그린_ID, 스모디_방문하기_ID, now);
+
+        // when
+        PagingParams pagingParams = new PagingParams();
+        pagingParams.setFilter("SUCCESS");
+        List<Cycle> actual = cycleService.findAllByMemberAndChallengeAndFilter(
+                조조그린_ID, 미라클_모닝_ID, pagingParams
+        );
+
+        // then
+        assertThat(actual.size()).isEqualTo(2);
     }
 
     @DisplayName("진행중인 사이클을 조회한다.")

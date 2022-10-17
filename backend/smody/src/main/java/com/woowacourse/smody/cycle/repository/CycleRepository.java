@@ -32,7 +32,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
             + "where c.member_id = :memberId and c.challenge_id = :challengeId " +
             "order by c.start_time DESC limit 1",
             nativeQuery = true)
-    Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge);
+    Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge); // TODO-이거 시그니쳐 아이디들로 바꾸는게 더 낫지 않나?
 
     List<Cycle> findByMember(Member member);
 
@@ -41,13 +41,12 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     void deleteByMember(@Param("member") Member member);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select c from Cycle c where c.id = :id")
-    Optional<Cycle> findByIdWithLock(@Param("id") Long id);
+    @Query("select c from Cycle c where c.id = :cycleId")
+    Optional<Cycle> findByIdWithLock(@Param("cycleId") Long cycleId);
 
     @Query("select c from Cycle c "
             + "join fetch c.challenge join fetch c.member "
             + "where c.challenge.id = :challengeId and c.member.id = :memberId")
-    List<Cycle> findAllByChallengeIdAndMemberId(@Param("challengeId") Long challengeId,
-                                                @Param("memberId") Long memberId);
-
+    List<Cycle> findAllByChallengeAndMember(@Param("challengeId") Long challengeId,
+                                            @Param("memberId") Long memberId);
 }

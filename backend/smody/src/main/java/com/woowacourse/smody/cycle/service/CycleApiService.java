@@ -16,7 +16,6 @@ import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
 import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.CursorPaging;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
@@ -69,48 +68,52 @@ public class CycleApiService {
         }
     }
 
-    public CycleResponse findWithSuccessCountById(Long cycleId) {
-        Cycle cycle = cycleService.search(cycleId);
-        return new CycleResponse(cycle, cycleService.countSuccess(cycle));
-    }
-
+    // TODO-이거 이해가 잘 안됨, 결국 사이클 하나에 대한 조회인데 챌린징레코드를 써야하나?
     public List<InProgressCycleResponse> findInProgressByMe(TokenPayload tokenPayload,
                                                             LocalDateTime searchTime,
                                                             PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload.getId());
         Integer size = pagingParams.getSize();
-        List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
-                sortByLatest(cycleService.findAllChallengingRecordByMember(member), searchTime));
-
+        List<ChallengingRecord> challengingRecords = cursorPaging(
+                pagingParams,
+                size,
+                sortByDeadLineToMillis(cycleService.findAllChallengingRecordByMember(member), searchTime)
+        ); // TODO-여기서 챌린지 레코드를 쓰는게 맞나? 이렇게 찾은 챌린지 레코드는 하나의 챌린지에 대해서 라는 조건이 깨지는 건데?
         return challengingRecords.stream()
                 .map(challengingRecord -> new InProgressCycleResponse(
                         challengingRecord.getLatestCycle(), challengingRecord.getSuccessCount()
-                ))
+                )) // TODO-challengingRecord.getLatestCycle() 할 필요가 있나? 어차피 챌린징레코드에 사이클은 하나 들었을텐데
                 .collect(toList());
     }
 
-    private List<ChallengingRecord> sortByLatest(List<ChallengingRecord> challengingRecords,
-                                                 LocalDateTime searchTime) {
+    private List<ChallengingRecord> sortByDeadLineToMillis(List<ChallengingRecord> challengingRecords,
+                                                           LocalDateTime searchTime) {
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.isInProgress(searchTime))
                 .sorted(Comparator.comparing(challengingRecord -> challengingRecord.getDeadLineToMillis(searchTime)))
                 .collect(toList());
     }
 
-    private List<ChallengingRecord> cursorPaging(PagingParams pagingParams, Integer size,
+    private List<ChallengingRecord> cursorPaging(PagingParams pagingParams,
+                                                 Integer size,
                                                  List<ChallengingRecord> challengingRecords) {
-        Cycle cycle = cycleService.findById(pagingParams.getCursorId())
+        Cycle cycle = cycleService.findById(pagingParams.getCursorId()) // TODO-이거 search 쓰면 안되나?
                 .orElse(null);
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.contains(cycle))
                 .findAny()
                 .map(cursor -> CursorPaging.apply(challengingRecords, cursor, size))
-                .orElse(CursorPaging.apply(challengingRecords, null, size));
+                .orElse(CursorPaging.apply(challengingRecords, null, size)); // TODO-이 람다식도 좀 이상함, 억지느낌
+    }
+
+    public CycleResponse findWithSuccessCountById(Long cycleId) {
+        Cycle cycle = cycleService.search(cycleId);
+        return new CycleResponse(cycle, cycleService.countSuccess(cycle.getMember(), cycle.getChallenge()));
     }
 
     public StatResponse searchStat(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
-        List<Cycle> cycles = cycleService.searchByMember(member);
+        List<Cycle> cycles = cycleService.findByMember(member);
         int successCount = (int) cycles.stream()
                 .filter(Cycle::isSuccess)
                 .count();

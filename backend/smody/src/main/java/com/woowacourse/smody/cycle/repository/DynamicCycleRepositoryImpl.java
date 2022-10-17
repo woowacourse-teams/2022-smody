@@ -1,5 +1,6 @@
 package com.woowacourse.smody.cycle.repository;
 
+import static com.querydsl.core.types.ExpressionUtils.as;
 import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
@@ -7,7 +8,6 @@ import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,7 +27,9 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId, PagingParams pagingParams) {
+    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId,
+                                                            Long challengeId,
+                                                            PagingParams pagingParams) {
         return queryFactory
                 .selectFrom(cycle)
                 .where(buildDynamicQuery(memberId, challengeId, pagingParams))
@@ -66,24 +68,23 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                         .and(() -> cycle.progress.eq(Progress.from(pagingParams.getFilter())
                                 .orElse(null)))
                         .build()
-                )
-                .distinct()
+                ).distinct()
                 .fetch();
     }
 
+    // TODO-여기서 챌린징 레코드를 만드는게 맞나? 챌린징 레코드 정의에 반하는 거 같은데
     @Override
     public List<ChallengingRecord> findAllChallengingRecordByMemberAfterTime(Long memberId,
                                                                              LocalDateTime time) {
         return queryFactory
                 .select(challengingRecordConstructor())
                 .from(cycle)
-                .join(cycle.challenge, challenge).fetchJoin()
+                .join(cycle.challenge, challenge).fetchJoin() // TODO-단순히 페치조인을 위한 조인? challenge 를 쓰지 않는?
                 .where(DynamicQuery.builder()
                         .and(() -> cycle.member.id.eq(memberId))
                         .and(() -> cycle.startTime.after(time))
-                        .build()
-                )
-            .fetch();
+                        .build())
+                .fetch();
     }
 
     private ConstructorExpression<ChallengingRecord> challengingRecordConstructor() {
@@ -95,13 +96,13 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     private Expression<Long> successCountSubQuery() {
         QCycle subCycle = new QCycle("subCycle");
-        return ExpressionUtils.as(
+        return as(
                 JPAExpressions.select(count(subCycle.id))
                         .from(subCycle)
                         .where(new BooleanBuilder()
-                            .and(subCycle.challenge.eq(cycle.challenge))
-                            .and(subCycle.progress.eq(Progress.SUCCESS))
-                            .and(subCycle.member.eq(cycle.member))
+                                .and(subCycle.challenge.eq(cycle.challenge))
+                                .and(subCycle.progress.eq(Progress.SUCCESS))
+                                .and(subCycle.member.eq(cycle.member))
                         ),
                 "successCount");
     }

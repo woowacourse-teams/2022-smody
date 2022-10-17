@@ -28,10 +28,10 @@ public class ChallengingRecord {
                 .count();
     }
 
-    /*
+    /**
      * QueryDSL Projection 을 위한 생성자
      */
-    public ChallengingRecord(Cycle cycle, Long successCount) {
+    public ChallengingRecord(Cycle cycle, Long successCount) { // TODO-이거 왜 List<Cycle> 이 아니라 걍 Cycle 을 받지?
         this.cycles = List.of(cycle);
         this.successCount = successCount;
     }
@@ -104,7 +104,7 @@ public class ChallengingRecord {
 
     public Integer getCycleDetailCount() {
         return cycles.stream()
-                .mapToInt(cycle -> cycle.getCycleDetailsOrderByProgress().size())
+                .mapToInt(cycle -> cycle.getCycleDetails().size())
                 .sum();
     }
 }
