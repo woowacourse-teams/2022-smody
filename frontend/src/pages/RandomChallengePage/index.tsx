@@ -1,5 +1,15 @@
+import { useRandomChallengePage } from './useRandomChallengePage';
+
+import { ChallengeList } from 'components';
+
 const RandomChallengePage = () => {
-  return <div>랜덤 챌린지 페이지</div>;
+  const { challengeInfiniteData } = useRandomChallengePage();
+
+  if (typeof challengeInfiniteData === 'undefined') {
+    return null;
+  }
+
+  return <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />;
 };
 
 export default RandomChallengePage;
