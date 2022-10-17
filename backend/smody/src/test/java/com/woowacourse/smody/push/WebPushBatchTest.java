@@ -25,10 +25,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class PushSchedulerTest extends IntegrationTest {
+class WebPushBatchTest extends IntegrationTest {
 
     @Autowired
-    private PushScheduler pushScheduler;
+    private WebPushBatch webPushBatch;
 
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
@@ -64,7 +64,7 @@ class PushSchedulerTest extends IntegrationTest {
                 .willReturn(true);
 
         // when
-        pushScheduler.sendPushNotifications();
+        webPushBatch.sendPushNotifications();
 
         // then
         List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
@@ -83,7 +83,7 @@ class PushSchedulerTest extends IntegrationTest {
                 .willReturn(false);
 
         // when
-        pushScheduler.sendPushNotifications();
+        webPushBatch.sendPushNotifications();
 
         // then
         List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
@@ -102,7 +102,7 @@ class PushSchedulerTest extends IntegrationTest {
                 .willReturn(false);
 
         // when
-        pushScheduler.sendPushNotifications();
+        webPushBatch.sendPushNotifications();
 
         // then
         List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
