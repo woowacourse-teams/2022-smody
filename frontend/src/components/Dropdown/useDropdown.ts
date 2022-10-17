@@ -4,11 +4,21 @@ import { setBadge } from 'pwa/badge';
 import { pushStatus } from 'pwa/pushStatus';
 import { MouseEventHandler, useState, useEffect } from 'react';
 
+import useDetectPageChange from 'hooks/useDetectPageChange';
+
 export const useDropdown = ({
   updateNotificationCount,
   updateIsSubscribed,
 }: UseDropdownProps) => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
+
+  const resetDropdown = () => {
+    if (isDropdownToggled) {
+      setDropdownToggled(false);
+    }
+  };
+
+  useDetectPageChange(resetDropdown);
 
   useGetNotifications({
     useErrorBoundary: false,
