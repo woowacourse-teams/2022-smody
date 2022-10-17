@@ -2,7 +2,7 @@ import { useChallengePage } from './useChallengePage';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { EventPage, SearchPage } from 'pages';
+import { EventPage, RandomChallengePage, SearchPage } from 'pages';
 
 import { FlexBox, Button, FixedButton, Tabs } from 'components';
 
@@ -17,10 +17,10 @@ const tabList = [
   //     path: '/popular',
   //     tabName: '인기',
   //   },
-  //   {
-  //     path: '/random',
-  //     tabName: '랜덤',
-  //   },
+  {
+    path: CLIENT_PATH.CHALLENGE_RANDOM,
+    tabName: '랜덤',
+  },
   {
     path: CLIENT_PATH.CHALLENGE_SEARCH,
     tabName: '전체검색',
@@ -47,6 +47,10 @@ const ContentPage = () => {
 
   if (pathname === CLIENT_PATH.CHALLENGE_EVENT) {
     return <EventPage />;
+  }
+
+  if (pathname === CLIENT_PATH.CHALLENGE_RANDOM) {
+    return <RandomChallengePage />;
   }
 
   if (pathname === CLIENT_PATH.CHALLENGE_SEARCH) {

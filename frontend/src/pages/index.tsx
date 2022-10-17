@@ -18,3 +18,4 @@ export const CycleDetailSharePage = lazy(() => import('pages/CycleDetailSharePag
 export const RankingPage = lazy(() => import('pages/RankingPage'));
 export const EventPage = lazy(() => import('pages/EventPage'));
 export const ChallengePage = lazy(() => import('pages/ChallengePage'));
+export const RandomChallengePage = lazy(() => import('pages/RandomChallengePage'));

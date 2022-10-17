@@ -11,6 +11,7 @@ export const CLIENT_PATH = {
   CHALLENGE: '/challenge',
   CHALLENGE_SEARCH: '/challenge/search',
   CHALLENGE_EVENT: '/challenge/event',
+  CHALLENGE_RANDOM: '/challenge/random',
   FEED: '/feed',
   FEED_DETAIL: '/feed/detail',
   FEED_DETAIL_ID: '/feed/detail/:cycleDetailId',
