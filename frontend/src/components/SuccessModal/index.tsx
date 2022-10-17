@@ -4,7 +4,14 @@ import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, ModalOverlay, Text, CheckCircles } from 'components';
+import {
+  Button,
+  FlexBox,
+  ModalOverlay,
+  Text,
+  CheckCircles,
+  ChallengeIcon,
+} from 'components';
 import { SuccessModalProps } from 'components/SuccessModal/type';
 
 export const SuccessModal = ({
@@ -14,7 +21,7 @@ export const SuccessModal = ({
   successCount,
   challengeId,
   progressCount,
-  emoji,
+  emojiIndex,
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
   const {
@@ -30,7 +37,7 @@ export const SuccessModal = ({
     challengeName,
     challengeId,
     progressCount,
-    emoji,
+    emojiIndex,
   });
 
   return (
@@ -44,11 +51,10 @@ export const SuccessModal = ({
         <CloseWrapper onClick={handleClickClose}>
           <Close />
         </CloseWrapper>
-        <Text color={themeContext.onSurface} size={70} fontWeight="normal">
-          {emoji}
-          <span id="confettiRewardId" />
-          <span id="emojiRewardId" />
-        </Text>
+
+        <ChallengeIcon emojiIndex={emojiIndex} challengeId={challengeId} size="large" />
+        <span id="confettiRewardId" />
+        <span id="emojiRewardId" />
         <Text color={themeContext.onSurface} size={20} fontWeight="bold">
           {challengeName}
         </Text>

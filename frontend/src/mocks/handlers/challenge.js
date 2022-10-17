@@ -80,7 +80,7 @@ export const challenge = [
 
   // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
-    const searchValue = req.url.searchParams.get('search');
+    const searchValue = req.url.searchParams.get('filter');
     if (searchValue === null) {
       return res(ctx.status(200), ctx.json(challengeData));
     }
@@ -96,7 +96,7 @@ export const challenge = [
       return res(ctx.status(403), ctx.json({ code: 2002 }));
     }
 
-    const searchValue = req.url.searchParams.get('search');
+    const searchValue = req.url.searchParams.get('filter');
     if (searchValue === null) {
       return res(ctx.status(200), ctx.json(challengeData));
     }

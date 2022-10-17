@@ -1,28 +1,36 @@
 package com.woowacourse.smody.challenge.controller;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.challenge.dto.*;
-import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.support.ControllerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeRequest;
+import com.woowacourse.smody.challenge.dto.ChallengeResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
+import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.support.ControllerTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 class ChallengeControllerTest extends ControllerTest {
 
@@ -35,7 +43,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeTabResponse(2L, "미라클 모닝", 5, false, 1, 2)
         );
 
-        given(challengeQueryService.findAllWithChallengerCount(any(LocalDateTime.class), any(PagingParams.class)))
+        given(challengeApiService.findAllWithChallengerCountByFilter(any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
         // when
@@ -67,7 +75,7 @@ class ChallengeControllerTest extends ControllerTest {
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
-        given(challengeQueryService.findAllWithChallengerCount(any(TokenPayload.class), any(LocalDateTime.class),
+        given(challengeApiService.findAllWithChallengerCountByFilter(any(TokenPayload.class), any(LocalDateTime.class),
                 any(PagingParams.class)))
                 .willReturn(challengeTabRespons);
 
@@ -102,7 +110,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengeOfMineResponse(3L, "오늘의 운동", 0, 2, 0)
         );
 
-        given(challengeQueryService.searchOfMine(any(TokenPayload.class), any(PagingParams.class)))
+        given(challengeApiService.findAllByMeAndFilter(any(TokenPayload.class), any(PagingParams.class)))
                 .willReturn(challengeOfMineRespons);
 
         // when
@@ -131,7 +139,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, false, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
+        given(challengeApiService.findWithChallengerCount(any(LocalDateTime.class), eq(1L)))
                 .willReturn(challengeResponse);
 
         // when
@@ -160,7 +168,7 @@ class ChallengeControllerTest extends ControllerTest {
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ChallengeResponse challengeResponse =
                 new ChallengeResponse(1L, "스모디 방문하기", 3, true, "스모디 방문하기 입니다", 0, 1);
-        given(challengeQueryService.findWithChallengerCount(
+        given(challengeApiService.findWithChallengerCount(
                 any(TokenPayload.class), any(LocalDateTime.class), eq(1L))
         ).willReturn(challengeResponse);
 
@@ -192,7 +200,7 @@ class ChallengeControllerTest extends ControllerTest {
                 new ChallengersResponse(1L, "조조그린", 1, "picture1.jpg", "조조그린입니다"),
                 new ChallengersResponse(2L, "알파", 0, "picture2.jpg", "알파입니다")
         );
-        given(challengeQueryService.findAllChallengers(1L)
+        given(challengeApiService.findAllChallengers(1L)
         ).willReturn(challengersResponse);
 
         // when
@@ -218,7 +226,7 @@ class ChallengeControllerTest extends ControllerTest {
         // given
         Long challengeId = 1L;
         ChallengeRequest challengeRequest = new ChallengeRequest("1일 1포스팅 하기", "1일 1포스팅을 실천하는 챌린지입니다", 0, 1);
-        given(challengeService.create(any(ChallengeRequest.class))).willReturn(challengeId);
+        given(challengeApiService.create(any(ChallengeRequest.class))).willReturn(challengeId);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         // when
@@ -252,7 +260,7 @@ class ChallengeControllerTest extends ControllerTest {
                         5L, "외국어 공부하기", 7, false, 1, 2
                 )
         );
-        given(challengeQueryService.findAllWithChallengerCount
+        given(challengeApiService.findAllWithChallengerCountByFilter
                 (any(LocalDateTime.class), any(PagingParams.class))).willReturn(challengeTabResponse);
 
         // when
@@ -286,7 +294,7 @@ class ChallengeControllerTest extends ControllerTest {
                 )
         );
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.findAllWithChallengerCount(
+        given(challengeApiService.findAllWithChallengerCountByFilter(
                 any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)))
                 .willReturn(challengeTabResponse);
 
@@ -317,7 +325,7 @@ class ChallengeControllerTest extends ControllerTest {
                 "알고리즘 풀기", "알고리즘 풀기 챌린지입니다", 0, 1,
                 10, 40);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(challengeQueryService.findWithMine(
+        given(challengeApiService.findByMeAndChallenge(
                 any(TokenPayload.class), eq(1L)))
                 .willReturn(challengeHistoryResponse);
 

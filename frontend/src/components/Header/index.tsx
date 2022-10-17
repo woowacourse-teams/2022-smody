@@ -29,10 +29,15 @@ import { CLIENT_PATH } from 'constants/path';
 export const Header = ({ bgColor }: HeaderProps) => {
   const themeContext = useThemeContext();
 
-  const { isDark, handleDarkToggle } = useHeader();
+  const { wrapperRef, isDark, handleDarkToggle } = useHeader();
 
   return (
-    <Wrapper bgColor={bgColor} justifyContent="space-between" alignItems="center">
+    <Wrapper
+      ref={wrapperRef}
+      bgColor={bgColor}
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Link to={CLIENT_PATH.HOME}>
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
         {isDev && 'DEV'}
@@ -119,6 +124,7 @@ const Wrapper = styled(FlexBox)<HeaderProps>`
     right: 0;
     background-color: ${bgColor};
     z-index: ${Z_INDEX.HEADER};
+    transition: top 0.4s;
 
     /* PC (해상도 1024px)*/
     @media all and (min-width: 1024px) {

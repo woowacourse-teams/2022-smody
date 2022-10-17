@@ -8,7 +8,9 @@ export const CLIENT_PATH = {
   LOGIN: '/login',
   SIGN_UP: '/sign_up',
   CERT: '/cert',
-  SEARCH: '/search',
+  CHALLENGE: '/challenge',
+  CHALLENGE_SEARCH: '/challenge/search',
+  CHALLENGE_EVENT: '/challenge/event',
   FEED: '/feed',
   FEED_DETAIL: '/feed/detail',
   FEED_DETAIL_ID: '/feed/detail/:cycleDetailId',
@@ -25,6 +27,7 @@ export const CLIENT_PATH = {
   CHALLENGE_DETAIL_ID: '/challenge/detail/:challengeId',
   RANK: '/ranks',
   VOC: '/voc',
+  MANUAL: '/manual',
   NOT_FOUND: '/not_found',
   WILD_CARD: '*',
 };

@@ -19,9 +19,9 @@ export const RankingItem = ({
 
   return (
     <Wrapper surfaceColor={surfaceColor} alignItems="center" gap="1rem">
-      <Text size={24} color={onSurfaceColor} fontWeight="bold">
+      <RankingText size={24} color={onSurfaceColor} fontWeight="bold">
         {ranking}
-      </Text>
+      </RankingText>
       <ProfileImg
         aria-label="프로필 이미지"
         src={picture}
@@ -38,9 +38,9 @@ export const RankingItem = ({
       </UserInfoWrapper>
       <PointWrapper gap="1rem" alignItems="center">
         <Medal ranking={ranking} />
-        <Text size={16} color={onSurfaceColor}>
+        <PointText size={16} color={onSurfaceColor}>
           {point}점
-        </Text>
+        </PointText>
       </PointWrapper>
     </Wrapper>
   );
@@ -70,6 +70,16 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     background-color: ${surfaceColor};
     padding: 0.5rem 1rem;
   `}
+`;
+
+const RankingText = styled(Text)`
+  width: 1.8rem;
+  text-align: center;
+`;
+
+const PointText = styled(Text)`
+  width: 3.3rem;
+  text-align: center;
 `;
 
 const ProfileImg = styled.img`

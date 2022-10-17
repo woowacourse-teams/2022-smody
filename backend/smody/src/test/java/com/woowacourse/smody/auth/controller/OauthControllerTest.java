@@ -1,12 +1,5 @@
 package com.woowacourse.smody.auth.controller;
 
-import com.woowacourse.smody.auth.dto.*;
-import com.woowacourse.smody.support.ControllerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -18,6 +11,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.smody.auth.dto.LoginRequest;
+import com.woowacourse.smody.auth.dto.LoginResponse;
+import com.woowacourse.smody.auth.dto.PreTokenPayLoad;
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.auth.dto.ValidAuthResponse;
+import com.woowacourse.smody.support.ControllerTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
+
 class OauthControllerTest extends ControllerTest {
 
     @DisplayName("구글 로그인에 성공하면 200을 응답한다.")
@@ -28,7 +32,7 @@ class OauthControllerTest extends ControllerTest {
         LoginRequest loginRequest = new LoginRequest("email", "nickname", "picture");
         given(googleApi.requestToken(any(String.class)))
                 .willReturn(loginRequest);
-        given(oauthService.login(any(LoginRequest.class)))
+        given(oauthApiService.login(any(LoginRequest.class)))
                 .willReturn(loginResponse);
 
         // when
@@ -51,7 +55,7 @@ class OauthControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ValidAuthResponse validAuthResponse = new ValidAuthResponse(true);
-        given(oauthService.isValidAuth(any(PreTokenPayLoad.class)))
+        given(oauthApiService.isValidAuth(any(PreTokenPayLoad.class)))
                 .willReturn(validAuthResponse);
 
         // when

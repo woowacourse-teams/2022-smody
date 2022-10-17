@@ -1,11 +1,10 @@
 package com.woowacourse.smody.auth.dto;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor

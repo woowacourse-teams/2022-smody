@@ -1,6 +1,10 @@
 package com.woowacourse.smody.db_support;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,14 +33,21 @@ public class PagingParams {
         this.cursorId = cursorId;
     }
 
-    public Integer getDefaultSize() {
+    public String getSort() {
+        if (this.sort == null) {
+            return "";
+        }
+        return sort;
+    }
+
+    public Integer getSize() {
         if (this.size == null || this.size <= 0) {
             return 10;
         }
         return this.size;
     }
 
-    public Long getDefaultCursorId() {
+    public Long getCursorId() {
         if (this.cursorId == null) {
             return 0L;
         }

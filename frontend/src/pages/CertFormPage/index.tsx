@@ -9,13 +9,14 @@ import {
   Text,
   CheckCircles,
   Title,
-  ThumbnailWrapper,
+  ChallengeIcon,
   LoadingButton,
 } from 'components';
 import { SuccessModal } from 'components/SuccessModal';
 
+import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
-import { colorList, emojiList } from 'constants/style';
+import { TITLE_HEIGHT, colorList } from 'constants/style';
 
 const certImageCompressionOptions = {
   maxSizeMB: 0.2,
@@ -47,7 +48,7 @@ const CertFormPage = () => {
   } = useCertFormPage();
 
   return (
-    <FlexBox flexDirection="column" alignItems="center">
+    <Wrapper flexDirection="column" alignItems="center">
       <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
 
       <CertInfoWrapper
@@ -57,30 +58,24 @@ const CertFormPage = () => {
         gap="1rem"
       >
         <FlexBox flexDirection="column" alignItems="center">
-          <Text
-            size={20}
-            fontWeight="bold"
-            color={themeContext.primary}
-            style={{ marginBottom: '0.8rem' }}
-          >
+          <ChallengeNameText size={20} fontWeight="bold" color={themeContext.primary}>
             {challengeName}
-          </Text>
+          </ChallengeNameText>
           <CheckCircles progressCount={progressCount} />
         </FlexBox>
 
-        <ThumbnailWrapper size="medium" bgColor={colorList[colorIndex]}>
-          {emojiList[emojiIndex]}
-        </ThumbnailWrapper>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor={colorList[colorIndex]}
+        />
       </CertInfoWrapper>
       <form onSubmit={handleSubmitCert}>
         <section>
-          <Text
-            size={14}
-            color={themeContext.mainText}
-            style={{ margin: '2rem 0 0.5rem 1rem' }}
-          >
+          <MiniTitle size={14} color={themeContext.mainText}>
             사진
-          </Text>
+          </MiniTitle>
           <CertImageWrapper
             onClick={handleImageInputButtonClick}
             justifyContent="center"
@@ -95,31 +90,24 @@ const CertFormPage = () => {
           {renderImageInput(certImageCompressionOptions)}
         </section>
 
-        <Section flexDirection="column">
-          <Text
-            size={14}
-            color={themeContext.mainText}
-            style={{ margin: '2rem 0 0.5rem 1rem' }}
-          >
+        <FlexBox flexDirection="column">
+          <MiniTitle size={14} color={themeContext.mainText}>
             기록
-          </Text>
-          <TextArea
-            cols={50}
-            rows={5}
-            maxLength={254}
-            value={description}
-            onChange={handleChangeDescription}
-            isDark={isDark}
-          />
-          <TextLength
-            as="span"
-            size={12}
-            color={themeContext.mainText}
-            style={{ marginLeft: 'auto' }}
-          >
-            {description.length}/255
+          </MiniTitle>
+          <TextAreaWrapper isDark={isDark}>
+            <TextArea
+              cols={50}
+              rows={5}
+              maxLength={MAX_TEXTAREA_LENGTH - 1}
+              value={description}
+              onChange={handleChangeDescription}
+              isDark={isDark}
+            />
+          </TextAreaWrapper>
+          <TextLength as="span" size={12} color={themeContext.mainText}>
+            {description.length}/{MAX_TEXTAREA_LENGTH}
           </TextLength>
-        </Section>
+        </FlexBox>
         <LoadingButton
           isDisabled={isButtonDisabled}
           isLoading={isLoadingPost}
@@ -137,14 +125,18 @@ const CertFormPage = () => {
           challengeName={challengeName}
           successCount={successCount}
           progressCount={progressCount + 1}
-          emoji={emojiList[emojiIndex]}
+          emojiIndex={emojiIndex}
         />
       )}
-    </FlexBox>
+    </Wrapper>
   );
 };
 
 export default CertFormPage;
+
+const Wrapper = styled(FlexBox)`
+  padding-top: ${TITLE_HEIGHT};
+`;
 
 const CertInfoWrapper = styled(FlexBox)`
   width: 100%;
@@ -154,7 +146,7 @@ const CertInfoWrapper = styled(FlexBox)`
 const CertImageWrapper = styled(FlexBox)<CertImageWrapperProps>`
   ${({ theme, isSelectImage }) => css`
     background-color: ${theme.background};
-    width: 26rem;
+    width: 100%;
     height: 18rem;
     border-radius: 20px;
     margin-bottom: 1rem;
@@ -184,6 +176,14 @@ const CertImageWrapper = styled(FlexBox)<CertImageWrapperProps>`
   `}
 `;
 
+const ChallengeNameText = styled(Text)`
+  margin-bottom: 0.8rem;
+`;
+
+const MiniTitle = styled(Text)`
+  margin: 2rem 0 0.5rem 1rem;
+`;
+
 const CertImage = styled.img`
   width: 100%;
   height: 100%;
@@ -191,26 +191,50 @@ const CertImage = styled.img`
   object-fit: cover;
 `;
 
-const Section = styled(FlexBox)``;
-
-const TextArea = styled.textarea<TextAreaProps>`
+const TextAreaWrapper = styled.div<TextAreaProps>`
   ${({ theme, isDark }) => css`
+    padding: 1rem 0 1rem 1rem;
     border-radius: 20px;
-    padding: 1rem;
-    width: 26rem;
-    border: none;
-    resize: none;
-    font-size: 1rem;
     background-color: ${isDark ? theme.input : theme.background};
-    color: ${theme.onInput};
 
-    &:focus {
+    &:focus-within {
       outline: ${theme.primary} 2px solid;
     }
   `}
 `;
 
+const TextArea = styled.textarea<TextAreaProps>`
+  ${({ theme, isDark }) => css`
+    padding-right: 1rem;
+    border: none;
+    resize: none;
+    width: 100%;
+    font-size: 1rem;
+    background-color: ${isDark ? theme.input : theme.background};
+    color: ${theme.onInput};
+    outline: none;
+
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
+    }
+  `}
+`;
+
 const TextLength = styled(Text)`
-  margin: 0.5rem 0 1.5rem;
+  margin: 0.5rem 0 1.5rem auto;
   align-self: flex-end;
 `;

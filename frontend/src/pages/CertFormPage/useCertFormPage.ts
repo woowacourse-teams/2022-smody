@@ -1,5 +1,5 @@
 import { usePostCycleProgress } from 'apis';
-import { useState, useMemo, FormEventHandler, ChangeEvent } from 'react';
+import { useState, useMemo, FormEventHandler, ChangeEventHandler } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';
@@ -68,7 +68,7 @@ const useCertFormPage = () => {
     setIsSuccessModalOpen(false);
   };
 
-  const handleChangeDescription = (event: ChangeEvent<HTMLDivElement>) => {
+  const handleChangeDescription: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     setDescription(event.target.value);
   };
 

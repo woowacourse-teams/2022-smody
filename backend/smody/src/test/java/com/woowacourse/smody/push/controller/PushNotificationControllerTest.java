@@ -6,9 +6,11 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,19 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PushNotificationControllerTest extends ControllerTest {
 
@@ -55,7 +44,7 @@ class PushNotificationControllerTest extends ControllerTest {
 		);
 		List<PushNotificationResponse> responses = List.of(pushNotificationResponse1,
 			pushNotificationResponse2);
-		given(pushNotificationService.searchNotificationsOfMine(any()))
+		given(pushNotificationApiService.searchNotificationsByMe(any()))
 			.willReturn(responses);
 
 		// when
@@ -117,5 +106,23 @@ class PushNotificationControllerTest extends ControllerTest {
 								fieldWithPath("memberIds").type(JsonFieldType.ARRAY).description("멘션대상 회원들의 id"),
 								fieldWithPath("pathId").type(JsonFieldType.NUMBER).description("피드 id")
 						)));
+	}
+
+	@DisplayName("나의 보낸 알림을 모두 삭제하면 204 응답을 반환한다.")
+	@Test
+	void deleteMyCompleteNotifications() throws Exception {
+		// given
+		TokenPayload tokenPayload = new TokenPayload(1L);
+		String token = jwtTokenProvider.createToken(tokenPayload);
+
+		// when
+		ResultActions result = mockMvc.perform(delete("/push-notifications/me")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Bearer " + token));
+
+		// then
+		result.andExpect(status().isNoContent())
+			.andDo(document("delete-my-notifications", HOST_INFO,
+				preprocessResponse(prettyPrint())));
 	}
 }

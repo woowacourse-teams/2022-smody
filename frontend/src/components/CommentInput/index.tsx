@@ -1,6 +1,5 @@
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { FlexBox, ValidationMessage, MembersPopover } from 'components';
@@ -14,29 +13,30 @@ export const CommentInput = ({
     commentInputRef,
     content,
     isVisibleWriteButton,
-    isMaxLengthOver,
+    isCommentError,
+    commentErrorMessage,
     isLoadingPostComment,
     isLoadingPatchComment,
     handleClickWrite,
+    isLoadingPostMentionNotifications,
+    isPopoverOpen,
+    handleClosePopover,
     membersData,
     hasNextMembersPage,
     fetchNextMembersPage,
-    isPopoverOpen,
-    handleClosePopover,
     selectMember,
-    isLoadingPostMentionNotifications,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
-      <InnerWrapper alignItems="center" isShowLengthWarning={isMaxLengthOver}>
+      <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
         <CommentInputElement contentEditable={true} ref={commentInputRef} />
         <WriteButton
           disabled={
             !isVisibleWriteButton ||
             isLoadingPostComment ||
             isLoadingPatchComment ||
-            isMaxLengthOver ||
+            isCommentError ||
             isLoadingPostMentionNotifications
           }
           isVisible={isVisibleWriteButton}
@@ -45,12 +45,12 @@ export const CommentInput = ({
           {editMode.isEditMode ? '수정' : '작성'}
         </WriteButton>
       </InnerWrapper>
-      {isMaxLengthOver && (
+      {isCommentError && (
         <ValidationMessageWrapper>
           <ValidationMessage
             isValidated={false}
             value={content}
-            message={'댓글은 최대 255자까지 입력할 수 있습니다.'}
+            message={commentErrorMessage}
           />
         </ValidationMessageWrapper>
       )}

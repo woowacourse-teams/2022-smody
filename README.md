@@ -1,6 +1,8 @@
-# SMODY(스모디) https://www.smody.co.kr
+# SMODY(스모디) 
 
 <img src="https://user-images.githubusercontent.com/59413128/185350531-1ecaaf78-e295-4bf5-b14a-4c5208e84c65.png" width="100"> <img src="https://user-images.githubusercontent.com/59413128/185350386-6b9d9f8b-8f86-4f63-84c1-9b52dd9fbf19.png" alt="PWA" width="300">
+
+https://www.smody.co.kr
 
 ## 프로젝트 설명
 
@@ -32,7 +34,7 @@
 
 ### Backend
 
-<img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/185350115-745305d6-6062-4ace-885b-e45806ad2ddd.png">
+<img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/195751494-9f596b69-f515-4ee3-907b-7c56dc976350.png">
 
 ### Infra
 

@@ -1,13 +1,32 @@
 package com.woowacourse.smody.challenge.service;
 
+import static com.woowacourse.smody.support.ResourceFixture.JPA_공부_ID;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
+import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알고리즘_풀기_ID;
+import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
+import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
+import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.challenge.dto.*;
+import com.woowacourse.smody.challenge.dto.ChallengeHistoryResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeOfMineResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeResponse;
+import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
+import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.IntegrationTest;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,18 +35,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.woowacourse.smody.support.ResourceFixture.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 class ChallengeServiceTest extends IntegrationTest {
 
     @Autowired
-    private ChallengeQueryService challengeQueryService;
+    private ChallengeApiService challengeApiService;
 
     @Autowired
     private ChallengeService challengeService;
@@ -65,7 +76,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, null, 0L, null));
 
             // then
@@ -84,7 +95,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pageFullSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 3, 0L, null));
 
             // then
@@ -103,7 +114,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pagePartialSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
@@ -122,7 +133,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchOfMine_pageOverMaxPage() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, null));
 
             // then
@@ -133,7 +144,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, null, 0L, "success"));
 
             // then
@@ -152,7 +163,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageFullSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 3, 0L, "success"));
 
             // then
@@ -171,7 +182,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pagePartialSize() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 2, 오늘의_운동_ID, "success"));
 
             // then
@@ -190,7 +201,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void searchSuccessOfMine_pageOverMaxPage() {
             // when
-            List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+            List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                     tokenPayload, new PagingParams(null, 3, 알고리즘_풀기_ID, "success"));
 
             // then
@@ -208,7 +219,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(조조그린_ID, 스모디_방문하기_ID, Progress.SUCCESS, now.minusDays(7L));
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
-        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+        List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                 tokenPayload, new PagingParams(null, null, 0L, null));
 
         // then
@@ -235,7 +246,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(조조그린_ID, JPA_공부_ID, Progress.NOTHING, now.plusDays(1L));
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
-        List<ChallengeOfMineResponse> responses = challengeQueryService.searchOfMine(
+        List<ChallengeOfMineResponse> responses = challengeApiService.findAllByMeAndFilter(
                 tokenPayload, new PagingParams(null, null, 0L, null));
 
         // then
@@ -269,7 +280,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallengerCount_sort() {
             // when
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     now, new PagingParams(null, null, 0L, null));
 
             // then
@@ -286,7 +297,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallengerCount_pageFullSize() {
             // when
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(now,
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(now,
                     new PagingParams(null, 2, 0L, null));
 
             // then
@@ -303,7 +314,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallengerCount_pagePartialSize() {
             // when
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     now, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
@@ -320,7 +331,7 @@ class ChallengeServiceTest extends IntegrationTest {
         @Test
         void findAllWithChallengerCount_pageOverMaxPage() {
             // when
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     now, new PagingParams(null, 3, JPA_공부_ID, null));
 
             // then
@@ -332,7 +343,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     tokenPayload, now, new PagingParams(null, null, 0L, null));
 
             // then
@@ -350,7 +361,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void findAllWithChallengerCount_pageFullSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     tokenPayload, now, new PagingParams(null, 2, 0L, null));
 
             // then
@@ -370,7 +381,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void findAllWithChallengerCount_pagePartialSizeAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     tokenPayload, now, new PagingParams(null, 2, 미라클_모닝_ID, null));
 
             // then
@@ -390,7 +401,7 @@ class ChallengeServiceTest extends IntegrationTest {
         void findAllWithChallengerCount_pageOverMaxPageAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-            List<ChallengeTabResponse> challengeResponses = challengeQueryService.findAllWithChallengerCount(
+            List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     tokenPayload, now, new PagingParams(null, 3, JPA_공부_ID, null));
 
             // then
@@ -407,7 +418,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeQueryService.findWithChallengerCount(now, 미라클_모닝_ID);
+        ChallengeResponse challengeResponse = challengeApiService.findWithChallengerCount(now, 미라클_모닝_ID);
 
         // then
         assertAll(
@@ -427,7 +438,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 미라클_모닝_ID, Progress.SUCCESS, now.minusDays(3L));
 
         // when
-        ChallengeResponse challengeResponse = challengeQueryService
+        ChallengeResponse challengeResponse = challengeApiService
                 .findWithChallengerCount(tokenPayload, now, 미라클_모닝_ID);
 
         // then
@@ -449,7 +460,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
 
         // when
-        List<ChallengersResponse> challengersResponse = challengeQueryService
+        List<ChallengersResponse> challengersResponse = challengeApiService
                 .findAllChallengers(미라클_모닝_ID);
 
         // then
@@ -477,7 +488,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
 
         // when
-        List<ChallengersResponse> challengersResponse = challengeQueryService
+        List<ChallengersResponse> challengersResponse = challengeApiService
                 .findAllChallengers(알고리즘_풀기_ID);
 
         // then
@@ -493,7 +504,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성(토닉_ID, 오늘의_운동_ID, Progress.SUCCESS, now.minusDays(1L));
 
         // when then
-        assertThatThrownBy(() -> challengeQueryService.findAllChallengers(100L))
+        assertThatThrownBy(() -> challengeApiService.findAllChallengers(100L))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.NOT_FOUND_CHALLENGE);
@@ -502,12 +513,10 @@ class ChallengeServiceTest extends IntegrationTest {
     @DisplayName("챌린지를 생성하는 경우")
     @Test
     void create() {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
-
         // when
-        Long challengeId = challengeService.create(challengeRequest);
+        Long challengeId = challengeService.create(
+                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1
+        );
 
         // when then
         assertThat(challengeService.search(challengeId)).isNotNull();
@@ -516,12 +525,10 @@ class ChallengeServiceTest extends IntegrationTest {
     @DisplayName("중복된 챌린지 이름으로 생성하는 경우 예외 발생")
     @Test
     void create_duplicatedName() {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1);
-
         // when
-        Long challengeId = challengeService.create(challengeRequest);
+        Long challengeId = challengeService.create(
+                "1일 1포스팅 챌린지", "1일 1포스팅하는 챌린지입니다", 0, 1
+        );
 
         // when then
         assertThat(challengeId).isNotNull();
@@ -531,12 +538,8 @@ class ChallengeServiceTest extends IntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"   ", ""})
     void create_emptyDesc(String invalidDescription) {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                "1일 1포스팅 챌린지", invalidDescription, 0, 1);
-
         // when then
-        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+        assertThatThrownBy(() -> challengeService.create("1일 1포스팅 챌린지", invalidDescription, 0, 1))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
@@ -545,12 +548,8 @@ class ChallengeServiceTest extends IntegrationTest {
     @DisplayName("챌린지 소개 길이가 255자 초과인 경우 예외 발생")
     @Test
     void create_overDescriptionSize() {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                "1일 1포스팅 챌린지", "a".repeat(256), 0, 1);
-
         // when then
-        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+        assertThatThrownBy(() -> challengeService.create("1일 1포스팅 챌린지", "a".repeat(256), 0, 1))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_DESCRIPTION);
@@ -560,12 +559,8 @@ class ChallengeServiceTest extends IntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"   ", ""})
     void create_emptyName(String invalidName) {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                invalidName, "1일 1포스팅 챌린지입니다", 0, 1);
-
         // when then
-        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+        assertThatThrownBy(() -> challengeService.create(invalidName, "1일 1포스팅 챌린지입니다", 0, 1))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_NAME);
@@ -574,12 +569,8 @@ class ChallengeServiceTest extends IntegrationTest {
     @DisplayName("챌린지 이름 길이가 30자 초과인 경우 예외 발생")
     @Test
     void create_overNameSize() {
-        // given
-        ChallengeRequest challengeRequest = new ChallengeRequest(
-                "a".repeat(31), "1일 1포스팅 챌린지입니다", 0, 1);
-
         // when then
-        assertThatThrownBy(() -> challengeService.create(challengeRequest))
+        assertThatThrownBy(() -> challengeService.create("a".repeat(31), "1일 1포스팅 챌린지입니다", 0, 1))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_CHALLENGE_NAME);
@@ -594,7 +585,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 now, new PagingParams(null, null, 0L, "기"));
 
         // then
@@ -618,7 +609,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 now, new PagingParams(null, null, 스모디_방문하기_ID, "기"));
 
         // then
@@ -642,7 +633,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 now, new PagingParams(null, null, 알고리즘_풀기_ID, "기"));
 
         // then
@@ -659,7 +650,7 @@ class ChallengeServiceTest extends IntegrationTest {
         fixture.사이클_생성_NOTHING(더즈_ID, 스모디_방문하기_ID, now);
 
         // when then
-        assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
+        assertThatThrownBy(() -> challengeApiService.findAllWithChallengerCountByFilter(
                 now, new PagingParams(null, null, 0L, invalidSearchingName)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
@@ -676,7 +667,7 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, now, new PagingParams(null, null, 0L, "기"));
 
         // then
@@ -701,7 +692,7 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, now, new PagingParams(null, null, 스모디_방문하기_ID, "기"));
 
         // then
@@ -726,7 +717,7 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        List<ChallengeTabResponse> challengeTabResponse = challengeQueryService.findAllWithChallengerCount(
+        List<ChallengeTabResponse> challengeTabResponse = challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, now, new PagingParams(null, null, 알고리즘_풀기_ID, "기"));
 
         // then
@@ -744,7 +735,7 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when then
-        assertThatThrownBy(() -> challengeQueryService.findAllWithChallengerCount(
+        assertThatThrownBy(() -> challengeApiService.findAllWithChallengerCountByFilter(
                 tokenPayload, now, new PagingParams(null, null, 0L, invalidSearchingName)))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
@@ -763,18 +754,18 @@ class ChallengeServiceTest extends IntegrationTest {
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
         // when
-        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findWithMine(
+        ChallengeHistoryResponse challengeHistoryResponse = challengeApiService.findByMeAndChallenge(
                 tokenPayload, 알고리즘_풀기_ID);
 
         // then
         assertAll(
                 () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("알고리즘 풀기"),
                 () -> assertThat(challengeHistoryResponse.getSuccessCount()).isEqualTo(2),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(8)
+                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isEqualTo(9)
         );
     }
 
-    @DisplayName("회원이 참가한 챌린지 하나를 조회하는 경우")
+    @DisplayName("회원이 참가하지 않은 챌린지를 조회하는 경우 예외를 던진다.")
     @Test
     void findOneWithMine_notParticipate() {
         //given
@@ -785,14 +776,10 @@ class ChallengeServiceTest extends IntegrationTest {
 
         TokenPayload tokenPayload = new TokenPayload(알파_ID);
 
-        // when
-        ChallengeHistoryResponse challengeHistoryResponse = challengeQueryService.findWithMine(tokenPayload, 오늘의_운동_ID);
-
-        // then
-        assertAll(
-                () -> assertThat(challengeHistoryResponse.getChallengeName()).isEqualTo("오늘의 운동"),
-                () -> assertThat(challengeHistoryResponse.getSuccessCount()).isZero(),
-                () -> assertThat(challengeHistoryResponse.getCycleDetailCount()).isZero()
-        );
+        // when, then
+        assertThatThrownBy(() -> challengeApiService.findByMeAndChallenge(tokenPayload, 오늘의_운동_ID))
+                .isInstanceOf(BusinessException.class)
+                .extracting("ExceptionData")
+                .isEqualTo(ExceptionData.DATA_INTEGRITY_ERROR);
     }
 }

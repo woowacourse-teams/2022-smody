@@ -19,3 +19,14 @@ export type ValidatorFunction = (
   value: string,
   optionalValue?: string,
 ) => ValidatorReturns;
+
+export type LocationState = {
+  isInCertFormPage: boolean;
+  cycleId?: number;
+  challengeId?: number;
+  challengeName?: string;
+  progressCount?: number;
+  successCount?: number;
+  emojiIndex?: number;
+  colorIndex?: number;
+};

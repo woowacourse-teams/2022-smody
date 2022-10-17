@@ -1,5 +1,8 @@
 package com.woowacourse.smody.comment.domain;
 
+import static com.woowacourse.smody.support.ResourceFixture.이미지;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
@@ -7,13 +10,9 @@ import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommentTest {
 
@@ -23,10 +22,10 @@ class CommentTest {
         // given
         String invalidContent = "1234567890".repeat(25) + "123456";
         Member member = new Member("email@email.com", "nickname", "introduction", "picture");
-        Challenge challenge = new Challenge("challenge");
+        Challenge challenge = new Challenge("challenge", "설명", 1, 1);
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, LocalDateTime.now());
         cycle.increaseProgress(LocalDateTime.now().plusMinutes(1), 이미지, "인증1");
-        CycleDetail cycleDetail = cycle.getCycleDetails().get(0);
+        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
         assertThatThrownBy(() -> new Comment(cycleDetail, member, invalidContent))

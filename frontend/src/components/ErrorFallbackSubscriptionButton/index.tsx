@@ -1,17 +1,19 @@
 import { ErrorFallbackSubscriptionButtonProps } from './type';
-import { useErrorFallbackSubscriptionButton } from './useErrorFallbackSubscriptionButton';
 import styled from 'styled-components';
 
+import { useErrorFallbackLogic } from 'hooks/useErrorFallbackLogic';
 import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox, ToggleButton, UnderLineText } from 'components';
+
+const handleClickToggleButton = () => {};
 
 export const ErrorFallbackSubscriptionButton = ({
   errorCode,
   errorMessage,
 }: ErrorFallbackSubscriptionButtonProps) => {
   const themeContext = useThemeContext();
-  const { handleClickToggleButton } = useErrorFallbackSubscriptionButton({
+  useErrorFallbackLogic({
     errorCode,
     errorMessage,
   });

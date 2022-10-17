@@ -2,7 +2,7 @@
   "name": "Smody",
   "short_name": "Smody",
   "description": "작심삼일에 지쳤을 때, Three more days. 스모디",
-  "start_url": "/home",
+  "start_url": "/feed",
   "scope": "/",
   "background_color": "#f5f3ff",
   "theme_color": "#7c61ff",
@@ -49,33 +49,26 @@
   ],
   "icons": [
     {
-      "src": "image/favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "48x48"
-    },
-    {
       "src": "image/android-chrome-192x192.png",
       "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any"
+      "sizes": "192x192"
     },
     {
       "src": "image/android-chrome-512x512.png",
       "type": "image/png",
-      "sizes": "512x512",
+      "sizes": "512x512"
+    },
+    {
+      "src": "image/android-chrome-192x192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192",
       "purpose": "maskable"
     },
     {
-      "src": "image/favicon-16x16.png",
+      "src": "image/android-chrome-512x512-maskable.png",
       "type": "image/png",
-      "sizes": "16x16",
-      "purpose": "any"
-    },
-    {
-      "src": "image/favicon-32x32.png",
-      "type": "image/png",
-      "sizes": "32x32",
-      "purpose": "any"
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [

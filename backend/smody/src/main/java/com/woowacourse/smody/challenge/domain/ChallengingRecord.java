@@ -1,23 +1,25 @@
 package com.woowacourse.smody.challenge.domain;
 
+import static java.util.stream.Collectors.toList;
+
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
-
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-
 public class ChallengingRecord {
 
-    private final List<Cycle> cycles; // 최근 Cycle(member, challenge, 인증 시간), 성공 회수
+    private static final int ANY_INDEX = 0;
+    private static final int FIRST_INDEX = 0;
+
+    private final List<Cycle> cycles;
     private final Long successCount;
 
-    ChallengingRecord(List<Cycle> cycles) {
+    public ChallengingRecord(List<Cycle> cycles) {
         validateOnlyMember(cycles);
         validateOnlyChallenge(cycles);
         this.cycles = cycles;
@@ -26,19 +28,12 @@ public class ChallengingRecord {
                 .count();
     }
 
+    /*
+     * QueryDSL Projection 을 위한 생성자
+     */
     public ChallengingRecord(Cycle cycle, Long successCount) {
         this.cycles = List.of(cycle);
         this.successCount = successCount;
-    }
-
-    public static List<ChallengingRecord> from(List<Cycle> cycles) {
-        return cycles.stream()
-                .filter(cycle -> cycle.isInProgress(LocalDateTime.now()))
-                .collect(groupingBy(Cycle::getChallenge, toList()))
-                .values()
-                .stream()
-                .map(ChallengingRecord::new)
-                .collect(toList());
     }
 
     private void validateOnlyMember(List<Cycle> cycles) {
@@ -71,33 +66,45 @@ public class ChallengingRecord {
     }
 
     public Challenge getChallenge() {
-        return cycles.get(0)
+        return cycles.get(ANY_INDEX)
                 .getChallenge();
     }
 
     public boolean match(Member member) {
-        return cycles.get(0)
+        return cycles.get(ANY_INDEX)
                 .getMember()
                 .equals(member);
     }
 
-    public boolean match(Cycle cycle) {
-        return cycles.get(0)
-                .equals(cycle);
+    public boolean contains(Cycle cycle) {
+        return cycles.stream()
+                .anyMatch(c -> c.equals(cycle));
     }
 
     public boolean isInProgress(LocalDateTime searchTime) {
-        return cycles.get(0)
-                .isInProgress(searchTime);
+        return cycles.stream()
+                .anyMatch(cycle -> cycle.isInProgress(searchTime));
     }
 
-    public long getEndTime(LocalDateTime searchTime) {
-        // 진행중인 사이클이 있는지
-        return cycles.get(0)
-                .calculateEndTime(searchTime);
+    public long getDeadLineToMillis(LocalDateTime searchTime) {
+        return cycles.stream()
+                .filter(cycle -> cycle.isInProgress(searchTime))
+                .findAny()
+                .orElseThrow(() -> new BusinessException(ExceptionData.INVALID_PROGRESS_TIME))
+                .calculateDeadLineToMillis(searchTime);
     }
 
-    public Cycle getCycle() {
-        return cycles.get(0);
+    public Cycle getLatestCycle() {
+        List<Cycle> sortedCycles = cycles.stream()
+                .sorted((cycle1, cycle2) ->
+                        (int) ChronoUnit.MILLIS.between(cycle1.getStartTime(), cycle2.getStartTime()))
+                .collect(toList());
+        return sortedCycles.get(FIRST_INDEX);
+    }
+
+    public Integer getCycleDetailCount() {
+        return cycles.stream()
+                .mapToInt(cycle -> cycle.getCycleDetailsOrderByProgress().size())
+                .sum();
     }
 }

@@ -4,15 +4,14 @@ import com.woowacourse.smody.auth.token.JwtTokenExtractor;
 import com.woowacourse.smody.auth.token.JwtTokenProvider;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -26,8 +25,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        RequiredLogin requiredLogin = handlerMethod.getMethodAnnotation(RequiredLogin.class);
+        if (handler instanceof HandlerMethod) {
+            return handleHandlerMethod(request, (HandlerMethod)handler);
+        }
+        return true;
+    }
+
+    private boolean handleHandlerMethod(HttpServletRequest request, HandlerMethod handler) {
+        RequiredLogin requiredLogin = handler.getMethodAnnotation(RequiredLogin.class);
         if (Objects.isNull(requiredLogin)) {
             return true;
         }

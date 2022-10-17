@@ -3,6 +3,8 @@ import { useDropdown } from './useDropdown';
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 
+import { Z_INDEX } from 'constants/css';
+
 export const Dropdown = ({
   disabled = false,
   button,
@@ -31,12 +33,12 @@ export const Dropdown = ({
 
 const EntireBackground = css`
   &:before {
+    z-index: ${Z_INDEX.CSS_MODAL_BG};
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 80;
     display: block;
     cursor: default;
     content: ' ';
@@ -65,8 +67,9 @@ const DropdownButton = styled.button`
 
 const DropdownMenu = styled.div`
   ${({ theme }) => css`
-    overflow: auto;
+    z-index: ${Z_INDEX.CSS_MODAL};
     height: fit-content;
+    overflow: auto;
     max-height: 32rem;
     white-space: nowrap;
     background-color: ${theme.surface};
@@ -77,9 +80,9 @@ const DropdownMenu = styled.div`
     position: absolute;
     top: 2.3rem;
     right: -0.2rem;
-    z-index: 100;
 
     // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
+    // overflow: auto 때문에 삼각형 팁 디자인이 현재 적용되지 않음
     &::after {
       top: -14px;
       right: 10px;

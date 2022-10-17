@@ -26,7 +26,7 @@ export const Navbar = () => {
               alignItems="center"
               gap="6px"
               as={Link}
-              to={CLIENT_PATH.SEARCH}
+              to={CLIENT_PATH.CHALLENGE_EVENT}
             >
               <ImFire size={23} color={challengeColor} />
               <Text size={11} color={challengeColor}>
@@ -58,15 +58,10 @@ export const Navbar = () => {
               to={CLIENT_PATH.CERT}
               fill={certColor}
             >
-              <CenterWrapper>
-                <CenterBackground />
-                <CenterIconWrapper>
-                  <Plus />
-                </CenterIconWrapper>
-                <Text size={11} color={certColor}>
-                  인증
-                </Text>
-              </CenterWrapper>
+              <Plus />
+              <Text size={11} color={certColor}>
+                인증
+              </Text>
             </NavLink>
           </li>
           <li>
@@ -120,7 +115,7 @@ const Footer = styled.footer`
 const NavItemsContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  margin-top: -7px;
+  margin: 0.8rem 0;
 `;
 
 const NavLink = styled(FlexBox)`
@@ -134,30 +129,4 @@ const NavLink = styled(FlexBox)`
       }
     }
   `}
-`;
-
-const CenterWrapper = styled.div`
-  position: relative;
-  top: -20px;
-
-  ${Text} {
-    position: relative;
-    text-align: center;
-  }
-`;
-
-const CenterBackground = styled.div`
-  ${({ theme }) => css`
-    width: 70px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background-color: ${theme.background};
-    border-top: 1px solid ${theme.border};
-  `}
-`;
-
-const CenterIconWrapper = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
 `;

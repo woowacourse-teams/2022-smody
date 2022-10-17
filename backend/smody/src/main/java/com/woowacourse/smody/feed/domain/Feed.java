@@ -1,11 +1,10 @@
 package com.woowacourse.smody.feed.domain;
 
 import com.woowacourse.smody.cycle.domain.Progress;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -43,6 +42,9 @@ public class Feed {
         this.commentCount = commentCount;
     }
 
+    /*
+     * QueryDSL Projection 을 위한 생성자
+     */
     public Feed(
         Long cycleDetailId, String progressImage, String description,
         LocalDateTime progressTime, Progress progress,

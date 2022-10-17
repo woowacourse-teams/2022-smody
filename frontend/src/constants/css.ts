@@ -1,9 +1,12 @@
 export const Z_INDEX = {
-  HEADER: 1,
-  NAVBAR: 1,
+  HEADER: 2,
+  NAVBAR: 2,
   FIXED_BUTTON: 2,
   SNACKBAR: 3,
   MODAL: 3,
   UNDER_TEXT: 0,
   UNDER_LINE: -1,
+  TITLE: 1,
+  CSS_MODAL: 2,
+  CSS_MODAL_BG: 1,
 };

@@ -1,21 +1,5 @@
 package com.woowacourse.smody.cycle.controller;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
-import com.woowacourse.smody.cycle.dto.*;
-import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.support.ControllerTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -23,10 +7,42 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.cycle.dto.CycleDetailResponse;
+import com.woowacourse.smody.cycle.dto.CycleRequest;
+import com.woowacourse.smody.cycle.dto.CycleResponse;
+import com.woowacourse.smody.cycle.dto.FilteredCycleDetailResponse;
+import com.woowacourse.smody.cycle.dto.FilteredCycleHistoryResponse;
+import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
+import com.woowacourse.smody.cycle.dto.ProgressRequest;
+import com.woowacourse.smody.cycle.dto.ProgressResponse;
+import com.woowacourse.smody.cycle.dto.StatResponse;
+import com.woowacourse.smody.db_support.PagingParams;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.support.ControllerTest;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
 public class CycleControllerTest extends ControllerTest {
 
@@ -36,7 +52,7 @@ public class CycleControllerTest extends ControllerTest {
         // given
         Long cycleId = 1L;
         CycleRequest request = new CycleRequest(LocalDateTime.now(), 1L);
-        given(cycleService.create(any(TokenPayload.class), any(CycleRequest.class))).willReturn(cycleId);
+        given(cycleApiService.create(any(TokenPayload.class), any(CycleRequest.class))).willReturn(cycleId);
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
 
         // when
@@ -79,7 +95,7 @@ public class CycleControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         ProgressResponse response = new ProgressResponse(2);
-        given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
+        given(cycleApiService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willReturn(response);
 
         // when
@@ -109,7 +125,7 @@ public class CycleControllerTest extends ControllerTest {
     void increaseProgress_400() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
+        given(cycleApiService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willThrow(new BusinessException(ExceptionData.INVALID_PROGRESS_TIME));
 
         // when
@@ -125,7 +141,7 @@ public class CycleControllerTest extends ControllerTest {
     void increaseProgress_403() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        given(cycleService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
+        given(cycleApiService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willThrow(new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER));
 
         // when
@@ -145,7 +161,7 @@ public class CycleControllerTest extends ControllerTest {
         List<InProgressCycleResponse> inProgressCycleResponses = List.of(
                 new InProgressCycleResponse(1L, 1L, "미라클 모닝", 2, now, 3, 0, 1),
                 new InProgressCycleResponse(2L, 2L, "오늘의 운동", 1, now, 3, 0, 1));
-        given(cycleQueryService.findInProgressOfMine(
+        given(cycleApiService.findInProgressByMe(
                 any(TokenPayload.class), any(LocalDateTime.class), any(PagingParams.class)
         )).willReturn(inProgressCycleResponses);
 
@@ -179,7 +195,7 @@ public class CycleControllerTest extends ControllerTest {
                 cycleId, 1L, "미라클 모닝", 2, LocalDateTime.now(), 3, "미라클 모닝입니다", 0, 1,
                 List.of(new CycleDetailResponse(LocalDateTime.now(), "image1", "인증 내용1"),
                         new CycleDetailResponse(LocalDateTime.now(), "image2", "인증 내용2")));
-        given(cycleQueryService.findById(cycleId))
+        given(cycleApiService.findWithSuccessCountById(cycleId))
                 .willReturn(cycleResponse);
 
         // when
@@ -214,7 +230,7 @@ public class CycleControllerTest extends ControllerTest {
     void findById_404() throws Exception {
         // given
         long cycleId = 1L;
-        given(cycleQueryService.findById(cycleId))
+        given(cycleApiService.findWithSuccessCountById(cycleId))
                 .willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
 
         // when
@@ -230,7 +246,7 @@ public class CycleControllerTest extends ControllerTest {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
         StatResponse statResponse = new StatResponse(35, 5);
-        given(cycleQueryService.searchStat(any(TokenPayload.class)))
+        given(cycleApiService.searchStat(any(TokenPayload.class)))
                 .willReturn(statResponse);
 
         // when
@@ -280,7 +296,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleApiService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when
@@ -339,7 +355,7 @@ public class CycleControllerTest extends ControllerTest {
                         )
                 ))
         );
-        given(cycleQueryService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
+        given(cycleApiService.findAllByMemberAndChallenge(any(TokenPayload.class), eq(1L), any(PagingParams.class)))
                 .willReturn(filteredCycleHistoryRespons);
 
         // when

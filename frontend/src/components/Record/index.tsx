@@ -10,14 +10,20 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Button, FlexBox, Text, CheckSuccessCycle } from 'components';
+import { Button, FlexBox, Text, CheckSuccessCycle, ChallengeIcon } from 'components';
 
 import { CYCLE_SUCCESS_CRITERIA } from 'constants/domain';
-import { cursorPointer, emojiList } from 'constants/style';
+import { cursorPointer } from 'constants/style';
 
 const CyclePeriod = [...Array(CYCLE_SUCCESS_CRITERIA)];
 
-export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordProps) => {
+export const Record = ({
+  cycleId,
+  emojiIndex,
+  startTime,
+  cycleDetails,
+  challengeId,
+}: RecordProps) => {
   const themeContext = useThemeContext();
   const { currentCycleCertCount, isSuccess, cycleProgressTime, handleClickShare } =
     useRecord({
@@ -49,6 +55,7 @@ export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordP
             emojiIndex={emojiIndex}
             isBlank={currentCycleCertCount < index + 1}
             index={index}
+            challengeId={challengeId}
           />
         ))}
       </FlexBox>
@@ -56,16 +63,24 @@ export const Record = ({ cycleId, emojiIndex, startTime, cycleDetails }: RecordP
   );
 };
 
-const RecordItem = ({ cycleDetails, emojiIndex, isBlank, index }: RecordItemProps) => {
-  const themeContext = useThemeContext();
+const RecordItem = ({
+  cycleDetails,
+  emojiIndex,
+  isBlank,
+  index,
+  challengeId,
+}: RecordItemProps) => {
   const handleNavigateFeedDetail = useRecordItem();
 
   if (isBlank) {
     return (
       <RecordItemWrapper justifyContent="center" alignItems="center">
-        <Text size={32} color={themeContext.onSurface}>
-          {emojiList[emojiIndex]}
-        </Text>
+        <ChallengeIcon
+          emojiIndex={emojiIndex}
+          challengeId={challengeId}
+          size="medium"
+          bgColor="transparent"
+        />
       </RecordItemWrapper>
     );
   }

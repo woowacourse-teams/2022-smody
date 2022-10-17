@@ -1,5 +1,7 @@
 package com.woowacourse.smody.image;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
@@ -7,9 +9,8 @@ import com.woowacourse.smody.image.strategy.ImgBBImageStrategy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ImgBBImageStrategyTest {
 
@@ -20,7 +21,7 @@ class ImgBBImageStrategyTest {
         MultipartFile emptyImageFile = new MockMultipartFile(
                 "image", "image.jpg", "image/jpg", "".getBytes()
         );
-        ImageStrategy imgBBImageStrategy = new ImgBBImageStrategy();
+        ImageStrategy imgBBImageStrategy = new ImgBBImageStrategy(new RestTemplate());
 
         // when then
         assertThatThrownBy(
@@ -37,7 +38,7 @@ class ImgBBImageStrategyTest {
         MultipartFile emptyImageFile = new MockMultipartFile(
                 "image", "image.jpg", "image/jpg", (byte[]) null
         );
-        ImageStrategy imgBBImageStrategy = new ImgBBImageStrategy();
+        ImageStrategy imgBBImageStrategy = new ImgBBImageStrategy(new RestTemplate());
 
         // when then
         assertThatThrownBy(
