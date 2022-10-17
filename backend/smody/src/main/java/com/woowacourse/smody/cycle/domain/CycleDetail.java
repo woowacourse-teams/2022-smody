@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +35,7 @@ public class CycleDetail {
 
     @JoinColumn(name = "cycle_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Cycle cycle;
 
     @OneToMany(mappedBy = "cycleDetail", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)

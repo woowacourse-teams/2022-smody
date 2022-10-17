@@ -15,6 +15,8 @@ import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -35,6 +37,7 @@ public class RankingActivity {
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     @JoinColumn(name = "ranking_period_id")

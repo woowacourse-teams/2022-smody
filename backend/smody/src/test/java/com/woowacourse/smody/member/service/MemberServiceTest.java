@@ -1,10 +1,9 @@
 package com.woowacourse.smody.member.service;
 
 import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
+import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
-import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import com.woowacourse.smody.comment.repository.CommentRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
@@ -22,6 +22,7 @@ import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
+import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +50,12 @@ class MemberServiceTest extends IntegrationTest {
 
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private RankingActivityRepository rankingActivityRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -96,12 +103,14 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void withdraw() {
         // given
-        Cycle cycle1 = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
-        Cycle cycle2 = fixture.사이클_생성_NOTHING(조조그린_ID, 오늘의_운동_ID, LocalDateTime.now());
-        cycle1.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
-        cycle2.increaseProgress(LocalDateTime.now(), 이미지, "인증 완료");
+        LocalDateTime now = LocalDateTime.now();
+        fixture.회원_조회(조조그린_ID);
+        Cycle cycle1 = fixture.사이클_생성_FIRST(조조그린_ID, 스모디_방문하기_ID, now);
+        Cycle cycle2 = fixture.사이클_생성_FIRST(조조그린_ID, 오늘의_운동_ID, now);
+        fixture.댓글_등록(cycle1.getLatestCycleDetail(), 조조그린_ID, "댓글");
+        fixture.댓글_등록(cycle2.getLatestCycleDetail(), 조조그린_ID, "댓글");
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
         fixture.알림_구독(조조그린_ID, "endpoint");
-        fixture.발송_예정_알림_생성(조조그린_ID, null, LocalDateTime.now(), PushCase.SUBSCRIPTION);
 
         // when
         memberService.withdraw(조조그린_ID);
@@ -110,12 +119,12 @@ class MemberServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThatThrownBy(() -> memberService.search(조조그린_ID))
                         .isInstanceOf(BusinessException.class),
-                () -> assertThat(cycleRepository.findAll())
-                        .isEmpty(),
-                () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList())
-                        .isEmpty(),
+                () -> assertThat(cycleRepository.findAll()).isEmpty(),
+                () -> assertThat(em.createQuery("select cd from CycleDetail cd").getResultList()).isEmpty(),
                 () -> assertThat(pushNotificationRepository.findAll()).isEmpty(),
-                () -> assertThat(pushSubscriptionRepository.findAll()).isEmpty()
+                () -> assertThat(pushSubscriptionRepository.findAll()).isEmpty(),
+                () -> assertThat(commentRepository.findAll()).isEmpty(),
+                () -> assertThat(rankingActivityRepository.findAll()).isEmpty()
         );
     }
 
@@ -143,7 +152,7 @@ class MemberServiceTest extends IntegrationTest {
         CountDownLatch latch = new CountDownLatch(2);
 
         given(imageStrategy.extractUrl(any()))
-            .willReturn("update-image-url");
+                .willReturn("update-image-url");
 
         // when
         service.execute(() -> {
@@ -161,9 +170,9 @@ class MemberServiceTest extends IntegrationTest {
         // then
         Member result = memberService.search(조조그린_ID);
         assertAll(
-            () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
-            () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
-            () -> assertThat(result.getIntroduction()).isEqualTo("HI")
+                () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
+                () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
+                () -> assertThat(result.getIntroduction()).isEqualTo("HI")
         );
         rollbackToOriginalData(result);
     }
