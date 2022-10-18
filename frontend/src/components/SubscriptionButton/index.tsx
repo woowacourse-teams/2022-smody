@@ -2,6 +2,7 @@ import { InfoAboutSubscribeProps, SubscriptionButtonProps } from './type';
 import { useSubscriptionButton } from './useSubscriptionButton';
 import LoadingDots from 'assets/loading_dots.svg';
 import { pushStatus } from 'pwa/pushStatus';
+import { FaTrashAlt } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -10,8 +11,14 @@ import { FlexBox, ToggleButton, UnderLineText, Text } from 'components';
 
 export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonProps) => {
   const themeContext = useThemeContext();
-  const { isSubscribed, subscribe, isLoadingSubscribe, isAbleSubscribe } =
-    useSubscriptionButton({ updateIsSubscribed });
+  const {
+    isSubscribed,
+    subscribe,
+    isLoadingSubscribe,
+    isAbleSubscribe,
+    handleClickDeleteAllNotifications,
+    isLoadingDeleteAllNotifications,
+  } = useSubscriptionButton({ updateIsSubscribed });
 
   return (
     <div>
@@ -31,6 +38,19 @@ export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonPro
           checked={isSubscribed}
           handleChange={subscribe}
         />
+        <DeleteWrapper>
+          <DeleteButton
+            type="button"
+            disabled={isLoadingDeleteAllNotifications}
+            onClick={() => handleClickDeleteAllNotifications()}
+          >
+            {isLoadingDeleteAllNotifications ? (
+              <LoadingDots />
+            ) : (
+              <FaTrashAlt size={20} color={themeContext.onBackground} />
+            )}
+          </DeleteButton>
+        </DeleteWrapper>
         {isLoadingSubscribe && (
           <LoadingWrapper>
             <LoadingDots />
@@ -105,4 +125,21 @@ const LoadingWrapper = styled.div`
 
 const ErrorText = styled(Text)`
   line-height: 1.5;
+`;
+
+const DeleteWrapper = styled.div`
+  flex-grow: 1;
+  text-align: end;
+`;
+
+const DeleteButton = styled.button`
+  ${({ theme }) => css`
+    &:disabled {
+      cursor: wait;
+      svg {
+        width: 40px;
+        stroke: ${theme.primary};
+      }
+    }
+  `}
 `;
