@@ -26,6 +26,7 @@ export const CommentInput = ({
     fetchNextMembersPage,
     selectMember,
     handleKeydownCommentInput,
+    handleInputCommentInput,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
@@ -35,6 +36,7 @@ export const CommentInput = ({
           contentEditable={true}
           ref={commentInputRef}
           onKeyDown={handleKeydownCommentInput}
+          onInput={handleInputCommentInput}
         />
         <WriteButton
           disabled={

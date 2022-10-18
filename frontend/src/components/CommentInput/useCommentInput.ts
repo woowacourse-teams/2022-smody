@@ -43,6 +43,7 @@ const useCommentInput = ({
     fetchNextMembersPage,
     selectMember,
     handleKeydownCommentInput,
+    handleInputCommentInput,
   } = useMention({
     commentInputRef,
     setContent,
@@ -163,6 +164,7 @@ const useCommentInput = ({
     fetchNextMembersPage,
     selectMember,
     handleKeydownCommentInput,
+    handleInputCommentInput,
   };
 };
 

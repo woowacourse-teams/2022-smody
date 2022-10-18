@@ -1,5 +1,12 @@
 import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
-import { useState, useEffect, useRef, KeyboardEventHandler, RefObject } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  KeyboardEventHandler,
+  FormEventHandler,
+  RefObject,
+} from 'react';
 import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
@@ -111,36 +118,7 @@ const useMention = <T extends HTMLElement>({
     }
   };
 
-  // inputChangeHandler 시작
-  const inputChangeHandler: MutationCallback = (mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList') {
-        if (
-          mutation.removedNodes.length > 0 &&
-          mutation.removedNodes[0].nodeName === 'SPAN'
-        ) {
-          const targetNode = mutation.removedNodes[0] as HTMLElement;
-          const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
-          const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
-          if (deletedIndex > -1) {
-            mentionedMemberIds.splice(deletedIndex, 1);
-          }
-
-          setMentionedMemberIds((prevMentionMemberIds) => {
-            const copiedMentionMembersId = [...prevMentionMemberIds];
-
-            const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
-
-            if (deletedIndex > -1) {
-              copiedMentionMembersId.splice(deletedIndex, 1);
-            }
-
-            return copiedMentionMembersId;
-          });
-        }
-      }
-    });
-
+  const handleInputCommentInput: FormEventHandler<HTMLDivElement> = () => {
     const hasSymbolPosition =
       lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
 
@@ -183,6 +161,37 @@ const useMention = <T extends HTMLElement>({
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
+  };
+
+  // inputChangeHandler 시작
+  const inputChangeHandler: MutationCallback = (mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        if (
+          mutation.removedNodes.length > 0 &&
+          mutation.removedNodes[0].nodeName === 'SPAN'
+        ) {
+          const targetNode = mutation.removedNodes[0] as HTMLElement;
+          const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
+          const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
+          if (deletedIndex > -1) {
+            mentionedMemberIds.splice(deletedIndex, 1);
+          }
+
+          setMentionedMemberIds((prevMentionMemberIds) => {
+            const copiedMentionMembersId = [...prevMentionMemberIds];
+
+            const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
+
+            if (deletedIndex > -1) {
+              copiedMentionMembersId.splice(deletedIndex, 1);
+            }
+
+            return copiedMentionMembersId;
+          });
+        }
+      }
+    });
   };
   // inputChangeHandler 끝
 
@@ -299,6 +308,7 @@ const useMention = <T extends HTMLElement>({
     fetchNextMembersPage,
     selectMember,
     handleKeydownCommentInput,
+    handleInputCommentInput,
   };
 };
 
