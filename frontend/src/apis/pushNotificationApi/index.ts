@@ -1,4 +1,5 @@
 import {
+  deleteAllNotification,
   deleteNotification,
   getNotifications,
   getVapidPublicKey,
@@ -84,3 +85,8 @@ export const useDeleteNotification = (
     deleteNotification,
     options,
   );
+
+export const useDeleteAllNotification = (
+  options?: UseMutationOptions<AxiosResponse, AxiosError<ErrorResponse>>,
+) =>
+  useMutation<AxiosResponse, AxiosError<ErrorResponse>>(deleteAllNotification, options);
