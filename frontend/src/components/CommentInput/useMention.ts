@@ -89,30 +89,27 @@ const useMention = <T extends HTMLElement>({
     refetchMembers();
   }, [filterValue]);
 
-  useEffect(() => {
-    const handleKeydown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-      const { key } = event;
+  const handleKeydownCommentInput: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    const { key } = event;
 
-      if (key === 'Backspace' || key === 'Delete') {
-        detectMentionSymbolWhenTextDeleted();
-        return;
-      }
+    if (key === 'Backspace' || key === 'Delete') {
+      detectMentionSymbolWhenTextDeleted();
+      return;
+    }
 
-      isPrevPressBackspace.current = false;
-      prevCursorPosition.current = 0;
+    isPrevPressBackspace.current = false;
+    prevCursorPosition.current = 0;
 
-      if (key === 'ArrowLeft') {
-        detectLeftEscapingMentionArea();
-        return;
-      }
+    if (key === 'ArrowLeft') {
+      detectLeftEscapingMentionArea();
+      return;
+    }
 
-      if (key === 'ArrowRight') {
-        detectRightEscapingMentionArea();
-        return;
-      }
-    };
-    commentInputRef.current!.addEventListener('keydown', handleKeydown);
-  }, []);
+    if (key === 'ArrowRight') {
+      detectRightEscapingMentionArea();
+      return;
+    }
+  };
 
   // inputChangeHandler 시작
   const inputChangeHandler: MutationCallback = (mutations) => {
@@ -301,6 +298,7 @@ const useMention = <T extends HTMLElement>({
     hasNextMembersPage,
     fetchNextMembersPage,
     selectMember,
+    handleKeydownCommentInput,
   };
 };
 
