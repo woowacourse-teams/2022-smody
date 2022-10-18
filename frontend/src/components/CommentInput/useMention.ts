@@ -228,17 +228,13 @@ const useMention = <T extends HTMLElement>({
 
     // 지우려는 element 첫 번째 자식인 경우 contentEditable 부모에서 해당 element를 삭제할 수 없는 이슈 때문에
     // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
-    if (
-      commentInputRef.current!.childNodes.length === 3 &&
-      commentInputRef.current!.childNodes[1].nodeName &&
-      commentInputRef.current!.childNodes[0].textContent === ''
-    ) {
+    if (isFirstMentionTag()) {
       initializeMention();
       commentInputRef.current!.textContent = ' ';
       return;
     }
 
-    if (!innerText.includes('@')) {
+    if (isNotIncludeMentionSymbol(innerText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
@@ -246,19 +242,20 @@ const useMention = <T extends HTMLElement>({
     const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
 
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
-    // 슬라이스 한 문자열 내부에 공백이 있나
-    if (cursorPosition - 1 === mentionSymbolPosition) {
+
+    if (isCurrentDeleteMentionSymbol(cursorPosition, mentionSymbolPosition)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
-    if (targetText.includes(' ')) {
+    // 슬라이스 한 문자열 내부에 공백이 있나
+    if (isIncludeWhite(targetText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
     // mentionSymbolPosition 앞에 공백이 있나 && mentionSymbolPosition 위치가 첫번째이다.
-    if (mentionSymbolPosition !== 0 && innerText[mentionSymbolPosition - 1] !== ' ') {
+    if (isNotMeetMentionSymbol(mentionSymbolPosition, innerText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
@@ -267,6 +264,23 @@ const useMention = <T extends HTMLElement>({
     isPrevPressBackspace.current = true;
     prevCursorPosition.current = cursorPosition;
   };
+
+  const isFirstMentionTag = () =>
+    commentInputRef.current!.childNodes.length === 3 &&
+    commentInputRef.current!.childNodes[1].nodeName &&
+    commentInputRef.current!.childNodes[0].textContent === '';
+
+  const isNotIncludeMentionSymbol = (text: string) => !text.includes('@');
+
+  const isCurrentDeleteMentionSymbol = (
+    cursorPosition: number,
+    mentionSymbolPosition: number,
+  ) => cursorPosition - 1 === mentionSymbolPosition;
+
+  const isIncludeWhite = (text: string) => text.includes(' ');
+
+  const isNotMeetMentionSymbol = (mentionSymbolPosition: number, text: string) =>
+    mentionSymbolPosition !== 0 && text[mentionSymbolPosition - 1] !== ' ';
 
   const detectLeftEscapingMentionArea = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
