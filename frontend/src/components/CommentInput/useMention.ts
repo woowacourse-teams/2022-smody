@@ -154,24 +154,27 @@ const useMention = <T extends HTMLElement>({
 
   const setNicknameAfterMentionSymbol = (text: string) => {
     if (isCurrentCharacterWhiteSpace(text)) {
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      setFilterValue(''); // 초기화
-      isFilterValueInitiatedRef.current = true;
-
-      handleClosePopover();
-    } else {
-      // 건들지 마시오
-      setFilterValue(
-        text.slice(
-          lastMentionSymbolPositionRef.current,
-          getCursorPosition(commentInputRef.current!)!,
-        ),
-      );
+      initializeMention();
+      return;
     }
+
+    const detectedFilterValue = text.slice(
+      lastMentionSymbolPositionRef.current,
+      getCursorPosition(commentInputRef.current!)!,
+    );
+
+    setFilterValue(detectedFilterValue);
   };
 
   const isCurrentCharacterWhiteSpace = (text: string) =>
     text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
+
+  const initializeMention = () => {
+    lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+    setFilterValue(''); // 초기화
+    isFilterValueInitiatedRef.current = true;
+    handleClosePopover();
+  };
 
   // inputChangeHandler 시작
   const inputChangeHandler: MutationCallback = (mutations) => {
