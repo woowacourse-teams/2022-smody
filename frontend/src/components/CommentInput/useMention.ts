@@ -29,6 +29,7 @@ type useMentionProps<T extends HTMLElement> = {
   mentionedMemberIds: number[];
   setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
 };
+
 const useMention = <T extends HTMLElement>({
   commentInputRef,
   setContent,
@@ -119,49 +120,58 @@ const useMention = <T extends HTMLElement>({
   };
 
   const handleInputCommentInput: FormEventHandler<HTMLDivElement> = () => {
-    const hasSymbolPosition =
-      lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
-
-    const isCurrentCharacterWhiteSpace = (text: string) =>
-      text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
-
-    if (isFilterValueInitiatedRef.current === true) {
-      isFilterValueInitiatedRef.current = false;
-    }
-
-    const setNicknameAfterMentionSymbol = (text: string) => {
-      if (isCurrentCharacterWhiteSpace(text)) {
-        lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-        setFilterValue(''); // 초기화
-        isFilterValueInitiatedRef.current = true;
-
-        handleClosePopover();
-      } else {
-        // 건들지 마시오
-        setFilterValue(
-          text.slice(
-            lastMentionSymbolPositionRef.current,
-            getCursorPosition(commentInputRef.current!)!,
-          ),
-        );
-      }
-    };
-
     resizeHeight(commentInputRef.current!);
     const { innerText } = commentInputRef.current!;
 
-    if (hasSymbolPosition) {
-      setNicknameAfterMentionSymbol(innerText);
+    resetIsFilterValueInitiated();
 
-      if (getCursorPosition(commentInputRef.current!)! === 0) {
-        handleClosePopover();
-      }
-    } else {
+    if (hasNotMentionSymbolPosition) {
       detectMentionSymbolWhenTextAdded(innerText);
+      setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
+
+      return;
+    }
+
+    setNicknameAfterMentionSymbol(innerText);
+
+    if (isStartPosition()) {
+      handleClosePopover();
     }
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
   };
+
+  const resetIsFilterValueInitiated = () => {
+    if (isFilterValueInitiatedRef.current) {
+      isFilterValueInitiatedRef.current = false;
+    }
+  };
+
+  const hasNotMentionSymbolPosition =
+    lastMentionSymbolPositionRef.current === ABSENCE_SYMBOL_POSITION;
+
+  const isStartPosition = () => getCursorPosition(commentInputRef.current!) === 0;
+
+  const setNicknameAfterMentionSymbol = (text: string) => {
+    if (isCurrentCharacterWhiteSpace(text)) {
+      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+      setFilterValue(''); // 초기화
+      isFilterValueInitiatedRef.current = true;
+
+      handleClosePopover();
+    } else {
+      // 건들지 마시오
+      setFilterValue(
+        text.slice(
+          lastMentionSymbolPositionRef.current,
+          getCursorPosition(commentInputRef.current!)!,
+        ),
+      );
+    }
+  };
+
+  const isCurrentCharacterWhiteSpace = (text: string) =>
+    text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
 
   // inputChangeHandler 시작
   const inputChangeHandler: MutationCallback = (mutations) => {
