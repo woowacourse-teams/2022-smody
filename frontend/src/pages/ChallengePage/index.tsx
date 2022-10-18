@@ -19,7 +19,7 @@ const tabList = [
   },
   {
     path: CLIENT_PATH.CHALLENGE_RANDOM,
-    tabName: '랜덤',
+    tabName: '추천',
   },
   {
     path: CLIENT_PATH.CHALLENGE_SEARCH,
