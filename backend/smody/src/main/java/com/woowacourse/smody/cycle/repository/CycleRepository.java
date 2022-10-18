@@ -32,7 +32,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
             + "where c.member_id = :memberId and c.challenge_id = :challengeId " +
             "order by c.start_time DESC limit 1",
             nativeQuery = true)
-    Optional<Cycle> findRecent(@Param("memberId") Member member, @Param("challengeId") Challenge challenge); // TODO-이거 시그니쳐 아이디들로 바꾸는게 더 낫지 않나?
+    Optional<Cycle> findRecent(@Param("memberId") Long memberId, @Param("challengeId") Long challengeId);
 
     List<Cycle> findByMember(Member member);
 

@@ -35,7 +35,7 @@ public class ChallengeApiService {
 
     public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime,
                                                                          PagingParams pagingParams) {
-        return findAllWithChallengerCountByFilter(new TokenPayload(0L), searchTime, pagingParams);
+        return findAllWithChallengerCountByFilter(TokenPayload.NOT_LOGIN_TOKEN_PAYLOAD, searchTime, pagingParams);
     }
 
     public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(TokenPayload tokenPayload,
@@ -73,7 +73,7 @@ public class ChallengeApiService {
     }
 
     public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {
-        return findWithChallengerCount(new TokenPayload(0L), searchTime, challengeId);
+        return findWithChallengerCount(TokenPayload.NOT_LOGIN_TOKEN_PAYLOAD, searchTime, challengeId);
     }
 
     public ChallengeResponse findWithChallengerCount(

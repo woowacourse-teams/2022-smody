@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(uniqueConstraints = {
         @UniqueConstraint(
                 name = "unique_column_in_ranking_activity",
-                columnNames = {"member_id", "ranking_period_id"} // TODO-유니크 조건 2개 엮은 이유는?
+                columnNames = {"member_id", "ranking_period_id"}
         )
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

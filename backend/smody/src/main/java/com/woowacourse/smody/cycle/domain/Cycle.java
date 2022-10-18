@@ -32,8 +32,8 @@ import org.hibernate.annotations.BatchSize;
 @Getter
 public class Cycle {
 
-    // TODO-이거 이름 Cycle.DAYS 인데 좀 더 설명이 필요하지 않을까?
     public static final long DAYS = 3L;
+    private static final int MAX_CYCLE_DETAILS_SIZE = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +78,7 @@ public class Cycle {
 
     public void increaseProgress(LocalDateTime progressTime, Image progressImage, String description) {
         this.progress = progress.increase(startTime, progressTime);
-        if (this.cycleDetails.size() <= 2) { // TODO-this.progress != Progress.SUCCESS 로 하는게 더 낫지 않나?
+        if (this.cycleDetails.size() < MAX_CYCLE_DETAILS_SIZE) {
             this.cycleDetails.add(
                     new CycleDetail(this, progressTime, progressImage.getUrl(), description, progress)
             );
@@ -97,7 +97,6 @@ public class Cycle {
         return this.progress.isSuccess();
     }
 
-    // TODO-이거 이름 괜찮나?
     public boolean isInDays(LocalDateTime now) {
         return now.isBefore(this.getStartTime().plusDays(DAYS));
     }
@@ -106,7 +105,6 @@ public class Cycle {
         return this.progress.calculateDeadLineToMillis(this.startTime, searchTime);
     }
 
-    // TODO-얘를 걍 게터로 사용해야 하지 않을까?
     public List<CycleDetail> getCycleDetailsOrderByProgress() {
         return cycleDetails.stream()
                 .sorted((detail1, detail2) ->

@@ -7,11 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class SmodyDatabaseManager {
+
+    private static final Logger log = LoggerFactory.getLogger(SmodyDatabaseManager.class);
 
     private final EntityManager entityManager;
     private final List<String> tableNames;
@@ -42,6 +46,7 @@ public class SmodyDatabaseManager {
 
     @Transactional
     public void truncateTables() {
+        log.info("------------------------------------ 테스트 종료 ------------------------------------");
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
         for (String tableName : tableNames) {
             entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
@@ -105,5 +110,6 @@ public class SmodyDatabaseManager {
                 1,
                 1
         ));
+        log.info("------------------------------------ 테스트 시작 ------------------------------------");
     }
 }

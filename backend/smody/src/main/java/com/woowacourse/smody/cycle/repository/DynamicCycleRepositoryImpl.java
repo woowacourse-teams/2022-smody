@@ -72,14 +72,13 @@ public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
                 .fetch();
     }
 
-    // TODO-여기서 챌린징 레코드를 만드는게 맞나? 챌린징 레코드 정의에 반하는 거 같은데
     @Override
     public List<ChallengingRecord> findAllChallengingRecordByMemberAfterTime(Long memberId,
                                                                              LocalDateTime time) {
         return queryFactory
                 .select(challengingRecordConstructor())
                 .from(cycle)
-                .join(cycle.challenge, challenge).fetchJoin() // TODO-단순히 페치조인을 위한 조인? challenge 를 쓰지 않는?
+                .join(cycle.challenge, challenge).fetchJoin()
                 .where(DynamicQuery.builder()
                         .and(() -> cycle.member.id.eq(memberId))
                         .and(() -> cycle.startTime.after(time))

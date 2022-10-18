@@ -30,15 +30,12 @@ class CommentServiceTest extends IntegrationTest {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private ResourceFixture resourceFixture;
-
     @DisplayName("댓글을 생성한다.")
     @Test
     void create() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
@@ -53,7 +50,7 @@ class CommentServiceTest extends IntegrationTest {
     void create_withCreatedAt() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when
@@ -78,7 +75,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         Long invalidMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
@@ -94,7 +91,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         String invalidContent = "1234567890".repeat(25) + "123456";
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
 
         // when, then
@@ -106,10 +103,10 @@ class CommentServiceTest extends IntegrationTest {
 
     @DisplayName("댓글을 수정한다.")
     @Test
-    void updateComment() {
+    void update() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
@@ -123,7 +120,7 @@ class CommentServiceTest extends IntegrationTest {
 
     @DisplayName("댓글 수정 시 댓글을 찾을 수 없으면 예외를 발생시킨다.")
     @Test
-    void updateComment_notFound() {
+    void update_notFound() {
         assertThatThrownBy(() -> commentService.update(조조그린_ID, 1L, "수정후"))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
@@ -132,11 +129,11 @@ class CommentServiceTest extends IntegrationTest {
 
     @DisplayName("댓글 수정 시 멤버가 작성한 댓글이 아닌 경우 예외를 발생시킨다.")
     @Test
-    void updateComment_unauthorizedMember() {
+    void update_unauthorizedMember() {
         // given
         Long unauthorizedMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
@@ -149,11 +146,11 @@ class CommentServiceTest extends IntegrationTest {
 
     @DisplayName("댓글 수정 시 1자 미만 255자 초과하는 댓글이면 예외를 발생시킨다.")
     @Test
-    void updateComment_invalidContent() {
+    void update_invalidContent() {
         // given
         String invalidContent = "1234567890".repeat(25) + "123456";
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "수정전"));
 
@@ -166,10 +163,10 @@ class CommentServiceTest extends IntegrationTest {
 
     @DisplayName("댓글을 삭제한다.")
     @Test
-    void deleteComment() {
+    void delete() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
         commentRepository.save(comment);
@@ -188,7 +185,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         Long unauthorizedMemberId = 0L;
         LocalDateTime now = LocalDateTime.now();
-        Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        Cycle cycle = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, cycle.getMember(), "댓글");
         commentRepository.save(comment);
@@ -207,7 +204,7 @@ class CommentServiceTest extends IntegrationTest {
         // given
         Long notFoundCommentId = 0L;
         LocalDateTime now = LocalDateTime.now();
-        resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, now);
 
         assertThatThrownBy(() -> commentService.delete(조조그린_ID, notFoundCommentId))
                 .isInstanceOf(BusinessException.class)

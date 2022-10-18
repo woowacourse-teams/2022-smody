@@ -3,7 +3,6 @@ package com.woowacourse.smody.feed.service;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.feed.domain.Feed;
 import com.woowacourse.smody.feed.dto.FeedResponse;
-import com.woowacourse.smody.feed.repository.FeedRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

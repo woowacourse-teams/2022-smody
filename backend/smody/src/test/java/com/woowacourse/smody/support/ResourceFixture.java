@@ -157,7 +157,7 @@ public class ResourceFixture {
         return commentRepository.save(comment);
     }
 
-    @Transactional // TODO-이거 트랜젝션 붙인 이유가 뭔가?
+    @Transactional
     public void 사이클_인증(Long cycleId, LocalDateTime progressTime) {
         Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
         cycle.increaseProgress(progressTime, 이미지, "description");

@@ -31,7 +31,7 @@ public class ChallengingRecord {
     /**
      * QueryDSL Projection 을 위한 생성자
      */
-    public ChallengingRecord(Cycle cycle, Long successCount) { // TODO-이거 왜 List<Cycle> 이 아니라 걍 Cycle 을 받지?
+    public ChallengingRecord(Cycle cycle, Long successCount) {
         this.cycles = List.of(cycle);
         this.successCount = successCount;
     }

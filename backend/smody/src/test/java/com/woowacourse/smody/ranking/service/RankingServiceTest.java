@@ -3,7 +3,6 @@ package com.woowacourse.smody.ranking.service;
 import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

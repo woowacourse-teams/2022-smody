@@ -26,7 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class RankingPointEventListener {
 
     @Value("#{${admin.staff}}")
-    private List<Long> staffsIds;
+    private List<Long> staffs;
 
     private final RankingService rankingService;
     private final TransactionTemplate transactionTemplate;
@@ -36,7 +36,7 @@ public class RankingPointEventListener {
     public void handle(CycleProgressEvent event) {
         Cycle cycle = event.getCycle();
         Long memberId = cycle.getMember().getId();
-        if (staffsIds.contains(memberId)) {
+        if (staffs.contains(memberId)) {
             return;
         }
         try {

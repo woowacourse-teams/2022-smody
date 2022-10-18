@@ -6,7 +6,9 @@ import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.cycle.repository.CycleDetailRepository;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CycleService {
 
     private final CycleRepository cycleRepository;
+    private final CycleDetailRepository cycleDetailRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
 
@@ -33,7 +36,7 @@ public class CycleService {
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
-        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member, challenge);
+        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
         if (optionalCycle.isPresent()) {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
@@ -59,9 +62,14 @@ public class CycleService {
                 .intValue();
     }
 
-    public Cycle search(Long cycleId) {
+    public Cycle searchCycle(Long cycleId) {
         return cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+    }
+
+    public CycleDetail searchCycleDetail(Long cycleDetailId) {
+        return cycleDetailRepository.findById(cycleDetailId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
     }
 
     public Cycle searchWithLock(Long cycleId) {

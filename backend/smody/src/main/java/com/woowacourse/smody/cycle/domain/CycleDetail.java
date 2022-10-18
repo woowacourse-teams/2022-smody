@@ -35,7 +35,6 @@ public class CycleDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     private Cycle cycle;
 
-    // TODO-캐스케이드 퍼시스트 하지 않은 이유?
     @OneToMany(mappedBy = "cycleDetail", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Comment> comments;
 

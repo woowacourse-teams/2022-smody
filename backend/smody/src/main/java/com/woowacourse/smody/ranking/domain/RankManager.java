@@ -1,8 +1,10 @@
 package com.woowacourse.smody.ranking.domain;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RankManager {
 
@@ -12,14 +14,21 @@ public class RankManager {
         this.ranksOfActivities = ranksOfActivities;
     }
 
-    // TODO-이거도 사실은 정렬된게 들어온다는 전제가 있어야하는데 너무 쿼리에 의존적이게 되서 객체지향을 해치게 되는거 같다. 괜찮을까?
-    public static RankManager of(List<RankingActivity> rankingActivitiesOrderByPointDesc) {
+    public static RankManager of(List<RankingActivity> rankingActivities) {
+        List<RankingActivity> sortedRankinActivities = sortByPointDesc(rankingActivities);
         Map<Integer, Integer> cache = new HashMap<>();
-        for (int ranking = 0; ranking < rankingActivitiesOrderByPointDesc.size(); ranking++) {
-            RankingActivity rankingActivity = rankingActivitiesOrderByPointDesc.get(ranking);
+        for (int ranking = 0; ranking < sortedRankinActivities.size(); ranking++) {
+            RankingActivity rankingActivity = sortedRankinActivities.get(ranking);
             cache.putIfAbsent(rankingActivity.getPoint(), ranking + 1);
         }
         return new RankManager(cache);
+    }
+
+    private static List<RankingActivity> sortByPointDesc(final List<RankingActivity> rankingActivities) {
+        List<RankingActivity> sortedRankinActivities = rankingActivities.stream()
+                .sorted(Comparator.comparing(RankingActivity::getPoint).reversed())
+                .collect(Collectors.toList());
+        return sortedRankinActivities;
     }
 
     public Integer getRanking(RankingActivity rankingActivity) {

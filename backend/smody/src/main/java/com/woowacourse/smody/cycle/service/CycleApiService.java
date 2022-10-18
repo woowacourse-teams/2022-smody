@@ -68,7 +68,6 @@ public class CycleApiService {
         }
     }
 
-    // TODO-이거 이해가 잘 안됨, 결국 사이클 하나에 대한 조회인데 챌린징레코드를 써야하나?
     public List<InProgressCycleResponse> findInProgressByMe(TokenPayload tokenPayload,
                                                             LocalDateTime searchTime,
                                                             PagingParams pagingParams) {
@@ -78,11 +77,11 @@ public class CycleApiService {
                 pagingParams,
                 size,
                 sortByDeadLineToMillis(cycleService.findAllChallengingRecordByMember(member), searchTime)
-        ); // TODO-여기서 챌린지 레코드를 쓰는게 맞나? 이렇게 찾은 챌린지 레코드는 하나의 챌린지에 대해서 라는 조건이 깨지는 건데?
+        );
         return challengingRecords.stream()
                 .map(challengingRecord -> new InProgressCycleResponse(
                         challengingRecord.getLatestCycle(), challengingRecord.getSuccessCount()
-                )) // TODO-challengingRecord.getLatestCycle() 할 필요가 있나? 어차피 챌린징레코드에 사이클은 하나 들었을텐데
+                ))
                 .collect(toList());
     }
 
@@ -97,17 +96,17 @@ public class CycleApiService {
     private List<ChallengingRecord> cursorPaging(PagingParams pagingParams,
                                                  Integer size,
                                                  List<ChallengingRecord> challengingRecords) {
-        Cycle cycle = cycleService.findById(pagingParams.getCursorId()) // TODO-이거 search 쓰면 안되나?
+        Cycle cycle = cycleService.findById(pagingParams.getCursorId())
                 .orElse(null);
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.contains(cycle))
                 .findAny()
                 .map(cursor -> CursorPaging.apply(challengingRecords, cursor, size))
-                .orElse(CursorPaging.apply(challengingRecords, null, size)); // TODO-이 람다식도 좀 이상함, 억지느낌
+                .orElse(CursorPaging.apply(challengingRecords, null, size));
     }
 
     public CycleResponse findWithSuccessCountById(Long cycleId) {
-        Cycle cycle = cycleService.search(cycleId);
+        Cycle cycle = cycleService.searchCycle(cycleId);
         return new CycleResponse(cycle, cycleService.countSuccess(cycle.getMember(), cycle.getChallenge()));
     }
 
