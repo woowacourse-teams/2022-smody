@@ -69,11 +69,7 @@ const InfoAboutSubscribe = ({ isAbleSubscribe }: InfoAboutSubscribeProps) => {
   }
 
   return (
-    <FlexBox
-      flexDirection="column"
-      justifyContent="center"
-      style={{ cursor: 'default', padding: '0 1rem ', margin: '1rem 0 ' }}
-    >
+    <InfoAboutSubscribeWrapper flexDirection="column" justifyContent="center">
       {!pushStatus.pushSupport && (
         <ErrorText size={12} color={themeContext.error}>
           [알림 기능을 사용할 수 없는 브라우저입니다.]
@@ -101,7 +97,7 @@ const InfoAboutSubscribe = ({ isAbleSubscribe }: InfoAboutSubscribeProps) => {
           </a>
         </div>
       )}
-    </FlexBox>
+    </InfoAboutSubscribeWrapper>
   );
 };
 
@@ -109,6 +105,12 @@ const SubscriptionWrapper = styled(FlexBox)`
   cursor: default;
   padding: 0 1rem;
   margin: 1rem 0 0.5rem;
+`;
+
+const InfoAboutSubscribeWrapper = styled(FlexBox)`
+  padding: 0 1rem;
+  margin: 1rem 0;
+  cursor: default;
 `;
 
 const LoadingWrapper = styled.div`
