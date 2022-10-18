@@ -10,7 +10,7 @@ import { Member } from 'types/member';
 
 export type GetChallengeParams = {
   searchValue?: string;
-  sort?: 'random';
+  sort?: 'popular' | 'random';
 };
 
 export type GetAllChallengesParams = GetChallengeParams & {

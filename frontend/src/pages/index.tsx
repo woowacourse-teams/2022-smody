@@ -19,3 +19,4 @@ export const RankingPage = lazy(() => import('pages/RankingPage'));
 export const EventPage = lazy(() => import('pages/EventPage'));
 export const ChallengePage = lazy(() => import('pages/ChallengePage'));
 export const RandomChallengePage = lazy(() => import('pages/RandomChallengePage'));
+export const PopularChallengePage = lazy(() => import('pages/PopularChallengePage'));
