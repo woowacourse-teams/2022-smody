@@ -59,4 +59,10 @@ export const push = [
     notifications.splice(index, 1);
     return res(ctx.status(200));
   }),
+
+  // 나의 보낸 알림 모두 삭제(DELETE)
+  rest.delete(`${BASE_URL}/push-notifications/me`, (req, res, ctx) => {
+    notifications.length = 0;
+    return res(ctx.status(204));
+  }),
 ];
