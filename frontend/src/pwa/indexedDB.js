@@ -29,6 +29,14 @@ class IndexedDB {
         db.createObjectStore(INDEXED_DB.CHALLENGE, {
           keyPath: 'challengeId',
         });
+
+        db.createObjectStore(INDEXED_DB.RANDOM_CHALLENGE, {
+          keyPath: 'challengeId',
+        });
+
+        db.createObjectStore(INDEXED_DB.POPULAR_CHALLENGE, {
+          keyPath: 'challengeId',
+        });
       };
 
       request.onsuccess = () => {
