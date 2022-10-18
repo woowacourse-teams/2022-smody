@@ -150,8 +150,6 @@ const useMention = <T extends HTMLElement>({
   const hasNotMentionSymbolPosition =
     lastMentionSymbolPositionRef.current === ABSENCE_SYMBOL_POSITION;
 
-  const isStartPosition = () => getCursorPosition(commentInputRef.current!) === 0;
-
   const setNicknameAfterMentionSymbol = (text: string) => {
     if (isCurrentCharacterWhiteSpace(text)) {
       initializeMention();
@@ -166,15 +164,10 @@ const useMention = <T extends HTMLElement>({
     setFilterValue(detectedFilterValue);
   };
 
+  const isStartPosition = () => getCursorPosition(commentInputRef.current!) === 0;
+
   const isCurrentCharacterWhiteSpace = (text: string) =>
     text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
-
-  const initializeMention = () => {
-    lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-    setFilterValue(''); // 초기화
-    isFilterValueInitiatedRef.current = true;
-    handleClosePopover();
-  };
 
   // inputChangeHandler 시작
   const inputChangeHandler: MutationCallback = (mutations) => {
@@ -242,11 +235,7 @@ const useMention = <T extends HTMLElement>({
       commentInputRef.current!.childNodes[1].nodeName &&
       commentInputRef.current!.childNodes[0].textContent === ''
     ) {
-      // init 3종 세트
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      isFilterValueInitiatedRef.current = true;
-      setFilterValue('');
-      handleClosePopover();
+      initializeMention();
 
       commentInputRef.current!.textContent = ' ';
 
@@ -289,10 +278,7 @@ const useMention = <T extends HTMLElement>({
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition - 2] === ' ') {
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      setFilterValue('');
-      isFilterValueInitiatedRef.current = true;
-      handleClosePopover();
+      initializeMention();
     }
   };
 
@@ -301,15 +287,18 @@ const useMention = <T extends HTMLElement>({
     const { innerText } = commentInputRef.current!;
 
     if (innerText[cursorPosition] === ' ') {
-      // init 3종 세트
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      setFilterValue('');
-      isFilterValueInitiatedRef.current = true;
-      handleClosePopover();
+      initializeMention();
     }
   };
 
   useMutationObserver<T>(commentInputRef, inputChangeHandler);
+
+  const initializeMention = () => {
+    lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+    setFilterValue('');
+    isFilterValueInitiatedRef.current = true;
+    handleClosePopover();
+  };
 
   return {
     postMentionNotifications,
