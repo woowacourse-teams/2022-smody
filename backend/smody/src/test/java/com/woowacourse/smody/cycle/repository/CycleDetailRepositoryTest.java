@@ -61,7 +61,7 @@ class CycleDetailRepositoryTest extends RepositoryTest {
                 "image.jpg", "인증6"));
 
         // when
-        List<Feed> feeds = cycleDetailRepository.searchAll(new PagingParams("latest", 3, cycleDetail.getId()));
+        List<Feed> feeds = cycleDetailRepository.findAll(new PagingParams("latest", 3, cycleDetail.getId()));
 
         // then
         assertAll(

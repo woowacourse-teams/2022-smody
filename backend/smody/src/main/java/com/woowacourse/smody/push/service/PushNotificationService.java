@@ -45,8 +45,8 @@ public class PushNotificationService {
         pushNotificationRepository.updatePushStatusIn(notifications, PushStatus.COMPLETE);
     }
 
-    public List<PushNotification> findAllLatest(Member member, PushStatus pushStatus) {
-        return pushNotificationRepository.findAllLatest(member, pushStatus);
+    public List<PushNotification> findAllLatestOrderByDesc(Member member, PushStatus pushStatus) {
+        return pushNotificationRepository.findAllLatestOrderByDesc(member, pushStatus);
     }
 
     @Transactional

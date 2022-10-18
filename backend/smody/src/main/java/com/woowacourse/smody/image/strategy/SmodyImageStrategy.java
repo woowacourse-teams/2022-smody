@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-@RequiredArgsConstructor
 @Primary
+@RequiredArgsConstructor
 public class SmodyImageStrategy implements ImageStrategy {
 
     @Value("${secret.key.upload}")
@@ -30,7 +30,7 @@ public class SmodyImageStrategy implements ImageStrategy {
         ResponseEntity<String> imageServerResponse = restTemplate
                 .postForEntity(
                         "https://images.smody.co.kr/images/upload",
-                        generateImageRequest(rawImage),
+                        generateRequestHttpEntity(rawImage),
                         String.class
                 );
         if (imageServerResponse.getStatusCode().is4xxClientError()) {
@@ -45,14 +45,20 @@ public class SmodyImageStrategy implements ImageStrategy {
         }
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> generateImageRequest(final MultipartFile rawImage) {
+    private HttpEntity<MultiValueMap<String, Object>> generateRequestHttpEntity(MultipartFile rawImage) {
+        return new HttpEntity<>(generateBody(rawImage), generateHeaders());
+    }
+
+    private MultiValueMap<String, Object> generateBody(MultipartFile rawImage) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("rawImage", rawImage.getResource());
         body.add("secretKeyUpload", secretKeyUpload);
+        return body;
+    }
 
+    private HttpHeaders generateHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        return new HttpEntity<>(body, headers);
+        return headers;
     }
 }

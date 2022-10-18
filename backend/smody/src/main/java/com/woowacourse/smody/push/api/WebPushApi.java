@@ -17,9 +17,9 @@ import org.apache.http.HttpResponse;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Slf4j
 public class WebPushApi {
 
@@ -28,9 +28,8 @@ public class WebPushApi {
     private final PushService pushService;
     private final ObjectMapper objectMapper;
 
-    public WebPushApi(
-            @Value("${vapid.public.key}") String publicKey,
-            @Value("${vapid.private.key}") String privateKey) throws GeneralSecurityException {
+    public WebPushApi(@Value("${vapid.public.key}") String publicKey,
+                      @Value("${vapid.private.key}") String privateKey) throws GeneralSecurityException {
         this.publicKey = publicKey;
         Security.addProvider(new BouncyCastleProvider());
         this.pushService = new PushService(publicKey, privateKey);
@@ -51,8 +50,7 @@ public class WebPushApi {
             log.warn("스레드가 interrupted 되었습니다.");
             Thread.currentThread().interrupt();
             throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
-        } catch (GeneralSecurityException | IOException
-                | JoseException | ExecutionException exception) {
+        } catch (GeneralSecurityException | IOException | JoseException | ExecutionException exception) {
             throw new BusinessException(ExceptionData.WEB_PUSH_ERROR);
         }
         return httpResponse != null && httpResponse.getStatusLine().getStatusCode() == 201;

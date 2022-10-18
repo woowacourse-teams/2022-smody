@@ -42,7 +42,7 @@ public class Feed {
         this.commentCount = commentCount;
     }
 
-    /*
+    /**
      * QueryDSL Projection 을 위한 생성자
      */
     public Feed(

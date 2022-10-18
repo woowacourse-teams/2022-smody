@@ -30,7 +30,7 @@ public class RankingPointEventListener {
 
     private final RankingService rankingService;
     private final TransactionTemplate transactionTemplate;
-    
+
     @TransactionalEventListener
     @Async("asyncExecutor")
     public void handle(CycleProgressEvent event) {
@@ -43,8 +43,8 @@ public class RankingPointEventListener {
             applyRankingPointWithTransaction(cycle);
         } catch (DataIntegrityViolationException e) {
             /**
-            * 여러 사람이 동시에 랭킹 점수에 관한 이벤트를 발생했을 경우
-            * unique 제약조건으로 예외가 발생한 이벤트를 새로운 트랜잭션으로 처리한다.
+             * 여러 사람이 동시에 랭킹 점수에 관한 이벤트를 발생했을 경우
+             * unique 제약조건으로 예외가 발생한 이벤트를 새로운 트랜잭션으로 처리한다.
              */
             applyRankingPointWithTransaction(cycle);
         }

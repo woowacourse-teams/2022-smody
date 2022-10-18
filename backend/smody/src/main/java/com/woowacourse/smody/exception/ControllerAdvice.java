@@ -1,5 +1,6 @@
 package com.woowacourse.smody.exception;
 
+import com.woowacourse.smody.exception.api.GithubApi;
 import com.woowacourse.smody.exception.dto.ExceptionResponse;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;

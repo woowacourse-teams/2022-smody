@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FeedDynamicRepository {
 
-    List<Feed> searchAll(PagingParams pagingParams);
+    List<Feed> findAll(PagingParams pagingParams);
 }

@@ -17,13 +17,13 @@ public class FeedApiService {
     private final FeedService feedService;
 
     public List<FeedResponse> findAll(PagingParams pagingParams) {
-        List<Feed> feeds = feedService.searchAll(pagingParams);
+        List<Feed> feeds = feedService.findAll(pagingParams);
         return feeds.stream()
                 .map(FeedResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public FeedResponse searchById(Long cycleDetailId) {
+    public FeedResponse findById(Long cycleDetailId) {
         Feed feed = feedService.search(cycleDetailId);
         return new FeedResponse(feed);
     }

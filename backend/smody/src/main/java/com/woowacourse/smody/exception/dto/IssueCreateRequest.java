@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class IssueCreateRequest {
 
-	private String title;
-	private String body;
-	private List<String> assignees;
-	private List<String> labels;
+    private String title;
+    private String body;
+    private List<String> assignees;
+    private List<String> labels;
 }

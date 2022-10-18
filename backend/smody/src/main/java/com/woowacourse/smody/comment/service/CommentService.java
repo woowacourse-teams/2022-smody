@@ -7,7 +7,6 @@ import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.feed.repository.FeedRepository;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.util.List;

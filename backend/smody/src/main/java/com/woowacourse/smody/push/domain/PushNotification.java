@@ -48,8 +48,12 @@ public class PushNotification {
     private Long pathId;
 
     @Builder
-    public PushNotification(String message, LocalDateTime pushTime, PushStatus pushStatus, Member member,
-                            PushCase pushCase, Long pathId) {
+    public PushNotification(String message,
+                            LocalDateTime pushTime,
+                            PushStatus pushStatus,
+                            Member member,
+                            PushCase pushCase,
+                            Long pathId) {
         this.message = message;
         this.pushTime = pushTime;
         this.pushStatus = pushStatus;

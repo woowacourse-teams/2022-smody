@@ -19,7 +19,7 @@ import com.woowacourse.smody.comment.service.CommentService;
 import com.woowacourse.smody.cycle.controller.CycleController;
 import com.woowacourse.smody.cycle.service.CycleApiService;
 import com.woowacourse.smody.cycle.service.CycleService;
-import com.woowacourse.smody.exception.GithubApi;
+import com.woowacourse.smody.exception.api.GithubApi;
 import com.woowacourse.smody.feed.controller.FeedController;
 import com.woowacourse.smody.feed.service.FeedApiService;
 import com.woowacourse.smody.member.controller.MemberController;

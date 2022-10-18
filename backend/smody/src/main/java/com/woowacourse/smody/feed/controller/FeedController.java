@@ -27,7 +27,7 @@ public class FeedController {
 
     @GetMapping("/{cycleDetailId}")
     public ResponseEntity<FeedResponse> findById(@PathVariable Long cycleDetailId) {
-        FeedResponse feedResponse = feedApiService.searchById(cycleDetailId);
+        FeedResponse feedResponse = feedApiService.findById(cycleDetailId);
         return ResponseEntity.ok(feedResponse);
     }
 }

@@ -25,10 +25,15 @@ public class PushSubscriptionApiService {
     public void subscribe(TokenPayload tokenPayload, SubscriptionRequest subscriptionRequest) {
         Member member = memberService.search(tokenPayload.getId());
         PushSubscription subscription = pushSubscriptionService.findByEndpoint(subscriptionRequest.endpoint)
-                .map(pushSubscription -> pushSubscription.updateMember(member))
-                .orElseGet(() -> pushSubscriptionService.create(subscriptionRequest.toEntity(member)));
+                .map(pushSubscription -> getUpdatedSubscription(member, pushSubscription))
+                .orElseGet(() -> pushSubscriptionService.create(subscriptionRequest.toPushSubscriptionEntity(member)));
 
         applicationEventPublisher.publishEvent(new PushSubscribeEvent(subscription));
+    }
+
+    private PushSubscription getUpdatedSubscription(final Member member, final PushSubscription pushSubscription) {
+        pushSubscription.updateMember(member);
+        return pushSubscription;
     }
 
     @Transactional

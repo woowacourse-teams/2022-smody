@@ -11,7 +11,6 @@ import com.woowacourse.smody.exception.ExceptionData;
 import java.util.Arrays;
 import org.springframework.data.domain.Sort;
 
-// TODO: 파라미터 네임 컨벤션 통일화
 public enum SortSelection {
 
     DEFAULT("") {

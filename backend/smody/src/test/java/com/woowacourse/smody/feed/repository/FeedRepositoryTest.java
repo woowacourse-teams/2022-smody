@@ -43,7 +43,7 @@ class FeedRepositoryTest extends RepositoryTest {
         commentRepository.save(new Comment(cycleDetail, cycle.getMember(), "댓글"));
         entityManager.clear();
 
-        List<Feed> feeds = feedRepository.searchAll(new PagingParams("latest", 10, 0L));
+        List<Feed> feeds = feedRepository.findAll(new PagingParams("latest", 10, 0L));
 
         assertThat(feeds).hasSize(3);
     }
