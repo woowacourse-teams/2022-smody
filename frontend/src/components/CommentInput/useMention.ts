@@ -224,10 +224,8 @@ const useMention = <T extends HTMLElement>({
 
   const detectMentionSymbolWhenTextDeleted = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
-
     const { innerText } = commentInputRef.current!;
 
-    useRef;
     // 지우려는 element 첫 번째 자식인 경우 contentEditable 부모에서 해당 element를 삭제할 수 없는 이슈 때문에
     // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
     if (
@@ -236,15 +234,12 @@ const useMention = <T extends HTMLElement>({
       commentInputRef.current!.childNodes[0].textContent === ''
     ) {
       initializeMention();
-
       commentInputRef.current!.textContent = ' ';
-
       return;
     }
 
     if (!innerText.includes('@')) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-
       return;
     }
 
@@ -277,19 +272,25 @@ const useMention = <T extends HTMLElement>({
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
-    if (innerText[cursorPosition - 2] === ' ') {
+    if (isEscapingLeftMentionArea(innerText, cursorPosition)) {
       initializeMention();
     }
   };
+
+  const isEscapingLeftMentionArea = (text: string, cursorPosition: number) =>
+    text[cursorPosition - 2] === ' ';
 
   const detectRightEscapingMentionArea = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
-    if (innerText[cursorPosition] === ' ') {
+    if (isEscapingRightMentionArea(innerText, cursorPosition)) {
       initializeMention();
     }
   };
+
+  const isEscapingRightMentionArea = (text: string, cursorPosition: number) =>
+    text[cursorPosition] === ' ';
 
   useMutationObserver<T>(commentInputRef, inputChangeHandler);
 
