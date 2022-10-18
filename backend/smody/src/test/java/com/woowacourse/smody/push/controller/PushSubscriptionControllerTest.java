@@ -30,7 +30,7 @@ class PushSubscriptionControllerTest extends ControllerTest {
     void getPublicKey() throws Exception {
         // given
         String publicKey = "BNzzfdcBcThU27FcGve6F3GF6He2Fro82ZMuOLga9fukatLMlaKB6GdO-82loi6W4iGdPQZAp_4HLgST8z5of_E";
-        given(webPushService.getPublicKey())
+        given(webPushApi.getPublicKey())
                 .willReturn(publicKey);
 
         // when

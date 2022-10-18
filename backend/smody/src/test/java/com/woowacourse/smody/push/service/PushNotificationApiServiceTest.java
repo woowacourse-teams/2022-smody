@@ -23,6 +23,7 @@ import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,114 +35,136 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
 
-    @DisplayName("회원의 발송된 알림을 시간 내림차순으로 모두 가져온다.")
-    @Test
-    void findByMember() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
+    @DisplayName("발송된 알림을 시간 내림차순으로 조회할 때 - searchNotificationsByMe()")
+    @Nested
+    class SearchNotificationsByMe {
 
-        PushNotification notification1 = fixture.발송된_알림_생성(
-                조조그린_ID, null, now.minusHours(2L), PushCase.SUBSCRIPTION
-        );
-        PushNotification notification2 = fixture.발송된_알림_생성(
-                조조그린_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE
-        );
-        PushNotification notification3 = fixture.발송된_알림_생성(
-                조조그린_ID, 2L, now, PushCase.CHALLENGE
-        );
+        @DisplayName("성공")
+        @Test
+        void success() {
+            // given
+            LocalDateTime now = LocalDateTime.now();
 
-        fixture.발송된_알림_생성(더즈_ID, 3L, now.minusHours(3L), PushCase.CHALLENGE);
-        fixture.발송_예정_알림_생성(
-                조조그린_ID, 2L, now.plusHours(1L), PushCase.CHALLENGE
-        );
+            PushNotification notification1 = fixture.발송된_알림_생성(
+                    조조그린_ID, null, now.minusHours(2L), PushCase.SUBSCRIPTION
+            );
+            PushNotification notification2 = fixture.발송된_알림_생성(
+                    조조그린_ID, 1L, now.minusHours(1L), PushCase.CHALLENGE
+            );
+            PushNotification notification3 = fixture.발송된_알림_생성(
+                    조조그린_ID, 2L, now, PushCase.CHALLENGE
+            );
 
-        // when
-        List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
-                new TokenPayload(조조그린_ID));
+            fixture.발송된_알림_생성(더즈_ID, 3L, now.minusHours(3L), PushCase.CHALLENGE);
+            fixture.발송_예정_알림_생성(
+                    조조그린_ID, 2L, now.plusHours(1L), PushCase.CHALLENGE
+            );
 
-        // then
-        assertAll(
-                () -> assertThat(responses).hasSize(3),
-                () -> assertThat(responses)
-                        .map(PushNotificationResponse::getPushNotificationId)
-                        .containsExactly(notification3.getId(), notification2.getId(), notification1.getId()),
-                () -> assertThat(responses)
-                        .map(PushNotificationResponse::getPushCase)
-                        .containsExactly("challenge", "challenge", "subscription")
-        );
+            // when
+            List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
+                    new TokenPayload(조조그린_ID));
+
+            // then
+            assertAll(
+                    () -> assertThat(responses).hasSize(3),
+                    () -> assertThat(responses)
+                            .map(PushNotificationResponse::getPushNotificationId)
+                            .containsExactly(notification3.getId(), notification2.getId(), notification1.getId()),
+                    () -> assertThat(responses)
+                            .map(PushNotificationResponse::getPushCase)
+                            .containsExactly("challenge", "challenge", "subscription")
+            );
+        }
     }
 
-    @DisplayName("알림을 삭제한다.")
-    @Test
-    void delete() {
-        // given
-        PushNotification notification = fixture.발송된_알림_생성(
-                조조그린_ID, null, LocalDateTime.now().minusHours(2L), PushCase.SUBSCRIPTION
-        );
+    @DisplayName("알림을 삭제할 때 - deleteById()")
+    @Nested
+    class DeleteById {
 
-        // when
-        pushNotificationApiService.deleteById(notification.getId());
+        @DisplayName("성공")
+        @Test
+        void delete() {
+            // given
+            PushNotification notification = fixture.발송된_알림_생성(
+                    조조그린_ID, null, LocalDateTime.now().minusHours(2L), PushCase.SUBSCRIPTION
+            );
 
-        // then
-        List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
-                new TokenPayload(조조그린_ID));
-        assertThat(responses).isEmpty();
+            // when
+            pushNotificationApiService.deleteById(notification.getId());
+
+            // then
+            List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
+                    new TokenPayload(조조그린_ID));
+            assertThat(responses).isEmpty();
+        }
     }
 
-    @DisplayName("알람을 저장한다.")
-    @Test
-    void saveNotification() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
-        Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
-        CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
-        List<Long> ids = List.of(토닉_ID, 더즈_ID);
-        MentionNotificationRequest mentionNotificationRequest =
-                new MentionNotificationRequest(ids, cycleDetail.getId());
+    @DisplayName("알림을 저장할 때 - saveNotification()")
+    @Nested
+    class SaveNotification {
 
-        // when
-        pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
+        @DisplayName("성공")
+        @Test
+        void saveNotification() {
+            // given
+            LocalDateTime now = LocalDateTime.now();
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+            Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
+            CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
+            List<Long> ids = List.of(토닉_ID, 더즈_ID);
+            MentionNotificationRequest mentionNotificationRequest =
+                    new MentionNotificationRequest(ids, cycleDetail.getId());
 
-        // then
-        PushNotification pushNotification1 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(0);
-        PushNotification pushNotification2 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(1);
-        assertAll(
-                () -> assertThat(pushNotification1.getMember().getId()).isEqualTo(더즈_ID),
-                () -> assertThat(pushNotification1.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-                () -> assertThat(pushNotification1.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
-                () -> assertThat(pushNotification1.getPushCase()).isEqualTo(PushCase.MENTION),
-                () -> assertThat(pushNotification1.getPathId()).isEqualTo(cycleDetail.getId()),
-                () -> verify(webPushService, never())
-                        .sendNotification(any(), any()),
+            // when
+            pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
 
-                () -> assertThat(pushNotification2.getMember().getId()).isEqualTo(토닉_ID),
-                () -> assertThat(pushNotification2.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-                () -> assertThat(pushNotification2.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
-                () -> assertThat(pushNotification2.getPushCase()).isEqualTo(PushCase.MENTION),
-                () -> assertThat(pushNotification2.getPathId()).isEqualTo(cycleDetail.getId()),
-                () -> verify(webPushService, never())
-                        .sendNotification(any(), any())
-        );
+            // then
+            PushNotification pushNotification1 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
+                    .get(0);
+            PushNotification pushNotification2 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
+                    .get(1);
+            assertAll(
+                    () -> assertThat(pushNotification1.getMember().getId()).isEqualTo(더즈_ID),
+                    () -> assertThat(pushNotification1.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
+                    () -> assertThat(pushNotification1.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
+                    () -> assertThat(pushNotification1.getPushCase()).isEqualTo(PushCase.MENTION),
+                    () -> assertThat(pushNotification1.getPathId()).isEqualTo(cycleDetail.getId()),
+                    () -> verify(webPushApi, never())
+                            .sendNotification(any(), any()),
+
+                    () -> assertThat(pushNotification2.getMember().getId()).isEqualTo(토닉_ID),
+                    () -> assertThat(pushNotification2.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
+                    () -> assertThat(pushNotification2.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
+                    () -> assertThat(pushNotification2.getPushCase()).isEqualTo(PushCase.MENTION),
+                    () -> assertThat(pushNotification2.getPathId()).isEqualTo(cycleDetail.getId()),
+                    () -> verify(webPushApi, never())
+                            .sendNotification(any(), any())
+            );
+        }
     }
 
-    @DisplayName("회원의 보낸 상태의 알림을 모두 삭제한다.")
-    @Test
-    void deleteMyCompleteNotifications() {
-        // given
-        LocalDateTime now = LocalDateTime.now();
-        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+    @DisplayName("보낸 상태의 알림을 모두 삭제할 때 - deleteMyCompleteNotifications()")
+    @Nested
+    class DeleteMyCompleteNotifications {
 
-        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.COMMENT);
-        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.CHALLENGE);
+        @DisplayName("성공")
+        @Test
+        void success() {
+            // given
+            LocalDateTime now = LocalDateTime.now();
+            TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
 
-        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
-        fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+            fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.COMMENT);
+            fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.CHALLENGE);
 
-        // when
-        pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+            fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+            fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
 
-        // then
-        assertThat(pushNotificationRepository.findAll()).hasSize(2);
+            // when
+            pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+
+            // then
+            assertThat(pushNotificationRepository.findAll()).hasSize(2);
+        }
     }
 }

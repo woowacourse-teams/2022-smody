@@ -1,4 +1,4 @@
-package com.woowacourse.smody.push.service;
+package com.woowacourse.smody.push.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.exception.BusinessException;
@@ -21,14 +21,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class WebPushService {
+public class WebPushApi {
 
     private final String publicKey;
 
     private final PushService pushService;
     private final ObjectMapper objectMapper;
 
-    public WebPushService(
+    public WebPushApi(
             @Value("${vapid.public.key}") String publicKey,
             @Value("${vapid.private.key}") String privateKey) throws GeneralSecurityException {
         this.publicKey = publicKey;
