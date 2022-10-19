@@ -3,9 +3,9 @@ import {
   useState,
   useEffect,
   useRef,
-  KeyboardEventHandler,
   FormEventHandler,
   RefObject,
+  KeyboardEventHandler,
 } from 'react';
 import { getCursorPosition } from 'utils';
 
