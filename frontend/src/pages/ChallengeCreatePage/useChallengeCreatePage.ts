@@ -31,7 +31,7 @@ const useChallengeCreatePage = () => {
         status: 'SUCCESS',
       });
 
-      navigate(CLIENT_PATH.SEARCH);
+      navigate(CLIENT_PATH.CHALLENGE_SEARCH);
     },
   });
 

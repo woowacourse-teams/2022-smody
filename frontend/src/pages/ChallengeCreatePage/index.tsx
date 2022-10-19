@@ -41,7 +41,7 @@ const ChallengeCreatePage = () => {
 
   return (
     <FlexBox flexDirection="column">
-      <Title text="새로운 챌린지 생성" linkTo={CLIENT_PATH.SEARCH} />
+      <Title text="새로운 챌린지 생성" linkTo={CLIENT_PATH.CHALLENGE_SEARCH} />
       <ChallengeCreateForm onSubmit={handleClickCreateChallenge}>
         <Input
           type="text"

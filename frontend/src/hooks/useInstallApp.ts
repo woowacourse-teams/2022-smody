@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react';
 
 let deferredPrompt: any; // 비표준 API라서 any로 선언
 
+declare global {
+  interface Navigator {
+    standalone: boolean;
+  }
+  interface Window {
+    MSStream: unknown;
+  }
+}
+
 const useInstallApp = () => {
   const [isInstallPromptDeferred, setIsInstallPromptDeferred] = useState(false);
   const [pwaMode, setPwaMode] = useState('browser');

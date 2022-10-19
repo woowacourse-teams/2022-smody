@@ -20,7 +20,7 @@ export const ChallengeDetail = ({
 
   return (
     <FlexBox flexDirection="column">
-      <Title text={challengeName} linkTo={CLIENT_PATH.SEARCH}>
+      <Title text={challengeName} linkTo={CLIENT_PATH.CHALLENGE_SEARCH}>
         <ShareButton text={`${challengeName} 챌린지에 함께 도전해요!`} />
       </Title>
       <ChallengeDetailWrapper

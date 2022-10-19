@@ -1,4 +1,4 @@
-import { challengeData } from 'mocks/data';
+import { challengeInfiniteData } from 'mocks/data';
 
 import { ChallengeList } from 'components';
 import { ChallengeListProps } from 'components/ChallengeList/type';
@@ -13,5 +13,5 @@ export const DefaultChallengeList = (args: ChallengeListProps) => (
 );
 
 DefaultChallengeList.args = {
-  challengeListData: challengeData,
+  challengeInfiniteData: challengeInfiniteData,
 };
