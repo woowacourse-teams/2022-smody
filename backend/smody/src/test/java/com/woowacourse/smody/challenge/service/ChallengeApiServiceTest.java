@@ -43,7 +43,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
 
     private final LocalDateTime now = LocalDateTime.now();
 
-    @DisplayName("비회원이 챌린지를 도전자 수와 함께 조회 할 때 - findAllWithChallengerCountByFilter()")
+    @DisplayName("비회원이 챌린지를 도전자 수와 함께 조회 할 때")
     @Nested
     class FindAllWithChallengerCountByFilter {
 
@@ -286,7 +286,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("회원이 챌린지를 도전자 수와 함께 조회 할 때 - findAllWithChallengerCountByFilter()")
+    @DisplayName("회원이 챌린지를 도전자 수와 함께 조회 할 때")
     @Nested
     class FindAllWithChallengerCountByFilter_Login {
 
@@ -432,7 +432,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("나의 특정 챌린지에 대한 사이클 성공 횟수, 인증 횟수를 조회 할 때 - findByMeAndChallenge()")
+    @DisplayName("나의 특정 챌린지에 대한 사이클 성공 횟수, 인증 횟수를 조회 할 때")
     @Nested
     class FindByMeAndChallenge {
 
@@ -499,7 +499,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("나의 모든 챌린지를 조회할 때 - findAllByMeAndFilter()")
+    @DisplayName("나의 모든 챌린지를 조회할 때")
     @Nested
     class FindAllByMeAndFilter {
 
@@ -708,7 +708,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("하나의 챌린지를 상세 조회할 때 - findWithChallengerCount()")
+    @DisplayName("하나의 챌린지를 상세 조회할 때")
     @Nested
     class FindWithChallengerCount {
 
@@ -753,7 +753,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("챌린지의 참여자를 조회할 때 - findAllChallengers()")
+    @DisplayName("챌린지의 참여자를 조회할 때")
     @Nested
     class FindAllChallengers {
 

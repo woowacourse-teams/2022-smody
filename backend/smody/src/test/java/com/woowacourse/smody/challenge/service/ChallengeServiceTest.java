@@ -36,7 +36,7 @@ class ChallengeServiceTest extends IntegrationTest {
 
     private final LocalDateTime now = LocalDateTime.now();
 
-    @DisplayName("id로 챌린지를 조회할 때 - search()")
+    @DisplayName("id로 챌린지를 조회할 때")
     @Nested
     class Search {
 
@@ -61,7 +61,7 @@ class ChallengeServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("id로 챌린지를 조회할 때 - findById()")
+    @DisplayName("id로 챌린지를 조회할 때")
     @Nested
     class FindById {
 
@@ -86,7 +86,7 @@ class ChallengeServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("챌린지를 조회할 때 - findAllByFilter()")
+    @DisplayName("챌린지를 조회할 때")
     @Nested
     class FindAllByFilter {
 
@@ -210,7 +210,7 @@ class ChallengeServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("챌린지를 생성할 때 - create()")
+    @DisplayName("챌린지를 생성할 때")
     @Nested
     class Create {
 
