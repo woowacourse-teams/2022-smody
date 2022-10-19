@@ -29,6 +29,7 @@ public enum ExceptionData {
     NOT_FOUND_RANKING_PERIOD(4006, "존재하지 않는 랭킹 기간입니다.", 404),
     NOT_FOUND_RANKING_ACTIVITY(4007, "존재하지 않는 랭킹 활동입니다.", 404),
     NOT_FOUND_PUSH_NOTIFICATION(4008, "알림을 찾을 수 없습니다.", 404),
+    NOT_FOUND_SORT(4009, "정렬 기준을 찾을 수 없습니다.", 404),
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다.", 400),
 
@@ -38,14 +39,12 @@ public enum ExceptionData {
     DUPLICATE_NAME(7002, "중복된 챌린지 이름입니다.", 400),
     INVALID_CHALLENGE_NAME(7003, "챌린지 이름 형식이 올바르지 않습니다.", 400),
     INVALID_SEARCH_NAME(7004, "검색 이름 형식이 올바르지 않습니다.", 400),
-    ANY_PROGRESS_RECORD_CHALLENGE(7005, "인증 기록이 없는 챌린지입니다.", 400),
+    OUT_OF_BOUND_RANDOM_SIZE(7005, "랜덤 조회할 챌린지 개수가 전체 챌린지 개수보다 많습니다.", 400),
 
     WEB_PUSH_ERROR(8001, "웹 푸시 라이브러리 관련 예외입니다.", 400),
 
     AUTHORIZATION_SERVER_ERROR(9001, "인가 관련 서버 내부의 오류입니다.", 500),
-    IMAGE_UPLOAD_ERROR(9002, "이미지 업로드 관련 서버 내부의 오류입니다.", 500),
     DATA_INTEGRITY_ERROR(9003, "데이터 정합성 관련 서버 내부의 오류입니다.", 500),
-    NOT_FOUND_SORT(9004, "정렬 기준을 찾을 수 없습니다.", 500)
     ;
 
     private final int code;

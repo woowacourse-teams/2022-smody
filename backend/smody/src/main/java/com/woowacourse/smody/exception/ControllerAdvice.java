@@ -6,6 +6,7 @@ import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,22 +24,27 @@ public class ControllerAdvice {
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleBusinessException(BusinessException businessException) {
         ExceptionData exceptionData = businessException.getExceptionData();
-        ExceptionResponse exceptionResponse = new ExceptionResponse(exceptionData);
         log.info("[비즈니스 예외 발생] 에러 코드 : {}, 메세지 : {}", exceptionData.getCode(), exceptionData.getMessage());
+        if (exceptionData.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR.value()
+                && isProdProfile(environment.getActiveProfiles())) {
+            githubApi.create(businessException);
+        }
         return ResponseEntity.status(exceptionData.getStatusCode())
-            .body(exceptionResponse);
+                .body(new ExceptionResponse(exceptionData));
     }
 
     @ExceptionHandler
-    public void handleUnExpectedException(Exception exception) {
+    public ResponseEntity<String> handleUnExpectedException(Exception exception) {
         log.error("[예상치 못한 예외 발생] ", exception);
-        if (isProd(environment.getActiveProfiles())) {
+        if (isProdProfile(environment.getActiveProfiles())) {
             githubApi.create(exception);
         }
+        return ResponseEntity.internalServerError()
+                .body(ExceptionUtils.createIssueBody(exception));
     }
 
-    private boolean isProd(String[] activeProfiles) {
+    private boolean isProdProfile(String[] activeProfiles) {
         return Arrays.stream(activeProfiles)
-            .anyMatch(env -> env.equalsIgnoreCase(ISSUE_CREATE_PROFILE));
+                .anyMatch(env -> env.equalsIgnoreCase(ISSUE_CREATE_PROFILE));
     }
 }
