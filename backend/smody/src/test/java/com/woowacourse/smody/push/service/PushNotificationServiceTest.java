@@ -114,7 +114,7 @@ class PushNotificationServiceTest extends IntegrationTest {
 
     @DisplayName("조회")
     @Test
-    void findAllLatest() {
+    void findAllLatestOrderByDesc() {
         // given
         LocalDateTime now = LocalDateTime.now();
         fixture.발송된_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
@@ -125,7 +125,7 @@ class PushNotificationServiceTest extends IntegrationTest {
         Member member = fixture.회원_조회(조조그린_ID);
 
         // when
-        List<PushNotification> actual = pushNotificationService.findAllLatest(member, PushStatus.COMPLETE);
+        List<PushNotification> actual = pushNotificationService.findAllLatestOrderByDesc(member, PushStatus.COMPLETE);
 
         // then
         assertAll(

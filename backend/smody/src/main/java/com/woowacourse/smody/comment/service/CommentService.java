@@ -1,15 +1,12 @@
 package com.woowacourse.smody.comment.service;
 
-import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.domain.CommentCreateEvent;
-import com.woowacourse.smody.comment.dto.CommentRequest;
-import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
 import com.woowacourse.smody.comment.repository.CommentRepository;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.feed.repository.FeedRepository;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.util.List;
@@ -24,17 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final MemberService memberService;
+    private final CycleService cycleService;
     private final CommentRepository commentRepository;
-    private final FeedRepository feedRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Comment create(Long memberId, Long cycleDetailId, String content) {
         Member member = memberService.search(memberId);
-        CycleDetail cycleDetail = feedRepository.findById(cycleDetailId)
-                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
+        CycleDetail cycleDetail = cycleService.searchCycleDetail(cycleDetailId);
         Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
-
         applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
         return comment;
     }
@@ -44,6 +39,12 @@ public class CommentService {
         Comment comment = search(commentId);
         validateMember(memberId, comment);
         comment.updateContent(content);
+    }
+
+    private void validateMember(Long memberId, Comment comment) {
+        if (!comment.isWriter(memberId)) {
+            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
+        }
     }
 
     @Transactional
@@ -56,12 +57,6 @@ public class CommentService {
     public Comment search(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_COMMENT));
-    }
-
-    private void validateMember(Long memberId, Comment comment) {
-        if (!comment.isCommentByMemberId(memberId)) {
-            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
-        }
     }
 
     public List<Comment> findAllByCycleDetailId(Long cycleDetailId) {

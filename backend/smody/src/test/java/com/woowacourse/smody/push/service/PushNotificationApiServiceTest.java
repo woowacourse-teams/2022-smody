@@ -56,7 +56,7 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         );
 
         // when
-        List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
+        List<PushNotificationResponse> responses = pushNotificationApiService.findCompleteNotificationsByMe(
                 new TokenPayload(조조그린_ID));
 
         // then
@@ -83,7 +83,7 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         pushNotificationApiService.deleteById(notification.getId());
 
         // then
-        List<PushNotificationResponse> responses = pushNotificationApiService.searchNotificationsByMe(
+        List<PushNotificationResponse> responses = pushNotificationApiService.findCompleteNotificationsByMe(
                 new TokenPayload(조조그린_ID));
         assertThat(responses).isEmpty();
     }
@@ -101,7 +101,7 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
                 new MentionNotificationRequest(ids, cycleDetail.getId());
 
         // when
-        pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
+        pushNotificationApiService.createMentionNotification(tokenPayload, mentionNotificationRequest);
 
         // then
         PushNotification pushNotification1 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
@@ -141,7 +141,7 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
 
         // when
-        pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+        pushNotificationApiService.deleteCompleteNotificationsByMe(tokenPayload);
 
         // then
         assertThat(pushNotificationRepository.findAll()).hasSize(2);

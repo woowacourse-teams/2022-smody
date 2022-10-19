@@ -1,8 +1,7 @@
 package com.woowacourse.smody.push;
 
-import org.springframework.scheduling.annotation.Scheduled;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 
 @RequiredArgsConstructor
 public class WebPushScheduler {

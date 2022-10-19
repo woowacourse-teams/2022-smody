@@ -15,12 +15,12 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
 
+    public List<Feed> findAll(PagingParams pagingParams) {
+        return feedRepository.findAll(pagingParams);
+    }
+
     public Feed search(Long cycleDetailId) {
         return feedRepository.findByCycleDetailId(cycleDetailId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
-    }
-
-    public List<Feed> searchAll(PagingParams pagingParams) {
-        return feedRepository.searchAll(pagingParams);
     }
 }

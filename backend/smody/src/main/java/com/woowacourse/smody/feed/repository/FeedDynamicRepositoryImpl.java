@@ -1,5 +1,6 @@
 package com.woowacourse.smody.feed.repository;
 
+import static com.querydsl.core.types.ExpressionUtils.as;
 import static com.woowacourse.smody.challenge.domain.QChallenge.challenge;
 import static com.woowacourse.smody.comment.domain.QComment.comment;
 import static com.woowacourse.smody.cycle.domain.QCycle.cycle;
@@ -7,7 +8,6 @@ import static com.woowacourse.smody.cycle.domain.QCycleDetail.cycleDetail;
 import static com.woowacourse.smody.member.domain.QMember.member;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
 
-    private static final Expression<Long> COMMENT_COUNT = ExpressionUtils.as(
+    private static final Expression<Long> COMMENT_COUNT = as(
             JPAExpressions.select(comment.count())
                     .from(comment)
                     .where(comment.cycleDetail.eq(cycleDetail)),
@@ -41,12 +41,12 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Feed> searchAll(PagingParams pagingParams) {
-        OrderSpecifier<?>[] orders = SortSelection.findByParameter(pagingParams.getSort())
+    public List<Feed> findAll(PagingParams pagingParams) {
+        OrderSpecifier<?>[] orderSpecifiers = SortSelection.findByParameter(pagingParams.getSort())
                 .getOrderSpecifiers();
 
-        Long cycleDetailId = pagingParams.getCursorId();
-        LocalDateTime progressTime = getCursorProgressTime(cycleDetailId);
+        Long cursorCycleDetailId = pagingParams.getCursorId();
+        LocalDateTime cursorProgressTime = getCursorProgressTime(cursorCycleDetailId);
 
         return queryFactory
                 .select(Projections.constructor(Feed.class, FEED_FIELDS))
@@ -55,11 +55,11 @@ public class FeedDynamicRepositoryImpl implements FeedDynamicRepository {
                 .join(cycle.member, member)
                 .join(cycle.challenge, challenge)
                 .where(DynamicQuery.builder()
-                        .and(() -> cycleDetail.id.ne(cycleDetailId))
-                        .and(() -> cycleDetail.progressTime.loe(progressTime))
+                        .and(() -> cycleDetail.id.ne(cursorCycleDetailId))
+                        .and(() -> cycleDetail.progressTime.loe(cursorProgressTime))
                         .build()
                 )
-                .orderBy(orders)
+                .orderBy(orderSpecifiers)
                 .limit(pagingParams.getSize())
                 .fetch();
     }

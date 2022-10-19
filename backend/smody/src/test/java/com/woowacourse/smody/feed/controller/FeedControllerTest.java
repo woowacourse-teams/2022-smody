@@ -73,7 +73,7 @@ class FeedControllerTest extends ControllerTest {
             2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
             "인증설명", 1L, "미라클 모닝", 5
         );
-        BDDMockito.given(feedApiService.searchById(1L)).willReturn(feedResponse);
+        BDDMockito.given(feedApiService.findById(1L)).willReturn(feedResponse);
 
         // when
         ResultActions result = mockMvc.perform(get("/feeds/1"));
@@ -102,7 +102,7 @@ class FeedControllerTest extends ControllerTest {
     @Test
     void findById_404() throws Exception {
         // given
-        BDDMockito.given(feedApiService.searchById(1L))
+        BDDMockito.given(feedApiService.findById(1L))
                 .willThrow(new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
 
         // when

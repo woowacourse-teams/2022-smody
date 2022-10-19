@@ -38,7 +38,7 @@ public class ChallengePushEventListener {
     }
 
     private void executePush(Cycle cycle) {
-        cycle = cycleService.search(cycle.getId());
+        cycle = cycleService.searchCycle(cycle.getId());
         deleteInCompleteNotificationIfSamePathIdPresent(cycle);
         if (cycle.isSuccess()) {
             return;

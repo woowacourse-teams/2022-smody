@@ -41,7 +41,7 @@ class RankingControllerTest extends ControllerTest {
                         "week"
                 )
         );
-        given(rankingApiService.findAllPeriod(new PagingParams("startDate:desc", 10)))
+        given(rankingApiService.findAllRankingPeriod(new PagingParams("startDate:desc", 10)))
                 .willReturn(rankingPeriodResponses);
 
         // when
@@ -74,7 +74,7 @@ class RankingControllerTest extends ControllerTest {
                 )
         );
 
-        given(rankingApiService.findAllRankedActivityByPeriodId(1L))
+        given(rankingApiService.findAllRankingActivityByPeriodId(1L))
                 .willReturn(responses);
 
         // when

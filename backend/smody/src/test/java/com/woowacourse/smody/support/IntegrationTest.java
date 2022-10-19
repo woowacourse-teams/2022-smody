@@ -30,7 +30,7 @@ public class IntegrationTest {
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
-    
+
     protected void synchronize(Runnable runnable) throws InterruptedException {
         ThreadPoolExecutor threadPoolExecutor = taskExecutor.getThreadPoolExecutor();
         runnable.run();

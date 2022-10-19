@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class StatResponse {
+
     private Integer totalCount;
     private Integer successCount;
 }

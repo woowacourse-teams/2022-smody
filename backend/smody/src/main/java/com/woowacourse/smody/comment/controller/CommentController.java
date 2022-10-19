@@ -7,7 +7,6 @@ import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.comment.dto.CommentResponse;
 import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
 import com.woowacourse.smody.comment.service.CommentApiService;
-import com.woowacourse.smody.comment.service.CommentService;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,8 @@ public class CommentController {
 
     @PostMapping("/feeds/{cycleDetailId}/comments")
     @RequiredLogin
-    public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload, @PathVariable Long cycleDetailId,
+    public ResponseEntity<Void> create(@LoginMember TokenPayload tokenPayload,
+                                       @PathVariable Long cycleDetailId,
                                        @RequestBody CommentRequest commentRequest) {
         Long commentId = commentApiService.create(tokenPayload, cycleDetailId, commentRequest);
         return ResponseEntity.created(URI.create("/comments/" + commentId)).build();
@@ -52,7 +52,9 @@ public class CommentController {
 
     @GetMapping("/feeds/{cycleDetailId}/comments")
     public ResponseEntity<List<CommentResponse>> findAllByCycleDetailId(@PathVariable Long cycleDetailId) {
-        return ResponseEntity.ok(commentApiService.findAllByCycleDetailId(new TokenPayload(0L), cycleDetailId));
+        return ResponseEntity.ok(
+                commentApiService.findAllByCycleDetailId(TokenPayload.NOT_LOGIN_TOKEN_PAYLOAD, cycleDetailId)
+        );
     }
 
     @GetMapping("/feeds/{cycleDetailId}/comments/auth")

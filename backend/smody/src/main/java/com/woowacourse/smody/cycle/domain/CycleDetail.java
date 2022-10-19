@@ -51,8 +51,11 @@ public class CycleDetail {
     @Column(nullable = false)
     private Progress progress;
 
-    public CycleDetail(Cycle cycle, LocalDateTime progressTime, String progressImage,
-                       String description, Progress progress) {
+    public CycleDetail(Cycle cycle,
+                       LocalDateTime progressTime,
+                       String progressImage,
+                       String description,
+                       Progress progress) {
         validateDescription(description);
         this.cycle = cycle;
         this.progressTime = progressTime;

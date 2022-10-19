@@ -38,7 +38,8 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @DisplayName("랭킹 기간이 없고 처음 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
-    void handle_firstRank_notPeriod(Progress progress, Integer expected) throws InterruptedException {
+    void
+    handle_firstRank_notPeriod(Progress progress, Integer expected) throws InterruptedException {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, progress, startTime);

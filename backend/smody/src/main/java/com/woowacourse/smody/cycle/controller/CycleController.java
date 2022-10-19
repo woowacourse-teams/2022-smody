@@ -53,8 +53,7 @@ public class CycleController {
     @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressByMe(@LoginMember TokenPayload tokenPayload,
                                                                                @ModelAttribute PagingParams pagingParams) {
-        return ResponseEntity.ok(
-                cycleApiService.findInProgressByMe(tokenPayload, LocalDateTime.now(), pagingParams));
+        return ResponseEntity.ok(cycleApiService.findInProgressByMe(tokenPayload, LocalDateTime.now(), pagingParams));
     }
 
     @GetMapping("/{cycleId}")
@@ -73,9 +72,11 @@ public class CycleController {
     public ResponseEntity<List<FilteredCycleHistoryResponse>> findAllByMemberAndChallengeWithFilter(
             @LoginMember TokenPayload tokenPayload,
             @PathVariable Long challengeId,
-            @ModelAttribute PagingParams pagingParams) {
+            @ModelAttribute PagingParams pagingParams
+    ) {
         return ResponseEntity.ok(
-                cycleApiService.findAllByMemberAndChallenge(tokenPayload, challengeId, pagingParams));
+                cycleApiService.findAllByMemberAndChallenge(tokenPayload, challengeId, pagingParams)
+        );
     }
 }
 

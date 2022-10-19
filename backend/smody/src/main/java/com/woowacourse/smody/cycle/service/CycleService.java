@@ -6,7 +6,9 @@ import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.cycle.repository.CycleDetailRepository;
 import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CycleService {
 
     private final CycleRepository cycleRepository;
+    private final CycleDetailRepository cycleDetailRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
 
@@ -33,8 +36,7 @@ public class CycleService {
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
-        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member, challenge);
-
+        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
         if (optionalCycle.isPresent()) {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
@@ -45,20 +47,29 @@ public class CycleService {
         if (cycle.isInProgress(startTime)) {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }
-        if (cycle.isSuccess() && cycle.isInDays(startTime)) {
+        if (isRetry(startTime, cycle)) {
             return cycle.getStartTime().plusDays(Cycle.DAYS);
         }
         return startTime;
     }
 
-    public int countSuccess(Cycle cycle) {
-        return cycleRepository.countSuccess(cycle.getMember(), cycle.getChallenge())
+    private boolean isRetry(final LocalDateTime startTime, final Cycle cycle) {
+        return cycle.isSuccess() && cycle.isInDays(startTime);
+    }
+
+    public int countSuccess(Member member, Challenge challenge) {
+        return cycleRepository.countSuccess(member, challenge)
                 .intValue();
     }
 
-    public Cycle search(Long cycleId) {
+    public Cycle searchCycle(Long cycleId) {
         return cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE));
+    }
+
+    public CycleDetail searchCycleDetail(Long cycleDetailId) {
+        return cycleDetailRepository.findById(cycleDetailId)
+                .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_CYCLE_DETAIL));
     }
 
     public Cycle searchWithLock(Long cycleId) {
@@ -70,12 +81,12 @@ public class CycleService {
         return cycleRepository.findById(id);
     }
 
-    public List<Cycle> searchByMember(Member member) {
+    public List<Cycle> findByMember(Member member) {
         return cycleRepository.findByMember(member);
     }
 
-    public List<Cycle> findAllByChallengeIdAndMemberId(Long challengeId, Long memberId) {
-        return cycleRepository.findAllByChallengeIdAndMemberId(challengeId, memberId);
+    public List<Cycle> findAllByChallengeAndMember(Long challengeId, Long memberId) {
+        return cycleRepository.findAllByChallengeAndMember(challengeId, memberId);
     }
 
     public List<Cycle> findAllByMemberAndFilter(Member member, PagingParams pagingParams) {
@@ -96,7 +107,8 @@ public class CycleService {
                 .collect(toList());
     }
 
-    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId, Long challengeId,
+    public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId,
+                                                            Long challengeId,
                                                             PagingParams pagingParams) {
         return cycleRepository.findAllByMemberAndChallengeAndFilter(memberId, challengeId, pagingParams);
     }

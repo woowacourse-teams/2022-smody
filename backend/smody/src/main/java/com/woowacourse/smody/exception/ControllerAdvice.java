@@ -1,16 +1,14 @@
 package com.woowacourse.smody.exception;
 
+import com.woowacourse.smody.exception.api.GithubApi;
+import com.woowacourse.smody.exception.dto.ExceptionResponse;
 import java.util.Arrays;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.woowacourse.smody.exception.dto.ExceptionResponse;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @RequiredArgsConstructor

@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class RankingActivity {
 
     private static final int DEFAULT_POINT = 0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ranking_activity_id")
@@ -54,7 +55,7 @@ public class RankingActivity {
         return new RankingActivity(member, period, DEFAULT_POINT);
     }
 
-    public void active(Progress progress) {
+    public void plusPoint(Progress progress) {
         this.point += Point.calculate(progress);
     }
 }

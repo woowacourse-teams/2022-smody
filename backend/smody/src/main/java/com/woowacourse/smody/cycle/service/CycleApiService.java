@@ -16,7 +16,6 @@ import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
 import com.woowacourse.smody.cycle.dto.ProgressRequest;
 import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.CursorPaging;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
@@ -69,19 +68,16 @@ public class CycleApiService {
         }
     }
 
-    public CycleResponse findWithSuccessCountById(Long cycleId) {
-        Cycle cycle = cycleService.search(cycleId);
-        return new CycleResponse(cycle, cycleService.countSuccess(cycle));
-    }
-
     public List<InProgressCycleResponse> findInProgressByMe(TokenPayload tokenPayload,
                                                             LocalDateTime searchTime,
                                                             PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload.getId());
         Integer size = pagingParams.getSize();
-        List<ChallengingRecord> challengingRecords = cursorPaging(pagingParams, size,
-                sortByLatest(cycleService.findAllChallengingRecordByMember(member), searchTime));
-
+        List<ChallengingRecord> challengingRecords = cursorPaging(
+                pagingParams,
+                size,
+                sortByDeadLineToMillis(cycleService.findAllChallengingRecordByMember(member), searchTime)
+        );
         return challengingRecords.stream()
                 .map(challengingRecord -> new InProgressCycleResponse(
                         challengingRecord.getLatestCycle(), challengingRecord.getSuccessCount()
@@ -89,15 +85,16 @@ public class CycleApiService {
                 .collect(toList());
     }
 
-    private List<ChallengingRecord> sortByLatest(List<ChallengingRecord> challengingRecords,
-                                                 LocalDateTime searchTime) {
+    private List<ChallengingRecord> sortByDeadLineToMillis(List<ChallengingRecord> challengingRecords,
+                                                           LocalDateTime searchTime) {
         return challengingRecords.stream()
                 .filter(challengingRecord -> challengingRecord.isInProgress(searchTime))
                 .sorted(Comparator.comparing(challengingRecord -> challengingRecord.getDeadLineToMillis(searchTime)))
                 .collect(toList());
     }
 
-    private List<ChallengingRecord> cursorPaging(PagingParams pagingParams, Integer size,
+    private List<ChallengingRecord> cursorPaging(PagingParams pagingParams,
+                                                 Integer size,
                                                  List<ChallengingRecord> challengingRecords) {
         Cycle cycle = cycleService.findById(pagingParams.getCursorId())
                 .orElse(null);
@@ -108,9 +105,14 @@ public class CycleApiService {
                 .orElse(CursorPaging.apply(challengingRecords, null, size));
     }
 
+    public CycleResponse findWithSuccessCountById(Long cycleId) {
+        Cycle cycle = cycleService.searchCycle(cycleId);
+        return new CycleResponse(cycle, cycleService.countSuccess(cycle.getMember(), cycle.getChallenge()));
+    }
+
     public StatResponse searchStat(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
-        List<Cycle> cycles = cycleService.searchByMember(member);
+        List<Cycle> cycles = cycleService.findByMember(member);
         int successCount = (int) cycles.stream()
                 .filter(Cycle::isSuccess)
                 .count();

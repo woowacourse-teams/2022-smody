@@ -1,13 +1,6 @@
 package com.woowacourse.smody.push;
 
-import static java.util.stream.Collectors.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.stream.Collectors.groupingBy;
 
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushNotification;
@@ -15,8 +8,12 @@ import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.api.WebPushApi;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor

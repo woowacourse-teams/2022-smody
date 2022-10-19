@@ -1,7 +1,9 @@
-package com.woowacourse.smody.exception;
+package com.woowacourse.smody.exception.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.smody.exception.BusinessException;
+import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.exception.dto.IssueCreateRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class GithubApi {
 
-    private static final String REPO_URL = "https://api.github.com/repos/woowacourse-teams/2022-smody/issues";
+    private static final String REPOSITORY_URL = "https://api.github.com/repos/woowacourse-teams/2022-smody/issues";
     private static final List<String> ASSIGNEES = List.of("ldk980130", "bcc0830", "jojogreen91", "tonic523");
     private static final List<String> LABELS = List.of("장애", "에러 해결", "백엔드");
     private static final MediaType JSON_MEDIA_TYPE = new MediaType("application", "json", StandardCharsets.UTF_8);
@@ -32,7 +34,7 @@ public class GithubApi {
 
     public void create(Exception exception) {
         restTemplate.exchange(
-                REPO_URL,
+                REPOSITORY_URL,
                 HttpMethod.POST,
                 new HttpEntity<>(createRequestJson(exception), setAuthorization()),
                 String.class
