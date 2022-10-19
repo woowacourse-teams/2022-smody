@@ -2,7 +2,7 @@ import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage, MembersPopover } from 'components';
+import { FlexBox, ValidationMessage, MembersPopover, Tooltip } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
@@ -30,7 +30,18 @@ export const CommentInput = ({
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
-    <Wrapper flexDirection="column" alignItems="center">
+    <Wrapper alignItems="flex-start">
+      <Tooltip
+        ariaLabel="댓글 툴팁"
+        xPosition="right"
+        yPosition="top"
+        xDelta="0px"
+        yDelta="-100px"
+        line={2.3}
+      >
+        댓글을 통해 다른 사람에게 멘션 알림을 보내려면 @와 닉네임을 붙여서 입력한 후
+        선택하세요.
+      </Tooltip>
       <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
         <CommentInputElement
           contentEditable={true}
