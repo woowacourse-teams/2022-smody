@@ -73,6 +73,8 @@ const Router = () => {
 
           <Route path={CLIENT_PATH.CHALLENGE_EVENT} element={<ChallengePage />} />
           <Route path={CLIENT_PATH.CHALLENGE_SEARCH} element={<ChallengePage />} />
+          <Route path={CLIENT_PATH.CHALLENGE_RANDOM} element={<ChallengePage />} />
+          <Route path={CLIENT_PATH.CHALLENGE_POPULAR} element={<ChallengePage />} />
 
           <Route path={CLIENT_PATH.VOC} element={<VocPage />} />
 
