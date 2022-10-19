@@ -44,11 +44,14 @@ export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonPro
             disabled={isLoadingDeleteAllNotifications}
             onClick={() => handleClickDeleteAllNotifications()}
           >
-            {isLoadingDeleteAllNotifications ? (
-              <LoadingDots />
-            ) : (
-              <FaTrashAlt size={20} color={themeContext.onBackground} />
-            )}
+            <FaTrashAlt
+              size={20}
+              color={
+                isLoadingDeleteAllNotifications
+                  ? themeContext.disabled
+                  : themeContext.primary
+              }
+            />
           </DeleteButton>
         </DeleteWrapper>
         {isLoadingSubscribe && (
@@ -135,13 +138,7 @@ const DeleteWrapper = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  ${({ theme }) => css`
-    &:disabled {
-      cursor: wait;
-      svg {
-        width: 40px;
-        stroke: ${theme.primary};
-      }
-    }
-  `}
+  &:disabled {
+    cursor: wait;
+  }
 `;
