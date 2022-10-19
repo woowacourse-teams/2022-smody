@@ -1269,7 +1269,8 @@ export const notifications = [
   },
   {
     pushNotificationId: 3,
-    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    message:
+      '가장이름이긴챌린지는어떤챌린지일까한다면이챌린지가생각날꺼야 인증까지 얼마 안남았어요~',
     pushTime: '2022-08-12T14:15:00',
     pathId: 3,
     type: 'comment',

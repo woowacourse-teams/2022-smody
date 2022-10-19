@@ -49,6 +49,12 @@ export const push = [
     return res(ctx.status(200), ctx.json(notifications));
   }),
 
+  // 나의 보낸 알림 모두 삭제(DELETE)
+  rest.delete(`${BASE_URL}/push-notifications/me`, (req, res, ctx) => {
+    notifications.length = 0;
+    return res(ctx.delay(1000), ctx.status(204));
+  }),
+
   // 읽은 알림 삭제(DELETE)
   rest.delete(`${BASE_URL}/push-notifications/:pushNotificationId`, (req, res, ctx) => {
     const { pushNotificationId } = req.params;

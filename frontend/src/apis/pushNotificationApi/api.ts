@@ -22,3 +22,7 @@ export const deleteNotification = async ({
 }: DeleteNotificationParams) => {
   return authApiClient.axios.delete(`/push-notifications/${pushNotificationId}`);
 };
+
+export const deleteAllNotification = async () => {
+  return authApiClient.axios.delete('/push-notifications/me');
+};

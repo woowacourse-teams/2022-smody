@@ -2,6 +2,7 @@ import { InfoAboutSubscribeProps, SubscriptionButtonProps } from './type';
 import { useSubscriptionButton } from './useSubscriptionButton';
 import LoadingDots from 'assets/loading_dots.svg';
 import { pushStatus } from 'pwa/pushStatus';
+import { FaTrashAlt } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -10,8 +11,14 @@ import { FlexBox, ToggleButton, UnderLineText, Text } from 'components';
 
 export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonProps) => {
   const themeContext = useThemeContext();
-  const { isSubscribed, subscribe, isLoadingSubscribe, isAbleSubscribe } =
-    useSubscriptionButton({ updateIsSubscribed });
+  const {
+    isSubscribed,
+    subscribe,
+    isLoadingSubscribe,
+    isAbleSubscribe,
+    handleClickDeleteAllNotifications,
+    isLoadingDeleteAllNotifications,
+  } = useSubscriptionButton({ updateIsSubscribed });
 
   return (
     <div>
@@ -31,6 +38,22 @@ export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonPro
           checked={isSubscribed}
           handleChange={subscribe}
         />
+        <DeleteWrapper>
+          <DeleteButton
+            type="button"
+            disabled={isLoadingDeleteAllNotifications}
+            onClick={() => handleClickDeleteAllNotifications()}
+          >
+            <FaTrashAlt
+              size={20}
+              color={
+                isLoadingDeleteAllNotifications
+                  ? themeContext.disabled
+                  : themeContext.primary
+              }
+            />
+          </DeleteButton>
+        </DeleteWrapper>
         {isLoadingSubscribe && (
           <LoadingWrapper>
             <LoadingDots />
@@ -49,11 +72,7 @@ const InfoAboutSubscribe = ({ isAbleSubscribe }: InfoAboutSubscribeProps) => {
   }
 
   return (
-    <FlexBox
-      flexDirection="column"
-      justifyContent="center"
-      style={{ cursor: 'default', padding: '0 1rem ', margin: '1rem 0 ' }}
-    >
+    <InfoAboutSubscribeWrapper flexDirection="column" justifyContent="center">
       {!pushStatus.pushSupport && (
         <ErrorText size={12} color={themeContext.error}>
           [알림 기능을 사용할 수 없는 브라우저입니다.]
@@ -81,7 +100,7 @@ const InfoAboutSubscribe = ({ isAbleSubscribe }: InfoAboutSubscribeProps) => {
           </a>
         </div>
       )}
-    </FlexBox>
+    </InfoAboutSubscribeWrapper>
   );
 };
 
@@ -89,6 +108,12 @@ const SubscriptionWrapper = styled(FlexBox)`
   cursor: default;
   padding: 0 1rem;
   margin: 1rem 0 0.5rem;
+`;
+
+const InfoAboutSubscribeWrapper = styled(FlexBox)`
+  padding: 0 1rem;
+  margin: 1rem 0;
+  cursor: default;
 `;
 
 const LoadingWrapper = styled.div`
@@ -105,4 +130,15 @@ const LoadingWrapper = styled.div`
 
 const ErrorText = styled(Text)`
   line-height: 1.5;
+`;
+
+const DeleteWrapper = styled.div`
+  flex-grow: 1;
+  text-align: end;
+`;
+
+const DeleteButton = styled.button`
+  &:disabled {
+    cursor: wait;
+  }
 `;
