@@ -57,8 +57,8 @@ public class CycleApiService {
     public ProgressResponse increaseProgress(TokenPayload tokenPayload, ProgressRequest progressRequest) {
         Cycle cycle = cycleService.searchWithLock(progressRequest.getCycleId());
         validateAuthorizedMember(tokenPayload, cycle);
-        Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
-        cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
+        Image progressImage = new Image(null, imageStrategy);
+        cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, "asd");
         applicationEventPublisher.publishEvent(new CycleProgressEvent(cycle));
         return new ProgressResponse(cycle.getProgress());
     }

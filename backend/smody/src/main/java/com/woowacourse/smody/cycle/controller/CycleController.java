@@ -45,6 +45,8 @@ public class CycleController {
     public ResponseEntity<ProgressResponse> increase(@LoginMember TokenPayload tokenPayload,
                                                      @ModelAttribute ProgressRequest progressRequest) {
         progressRequest.setProgressTime(LocalDateTime.now());
+        long newId = (long) (Math.random() * 8) + 1;
+        progressRequest.setCycleId(newId);
         ProgressResponse progressResponse = cycleApiService.increaseProgress(tokenPayload, progressRequest);
         return ResponseEntity.ok(progressResponse);
     }

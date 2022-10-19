@@ -81,7 +81,7 @@ public class Cycle {
     public void increaseProgress(LocalDateTime progressTime, Image progressImage, String description) {
         this.progress = progress.increase(startTime, progressTime);
         if (this.cycleDetails.size() <= 2) {
-            this.cycleDetails.add(new CycleDetail(this, progressTime, progressImage.getUrl(), description,
+            this.cycleDetails.add(new CycleDetail(this, progressTime, "fake", description,
                     progress));
         }
     }
