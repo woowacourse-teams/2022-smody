@@ -1,10 +1,11 @@
 import { useChallengePage } from './useChallengePage';
+import { Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { EventPage, SearchPage } from 'pages';
 
-import { FlexBox, Button, FixedButton, Tabs } from 'components';
+import { FlexBox, Button, FixedButton, Tabs, LoadingSpinner } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 
@@ -33,7 +34,9 @@ const ChallengePage = () => {
     <FlexBox flexDirection="column">
       <Tabs tabList={tabList} />
       <ContentWrapper>
-        <ContentPage />
+        <Suspense fallback={<LoadingSpinner />}>
+          <ContentPage />
+        </Suspense>
       </ContentWrapper>
       <FixedButton onClick={handleCreateChallengeButton}>챌린지 생성하기</FixedButton>
     </FlexBox>
