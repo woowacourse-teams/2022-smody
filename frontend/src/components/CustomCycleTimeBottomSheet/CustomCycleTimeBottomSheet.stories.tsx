@@ -21,6 +21,7 @@ export const DefaultCustomCycleTimeBottomSheet = (
 ) => <CustomCycleTimeBottomSheet {...args} />;
 
 DefaultCustomCycleTimeBottomSheet.args = {
-  startHour: 21,
+  challengeName: '테스트용 챌린지',
+  joinChallenge: action('clicked'),
   handleCloseBottomSheet: action('clicked'),
 };

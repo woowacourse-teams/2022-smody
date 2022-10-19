@@ -22,7 +22,10 @@ export const DefaultSuccessModal = ({ ...args }: SuccessModalProps) => (
 
 DefaultSuccessModal.args = {
   handleCloseModal: action('clicked'),
+  cycleId: 1,
   challengeName: '미라클 모닝',
   successCount: 7,
-  challengeId: '1',
+  challengeId: 1,
+  progressCount: 1,
+  emojiIndex: 1,
 };

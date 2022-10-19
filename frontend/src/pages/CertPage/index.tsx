@@ -51,7 +51,7 @@ const CertPage = () => {
         title="도전 중인 챌린지가 없습니다 :)"
         description="새로운 챌린지에 도전해보아요!!"
         linkText="검색 페이지로 이동하기"
-        linkTo={CLIENT_PATH.SEARCH}
+        linkTo={CLIENT_PATH.CHALLENGE_SEARCH}
       />
     );
   }

@@ -9,4 +9,4 @@ export default {
 
 export const DefaultTooltip = (args: TooltipProps) => <Tooltip {...args} />;
 
-DefaultTooltip.args = { title: '툴팁 내용', isOpenTooltip: true };
+DefaultTooltip.args = { ariaLabel: '툴팁 내용', xPosition: 'right' };
