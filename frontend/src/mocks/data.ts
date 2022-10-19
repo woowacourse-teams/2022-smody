@@ -827,7 +827,8 @@ export const feedData = [
     picture:
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
-    progressImage: 'https://i.ibb.co/mJwjFq1/progress-Image.png',
+    progressImage:
+      'https://images.smody.co.kr/images/ea30c87c-eedb-467c-9910-b9230ec65e58.jpg',
     progressCount: 1,
     description:
       '바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^',

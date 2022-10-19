@@ -86,6 +86,7 @@ export const FeedItem = ({
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
         isSuccess={isSuccess}
+        isDetailPage={isDetailPage}
       />
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
@@ -133,11 +134,11 @@ const ChallengeName = styled(UnderLineText)`
   pointer-events: auto;
 `;
 
-const ProgressImg = styled.img<CheckSuccessProps>`
-  ${({ theme, isSuccess }) => css`
+const ProgressImg = styled.img<CheckSuccessProps & WrapperProps>`
+  ${({ theme, isSuccess, isDetailPage }) => css`
     width: 100%;
-    height: 400px;
-    object-fit: cover;
+    height: ${isDetailPage ? '100%' : '400px'};
+    object-fit: ${isDetailPage ? 'scale-down' : 'cover'};
     border-radius: 20px;
     background-color: white;
     margin: 0.2rem 0.1rem;
