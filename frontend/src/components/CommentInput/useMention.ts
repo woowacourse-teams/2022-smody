@@ -232,7 +232,7 @@ const useMention = <T extends HTMLElement>({
       initializeMention();
 
       // 아래 공백의 타당한 이유가 없다면 제거
-      // commentInputRef.current!.textContent = ' ';
+      commentInputRef.current!.textContent = '';
       return;
     }
 
