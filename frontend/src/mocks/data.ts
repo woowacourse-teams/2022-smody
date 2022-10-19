@@ -314,6 +314,8 @@ export const cycleData = [
   },
 ];
 
+export const challengeInfiniteData = [{ data: challengeData }];
+
 export const cycleByIdData = [
   {
     cycleId: 1,

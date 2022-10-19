@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FlexBox, MemoizedChallengeItem, EmptyContent } from 'components';
 
 export const ChallengeList = ({ challengeInfiniteData }: ChallengeListProps) => {
-  if (challengeInfiniteData[0].data.length === 0) {
+  if (!challengeInfiniteData || challengeInfiniteData[0].data.length === 0) {
     return (
       <EmptyContentWrapper>
         <EmptyContent

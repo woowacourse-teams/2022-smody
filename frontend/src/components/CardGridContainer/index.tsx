@@ -60,9 +60,3 @@ const Grid = styled.div`
   width: 100%;
   min-width: 390px;
 `;
-
-const Line = styled.hr`
-  border-style: solid none none;
-  margin-bottom: 0;
-  border-color: ${({ theme }) => theme.disabled};
-`;
