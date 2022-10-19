@@ -104,7 +104,7 @@ public class ChallengingRecord {
 
     public Integer getCycleDetailCount() {
         return cycles.stream()
-                .mapToInt(cycle -> cycle.getCycleDetails().size())
+                .mapToInt(Cycle::getCycleDetailCount)
                 .sum();
     }
 }

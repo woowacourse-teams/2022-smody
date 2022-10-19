@@ -127,4 +127,8 @@ public class Cycle {
         }
         return getLatestCycleDetail().getProgressTime();
     }
+
+    public int getCycleDetailCount() {
+        return this.cycleDetails.size();
+    }
 }
