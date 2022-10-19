@@ -42,7 +42,7 @@ public class CommentService {
     }
 
     private void validateMember(Long memberId, Comment comment) {
-        if (!comment.isCommentByMemberId(memberId)) {
+        if (!comment.isWriter(memberId)) {
             throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
         }
     }

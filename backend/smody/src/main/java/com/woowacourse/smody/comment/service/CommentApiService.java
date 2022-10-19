@@ -39,7 +39,7 @@ public class CommentApiService {
     public List<CommentResponse> findAllByCycleDetailId(TokenPayload tokenPayload, Long cycleDetailId) {
         List<Comment> comments = commentService.findAllByCycleDetailId(cycleDetailId);
         return comments.stream()
-                .map(comment -> new CommentResponse(comment, comment.isCommentByMemberId(tokenPayload.getId())))
+                .map(comment -> new CommentResponse(comment, comment.isWriter(tokenPayload.getId())))
                 .collect(Collectors.toList());
     }
 }

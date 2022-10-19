@@ -55,7 +55,7 @@ public class RankingActivity {
         return new RankingActivity(member, period, DEFAULT_POINT);
     }
 
-    public void doActivity(Progress progress) {
+    public void plusPoint(Progress progress) {
         this.point += Point.calculate(progress);
     }
 }

@@ -51,7 +51,7 @@ public class Comment extends AuditingEntity {
         }
     }
 
-    public boolean isCommentByMemberId(Long memberId) {
+    public boolean isWriter(Long memberId) {
         return this.member.getId().equals(memberId);
     }
 

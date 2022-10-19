@@ -87,7 +87,7 @@ public class RankingPointEventListener {
 
     private void updateActivities(CycleDetail cycleDetail, List<RankingActivity> activities) {
         for (RankingActivity activity : activities) {
-            activity.doActivity(cycleDetail.getProgress());
+            activity.plusPoint(cycleDetail.getProgress());
         }
     }
 
