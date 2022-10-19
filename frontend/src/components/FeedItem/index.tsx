@@ -138,7 +138,7 @@ const ProgressImg = styled.img<CheckSuccessProps & WrapperProps>`
   ${({ theme, isSuccess, isDetailPage }) => css`
     width: 100%;
     height: ${isDetailPage ? '100%' : '400px'};
-    object-fit: ${isDetailPage ? 'scale-down' : 'cover'};
+    object-fit: cover;
     border-radius: 20px;
     background-color: white;
     margin: 0.2rem 0.1rem;
