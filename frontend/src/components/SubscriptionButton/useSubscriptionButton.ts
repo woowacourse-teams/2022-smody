@@ -17,7 +17,9 @@ export const useSubscriptionButton = ({
   }, [isSubscribed]);
 
   const handleClickDeleteAllNotifications = () => {
-    deleteAllNotifications();
+    if (window.confirm('알림을 모두 삭제하시겠습니까?')) {
+      deleteAllNotifications();
+    }
   };
 
   const isAbleSubscribe =
