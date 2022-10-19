@@ -30,6 +30,8 @@ type useMentionProps<T extends HTMLElement> = {
   setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
+const ABSENCE_SYMBOL_POSITION = -1;
+
 const useMention = <T extends HTMLElement>({
   commentInputRef,
   setContent,
@@ -39,8 +41,8 @@ const useMention = <T extends HTMLElement>({
   // ------- 멘션 알림 기능 ------------------------
   const isFirstRendered = useRef(true);
   const [filterValue, setFilterValue] = useState('');
-  const ABSENCE_SYMBOL_POSITION = -1;
 
+  // lastMentionSymbolPositionRef
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiatedRef = useRef(false);
 
@@ -49,10 +51,10 @@ const useMention = <T extends HTMLElement>({
       commentInputRef,
       mentionedMemberIds,
       setMentionedMemberIds,
-      lastMentionSymbolPosition: lastMentionSymbolPositionRef.current,
+      lastMentionSymbolPosition: lastMentionSymbolPositionRef,
       filterValue,
       setFilterValue,
-      isFilterValueInitiated: isFilterValueInitiatedRef.current,
+      isFilterValueInitiated: isFilterValueInitiatedRef,
     });
 
   const {
@@ -70,6 +72,7 @@ const useMention = <T extends HTMLElement>({
           return;
         }
 
+        // 멘션 심볼 포지션(@)이 없다면 아래 함수를 호출하지 않도록 고쳐야한다.
         handleOpenPopover();
       },
       enabled: false,
@@ -116,11 +119,14 @@ const useMention = <T extends HTMLElement>({
   useMutationObserver<T>(commentInputRef, inputChangeHandler);
 
   useEffect(() => {
+    // useGetMembers의 enables 옵션을 false로 했기 때문에 해당 로직은 제거해도 될 거 같다.
     if (isFirstRendered.current) {
       isFirstRendered.current = false;
       return;
     }
-    if (isFilterValueInitiatedRef.current === true) {
+
+    if (isFilterValueInitiatedRef.current) {
+      isFilterValueInitiatedRef.current = false;
       return;
     }
 
@@ -152,10 +158,9 @@ const useMention = <T extends HTMLElement>({
 
     resetIsFilterValueInitiated();
 
+    setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
     if (hasNotMentionSymbolPosition) {
       detectMentionSymbolWhenTextAdded(innerText);
-      setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
-
       return;
     }
 
@@ -164,8 +169,6 @@ const useMention = <T extends HTMLElement>({
     if (isStartPosition()) {
       handleClosePopover();
     }
-
-    setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
   };
 
   const resetIsFilterValueInitiated = () => {
@@ -214,6 +217,8 @@ const useMention = <T extends HTMLElement>({
 
     lastMentionSymbolPositionRef.current = cursorPosition;
     refetchMembers();
+
+    // onSuccess 안에서 popover를 열기 떄문에 해당 로직은 제거해도 될 거 같다.
     handleOpenPopover();
   };
 
@@ -225,11 +230,14 @@ const useMention = <T extends HTMLElement>({
     // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
     if (isFirstMentionTag()) {
       initializeMention();
-      commentInputRef.current!.textContent = ' ';
+
+      // 아래 공백의 타당한 이유가 없다면 제거
+      // commentInputRef.current!.textContent = ' ';
       return;
     }
 
     if (isNotIncludeMentionSymbol(innerText)) {
+      // 아래의 초기화 로직이 필요한 이유가 타당하지 않다면 제거
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
@@ -238,12 +246,14 @@ const useMention = <T extends HTMLElement>({
 
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
 
+    // 현재 지운 문자가 @일때 그 앞부분을 다시 탐색하여 유효한 @를 찾지 못할 때 return 하도록 조건문 변경 필요
     if (isCurrentDeleteMentionSymbol(cursorPosition, mentionSymbolPosition)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+
       return;
     }
 
-    // 슬라이스 한 문자열 내부에 공백이 있나
+    // 슬라이스 한 문자열 내부에 공백이 있나, 해당 조건을 위 조건문이 리팩터링 됐을 때 위 조건문 위로 옮길 필요가 있음
     if (isIncludeWhite(targetText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
@@ -301,6 +311,7 @@ const useMention = <T extends HTMLElement>({
 
   const initializeMention = () => {
     lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+    // FilterValue 초기값 상수화 필요
     setFilterValue('');
     isFilterValueInitiatedRef.current = true;
     handleClosePopover();

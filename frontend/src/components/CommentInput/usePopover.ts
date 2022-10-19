@@ -1,14 +1,14 @@
-import { RefObject, useState } from 'react';
+import { RefObject, MutableRefObject, useState } from 'react';
 import { getCursorPosition, insertAfter } from 'utils';
 
 type usePopoverProps<T extends HTMLElement> = {
   commentInputRef: RefObject<T>;
   mentionedMemberIds: number[];
   setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
-  lastMentionSymbolPosition: number;
+  lastMentionSymbolPosition: MutableRefObject<number>;
   filterValue: string;
   setFilterValue: (arg0: string) => void;
-  isFilterValueInitiated: boolean;
+  isFilterValueInitiated: MutableRefObject<boolean>;
 };
 
 const usePopover = <T extends HTMLElement>({
@@ -44,9 +44,9 @@ const usePopover = <T extends HTMLElement>({
 
     let accLength = 0;
 
-    const currentNodeIndex = Array.from(childNodes).findIndex((childNode: any) => {
+    const currentNodeIndex = Array.from(childNodes).findIndex((childNode) => {
       const text = childNode.textContent!;
-      if (lastMentionSymbolPosition <= accLength + text.length) {
+      if (lastMentionSymbolPosition.current <= accLength + text.length) {
         return true;
       }
 
@@ -57,8 +57,8 @@ const usePopover = <T extends HTMLElement>({
     const currentNode = childNodes[currentNodeIndex];
     const currentText = currentNode.textContent;
 
-    const targetStart = lastMentionSymbolPosition - accLength - 1;
-    const targetEnd = lastMentionSymbolPosition - accLength + filterValue.length;
+    const targetStart = lastMentionSymbolPosition.current - accLength - 1;
+    const targetEnd = lastMentionSymbolPosition.current - accLength + filterValue.length;
 
     const frontTextNode = document.createTextNode(
       currentText!.substring(0, targetStart)!,
@@ -74,7 +74,9 @@ const usePopover = <T extends HTMLElement>({
     nicknameSpan.style.padding = '2px 4px';
     nicknameSpan.setAttribute('data-member-id', String(memberId));
 
-    const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
+    const backTextNode = document.createTextNode(
+      ' ' + currentText!.substring(targetEnd)!,
+    );
 
     if (currentNodeIndex === 0) {
       commentInputRef.current.appendChild(frontTextNode);
@@ -92,9 +94,9 @@ const usePopover = <T extends HTMLElement>({
     const ABSENCE_SYMBOL_POSITION = -1;
 
     // init 삼형제
-    lastMentionSymbolPosition = ABSENCE_SYMBOL_POSITION;
+    lastMentionSymbolPosition.current = ABSENCE_SYMBOL_POSITION;
     setFilterValue('');
-    isFilterValueInitiated = true;
+    isFilterValueInitiated.current = true;
 
     // contenteditable div에서 cursor position에 focus 하기
     const element = commentInputRef.current;
