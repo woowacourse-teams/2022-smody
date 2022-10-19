@@ -1,5 +1,5 @@
 import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
-import { useState, useEffect, useRef, KeyboardEventHandler, RefObject } from 'react';
+import { useState, useEffect, useRef, RefObject } from 'react';
 import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
@@ -90,7 +90,7 @@ const useMention = <T extends HTMLElement>({
   }, [filterValue]);
 
   useEffect(() => {
-    const handleKeydown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    const handleKeydown = (event: KeyboardEvent) => {
       const { key } = event;
 
       if (key === 'Backspace' || key === 'Delete') {
@@ -111,6 +111,7 @@ const useMention = <T extends HTMLElement>({
         return;
       }
     };
+
     commentInputRef.current!.addEventListener('keydown', handleKeydown);
   }, []);
 
