@@ -7,7 +7,7 @@ import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 import com.woowacourse.smody.push.dto.VapidPublicKeyResponse;
 import com.woowacourse.smody.push.service.PushSubscriptionApiService;
-import com.woowacourse.smody.push.service.WebPushService;
+import com.woowacourse.smody.push.api.WebPushApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PushSubscriptionController {
 
     private final PushSubscriptionApiService pushSubscriptionApiService;
-    private final WebPushService webPushService;
+    private final WebPushApi webPushApi;
 
     @GetMapping("/public-key")
     public ResponseEntity<VapidPublicKeyResponse> sendPublicKey() {
-        return ResponseEntity.ok(new VapidPublicKeyResponse(webPushService.getPublicKey()));
+        return ResponseEntity.ok(new VapidPublicKeyResponse(webPushApi.getPublicKey()));
     }
 
     @PostMapping("/subscribe")

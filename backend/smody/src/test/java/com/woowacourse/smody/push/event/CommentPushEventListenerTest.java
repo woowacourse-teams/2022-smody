@@ -62,7 +62,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 			() -> assertThat(pushNotification.getMessage()).isEqualTo("더즈님께서 회원님의 피드에 댓글을 남겼어요!"),
 			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.COMMENT),
 			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycleDetail.getId()),
-			() -> verify(webPushService, never())
+			() -> verify(webPushApi, never())
 				.sendNotification(any(), any())
 		);
 	}
@@ -81,7 +81,7 @@ class CommentPushEventListenerTest extends IntegrationTest {
 		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
 		assertAll(
 			() -> assertThat(results).isEmpty(),
-			() -> verify(webPushService, never())
+			() -> verify(webPushApi, never())
 				.sendNotification(any(), any())
 		);
 	}

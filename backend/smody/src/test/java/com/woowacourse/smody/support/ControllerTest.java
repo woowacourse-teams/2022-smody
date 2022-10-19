@@ -28,7 +28,7 @@ import com.woowacourse.smody.push.controller.PushNotificationController;
 import com.woowacourse.smody.push.controller.PushSubscriptionController;
 import com.woowacourse.smody.push.service.PushNotificationApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionApiService;
-import com.woowacourse.smody.push.service.WebPushService;
+import com.woowacourse.smody.push.api.WebPushApi;
 import com.woowacourse.smody.ranking.controller.RankingController;
 import com.woowacourse.smody.ranking.service.RankingApiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +105,7 @@ public class ControllerTest {
     protected PushSubscriptionApiService pushSubscriptionApiService;
 
     @MockBean
-    protected WebPushService webPushService;
+    protected WebPushApi webPushApi;
 
     @MockBean
     protected PushNotificationApiService pushNotificationApiService;

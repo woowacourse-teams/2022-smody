@@ -34,9 +34,9 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
 
-    @DisplayName("회원의 발송된 알림을 시간 내림차순으로 모두 가져온다.")
+    @DisplayName("발송된 알림을 시간 내림차순으로 조회한다.")
     @Test
-    void findByMember() {
+    void searchNotificationsByMe() {
         // given
         LocalDateTime now = LocalDateTime.now();
 
@@ -88,7 +88,7 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         assertThat(responses).isEmpty();
     }
 
-    @DisplayName("알람을 저장한다.")
+    @DisplayName("알림을 저장한다.")
     @Test
     void saveNotification() {
         // given
@@ -104,15 +104,17 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
         pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
 
         // then
-        PushNotification pushNotification1 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(0);
-        PushNotification pushNotification2 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(1);
+        PushNotification pushNotification1 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
+                .get(0);
+        PushNotification pushNotification2 = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
+                .get(1);
         assertAll(
                 () -> assertThat(pushNotification1.getMember().getId()).isEqualTo(더즈_ID),
                 () -> assertThat(pushNotification1.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
                 () -> assertThat(pushNotification1.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
                 () -> assertThat(pushNotification1.getPushCase()).isEqualTo(PushCase.MENTION),
                 () -> assertThat(pushNotification1.getPathId()).isEqualTo(cycleDetail.getId()),
-                () -> verify(webPushService, never())
+                () -> verify(webPushApi, never())
                         .sendNotification(any(), any()),
 
                 () -> assertThat(pushNotification2.getMember().getId()).isEqualTo(토닉_ID),
@@ -120,12 +122,12 @@ public class PushNotificationApiServiceTest extends IntegrationTest {
                 () -> assertThat(pushNotification2.getMessage()).isEqualTo("조조그린님께서 회원님을 언급하셨습니다!"),
                 () -> assertThat(pushNotification2.getPushCase()).isEqualTo(PushCase.MENTION),
                 () -> assertThat(pushNotification2.getPathId()).isEqualTo(cycleDetail.getId()),
-                () -> verify(webPushService, never())
+                () -> verify(webPushApi, never())
                         .sendNotification(any(), any())
         );
     }
 
-    @DisplayName("회원의 보낸 상태의 알림을 모두 삭제한다.")
+    @DisplayName("성공")
     @Test
     void deleteMyCompleteNotifications() {
         // given

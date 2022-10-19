@@ -1,6 +1,7 @@
 package com.woowacourse.smody.push.repository;
 
 import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
 
     List<PushNotification> findByPushStatus(PushStatus pushStatus);
 
-    Optional<PushNotification> findByPathIdAndPushStatus(Long pathId, PushStatus pushStatus);
+    Optional<PushNotification> findByPathIdAndPushStatusAndPushCase(Long pathId, PushStatus pushStatus, PushCase pushCase);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from PushNotification pn where pn.member = :member")

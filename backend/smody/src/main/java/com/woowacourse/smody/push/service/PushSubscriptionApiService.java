@@ -36,9 +36,4 @@ public class PushSubscriptionApiService {
         memberService.search(tokenPayload.getId());
         pushSubscriptionService.deleteByEndpoint(unSubscription.getEndpoint());
     }
-
-    @Transactional
-    public void delete(PushSubscription pushSubscription) {
-        pushSubscriptionService.delete(pushSubscription);
-    }
 }
