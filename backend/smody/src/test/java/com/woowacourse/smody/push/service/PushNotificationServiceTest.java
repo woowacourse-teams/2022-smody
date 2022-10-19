@@ -31,136 +31,111 @@ class PushNotificationServiceTest extends IntegrationTest {
     @Autowired
     private PushNotificationRepository pushNotificationRepository;
 
-    @DisplayName("푸시 알림을 생성할 때 - create()")
-    @Nested
-    class Create {
+    @DisplayName("푸시 알림을 생성한다.")
+    @Test
+    void create() {
+        // given
+        Member member = fixture.회원_조회(조조그린_ID);
+        PushNotification pushNotification = new PushNotification(
+                "알림", LocalDateTime.now(), PushStatus.IN_COMPLETE, member, PushCase.CHALLENGE, 1L
+        );
 
-        @DisplayName("성공")
-        @Test
-        void success() {
-            // given
-            Member member = fixture.회원_조회(조조그린_ID);
-            PushNotification pushNotification = new PushNotification(
-                    "알림", LocalDateTime.now(), PushStatus.IN_COMPLETE, member, PushCase.CHALLENGE, 1L
-            );
+        // when
+        pushNotificationService.create(pushNotification);
 
-            // when
-            pushNotificationService.create(pushNotification);
-
-            // then
-            assertThat(pushNotificationRepository.findById(pushNotification.getId())).isPresent();
-        }
+        // then
+        assertThat(pushNotificationRepository.findById(pushNotification.getId())).isPresent();
     }
 
-    @DisplayName("같은 경로, 상태를 가진 알림을 조회할 때 - searchSamePathAndStatusAndPushCase()")
-    @Nested
-    class SearchSamePathAndStatusAndPushCase {
+    @DisplayName("같은 경로, 상태를 가진 알림을 조회한다.")
+    @Test
+    void searchSamePathAndStatusAndPushCase() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now, PushCase.COMMENT);
+        PushNotification expected = fixture.발송_예정_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
 
-        @DisplayName("조회")
-        @Test
-        void success() {
-            // given
-            LocalDateTime now = LocalDateTime.now();
-            fixture.발송_예정_알림_생성(조조그린_ID, 1L, now, PushCase.COMMENT);
-            PushNotification expected = fixture.발송_예정_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
-            fixture.발송된_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
+        // when
+        Optional<PushNotification> pushNotification =
+                pushNotificationService.searchByPathAndStatusAndPushCase(
+                        1L, PushStatus.IN_COMPLETE, PushCase.CHALLENGE
+                );
 
-            // when
-            Optional<PushNotification> pushNotification =
-                    pushNotificationService.searchByPathAndStatusAndPushCase(
-                            1L, PushStatus.IN_COMPLETE, PushCase.CHALLENGE
-                    );
-
-            // then
-            PushNotification actual = pushNotification.get();
-            assertThat(actual.getId()).isEqualTo(expected.getId());
-        }
+        // then
+        PushNotification actual = pushNotification.get();
+        assertThat(actual.getId()).isEqualTo(expected.getId());
     }
 
-    @DisplayName("푸시를 할 수 있는 알림을 조회할 때 - searchPushable()")
-    @Nested
-    class SearchPushable {
+    @DisplayName("발송 가능한 알림을 조회한다.")
+    @Test
+    void searchPushable() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
 
-        @DisplayName("발송 가능한 알림을 조회한다.")
-        @Test
-        void searchPushable() {
-            // given
-            LocalDateTime now = LocalDateTime.now();
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION);
+        fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE);
 
-            fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION);
-            fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE);
+        fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.plusMinutes(2L), PushCase.CHALLENGE);
+        fixture.발송된_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE);
 
-            fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.plusMinutes(2L), PushCase.CHALLENGE);
-            fixture.발송된_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE);
+        // when
+        List<PushNotification> actual = pushNotificationService.searchPushable();
 
-            // when
-            List<PushNotification> actual = pushNotificationService.searchPushable();
-
-            // then
-            assertThat(actual)
-                    .map(PushNotification::getPathId)
-                    .containsOnly(1L, 2L);
-        }
+        // then
+        assertThat(actual)
+                .map(PushNotification::getPathId)
+                .containsOnly(1L, 2L);
     }
 
-    @DisplayName("알림 상태의 상태를 보냄으로 수정할 때 - completeAll()")
-    @Nested
-    class CompleteAll {
+    @DisplayName("알림들을 모두 발송 완료 상태로 변경한다.")
+    @Test
+    void completeAll() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
 
-        @DisplayName("알림들을 모두 발송 완료 상태로 변경한다.")
-        @Test
-        void completeAll() {
-            // given
-            LocalDateTime now = LocalDateTime.now();
+        List<PushNotification> notifications = List.of(
+                fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION),
+                fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE),
 
-            List<PushNotification> notifications = List.of(
-                    fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.minusMinutes(2L), PushCase.SUBSCRIPTION),
-                    fixture.발송_예정_알림_생성(더즈_ID, 2L, now.minusMinutes(3L), PushCase.CHALLENGE),
+                fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.minusMinutes(2L), PushCase.CHALLENGE),
+                fixture.발송_예정_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE)
+        );
 
-                    fixture.발송_예정_알림_생성(조조그린_ID, 3L, now.minusMinutes(2L), PushCase.CHALLENGE),
-                    fixture.발송_예정_알림_생성(토닉_ID, 4L, now.minusHours(1L), PushCase.CHALLENGE)
-            );
+        // when
+        pushNotificationService.completeAll(notifications);
 
-            // when
-            pushNotificationService.completeAll(notifications);
-
-            // then
-            assertThat(pushNotificationRepository.findAll())
-                    .map(PushNotification::getPushStatus)
-                    .containsExactly(PushStatus.COMPLETE, PushStatus.COMPLETE, PushStatus.COMPLETE,
-                            PushStatus.COMPLETE);
-        }
+        // then
+        assertThat(pushNotificationRepository.findAll())
+                .map(PushNotification::getPushStatus)
+                .containsExactly(PushStatus.COMPLETE, PushStatus.COMPLETE, PushStatus.COMPLETE,
+                        PushStatus.COMPLETE);
     }
 
-    @DisplayName("알림을 보낸 시간 순으로 정렬하여 조회할 때 - findAllLatest()")
-    @Nested
-    class FindAllLatest {
+    @DisplayName("조회")
+    @Test
+    void findAllLatest() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
+        fixture.발송된_알림_생성(조조그린_ID, 2L, now.minusDays(1), PushCase.CHALLENGE);
+        fixture.발송된_알림_생성(조조그린_ID, 3L, now.minusDays(2), PushCase.CHALLENGE);
+        fixture.발송된_알림_생성(조조그린_ID, 4L, now.minusDays(3), PushCase.CHALLENGE);
+        fixture.발송_예정_알림_생성(조조그린_ID, 5L, now.minusDays(4), PushCase.CHALLENGE);
+        Member member = fixture.회원_조회(조조그린_ID);
 
-        @DisplayName("조회")
-        @Test
-        void findAllLatest() {
-            // given
-            LocalDateTime now = LocalDateTime.now();
-            fixture.발송된_알림_생성(조조그린_ID, 1L, now, PushCase.CHALLENGE);
-            fixture.발송된_알림_생성(조조그린_ID, 2L, now.minusDays(1), PushCase.CHALLENGE);
-            fixture.발송된_알림_생성(조조그린_ID, 3L, now.minusDays(2), PushCase.CHALLENGE);
-            fixture.발송된_알림_생성(조조그린_ID, 4L, now.minusDays(3), PushCase.CHALLENGE);
-            fixture.발송_예정_알림_생성(조조그린_ID, 5L, now.minusDays(4), PushCase.CHALLENGE);
-            Member member = fixture.회원_조회(조조그린_ID);
+        // when
+        List<PushNotification> actual = pushNotificationService.findAllLatest(member, PushStatus.COMPLETE);
 
-            // when
-            List<PushNotification> actual = pushNotificationService.findAllLatest(member, PushStatus.COMPLETE);
-
-            // then
-            assertAll(
-                    () -> assertThat(actual).hasSize(4),
-                    () -> assertThat(actual).map(PushNotification::getPathId)
-                            .containsExactly(1L, 2L, 3L, 4L)
-            );
-        }
+        // then
+        assertAll(
+                () -> assertThat(actual).hasSize(4),
+                () -> assertThat(actual).map(PushNotification::getPathId)
+                        .containsExactly(1L, 2L, 3L, 4L)
+        );
     }
 
-    @DisplayName("id에 맞는 알림을 삭제할 때 - deleteById()")
+    @DisplayName("id에 맞는 알림을 삭제할 때")
     @Nested
     class DeleteById {
 
@@ -190,28 +165,23 @@ class PushNotificationServiceTest extends IntegrationTest {
         }
     }
 
-    @DisplayName("한 멤버에 대해 보내진 알림을 삭제할 때 - deleteCompletedByMember()")
-    @Nested
-    class DeleteCompletedByMember {
+    @DisplayName("보낸 알림을 모두 삭제한다.")
+    @Test
+    void deleteByMember() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Member member = fixture.회원_조회(조조그린_ID);
 
-        @DisplayName("보낸 알림을 모두 삭제한다.")
-        @Test
-        void deleteByMember() {
-            // given
-            LocalDateTime now = LocalDateTime.now();
-            Member member = fixture.회원_조회(조조그린_ID);
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.COMMENT);
+        fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.CHALLENGE);
 
-            fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.COMMENT);
-            fixture.발송된_알림_생성(조조그린_ID, 1L, now.minusHours(2), PushCase.CHALLENGE);
+        fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+        fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
 
-            fixture.발송_예정_알림_생성(조조그린_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
-            fixture.발송된_알림_생성(더즈_ID, 1L, now.plusMinutes(2), PushCase.SUBSCRIPTION);
+        // when
+        pushNotificationService.deleteCompletedByMember(member);
 
-            // when
-            pushNotificationService.deleteCompletedByMember(member);
-
-            // then
-            assertThat(pushNotificationRepository.findAll()).hasSize(2);
-        }
+        // then
+        assertThat(pushNotificationRepository.findAll()).hasSize(2);
     }
 }

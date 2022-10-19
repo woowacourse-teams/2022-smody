@@ -56,34 +56,40 @@ class MemberServiceTest extends IntegrationTest {
     @PersistenceContext
     private EntityManager em;
 
-    @DisplayName("자신의 회원 정보 조회를 한다.")
-    @Test
-    void search() {
-        // when
-        Member expected = fixture.회원_조회(조조그린_ID);
-        Member actual = memberService.search(조조그린_ID);
+    @DisplayName("자신의 회원정보를 조회할 때")
+    @Nested
+    class Search {
 
-        // then
-        assertAll(
-                () -> assertThat(actual.getEmail()).isEqualTo(expected.getEmail()),
-                () -> assertThat(actual.getNickname()).isEqualTo(expected.getNickname()),
-                () -> assertThat(actual.getPicture()).isEqualTo(expected.getPicture())
-        );
+        @DisplayName("조회")
+        @Test
+        void search() {
+            // when
+            Member expected = fixture.회원_조회(조조그린_ID);
+            Member actual = memberService.search(조조그린_ID);
+
+            // then
+            assertAll(
+                    () -> assertThat(actual.getEmail()).isEqualTo(expected.getEmail()),
+                    () -> assertThat(actual.getNickname()).isEqualTo(expected.getNickname()),
+                    () -> assertThat(actual.getPicture()).isEqualTo(expected.getPicture())
+            );
+        }
+
+        @DisplayName("회원이 존재하지 않는 경우 예외를 발생시킨다.")
+        @Test
+        void searchMyInfo_notExist() {
+            // when then
+            assertThatThrownBy(() -> memberService.search(Long.MAX_VALUE))
+                    .isInstanceOf(BusinessException.class)
+                    .extracting("exceptionData")
+                    .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
+        }
     }
 
-    @DisplayName("자신의 회원 정보 조회할 때 회원이 존재하지 않는 경우 예외를 발생시킨다.")
-    @Test
-    void searchMyInfo_notExist() {
-        // when then
-        assertThatThrownBy(() -> memberService.search(Long.MAX_VALUE))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
-    }
 
     @DisplayName("자신의 회원 정보를 수정한다.")
     @Test
-    void updateMyInfo() {
+    void updateByMe() {
         // when
         memberService.updateByMe(조조그린_ID, "쬬그린", "나는 쬬그린");
 
@@ -124,7 +130,7 @@ class MemberServiceTest extends IntegrationTest {
 
     @DisplayName("회원을 프로필 이미지를 수정한다.")
     @Test
-    void updateProfileImage() {
+    void updateProfileImageByMe() {
         // given
         String expected = "https://www.abc.com/profile.jpg";
         given(imageStrategy.extractUrl(any()))
@@ -231,9 +237,9 @@ class MemberServiceTest extends IntegrationTest {
         assertThat(memberService.findByEmail("email@email.com")).isPresent();
     }
 
-    @DisplayName("회원을 조회할 때 - findAllByFilter()")
+    @DisplayName("회원을 조회할 때")
     @Nested
-    class FindMembersTest {
+    class FindAllByFilter {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
         @Test

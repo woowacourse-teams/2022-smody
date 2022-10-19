@@ -71,7 +71,7 @@ class MemberApiServiceTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("회원을 조회할 때 - findAllByFilter()")
+    @DisplayName("회원을 조회할 때")
     @Nested
     class FindAllByFilter {
 
@@ -249,6 +249,7 @@ class MemberApiServiceTest extends IntegrationTest {
     void updateByMe() {
         // when
         memberApiService.updateByMe(new TokenPayload(조조그린_ID), new MemberUpdateRequest("토닉", "바뀜"));
+
         // then
         MemberResponse actual = memberApiService.findByMe(new TokenPayload(조조그린_ID));
         assertAll(
