@@ -25,12 +25,19 @@ export const CommentInput = ({
     hasNextMembersPage,
     fetchNextMembersPage,
     selectMember,
+    handleKeydownCommentInput,
+    handleInputCommentInput,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
       <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
-        <CommentInputElement contentEditable={true} ref={commentInputRef} />
+        <CommentInputElement
+          contentEditable={true}
+          ref={commentInputRef}
+          onKeyDown={handleKeydownCommentInput}
+          onInput={handleInputCommentInput}
+        />
         <WriteButton
           disabled={
             !isVisibleWriteButton ||

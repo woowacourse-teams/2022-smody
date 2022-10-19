@@ -83,16 +83,24 @@ export const dataURLtoBlob = (dataURL: string) => {
 };
 
 export const getCursorPosition = (element: HTMLElement) => {
-  let selectionStart;
-  const isSupported = typeof window.getSelection !== 'undefined';
+  const isNotSupported = typeof window.getSelection === 'undefined';
 
-  if (isSupported) {
-    const range = window.getSelection()!.getRangeAt(0);
-    const preSelectionRange = range.cloneRange();
-    preSelectionRange.selectNodeContents(element);
-    preSelectionRange.setEnd(range.startContainer, range.startOffset);
-    selectionStart = preSelectionRange.toString().length;
+  if (isNotSupported) {
+    return;
   }
+
+  const selection = window.getSelection();
+
+  if (selection === null) {
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+  const preSelectionRange = range.cloneRange();
+  preSelectionRange.selectNodeContents(element);
+  preSelectionRange.setEnd(range.startContainer, range.startOffset);
+  const selectionStart = preSelectionRange.toString().length;
+
   return selectionStart;
 };
 
