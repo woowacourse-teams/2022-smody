@@ -85,6 +85,38 @@ const useMention = <T extends HTMLElement>({
     isLoading: isLoadingPostMentionNotifications,
   } = usePostMentionNotifications();
 
+  const isNotDeleteSpanNode = (nodes: NodeList) =>
+    nodes.length === 0 || nodes[0].nodeName !== 'SPAN';
+
+  const inputChangeHandler: MutationCallback = (mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type !== 'childList') {
+        return;
+      }
+
+      if (isNotDeleteSpanNode(mutation.removedNodes)) {
+        return;
+      }
+
+      const targetNode = mutation.removedNodes[0] as HTMLElement;
+      const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
+
+      setMentionedMemberIds((prevMentionMemberIds) => {
+        const copiedMentionMembersId = [...prevMentionMemberIds];
+
+        const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
+
+        if (deletedIndex > -1) {
+          copiedMentionMembersId.splice(deletedIndex, 1);
+        }
+
+        return copiedMentionMembersId;
+      });
+    });
+  };
+
+  useMutationObserver<T>(commentInputRef, inputChangeHandler);
+
   useEffect(() => {
     if (isFirstRendered.current) {
       isFirstRendered.current = false;
@@ -168,38 +200,6 @@ const useMention = <T extends HTMLElement>({
 
   const isCurrentCharacterWhiteSpace = (text: string) =>
     text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
-
-  // inputChangeHandler 시작
-  const inputChangeHandler: MutationCallback = (mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList') {
-        if (
-          mutation.removedNodes.length > 0 &&
-          mutation.removedNodes[0].nodeName === 'SPAN'
-        ) {
-          const targetNode = mutation.removedNodes[0] as HTMLElement;
-          const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
-          const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
-          if (deletedIndex > -1) {
-            mentionedMemberIds.splice(deletedIndex, 1);
-          }
-
-          setMentionedMemberIds((prevMentionMemberIds) => {
-            const copiedMentionMembersId = [...prevMentionMemberIds];
-
-            const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
-
-            if (deletedIndex > -1) {
-              copiedMentionMembersId.splice(deletedIndex, 1);
-            }
-
-            return copiedMentionMembersId;
-          });
-        }
-      }
-    });
-  };
-  // inputChangeHandler 끝
 
   // 문자열 새로 입력됐을 때
   const detectMentionSymbolWhenTextAdded = (text: string) => {
@@ -305,8 +305,6 @@ const useMention = <T extends HTMLElement>({
 
   const isEscapingRightMentionArea = (text: string, cursorPosition: number) =>
     text[cursorPosition] === ' ';
-
-  useMutationObserver<T>(commentInputRef, inputChangeHandler);
 
   const initializeMention = () => {
     lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
