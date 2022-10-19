@@ -1,11 +1,13 @@
 package com.woowacourse.smody.member.service;
 
 import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.support.ResourceFixture.이미지;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -25,6 +27,7 @@ import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,7 +58,7 @@ class MemberServiceTest extends IntegrationTest {
 
     @DisplayName("자신의 회원 정보 조회를 한다.")
     @Test
-    void searchMyInfo() {
+    void search() {
         // when
         Member expected = fixture.회원_조회(조조그린_ID);
         Member actual = memberService.search(조조그린_ID);
@@ -143,7 +146,7 @@ class MemberServiceTest extends IntegrationTest {
         CountDownLatch latch = new CountDownLatch(2);
 
         given(imageStrategy.extractUrl(any()))
-            .willReturn("update-image-url");
+                .willReturn("update-image-url");
 
         // when
         service.execute(() -> {
@@ -161,9 +164,9 @@ class MemberServiceTest extends IntegrationTest {
         // then
         Member result = memberService.search(조조그린_ID);
         assertAll(
-            () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
-            () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
-            () -> assertThat(result.getIntroduction()).isEqualTo("HI")
+                () -> assertThat(result.getPicture()).isEqualTo("update-image-url"),
+                () -> assertThat(result.getNickname()).isEqualTo("쬬그린"),
+                () -> assertThat(result.getIntroduction()).isEqualTo("HI")
         );
         rollbackToOriginalData(result);
     }
@@ -175,7 +178,60 @@ class MemberServiceTest extends IntegrationTest {
         result.updateIntroduction(null);
     }
 
-    @DisplayName("회원을 조회할 때")
+    @DisplayName("로그인하지 않은 멤버를 조회한다.")
+    @Test
+    void searchLoginMember() {
+        // when
+        long notLoginMemberId = 0L;
+        Member actual = memberService.searchLoginMember(notLoginMemberId);
+
+        // then
+        assertThat(actual.getNickname()).isEqualTo("비회원");
+    }
+
+    @DisplayName("id들에 해당하는 멤버들을 조회한다.")
+    @Test
+    void searchByIdIn() {
+        // given
+        Member member1 = fixture.회원_조회(조조그린_ID);
+        Member member2 = fixture.회원_조회(토닉_ID);
+        Member member3 = fixture.회원_조회(더즈_ID);
+
+        // when
+        List<Member> actual = memberService.searchByIdIn(List.of(member1.getId(), member2.getId(), member3.getId()));
+
+        // then
+        assertThat(actual).map(Member::getId)
+                .contains(member1.getId(), member2.getId(), member3.getId());
+    }
+
+    @DisplayName("이메일로 멤버를 조회한다.")
+    @Test
+    void findByEmail() {
+        // given
+        Member member = fixture.회원_조회(조조그린_ID);
+
+        // when
+        Optional<Member> actual = memberService.findByEmail(member.getEmail());
+
+        // then
+        assertAll(
+                () -> assertThat(actual).isPresent(),
+                () -> assertThat(actual.get().getId()).isEqualTo(member.getId())
+        );
+    }
+
+    @DisplayName("멤버를 생성한다.")
+    @Test
+    void create() {
+        // when
+        Member member = memberService.create(new Member("email@email.com", "새로생긴 닉네임", "설명", "사진"));
+
+        // then
+        assertThat(memberService.findByEmail("email@email.com")).isPresent();
+    }
+
+    @DisplayName("회원을 조회할 때 - findAllByFilter()")
     @Nested
     class FindMembersTest {
 
