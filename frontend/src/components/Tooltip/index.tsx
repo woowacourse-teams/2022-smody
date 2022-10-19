@@ -56,7 +56,7 @@ export const Tooltip = ({
 
 const Wrapper = styled.div<{ isOpenTooltip: boolean }>`
   position: relative;
-
+  margin: 0 0.5rem;
   ${({ isOpenTooltip }) => isOpenTooltip && EntireBackground}
 `;
 
