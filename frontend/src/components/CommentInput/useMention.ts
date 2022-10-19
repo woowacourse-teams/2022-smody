@@ -43,8 +43,6 @@ const useMention = <T extends HTMLElement>({
 
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiatedRef = useRef(false);
-  const isPrevPressBackspace = useRef(false);
-  const prevCursorPosition = useRef(0);
 
   const { isPopoverOpen, handleOpenPopover, handleClosePopover, selectMember } =
     usePopover({
@@ -136,9 +134,6 @@ const useMention = <T extends HTMLElement>({
       detectMentionSymbolWhenTextDeleted();
       return;
     }
-
-    isPrevPressBackspace.current = false;
-    prevCursorPosition.current = 0;
 
     if (key === 'ArrowLeft') {
       detectLeftEscapingMentionArea();
@@ -261,8 +256,6 @@ const useMention = <T extends HTMLElement>({
     }
 
     lastMentionSymbolPositionRef.current = mentionSymbolPosition + 1;
-    isPrevPressBackspace.current = true;
-    prevCursorPosition.current = cursorPosition;
   };
 
   const isFirstMentionTag = () =>
