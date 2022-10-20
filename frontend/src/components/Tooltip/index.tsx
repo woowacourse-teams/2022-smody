@@ -56,7 +56,7 @@ export const Tooltip = ({
 
 const Wrapper = styled.div<{ isOpenTooltip: boolean }>`
   position: relative;
-  margin: 0 0.5rem;
+  margin: 0;
   ${({ isOpenTooltip }) => isOpenTooltip && EntireBackground}
 `;
 
@@ -78,6 +78,7 @@ const EntireBackground = css`
 const TooltipButton = styled.button`
   ${({ theme }) => css`
     color: ${theme.onPrimary};
+    padding: 0;
 
     &:hover {
       filter: brightness(1.2);

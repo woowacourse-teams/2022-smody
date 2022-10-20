@@ -31,7 +31,7 @@ export const CommentInput = ({
 
   return (
     <Wrapper flexDirection="column">
-      <TopRowWrapper alignItems="center">
+      <TopRowWrapper alignItems="center" gap="0.5rem">
         <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
           <CommentInputElement
             contentEditable={true}
