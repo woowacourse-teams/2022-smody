@@ -32,9 +32,13 @@ https://www.smody.co.kr
 
 <img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/185350085-f0dfdfc8-f28e-41a2-a637-9426e5217f78.png">
 
+- [Figma 링크](https://www.figma.com/file/HQinpzR8FuXUFxTZzzzCpf/Smody-Design-System)
+- [Storybook 링크](https://woowacourse-teams.github.io/2022-smody)
+
 ### Backend
 
-<img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/195751494-9f596b69-f515-4ee3-907b-7c56dc976350.png">
+<img width="529" alt="image" src="https://user-images.githubusercontent.com/59413128/196944126-2cd8cb03-b261-4555-828f-29d9f0173d98.png">
+
 
 ### Infra
 
