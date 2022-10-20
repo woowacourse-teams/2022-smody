@@ -40,7 +40,7 @@ const PopularChallengePage = () => {
       <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
         🔥 가장 많이 참여하고 있는 챌린지 🔥
       </TitleText>
-      <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />;
+      <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />
     </FlexBox>
   );
 };
