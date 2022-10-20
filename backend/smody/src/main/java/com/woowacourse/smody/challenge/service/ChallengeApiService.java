@@ -45,6 +45,9 @@ public class ChallengeApiService {
         if (pagingParams.getSort().equals("popular")) {
             return getChallengeTabResponsesWhenPopular(searchTime, pagingParams, member);
         }
+        if (pagingParams.getSort().equals("random")) {
+            return getChallengeTabResponsesWhenRandom(searchTime, pagingParams, member);
+        }
         List<Challenge> challenges = challengeService.findAllByFilter(pagingParams);
         List<Cycle> cycles = cycleService.findInProgressByChallenges(searchTime, challenges);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
@@ -58,6 +61,15 @@ public class ChallengeApiService {
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
         List<Challenge> challenges = challengingRecords.getChallengesOrderByChallenger();
         List<Challenge> pagedChallenges = CursorPaging.apply(challenges, null, pagingParams.getSize());
+        return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
+    }
+
+    private List<ChallengeTabResponse> getChallengeTabResponsesWhenRandom(final LocalDateTime searchTime,
+                                                                          final PagingParams pagingParams, final Member member) {
+        List<Challenge> randomChallenges = challengeService.findRandomChallenges(pagingParams.getSize());
+        List<Cycle> cycles = cycleService.findInProgress(searchTime);
+        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
+        List<Challenge> pagedChallenges = CursorPaging.apply(randomChallenges, null, pagingParams.getSize());
         return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
     }
 

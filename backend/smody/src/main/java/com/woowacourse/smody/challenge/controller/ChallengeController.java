@@ -43,10 +43,11 @@ public class ChallengeController {
     @RequiredLogin
     public ResponseEntity<List<ChallengeTabResponse>> findAllWithChallengerCountByFilter(
             @LoginMember TokenPayload tokenPayload,
-            @ModelAttribute PagingParams pagingParams) {
+            @ModelAttribute PagingParams pagingParams
+    ) {
         return ResponseEntity.ok(challengeApiService.findAllWithChallengerCountByFilter(
-                tokenPayload, LocalDateTime.now(), pagingParams)
-        );
+                tokenPayload, LocalDateTime.now(), pagingParams
+        ));
     }
 
     @GetMapping(value = "/me")

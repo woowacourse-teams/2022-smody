@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.exception.ExceptionUtils;
 import com.woowacourse.smody.exception.dto.IssueCreateRequest;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ public class GithubApi {
     private String createRequestJson(Exception exception) {
         return parseJsonString(new IssueCreateRequest(
                 "[ERROR] 서버 장애 발생 " + exception.getMessage(),
-                createIssueBody(exception),
+                "```\n" + ExceptionUtils.extractStackTrace(exception) + "\n```",
                 ASSIGNEES,
                 LABELS
         ));
@@ -56,12 +55,6 @@ public class GithubApi {
         } catch (JsonProcessingException e) {
             throw new BusinessException(ExceptionData.DATA_INTEGRITY_ERROR);
         }
-    }
-
-    private String createIssueBody(Exception exception) {
-        StringWriter stringWriter = new StringWriter();
-        exception.printStackTrace(new PrintWriter(stringWriter));
-        return "```\n" + stringWriter + "\n```";
     }
 
     private HttpHeaders setAuthorization() {
