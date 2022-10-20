@@ -81,6 +81,15 @@ export const challenge = [
   // 5. 모든 챌린지 조회(GET) - 비회원
   rest.get(`${BASE_URL}/challenges`, (req, res, ctx) => {
     const searchValue = req.url.searchParams.get('filter');
+    const sort = req.url.searchParams.get('sort');
+
+    if (sort === 'popular') {
+      return res(ctx.status(200), ctx.json(challengeData.splice(0, 1)));
+    }
+    if (sort === 'random') {
+      return res(ctx.status(200), ctx.json(challengeData.splice(0, 5)));
+    }
+
     if (searchValue === null) {
       return res(ctx.status(200), ctx.json(challengeData));
     }
@@ -88,6 +97,7 @@ export const challenge = [
     const filteredData = challengeData.filter((challenge) =>
       challenge.challengeName.includes(searchValue),
     );
+
     return res(ctx.status(200), ctx.json(filteredData));
   }),
   // 5. 모든 챌린지 조회(GET) - 회원
@@ -97,6 +107,15 @@ export const challenge = [
     }
 
     const searchValue = req.url.searchParams.get('filter');
+    const sort = req.url.searchParams.get('sort');
+
+    if (sort === 'popular') {
+      return res(ctx.status(200), ctx.json(challengeData.splice(0, 1)));
+    }
+    if (sort === 'random') {
+      return res(ctx.status(200), ctx.json(challengeData.splice(0, 5)));
+    }
+
     if (searchValue === null) {
       return res(ctx.status(200), ctx.json(challengeData));
     }
