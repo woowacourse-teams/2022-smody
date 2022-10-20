@@ -7,5 +7,5 @@ export type TooltipProps = {
   ariaLabel: string;
   xDelta?: string;
   yDelta?: string;
-  line: number;
+  line?: number;
 };

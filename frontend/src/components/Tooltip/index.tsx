@@ -17,7 +17,7 @@ export const Tooltip = ({
   yPosition = 'bottom',
   xDelta,
   yDelta,
-  line,
+  line = 1,
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
   const { isOpenTooltip, openTooltip, closeTooltip, closeTooltipOnBg } = useTooltip();
@@ -123,54 +123,68 @@ const HelpToggleMessage = styled.div<{
       : xPosition === 'middle'
       ? '-113px'
       : xPosition === 'left'
-      ? '-213px'
+      ? '-219px'
       : '0'};
 
     // 드롭다운 메뉴 상단 삼각형 팁 디자인
-    &::after {
-      top: ${yPosition === 'bottom' && '-14px'};
-      right: ${xPosition === 'middle'
-        ? '150px'
-        : xPosition === 'left'
-        ? '10px'
-        : '223px'};
-      content: '';
-      border: 7px solid transparent;
-      border-bottom-color: ${theme.surface};
-      position: absolute;
-    }
+    ${yPosition === 'bottom' &&
+    css`
+      &::after {
+        top: -14px;
+        right: ${xPosition === 'middle'
+          ? '150px'
+          : xPosition === 'left'
+          ? '10px'
+          : '223px'};
+        content: '';
+        border: 7px solid transparent;
+        border-bottom-color: ${theme.surface};
+        position: absolute;
+      }
 
-    &::before {
-      top: ${yPosition === 'bottom' && '-16px'};
-      right: ${xPosition === 'middle' ? '149px' : xPosition === 'left' ? '9px' : '222px'};
-      content: '';
-      border: 8px solid transparent;
-      border-bottom-color: ${theme.primary};
-      position: absolute;
-    }
+      &::before {
+        top: -16px;
+        right: ${xPosition === 'middle'
+          ? '149px'
+          : xPosition === 'left'
+          ? '9px'
+          : '222px'};
+        content: '';
+        border: 8px solid transparent;
+        border-bottom-color: ${theme.primary};
+        position: absolute;
+      }
+    `}
 
     // 드롭다운 메뉴 하단 삼각형 팁 디자인
-    &::after {
-      top: ${yPosition === 'top' && `${37 * line}px`};
-      right: ${xPosition === 'middle'
-        ? '150px'
-        : xPosition === 'left'
-        ? '10px'
-        : '223px'};
-      content: '';
-      border: 7px solid transparent;
-      border-top-color: ${theme.surface};
-      position: absolute;
-    }
+    ${yPosition === 'top' &&
+    css`
+      &::after {
+        top: ${37 * line}px;
+        right: ${xPosition === 'middle'
+          ? '150px'
+          : xPosition === 'left'
+          ? '10px'
+          : '223px'};
+        content: '';
+        border: 7px solid transparent;
+        border-top-color: ${theme.surface};
+        position: absolute;
+      }
 
-    &::before {
-      top: ${yPosition === 'top' && `${37 * line + 2}px`};
-      right: ${xPosition === 'middle' ? '149px' : xPosition === 'left' ? '9px' : '222px'};
-      content: '';
-      border: 8px solid transparent;
-      border-top-color: ${theme.primary};
-      position: absolute;
-    }
+      &::before {
+        top: ${37 * line + 2}px;
+        right: ${xPosition === 'middle'
+          ? '149px'
+          : xPosition === 'left'
+          ? '9px'
+          : '222px'};
+        content: '';
+        border: 8px solid transparent;
+        border-top-color: ${theme.primary};
+        position: absolute;
+      }
+    `}
   `}
 `;
 
