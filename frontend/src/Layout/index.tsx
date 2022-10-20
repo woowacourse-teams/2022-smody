@@ -46,6 +46,7 @@ export const Layout = () => {
   );
 
   useDetectPageChange(() => {
+    outletRef.current!.style.outline = 'none';
     outletRef.current!.focus();
   });
 
