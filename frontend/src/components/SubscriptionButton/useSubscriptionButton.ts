@@ -1,16 +1,23 @@
 import { UseSubscriptionButtonProps } from './type';
 import { useDeleteAllNotification } from 'apis';
+import { queryKeys } from 'apis/constants';
 import { pushStatus } from 'pwa/pushStatus';
 import { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 
 import useSubscribe from 'hooks/useSubscribe';
 
 export const useSubscriptionButton = ({
   updateIsSubscribed,
 }: UseSubscriptionButtonProps) => {
+  const queryClient = useQueryClient();
   const { isSubscribed, subscribe, isLoadingSubscribe } = useSubscribe();
   const { mutate: deleteAllNotifications, isLoading: isLoadingDeleteAllNotifications } =
-    useDeleteAllNotification();
+    useDeleteAllNotification({
+      onSuccess: () => {
+        queryClient.invalidateQueries(queryKeys.getNotifications);
+      },
+    });
 
   useEffect(() => {
     updateIsSubscribed(isSubscribed);

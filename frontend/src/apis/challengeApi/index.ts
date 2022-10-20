@@ -41,7 +41,7 @@ export const useGetAllChallenges = (
   >,
 ) =>
   useInfiniteQuery<AxiosResponse<GetAllChallengesResponse>, AxiosError<ErrorResponse>>(
-    queryKeys.getAllChallenges,
+    [queryKeys.getAllChallenges, sort],
     localStorage.getItem('accessToken')
       ? ({ pageParam = 0 }) =>
           getAllChallengesAuth({ searchValue, sort, cursorId: pageParam })
