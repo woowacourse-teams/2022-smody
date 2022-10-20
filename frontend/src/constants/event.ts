@@ -6,7 +6,7 @@ type EventChallengeListIndexSignature = {
   };
 };
 
-export const EVENT_CHALLENGE_ID_LIST = [78, 79, 80, 81, 82, 83, 84, 85, 88, 89];
+export const EVENT_CHALLENGE_ID_LIST = [78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90];
 
 export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
   78: {
@@ -54,10 +54,10 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
     link: 'https://www.gongcheck.day/',
     challengeName: '공책으로 우리 캠퍼스 아끼기',
   },
-  10: {
+  90: {
     name: 'thankoo',
     link: 'https://thankoo.co.kr/',
-    challengeName: '땡쿠로 툭 건드리기',
+    challengeName: '땡쿠에서 사람들 콕 찔러보기',
   },
   11: { name: 'f12', link: 'https://f12.app/', challengeName: '챌린지명' },
   12: { name: 'levellog', link: 'https://levellog.app/', challengeName: '챌린지명' },
