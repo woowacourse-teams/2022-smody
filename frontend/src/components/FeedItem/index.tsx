@@ -108,6 +108,7 @@ export const FeedItem = ({
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
         isSuccess={isSuccess}
+        isDetailPage={isDetailPage}
         onClick={isDetailPage ? handleOpenImgModal : undefined}
       />
       <Text size={14} color={themeContext.mainText}>
@@ -182,7 +183,7 @@ const ChallengeName = styled(UnderLineText)`
 `;
 
 const ProgressImg = styled.img<CheckSuccessProps>`
-  ${({ theme, isSuccess }) => css`
+  ${({ theme, isSuccess, isDetailPage }) => css`
     width: 100%;
     height: 400px;
     object-fit: cover;
@@ -197,6 +198,10 @@ const ProgressImg = styled.img<CheckSuccessProps>`
       background-origin: border-box;
       background-clip: content-box, border-box;
     `};
+    ${isDetailPage &&
+    css`
+      cursor: pointer;
+    `}
   `}
 `;
 

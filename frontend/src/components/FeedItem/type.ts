@@ -17,7 +17,7 @@ export type UseFeedProps = Pick<
 
 export type WrapperProps = Pick<FeedItemProps, 'isDetailPage'>;
 
-export type CheckSuccessProps = {
+export type CheckSuccessProps = WrapperProps & {
   isSuccess: boolean;
 };
 

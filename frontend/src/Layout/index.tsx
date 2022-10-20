@@ -46,7 +46,6 @@ export const Layout = () => {
   );
 
   useDetectPageChange(() => {
-    console.log('PAGE CHANGE callback run');
     outletRef.current!.focus();
   });
 
