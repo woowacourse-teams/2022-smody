@@ -40,7 +40,7 @@ const RandomChallengePage = () => {
       <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
         ❔ 이런 챌린지는 어때요 ❔
       </TitleText>
-      <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />;
+      <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />
     </FlexBox>
   );
 };
