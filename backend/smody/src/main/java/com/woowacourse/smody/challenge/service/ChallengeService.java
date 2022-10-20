@@ -57,15 +57,8 @@ public class ChallengeService {
 
     public List<Challenge> findRandomChallenges(Integer size) {
         List<Long> allIds = challengeRepository.findAllIds();
-        validateSize(allIds, size);
         Collections.shuffle(allIds);
-        List<Long> randomIds = allIds.subList(0, size);
+        List<Long> randomIds = allIds.subList(0, Math.min(size, allIds.size()));
         return challengeRepository.findAllByIdIn(randomIds);
-    }
-
-    private void validateSize(List<Long> allIds, Integer size) {
-        if (allIds.size() < size) {
-            throw new BusinessException(ExceptionData.OUT_OF_BOUND_RANDOM_SIZE);
-        }
     }
 }

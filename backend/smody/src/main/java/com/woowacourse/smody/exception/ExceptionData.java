@@ -39,7 +39,6 @@ public enum ExceptionData {
     DUPLICATE_NAME(7002, "중복된 챌린지 이름입니다.", 400),
     INVALID_CHALLENGE_NAME(7003, "챌린지 이름 형식이 올바르지 않습니다.", 400),
     INVALID_SEARCH_NAME(7004, "검색 이름 형식이 올바르지 않습니다.", 400),
-    OUT_OF_BOUND_RANDOM_SIZE(7005, "랜덤 조회할 챌린지 개수가 전체 챌린지 개수보다 많습니다.", 400),
 
     WEB_PUSH_ERROR(8001, "웹 푸시 라이브러리 관련 예외입니다.", 400),
 

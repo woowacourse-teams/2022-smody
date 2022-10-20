@@ -26,7 +26,7 @@ public class ControllerAdvice {
         ExceptionData exceptionData = businessException.getExceptionData();
         log.info("[비즈니스 예외 발생] 에러 코드 : {}, 메세지 : {}", exceptionData.getCode(), exceptionData.getMessage());
         if (exceptionData.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR.value()
-                && isProdProfile(environment.getActiveProfiles())) {
+                && isProdProfile()) {
             githubApi.create(businessException);
         }
         return ResponseEntity.status(exceptionData.getStatusCode())
@@ -36,15 +36,15 @@ public class ControllerAdvice {
     @ExceptionHandler
     public ResponseEntity<String> handleUnExpectedException(Exception exception) {
         log.error("[예상치 못한 예외 발생] ", exception);
-        if (isProdProfile(environment.getActiveProfiles())) {
+        if (isProdProfile()) {
             githubApi.create(exception);
         }
         return ResponseEntity.internalServerError()
                 .body(ExceptionUtils.createIssueBody(exception));
     }
 
-    private boolean isProdProfile(String[] activeProfiles) {
-        return Arrays.stream(activeProfiles)
+    private boolean isProdProfile() {
+        return Arrays.stream(environment.getActiveProfiles())
                 .anyMatch(env -> env.equalsIgnoreCase(ISSUE_CREATE_PROFILE));
     }
 }
