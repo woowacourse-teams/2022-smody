@@ -20,3 +20,5 @@ export type WrapperProps = Pick<FeedItemProps, 'isDetailPage'>;
 export type CheckSuccessProps = {
   isSuccess: boolean;
 };
+
+export type ImgCloseButtonProps = { handleCloseImgModal: () => void };
