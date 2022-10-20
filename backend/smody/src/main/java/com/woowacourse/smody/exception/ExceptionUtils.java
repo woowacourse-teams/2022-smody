@@ -5,9 +5,9 @@ import java.io.StringWriter;
 
 public class ExceptionUtils {
 
-    public static String createIssueBody(Exception exception) {
-        StringWriter issueBody = new StringWriter();
-        exception.printStackTrace(new PrintWriter(issueBody));
-        return String.valueOf(issueBody);
+    public static String extractStackTrace(Exception exception) {
+        StringWriter stackTrace = new StringWriter();
+        exception.printStackTrace(new PrintWriter(stackTrace));
+        return String.valueOf(stackTrace);
     }
 }

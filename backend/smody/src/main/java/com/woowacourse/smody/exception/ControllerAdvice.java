@@ -40,7 +40,7 @@ public class ControllerAdvice {
             githubApi.create(exception);
         }
         return ResponseEntity.internalServerError()
-                .body(ExceptionUtils.createIssueBody(exception));
+                .body(ExceptionUtils.extractStackTrace(exception));
     }
 
     private boolean isProdProfile() {

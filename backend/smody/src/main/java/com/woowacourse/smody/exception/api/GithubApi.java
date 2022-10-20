@@ -43,7 +43,7 @@ public class GithubApi {
     private String createRequestJson(Exception exception) {
         return parseJsonString(new IssueCreateRequest(
                 "[ERROR] 서버 장애 발생 " + exception.getMessage(),
-                "```\n" + ExceptionUtils.createIssueBody(exception) + "\n```",
+                "```\n" + ExceptionUtils.extractStackTrace(exception) + "\n```",
                 ASSIGNEES,
                 LABELS
         ));
