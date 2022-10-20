@@ -74,9 +74,7 @@ const usePopover = <T extends HTMLElement>({
     nicknameSpan.style.padding = '2px 4px';
     nicknameSpan.setAttribute('data-member-id', String(memberId));
 
-    const backTextNode = document.createTextNode(
-      ' ' + currentText!.substring(targetEnd)!,
-    );
+    const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
 
     if (currentNodeIndex === 0) {
       commentInputRef.current.appendChild(frontTextNode);
