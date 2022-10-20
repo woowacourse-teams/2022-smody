@@ -15,11 +15,12 @@ export const Tooltip = ({
   ariaLabel,
   xPosition = 'middle',
   yPosition = 'bottom',
-  left,
+  xDelta,
+  yDelta,
+  line,
 }: PropsWithChildren<TooltipProps>) => {
   const themeContext = useThemeContext();
   const { isOpenTooltip, openTooltip, closeTooltip, closeTooltipOnBg } = useTooltip();
-
   return (
     <Wrapper isOpenTooltip={isOpenTooltip} onClick={closeTooltipOnBg}>
       <ButtonWrapper icon={icon}>
@@ -38,7 +39,9 @@ export const Tooltip = ({
         hidden={!isOpenTooltip}
         xPosition={xPosition}
         yPosition={yPosition}
-        left={left}
+        xDelta={xDelta}
+        yDelta={yDelta}
+        line={line}
       >
         <span role="tooltip" id="tooltip-label">
           {children}
@@ -53,7 +56,7 @@ export const Tooltip = ({
 
 const Wrapper = styled.div<{ isOpenTooltip: boolean }>`
   position: relative;
-
+  margin: 0;
   ${({ isOpenTooltip }) => isOpenTooltip && EntireBackground}
 `;
 
@@ -75,6 +78,7 @@ const EntireBackground = css`
 const TooltipButton = styled.button`
   ${({ theme }) => css`
     color: ${theme.onPrimary};
+    padding: 0;
 
     &:hover {
       filter: brightness(1.2);
@@ -97,9 +101,11 @@ const ButtonWrapper = styled.div<{ icon: ReactNode }>`
 const HelpToggleMessage = styled.div<{
   xPosition: string;
   yPosition: string;
-  left?: string;
+  xDelta?: string;
+  yDelta?: string;
+  line: number;
 }>`
-  ${({ theme, xPosition, yPosition, left }) => css`
+  ${({ theme, xPosition, yPosition, xDelta, yDelta, line }) => css`
     z-index: ${Z_INDEX.CSS_MODAL};
     position: absolute;
     width: 250px;
@@ -111,19 +117,18 @@ const HelpToggleMessage = styled.div<{
     border: 1px solid ${theme.primary};
     background-color: ${theme.surface};
     color: ${theme.onSurface};
-    top: ${yPosition === 'top' ? '-43px' : '38px'};
-    left: ${left
-      ? left
+    top: ${yDelta ? yDelta : yPosition === 'top' ? '-49px' : '38px'};
+    left: ${xDelta
+      ? xDelta
       : xPosition === 'middle'
       ? '-113px'
       : xPosition === 'left'
       ? '-213px'
       : '0'};
 
-    // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
+    // 드롭다운 메뉴 상단 삼각형 팁 디자인
     &::after {
-      top: -14px;
-      right: 10px;
+      top: ${yPosition === 'bottom' && '-14px'};
       right: ${xPosition === 'middle'
         ? '150px'
         : xPosition === 'left'
@@ -136,11 +141,34 @@ const HelpToggleMessage = styled.div<{
     }
 
     &::before {
-      top: -16px;
+      top: ${yPosition === 'bottom' && '-16px'};
       right: ${xPosition === 'middle' ? '149px' : xPosition === 'left' ? '9px' : '222px'};
       content: '';
       border: 8px solid transparent;
       border-bottom-color: ${theme.primary};
+      position: absolute;
+    }
+
+    // 드롭다운 메뉴 하단 삼각형 팁 디자인
+    &::after {
+      top: ${yPosition === 'top' && `${37 * line}px`};
+      right: ${xPosition === 'middle'
+        ? '150px'
+        : xPosition === 'left'
+        ? '10px'
+        : '223px'};
+      content: '';
+      border: 7px solid transparent;
+      border-top-color: ${theme.surface};
+      position: absolute;
+    }
+
+    &::before {
+      top: ${yPosition === 'top' && `${37 * line + 2}px`};
+      right: ${xPosition === 'middle' ? '149px' : xPosition === 'left' ? '9px' : '222px'};
+      content: '';
+      border: 8px solid transparent;
+      border-top-color: ${theme.primary};
       position: absolute;
     }
   `}
