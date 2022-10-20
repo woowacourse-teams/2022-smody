@@ -30,23 +30,31 @@ const TabList = styled(FlexBox)`
     position: fixed;
     background-color: ${theme.background};
     margin-top: -10px;
-    width: 100%;
+    width: 85%;
+
+    /* 가로 스크롤 */
+    overflow-x: auto;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `}
 `;
 
 const Tab = styled.li<TabProps>`
-  ${({ isSelected, theme }) => `
-      cursor: pointer;
-      font-size: 17px;
-      padding: 1rem;
-      border-bottom: 2px solid ${COLOR.LIGHT_GRAY};
-      color: ${theme.onBackground};
-  
-      border-color: ${isSelected && theme.primary};
-      font-weight: ${isSelected ? 'bold' : 'normal'};
-  
-      &:hover {
-         border-color: ${theme.primary};
-      }
-    `}
+  ${({ isSelected, theme }) => css`
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0.5rem;
+    border-bottom: 2px solid ${COLOR.LIGHT_GRAY};
+    color: ${theme.onBackground};
+
+    border-color: ${isSelected && theme.primary};
+    font-weight: ${isSelected ? 'bold' : 'normal'};
+
+    &:hover {
+      border-color: ${theme.primary};
+    }
+  `}
 `;
