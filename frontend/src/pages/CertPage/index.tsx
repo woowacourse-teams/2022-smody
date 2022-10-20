@@ -64,7 +64,7 @@ const CertPage = () => {
         isFetching={isFetching}
         loader={<LoadingSpinner />}
       >
-        <CycleList>
+        <CycleList aria-label="챌린지 인증 목록">
           {cycleInfiniteData?.pages.map((page) =>
             page?.data.map((cycleInfo) => (
               <li key={cycleInfo.cycleId}>

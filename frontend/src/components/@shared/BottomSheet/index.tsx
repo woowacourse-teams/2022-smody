@@ -17,7 +17,9 @@ export const BottomSheet = ({
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(
-        <BottomSheetContent height={height}>{children}</BottomSheetContent>,
+        <BottomSheetContent height={height} role="dialog" aria-modal="true">
+          {children}
+        </BottomSheetContent>,
         document.getElementById('overlay-root') as HTMLElement,
       )}
     </>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useReward } from 'react-rewards';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,6 +38,8 @@ const useSuccessModal = ({
   const { reward: confettiReward } = useReward('confettiRewardId', 'confetti', {
     elementSize: 17,
   });
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const isEvent = EVENT_CHALLENGE_ID_LIST.includes(challengeId);
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
@@ -80,9 +82,12 @@ const useSuccessModal = ({
   useEffect(() => {
     confettiReward();
     emojiReward();
+
+    wrapperRef.current!.focus();
   }, []);
 
   return {
+    wrapperRef,
     successMessage,
     isChallengeComplete,
     handleClickClose,
