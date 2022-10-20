@@ -38,7 +38,7 @@ export const Header = ({ bgColor }: HeaderProps) => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Link to={CLIENT_PATH.HOME}>
+      <Link to={CLIENT_PATH.HOME} aria-label="Smody">
         <Logo isAnimated={false} width="100" color={themeContext.primary} />
         {isDev && 'DEV'}
         {isLocal && 'LOCAL'}

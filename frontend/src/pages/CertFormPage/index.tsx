@@ -77,10 +77,12 @@ const CertFormPage = () => {
             사진
           </MiniTitle>
           <CertImageWrapper
+            role="button"
             onClick={handleImageInputButtonClick}
             justifyContent="center"
             alignItems="center"
             isSelectImage={!!previewImageUrl}
+            aria-label="이미지 업로드"
           >
             {previewImageUrl && (
               <CertImage src={previewImageUrl} alt="챌린지 인증 이미지" />
@@ -180,7 +182,7 @@ const ChallengeNameText = styled(Text)`
   margin-bottom: 0.8rem;
 `;
 
-const MiniTitle = styled(Text)`
+const MiniTitle = styled(Text).attrs({ 'aria-label': '이미지 업로드 라벨' })`
   margin: 2rem 0 0.5rem 1rem;
 `;
 

@@ -30,7 +30,7 @@ const TabList = styled(FlexBox)`
     position: fixed;
     background-color: ${theme.background};
     margin-top: -10px;
-    width: 85%;
+    width: 100%;
 
     /* 가로 스크롤 */
     overflow-x: auto;

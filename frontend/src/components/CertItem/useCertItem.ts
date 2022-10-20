@@ -22,6 +22,7 @@ const useCertItem = ({
   const certEndDate = addDays(new Date(startTime), progressCount + CYCLE_UNIT);
 
   const isCertPossible = certStartDate <= nowDate && nowDate < certEndDate;
+  const certButtonText = isCertPossible ? '인증하기' : '오늘의 인증 완료🎉';
 
   const handleClickWrapper: MouseEventHandler<HTMLDivElement> = (e) => {
     if (e.target instanceof HTMLButtonElement) {
@@ -52,6 +53,7 @@ const useCertItem = ({
   return {
     certEndDate,
     isCertPossible,
+    certButtonText,
     handleClickWrapper,
     handleClickButton,
     startTimeString,

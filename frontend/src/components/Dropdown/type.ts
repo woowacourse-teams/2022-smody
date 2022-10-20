@@ -12,3 +12,5 @@ export type UseDropdownProps = Pick<
   DropdownProps,
   'updateIsSubscribed' | 'updateNotificationCount'
 >;
+
+export type WrapperProps = { isDropdownToggled: boolean };

@@ -22,9 +22,19 @@ export const Title = ({ text, linkTo, children }: PropsWithChildren<TitleProps>)
       bgColor={bgColor}
     >
       <IconWrapper>
-        <MdArrowBackIosNew size={20} onClick={backToPreviousPage} />
+        <MdArrowBackIosNew
+          role="button"
+          size={20}
+          onClick={backToPreviousPage}
+          aria-label="뒤로가기"
+        />
       </IconWrapper>
-      <Text fontWeight="bold" size={20} color={themeContext.onBackground}>
+      <Text
+        fontWeight="bold"
+        size={20}
+        color={themeContext.onBackground}
+        aria-label="현재 문서 위치"
+      >
         {text}
       </Text>
       <div>{children}</div>

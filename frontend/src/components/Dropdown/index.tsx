@@ -1,4 +1,4 @@
-import { DropdownProps } from './type';
+import { DropdownProps, WrapperProps } from './type';
 import { useDropdown } from './useDropdown';
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
@@ -46,11 +46,13 @@ const EntireBackground = css`
   }
 `;
 
-const Wrapper = styled.div<{ isDropdownToggled: boolean }>`
-  cursor: pointer;
-  position: relative;
+const Wrapper = styled.div<WrapperProps>`
+  ${({ isDropdownToggled }) => css`
+    cursor: pointer;
+    position: relative;
 
-  ${({ isDropdownToggled }) => isDropdownToggled && EntireBackground}
+    ${isDropdownToggled && EntireBackground}
+  `}
 `;
 
 const DropdownButton = styled.button`

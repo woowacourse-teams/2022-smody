@@ -39,7 +39,13 @@ export const ChallengeIcon = ({
   }
 
   return (
-    <Wrapper size={size} bgColor={bgColor} justifyContent="center" alignItems="center">
+    <Wrapper
+      size={size}
+      bgColor={bgColor}
+      justifyContent="center"
+      alignItems="center"
+      aria-hidden={true}
+    >
       {emojiList[emojiIndex]}
     </Wrapper>
   );

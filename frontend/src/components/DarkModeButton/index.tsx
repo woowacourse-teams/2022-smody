@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const DarkModeButton = ({ checked, handleChange }: DarkModeButtonProps) => {
   return (
-    <CheckBoxWrapper>
+    <CheckBoxWrapper aria-label="다크모드 전환 버튼">
       <CheckBox
         id="darkModeCheckbox"
         type="checkbox"

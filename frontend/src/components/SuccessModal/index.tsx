@@ -43,6 +43,8 @@ export const SuccessModal = ({
   return (
     <ModalOverlay handleCloseModal={handleClickClose}>
       <Wrapper
+        role="document"
+        tabIndex={-1}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"

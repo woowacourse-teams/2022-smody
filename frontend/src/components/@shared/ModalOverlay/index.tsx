@@ -17,7 +17,9 @@ export const ModalOverlay = ({
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(
-        <Modal isFullSize={isFullSize}>{children}</Modal>,
+        <Modal isFullSize={isFullSize} role="dialog" aria-modal="true">
+          {children}
+        </Modal>,
         document.getElementById('overlay-root') as HTMLElement,
       )}
     </>

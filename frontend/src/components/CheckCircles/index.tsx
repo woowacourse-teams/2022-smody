@@ -9,9 +9,14 @@ const totalCheck = [...Array(3)];
 
 export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
   return (
-    <FlexBox gap="1rem">
+    <FlexBox gap="1rem" aria-label={`${progressCount}번 인증완료`}>
       {totalCheck.map((_, index) => (
-        <CheckCircle key={index} checkCircleCount={index} progressCount={progressCount} />
+        <CheckCircle
+          key={index}
+          checkCircleCount={index}
+          progressCount={progressCount}
+          aria-hidden={true}
+        />
       ))}
     </FlexBox>
   );
@@ -21,7 +26,9 @@ const CheckCircle = ({ checkCircleCount, progressCount }: CheckCircleProps) => {
   const themeContext = useThemeContext();
 
   if (checkCircleCount < progressCount) {
-    return <BsCheckCircleFill color={themeContext.primary} size={27} />;
+    return (
+      <BsCheckCircleFill color={themeContext.primary} size={27} aria-hidden={true} />
+    );
   }
 
   return (
@@ -29,6 +36,7 @@ const CheckCircle = ({ checkCircleCount, progressCount }: CheckCircleProps) => {
       style={{ border: `1px solid ${themeContext.surface}`, borderRadius: '50%' }}
       color={themeContext.secondary}
       size={27}
+      aria-hidden={true}
     />
   );
 };
