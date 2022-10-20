@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 
-class MemberApiServiceTest extends IntegrationTest {
+public class MemberApiServiceTest extends IntegrationTest {
 
     @Autowired
     private MemberApiService memberApiService;
@@ -45,10 +45,10 @@ class MemberApiServiceTest extends IntegrationTest {
     private CycleRepository cycleRepository;
 
     @Autowired
-    private PushSubscriptionRepository pushSubscriptionRepository;
+    private PushNotificationRepository pushNotificationRepository;
 
     @Autowired
-    private PushNotificationRepository pushNotificationRepository;
+    private PushSubscriptionRepository pushSubscriptionRepository;
 
     @PersistenceContext
     private EntityManager em;

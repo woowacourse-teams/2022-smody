@@ -2,21 +2,25 @@ package com.woowacourse.smody.push;
 
 import static java.util.stream.Collectors.groupingBy;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
 import com.woowacourse.smody.push.api.WebPushApi;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class WebPushBatch {
 
     private final PushNotificationService pushNotificationService;
@@ -25,6 +29,7 @@ public class WebPushBatch {
 
     @Transactional
     public void sendPushNotifications() {
+        log.info("알림 발송 시작!");
         List<PushNotification> notifications = pushNotificationService.searchPushable();
 
         Map<Member, List<PushNotification>> notificationsByMember = groupByMemberNotifications(notifications);
@@ -37,6 +42,7 @@ public class WebPushBatch {
         }
 
         pushNotificationService.completeAll(notifications);
+        log.info("알림 발송 종료!");
     }
 
     private void sendNotificationsToMember(List<PushNotification> notifications,
