@@ -57,6 +57,7 @@ const useChallengeCreatePage = () => {
     if (emojiSelectedIndex !== currentIndex) {
       setEmojiSelectedIndex(currentIndex);
     }
+    setIsEmojiBottomSheetOpen(false);
   };
 
   const handleClickCreateChallenge = (event: FormEvent<HTMLFormElement>) => {
