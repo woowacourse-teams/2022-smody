@@ -2,7 +2,7 @@ import { INDEXED_DB_NAME, INDEXED_DB } from 'constants/storage';
 
 class IndexedDB {
   constructor() {
-    this._VERSION = 1.2;
+    this._VERSION = 1.3;
   }
 
   _openDatabase() {
