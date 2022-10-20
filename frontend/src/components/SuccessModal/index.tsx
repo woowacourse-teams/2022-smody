@@ -25,6 +25,7 @@ export const SuccessModal = ({
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
   const {
+    wrapperRef,
     successMessage,
     isChallengeComplete,
     handleClickClose,
@@ -43,6 +44,7 @@ export const SuccessModal = ({
   return (
     <ModalOverlay handleCloseModal={handleClickClose}>
       <Wrapper
+        ref={wrapperRef}
         role="document"
         tabIndex={-1}
         flexDirection="column"
@@ -50,14 +52,19 @@ export const SuccessModal = ({
         justifyContent="center"
         gap="1rem"
       >
-        <CloseWrapper onClick={handleClickClose}>
+        <CloseButton onClick={handleClickClose} aria-label="닫기">
           <Close />
-        </CloseWrapper>
+        </CloseButton>
 
         <ChallengeIcon emojiIndex={emojiIndex} challengeId={challengeId} size="large" />
-        <span id="confettiRewardId" />
-        <span id="emojiRewardId" />
-        <Text color={themeContext.onSurface} size={20} fontWeight="bold">
+        <span id="confettiRewardId" aria-hidden={true} />
+        <span id="emojiRewardId" aria-hidden={true} />
+        <Text
+          color={themeContext.onSurface}
+          size={20}
+          fontWeight="bold"
+          aria-label={`${challengeName} 챌린지`}
+        >
           {challengeName}
         </Text>
         <Text color={themeContext.primary} size={20} fontWeight="bold">
@@ -102,9 +109,8 @@ const Wrapper = styled(FlexBox)`
   padding: 1rem 1.25rem 1.438rem;
 `;
 
-const CloseWrapper = styled.div`
+const CloseButton = styled.button`
   align-self: flex-end;
-  cursor: pointer;
 `;
 
 const RetryButton = styled(Button)`

@@ -39,6 +39,7 @@ const useImageInput = (imageName: string) => {
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const reader = useMemo(() => new FileReader(), []);
 
   const hasImageFormData = formData.get(imageName) !== null;
@@ -98,6 +99,7 @@ const useImageInput = (imageName: string) => {
   //  이미지 인풋에 부착된 ref로 클릭 이벤트 전달
   const handleImageInputButtonClick = () => {
     imageInputRef?.current?.click();
+    textAreaRef?.current?.focus();
   };
 
   // ref가 부착된 인풋을 render하는 함수
@@ -119,6 +121,7 @@ const useImageInput = (imageName: string) => {
     hasImageFormData,
     isImageLoading,
     formData,
+    textAreaRef,
   };
 };
 

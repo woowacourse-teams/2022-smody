@@ -45,6 +45,7 @@ const CertFormPage = () => {
     handleSubmitCert,
     handleCloseModal,
     handleChangeDescription,
+    textAreaRef,
   } = useCertFormPage();
 
   return (
@@ -104,6 +105,7 @@ const CertFormPage = () => {
               value={description}
               onChange={handleChangeDescription}
               isDark={isDark}
+              ref={textAreaRef}
             />
           </TextAreaWrapper>
           <TextLength as="span" size={12} color={themeContext.mainText}>
