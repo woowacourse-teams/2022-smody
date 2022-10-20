@@ -314,6 +314,8 @@ export const cycleData = [
   },
 ];
 
+export const challengeInfiniteData = [{ data: challengeData }];
+
 export const cycleByIdData = [
   {
     cycleId: 1,
@@ -683,35 +685,35 @@ export const cycleNonDetailData = {
 export const challengers = [
   {
     memberId: 1,
-    nickName: '챌린저1',
+    nickname: '챌린저1',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 2,
-    nickName: '챌린저2',
+    nickname: '챌린저2',
     progressCount: 1,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 3,
-    nickName: '챌린저3',
+    nickname: '챌린저3',
     progressCount: 2,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 4,
-    nickName: '챌린저4',
+    nickname: '챌린저4',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 5,
-    nickName: '챌린저5',
+    nickname: '챌린저5',
     progressCount: 1,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
@@ -719,70 +721,70 @@ export const challengers = [
 
   {
     memberId: 6,
-    nickName: '챌린저6',
+    nickname: '챌린저6',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 7,
-    nickName: '챌린저7',
+    nickname: '챌린저7',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 8,
-    nickName: '챌린저8',
+    nickname: '챌린저8',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 9,
-    nickName: '챌린저9',
+    nickname: '챌린저9',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 10,
-    nickName: '챌린저10',
+    nickname: '챌린저10',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 11,
-    nickName: '챌린저11',
+    nickname: '챌린저11',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 12,
-    nickName: '챌린저12',
+    nickname: '챌린저12',
     progressCount: 1,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 13,
-    nickName: '챌린저13',
+    nickname: '챌린저13',
     progressCount: 2,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 14,
-    nickName: '챌린저14',
+    nickname: '챌린저14',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 15,
-    nickName: '챌린저15',
+    nickname: '챌린저15',
     progressCount: 1,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
@@ -790,28 +792,28 @@ export const challengers = [
 
   {
     memberId: 16,
-    nickName: '챌린저16',
+    nickname: '챌린저16',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 17,
-    nickName: '챌린저17',
+    nickname: '챌린저17',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 18,
-    nickName: '챌린저18',
+    nickname: '챌린저18',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
   },
   {
     memberId: 19,
-    nickName: '마지막챌린저',
+    nickname: '마지막챌린저',
     progressCount: 0,
     picture: 'https://i.pinimg.com/736x/2c/2c/60/2c2c60b20cb817a80afd381ae23dab05.jpg',
     introduction: '안녕하세요',
@@ -825,7 +827,8 @@ export const feedData = [
     picture:
       'https://cdn.pixabay.com/photo/2022/08/03/04/41/beech-leaves-7361863_1280.jpg',
     nickname: '유저1',
-    progressImage: 'https://i.ibb.co/mJwjFq1/progress-Image.png',
+    progressImage:
+      'https://images.smody.co.kr/images/ea30c87c-eedb-467c-9910-b9230ec65e58.jpg',
     progressCount: 1,
     description:
       '바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^바다가 너무 예쁘네요^_^',
@@ -1269,7 +1272,8 @@ export const notifications = [
   },
   {
     pushNotificationId: 3,
-    message: '더즈님께서 게시물에 댓글을 남기셨어요',
+    message:
+      '가장이름이긴챌린지는어떤챌린지일까한다면이챌린지가생각날꺼야 인증까지 얼마 안남았어요~',
     pushTime: '2022-08-12T14:15:00',
     pathId: 3,
     type: 'comment',

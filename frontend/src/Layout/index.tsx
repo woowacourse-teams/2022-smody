@@ -1,9 +1,10 @@
 import { OutletWrapperProps } from 'Layout/type';
-import { Suspense } from 'react';
+import { useRef, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import useDetectPageChange from 'hooks/useDetectPageChange';
 import useMatchPath from 'hooks/useMatchPath';
 import useThemeContext from 'hooks/useThemeContext';
 
@@ -28,6 +29,7 @@ const TITLE_USING_PATH_PADDING_TOP = TITLE_HEIGHT;
 const TITLE_NOT_USING_PATH_PADDING_TOP = '0px';
 
 export const Layout = () => {
+  const outletRef = useRef<HTMLDivElement>(null);
   const themeContext = useThemeContext();
   const { pathname } = useLocation();
 
@@ -42,6 +44,10 @@ export const Layout = () => {
     TITLE_USING_PATH_PADDING_TOP,
     TITLE_NOT_USING_PATH_PADDING_TOP,
   );
+
+  useDetectPageChange(() => {
+    outletRef.current!.focus();
+  });
 
   const bgColor = getPathMatchColor([
     CLIENT_PATH.CERT,
@@ -62,10 +68,12 @@ export const Layout = () => {
       <Header bgColor={bgColor} />
 
       <OutletWrapper
+        ref={outletRef}
         flexDirection="column"
         bgColor={bgColor}
         horizontalPadding={horizontalPadding}
         topPadding={topPadding}
+        tabIndex={-1}
       >
         <ErrorBoundary
           pathname={pathname}

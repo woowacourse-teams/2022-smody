@@ -23,11 +23,10 @@ public class PushNotificationApiService {
     private final PushNotificationService pushNotificationService;
     private final MemberService memberService;
 
-    public List<PushNotificationResponse> searchNotificationsByMe(TokenPayload tokenPayload) {
+    public List<PushNotificationResponse> findCompleteNotificationsByMe(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
-        List<PushNotification> pushNotifications = pushNotificationService
-                .findAllLatest(member, PushStatus.COMPLETE);
-
+        List<PushNotification> pushNotifications =
+                pushNotificationService.findAllLatestOrderByDesc(member, PushStatus.COMPLETE);
         return pushNotifications.stream()
                 .map(PushNotificationResponse::new)
                 .collect(Collectors.toList());
@@ -39,42 +38,37 @@ public class PushNotificationApiService {
     }
 
     @Transactional
-    public void saveNotification(TokenPayload tokenPayload,
-                                 MentionNotificationRequest mentionNotificationRequest) {
-        List<Long> mentionedIds = mentionNotificationRequest.getMemberIds();
-        Long mentioningId = tokenPayload.getId();
-        Long cycleDetailId = mentionNotificationRequest.getPathId();
-        if (mentionedIds.isEmpty() || mentioningId == null || cycleDetailId == null) {
-            return;
-        }
-
-        List<Member> mentionedMembers = memberService.searchByIdIn(mentionedIds);
+    public void createMentionNotification(TokenPayload tokenPayload,
+                                          MentionNotificationRequest mentionNotificationRequest) {
+        List<Member> mentionedMembers = memberService.searchByIdIn(mentionNotificationRequest.getMemberIds());
         Member mentioningMember = memberService.searchLoginMember(tokenPayload.getId());
         List<PushNotification> pushNotifications = generatePushNotifications(
-                mentionedMembers, mentioningMember, cycleDetailId);
+                mentionedMembers, mentioningMember, mentionNotificationRequest.getPathId()
+        );
         pushNotifications.forEach(pushNotificationService::create);
     }
 
-    private List<PushNotification> generatePushNotifications(List<Member> mentionedMembers, Member mentioningMember,
+    private List<PushNotification> generatePushNotifications(List<Member> mentionedMembers,
+                                                             Member mentioningMember,
                                                              Long pathId) {
         return mentionedMembers.stream()
-                .map(each -> buildNotification(mentioningMember, each, pathId))
+                .map(mentionedMember -> buildNotification(mentioningMember, mentionedMember, pathId))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private PushNotification buildNotification(Member mentioning, Member mentioned, Long pathId) {
+    private PushNotification buildNotification(Member mentioning, Member mentionedMember, Long pathId) {
         return PushNotification.builder()
                 .message(mentioning.getNickname() + "님께서 회원님을 언급하셨습니다!")
                 .pushTime(LocalDateTime.now())
                 .pushStatus(PushStatus.IN_COMPLETE)
                 .pushCase(PushCase.MENTION)
-                .member(mentioned)
+                .member(mentionedMember)
                 .pathId(pathId)
                 .build();
     }
 
     @Transactional
-    public void deleteMyCompleteNotifications(TokenPayload tokenPayload) {
+    public void deleteCompleteNotificationsByMe(TokenPayload tokenPayload) {
         Member member = memberService.search(tokenPayload.getId());
         pushNotificationService.deleteCompletedByMember(member);
     }

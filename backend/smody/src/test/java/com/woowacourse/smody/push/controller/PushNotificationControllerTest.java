@@ -44,7 +44,7 @@ class PushNotificationControllerTest extends ControllerTest {
 		);
 		List<PushNotificationResponse> responses = List.of(pushNotificationResponse1,
 			pushNotificationResponse2);
-		given(pushNotificationApiService.searchNotificationsByMe(any()))
+		given(pushNotificationApiService.findCompleteNotificationsByMe(any()))
 			.willReturn(responses);
 
 		// when

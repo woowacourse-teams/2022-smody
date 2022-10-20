@@ -12,7 +12,7 @@ public class SubscriptionRequest extends Subscription {
         super(endpoint, new Keys(p256dh, auth));
     }
 
-    public PushSubscription toEntity(Member member) {
+    public PushSubscription toPushSubscriptionEntity(Member member) {
         return new PushSubscription(endpoint, keys.p256dh, keys.auth, member);
     }
 }

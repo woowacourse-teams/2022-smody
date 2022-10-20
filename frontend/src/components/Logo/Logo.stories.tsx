@@ -11,4 +11,5 @@ export const DefaultLogo = (args: LogoProps) => <Logo {...args} />;
 DefaultLogo.args = {
   width: '300',
   color: '#000',
+  isAnimated: true,
 };

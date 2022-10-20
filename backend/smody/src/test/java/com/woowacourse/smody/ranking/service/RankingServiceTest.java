@@ -3,7 +3,6 @@ package com.woowacourse.smody.ranking.service;
 import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -34,7 +33,7 @@ class RankingServiceTest extends IntegrationTest {
 
     @DisplayName("전체 랭킹 기간을 최신순으로 정렬하여 조회한다.")
     @Test
-    void findAllPeriodLatest() {
+    void findAllRankingPeriod() {
         // given
         LocalDateTime now = LocalDate.now().atTime(0, 0, 0);
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(2), Duration.WEEK));
@@ -42,7 +41,7 @@ class RankingServiceTest extends IntegrationTest {
         rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(3), Duration.WEEK));
 
         // when
-        List<RankingPeriod> rankingPeriods = rankingService.findAllPeriod(
+        List<RankingPeriod> rankingPeriods = rankingService.findAllRankingPeriod(
                 new PagingParams("startDate:desc", 10)
         );
 
@@ -51,26 +50,25 @@ class RankingServiceTest extends IntegrationTest {
                 .containsExactly(now.minusWeeks(1), now.minusWeeks(2), now.minusWeeks(3));
     }
 
-    @DisplayName("랭킹 기간의 랭킹 활동을 순위대로 정렬하여 조회한다.")
+    @DisplayName("랭킹 기간의 랭킹 활동을 점수대로 정렬하여 조회한다.")
     @Test
-    void findAllActivity() {
+    void findAllRankingActivityByPeriodId() {
         // given
         LocalDateTime now = LocalDateTime.now();
         RankingPeriod rankingPeriod = rankingPeriodRepository.save(new RankingPeriod(now.minusWeeks(1), Duration.WEEK));
 
         rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(조조그린_ID), rankingPeriod, 100));
         rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(더즈_ID), rankingPeriod, 200));
-        rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(토닉_ID), rankingPeriod, 200));
         rankingActivityRepository.save(new RankingActivity(fixture.회원_조회(알파_ID), rankingPeriod, 300));
 
         // when
-        List<RankingActivity> actual = rankingService.findAllRankedActivityByPeriodId(
+        List<RankingActivity> actual = rankingService.findAllRankingActivityByPeriodId(
                 rankingPeriod.getId());
 
         // then
         assertAll(
                 () -> assertThat(actual).map(rankingActivity -> rankingActivity.getMember().getId())
-                        .containsExactly(알파_ID, 더즈_ID, 토닉_ID, 조조그린_ID)
+                        .containsExactly(알파_ID, 더즈_ID, 조조그린_ID)
         );
     }
 

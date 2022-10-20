@@ -9,7 +9,18 @@ import { Cycle, CycleDetail } from 'types/cycle';
 import { Member } from 'types/member';
 
 export type GetChallengeParams = {
-  searchValue: string;
+  searchValue?: string;
+  sort?: 'popular' | 'random';
+};
+
+export type GetAllChallengesParams = GetChallengeParams & {
+  cursorId: PickType<Challenge, 'challengeId'>;
+};
+
+export type GetAllChallengesParamsObject = Pick<GetChallengeParams, 'sort'> & {
+  cursorId: PickType<Challenge, 'challengeId'>;
+  size: number;
+  filter?: PickType<GetChallengeParams, 'searchValue'>;
 };
 
 export type GetAllChallengesResponse = AdditionalChallengeInfo[];

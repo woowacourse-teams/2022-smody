@@ -6,14 +6,11 @@ import static com.woowacourse.smody.ranking.domain.QRankingPeriod.rankingPeriod;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.NumberExpression;
-import com.woowacourse.smody.cycle.domain.QCycle;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
-import com.woowacourse.smody.ranking.domain.QRankingPeriod;
 import java.util.Arrays;
 import org.springframework.data.domain.Sort;
 
-// TODO: 파라미터 네임 컨벤션 통일화
 public enum SortSelection {
 
     DEFAULT("") {
@@ -85,7 +82,6 @@ public enum SortSelection {
             };
         }
     }
-
     ;
 
     private final String parameter;

@@ -22,12 +22,12 @@ public class PagingParams {
         this.sort = sort;
     }
 
-    public PagingParams(String sort, int size) {
+    public PagingParams(String sort, Integer size) {
         this.sort = sort;
         this.size = size;
     }
 
-    public PagingParams(String sort, int size, Long cursorId) {
+    public PagingParams(String sort, Integer size, Long cursorId) {
         this.sort = sort;
         this.size = size;
         this.cursorId = cursorId;

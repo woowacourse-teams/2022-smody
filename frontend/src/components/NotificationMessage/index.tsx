@@ -49,7 +49,6 @@ export const NotificationMessage = ({
 const NotificationWrapper = styled(FlexBox)`
   ${({ theme }) => css`
     padding: 0.4rem 0.8rem;
-    width: 100%;
     overflow: auto;
     &:hover {
       background-color: ${theme.primary};
@@ -64,7 +63,12 @@ const NotificationWrapper = styled(FlexBox)`
 `;
 
 const Message = styled(Text)`
-  /* height: 2rem; */
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
 `;
 
 const PushTimeText = styled(Text)``;

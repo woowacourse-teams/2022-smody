@@ -24,12 +24,13 @@ public class PushNotificationController {
 
     private final PushNotificationApiService pushNotificationApiService;
 
-    //TODO: api 수정(/push-notifications/me)
+    // TODO-api 수정(/push-notifications/me)
     @GetMapping
     @RequiredLogin
-    public ResponseEntity<List<PushNotificationResponse>> searchNotificationsByMe(
-            @LoginMember TokenPayload tokenPayload) {
-        return ResponseEntity.ok(pushNotificationApiService.searchNotificationsByMe(tokenPayload));
+    public ResponseEntity<List<PushNotificationResponse>> findCompleteNotificationsByMe(
+            @LoginMember TokenPayload tokenPayload
+    ) {
+        return ResponseEntity.ok(pushNotificationApiService.findCompleteNotificationsByMe(tokenPayload));
     }
 
     @DeleteMapping("{id}")
@@ -39,18 +40,19 @@ public class PushNotificationController {
         return ResponseEntity.noContent().build();
     }
 
+    // TODO-api 수정(/push-notifications/mention)
     @PostMapping
     @RequiredLogin
-    public ResponseEntity<Void> saveNotification(@LoginMember TokenPayload tokenPayload,
-                                                 @RequestBody MentionNotificationRequest mentionNotificationRequest) {
-        pushNotificationApiService.saveNotification(tokenPayload, mentionNotificationRequest);
+    public ResponseEntity<Void> createMentionNotification(@LoginMember TokenPayload tokenPayload,
+                                                          @RequestBody MentionNotificationRequest mentionNotificationRequest) {
+        pushNotificationApiService.createMentionNotification(tokenPayload, mentionNotificationRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/me")
     @RequiredLogin
-    public ResponseEntity<Void> deleteMyCompleteNotifications(@LoginMember TokenPayload tokenPayload) {
-        pushNotificationApiService.deleteMyCompleteNotifications(tokenPayload);
+    public ResponseEntity<Void> deleteCompleteNotificationsByMe(@LoginMember TokenPayload tokenPayload) {
+        pushNotificationApiService.deleteCompleteNotificationsByMe(tokenPayload);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,6 @@
 package com.woowacourse.smody.push;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,7 @@ import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.service.PushNotificationService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
-import com.woowacourse.smody.push.service.WebPushService;
-
+import com.woowacourse.smody.push.api.WebPushApi;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -26,7 +25,7 @@ public class WebPushBatch {
 
     private final PushNotificationService pushNotificationService;
     private final PushSubscriptionService pushSubscriptionService;
-    private final WebPushService webPushService;
+    private final WebPushApi webPushApi;
 
     @Transactional
     public void sendPushNotifications() {
@@ -59,7 +58,7 @@ public class WebPushBatch {
     private void sendNotificationsToSubscriptions(List<PushNotification> notifications, PushNotification notification,
         List<PushSubscription> subscriptions) {
         for (PushSubscription pushSubscription : subscriptions) {
-            boolean isValidSubscription = webPushService.sendNotification(pushSubscription, notification);
+            boolean isValidSubscription = webPushApi.sendNotification(pushSubscription, notification);
             handleFailedPush(notifications, notification, pushSubscription, isValidSubscription);
         }
     }

@@ -1,7 +1,7 @@
 package com.woowacourse.smody.support;
 
 import com.woowacourse.smody.image.strategy.ImageStrategy;
-import com.woowacourse.smody.push.service.WebPushService;
+import com.woowacourse.smody.push.api.WebPushApi;
 import com.woowacourse.smody.support.isoloation.SmodyTestEnvironmentExtension;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,7 @@ public class IntegrationTest {
     protected ImageStrategy imageStrategy;
 
     @MockBean
-    protected WebPushService webPushService;
+    protected WebPushApi webPushApi;
 
     @MockBean
     protected RestTemplate restTemplate;
@@ -30,7 +30,7 @@ public class IntegrationTest {
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
-    
+
     protected void synchronize(Runnable runnable) throws InterruptedException {
         ThreadPoolExecutor threadPoolExecutor = taskExecutor.getThreadPoolExecutor();
         runnable.run();

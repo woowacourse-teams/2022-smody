@@ -28,7 +28,7 @@ public class ChallengingRecord {
                 .count();
     }
 
-    /*
+    /**
      * QueryDSL Projection 을 위한 생성자
      */
     public ChallengingRecord(Cycle cycle, Long successCount) {
@@ -104,7 +104,7 @@ public class ChallengingRecord {
 
     public Integer getCycleDetailCount() {
         return cycles.stream()
-                .mapToInt(cycle -> cycle.getCycleDetailsOrderByProgress().size())
+                .mapToInt(Cycle::getCycleDetailCount)
                 .sum();
     }
 }

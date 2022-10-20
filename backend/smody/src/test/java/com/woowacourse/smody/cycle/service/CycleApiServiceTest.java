@@ -19,6 +19,7 @@ import static org.mockito.BDDMockito.given;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
+import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.cycle.dto.CycleResponse;
 import com.woowacourse.smody.cycle.dto.FilteredCycleHistoryResponse;
 import com.woowacourse.smody.cycle.dto.InProgressCycleResponse;
@@ -52,6 +53,18 @@ public class CycleApiServiceTest extends IntegrationTest {
     void init() {
         given(imageStrategy.extractUrl(any()))
                 .willReturn("fakeUrl");
+    }
+
+    @DisplayName("사이클을 생성한다.")
+    @Test
+    void create() {
+        // when
+        LocalDateTime time = LocalDateTime.of(1996, 8, 30, 8, 0);
+        CycleRequest cycleRequest = new CycleRequest(time, 스모디_방문하기_ID);
+        Long id = cycleApiService.create(new TokenPayload(조조그린_ID), cycleRequest);
+
+        // then
+        assertThat(id).isEqualTo(1L);
     }
 
     @DisplayName("유효한 시간일때 사이클의 진행도를 증가시킨다.")
@@ -184,7 +197,8 @@ public class CycleApiServiceTest extends IntegrationTest {
 
         // when
         List<InProgressCycleResponse> actual = cycleApiService.findInProgressByMe(
-                tokenPayload, now, new PagingParams(null, null, 0L, null));
+                tokenPayload, now, new PagingParams(null, null, 0L, null)
+        );
 
         // then
         assertThat(actual).map(InProgressCycleResponse::getSuccessCount)

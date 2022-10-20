@@ -38,7 +38,7 @@ export * from 'components/DarkModeButton';
 export * from 'components/CommentItem';
 export * from 'components/CommentInput';
 export * from 'components/FeedItem';
-export * from 'components/BottomSheet';
+export * from 'components/@shared/BottomSheet';
 export * from 'components/Dropdown';
 export * from 'components/Bell';
 export * from 'components/SubscriptionButton';

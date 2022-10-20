@@ -2,6 +2,7 @@ package com.woowacourse.smody.exception;
 
 import static org.mockito.BDDMockito.*;
 
+import com.woowacourse.smody.exception.api.GithubApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

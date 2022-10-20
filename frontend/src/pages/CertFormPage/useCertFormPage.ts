@@ -24,6 +24,7 @@ const useCertFormPage = () => {
     hasImageFormData,
     isImageLoading,
     formData,
+    textAreaRef,
   } = useImageInput(FORM_DATA_IMAGE_NAME);
 
   const isButtonDisabled = useMemo(
@@ -93,6 +94,7 @@ const useCertFormPage = () => {
     handleSubmitCert,
     handleCloseModal,
     handleChangeDescription,
+    textAreaRef,
   };
 };
 

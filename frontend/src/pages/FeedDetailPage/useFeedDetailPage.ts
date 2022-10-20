@@ -84,7 +84,6 @@ const useFeedDetailPage = () => {
     const result = commentsData?.data.find(
       ({ commentId }) => commentId === selectedCommentId,
     );
-    console.log('result', result);
 
     if (result === undefined) {
       return '';

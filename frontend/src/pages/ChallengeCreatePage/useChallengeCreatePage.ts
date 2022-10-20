@@ -31,7 +31,7 @@ const useChallengeCreatePage = () => {
         status: 'SUCCESS',
       });
 
-      navigate(CLIENT_PATH.SEARCH);
+      navigate(CLIENT_PATH.CHALLENGE_SEARCH);
     },
   });
 
@@ -57,6 +57,7 @@ const useChallengeCreatePage = () => {
     if (emojiSelectedIndex !== currentIndex) {
       setEmojiSelectedIndex(currentIndex);
     }
+    setIsEmojiBottomSheetOpen(false);
   };
 
   const handleClickCreateChallenge = (event: FormEvent<HTMLFormElement>) => {

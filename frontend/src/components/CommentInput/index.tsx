@@ -2,7 +2,7 @@ import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage, MembersPopover } from 'components';
+import { FlexBox, ValidationMessage, MembersPopover, Tooltip } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
@@ -25,26 +25,45 @@ export const CommentInput = ({
     hasNextMembersPage,
     fetchNextMembersPage,
     selectMember,
+    handleKeydownCommentInput,
+    handleInputCommentInput,
   } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
 
   return (
-    <Wrapper flexDirection="column" alignItems="center">
-      <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
-        <CommentInputElement contentEditable={true} ref={commentInputRef} />
-        <WriteButton
-          disabled={
-            !isVisibleWriteButton ||
-            isLoadingPostComment ||
-            isLoadingPatchComment ||
-            isCommentError ||
-            isLoadingPostMentionNotifications
-          }
-          isVisible={isVisibleWriteButton}
-          onClick={handleClickWrite}
+    <Wrapper flexDirection="column">
+      <TopRowWrapper alignItems="center" gap="0.5rem">
+        <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
+          <CommentInputElement
+            contentEditable={true}
+            ref={commentInputRef}
+            onKeyDown={handleKeydownCommentInput}
+            onInput={handleInputCommentInput}
+          />
+          <WriteButton
+            disabled={
+              !isVisibleWriteButton ||
+              isLoadingPostComment ||
+              isLoadingPatchComment ||
+              isCommentError ||
+              isLoadingPostMentionNotifications
+            }
+            isVisible={isVisibleWriteButton}
+            onClick={handleClickWrite}
+          >
+            {editMode.isEditMode ? '수정' : '작성'}
+          </WriteButton>
+        </InnerWrapper>
+        <Tooltip
+          ariaLabel="댓글 툴팁"
+          xPosition="left"
+          yPosition="top"
+          yDelta="-100px"
+          line={2.3}
         >
-          {editMode.isEditMode ? '수정' : '작성'}
-        </WriteButton>
-      </InnerWrapper>
+          댓글을 통해 다른 사람에게 멘션 알림을 보내려면 @와 닉네임을 붙여서 입력한 후
+          선택하세요.
+        </Tooltip>
+      </TopRowWrapper>
       {isCommentError && (
         <ValidationMessageWrapper>
           <ValidationMessage
@@ -76,7 +95,12 @@ const Wrapper = styled(FlexBox)`
     padding: 0.813rem 1.25rem;
     border-top: 2px solid ${theme.secondary};
     background-color: ${theme.background};
+    flex-grow: 1;
   `}
+`;
+
+const TopRowWrapper = styled(FlexBox)`
+  width: 100%;
 `;
 
 const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`

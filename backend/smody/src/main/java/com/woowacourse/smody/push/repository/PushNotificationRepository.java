@@ -1,6 +1,7 @@
 package com.woowacourse.smody.push.repository;
 
 import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import java.util.List;
@@ -14,22 +15,25 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
 
     List<PushNotification> findByPushStatus(PushStatus pushStatus);
 
-    Optional<PushNotification> findByPathIdAndPushStatus(Long pathId, PushStatus pushStatus);
+    Optional<PushNotification> findByPathIdAndPushStatusAndPushCase(Long pathId, PushStatus pushStatus, PushCase pushCase);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from PushNotification pn where pn.member = :member")
     void deleteByMember(@Param("member") Member member);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("delete from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus")
+    @Query("delete from PushNotification pn "
+            + "where pn.member = :member and pn.pushStatus = :pushStatus")
     void deleteByMemberAndPushStatus(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
 
-    @Query("select pn from PushNotification pn where pn.member = :member and pn.pushStatus = :pushStatus "
+    @Query("select pn from PushNotification pn "
+            + "where pn.member = :member and pn.pushStatus = :pushStatus "
             + "order by pn.pushTime desc")
-    List<PushNotification> findAllLatest(@Param("member") Member member, @Param("pushStatus") PushStatus pushStatus);
+    List<PushNotification> findAllLatestOrderByDesc(@Param("member") Member member,
+                                                    @Param("pushStatus") PushStatus pushStatus);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update PushNotification pn set pn.pushStatus = :pushStatus where pn in :notifications")
-	void updatePushStatusIn(@Param("notifications") List<PushNotification> notifications,
-                            @Param("pushStatus")  PushStatus pushStatus);
+    void updatePushStatusIn(@Param("notifications") List<PushNotification> notifications,
+                            @Param("pushStatus") PushStatus pushStatus);
 }

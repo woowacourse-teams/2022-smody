@@ -22,6 +22,7 @@ export const CertItem = ({
   const {
     certEndDate,
     isCertPossible,
+    certButtonText,
     handleClickWrapper,
     handleClickButton,
     startTimeString,
@@ -42,13 +43,14 @@ export const CertItem = ({
       gap="1rem"
       onClick={handleClickWrapper}
       style={{ ...cursorPointer }}
+      aria-label={`${challengeName} 챌린지 진행중`}
     >
       <TitleWrapper justifyContent="space-between">
         <TitleText
-          aria-label="진행중인 챌린지 이름"
           size={20}
           fontWeight="bold"
           color={themeContext.onBackground}
+          aria-label={`챌린지 이름 ${challengeName}`}
         >
           {challengeName}
         </TitleText>
@@ -72,8 +74,13 @@ export const CertItem = ({
         <Timer certEndDate={certEndDate} />
       </FlexBox>
       <FlexBox justifyContent="center" gap="1.5rem">
-        <Button disabled={!isCertPossible} onClick={handleClickButton} size="large">
-          {isCertPossible ? '인증하기' : '오늘의 인증 완료🎉'}
+        <Button
+          disabled={!isCertPossible}
+          onClick={handleClickButton}
+          size="large"
+          aria-label={`${challengeName} 챌린지 ${certButtonText}`}
+        >
+          {certButtonText}
         </Button>
       </FlexBox>
     </Wrapper>

@@ -1,4 +1,4 @@
-import { DropdownProps } from './type';
+import { DropdownProps, WrapperProps } from './type';
 import { useDropdown } from './useDropdown';
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
@@ -46,11 +46,13 @@ const EntireBackground = css`
   }
 `;
 
-const Wrapper = styled.div<{ isDropdownToggled: boolean }>`
-  cursor: pointer;
-  position: relative;
+const Wrapper = styled.div<WrapperProps>`
+  ${({ isDropdownToggled }) => css`
+    cursor: pointer;
+    position: relative;
 
-  ${({ isDropdownToggled }) => isDropdownToggled && EntireBackground}
+    ${isDropdownToggled && EntireBackground}
+  `}
 `;
 
 const DropdownButton = styled.button`
@@ -69,7 +71,8 @@ const DropdownMenu = styled.div`
   ${({ theme }) => css`
     z-index: ${Z_INDEX.CSS_MODAL};
     height: fit-content;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 32rem;
     white-space: nowrap;
     background-color: ${theme.surface};
@@ -80,6 +83,9 @@ const DropdownMenu = styled.div`
     position: absolute;
     top: 2.3rem;
     right: -0.2rem;
+
+    width: 80vw;
+    max-width: 400px;
 
     // 드롭다운 메뉴 우측 상단 삼각형 팁 디자인
     // overflow: auto 때문에 삼각형 팁 디자인이 현재 적용되지 않음

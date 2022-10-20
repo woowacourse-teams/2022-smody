@@ -1,4 +1,4 @@
-import { ModalOverlayProps } from './type';
+import { ModalOverlayProps, ModalProps } from './type';
 import { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
@@ -8,31 +8,45 @@ import { Z_INDEX } from 'constants/css';
 export const ModalOverlay = ({
   children,
   handleCloseModal,
+  isFullSize = false,
 }: PropsWithChildren<ModalOverlayProps>) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop onClick={handleCloseModal} />,
+        <Backdrop onClick={handleCloseModal} isFullSize={isFullSize} />,
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(
-        <Modal>{children}</Modal>,
+        <Modal isFullSize={isFullSize} role="dialog" aria-modal="true">
+          {children}
+        </Modal>,
         document.getElementById('overlay-root') as HTMLElement,
       )}
     </>
   );
 };
 
-const Modal = styled.div`
-  ${({ theme }) => css`
-    min-height: 347px;
-    width: 366px;
+const Modal = styled.div<ModalProps>`
+  ${({ theme, isFullSize }) => css`
+    ${isFullSize
+      ? css`
+          max-height: 90vh;
+          max-width: 90vw;
+          background-color: transparent;
+          backdrop-filter: blur(3px);
+        `
+      : css`
+          min-height: 347px;
+          width: 366px;
+          max-width: 90vw;
+          background-color: ${theme.surface};
+        `}
+
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     margin: 0;
-    background-color: ${theme.surface};
     border-radius: 20px;
     display: flex;
     justify-content: center;
@@ -40,8 +54,13 @@ const Modal = styled.div`
   `}
 `;
 
-const Backdrop = styled.div`
-  ${({ theme }) => css`
+const Backdrop = styled.div<ModalProps>`
+  ${({ theme, isFullSize }) => css`
+    ${isFullSize &&
+    css`
+      backdrop-filter: blur(3px);
+    `}
+
     position: fixed;
     top: 0;
     left: 0;

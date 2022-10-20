@@ -35,6 +35,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Cycle {
 
     public static final long DAYS = 3L;
+    private static final int MAX_CYCLE_DETAILS_SIZE = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,9 +81,10 @@ public class Cycle {
 
     public void increaseProgress(LocalDateTime progressTime, Image progressImage, String description) {
         this.progress = progress.increase(startTime, progressTime);
-        if (this.cycleDetails.size() <= 2) {
-            this.cycleDetails.add(new CycleDetail(this, progressTime, progressImage.getUrl(), description,
-                    progress));
+        if (this.cycleDetails.size() < MAX_CYCLE_DETAILS_SIZE) {
+            this.cycleDetails.add(
+                    new CycleDetail(this, progressTime, progressImage.getUrl(), description, progress)
+            );
         }
     }
 
@@ -117,6 +119,11 @@ public class Cycle {
         return progress.getCount() + 1;
     }
 
+    public CycleDetail getLatestCycleDetail() {
+        int lastIndex = this.cycleDetails.size() - 1;
+        return getCycleDetailsOrderByProgress().get(lastIndex);
+    }
+
     public LocalDateTime getLatestProgressTime() {
         if (this.cycleDetails.isEmpty()) {
             return this.startTime;
@@ -124,8 +131,7 @@ public class Cycle {
         return getLatestCycleDetail().getProgressTime();
     }
 
-    public CycleDetail getLatestCycleDetail() {
-        int lastIndex = this.cycleDetails.size() - 1;
-        return getCycleDetailsOrderByProgress().get(lastIndex);
+    public int getCycleDetailCount() {
+        return this.cycleDetails.size();
     }
 }

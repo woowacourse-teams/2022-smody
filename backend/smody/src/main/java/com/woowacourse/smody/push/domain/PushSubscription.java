@@ -51,8 +51,7 @@ public class PushSubscription {
         this.member = member;
     }
 
-    public PushSubscription updateMember(Member member) {
+    public void updateMember(Member member) {
         this.member = member;
-        return this;
     }
 }

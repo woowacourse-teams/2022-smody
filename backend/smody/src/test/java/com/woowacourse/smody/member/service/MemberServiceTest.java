@@ -1,10 +1,12 @@
 package com.woowacourse.smody.member.service;
 
 import static com.woowacourse.smody.support.ResourceFixture.MULTIPART_FILE;
+import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
 import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
 import static com.woowacourse.smody.support.ResourceFixture.알파_ID;
 import static com.woowacourse.smody.support.ResourceFixture.오늘의_운동_ID;
 import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
+import static com.woowacourse.smody.support.ResourceFixture.토닉_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,6 +28,7 @@ import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,34 +63,40 @@ class MemberServiceTest extends IntegrationTest {
     @PersistenceContext
     private EntityManager em;
 
-    @DisplayName("자신의 회원 정보 조회를 한다.")
-    @Test
-    void searchMyInfo() {
-        // when
-        Member expected = fixture.회원_조회(조조그린_ID);
-        Member actual = memberService.search(조조그린_ID);
+    @DisplayName("자신의 회원정보를 조회할 때")
+    @Nested
+    class Search {
 
-        // then
-        assertAll(
-                () -> assertThat(actual.getEmail()).isEqualTo(expected.getEmail()),
-                () -> assertThat(actual.getNickname()).isEqualTo(expected.getNickname()),
-                () -> assertThat(actual.getPicture()).isEqualTo(expected.getPicture())
-        );
+        @DisplayName("조회")
+        @Test
+        void search() {
+            // when
+            Member expected = fixture.회원_조회(조조그린_ID);
+            Member actual = memberService.search(조조그린_ID);
+
+            // then
+            assertAll(
+                    () -> assertThat(actual.getEmail()).isEqualTo(expected.getEmail()),
+                    () -> assertThat(actual.getNickname()).isEqualTo(expected.getNickname()),
+                    () -> assertThat(actual.getPicture()).isEqualTo(expected.getPicture())
+            );
+        }
+
+        @DisplayName("회원이 존재하지 않는 경우 예외를 발생시킨다.")
+        @Test
+        void searchMyInfo_notExist() {
+            // when then
+            assertThatThrownBy(() -> memberService.search(Long.MAX_VALUE))
+                    .isInstanceOf(BusinessException.class)
+                    .extracting("exceptionData")
+                    .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
+        }
     }
 
-    @DisplayName("자신의 회원 정보 조회할 때 회원이 존재하지 않는 경우 예외를 발생시킨다.")
-    @Test
-    void searchMyInfo_notExist() {
-        // when then
-        assertThatThrownBy(() -> memberService.search(Long.MAX_VALUE))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.NOT_FOUND_MEMBER);
-    }
 
     @DisplayName("자신의 회원 정보를 수정한다.")
     @Test
-    void updateMyInfo() {
+    void updateByMe() {
         // when
         memberService.updateByMe(조조그린_ID, "쬬그린", "나는 쬬그린");
 
@@ -130,7 +139,7 @@ class MemberServiceTest extends IntegrationTest {
 
     @DisplayName("회원을 프로필 이미지를 수정한다.")
     @Test
-    void updateProfileImage() {
+    void updateProfileImageByMe() {
         // given
         String expected = "https://www.abc.com/profile.jpg";
         given(imageStrategy.extractUrl(any()))
@@ -184,9 +193,62 @@ class MemberServiceTest extends IntegrationTest {
         result.updateIntroduction(null);
     }
 
+    @DisplayName("로그인하지 않은 멤버를 조회한다.")
+    @Test
+    void searchLoginMember() {
+        // when
+        long notLoginMemberId = 0L;
+        Member actual = memberService.searchLoginMember(notLoginMemberId);
+
+        // then
+        assertThat(actual.getNickname()).isEqualTo("비회원");
+    }
+
+    @DisplayName("id들에 해당하는 멤버들을 조회한다.")
+    @Test
+    void searchByIdIn() {
+        // given
+        Member member1 = fixture.회원_조회(조조그린_ID);
+        Member member2 = fixture.회원_조회(토닉_ID);
+        Member member3 = fixture.회원_조회(더즈_ID);
+
+        // when
+        List<Member> actual = memberService.searchByIdIn(List.of(member1.getId(), member2.getId(), member3.getId()));
+
+        // then
+        assertThat(actual).map(Member::getId)
+                .contains(member1.getId(), member2.getId(), member3.getId());
+    }
+
+    @DisplayName("이메일로 멤버를 조회한다.")
+    @Test
+    void findByEmail() {
+        // given
+        Member member = fixture.회원_조회(조조그린_ID);
+
+        // when
+        Optional<Member> actual = memberService.findByEmail(member.getEmail());
+
+        // then
+        assertAll(
+                () -> assertThat(actual).isPresent(),
+                () -> assertThat(actual.get().getId()).isEqualTo(member.getId())
+        );
+    }
+
+    @DisplayName("멤버를 생성한다.")
+    @Test
+    void create() {
+        // when
+        Member member = memberService.create(new Member("email@email.com", "새로생긴 닉네임", "설명", "사진"));
+
+        // then
+        assertThat(memberService.findByEmail("email@email.com")).isPresent();
+    }
+
     @DisplayName("회원을 조회할 때")
     @Nested
-    class FindMembersTest {
+    class FindAllByFilter {
 
         @DisplayName("글자가 없고 커서 ID도 없고 크가가 10일떄")
         @Test

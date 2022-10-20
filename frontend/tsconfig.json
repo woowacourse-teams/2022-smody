@@ -19,6 +19,6 @@
     "noEmitOnError": true,
     "outDir": "testOutDir"
   },
-  "include": ["src", "global.d.ts", "public/pwaServiceWorker.js"],
+  "include": ["src", "global.d.ts"],
   "exclude": ["node_modules"]
 }

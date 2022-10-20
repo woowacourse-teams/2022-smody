@@ -19,7 +19,7 @@ class PushSubscriptionRepositoryTest extends RepositoryTest {
     @Autowired
     private ResourceFixture fixture;
 
-    @DisplayName("회원 id들로 구독 정보들을 가져 온다.")
+    @DisplayName("회원 id 들로 구독 정보들을 가져 온다.")
     @Test
     void findByMemberIdIn() {
         // given

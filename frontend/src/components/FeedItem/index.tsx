@@ -1,5 +1,12 @@
-import { CheckSuccessProps, FeedItemProps, WrapperProps } from './type';
+import {
+  CheckSuccessProps,
+  FeedItemProps,
+  ImgCloseButtonProps,
+  WrapperProps,
+} from './type';
 import useFeedItem from './useFeedItem';
+import { useState } from 'react';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -10,7 +17,10 @@ import {
   UnderLineText,
   CheckCircles,
   CheckSuccessCycle,
+  ModalOverlay,
 } from 'components';
+
+import COLOR from 'styles/color';
 
 export const FeedItem = ({
   cycleDetailId,
@@ -47,11 +57,21 @@ export const FeedItem = ({
     isShowBriefChallengeName,
   });
 
+  const [isImgModalOpen, setIsImgModalOpen] = useState(false);
+
+  const handleCloseImgModal = () => {
+    setIsImgModalOpen(false);
+  };
+
+  const handleOpenImgModal = () => {
+    setIsImgModalOpen(true);
+  };
+
   return (
     <Wrapper
       flexDirection="column"
       gap="0.4rem"
-      onClick={handleClickFeed}
+      onClick={isDetailPage ? undefined : handleClickFeed}
       isDetailPage={isDetailPage}
     >
       <FlexBox alignItems="center" flexWrap="wrap">
@@ -62,6 +82,7 @@ export const FeedItem = ({
           width="32px"
           height="32px"
         />
+
         <Nickname size={20} color={themeContext.onBackground}>
           {nickname}
         </Nickname>
@@ -77,6 +98,7 @@ export const FeedItem = ({
         >
           {renderedChallengeName}
         </ChallengeName>
+
         <CheckSuccessCycle isSuccess={isSuccess} />
       </FlexBox>
       <CheckCirclesWrapper justifyContent="flex-end">
@@ -86,6 +108,8 @@ export const FeedItem = ({
         src={progressImage}
         alt={`${nickname}님의 ${challengeName} 인증 사진`}
         isSuccess={isSuccess}
+        isDetailPage={isDetailPage}
+        onClick={isDetailPage ? handleOpenImgModal : undefined}
       />
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
@@ -96,7 +120,30 @@ export const FeedItem = ({
       <CommentCount size={14} color={themeContext.mainText}>
         {`댓글 ${commentCount}개`}
       </CommentCount>
+      {isImgModalOpen && (
+        <ModalOverlay handleCloseModal={handleCloseImgModal} isFullSize={true}>
+          <div>
+            <ImgCloseButton handleCloseImgModal={handleCloseImgModal} />
+            <EntireImg
+              src={progressImage}
+              alt={`${nickname}님의 ${challengeName} 인증 사진`}
+            />
+          </div>
+        </ModalOverlay>
+      )}
     </Wrapper>
+  );
+};
+
+const ImgCloseButton = ({ handleCloseImgModal }: ImgCloseButtonProps) => {
+  return (
+    <CloseButton type="button" onClick={handleCloseImgModal} aria-label="닫기">
+      <BackWhite>
+        <CloseCircleWrapper>
+          <AiFillCloseCircle color={COLOR.PURPLE} size={30} />
+        </CloseCircleWrapper>
+      </BackWhite>
+    </CloseButton>
   );
 };
 
@@ -105,8 +152,10 @@ const Wrapper = styled(FlexBox)<WrapperProps>`
     max-width: 440px;
     min-width: 366px;
     padding: 20px 0;
-    cursor: pointer;
-    pointer-events: ${isDetailPage ? 'none' : 'auto'};
+    ${!isDetailPage &&
+    css`
+      cursor: pointer;
+    `}
 
     @media all and (max-width: 366px) {
       min-width: auto;
@@ -130,11 +179,11 @@ const OfText = styled(Text)`
 `;
 
 const ChallengeName = styled(UnderLineText)`
-  pointer-events: auto;
+  cursor: pointer;
 `;
 
 const ProgressImg = styled.img<CheckSuccessProps>`
-  ${({ theme, isSuccess }) => css`
+  ${({ theme, isSuccess, isDetailPage }) => css`
     width: 100%;
     height: 400px;
     object-fit: cover;
@@ -149,6 +198,10 @@ const ProgressImg = styled.img<CheckSuccessProps>`
       background-origin: border-box;
       background-clip: content-box, border-box;
     `};
+    ${isDetailPage &&
+    css`
+      cursor: pointer;
+    `}
   `}
 `;
 
@@ -165,4 +218,33 @@ const CommentCount = styled(Text)`
 
 const CheckCirclesWrapper = styled(FlexBox)`
   flex-grow: 1;
+`;
+
+const EntireImg = styled.img`
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 4px;
+  text-align: end;
+`;
+
+const BackWhite = styled.div`
+  position: relative;
+  margin: 10px;
+  background: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+`;
+
+const CloseCircleWrapper = styled.div`
+  position: absolute;
+  top: -7px;
+  right: -7px;
 `;

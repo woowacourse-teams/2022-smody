@@ -28,28 +28,9 @@ class FeedApiServiceTest extends IntegrationTest {
     @Autowired
     private FeedApiService feedApiService;
 
-    @DisplayName("id 값이 null로 들어오면 가장 최신순으로 조회한다")
+    @DisplayName("모든 피드 조회 시 지정된 커서 Id 를 기준으로 최근에 생성된 데이터를 조회한다.")
     @Test
-    void searchAllSortedTime() {
-        // given
-        LocalDateTime today = LocalDateTime.now().minusDays(3);
-        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
-
-        // when
-        List<FeedResponse> feedResponses = feedApiService.findAll(new PagingParams("latest", 10));
-
-        //then
-        assertAll(
-                () -> assertThat(feedResponses).hasSize(3),
-                () -> assertThat(feedResponses.stream()
-                        .map(FeedResponse::getDescription)
-                        .collect(Collectors.toList())).containsExactly("third", "second", "first")
-        );
-    }
-
-    @DisplayName("모든 피드 조회 시 지정된 Id를 기준으로 최근에 생성된 데이터를 조회한다.")
-    @Test
-    void searchByCycleDetailId() {
+    void findAll() {
         // given
         LocalDateTime today = LocalDateTime.now();
         Cycle cycle1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
@@ -61,6 +42,7 @@ class FeedApiServiceTest extends IntegrationTest {
         List<FeedResponse> feedResponses = feedApiService.findAll(
                 new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
+
         // then
         assertAll(
                 () -> assertThat(feedResponses).hasSize(10),
@@ -81,9 +63,28 @@ class FeedApiServiceTest extends IntegrationTest {
         );
     }
 
+    @DisplayName("cursorId 값이 null 로 들어오면 가장 최신순으로 조회한다")
+    @Test
+    void findAll_cursorIdNull() {
+        // given
+        LocalDateTime today = LocalDateTime.now().minusDays(3);
+        fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
+
+        // when
+        List<FeedResponse> feedResponses = feedApiService.findAll(new PagingParams("latest", 10));
+
+        //then
+        assertAll(
+                () -> assertThat(feedResponses).hasSize(3),
+                () -> assertThat(feedResponses.stream()
+                        .map(FeedResponse::getDescription)
+                        .collect(Collectors.toList())).containsExactly("third", "second", "first")
+        );
+    }
+
     @DisplayName("모든 피드 조회 시 사이클의 몇 번째 인증인지 알려준다.")
     @Test
-    void findAllWithProgress() {
+    void findAll_WithProgress() {
         // given
         LocalDateTime today = LocalDateTime.now();
         Cycle cycle1 = fixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, today);
@@ -95,6 +96,7 @@ class FeedApiServiceTest extends IntegrationTest {
         List<FeedResponse> feedResponses = feedApiService.findAll(
                 new PagingParams("latest", 10, cycle1.getCycleDetailsOrderByProgress().get(2).getId())
         );
+
         // then
         assertAll(
                 () -> assertThat(feedResponses).hasSize(10),
@@ -104,16 +106,7 @@ class FeedApiServiceTest extends IntegrationTest {
         );
     }
 
-    @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
-    @Test
-    void findById_notExistCycleDetail() {
-        assertThatThrownBy(() -> feedApiService.searchById(1L))
-                .isInstanceOf(BusinessException.class)
-                .extracting("exceptionData")
-                .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
-    }
-
-    @DisplayName("단건 조회")
+    @DisplayName("cycleDetailId 로 feed 를 조회한다.")
     @Test
     void findById() {
         // given
@@ -123,12 +116,21 @@ class FeedApiServiceTest extends IntegrationTest {
         // when
         List<CycleDetail> cycleDetails = cycle.getCycleDetailsOrderByProgress();
         Long cycleDetailId = cycleDetails.get(0).getId();
-        FeedResponse feedResponse = feedApiService.searchById(cycleDetailId);
+        FeedResponse feedResponse = feedApiService.findById(cycleDetailId);
 
         // then
         assertAll(
                 () -> assertThat(feedResponse.getCycleDetailId()).isEqualTo(cycleDetailId),
                 () -> assertThat(feedResponse.getProgressCount()).isEqualTo(1)
         );
+    }
+
+    @DisplayName("단건 조회 시 CycleDetail 을 찾지 못했을 경우 예외 발생")
+    @Test
+    void findById_notExistCycleDetail() {
+        assertThatThrownBy(() -> feedApiService.findById(1L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("exceptionData")
+                .isEqualTo(ExceptionData.NOT_FOUND_CYCLE_DETAIL);
     }
 }

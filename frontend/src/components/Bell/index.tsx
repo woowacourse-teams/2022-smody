@@ -9,7 +9,11 @@ export const Bell = ({ count, isSubscribed }: BellProps) => {
   const themeContext = useThemeContext();
 
   return (
-    <IconWrapper fill={themeContext.primary}>
+    <IconWrapper
+      fill={themeContext.primary}
+      aria-label={`${count} 개의 알림`}
+      role="button"
+    >
       {isSubscribed ? <BellFilledIcon /> : <BellEmptyIcon />}
       {!!count && <BellCount>{count}</BellCount>}
     </IconWrapper>

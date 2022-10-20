@@ -20,7 +20,7 @@ export const SnackBar = () => {
   return (
     <>
       {ReactDOM.createPortal(
-        <SnackBarElement status={status}>
+        <SnackBarElement status={status} role="alert">
           <FlexBox flexDirection="row" alignItems="center" justifyContent="space-between">
             <Text color={themeContext.onPrimary} size={12}>
               {message}

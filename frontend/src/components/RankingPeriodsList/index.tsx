@@ -35,7 +35,8 @@ export const RankingPeriodsList = () => {
           icon="점수기준"
           ariaLabel="점수 기준 툴팁"
           xPosition="left"
-          left="-172px"
+          yPosition="bottom"
+          xDelta="-190px"
         >
           <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#7B61FF' }}>
             점수 기준

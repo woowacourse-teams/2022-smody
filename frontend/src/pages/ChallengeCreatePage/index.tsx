@@ -41,7 +41,7 @@ const ChallengeCreatePage = () => {
 
   return (
     <FlexBox flexDirection="column">
-      <Title text="새로운 챌린지 생성" linkTo={CLIENT_PATH.SEARCH} />
+      <Title text="새로운 챌린지 생성" linkTo={CLIENT_PATH.CHALLENGE_SEARCH} />
       <ChallengeCreateForm onSubmit={handleClickCreateChallenge}>
         <Input
           type="text"
@@ -121,7 +121,7 @@ const ColorList = ({ colorSelectedIndex, handleSelectColor }: ColorListProps) =>
             checked={colorSelectedIndex === index}
             onChange={handleSelectColor}
           />
-          <label htmlFor={`color${index}`}>
+          <label htmlFor={`color${index}`} aria-label={`색상 ${index}`}>
             <ColorDiv color={color} />
           </label>
         </li>

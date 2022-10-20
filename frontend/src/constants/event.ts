@@ -6,7 +6,7 @@ type EventChallengeListIndexSignature = {
   };
 };
 
-export const EVENT_CHALLENGE_ID_LIST = [78, 79, 80, 81, 82, 83, 84, 85];
+export const EVENT_CHALLENGE_ID_LIST = [78, 79, 80, 81, 82, 83, 84, 85, 88, 89, 90];
 
 export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
   78: {
@@ -54,18 +54,18 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
     link: 'https://www.gongcheck.day/',
     challengeName: '공책으로 우리 캠퍼스 아끼기',
   },
-  10: {
+  90: {
     name: 'thankoo',
     link: 'https://thankoo.co.kr/',
-    challengeName: '땡쿠로 툭 건드리기',
+    challengeName: '땡쿠에서 사람들 콕 찔러보기',
   },
   11: { name: 'f12', link: 'https://f12.app/', challengeName: '챌린지명' },
   12: { name: 'levellog', link: 'https://levellog.app/', challengeName: '챌린지명' },
   13: { name: 'ternoko', link: 'https://ternoko.site/', challengeName: '챌린지명' },
-  14: {
+  89: {
     name: 'sokdaksokdak',
     link: 'https://sokdaksokdak.com/',
-    challengeName: '챌린지명',
+    challengeName: '속닥속닥에 글 작성하기',
   },
   15: { name: 'morak', link: 'https://mo-rak.com/', challengeName: '챌린지명' },
   16: {
@@ -74,7 +74,11 @@ export const EVENT_CHALLENGES: EventChallengeListIndexSignature = {
     challengeName: '스모디에서 챌린지 인증하기',
   },
 
-  17: { name: 'moamoa', link: 'https://moamoa.space/', challengeName: '챌린지명' },
+  88: {
+    name: 'moamoa',
+    link: 'https://moamoa.space/',
+    challengeName: '모아모아에서 스터디 진행하기',
+  },
 
   18: { name: 'jupjup', link: 'https://jupjup.site/', challengeName: '챌린지명' },
 };

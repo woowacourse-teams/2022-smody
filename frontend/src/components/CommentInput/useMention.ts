@@ -1,5 +1,12 @@
 import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
-import { useState, useEffect, useRef, KeyboardEventHandler, RefObject } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  FormEventHandler,
+  RefObject,
+  KeyboardEventHandler,
+} from 'react';
 import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
@@ -22,6 +29,9 @@ type useMentionProps<T extends HTMLElement> = {
   mentionedMemberIds: number[];
   setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
 };
+
+const ABSENCE_SYMBOL_POSITION = -1;
+
 const useMention = <T extends HTMLElement>({
   commentInputRef,
   setContent,
@@ -31,22 +41,20 @@ const useMention = <T extends HTMLElement>({
   // ------- 멘션 알림 기능 ------------------------
   const isFirstRendered = useRef(true);
   const [filterValue, setFilterValue] = useState('');
-  const ABSENCE_SYMBOL_POSITION = -1;
 
+  // lastMentionSymbolPositionRef
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiatedRef = useRef(false);
-  const isPrevPressBackspace = useRef(false);
-  const prevCursorPosition = useRef(0);
 
   const { isPopoverOpen, handleOpenPopover, handleClosePopover, selectMember } =
     usePopover({
       commentInputRef,
       mentionedMemberIds,
       setMentionedMemberIds,
-      lastMentionSymbolPosition: lastMentionSymbolPositionRef.current,
+      lastMentionSymbolPosition: lastMentionSymbolPositionRef,
       filterValue,
       setFilterValue,
-      isFilterValueInitiated: isFilterValueInitiatedRef.current,
+      isFilterValueInitiated: isFilterValueInitiatedRef,
     });
 
   const {
@@ -64,6 +72,7 @@ const useMention = <T extends HTMLElement>({
           return;
         }
 
+        // 멘션 심볼 포지션(@)이 없다면 아래 함수를 호출하지 않도록 고쳐야한다.
         handleOpenPopover();
       },
       enabled: false,
@@ -77,117 +86,118 @@ const useMention = <T extends HTMLElement>({
     isLoading: isLoadingPostMentionNotifications,
   } = usePostMentionNotifications();
 
+  const isNotDeleteSpanNode = (nodes: NodeList) =>
+    nodes.length === 0 || nodes[0].nodeName !== 'SPAN';
+
+  const inputChangeHandler: MutationCallback = (mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type !== 'childList') {
+        return;
+      }
+
+      if (isNotDeleteSpanNode(mutation.removedNodes)) {
+        return;
+      }
+
+      const targetNode = mutation.removedNodes[0] as HTMLElement;
+      const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
+
+      setMentionedMemberIds((prevMentionMemberIds) => {
+        const copiedMentionMembersId = [...prevMentionMemberIds];
+
+        const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
+
+        if (deletedIndex > -1) {
+          copiedMentionMembersId.splice(deletedIndex, 1);
+        }
+
+        return copiedMentionMembersId;
+      });
+    });
+  };
+
+  useMutationObserver<T>(commentInputRef, inputChangeHandler);
+
   useEffect(() => {
+    // useGetMembers의 enables 옵션을 false로 했기 때문에 해당 로직은 제거해도 될 거 같다.
     if (isFirstRendered.current) {
       isFirstRendered.current = false;
       return;
     }
-    if (isFilterValueInitiatedRef.current === true) {
+
+    if (isFilterValueInitiatedRef.current) {
+      isFilterValueInitiatedRef.current = false;
       return;
     }
 
     refetchMembers();
   }, [filterValue]);
 
-  useEffect(() => {
-    const handleKeydown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-      const { key } = event;
+  const handleKeydownCommentInput: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    const { key } = event;
 
-      if (key === 'Backspace' || key === 'Delete') {
-        detectMentionSymbolWhenTextDeleted();
-        return;
-      }
-
-      isPrevPressBackspace.current = false;
-      prevCursorPosition.current = 0;
-
-      if (key === 'ArrowLeft') {
-        detectLeftEscapingMentionArea();
-        return;
-      }
-
-      if (key === 'ArrowRight') {
-        detectRightEscapingMentionArea();
-        return;
-      }
-    };
-    commentInputRef.current!.addEventListener('keydown', handleKeydown);
-  }, []);
-
-  // inputChangeHandler 시작
-  const inputChangeHandler: MutationCallback = (mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList') {
-        if (
-          mutation.removedNodes.length > 0 &&
-          mutation.removedNodes[0].nodeName === 'SPAN'
-        ) {
-          const targetNode = mutation.removedNodes[0] as HTMLElement;
-          const deletedMemberId = Number(targetNode.getAttribute('data-member-id'));
-          const deletedIndex = mentionedMemberIds.indexOf(deletedMemberId);
-          if (deletedIndex > -1) {
-            mentionedMemberIds.splice(deletedIndex, 1);
-          }
-
-          setMentionedMemberIds((prevMentionMemberIds) => {
-            const copiedMentionMembersId = [...prevMentionMemberIds];
-
-            const deletedIndex = copiedMentionMembersId.indexOf(deletedMemberId);
-
-            if (deletedIndex > -1) {
-              copiedMentionMembersId.splice(deletedIndex, 1);
-            }
-
-            return copiedMentionMembersId;
-          });
-        }
-      }
-    });
-
-    const hasSymbolPosition =
-      lastMentionSymbolPositionRef.current !== ABSENCE_SYMBOL_POSITION;
-
-    const isCurrentCharacterWhiteSpace = (text: string) =>
-      text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
-
-    if (isFilterValueInitiatedRef.current === true) {
-      isFilterValueInitiatedRef.current = false;
+    if (key === 'Backspace' || key === 'Delete') {
+      detectMentionSymbolWhenTextDeleted();
+      return;
     }
 
-    const setNicknameAfterMentionSymbol = (text: string) => {
-      if (isCurrentCharacterWhiteSpace(text)) {
-        lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-        setFilterValue(''); // 초기화
-        isFilterValueInitiatedRef.current = true;
+    if (key === 'ArrowLeft') {
+      detectLeftEscapingMentionArea();
+      return;
+    }
 
-        handleClosePopover();
-      } else {
-        // 건들지 마시오
-        setFilterValue(
-          text.slice(
-            lastMentionSymbolPositionRef.current,
-            getCursorPosition(commentInputRef.current!)!,
-          ),
-        );
-      }
-    };
+    if (key === 'ArrowRight') {
+      detectRightEscapingMentionArea();
+      return;
+    }
+  };
 
+  const handleInputCommentInput: FormEventHandler<HTMLDivElement> = () => {
     resizeHeight(commentInputRef.current!);
     const { innerText } = commentInputRef.current!;
 
-    if (hasSymbolPosition) {
-      setNicknameAfterMentionSymbol(innerText);
-
-      if (getCursorPosition(commentInputRef.current!)! === 0) {
-        handleClosePopover();
-      }
-    } else {
-      detectMentionSymbolWhenTextAdded(innerText);
-    }
+    resetIsFilterValueInitiated();
 
     setContent(innerText.slice(0, MAX_TEXTAREA_LENGTH));
+    if (hasNotMentionSymbolPosition) {
+      detectMentionSymbolWhenTextAdded(innerText);
+      return;
+    }
+
+    setNicknameAfterMentionSymbol(innerText);
+
+    if (isStartPosition()) {
+      handleClosePopover();
+    }
   };
-  // inputChangeHandler 끝
+
+  const resetIsFilterValueInitiated = () => {
+    if (isFilterValueInitiatedRef.current) {
+      isFilterValueInitiatedRef.current = false;
+    }
+  };
+
+  const hasNotMentionSymbolPosition =
+    lastMentionSymbolPositionRef.current === ABSENCE_SYMBOL_POSITION;
+
+  const setNicknameAfterMentionSymbol = (text: string) => {
+    if (isCurrentCharacterWhiteSpace(text)) {
+      initializeMention();
+      return;
+    }
+
+    const detectedFilterValue = text.slice(
+      lastMentionSymbolPositionRef.current,
+      getCursorPosition(commentInputRef.current!)!,
+    );
+
+    setFilterValue(detectedFilterValue);
+  };
+
+  const isStartPosition = () => getCursorPosition(commentInputRef.current!) === 0;
+
+  const isCurrentCharacterWhiteSpace = (text: string) =>
+    text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
 
   // 문자열 새로 입력됐을 때
   const detectMentionSymbolWhenTextAdded = (text: string) => {
@@ -207,90 +217,105 @@ const useMention = <T extends HTMLElement>({
 
     lastMentionSymbolPositionRef.current = cursorPosition;
     refetchMembers();
+
+    // onSuccess 안에서 popover를 열기 떄문에 해당 로직은 제거해도 될 거 같다.
     handleOpenPopover();
   };
 
   const detectMentionSymbolWhenTextDeleted = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
-
     const { innerText } = commentInputRef.current!;
 
-    useRef;
     // 지우려는 element 첫 번째 자식인 경우 contentEditable 부모에서 해당 element를 삭제할 수 없는 이슈 때문에
     // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
-    if (
-      commentInputRef.current!.childNodes.length === 3 &&
-      commentInputRef.current!.childNodes[1].nodeName &&
-      commentInputRef.current!.childNodes[0].textContent === ''
-    ) {
-      // init 3종 세트
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      isFilterValueInitiatedRef.current = true;
-      setFilterValue('');
-      handleClosePopover();
+    if (isFirstMentionTag()) {
+      initializeMention();
 
-      commentInputRef.current!.textContent = ' ';
-
+      // 아래 공백의 타당한 이유가 없다면 제거
+      commentInputRef.current!.textContent = '';
       return;
     }
 
-    if (!innerText.includes('@')) {
+    if (isNotIncludeMentionSymbol(innerText)) {
+      // 아래의 초기화 로직이 필요한 이유가 타당하지 않다면 제거
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-
       return;
     }
 
     const mentionSymbolPosition = innerText.lastIndexOf('@', cursorPosition);
 
     const targetText = innerText.slice(mentionSymbolPosition + 1, cursorPosition - 1);
-    // 슬라이스 한 문자열 내부에 공백이 있나
-    if (cursorPosition - 1 === mentionSymbolPosition) {
+
+    // 현재 지운 문자가 @일때 그 앞부분을 다시 탐색하여 유효한 @를 찾지 못할 때 return 하도록 조건문 변경 필요
+    if (isCurrentDeleteMentionSymbol(cursorPosition, mentionSymbolPosition)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+
       return;
     }
 
-    if (targetText.includes(' ')) {
+    // 슬라이스 한 문자열 내부에 공백이 있나, 해당 조건을 위 조건문이 리팩터링 됐을 때 위 조건문 위로 옮길 필요가 있음
+    if (isIncludeWhite(targetText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
     // mentionSymbolPosition 앞에 공백이 있나 && mentionSymbolPosition 위치가 첫번째이다.
-    if (mentionSymbolPosition !== 0 && innerText[mentionSymbolPosition - 1] !== ' ') {
+    if (isNotMeetMentionSymbol(mentionSymbolPosition, innerText)) {
       lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
       return;
     }
 
     lastMentionSymbolPositionRef.current = mentionSymbolPosition + 1;
-    isPrevPressBackspace.current = true;
-    prevCursorPosition.current = cursorPosition;
   };
+
+  const isFirstMentionTag = () =>
+    commentInputRef.current!.childNodes.length === 3 &&
+    commentInputRef.current!.childNodes[1].nodeName &&
+    commentInputRef.current!.childNodes[0].textContent === '';
+
+  const isNotIncludeMentionSymbol = (text: string) => !text.includes('@');
+
+  const isCurrentDeleteMentionSymbol = (
+    cursorPosition: number,
+    mentionSymbolPosition: number,
+  ) => cursorPosition - 1 === mentionSymbolPosition;
+
+  const isIncludeWhite = (text: string) => text.includes(' ');
+
+  const isNotMeetMentionSymbol = (mentionSymbolPosition: number, text: string) =>
+    mentionSymbolPosition !== 0 && text[mentionSymbolPosition - 1] !== ' ';
 
   const detectLeftEscapingMentionArea = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
-    if (innerText[cursorPosition - 2] === ' ') {
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      setFilterValue('');
-      isFilterValueInitiatedRef.current = true;
-      handleClosePopover();
+    if (isEscapingLeftMentionArea(innerText, cursorPosition)) {
+      initializeMention();
     }
   };
+
+  const isEscapingLeftMentionArea = (text: string, cursorPosition: number) =>
+    text[cursorPosition - 2] === ' ';
 
   const detectRightEscapingMentionArea = () => {
     const cursorPosition = getCursorPosition(commentInputRef.current!)!;
     const { innerText } = commentInputRef.current!;
 
-    if (innerText[cursorPosition] === ' ') {
-      // init 3종 세트
-      lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
-      setFilterValue('');
-      isFilterValueInitiatedRef.current = true;
-      handleClosePopover();
+    if (isEscapingRightMentionArea(innerText, cursorPosition)) {
+      initializeMention();
     }
   };
 
-  useMutationObserver<T>(commentInputRef, inputChangeHandler);
+  const isEscapingRightMentionArea = (text: string, cursorPosition: number) =>
+    text[cursorPosition] === ' ';
+
+  const initializeMention = () => {
+    lastMentionSymbolPositionRef.current = ABSENCE_SYMBOL_POSITION;
+    // FilterValue 초기값 상수화 필요
+    setFilterValue('');
+    isFilterValueInitiatedRef.current = true;
+    handleClosePopover();
+  };
 
   return {
     postMentionNotifications,
@@ -301,6 +326,8 @@ const useMention = <T extends HTMLElement>({
     hasNextMembersPage,
     fetchNextMembersPage,
     selectMember,
+    handleKeydownCommentInput,
+    handleInputCommentInput,
   };
 };
 

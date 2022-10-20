@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class TokenPayload {
 
+    public static final TokenPayload NOT_LOGIN_TOKEN_PAYLOAD = new TokenPayload(0L);
+
     private Long id;
 
     public Map<String, Object> toMap() {

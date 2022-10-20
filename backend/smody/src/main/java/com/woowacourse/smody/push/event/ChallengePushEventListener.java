@@ -38,7 +38,7 @@ public class ChallengePushEventListener {
     }
 
     private void executePush(Cycle cycle) {
-        cycle = cycleService.search(cycle.getId());
+        cycle = cycleService.searchCycle(cycle.getId());
         deleteInCompleteNotificationIfSamePathIdPresent(cycle);
         if (cycle.isSuccess()) {
             return;
@@ -47,7 +47,7 @@ public class ChallengePushEventListener {
     }
 
     private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
-        pushNotificationService.searchSamePathAndStatus(cycle.getId(), PushStatus.IN_COMPLETE)
+        pushNotificationService.searchByPathAndStatusAndPushCase(cycle.getId(), PushStatus.IN_COMPLETE, PushCase.CHALLENGE)
                 .ifPresent(notification -> pushNotificationService.deleteById(notification.getId()));
     }
 

@@ -60,7 +60,7 @@ class WebPushBatchTest extends IntegrationTest {
     @Test
     void sendPushNotifications() {
         // given
-        given(webPushService.sendNotification(any(), any()))
+        given(webPushApi.sendNotification(any(), any()))
                 .willReturn(true);
 
         // when
@@ -70,7 +70,7 @@ class WebPushBatchTest extends IntegrationTest {
         List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
         assertAll(
                 () -> assertThat(result).hasSize(2),
-                () -> verify(webPushService, times(1))
+                () -> verify(webPushApi, times(1))
                         .sendNotification(any(), any())
         );
     }
@@ -79,7 +79,7 @@ class WebPushBatchTest extends IntegrationTest {
     @Test
     void sendPushNotifications_notComplete() {
         // given
-        given(webPushService.sendNotification(any(), any()))
+        given(webPushApi.sendNotification(any(), any()))
                 .willReturn(false);
 
         // when
@@ -89,7 +89,7 @@ class WebPushBatchTest extends IntegrationTest {
         List<PushNotification> result = pushNotificationRepository.findByPushStatus(PushStatus.COMPLETE);
         assertAll(
                 () -> assertThat(result).hasSize(1),
-                () -> verify(webPushService, times(1))
+                () -> verify(webPushApi, times(1))
                         .sendNotification(any(), any())
         );
     }
@@ -98,7 +98,7 @@ class WebPushBatchTest extends IntegrationTest {
     @Test
     void sendPushNotifications_deleteSubscriptions() {
         // given
-        given(webPushService.sendNotification(any(), any()))
+        given(webPushApi.sendNotification(any(), any()))
                 .willReturn(false);
 
         // when

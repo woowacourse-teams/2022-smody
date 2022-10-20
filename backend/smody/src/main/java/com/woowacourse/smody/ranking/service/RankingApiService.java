@@ -22,23 +22,23 @@ public class RankingApiService {
 
     private final RankingService rankingService;
 
-    public List<RankingPeriodResponse> findAllPeriod(PagingParams pagingParams) {
-        List<RankingPeriod> rankingPeriods = rankingService.findAllPeriod(pagingParams);
+    public List<RankingPeriodResponse> findAllRankingPeriod(PagingParams pagingParams) {
+        List<RankingPeriod> rankingPeriods = rankingService.findAllRankingPeriod(pagingParams);
         return rankingPeriods.stream()
                 .map(RankingPeriodResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public List<RankingActivityResponse> findAllRankedActivityByPeriodId(Long rankingPeriodId) {
-        List<RankingActivity> rankingActivities = rankingService.findAllRankedActivityByPeriodId(rankingPeriodId);
-        RankManager rankManager = RankManager.rank(rankingActivities);
+    public List<RankingActivityResponse> findAllRankingActivityByPeriodId(Long rankingPeriodId) {
+        List<RankingActivity> rankingActivities = rankingService.findAllRankingActivityByPeriodId(rankingPeriodId);
+        RankManager rankManager = RankManager.of(rankingActivities);
         return rankingActivities.stream()
                 .map(activity -> new RankingActivityResponse(rankManager.getRanking(activity), activity))
                 .collect(Collectors.toList());
     }
 
     public RankingActivityResponse findActivityOfMine(TokenPayload tokenPayload, Long rankingPeriodId) {
-        List<RankingActivityResponse> responses = findAllRankedActivityByPeriodId(rankingPeriodId);
+        List<RankingActivityResponse> responses = findAllRankingActivityByPeriodId(rankingPeriodId);
         return responses.stream()
                 .filter(response -> response.getMemberId().equals(tokenPayload.getId()))
                 .findFirst()

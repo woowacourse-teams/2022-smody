@@ -26,15 +26,14 @@ public class RankingService {
     private final RankingPeriodRepository rankingPeriodRepository;
     private final RankingActivityRepository rankingActivityRepository;
 
-    public List<RankingPeriod> findAllPeriod(PagingParams pagingParams) {
+    public List<RankingPeriod> findAllRankingPeriod(PagingParams pagingParams) {
         Sort sort = SortSelection.findByParameter(pagingParams.getSort()).getSort();
         return rankingPeriodRepository.findAll(sort);
     }
 
-    public List<RankingActivity> findAllRankedActivityByPeriodId(Long rankingPeriodId) {
+    public List<RankingActivity> findAllRankingActivityByPeriodId(Long rankingPeriodId) {
         RankingPeriod rankingPeriod = search(rankingPeriodId);
-        return rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(
-                rankingPeriod);
+        return rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(rankingPeriod);
     }
 
     private RankingPeriod search(Long rankingPeriodId) {
