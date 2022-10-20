@@ -83,7 +83,7 @@
       "name": "새로운 챌린지 검색하기",
       "short_name": "검색",
       "description": "새로운 챌린지를 검색하고 도전할 수 있다",
-      "url": "/search",
+      "url": "/challenge/search",
       "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
