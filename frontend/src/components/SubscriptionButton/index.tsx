@@ -41,6 +41,7 @@ export const SubscriptionButton = ({ updateIsSubscribed }: SubscriptionButtonPro
         <DeleteWrapper>
           <DeleteButton
             type="button"
+            aria-label="알림 전체 삭제"
             disabled={isLoadingDeleteAllNotifications}
             onClick={() => handleClickDeleteAllNotifications()}
           >
