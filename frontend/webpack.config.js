@@ -93,6 +93,7 @@ module.exports = {
         { from: 'public/image', to: 'image' },
         { from: 'public/manifest.json', to: '.' },
         { from: 'public/pwaServiceWorker.js', to: '.' },
+        { from: 'public/assetlinks.json', to: '.well-known' },
       ],
     }),
     // new BundleAnalyzerPlugin(),
