@@ -80,10 +80,10 @@
       "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "새로운 챌린지 검색하기",
+      "name": "챌린지 검색하기",
       "short_name": "검색",
       "description": "새로운 챌린지를 검색하고 도전할 수 있다",
-      "url": "/search",
+      "url": "/challenge/search",
       "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
@@ -91,6 +91,13 @@
       "short_name": "피드",
       "description": "다른 사용자들의 피드를 볼 수 있다",
       "url": "/feed",
+      "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "랭킹 보기",
+      "short_name": "랭킹",
+      "description": "전체 랭킹을 볼 수 있다",
+      "url": "/ranks",
       "icons": [{ "src": "image/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ],
