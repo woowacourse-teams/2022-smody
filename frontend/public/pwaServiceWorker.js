@@ -48,15 +48,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Cache Only 전략은 특정 버전에서 정적이라고 간주되는 리소스에 대한 캐싱 시 적합하다. request가 있을 경우 캐싱된 리소스만 반환하고 fetch하진 않는다.
-// Cache First 전략은 캐시에서 찾지 못하면 네트워크 요청을 하는 것이다. 서비스 워커는 먼저 캐시에 접근하고 매칭된 리소스를 찾지 못하면, 네트워크에 요청한다.
-// Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
-
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const urlPath = url.pathname.split('?')[0];
 
-  // App Shell을 Cache Storage에 캐싱(Cache Only)
+  // App Shell(Cache First)
+  // Cache First 전략은 캐시에서 찾지 못하면 네트워크 요청을 하는 것이다. 서비스 워커는 먼저 캐시에 접근하고 매칭된 리소스를 찾지 못하면, 네트워크에 요청한다.
   if (APP_SHELL.includes(urlPath)) {
     event.respondWith(
       caches.match(urlPath).then((response) => {
@@ -66,7 +63,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // bundle js 파일들을 Cache Storage에 캐싱(Cache First)
+  // bundle js(Cache First)
   if (event.request.url.includes('bundle')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
@@ -94,8 +91,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 새로 받는 이미지를 Cache Storage에 캐싱(Cache First)
+  // 이미지(Network First)
   // Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
+
   if (url.pathname.startsWith('/images')) {
     event.respondWith(
       caches.open(IMAGE_CACHE_NAME).then((cache) => {
