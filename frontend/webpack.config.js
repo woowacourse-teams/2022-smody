@@ -65,18 +65,13 @@ module.exports = {
       '...',
       new ESBuildMinifyPlugin({
         target: 'es2020',
-        css: true,
       }),
     ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(
         isProd ? process.env.PROD_BASE_URL : process.env.DEV_BASE_URL,
