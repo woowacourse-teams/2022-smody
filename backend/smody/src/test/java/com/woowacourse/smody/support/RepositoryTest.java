@@ -11,16 +11,16 @@ import org.springframework.context.annotation.Import;
 @Import({ResourceFixture.class, SmodyDatabaseManager.class, QueryFactoryTestConfig.class})
 public class RepositoryTest {
 
-	@Autowired
-	private SmodyDatabaseManager smodyDatabaseManager;
+    @Autowired
+    private SmodyDatabaseManager smodyDatabaseManager;
 
-	@BeforeEach
-	void init() {
-		smodyDatabaseManager.setUp();
-	}
+    @BeforeEach
+    void init() {
+        smodyDatabaseManager.setUp();
+    }
 
-	@AfterEach
-	void clear() {
-		smodyDatabaseManager.truncateTables();
-	}
+    @AfterEach
+    void clear() {
+        smodyDatabaseManager.truncateTables();
+    }
 }

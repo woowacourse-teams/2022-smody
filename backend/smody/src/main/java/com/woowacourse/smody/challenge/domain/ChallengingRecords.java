@@ -24,7 +24,6 @@ public class ChallengingRecords {
     public static ChallengingRecords from(List<Cycle> cycles) {
         Map<Challenge, List<Cycle>> byChallenge = cycles.stream()
                 .collect(groupingBy(Cycle::getChallenge));
-
         Map<Challenge, List<ChallengingRecord>> value = new HashMap<>();
         for (Challenge challenge : byChallenge.keySet()) {
             value.put(challenge, makeRecords(byChallenge, challenge));

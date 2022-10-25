@@ -15,7 +15,9 @@ public interface PushNotificationRepository extends JpaRepository<PushNotificati
 
     List<PushNotification> findByPushStatus(PushStatus pushStatus);
 
-    Optional<PushNotification> findByPathIdAndPushStatusAndPushCase(Long pathId, PushStatus pushStatus, PushCase pushCase);
+    Optional<PushNotification> findByPathIdAndPushStatusAndPushCase(Long pathId,
+                                                                    PushStatus pushStatus,
+                                                                    PushCase pushCase);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from PushNotification pn where pn.member = :member")

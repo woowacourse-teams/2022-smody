@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class PushResponse {
+public class PushRequest {
 
     private String message;
     private Long pathId;
     private String pushCase;
 
-    public PushResponse(PushNotification pushNotification) {
+    public PushRequest(PushNotification pushNotification) {
         this.message = pushNotification.getMessage();
         this.pathId = pushNotification.getPathId();
         this.pushCase = pushNotification.getPushCase()

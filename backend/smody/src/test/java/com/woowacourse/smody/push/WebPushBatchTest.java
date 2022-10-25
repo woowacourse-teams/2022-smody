@@ -105,7 +105,7 @@ class WebPushBatchTest extends IntegrationTest {
         webPushBatch.sendPushNotifications();
 
         // then
-        List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
+        List<PushSubscription> subscriptions = pushSubscriptionService.findByMembers(
                 List.of(member1, member2)
         );
 

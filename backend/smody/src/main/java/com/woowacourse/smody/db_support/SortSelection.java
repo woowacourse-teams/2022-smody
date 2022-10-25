@@ -78,11 +78,10 @@ public enum SortSelection {
         @Override
         public OrderSpecifier<?>[] getOrderSpecifiers() {
             return new OrderSpecifier[]{
-                NumberExpression.random().asc()
+                    NumberExpression.random().asc()
             };
         }
-    }
-    ;
+    };
 
     private final String parameter;
 

@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class CycleProgressEvent {
 
-	private final Cycle cycle;
+    private final Cycle cycle;
 }

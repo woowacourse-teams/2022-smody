@@ -26,7 +26,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
         if (handler instanceof HandlerMethod) {
-            return handleHandlerMethod(request, (HandlerMethod)handler);
+            return handleHandlerMethod(request, (HandlerMethod) handler);
         }
         return true;
     }

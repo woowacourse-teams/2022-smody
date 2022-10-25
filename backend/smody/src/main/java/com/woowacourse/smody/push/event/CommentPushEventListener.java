@@ -26,12 +26,10 @@ public class CommentPushEventListener {
     @TransactionalEventListener
     public void handle(CommentCreateEvent event) {
         Comment comment = commentService.search(event.getComment().getId());
-        Member cycleDetailWriter = extractDetailWriter(comment);
-
-        if (isSelfCommented(comment, cycleDetailWriter)) {
+        Member cycleDetailOwner = extractDetailWriter(comment);
+        if (isSelfCommented(comment, cycleDetailOwner)) {
             return;
         }
-
         pushNotificationService.create(buildNotification(comment));
     }
 
@@ -43,16 +41,15 @@ public class CommentPushEventListener {
         return cycleDetailWriter.matchId(comment.getMember().getId());
     }
 
-    public PushNotification buildNotification(Object entity) {
-        Comment comment = (Comment) entity;
-        Member cycleDetailWriter = extractDetailWriter(comment);
+    public PushNotification buildNotification(Comment comment) {
         Member commentWriter = comment.getMember();
+        Member cycleDetailOwner = extractDetailWriter(comment);
         return PushNotification.builder()
                 .message(commentWriter.getNickname() + "님께서 회원님의 피드에 댓글을 남겼어요!")
                 .pushTime(comment.getCreatedAt())
                 .pushStatus(PushStatus.IN_COMPLETE)
                 .pushCase(PushCase.COMMENT)
-                .member(cycleDetailWriter)
+                .member(cycleDetailOwner)
                 .pathId(comment.getCycleDetail().getId())
                 .build();
     }

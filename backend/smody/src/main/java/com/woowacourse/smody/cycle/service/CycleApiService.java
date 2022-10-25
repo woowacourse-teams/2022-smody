@@ -48,6 +48,7 @@ public class CycleApiService {
         Cycle cycle = cycleService.create(
                 tokenPayload.getId(), cycleRequest.getChallengeId(), cycleRequest.getStartTime()
         );
+
         applicationEventPublisher.publishEvent(new CycleCreateEvent(cycle));
         return cycle.getId();
     }
@@ -58,6 +59,7 @@ public class CycleApiService {
         validateAuthorizedMember(tokenPayload, cycle);
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
+
         applicationEventPublisher.publishEvent(new CycleProgressEvent(cycle));
         return new ProgressResponse(cycle.getProgress());
     }

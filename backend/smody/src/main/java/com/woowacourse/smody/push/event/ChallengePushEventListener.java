@@ -27,17 +27,17 @@ public class ChallengePushEventListener {
     @Async("asyncExecutor")
     @TransactionalEventListener
     public void handle(CycleCreateEvent event) {
-        executePush(event.getCycle());
+        createPushNotification(event.getCycle());
     }
 
     @Transactional
     @Async("asyncExecutor")
     @TransactionalEventListener
     public void handle(CycleProgressEvent event) {
-        executePush(event.getCycle());
+        createPushNotification(event.getCycle());
     }
 
-    private void executePush(Cycle cycle) {
+    private void createPushNotification(Cycle cycle) {
         cycle = cycleService.searchCycle(cycle.getId());
         deleteInCompleteNotificationIfSamePathIdPresent(cycle);
         if (cycle.isSuccess()) {
@@ -47,12 +47,12 @@ public class ChallengePushEventListener {
     }
 
     private void deleteInCompleteNotificationIfSamePathIdPresent(Cycle cycle) {
-        pushNotificationService.searchByPathAndStatusAndPushCase(cycle.getId(), PushStatus.IN_COMPLETE, PushCase.CHALLENGE)
-                .ifPresent(notification -> pushNotificationService.deleteById(notification.getId()));
+        pushNotificationService.searchByPathAndStatusAndPushCase(
+                cycle.getId(), PushStatus.IN_COMPLETE, PushCase.CHALLENGE
+        ).ifPresent(notification -> pushNotificationService.deleteById(notification.getId()));
     }
 
-    public PushNotification buildNotification(Object entity) {
-        Cycle cycle = (Cycle) entity;
+    public PushNotification buildNotification(Cycle cycle) {
         Challenge challenge = cycle.getChallenge();
         LocalDateTime pushTime = extractPushTime(cycle);
         return PushNotification.builder()

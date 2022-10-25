@@ -17,29 +17,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class SubscriptionPushEventListenerTest extends IntegrationTest {
 
-	@Autowired
-	private SubscriptionPushEventListener pushStrategy;
+    @Autowired
+    private SubscriptionPushEventListener pushStrategy;
 
-	@Autowired
-	private PushNotificationRepository pushNotificationRepository;
+    @Autowired
+    private PushNotificationRepository pushNotificationRepository;
 
-	@DisplayName("알림 구독에 대한 알림을 저장한다")
-	@Test
-	void push() throws InterruptedException {
-		// given
-		PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
+    @DisplayName("알림 구독에 대한 알림을 저장한다")
+    @Test
+    void push() throws InterruptedException {
+        // given
+        PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
 
-		// when
-		synchronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
+        // when
+        synchronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
 
-		// then
-		PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
-		assertAll(
-			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getMessage()).contains("조조그린님 스모디 알림이 구독되었습니다."),
-			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
-			() -> assertThat(pushNotification.getPathId()).isNull()
-		);
-	}
+        // then
+        PushNotification pushNotification = pushNotificationRepository.findAll().get(0);
+        assertAll(
+                () -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+                () -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
+                () -> assertThat(pushNotification.getMessage()).contains("조조그린님 스모디 알림이 구독되었습니다."),
+                () -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.SUBSCRIPTION),
+                () -> assertThat(pushNotification.getPathId()).isNull()
+        );
+    }
 }
