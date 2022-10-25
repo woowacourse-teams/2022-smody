@@ -30,6 +30,7 @@ public class CommentService {
         Member member = memberService.search(memberId);
         CycleDetail cycleDetail = cycleService.searchCycleDetail(cycleDetailId);
         Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
+
         applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
         return comment;
     }

@@ -35,7 +35,7 @@ class CycleDetailRepositoryTest extends RepositoryTest {
         LocalDateTime today = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.NOTHING, today);
         // when
-        cycle.increaseProgress(today.plusMinutes(5L),이미지, "인증");
+        cycle.increaseProgress(today.plusMinutes(5L), 이미지, "인증");
 
         // then
         assertThat(cycleDetailRepository.findAll()).hasSize(1);

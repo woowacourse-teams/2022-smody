@@ -46,17 +46,17 @@ public class Feed {
      * QueryDSL Projection 을 위한 생성자
      */
     public Feed(
-        Long cycleDetailId, String progressImage, String description,
-        LocalDateTime progressTime, Progress progress,
-        Long memberId, String picture, String nickname,
-        Long challengeId, String challengeName,
-        Long commentCount
+            Long cycleDetailId, String progressImage, String description,
+            LocalDateTime progressTime, Progress progress,
+            Long memberId, String picture, String nickname,
+            Long challengeId, String challengeName,
+            Long commentCount
     ) {
         this(cycleDetailId, progressImage,
-            description, progressTime, progress,
-            memberId, picture, nickname,
-            challengeId, challengeName,
-            Math.toIntExact(commentCount)
+                description, progressTime, progress,
+                memberId, picture, nickname,
+                challengeId, challengeName,
+                Math.toIntExact(commentCount)
         );
     }
 }

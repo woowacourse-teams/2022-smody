@@ -83,7 +83,8 @@ class CycleRepositoryTest extends RepositoryTest {
         fixture.사이클_생성_SUCCESS(더즈_ID, 오늘의_운동_ID, now.plusSeconds(1L));
 
         // when
-        List<ChallengingRecord> actual = cycleRepository.findAllChallengingRecordByMemberAfterTime(조조그린_ID, now.minusDays(3));
+        List<ChallengingRecord> actual = cycleRepository.findAllChallengingRecordByMemberAfterTime(조조그린_ID,
+                now.minusDays(3));
 
         for (ChallengingRecord challengingRecord : actual) {
             String name = challengingRecord.getChallenge().getName();

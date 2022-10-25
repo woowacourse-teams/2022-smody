@@ -12,7 +12,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @AllArgsConstructor
-public class TokenChekcerArgumentResolver implements HandlerMethodArgumentResolver {
+public class TokenCheckerArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenExtractor jwtTokenExtractor;
 
@@ -22,8 +22,10 @@ public class TokenChekcerArgumentResolver implements HandlerMethodArgumentResolv
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(MethodParameter parameter,
+                                  ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest,
+                                  WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = jwtTokenExtractor.extract(request);
         return new PreTokenPayLoad(token);

@@ -33,8 +33,8 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
     @Autowired
     private CycleApiService cycleApiService;
 
-	@Autowired
-	private CycleService cycleService;
+    @Autowired
+    private CycleService cycleService;
 
     @Autowired
     private PushNotificationRepository pushNotificationRepository;

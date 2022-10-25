@@ -65,7 +65,8 @@ public class ChallengeApiService {
     }
 
     private List<ChallengeTabResponse> getChallengeTabResponsesWhenRandom(final LocalDateTime searchTime,
-                                                                          final PagingParams pagingParams, final Member member) {
+                                                                          final PagingParams pagingParams,
+                                                                          final Member member) {
         List<Challenge> randomChallenges = challengeService.findRandomChallenges(pagingParams.getSize());
         List<Cycle> cycles = cycleService.findInProgress(searchTime);
         ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);

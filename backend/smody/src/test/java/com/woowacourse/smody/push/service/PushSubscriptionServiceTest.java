@@ -73,7 +73,7 @@ class PushSubscriptionServiceTest extends IntegrationTest {
         fixture.알림_구독(더즈_ID, "endpoint3");
 
         // when
-        List<PushSubscription> pushSubscriptions = pushSubscriptionService.searchByMembers(
+        List<PushSubscription> pushSubscriptions = pushSubscriptionService.findByMembers(
                 List.of(member1, member2, member3));
 
         // then

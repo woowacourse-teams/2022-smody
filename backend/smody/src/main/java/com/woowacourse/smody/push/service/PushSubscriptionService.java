@@ -30,7 +30,7 @@ public class PushSubscriptionService {
         pushSubscriptionRepository.delete(pushSubscription);
     }
 
-    public List<PushSubscription> searchByMembers(List<Member> members) {
+    public List<PushSubscription> findByMembers(List<Member> members) {
         return pushSubscriptionRepository.findByMemberIn(members);
     }
 

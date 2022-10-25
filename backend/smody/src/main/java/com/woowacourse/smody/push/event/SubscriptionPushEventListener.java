@@ -29,8 +29,7 @@ public class SubscriptionPushEventListener {
         pushNotificationService.create(buildNotification(member));
     }
 
-    public PushNotification buildNotification(Object entity) {
-        Member member = (Member) entity;
+    public PushNotification buildNotification(Member member) {
         return PushNotification.builder()
                 .message(member.getNickname() + "님 스모디 알림이 구독되었습니다.")
                 .pushTime(LocalDateTime.now())

@@ -28,16 +28,16 @@ public class PushNotificationService {
         pushNotificationRepository.save(pushNotification);
     }
 
-    public Optional<PushNotification> searchByPathAndStatusAndPushCase(Long pathId, PushStatus status, PushCase pushCase) {
+    public Optional<PushNotification> searchByPathAndStatusAndPushCase(Long pathId, PushStatus status,
+                                                                       PushCase pushCase) {
         return pushNotificationRepository.findByPathIdAndPushStatusAndPushCase(pathId, status, pushCase);
     }
 
     public List<PushNotification> searchPushable() {
-        LocalDateTime now = LocalDateTime.now();
         return pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
-            .stream()
-            .filter(notification -> notification.isPushable(now))
-            .collect(Collectors.toList());
+                .stream()
+                .filter(notification -> notification.isPushable(LocalDateTime.now()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -52,7 +52,7 @@ public class PushNotificationService {
     @Transactional
     public void deleteById(Long pushNotificationId) {
         try {
-            pushNotificationRepository.deleteById(pushNotificationId);
+            pushNotificationRepository.deleteById(pushNotificationId); // TODO-이거 예외 터짐? 멱등한거 아님?
         } catch (EmptyResultDataAccessException e) {
             throw new BusinessException(ExceptionData.NOT_FOUND_PUSH_NOTIFICATION);
         }

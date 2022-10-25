@@ -31,12 +31,12 @@ class FeedControllerTest extends ControllerTest {
         // given
         List<FeedResponse> feedResponses = List.of(
                 new FeedResponse(2L, 1L, "토닉.jpg", "토닉", "인증.jpg",
-                    2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                    "인증설명", 1L, "미라클 모닝", 5
+                        2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+                        "인증설명", 1L, "미라클 모닝", 5
                 ),
                 new FeedResponse(3L, 2L, "빅터.jpg", "빅터", "인증.jpg",
-                    3, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-                    "인증설명", 1L, "미라클 모닝", 4
+                        3, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+                        "인증설명", 1L, "미라클 모닝", 4
                 )
         );
         BDDMockito.given(feedApiService.findAll(any(PagingParams.class))).willReturn(feedResponses);
@@ -70,8 +70,8 @@ class FeedControllerTest extends ControllerTest {
     void findById() throws Exception {
         // given
         FeedResponse feedResponse = new FeedResponse(2L, 1L, "토닉.jpg", "토닉", "인증.jpg",
-            2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
-            "인증설명", 1L, "미라클 모닝", 5
+                2, LocalDateTime.of(2022, 8, 8, 10, 0, 0),
+                "인증설명", 1L, "미라클 모닝", 5
         );
         BDDMockito.given(feedApiService.findById(1L)).willReturn(feedResponse);
 
