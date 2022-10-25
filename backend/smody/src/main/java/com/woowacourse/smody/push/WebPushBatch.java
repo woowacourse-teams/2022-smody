@@ -28,7 +28,7 @@ public class WebPushBatch {
 
     @Transactional
     public void sendPushNotifications() {
-        log.info("알림 발송 시작!");
+        log.info("알림 발송 시작.");
         List<PushNotification> pushableNotifications = pushNotificationService.searchPushable();
 
         Map<Member, List<PushNotification>> notificationsByMember = groupByMemberNotifications(pushableNotifications);
@@ -41,7 +41,7 @@ public class WebPushBatch {
         }
 
         pushNotificationService.completeAll(pushableNotifications);
-        log.info("알림 발송 종료");
+        log.info("알림 발송 종료.");
     }
 
     private Map<Member, List<PushNotification>> groupByMemberNotifications(List<PushNotification> notifications) {

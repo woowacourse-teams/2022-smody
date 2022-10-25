@@ -2,12 +2,14 @@ package com.woowacourse.smody.comment.service;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
+import com.woowacourse.smody.comment.domain.CommentCreateEvent;
 import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.comment.dto.CommentResponse;
 import com.woowacourse.smody.comment.dto.CommentUpdateRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentApiService {
 
     private final CommentService commentService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Long create(TokenPayload tokenPayload, Long cycleDetailId, CommentRequest commentRequest) {
         Comment comment = commentService.create(
                 tokenPayload.getId(), cycleDetailId, commentRequest.getContent()
         );
+
+        applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
         return comment.getId();
     }
 
