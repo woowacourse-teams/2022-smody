@@ -5,14 +5,13 @@ const path = require('path');
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = process.env.NODE_ENV === 'local';
 const dotenv = require('dotenv');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 dotenv.config({ path: '.env' });
 
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: isProd ? false : 'eval',
+  devtool: isProd ? false : 'eval-cheap-module-source-map',
   performance: {
     hints: false,
   },
@@ -96,6 +95,5 @@ module.exports = {
         { from: 'public/assetlinks.json', to: '.well-known' },
       ],
     }),
-    // new BundleAnalyzerPlugin(),
   ],
 };
