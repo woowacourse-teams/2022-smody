@@ -54,7 +54,7 @@ public class PushNotificationService {
     @Transactional
     public void deleteById(Long pushNotificationId) {
         try {
-            pushNotificationRepository.deleteById(pushNotificationId); // TODO-이거 예외 터짐? 멱등한거 아님?
+            pushNotificationRepository.deleteById(pushNotificationId);
         } catch (EmptyResultDataAccessException e) {
             throw new BusinessException(ExceptionData.NOT_FOUND_PUSH_NOTIFICATION);
         }
