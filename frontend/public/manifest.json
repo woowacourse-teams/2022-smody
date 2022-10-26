@@ -13,35 +13,35 @@
   "screenshots": [
     {
       "src": "image/screenshot-0.png",
-      "sizes": "1276x1836",
+      "sizes": "638x918",
       "type": "image/png",
       "platform": "narrow",
       "label": "스모디 앱의 홈스크린"
     },
     {
       "src": "image/screenshot-1.png",
-      "sizes": "1276x1836",
+      "sizes": "638x918",
       "type": "image/png",
       "platform": "narrow",
       "label": "챌린지 인증"
     },
     {
       "src": "image/screenshot-2.png",
-      "sizes": "1276x1836",
+      "sizes": "638x918",
       "type": "image/png",
       "platform": "narrow",
       "label": "챌린지 검색"
     },
     {
       "src": "image/screenshot-3.png",
-      "sizes": "1276x1836",
+      "sizes": "638x918",
       "type": "image/png",
       "platform": "narrow",
       "label": "피드"
     },
     {
       "src": "image/screenshot-4.png",
-      "sizes": "1276x1836",
+      "sizes": "638x918",
       "type": "image/png",
       "platform": "narrow",
       "label": "프로필"
@@ -51,12 +51,14 @@
     {
       "src": "image/android-chrome-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "image/android-chrome-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
     },
     {
       "src": "image/android-chrome-192x192-maskable.png",
