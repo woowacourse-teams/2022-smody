@@ -2,6 +2,7 @@
   "name": "Smody",
   "short_name": "Smody",
   "description": "작심삼일에 지쳤을 때, Three more days. 스모디",
+  "lang": "ko-kr",
   "start_url": "/feed",
   "scope": "/",
   "background_color": "#f5f3ff",
