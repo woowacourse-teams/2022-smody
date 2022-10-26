@@ -1,4 +1,4 @@
-const VERSION = 'v5.1.6';
+const VERSION = 'v5.1.7';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -17,6 +17,11 @@ const APP_SHELL = [
   '/manifest.json',
   '/index.html',
 ];
+
+let broadcast;
+if ('BroadcastChannel' in self) {
+  broadcast = new BroadcastChannel('push-channel');
+}
 
 self.addEventListener('install', (event) => {
   console.log('SMODY service worker - install', VERSION);
@@ -114,15 +119,6 @@ self.addEventListener('fetch', (event) => {
 });
 
 // 알림 관련 코드
-let getVersionPort;
-
-// 메시지 수신
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'INIT_PORT') {
-    // Port 설정 - 하나의 포트만 전달됐으므로 첫 번째 요소를 가져온다
-    getVersionPort = event.ports[0];
-  }
-});
 
 self.addEventListener('push', (event) => {
   const data = event.data.json();
@@ -156,8 +152,8 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(self.registration.showNotification(title, options));
 
-  if (getVersionPort) {
-    getVersionPort.postMessage({ message: data.message });
+  if (broadcast) {
+    broadcast.postMessage({ message: data.message });
   }
 });
 
