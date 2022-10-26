@@ -1,4 +1,4 @@
-const VERSION = 'v5.1.5';
+const VERSION = 'v5.1.6';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -146,8 +146,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.message,
-    icon: './image/favicon-32x32.png',
-    badge: './image/favicon-16x16.png',
+    icon: './image/android-chrome-512x512.png',
+    badge: './image/android-chrome-512x512.png',
     vibrate: [
       500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500,
     ],
