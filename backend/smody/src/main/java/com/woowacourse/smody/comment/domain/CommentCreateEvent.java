@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class CommentCreateEvent {
 
-	private final Comment comment;
+    private final Comment comment;
 }

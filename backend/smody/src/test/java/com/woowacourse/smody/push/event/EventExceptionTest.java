@@ -114,7 +114,7 @@ class EventExceptionTest extends IntegrationTest {
         synchronize(() -> pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest));
 
         // then
-        List<PushSubscription> subscriptions = pushSubscriptionService.searchByMembers(
+        List<PushSubscription> subscriptions = pushSubscriptionService.findByMembers(
                 List.of(fixture.회원_조회(조조그린_ID))
         );
         List<PushNotification> notifications = pushNotificationRepository.findAll();

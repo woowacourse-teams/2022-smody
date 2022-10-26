@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class PushSubscribeEvent {
 
-	private final PushSubscription pushSubscription;
+    private final PushSubscription pushSubscription;
 }

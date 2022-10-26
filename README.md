@@ -43,3 +43,32 @@ https://www.smody.co.kr
 ### Infra
 
 <img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/185350044-159d30d9-751a-495e-94b5-3f61a433f5e9.png">
+
+## 프로젝트 로컬 실행 방법
+### 백엔드 로컬
+
+- 자바 버전 openJDK는 11이어야 한다.
+- application.properties 파일 코드를 추가해야 한다.
+
+```bash
+cd backend/smody
+
+./gradlew bootRun --args='--spring.profiles.active=local --batch.schedule.enabled=true'
+```
+
+### 프론트엔드 로컬
+
+- node 버전은 16.1.0이어야 한다.
+
+```bash
+cd frontend
+
+# 패키지 설치
+yarn
+
+# 로컬 모드 구동(백엔드 로컬 8080과 연결)
+yarn run start:local
+
+# 개발 모드 구동(msw)
+yarn run start:dev
+```

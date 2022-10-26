@@ -22,66 +22,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class ChallengePushEventListenerTest extends IntegrationTest {
 
-	@Autowired
-	private ChallengePushEventListener pushStrategy;
+    @Autowired
+    private ChallengePushEventListener pushStrategy;
 
-	@Autowired
-	private PushNotificationRepository pushNotificationRepository;
+    @Autowired
+    private PushNotificationRepository pushNotificationRepository;
 
-	@DisplayName("챌린지 인증 임박 알림을 저장한다.")
-	@Test
-	void push() throws InterruptedException {
-		// given
-		LocalDateTime now = LocalDateTime.now();
-		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+    @DisplayName("챌린지 인증 임박 알림을 저장한다.")
+    @Test
+    void push() throws InterruptedException {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
-		// when
-		synchronize(() -> pushStrategy.handle(new CycleCreateEvent(cycle)));
+        // when
+        synchronize(() -> pushStrategy.handle(new CycleCreateEvent(cycle)));
 
-		// then
-		LocalDateTime pushTime = now
-			.plusDays(1L)
-			.minusHours(3L);
-		PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(0);
-		assertAll(
-			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
-				.isEqualTo(pushTime.format(FORMATTER)),
-			() -> assertThat(pushNotification.getMessage()).contains("미라클 모닝 인증까지 얼마 안남았어요~"),
-			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
-		);
-	}
+        // then
+        LocalDateTime pushTime = now
+                .plusDays(1L)
+                .minusHours(3L);
+        PushNotification pushNotification = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE).get(0);
+        assertAll(
+                () -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+                () -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
+                () -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+                        .isEqualTo(pushTime.format(FORMATTER)),
+                () -> assertThat(pushNotification.getMessage()).contains("미라클 모닝 인증까지 얼마 안남았어요~"),
+                () -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
+                () -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
+        );
+    }
 
-	@DisplayName("사이클에 대한 새로운 인증 임박 알림을 만들 때, "
-		+ "이전 인증 임박 알림이 보내지지 않았다면 삭제한다.")
-	@Test
-	void push_cycleProgress() throws InterruptedException {
-		// given
-		LocalDateTime now = LocalDateTime.now();
-		Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
-		synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
-		fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
+    @DisplayName("사이클에 대한 새로운 인증 임박 알림을 만들 때, "
+            + "이전 인증 임박 알림이 보내지지 않았다면 삭제한다.")
+    @Test
+    void push_cycleProgress() throws InterruptedException {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
+        synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
+        fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
 
-		// when\
-		synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
+        // when\
+        synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
 
-		// then
-		LocalDateTime pushTime = now
-			.plusDays(2L)
-			.minusHours(3L);
-		List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE);
-		PushNotification pushNotification = results.get(0);
-		assertAll(
-			() -> assertThat(results).hasSize(1),
-			() -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
-			() -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
-			() -> assertThat(pushNotification.getPushTime().format(FORMATTER))
-				.isEqualTo(pushTime.format(FORMATTER)),
-			() -> assertThat(pushNotification.getMessage()).isEqualTo("미라클 모닝 인증까지 얼마 안남았어요~"),
-			() -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
-			() -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
-		);
-	}
+        // then
+        LocalDateTime pushTime = now
+                .plusDays(2L)
+                .minusHours(3L);
+        List<PushNotification> results = pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE);
+        PushNotification pushNotification = results.get(0);
+        assertAll(
+                () -> assertThat(results).hasSize(1),
+                () -> assertThat(pushNotification.getMember().getId()).isEqualTo(조조그린_ID),
+                () -> assertThat(pushNotification.getPushStatus()).isEqualTo(PushStatus.IN_COMPLETE),
+                () -> assertThat(pushNotification.getPushTime().format(FORMATTER))
+                        .isEqualTo(pushTime.format(FORMATTER)),
+                () -> assertThat(pushNotification.getMessage()).isEqualTo("미라클 모닝 인증까지 얼마 안남았어요~"),
+                () -> assertThat(pushNotification.getPushCase()).isEqualTo(PushCase.CHALLENGE),
+                () -> assertThat(pushNotification.getPathId()).isEqualTo(cycle.getId())
+        );
+    }
 }

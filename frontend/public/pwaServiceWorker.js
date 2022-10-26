@@ -1,4 +1,4 @@
-const VERSION = 'v5.1.6';
+const VERSION = 'v5.1.7';
 const CACHE_NAME = 'smody-cache_' + VERSION;
 const IMAGE_CACHE_NAME = 'smody-image_' + VERSION;
 
@@ -17,6 +17,11 @@ const APP_SHELL = [
   '/manifest.json',
   '/index.html',
 ];
+
+let broadcast;
+if ('BroadcastChannel' in self) {
+  broadcast = new BroadcastChannel('push-channel');
+}
 
 self.addEventListener('install', (event) => {
   console.log('SMODY service worker - install', VERSION);
@@ -48,15 +53,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Cache Only 전략은 특정 버전에서 정적이라고 간주되는 리소스에 대한 캐싱 시 적합하다. request가 있을 경우 캐싱된 리소스만 반환하고 fetch하진 않는다.
-// Cache First 전략은 캐시에서 찾지 못하면 네트워크 요청을 하는 것이다. 서비스 워커는 먼저 캐시에 접근하고 매칭된 리소스를 찾지 못하면, 네트워크에 요청한다.
-// Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
-
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   const urlPath = url.pathname.split('?')[0];
 
-  // App Shell을 Cache Storage에 캐싱(Cache Only)
+  // App Shell(Cache First)
+  // Cache First 전략은 캐시에서 찾지 못하면 네트워크 요청을 하는 것이다. 서비스 워커는 먼저 캐시에 접근하고 매칭된 리소스를 찾지 못하면, 네트워크에 요청한다.
   if (APP_SHELL.includes(urlPath)) {
     event.respondWith(
       caches.match(urlPath).then((response) => {
@@ -66,7 +68,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // bundle js 파일들을 Cache Storage에 캐싱(Cache First)
+  // bundle js(Cache First)
   if (event.request.url.includes('bundle')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
@@ -94,8 +96,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 새로 받는 이미지를 Cache Storage에 캐싱(Cache First)
+  // 이미지(Network First)
   // Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
+
   if (url.pathname.startsWith('/images')) {
     event.respondWith(
       caches.open(IMAGE_CACHE_NAME).then((cache) => {
@@ -116,15 +119,6 @@ self.addEventListener('fetch', (event) => {
 });
 
 // 알림 관련 코드
-let getVersionPort;
-
-// 메시지 수신
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'INIT_PORT') {
-    // Port 설정 - 하나의 포트만 전달됐으므로 첫 번째 요소를 가져온다
-    getVersionPort = event.ports[0];
-  }
-});
 
 self.addEventListener('push', (event) => {
   const data = event.data.json();
@@ -148,8 +142,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.message,
-    icon: './image/favicon-32x32.png',
-    badge: './image/favicon-16x16.png',
+    icon: './image/android-chrome-512x512.png',
+    badge: './image/android-chrome-512x512.png',
     vibrate: [
       500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500,
     ],
@@ -158,8 +152,8 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(self.registration.showNotification(title, options));
 
-  if (getVersionPort) {
-    getVersionPort.postMessage({ message: data.message });
+  if (broadcast) {
+    broadcast.postMessage({ message: data.message });
   }
 });
 

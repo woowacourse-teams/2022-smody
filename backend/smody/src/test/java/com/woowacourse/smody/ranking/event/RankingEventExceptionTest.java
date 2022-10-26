@@ -55,7 +55,6 @@ class RankingEventExceptionTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
         RankingPeriod period = rankingPeriodRepository.save(new RankingPeriod(now.minusDays(2), Duration.WEEK));
 
-
         given(imageStrategy.extractUrl(any()))
                 .willReturn("fakeUrl");
 

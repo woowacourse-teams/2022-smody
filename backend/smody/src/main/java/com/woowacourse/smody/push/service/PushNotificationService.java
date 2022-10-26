@@ -28,16 +28,18 @@ public class PushNotificationService {
         pushNotificationRepository.save(pushNotification);
     }
 
-    public Optional<PushNotification> searchByPathAndStatusAndPushCase(Long pathId, PushStatus status, PushCase pushCase) {
+    public Optional<PushNotification> searchByPathAndStatusAndPushCase(Long pathId,
+                                                                       PushStatus status,
+                                                                       PushCase pushCase) {
         return pushNotificationRepository.findByPathIdAndPushStatusAndPushCase(pathId, status, pushCase);
     }
 
     public List<PushNotification> searchPushable() {
         LocalDateTime now = LocalDateTime.now();
         return pushNotificationRepository.findByPushStatus(PushStatus.IN_COMPLETE)
-            .stream()
-            .filter(notification -> notification.isPushable(now))
-            .collect(Collectors.toList());
+                .stream()
+                .filter(notification -> notification.isPushable(now))
+                .collect(Collectors.toList());
     }
 
     @Transactional

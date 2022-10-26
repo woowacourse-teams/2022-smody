@@ -23,14 +23,12 @@ public class CommentService {
     private final MemberService memberService;
     private final CycleService cycleService;
     private final CommentRepository commentRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Comment create(Long memberId, Long cycleDetailId, String content) {
         Member member = memberService.search(memberId);
         CycleDetail cycleDetail = cycleService.searchCycleDetail(cycleDetailId);
         Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
-        applicationEventPublisher.publishEvent(new CommentCreateEvent(comment));
         return comment;
     }
 

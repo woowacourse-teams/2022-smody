@@ -1,15 +1,20 @@
 package com.woowacourse.smody.exception;
 
-import com.woowacourse.smody.exception.api.GithubApi;
-import com.woowacourse.smody.exception.dto.ExceptionResponse;
 import java.util.Arrays;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.woowacourse.smody.exception.api.GithubApi;
+import com.woowacourse.smody.exception.dto.ExceptionResponse;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -31,6 +36,13 @@ public class ControllerAdvice {
         }
         return ResponseEntity.status(exceptionData.getStatusCode())
                 .body(new ExceptionResponse(exceptionData));
+    }
+
+    @ExceptionHandler(value = {BindException.class, MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<ExceptionResponse> handleBindingException() {
+        ExceptionData exceptionData = ExceptionData.REQUEST_BINDING_ERROR;
+        return ResponseEntity.status(exceptionData.getStatusCode())
+            .body(new ExceptionResponse(exceptionData));
     }
 
     @ExceptionHandler

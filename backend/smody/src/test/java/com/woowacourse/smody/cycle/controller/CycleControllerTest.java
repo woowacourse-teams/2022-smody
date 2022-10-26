@@ -100,7 +100,7 @@ public class CycleControllerTest extends ControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(multipart("/cycles/1/progress")
-                .file((MockMultipartFile)MULTIPART_FILE)
+                .file((MockMultipartFile) MULTIPART_FILE)
                 .param("description", "인증 완료")
                 .header("Authorization", "Bearer " + token));
 

@@ -2,7 +2,7 @@ package com.woowacourse.smody.config;
 
 import com.woowacourse.smody.auth.login.AuthInterceptor;
 import com.woowacourse.smody.auth.login.LoginMemberArgumentResolver;
-import com.woowacourse.smody.auth.token.TokenChekcerArgumentResolver;
+import com.woowacourse.smody.auth.token.TokenCheckerArgumentResolver;
 import com.woowacourse.smody.logging.LogInterceptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +25,12 @@ public class WebConfig implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
     private final LogInterceptor logInterceptor;
     private final LoginMemberArgumentResolver loginMemberArgumentResolver;
-    private final TokenChekcerArgumentResolver tokenChekcerArgumentResolver;
+    private final TokenCheckerArgumentResolver tokenCheckerArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginMemberArgumentResolver);
-        resolvers.add(tokenChekcerArgumentResolver);
+        resolvers.add(tokenCheckerArgumentResolver);
     }
 
     @Override
