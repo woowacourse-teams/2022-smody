@@ -148,12 +148,19 @@ public class AcceptanceTestFixture {
             .extract();
     }
 
-    public static ExtractableResponse<Response> 피드_조회_요청(Integer size, Long cursorId) {
+    public static ExtractableResponse<Response> 피드_전체_조회_요청(Integer size, Long cursorId) {
         return RestAssured.given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .queryParams(buildDynamicParams(size, "latest", cursorId, null))
             .when()
             .get("/feeds")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 피드_조회_요청(Long feedId) {
+        return RestAssured.given().log().all()
+            .when()
+            .get("/feeds/" + feedId)
             .then().log().all()
             .extract();
     }
