@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
+import com.woowacourse.smody.member.dto.MemberUpdateRequest;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -16,6 +17,57 @@ import io.restassured.response.Response;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AcceptanceTestFixture {
+
+    public static ExtractableResponse<Response> 나의_정보_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/members/me")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 나의_정보_수정_요청(String token, String nickname, String introduction) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new MemberUpdateRequest(nickname, introduction))
+            .when()
+            .patch("/members/me")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 나의_이미지_수정_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .multiPart("profileImage", "image", "byte".getBytes())
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+            .when()
+            .post("/members/me/profile-image")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 회원_탈퇴_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .delete("/members/me")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 회원_조회_요청(String token, String filter) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .queryParams(buildDynamicParams(null, null, null, filter))
+            .when()
+            .get("/members/")
+            .then().log().all()
+            .extract();
+    }
 
     public static ExtractableResponse<Response> 사이클_생성_요청(String token, LocalDateTime startTime, Long challengeId) {
         return RestAssured.given().log().all()
