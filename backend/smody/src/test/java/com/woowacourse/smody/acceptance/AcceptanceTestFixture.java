@@ -213,4 +213,21 @@ public class AcceptanceTestFixture {
             .then().log().all()
             .extract();
     }
+
+    public static ExtractableResponse<Response> 구글_링크_요청() {
+        return RestAssured.given().log().all()
+            .when()
+            .get("/oauth/link/google")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 토큰_검증_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/oauth/check")
+            .then().log().all()
+            .extract();
+    }
 }
