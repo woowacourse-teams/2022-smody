@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 
 import com.woowacourse.smody.challenge.dto.ChallengeRequest;
+import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 
 import io.restassured.RestAssured;
@@ -161,6 +162,54 @@ public class AcceptanceTestFixture {
         return RestAssured.given().log().all()
             .when()
             .get("/feeds/" + feedId)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 댓글_작성_요청(String token, Long feedId, String content) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new CommentRequest(content))
+            .when()
+            .post("/feeds/" + feedId + "/comments")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 댓글_수정_요청(String token, Long commentId, String content) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new CommentRequest(content))
+            .when()
+            .patch("/comments/" + commentId)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 댓글_삭제_요청(String token, Long commentId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .delete("/comments/" + commentId)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 로그인_댓글_조회_요청(String token, Long feedId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/feeds/" + feedId + "/comments/auth")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 댓글_조회_요청(Long feedId) {
+        return RestAssured.given().log().all()
+            .when()
+            .get("/feeds/" + feedId + "/comments")
             .then().log().all()
             .extract();
     }

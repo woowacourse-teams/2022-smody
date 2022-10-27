@@ -35,7 +35,7 @@ class AcceptanceTest {
     private int port;
 
     @Autowired
-    protected JwtTokenProvider tokenProvider;
+    private JwtTokenProvider tokenProvider;
 
     @MockBean
     private ImageStrategy imageStrategy;
@@ -83,5 +83,9 @@ class AcceptanceTest {
 
     protected Executable CREATED_응답(ExtractableResponse<Response> response) {
         return () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    protected Executable NO_CONTENT_응답(ExtractableResponse<Response> response) {
+        return () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
