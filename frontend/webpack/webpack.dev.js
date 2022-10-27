@@ -11,6 +11,9 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
+  output: {
+    filename: '[name].[chunkhash].js',
+  },
   module: {
     rules: [
       {
@@ -29,17 +32,6 @@ module.exports = merge(common, {
     port: 3000,
     hot: true,
     open: true,
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-    minimizer: [
-      '...',
-      new ESBuildMinifyPlugin({
-        target: 'es2020',
-      }),
-    ],
   },
   plugins: [
     new webpack.DefinePlugin({

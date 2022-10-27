@@ -10,6 +10,9 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 module.exports = merge(common, {
   mode: 'production',
   devtool: false,
+  output: {
+    filename: 'bundle.[chunkhash].js',
+  },
   module: {
     rules: [
       {
