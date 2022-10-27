@@ -1,5 +1,6 @@
 package com.woowacourse.smody.acceptance;
 
+import static com.woowacourse.smody.support.ResourceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -39,15 +40,25 @@ class AcceptanceTest {
     @MockBean
     private ImageStrategy imageStrategy;
 
+    protected String 조조그린_토큰;
+    protected String 더즈_토큰;
+    protected String 토닉_토큰;
+    protected String 알파_토큰;
+
     @BeforeEach
     protected void setUp() {
         RestAssured.port = port;
+
+        조조그린_토큰 = 토큰_요청(조조그린_ID);
+        더즈_토큰 = 토큰_요청(더즈_ID);
+        토닉_토큰 = 토큰_요청(토닉_ID);
+        알파_토큰 = 토큰_요청(알파_ID);
 
         given(imageStrategy.extractUrl(any()))
             .willReturn("imageUrl");
     }
 
-    protected String 토큰_요청(Long memberId) {
+    private String 토큰_요청(Long memberId) {
         return tokenProvider.createToken(new TokenPayload(memberId));
     }
 

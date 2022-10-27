@@ -1,5 +1,6 @@
 package com.woowacourse.smody.acceptance;
 
+import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -17,19 +18,15 @@ class FeedAcceptanceTest extends AcceptanceTest {
     @DisplayName("피드 전체 조회")
     @Test
     void getFeeds() {
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParams(Map.of(
-                        "size", 10,
-                        "sort", "latest"
-                ))
-                .when()
-                .get("/feeds")
-                .then().log().all()
-                .extract();
+        // given
 
+
+        // when
+        ExtractableResponse<Response> response = 피드_조회_요청(10, null);
+
+        // then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+                OK_응답(response)
         );
     }
 }

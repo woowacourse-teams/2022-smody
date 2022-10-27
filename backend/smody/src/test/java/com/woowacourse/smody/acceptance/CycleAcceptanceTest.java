@@ -26,11 +26,10 @@ class CycleAcceptanceTest extends AcceptanceTest {
     @DisplayName("사이클을 생성한다.")
     @Test
     void post_cycles() {
-        // given
-        String token = 토큰_요청(조조그린_ID);
-
         // when
-        ExtractableResponse<Response> response = 사이클_생성_요청(token, LocalDateTime.now(), 미라클_모닝_ID);
+        ExtractableResponse<Response> response = 사이클_생성_요청(
+            조조그린_토큰, LocalDateTime.now(), 미라클_모닝_ID
+        );
 
         // then
         assertAll(
@@ -43,7 +42,6 @@ class CycleAcceptanceTest extends AcceptanceTest {
     @Test
     void post_cycle_progress() {
         // given
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         Long 사이클_ID = ID_추출(
             사이클_생성_요청(
                 조조그린_토큰,
@@ -66,8 +64,6 @@ class CycleAcceptanceTest extends AcceptanceTest {
     @Test
     void get_cycles_me() {
         // given
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
-
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime 삼일전 = now.minusDays(3).minusMinutes(1);
 
@@ -76,7 +72,7 @@ class CycleAcceptanceTest extends AcceptanceTest {
         사이클_생성_요청(조조그린_토큰, now, 오늘의_운동_ID);
 
         사이클_생성_요청(조조그린_토큰, 삼일전, JPA_공부_ID);
-        사이클_생성_요청(토큰_요청(더즈_ID), now, JPA_공부_ID);
+        사이클_생성_요청(더즈_토큰, now, JPA_공부_ID);
 
         // when
         ExtractableResponse<Response> response = 나의_사이클_조회_요청(조조그린_토큰);
@@ -97,11 +93,8 @@ class CycleAcceptanceTest extends AcceptanceTest {
     void get_cycles_one() {
         // given
         Long 사이클_ID = ID_추출(
-            사이클_생성_요청(
-                토큰_요청(조조그린_ID),
-                LocalDateTime.now(),
-                미라클_모닝_ID
-            ));
+            사이클_생성_요청(조조그린_토큰, LocalDateTime.now(), 미라클_모닝_ID)
+        );
 
         // when
         ExtractableResponse<Response> response = 사이클_조회_요청(사이클_ID);
@@ -118,13 +111,12 @@ class CycleAcceptanceTest extends AcceptanceTest {
     @Test
     void get_cycles_me_stat() {
         // given
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         LocalDateTime now = LocalDateTime.now();
 
         사이클_생성_요청(조조그린_토큰, now, 미라클_모닝_ID);
         사이클_생성_요청(조조그린_토큰, now, 스모디_방문하기_ID);
 
-        사이클_생성_요청(토큰_요청(더즈_ID), now, 오늘의_운동_ID);
+        사이클_생성_요청(더즈_토큰, now, 오늘의_운동_ID);
 
         // when
         ExtractableResponse<Response> response = 사이클_통계_요청(조조그린_토큰);
@@ -142,7 +134,6 @@ class CycleAcceptanceTest extends AcceptanceTest {
     @Test
     void get_cycles_me_challengeId() {
         // given
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         LocalDateTime now = LocalDateTime.now();
 
         사이클_생성_요청(조조그린_토큰, now.minusDays(4), 미라클_모닝_ID);

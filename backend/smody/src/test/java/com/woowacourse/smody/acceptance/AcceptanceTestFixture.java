@@ -147,4 +147,14 @@ public class AcceptanceTestFixture {
             .then().log().all()
             .extract();
     }
+
+    public static ExtractableResponse<Response> 피드_조회_요청(Integer size, Long cursorId) {
+        return RestAssured.given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .queryParams(buildDynamicParams(size, "latest", cursorId, null))
+            .when()
+            .get("/feeds")
+            .then().log().all()
+            .extract();
+    }
 }

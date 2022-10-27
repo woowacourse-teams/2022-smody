@@ -20,7 +20,6 @@ import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-@SuppressWarnings("NonAsciiCharacters")
 public class ChallengeAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("전체 챌린지를 페이징하여 조회한다.")
@@ -78,10 +77,10 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
     @Test
     void get_challenges_sort_popular() {
         // given
-        사이클_생성_요청(토큰_요청(조조그린_ID), LocalDateTime.now(), 미라클_모닝_ID);
-        사이클_생성_요청(토큰_요청(더즈_ID), LocalDateTime.now(), 미라클_모닝_ID);
+        사이클_생성_요청(조조그린_토큰, LocalDateTime.now(), 미라클_모닝_ID);
+        사이클_생성_요청(더즈_토큰, LocalDateTime.now(), 미라클_모닝_ID);
 
-        사이클_생성_요청(토큰_요청(토닉_ID), LocalDateTime.now(), 스모디_방문하기_ID);
+        사이클_생성_요청(토닉_토큰, LocalDateTime.now(), 스모디_방문하기_ID);
 
         // when
         ExtractableResponse<Response> response = 챌린지_조회_요청(2, "popular", null, null);
@@ -104,10 +103,8 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
     @Test
     void get_challenges_me() {
         // given
-        String 더즈_토큰 = 토큰_요청(더즈_ID);
         사이클_생성_요청(더즈_토큰, LocalDateTime.now(), 오늘의_운동_ID);
 
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         사이클_생성_요청(조조그린_토큰, LocalDateTime.now(), 스모디_방문하기_ID);
         사이클_생성_요청(조조그린_토큰, LocalDateTime.now(), 미라클_모닝_ID);
 
@@ -131,7 +128,6 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
     void get_challenges_me_one() {
         // given
         LocalDateTime now = LocalDateTime.now();
-        String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         사이클_진행_요청(
             조조그린_토큰,
             ID_추출(사이클_생성_요청(조조그린_토큰, now, 미라클_모닝_ID))
@@ -168,11 +164,11 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
     @Test
     void get_challenges_challengers() {
         // given
-        사이클_생성_요청(토큰_요청(조조그린_ID), LocalDateTime.now(), 미라클_모닝_ID);
-        사이클_생성_요청(토큰_요청(더즈_ID), LocalDateTime.now(), 미라클_모닝_ID);
-        사이클_생성_요청(토큰_요청(알파_ID), LocalDateTime.now(), 미라클_모닝_ID);
+        사이클_생성_요청(조조그린_토큰, LocalDateTime.now(), 미라클_모닝_ID);
+        사이클_생성_요청(더즈_토큰, LocalDateTime.now(), 미라클_모닝_ID);
+        사이클_생성_요청(알파_토큰, LocalDateTime.now(), 미라클_모닝_ID);
 
-        사이클_생성_요청(토큰_요청(토닉_ID), LocalDateTime.now(), 스모디_방문하기_ID);
+        사이클_생성_요청(토닉_토큰, LocalDateTime.now(), 스모디_방문하기_ID);
 
         // when
         ExtractableResponse<Response> response = 챌린저_조회_요청(미라클_모닝_ID);
@@ -192,7 +188,7 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
     void post_challenge() {
         // when
         ExtractableResponse<Response> response = 챌린지_생성_요청(
-            토큰_요청(조조그린_ID), "테스트 작성하기", "테스트를 열심히"
+            조조그린_토큰, "테스트 작성하기", "테스트를 열심히"
         );
 
         // then
