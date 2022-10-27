@@ -18,11 +18,11 @@
   ],
   "scripts": {
     "typecheck": "tsc --build && tsc --build --clean",
-    "start:prod": "cross-env NODE_ENV=production webpack serve --mode production",
-    "start:local": "cross-env NODE_ENV=local webpack serve --mode production",
-    "start:dev": "cross-env NODE_ENV=development webpack serve --mode development",
-    "build:prod": "cross-env NODE_ENV=production webpack --mode production",
-    "build:dev": "webpack --mode development",
+    "start:prod": "webpack serve --config webpack/webpack.prod.js",
+    "start:local": "cross-env NODE_ENV=local webpack serve --config webpack/webpack.dev.js",
+    "start:dev": "webpack serve --config webpack/webpack.dev.js",
+    "build:prod": "webpack --config webpack/webpack.prod.js",
+    "build:dev": "webpack --config webpack/webpack.dev.js",
     "test": "jest --watch --no-cache",
     "pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "storybook": "start-storybook -p 6006",
@@ -88,7 +88,8 @@
     "webpack": "^5.73.0",
     "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.9.3"
+    "webpack-dev-server": "^4.9.3",
+    "webpack-merge": "^5.8.0"
   },
   "msw": {
     "workerDirectory": "public"
