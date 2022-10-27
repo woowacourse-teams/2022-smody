@@ -1,11 +1,14 @@
 package com.woowacourse.smody.acceptance;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.MediaType;
+
 import com.woowacourse.smody.cycle.dto.CycleRequest;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
-import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AcceptanceTestFixture {

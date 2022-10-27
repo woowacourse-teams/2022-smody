@@ -31,7 +31,7 @@ class CommentAcceptanceTest extends AcceptanceTest {
     void updateComment() {
         Cycle cycle = resourceFixture.사이클_생성_SUCCESS(조조그린_ID, 미라클_모닝_ID, LocalDateTime.now());
         Member member = cycle.getMember();
-        String token = 로그인_혹은_회원가입(member);
+        String token = 토큰_요청(member.getId());
         CycleDetail cycleDetail = cycle.getCycleDetailsOrderByProgress().get(0);
         Comment comment = new Comment(cycleDetail, member, "수정전");
         commentRepository.save(comment);
