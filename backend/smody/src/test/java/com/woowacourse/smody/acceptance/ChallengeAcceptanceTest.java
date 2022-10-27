@@ -134,7 +134,7 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
         String 조조그린_토큰 = 토큰_요청(조조그린_ID);
         사이클_진행_요청(
             조조그린_토큰,
-            toCreatedId(사이클_생성_요청(조조그린_토큰, now, 미라클_모닝_ID))
+            ID_추출(사이클_생성_요청(조조그린_토큰, now, 미라클_모닝_ID))
         );
 
         // when
@@ -198,7 +198,7 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
             CREATED_응답(response),
-            () -> assertThat(toCreatedId(response)).isEqualTo(6L)
+            () -> assertThat(ID_추출(response)).isEqualTo(6L)
         );
     }
 }

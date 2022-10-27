@@ -59,7 +59,7 @@ class AcceptanceTest {
         return response.jsonPath().getObject(".", type);
     }
 
-    protected Long toCreatedId(ExtractableResponse<Response> response) {
+    protected Long ID_추출(ExtractableResponse<Response> response) {
         return Long.parseLong(
             response.header("location")
                 .split("/")[2]

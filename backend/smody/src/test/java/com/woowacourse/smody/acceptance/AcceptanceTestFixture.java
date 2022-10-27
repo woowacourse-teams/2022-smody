@@ -39,19 +39,44 @@ public class AcceptanceTestFixture {
             .extract();
     }
 
-    public static ExtractableResponse<Response> 사이클_조회_요청(String cycleId) {
+    public static ExtractableResponse<Response> 나의_사이클_조회_요청(String token) {
         return RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .auth().oauth2(token)
+            .when()
+            .get("/cycles/me")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 사이클_조회_요청(Long cycleId) {
+        return RestAssured.given().log().all()
                 .when()
                 .get("/cycles/" + cycleId)
                 .then().log().all()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 챌린지_조회_요청(Integer size, String sort, Long cursorId, String filter) {
-        Map<String, Object> params = buildDynamicParams(size, sort, cursorId, filter);
+    public static ExtractableResponse<Response> 사이클_통계_요청(String token) {
         return RestAssured.given().log().all()
-            .queryParams(params)
+            .auth().oauth2(token)
+            .when()
+            .get("/cycles/me/stat")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 챌린지별_사이클_조회_요청(String token, Long challengeId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/cycles/me/" + challengeId)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 챌린지_조회_요청(Integer size, String sort, Long cursorId, String filter) {
+        return RestAssured.given().log().all()
+            .queryParams(buildDynamicParams(size, sort, cursorId, filter))
             .when()
             .get("/challenges")
             .then().log().all()
