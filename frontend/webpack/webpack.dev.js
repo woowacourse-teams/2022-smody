@@ -4,11 +4,10 @@ const dotenv = require('dotenv');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-module.exports = merge(common, {
+module.exports = smp.wrap(merge(common, {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
   cache: {
@@ -19,10 +18,15 @@ module.exports = merge(common, {
       {
         test: /\.(js|jsx|ts|tsx)$/i,
         exclude: /node_modules/,
-        loader: 'esbuild-loader',
+        loader: 'babel-loader',
         options: {
-          loader: 'tsx',
-          target: 'es2020',
+          cacheCompression: false,
+          cacheDirectory: true,
+          presets: [
+            '@babel/preset-env',
+            ['@babel/preset-react', { runtime: 'automatic' }],
+            '@babel/preset-typescript',
+          ],
         },
       },
     ],
@@ -33,8 +37,12 @@ module.exports = merge(common, {
     hot: true,
     open: true,
   },
+  optimization: {
+    runtimeChunk: {
+      name: (entrypoint) => `runtime-${entrypoint.name}`,
+    },
+  },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(process.env.DEV_BASE_URL),
       'process.env.CLIENT_ID': JSON.stringify(process.env.CLIENT_ID),
@@ -42,7 +50,4 @@ module.exports = merge(common, {
       'process.env.IS_LOCAL': JSON.stringify(isLocal),
     }),
   ],
-  optimization: {
-    minimize: false,
-  },
 });

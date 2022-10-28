@@ -1,18 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('progress-webpack-plugin');
-
 const path = require('path');
 
 module.exports = {
-  performance: {
-    hints: false,
-  },
   entry: './src/index.tsx',
   output: {
     publicPath: '/',
     path: path.join(__dirname, '../dist'),
-    // clean: true,
     filename: '[name].[chunkhash].js',
   },
   resolve: {
@@ -38,11 +33,6 @@ module.exports = {
       },
     ],
   },
-  optimization: {
-    runtimeChunk: {
-      name: (entrypoint) => `runtime-${entrypoint.name}`,
-    },
-  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -57,4 +47,7 @@ module.exports = {
     }),
     new ProgressPlugin(true),
   ],
+  performance: {
+    hints: false,
+  },
 };
