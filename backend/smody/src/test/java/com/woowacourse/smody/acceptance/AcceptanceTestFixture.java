@@ -346,4 +346,30 @@ public class AcceptanceTestFixture {
             .then().log().all()
             .extract();
     }
+
+    public static ExtractableResponse<Response> 랭킹_기간_조회_요청() {
+        return RestAssured.given().log().all()
+            .queryParams(buildDynamicParams(10, "startDate:desc", null, null))
+            .when()
+            .get("/ranking-periods")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 랭킹_활동_조회_요청(Long periodId) {
+        return RestAssured.given().log().all()
+            .when()
+            .get("/ranking-periods/" + periodId + "/ranking-activities")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 나의_랭킹_활동_조회_요청(String token, Long periodId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/ranking-periods/" + periodId + "/ranking-activities/me")
+            .then().log().all()
+            .extract();
+    }
 }
