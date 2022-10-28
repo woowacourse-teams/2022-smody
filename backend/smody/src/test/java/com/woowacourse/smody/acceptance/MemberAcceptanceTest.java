@@ -62,7 +62,9 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 나의_이미지_수정_요청(조조그린_토큰);
 
         // then
-        NO_CONTENT_응답(response);
+        assertAll(
+            NO_CONTENT_응답(response)
+        );
     }
 
     @DisplayName("회원 탈퇴를 한다.")

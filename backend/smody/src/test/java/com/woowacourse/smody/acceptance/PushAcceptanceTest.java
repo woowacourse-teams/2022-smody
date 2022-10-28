@@ -2,6 +2,7 @@ package com.woowacourse.smody.acceptance;
 
 import static com.woowacourse.smody.acceptance.AcceptanceTestFixture.*;
 import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +14,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class PushAcceptanceTest extends AcceptanceTest {
+class PushAcceptanceTest extends AcceptanceTest {
 
     private final String endpoint = "endpoint";
 
@@ -24,7 +25,9 @@ public class PushAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 알림_구독_요청(조조그린_토큰, endpoint);
 
         // then
-        OK_응답(response);
+        assertAll(
+            OK_응답(response)
+        );
     }
 
     @DisplayName("알림 구독을 해제한다.")
@@ -59,7 +62,9 @@ public class PushAcceptanceTest extends AcceptanceTest {
         );
 
         // then
-        OK_응답(response);
+        assertAll(
+            OK_응답(response)
+        );
     }
 
     @DisplayName("나의 알림을 조회한다.")
@@ -69,17 +74,29 @@ public class PushAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 나의_알림_조회_요청(조조그린_토큰);
 
         // then
-        OK_응답(response);
+        assertAll(
+            OK_응답(response)
+        );
     }
 
     @DisplayName("알림을 하나 삭제한다.")
     @Test
     void delete_push_notifications() {
+        // given
+        Long 피드_ID = 1L;
+        맨션_알림_요청(
+            더즈_토큰,
+            List.of(조조그린_ID),
+            피드_ID
+        );
+
         // when
         ExtractableResponse<Response> response = 알림_삭제_요청(조조그린_토큰, 1L);
 
         // then
-        NO_CONTENT_응답(response);
+        assertAll(
+            NO_CONTENT_응답(response)
+        );
     }
 
     @DisplayName("알림을 하나 삭제한다.")
@@ -89,6 +106,8 @@ public class PushAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 나의_알림_삭제_요청(조조그린_토큰);
 
         // then
-        NO_CONTENT_응답(response);
+        assertAll(
+            NO_CONTENT_응답(response)
+        );
     }
 }

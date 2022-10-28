@@ -20,7 +20,7 @@ import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-public class ChallengeAcceptanceTest extends AcceptanceTest {
+class ChallengeAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("전체 챌린지를 페이징하여 조회한다.")
     @Test
@@ -142,7 +142,7 @@ public class ChallengeAcceptanceTest extends AcceptanceTest {
             OK_응답(response),
             () -> assertThat(actual.getChallengeName()).isEqualTo("미라클 모닝"),
             () -> assertThat(actual.getCycleDetailCount()).isEqualTo(1),
-            () -> assertThat(actual.getSuccessCount()).isEqualTo(0)
+            () -> assertThat(actual.getSuccessCount()).isZero()
         );
     }
 
