@@ -11,9 +11,6 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'eval-cheap-module-source-map',
-  output: {
-    filename: '[name].[chunkhash].js',
-  },
   module: {
     rules: [
       {
@@ -22,7 +19,7 @@ module.exports = merge(common, {
         loader: 'esbuild-loader',
         options: {
           loader: 'tsx',
-          target: 'es2020',
+          target: 'es5',
         },
       },
     ],
@@ -41,4 +38,7 @@ module.exports = merge(common, {
       'process.env.IS_LOCAL': JSON.stringify(isLocal),
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
 });

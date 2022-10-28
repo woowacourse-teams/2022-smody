@@ -10,18 +10,28 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 module.exports = merge(common, {
   mode: 'production',
   devtool: false,
-  output: {
-    filename: 'bundle.[chunkhash].js',
-  },
+  target: ['web', 'es5'],
   module: {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/i,
         exclude: /node_modules/,
-        loader: 'esbuild-loader',
+        loader: 'babel-loader',
         options: {
-          loader: 'tsx',
-          target: 'es2020',
+          presets: [
+            [
+              '@babel/preset-env',
+              {
+                targets: { safari: '11' },
+                useBuiltIns: 'usage',
+                corejs: {
+                  version: 3,
+                },
+              },
+            ],
+            ['@babel/preset-react', { runtime: 'automatic' }],
+            '@babel/preset-typescript',
+          ],
         },
       },
     ],
@@ -30,12 +40,6 @@ module.exports = merge(common, {
     splitChunks: {
       chunks: 'all',
     },
-    minimizer: [
-      '...',
-      new ESBuildMinifyPlugin({
-        target: 'es2020',
-      }),
-    ],
   },
   plugins: [
     new webpack.DefinePlugin({
