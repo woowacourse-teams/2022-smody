@@ -35,6 +35,17 @@ module.exports = smp.wrap(
               ['@babel/preset-react', { runtime: 'automatic' }],
               '@babel/preset-typescript',
             ],
+            plugins: [
+              [
+                'babel-plugin-styled-components',
+                {
+                  displayName: false,
+                  minify: true,
+                  transpileTemplateLiterals: true,
+                  pure: true,
+                },
+              ],
+            ],
           },
         },
       ],

@@ -68,6 +68,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "babel-loader": "^8.2.5",
+    "babel-plugin-styled-components": "^2.0.7",
     "chromatic": "^6.7.0",
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "3",
