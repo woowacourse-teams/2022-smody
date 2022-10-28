@@ -91,6 +91,7 @@
     "jest-transformer-svg": "^2.0.0",
     "msw": "^0.43.0",
     "prettier": "2.7.1",
+    "progress-webpack-plugin": "^1.0.16",
     "react-rewards": "^2.0.4",
     "smody-library": "^1.1.0",
     "ts-jest": "^28.0.7",

@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const dotenv = require('dotenv');
-const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
@@ -10,6 +9,9 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 module.exports = merge(common, {
   mode: 'production',
   devtool: false,
+  cache: {
+    type: 'filesystem',
+  },
   target: ['web', 'es5'],
   module: {
     rules: [
