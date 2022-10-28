@@ -2,6 +2,7 @@ package com.woowacourse.smody.acceptance;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
@@ -10,6 +11,9 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.comment.dto.CommentRequest;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
 import com.woowacourse.smody.member.dto.MemberUpdateRequest;
+import com.woowacourse.smody.push.dto.MentionNotificationRequest;
+import com.woowacourse.smody.push.dto.SubscriptionRequest;
+import com.woowacourse.smody.push.dto.UnSubscriptionRequest;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -279,6 +283,66 @@ public class AcceptanceTestFixture {
             .auth().oauth2(token)
             .when()
             .get("/oauth/check")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 알림_구독_요청(String token, String endpoint) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new SubscriptionRequest(endpoint, "p256dh", "auth"))
+            .when()
+            .post("/web-push/subscribe")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 알림_구독_해제_요청(String token, String endpoint) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new UnSubscriptionRequest(endpoint))
+            .when()
+            .post("/web-push/unsubscribe")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 맨션_알림_요청(String token, List<Long> memberIds, Long pathId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(new MentionNotificationRequest(memberIds, pathId))
+            .when()
+            .post("/push-notifications")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 나의_알림_조회_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .get("/push-notifications")
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 알림_삭제_요청(String token, Long notificationId) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .delete("/push-notifications/" + notificationId)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> 나의_알림_삭제_요청(String token) {
+        return RestAssured.given().log().all()
+            .auth().oauth2(token)
+            .when()
+            .delete("/push-notifications/me")
             .then().log().all()
             .extract();
     }
