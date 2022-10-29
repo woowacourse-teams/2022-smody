@@ -25,7 +25,6 @@ module.exports = smp.wrap(
               [
                 '@babel/preset-env',
                 {
-                  targets: { safari: '11' },
                   useBuiltIns: 'usage',
                   corejs: {
                     version: 3,
@@ -50,16 +49,13 @@ module.exports = smp.wrap(
         },
       ],
     },
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-      },
-    },
     plugins: [
       new ForkTsCheckerWebpackPlugin(),
       new webpack.DefinePlugin({
         'process.env.BASE_URL': JSON.stringify(process.env.PROD_BASE_URL),
         'process.env.IS_LOCAL': false,
+        'process.env.CLIENT_ID': null,
+        'process.env.PUBLIC_KEY': null,
       }),
     ],
   }),
