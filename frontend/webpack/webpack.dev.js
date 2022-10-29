@@ -35,12 +35,6 @@ module.exports = smp.wrap(
         },
       ],
     },
-    devServer: {
-      historyApiFallback: true,
-      port: 3000,
-      hot: true,
-      open: true,
-    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.BASE_URL': JSON.stringify(process.env.DEV_BASE_URL),

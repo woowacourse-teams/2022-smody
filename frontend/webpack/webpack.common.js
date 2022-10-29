@@ -47,6 +47,12 @@ module.exports = {
     }),
     new ProgressPlugin(true),
   ],
+  devServer: {
+    historyApiFallback: true,
+    port: 3000,
+    hot: true,
+    open: true,
+  },
   performance: {
     hints: false,
   },
