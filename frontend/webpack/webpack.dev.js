@@ -41,11 +41,6 @@ module.exports = smp.wrap(
       hot: true,
       open: true,
     },
-    optimization: {
-      runtimeChunk: {
-        name: (entrypoint) => `runtime-${entrypoint.name}`,
-      },
-    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.BASE_URL': JSON.stringify(process.env.DEV_BASE_URL),
