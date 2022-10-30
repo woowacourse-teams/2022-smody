@@ -9,7 +9,7 @@ const totalCheck = [...Array(3)];
 
 export const CheckCircles = ({ progressCount }: CheckCirclesProps) => {
   return (
-    <FlexBox gap="1rem" aria-label={`${progressCount}번 인증완료`}>
+    <FlexBox gap="1rem" role="group" aria-label={`${progressCount}번 인증완료`}>
       {totalCheck.map((_, index) => (
         <CheckCircle
           key={index}
