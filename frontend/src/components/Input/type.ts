@@ -17,7 +17,3 @@ export type InputProps = {
 export type InputContainerProps = Pick<InputProps, 'isValidated'> & {
   isFocus: boolean;
 };
-
-export type WordLengthProps = {
-  isMargin: boolean;
-};
