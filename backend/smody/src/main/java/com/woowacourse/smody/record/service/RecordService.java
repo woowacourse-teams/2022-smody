@@ -66,7 +66,7 @@ public class RecordService {
 
     public Map<Long, Long> countChallengers(List<Challenge> challenges, LocalDateTime startTime) {
         return recordRepository.countChallengers(challenges, startTime).stream()
-                .collect(Collectors.toMap(ChallengersResult::getChallengeId, ChallengersResult::getChallengers));
+                .collect(Collectors.toMap(each -> each[0], each -> each[1]));
     }
 
     public Map<Long, Boolean> calculateInProgress(Member member, List<Challenge> challenges, LocalDateTime startTime) {

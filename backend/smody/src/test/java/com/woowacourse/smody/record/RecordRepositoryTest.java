@@ -47,15 +47,15 @@ public class RecordRepositoryTest extends RepositoryTest {
         Challenge challenge2 = resourceFixture.챌린지_조회(알고리즘_풀기_ID);
 
         // when
-        List<ChallengersResult> challengersResults = recordRepository.countChallengers(List.of(challenge1, challenge2), startTime);
+        List<Long[]> challengersResults = recordRepository.countChallengers(List.of(challenge1, challenge2), startTime);
 
         // then
         assertAll(
                 () -> assertThat(challengersResults.size()).isEqualTo(2),
-                () -> assertThat(challengersResults.get(0).getChallengeId()).isEqualTo(미라클_모닝_ID),
-                () -> assertThat(challengersResults.get(0).getChallengers()).isEqualTo(2L),
-                () -> assertThat(challengersResults.get(1).getChallengeId()).isEqualTo(알고리즘_풀기_ID),
-                () -> assertThat(challengersResults.get(1).getChallengers()).isEqualTo(1L)
+                () -> assertThat(challengersResults.get(0)[0]).isEqualTo(미라클_모닝_ID),
+                () -> assertThat(challengersResults.get(0)[1]).isEqualTo(2L),
+                () -> assertThat(challengersResults.get(1)[0]).isEqualTo(알고리즘_풀기_ID),
+                () -> assertThat(challengersResults.get(1)[1]).isEqualTo(1L)
         );
     }
 

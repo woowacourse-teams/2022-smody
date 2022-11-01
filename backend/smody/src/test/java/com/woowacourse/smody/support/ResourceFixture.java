@@ -157,7 +157,7 @@ public class ResourceFixture {
                     record.toSuccess();
                 }
             }
-            entityManager.flush();
+        entityManager.flush();
         }
         return cycleRepository.save(cycle);
     }
