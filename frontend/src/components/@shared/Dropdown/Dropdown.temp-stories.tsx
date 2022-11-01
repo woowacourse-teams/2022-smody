@@ -1,6 +1,7 @@
+import { Dropdown } from 'components/@shared/Dropdown';
+import { DropdownProps } from 'components/@shared/Dropdown/type';
+
 import { Bell } from 'components/Bell';
-import { Dropdown } from 'components/Dropdown';
-import { DropdownProps } from 'components/Dropdown/type';
 
 export default {
   title: 'components/Dropdown',
