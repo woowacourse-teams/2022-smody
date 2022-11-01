@@ -4,6 +4,7 @@ type TabType = { path: string; tabName: string };
 
 export type TabsProps = {
   tabList: TabType[];
+  ariaLabel?: string;
 };
 
 export type TabProps = {

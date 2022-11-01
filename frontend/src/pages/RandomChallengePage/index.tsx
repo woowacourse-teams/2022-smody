@@ -36,8 +36,8 @@ const RandomChallengePage = () => {
   }
 
   return (
-    <FlexBox flexDirection="column">
-      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
+    <FlexBox flexDirection="column" aria-label="랜덤 챌린지 페이지" as="section">
+      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold" as="h1">
         🎲 이런 챌린지는 어때요 🎲
       </TitleText>
       <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />

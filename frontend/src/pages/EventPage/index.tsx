@@ -11,8 +11,13 @@ const EventPage = () => {
   const themeContext = useThemeContext();
 
   return (
-    <FlexBox flexDirection="column" justifyContent="center">
-      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
+    <FlexBox
+      flexDirection="column"
+      justifyContent="center"
+      aria-label="이벤트 챌린지 페이지"
+      as="section"
+    >
+      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold" as="h1">
         ⭐ 우테코 팀프로젝트 사용 챌린지 이벤트 ⭐
       </TitleText>
       <DescriptionText color={themeContext.onBackground} size={16}>

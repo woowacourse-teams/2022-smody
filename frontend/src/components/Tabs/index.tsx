@@ -6,11 +6,11 @@ import { FlexBox } from 'components';
 
 import COLOR from 'styles/color';
 
-export const Tabs = ({ tabList }: TabsProps) => {
+export const Tabs = ({ tabList, ariaLabel }: TabsProps) => {
   const { pathname, handleClickTab } = useTabs();
 
   return (
-    <TabList as="ul" alignItems="center">
+    <TabList as="ul" alignItems="center" aria-label={ariaLabel}>
       {tabList.map(({ path, tabName }) => (
         <Tab
           key={path}

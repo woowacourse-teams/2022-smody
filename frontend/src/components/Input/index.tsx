@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { InputProps, InputContainerProps, WordLengthProps } from 'components/Input/type';
+import { InputProps, InputContainerProps } from 'components/Input/type';
 import { useInput } from 'components/Input/useInput';
 import { ValidationMessage } from 'components/ValidationMessage';
 
@@ -52,9 +52,7 @@ export const Input = ({
         <div>
           <ValidationMessage isValidated={isValidated} value={value} message={message} />
         </div>
-        <WordLength isMargin={!!needWordLength}>
-          {needWordLength ? `${value?.length}/${maxLength}` : ''}
-        </WordLength>
+        {needWordLength && <WordLength>{`${value?.length}/${maxLength}`}</WordLength>}
       </FlexBox>
     </Wrapper>
   );
@@ -130,11 +128,6 @@ const TextAreaElement = styled.textarea`
   `}
 `;
 
-const WordLength = styled.div<WordLengthProps>`
-  ${({ isMargin }) => css`
-    ${isMargin &&
-    css`
-      margin-top: 0.3rem;
-    `}
-  `}
+const WordLength = styled.span`
+  margin-top: 0.3rem;
 `;

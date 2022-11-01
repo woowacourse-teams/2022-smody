@@ -32,8 +32,8 @@ const ChallengePage = () => {
   const { handleCreateChallengeButton } = useChallengePage();
   return (
     <FlexBox flexDirection="column">
-      <Tabs tabList={tabList} />
-      <ContentWrapper>
+      <Tabs tabList={tabList} ariaLabel="챌린지 페이지 탭 목록" />
+      <ContentWrapper aria-label="탭 컨텐츠">
         <Suspense fallback={<LoadingSpinner />}>
           <ContentPage />
         </Suspense>

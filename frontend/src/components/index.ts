@@ -65,3 +65,4 @@ export * from 'components/CheckSuccessCycle';
 export * from 'components/Tabs';
 export * from 'components/Tooltip';
 export * from 'components/InstallPrompt';
+export * from 'components/SROnly';
