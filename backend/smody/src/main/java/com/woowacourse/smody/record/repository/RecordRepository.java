@@ -40,7 +40,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     @Query("select " +
             "new com.woowacourse.smody.record.dto.InProgressResult(r.challenge.id, count(r.member.id)) from Record r " +
-            "where r.member=:member and r.challenge = :challenges and r.deadLineTime >= :startTime and r.isSuccess=false ")
+            "where r.member=:member and r.challenge = :challenge and r.deadLineTime >= :startTime and r.isSuccess=false ")
     InProgressResult isInProgressSingleChallenge(@Param("member") Member member, @Param("challenge") Challenge challenge,
                                                          @Param("startTime") LocalDateTime startTime);
 }
