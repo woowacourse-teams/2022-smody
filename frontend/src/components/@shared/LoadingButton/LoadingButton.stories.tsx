@@ -1,5 +1,5 @@
-import { LoadingButton } from 'components/LoadingButton';
-import { LoadingButtonProps } from 'components/LoadingButton/type';
+import { LoadingButton } from 'components/@shared/LoadingButton';
+import { LoadingButtonProps } from 'components/@shared/LoadingButton/type';
 
 export default {
   title: 'components/LoadingButton',
