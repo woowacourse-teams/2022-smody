@@ -1,4 +1,4 @@
-import { CardGridContainer } from 'components';
+import { CardGridContainer } from '.';
 
 export default {
   title: 'components/CardGridContainer',

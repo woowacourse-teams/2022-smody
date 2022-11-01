@@ -1,6 +1,5 @@
+import { SearchBar } from '.';
 import { useRef } from 'react';
-
-import { SearchBar } from 'components';
 
 export default {
   title: 'components/SearchBar',

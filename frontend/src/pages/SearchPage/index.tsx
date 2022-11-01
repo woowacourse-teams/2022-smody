@@ -1,3 +1,4 @@
+import { SearchBar } from './components/SearchBar';
 import styled from 'styled-components';
 
 import useSnackBar from 'hooks/useSnackBar';
@@ -8,7 +9,6 @@ import {
   LoadingSpinner,
   FlexBox,
   InfiniteScroll,
-  SearchBar,
   ChallengeList,
   ChallengeItem,
   SROnly,
