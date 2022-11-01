@@ -22,10 +22,10 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
             + "where r.deadLineTime >= :startTime and r.isSuccess=false ")
     Long countChallengers(@Param("startTime") LocalDateTime startTime);
 
-    @Query("select " +
-            "new com.woowacourse.smody.record.dto.ChallengersResult(r.challenge.id, count(r.member.id)) from Record r " +
-            "where r.challenge in :challenges and r.deadLineTime >= :startTime and r.isSuccess=false " +
-            "group by r.challenge")
+    @Query(value = "select r.challenge_id, count(r.member_id) from record r where (select r.record_id from record r " +
+            "where r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
+            "order by r.dead_line_time, r.record_id limit 1) <= r.record_id and r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
+            "group by r.challenge_id", nativeQuery = true)
     List<ChallengersResult> countChallengers(@Param("challenges") List<Challenge> challenges,
                                              @Param("startTime") LocalDateTime startTime);
 
