@@ -1,6 +1,5 @@
+import { CycleDetailItem } from '.';
 import { CycleDetailItemProps } from './type';
-
-import { CycleDetailItem } from 'components';
 
 export default {
   title: 'Components/CycleDetailItem',

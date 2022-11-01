@@ -1,9 +1,10 @@
 import { CycleDetailListProps } from './type';
 import styled from 'styled-components';
 
+import { CycleDetailItem } from 'pages/CycleDetailPage/components/CycleDetailItem';
+
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { CycleDetailItem } from 'components/CycleDetailItem';
 import { EmptyContent } from 'components/EmptyContent';
 
 import { CLIENT_PATH } from 'constants/path';
