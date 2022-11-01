@@ -2,7 +2,7 @@ import { SnackBarProps } from './type';
 import { useSetRecoilState } from 'recoil';
 import { snackBarState } from 'recoil/snackbar/atoms';
 
-import { SnackBar } from 'components/SnackBar';
+import { SnackBar } from 'components/@shared/SnackBar';
 
 const snackBarRoot = document.createElement('div');
 snackBarRoot.setAttribute('id', 'snackbar-root');
