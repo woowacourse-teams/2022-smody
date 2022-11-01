@@ -1,9 +1,8 @@
 package com.woowacourse.smody;
 
-import com.woowacourse.smody.support.IntegrationTest;
 import org.junit.jupiter.api.Test;
 
-class SmodyApplicationTests extends IntegrationTest {
+class SmodyApplicationTests {
 
     @Test
     void contextLoads() {
