@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { FixedButton } from 'components/FixedButton';
+import { FixedButton } from 'components/@shared/FixedButton';
 
 export default {
   title: 'components/FixedButton',
