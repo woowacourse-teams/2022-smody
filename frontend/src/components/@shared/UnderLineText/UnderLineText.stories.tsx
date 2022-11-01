@@ -1,5 +1,5 @@
-import { UnderLineText } from 'components/UnderLineText';
-import { UnderLineTextProps } from 'components/UnderLineText/type';
+import { UnderLineText } from 'components/@shared/UnderLineText';
+import { UnderLineTextProps } from 'components/@shared/UnderLineText/type';
 
 export default {
   title: 'components/UnderLineText',

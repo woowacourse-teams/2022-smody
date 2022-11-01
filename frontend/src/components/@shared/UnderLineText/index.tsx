@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { UnderLineTextProps } from 'components/UnderLineText/type';
+import { UnderLineTextProps } from 'components/@shared/UnderLineText/type';
 
 import { Z_INDEX } from 'constants/css';
 import { fontSizeMapper } from 'constants/style';
