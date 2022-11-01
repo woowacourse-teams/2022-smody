@@ -76,6 +76,12 @@ public class RecordService {
 
     public Map<Long, Long> countChallengers(Challenge challenge, LocalDateTime startTime) {
         Long[] result = recordRepository.countChallengersSingleChallenge(challenge, startTime);
+        if (result.length == 0) {
+            return Collections.emptyMap();
+        }
+        else if (result.length == 1) {
+            return Map.of(result[0], 0L);
+        }
         return Map.of(result[0], result[1]);
     }
 
