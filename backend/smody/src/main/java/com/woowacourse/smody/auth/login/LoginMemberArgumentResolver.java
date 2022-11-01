@@ -1,5 +1,6 @@
 package com.woowacourse.smody.auth.login;
 
+import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import java.util.Objects;
@@ -23,8 +24,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        return Optional.ofNullable(Objects.requireNonNull(request).getAttribute("payload"))
-                .orElseThrow(() -> new BusinessException(ExceptionData.AUTHORIZATION_SERVER_ERROR));
+        return new TokenPayload(1L);
     }
 }
