@@ -1,16 +1,10 @@
+import { CardBox } from '../CardBox';
 import useCardGridContainer from './useCardGridContainer';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import {
-  CardBox,
-  Text,
-  EmptyContent,
-  LoadingSpinner,
-  InfiniteScroll,
-  FlexBox,
-} from 'components';
+import { Text, EmptyContent, LoadingSpinner, InfiniteScroll, FlexBox } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 

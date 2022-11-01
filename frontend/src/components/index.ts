@@ -17,8 +17,6 @@ export * from 'components/UnderLineText';
 export * from 'components/ChallengeIcon';
 export * from 'components/FixedButton';
 export * from 'components/Profile';
-export * from 'components/CardBox';
-export * from 'components/CardGridContainer';
 export * from 'components/EmptyContent';
 export * from 'components/SnackBar';
 export * from 'components/LoadingSpinner';

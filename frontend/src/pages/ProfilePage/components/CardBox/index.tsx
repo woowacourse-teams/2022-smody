@@ -1,10 +1,11 @@
 import { useCardBox } from './useCardBox';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, Text, ChallengeIcon } from 'components';
-import { CardBoxProps, WrapperProps } from 'components/CardBox/type';
+import { CardBoxProps, WrapperProps } from 'pages/ProfilePage/components/CardBox/type';
 
-import { colorList, emojiList } from 'constants/style';
+import { FlexBox, Text, ChallengeIcon } from 'components';
+
+import { colorList } from 'constants/style';
 
 import COLOR from 'styles/color';
 

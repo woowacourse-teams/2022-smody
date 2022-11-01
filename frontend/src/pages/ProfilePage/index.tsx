@@ -1,6 +1,7 @@
+import { CardGridContainer } from './components/CardGridContainer';
 import styled from 'styled-components';
 
-import { Profile, CardGridContainer, FlexBox } from 'components';
+import { Profile, FlexBox } from 'components';
 
 const ProfilePage = () => {
   return (
