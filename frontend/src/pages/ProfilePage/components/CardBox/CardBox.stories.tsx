@@ -2,7 +2,7 @@ import { CardBox } from '.';
 import { CardBoxProps } from './type';
 
 export default {
-  title: 'components/CardBox',
+  title: 'pages/ProfilePage/CardBox',
   component: CardBox,
 };
 

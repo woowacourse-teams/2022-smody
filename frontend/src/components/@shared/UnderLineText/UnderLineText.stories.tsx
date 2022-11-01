@@ -2,7 +2,7 @@ import { UnderLineText } from 'components/@shared/UnderLineText';
 import { UnderLineTextProps } from 'components/@shared/UnderLineText/type';
 
 export default {
-  title: 'components/UnderLineText',
+  title: '@shared/UnderLineText',
   component: UnderLineText,
   argTypes: {
     fontWeight: {

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { FixedButton } from 'components/@shared/FixedButton';
 
 export default {
-  title: 'components/FixedButton',
+  title: '@shared/FixedButton',
   component: FixedButton,
 };
 

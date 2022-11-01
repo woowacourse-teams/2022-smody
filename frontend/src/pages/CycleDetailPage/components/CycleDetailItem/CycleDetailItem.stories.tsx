@@ -2,7 +2,7 @@ import { CycleDetailItem } from '.';
 import { CycleDetailItemProps } from './type';
 
 export default {
-  title: 'Components/CycleDetailItem',
+  title: 'pages/CycleDetailPage/CycleDetailItem',
   component: CycleDetailItem,
 };
 

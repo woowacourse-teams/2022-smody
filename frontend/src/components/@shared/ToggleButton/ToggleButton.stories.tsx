@@ -5,7 +5,7 @@ import { useArgs } from '@storybook/client-api';
 import { ToggleButton } from 'components/@shared/ToggleButton';
 
 export default {
-  title: 'components/ToggleButton',
+  title: '@shared/ToggleButton',
   component: ToggleButton,
   argTypes: {
     handleChange: {

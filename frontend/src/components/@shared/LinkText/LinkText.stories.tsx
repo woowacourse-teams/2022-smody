@@ -2,7 +2,7 @@ import { LinkText } from 'components/@shared/LinkText';
 import { LinkTextProps } from 'components/@shared/LinkText/type';
 
 export default {
-  title: 'components/LinkText',
+  title: '@shared/LinkText',
   component: LinkText,
   argTypes: {
     fontWeight: {

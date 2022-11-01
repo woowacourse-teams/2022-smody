@@ -4,7 +4,7 @@ import { TitleProps } from 'components/@shared/Title/type';
 import { CLIENT_PATH } from 'constants/path';
 
 export default {
-  title: 'components/Title',
+  title: '@shared/Title',
   component: Title,
 };
 

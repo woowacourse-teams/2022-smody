@@ -5,7 +5,7 @@ import { useArgs } from '@storybook/client-api';
 import { DarkModeButton } from 'components/@shared/DarkModeButton';
 
 export default {
-  title: 'components/DarkModeButton',
+  title: '@shared/DarkModeButton',
   component: DarkModeButton,
   argTypes: {
     handleChange: {

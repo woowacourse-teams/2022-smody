@@ -4,7 +4,7 @@ import { TabsProps } from 'components/@shared/Tabs/type';
 import { CLIENT_PATH } from 'constants/path';
 
 export default {
-  title: 'components/Tabs',
+  title: '@shared/Tabs',
   component: Tabs,
 };
 

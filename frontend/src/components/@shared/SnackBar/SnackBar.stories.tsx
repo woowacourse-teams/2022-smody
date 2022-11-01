@@ -9,7 +9,7 @@ snackBarRoot.setAttribute('id', 'snackbar-root');
 document.body.append(snackBarRoot);
 
 export default {
-  title: 'Components/SnackBar',
+  title: '@shared/SnackBar',
   component: SnackBar,
   argTypes: {
     status: {

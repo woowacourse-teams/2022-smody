@@ -2,7 +2,7 @@ import { CommentInput } from '.';
 import { CommentInputProps } from './type';
 
 export default {
-  title: 'Components/CommentInput',
+  title: 'pages/FeedDetailPage/CommentInput',
   component: CommentInput,
   argTypes: {
     editMode: {

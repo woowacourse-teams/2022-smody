@@ -2,7 +2,7 @@ import { LoadingButton } from 'components/@shared/LoadingButton';
 import { LoadingButtonProps } from 'components/@shared/LoadingButton/type';
 
 export default {
-  title: 'components/LoadingButton',
+  title: '@shared/LoadingButton',
   component: LoadingButton,
 };
 

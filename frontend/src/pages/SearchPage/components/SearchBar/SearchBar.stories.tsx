@@ -2,7 +2,7 @@ import { SearchBar } from '.';
 import { useRef } from 'react';
 
 export default {
-  title: 'components/SearchBar',
+  title: 'pages/SearchPage/SearchBar',
   component: SearchBar,
   argTypes: {
     searchInput: {

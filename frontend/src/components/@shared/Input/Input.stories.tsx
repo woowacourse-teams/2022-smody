@@ -5,7 +5,7 @@ import useInput from 'hooks/useInput';
 import { Input } from 'components/@shared/Input';
 
 export default {
-  title: 'Components/Input',
+  title: '@shared/Input',
   component: Input,
   argTypes: {
     icon: {

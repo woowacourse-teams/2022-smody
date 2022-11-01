@@ -3,7 +3,7 @@ import { TooltipProps } from './type';
 import { Tooltip } from 'components/@shared/Tooltip';
 
 export default {
-  Tooltip: 'components/Tooltip',
+  title: '@shared/Tooltip',
   component: Tooltip,
 };
 
