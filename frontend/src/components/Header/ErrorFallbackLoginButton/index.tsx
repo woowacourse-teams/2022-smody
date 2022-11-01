@@ -1,5 +1,5 @@
 import { Button } from 'components';
-import { ErrorFallbackLogInButtonProps } from 'components/ErrorFallbackLoginButton/type';
+import { ErrorFallbackLogInButtonProps } from 'components/Header/ErrorFallbackLoginButton/type';
 
 export const ErrorFallbackLogInButton = ({
   handleClickErrorFallbackLoginButton,

@@ -48,7 +48,7 @@ export * from 'components/NotificationMessage';
 export * from 'components/ChallengeInfoWithUser';
 export * from 'components/Record';
 export * from 'components/ErrorFallbackMain';
-export * from 'components/ErrorFallbackLoginButton';
+export * from 'components/Header/ErrorFallbackLoginButton';
 export * from 'components/ErrorFallbackSubscriptionButton';
 export * from 'components/ErrorFallbackNotificationMessage';
 export * from 'components/MembersPopover';
