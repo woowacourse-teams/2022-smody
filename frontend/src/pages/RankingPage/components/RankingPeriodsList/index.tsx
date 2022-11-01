@@ -1,3 +1,4 @@
+import { RankingPeriodItem } from '../RankingPeriodItem';
 import { SelectListProps } from './type';
 import useRankingPeriodsList from './useRankingPeriodsList';
 import { BsFillCaretDownFill, BsFillCaretUpFill } from 'react-icons/bs';
@@ -7,7 +8,7 @@ import useThemeContext from 'hooks/useThemeContext';
 
 import { FlexBox } from 'components/@shared/FlexBox';
 
-import { RankingPeriodItem, Text, Tooltip } from 'components';
+import { Text, Tooltip } from 'components';
 
 export const RankingPeriodsList = () => {
   const themeContext = useThemeContext();

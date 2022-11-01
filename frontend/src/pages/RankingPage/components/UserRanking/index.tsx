@@ -1,10 +1,11 @@
+import { RankingItem } from '../RankingItem';
 import { RankingItemSkeletonProps } from './type';
 import useUserRanking from './useUserRanking';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { Text, RankingItem, FlexBox } from 'components';
+import { Text, FlexBox } from 'components';
 
 export const UserRanking = () => {
   const themeContext = useThemeContext();
