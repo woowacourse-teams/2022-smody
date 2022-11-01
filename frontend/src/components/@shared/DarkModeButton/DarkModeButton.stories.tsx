@@ -2,7 +2,7 @@ import { DarkModeButtonProps } from './type';
 
 import { useArgs } from '@storybook/client-api';
 
-import { DarkModeButton } from 'components/DarkModeButton';
+import { DarkModeButton } from 'components/@shared/DarkModeButton';
 
 export default {
   title: 'components/DarkModeButton',
