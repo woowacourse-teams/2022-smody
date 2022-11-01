@@ -2,7 +2,7 @@ import { validateIntroduction, validateNickname } from 'utils/validator';
 
 import useInput from 'hooks/useInput';
 
-import { Input } from 'components/Input';
+import { Input } from 'components/@shared/Input';
 
 export default {
   title: 'Components/Input',

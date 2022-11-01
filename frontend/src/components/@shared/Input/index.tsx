@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import { FlexBox } from 'components/@shared/FlexBox';
+import { InputProps, InputContainerProps } from 'components/@shared/Input/type';
+import { useInput } from 'components/@shared/Input/useInput';
 
-import { InputProps, InputContainerProps } from 'components/Input/type';
-import { useInput } from 'components/Input/useInput';
 import { ValidationMessage } from 'components/ValidationMessage';
 
 export const Input = ({
