@@ -1,5 +1,5 @@
-import { Title } from 'components/Title';
-import { TitleProps } from 'components/Title/type';
+import { Title } from 'components/@shared/Title';
+import { TitleProps } from 'components/@shared/Title/type';
 
 import { CLIENT_PATH } from 'constants/path';
 
