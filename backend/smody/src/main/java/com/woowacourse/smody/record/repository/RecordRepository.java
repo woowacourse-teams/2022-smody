@@ -26,7 +26,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
             "where r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
             "order by r.dead_line_time, r.record_id limit 1) <= r.record_id and r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
             "group by r.challenge_id", nativeQuery = true)
-    List<ChallengersResult> countChallengers(@Param("challenges") List<Challenge> challenges,
+    List<Long []> countChallengers(@Param("challenges") List<Challenge> challenges,
                                              @Param("startTime") LocalDateTime startTime);
 
     @Query("select " +

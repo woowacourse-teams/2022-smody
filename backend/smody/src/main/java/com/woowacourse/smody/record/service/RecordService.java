@@ -66,13 +66,13 @@ public class RecordService {
 
     public Map<Long, Long> countChallengers(List<Challenge> challenges, LocalDateTime startTime) {
         return recordRepository.countChallengers(challenges, startTime).stream()
-                .collect(Collectors.toMap(ChallengersResult::getChallengeId, ChallengersResult::getChallengers));
+                .collect(Collectors.toMap(each -> each[0], each -> each[1]));
     }
 
     public Map<Long, Boolean> calculateInProgress(Member member, List<Challenge> challenges, LocalDateTime startTime) {
-//        if (member.getId() == null || member.getId() == 0L) {
-//            return Collections.emptyMap();
-//        }
+        if (member.getId() == null || member.getId() == 0L) {
+            return Collections.emptyMap();
+        }
         return recordRepository.isInProgress(member, challenges, startTime).stream()
                 .collect(Collectors.toMap(InProgressResult::getChallengeId, InProgressResult::isInProgress));
     }
