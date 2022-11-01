@@ -120,11 +120,11 @@ public class ChallengeApiService {
     ) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
         Challenge challenge = challengeService.search(challengeId);
-        Map<Long, Long> count = recordService.countChallengers(challenge, searchTime);
+        Long count = recordService.countChallengers(challenge, searchTime);
         Map<Long, Boolean> inProgressResults = recordService.calculateInProgress(member, challenge, searchTime);
         return new ChallengeResponse(
                 challenge,
-                count.get(challengeId).intValue(),
+                count.intValue(),
                 inProgressResults.get(challengeId)
         );
     }
