@@ -2,7 +2,7 @@ import { ToggleButtonProps } from './type';
 
 import { useArgs } from '@storybook/client-api';
 
-import { ToggleButton } from 'components/ToggleButton';
+import { ToggleButton } from 'components/@shared/ToggleButton';
 
 export default {
   title: 'components/ToggleButton',
