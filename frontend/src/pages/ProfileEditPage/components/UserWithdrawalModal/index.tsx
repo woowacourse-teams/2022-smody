@@ -3,8 +3,9 @@ import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
+import { UserWithdrawalModalProps } from 'pages/ProfileEditPage/components/UserWithdrawalModal/type';
+
 import { Button, FlexBox, ModalOverlay, Text, Input } from 'components';
-import { UserWithdrawalModalProps } from 'components/UserWithdrawalModal/type';
 
 export const UserWithdrawalModal = ({
   email,
