@@ -1,5 +1,5 @@
-import { LinkText } from 'components/LinkText';
-import { LinkTextProps } from 'components/LinkText/type';
+import { LinkText } from 'components/@shared/LinkText';
+import { LinkTextProps } from 'components/@shared/LinkText/type';
 
 export default {
   title: 'components/LinkText',

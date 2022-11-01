@@ -1,9 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 
+import { LinkTextProps } from 'components/@shared/LinkText/type';
 import { Text } from 'components/@shared/Text';
-
-import { LinkTextProps } from 'components/LinkText/type';
 
 export const LinkText = ({
   children,
