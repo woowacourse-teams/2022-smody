@@ -1,7 +1,9 @@
 package com.woowacourse.smody.support;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.record.domain.Record;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.comment.domain.Comment;
 import com.woowacourse.smody.comment.repository.CommentRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
@@ -20,10 +22,14 @@ import com.woowacourse.smody.push.repository.PushSubscriptionRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityManager;
 
 @Component
 @SuppressWarnings("NonAsciiCharacters")
@@ -35,19 +41,25 @@ public class ResourceFixture {
     private final PushNotificationRepository pushNotificationRepository;
     private final PushSubscriptionRepository pushSubscriptionRepository;
     private final CommentRepository commentRepository;
+    private final RecordRepository recordRepository;
+    private final EntityManager entityManager;
 
     public ResourceFixture(MemberRepository memberRepository,
                            ChallengeRepository challengeRepository,
                            CycleRepository cycleRepository,
                            PushNotificationRepository pushNotificationRepository,
                            PushSubscriptionRepository pushSubscriptionRepository,
-                           CommentRepository commentRepository) {
+                           CommentRepository commentRepository,
+                           RecordRepository recordRepository,
+                           EntityManager entityManager) {
         this.memberRepository = memberRepository;
         this.challengeRepository = challengeRepository;
         this.cycleRepository = cycleRepository;
         this.pushNotificationRepository = pushNotificationRepository;
         this.pushSubscriptionRepository = pushSubscriptionRepository;
         this.commentRepository = commentRepository;
+        this.recordRepository = recordRepository;
+        this.entityManager = entityManager;
     }
 
     public static final Long 조조그린_ID = 1L;
@@ -76,31 +88,31 @@ public class ResourceFixture {
         return challengeRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public Cycle 사이클_생성(Long memberId, Long challengeId, Progress progress, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
         return 인증_기록_추가(cycle, progress);
     }
-
+    @Transactional
     public Cycle 사이클_생성_NOTHING(Long memberId, Long challengeId, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
         return 인증_기록_추가(cycle, Progress.NOTHING);
     }
-
+    @Transactional
     public Cycle 사이클_생성_FIRST(Long memberId, Long challengeId, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
         return 인증_기록_추가(cycle, Progress.FIRST);
     }
-
+    @Transactional
     public Cycle 사이클_생성_SECOND(Long memberId, Long challengeId, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
         return 인증_기록_추가(cycle, Progress.SECOND);
     }
-
+    @Transactional
     public Cycle 사이클_생성_SUCCESS(Long memberId, Long challengeId, LocalDateTime startTime) {
         Cycle cycle = new Cycle(회원_조회(memberId), 챌린지_조회(challengeId), Progress.NOTHING, startTime);
         return 인증_기록_추가(cycle, Progress.SUCCESS);
     }
-
     private Cycle 인증_기록_추가(Cycle cycle, Progress progress) {
         List<CycleDetail> cycleDetails = List.of(
                 new CycleDetail(
@@ -115,6 +127,37 @@ public class ResourceFixture {
         );
         for (int i = 0; i < progress.getCount(); i++) {
             cycle.increaseProgress(cycleDetails.get(i).getProgressTime(), 이미지, cycleDetails.get(i).getDescription());
+        }
+        Optional<Record> recordOptional = recordRepository.findByMemberAndAndChallenge(cycle.getMember(), cycle.getChallenge());
+        if (recordOptional.isEmpty()) {
+            if (cycle.isSuccess()) {
+                recordRepository.save(new Record(
+                        cycle.getMember(), cycle.getChallenge(), 1,
+                        progress.getCount(), cycle.getStartTime().plusDays(3), true));
+            }
+            else {
+                recordRepository.save(new Record(
+                        cycle.getMember(), cycle.getChallenge(), 0,
+                        progress.getCount(), cycle.getStartTime().plusDays(progress.getCount() + 1), false));
+            }
+        }
+        else {
+            Record record = recordOptional.get();
+            LocalDateTime nowTime = cycle.getStartTime().plusDays(progress.getCount() + 1);
+            if (cycle.isSuccess()) {
+                nowTime = cycle.getStartTime().plusDays(3);
+            }
+            if (record.getDeadLineTime().isBefore(nowTime)) {
+                if (!cycle.isSuccess()) {
+                    record.changeDeadLine(cycle.getStartTime(), (long) (progress.getCount() + 1));
+                    record.toNotSuccess();
+                }
+                else {
+                    record.changeDeadLine(cycle.getStartTime(), 3L);
+                    record.toSuccess();
+                }
+            }
+            entityManager.flush();
         }
         return cycleRepository.save(cycle);
     }
@@ -161,6 +204,11 @@ public class ResourceFixture {
     public void 사이클_인증(Long cycleId, LocalDateTime progressTime) {
         Cycle cycle = cycleRepository.findById(cycleId).orElseThrow();
         cycle.increaseProgress(progressTime, 이미지, "description");
+        Record record = recordRepository.findByMemberAndAndChallenge(cycle.getMember(), cycle.getChallenge()).orElseThrow();
+        record.changeDeadLine(cycle.getStartTime(), (long) (cycle.getProgress().getCount() + 1));
+        if (cycle.isSuccess()) {
+            record.toSuccess();
+        }
     }
 
     public Member 회원_추가(String nickName, String email) {

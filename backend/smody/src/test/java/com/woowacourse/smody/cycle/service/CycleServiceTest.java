@@ -13,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
+import com.woowacourse.smody.record.domain.Record;
 import com.woowacourse.smody.challenge.repository.ChallengeRepository;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.db_support.PagingParams;
@@ -23,6 +25,8 @@ import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -36,6 +40,9 @@ class CycleServiceTest extends IntegrationTest {
 
     @Autowired
     private ChallengeRepository challengeRepository;
+
+    @Autowired
+    private RecordRepository recordRepository;
 
     private final LocalDateTime now = LocalDateTime.now();
 
@@ -285,5 +292,19 @@ class CycleServiceTest extends IntegrationTest {
         // then
         assertThat(actual).map(cycle -> cycle.getChallenge().getName())
                 .containsExactly("미라클 모닝", "스모디 방문하기", "오늘의 운동");
+    }
+
+    @DisplayName("사이클 생성 시 레코드도 같이 만들어진다")
+    @Test
+    void createRecord() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+
+        // when
+        Cycle cycle = cycleService.create(조조그린_ID, 미라클_모닝_ID, now);
+        Optional<Record> myRecord = recordRepository.findByMemberAndAndChallenge(cycle.getMember(), cycle.getChallenge());
+
+        // then
+        assertThat(myRecord.isPresent()).isTrue();
     }
 }

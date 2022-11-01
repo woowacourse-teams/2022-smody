@@ -19,7 +19,14 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.woowacourse.smody.record.dto.ChallengersResult;
+import com.woowacourse.smody.record.dto.InProgressResult;
+import com.woowacourse.smody.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +39,7 @@ public class ChallengeApiService {
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
+    private final RecordService recordService;
 
     public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime,
                                                                          PagingParams pagingParams) {
@@ -49,9 +57,9 @@ public class ChallengeApiService {
             return getChallengeTabResponsesWhenRandom(searchTime, pagingParams, member);
         }
         List<Challenge> challenges = challengeService.findAllByFilter(pagingParams);
-        List<Cycle> cycles = cycleService.findInProgressByChallenges(searchTime, challenges);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
-        return getChallengeTabResponses(challenges, member, challengingRecords);
+        Map<Long, Long> count = recordService.countChallengers(challenges, searchTime);
+        Map<Long, Boolean> inProgressResults = recordService.calculateInProgress(member, challenges, searchTime);
+        return getChallengeTabResponses(challenges, count, inProgressResults);
     }
 
     private List<ChallengeTabResponse> getChallengeTabResponsesWhenPopular(LocalDateTime searchTime,
@@ -83,6 +91,26 @@ public class ChallengeApiService {
                         challengingRecords.countChallenger(challenge),
                         challengingRecords.isChallenging(challenge, member)
                 )).collect(toList());
+    }
+
+    private List<ChallengeTabResponse> getChallengeTabResponses(List<Challenge> challenges,
+                                                                Map<Long, Long> challengersCount,
+                                                                Map<Long, Boolean> inProgress) {
+        Map<Challenge, Long> challengersByChallenge = new HashMap<>();
+        Map<Challenge, Boolean> inProgressByChallenge = new HashMap<>();
+        for (Challenge challenge : challenges) {
+            challengersByChallenge.put(challenge, 0L);
+            inProgressByChallenge.put(challenge, false);
+        }
+        challenges.stream()
+                .filter(each -> challengersCount.containsKey(each.getId()))
+                .forEach(each -> challengersByChallenge.put(each, challengersCount.get(each.getId())));
+        challenges.stream()
+                .filter(each -> inProgress.containsKey(each.getId()))
+                .forEach(each -> inProgressByChallenge.put(each, inProgress.get(each.getId())));
+        return challenges.stream()
+                .map(each -> new ChallengeTabResponse(each, challengersByChallenge.get(each).intValue(), inProgressByChallenge.get(each)))
+                .collect(Collectors.toList());
     }
 
     public ChallengeResponse findWithChallengerCount(LocalDateTime searchTime, Long challengeId) {

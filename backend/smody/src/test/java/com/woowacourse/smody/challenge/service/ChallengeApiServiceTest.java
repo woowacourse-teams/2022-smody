@@ -25,6 +25,8 @@ import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
+import com.woowacourse.smody.record.domain.Record;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +37,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 class ChallengeApiServiceTest extends IntegrationTest {
 
@@ -306,6 +311,7 @@ class ChallengeApiServiceTest extends IntegrationTest {
         void findAllWithChallengerCount_sortAuth() {
             // when
             TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+
             List<ChallengeTabResponse> challengeResponses = challengeApiService.findAllWithChallengerCountByFilter(
                     tokenPayload, now, new PagingParams(null, null, 0L, null));
 

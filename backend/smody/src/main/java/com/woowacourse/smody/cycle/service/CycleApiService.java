@@ -5,6 +5,8 @@ import static java.util.stream.Collectors.toList;
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
+import com.woowacourse.smody.record.domain.Record;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleCreateEvent;
@@ -27,6 +29,8 @@ import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+
+import com.woowacourse.smody.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -42,6 +46,8 @@ public class CycleApiService {
     private final MemberService memberService;
     private final ImageStrategy imageStrategy;
     private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final RecordService recordService;
 
     @Transactional
     public Long create(TokenPayload tokenPayload, CycleRequest cycleRequest) {
@@ -59,6 +65,7 @@ public class CycleApiService {
         validateAuthorizedMember(tokenPayload, cycle);
         Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
         cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
+        recordService.increaseDeadLine(cycle);
 
         applicationEventPublisher.publishEvent(new CycleProgressEvent(cycle));
         return new ProgressResponse(cycle.getProgress());

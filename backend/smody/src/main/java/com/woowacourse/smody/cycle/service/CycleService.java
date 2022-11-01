@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.toList;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
+import com.woowacourse.smody.record.domain.Record;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.challenge.service.ChallengeService;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
@@ -18,6 +20,8 @@ import com.woowacourse.smody.member.service.MemberService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import com.woowacourse.smody.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +35,7 @@ public class CycleService {
     private final CycleDetailRepository cycleDetailRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
+    private final RecordService recordService;
 
     @Transactional
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
@@ -40,6 +45,7 @@ public class CycleService {
         if (optionalCycle.isPresent()) {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
         }
+        recordService.create(member, challenge, startTime);
         return cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
     }
 

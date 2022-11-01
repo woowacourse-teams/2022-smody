@@ -20,6 +20,9 @@ public enum ExceptionData {
     INVALID_PROGRESS_TIME(3002, "인증할 수 있는 시간이 아닙니다.", 400),
     DUPLICATE_IN_PROGRESS_CHALLENGE(3003, "이미 진행중인 챌린지입니다.", 400),
     INVALID_START_TIME(3004, "유효하지 않은 시작시간입니다.", 400),
+    INVALID_SUCCESS_COUNT(3005, "유효하지 않은 성공 횟수입니다.", 400),
+    INVALID_PROGRESS_COUNT(3006, "유효하지 않은 인증 횟수입니다.", 400),
+    CANNOT_UPDATE_DEADLINE(3007, "데드라인을 갱신할 수 없는 시간입니다.", 400),
 
     NOT_FOUND_MEMBER(4001, "존재하지 않는 회원입니다.", 404),
     NOT_FOUND_CHALLENGE(4002, "존재하지 않는 챌린지입니다.", 404),
@@ -30,8 +33,10 @@ public enum ExceptionData {
     NOT_FOUND_RANKING_ACTIVITY(4007, "존재하지 않는 랭킹 활동입니다.", 404),
     NOT_FOUND_PUSH_NOTIFICATION(4008, "알림을 찾을 수 없습니다.", 404),
     NOT_FOUND_SORT(4009, "정렬 기준을 찾을 수 없습니다.", 404),
+    NOT_FOUND_RECORD(4010, "레코드를 찾을 수 없습니다.", 404),
 
     EMPTY_IMAGE(5001, "이미지의 바이트코드가 비었습니다.", 400),
+    INVALID_INPROGRESS_NUMBER(5002, "참가 여부는 1이하의 숫자여야 합니다.", 400),
 
     INVALID_CYCLE_DETAIL_DESCRIPTION(6001, "인증 설명 형식이 올바르지 않습니다.", 400),
 

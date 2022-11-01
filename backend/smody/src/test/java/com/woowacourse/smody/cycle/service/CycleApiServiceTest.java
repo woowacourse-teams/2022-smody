@@ -17,6 +17,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
+import com.woowacourse.smody.record.domain.Record;
+import com.woowacourse.smody.record.repository.RecordRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.dto.CycleRequest;
@@ -32,6 +34,7 @@ import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,6 +49,9 @@ public class CycleApiServiceTest extends IntegrationTest {
 
     @Autowired
     private CycleApiService cycleApiService;
+
+    @Autowired
+    private RecordRepository recordRepository;
 
     private final LocalDateTime now = LocalDateTime.now();
 
@@ -447,5 +453,40 @@ public class CycleApiServiceTest extends IntegrationTest {
             // then
             assertThat(historyResponses).isEmpty();
         }
+    }
+
+    @DisplayName("사이클 인증 시 레코드의 deadline을 증가시킨다")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "NOTHING,2022-01-01T00:00:00,2,false",
+            "NOTHING,2022-01-01T23:59:59,2,false",
+            "FIRST,2022-01-02T00:00:00,3,false",
+            "FIRST,2022-01-02T23:59:59,3,false",
+            "SECOND,2022-01-03T00:00:00,3,true",
+            "SECOND,2022-01-03T23:59:59,3,true"
+    })
+    void changeRecord(Progress progress, LocalDateTime progressTime, int expected, boolean isEnded) {
+        // given
+        TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
+        MultipartFile imageFile = new MockMultipartFile(
+                "progressImage", "progressImage.jpg", "image/jpg", "image".getBytes()
+        );
+        Cycle cycle = fixture.사이클_생성(
+                조조그린_ID,
+                스모디_방문하기_ID,
+                progress,
+                LocalDateTime.of(2022, 1, 1, 0, 0)
+        );
+        ProgressRequest request = new ProgressRequest(cycle.getId(), progressTime, imageFile, "인증 완료");
+
+        // when
+        cycleApiService.increaseProgress(tokenPayload, request);
+        Record record = recordRepository.findByMemberAndAndChallenge(cycle.getMember(), cycle.getChallenge()).get();
+
+        // then
+        assertAll(
+                () -> assertThat(record.getDeadLineTime()).isEqualTo(cycle.getStartTime().plusDays(expected)),
+                () -> assertThat(record.isSuccess()).isEqualTo(isEnded)
+        );
     }
 }
