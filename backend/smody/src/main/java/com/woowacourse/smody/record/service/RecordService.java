@@ -70,7 +70,7 @@ public class RecordService {
     }
 
     public Map<Long, Boolean> calculateInProgress(Member member, List<Challenge> challenges, LocalDateTime startTime) {
-        if (member.getNickname().equals("비회원")) {
+        if (member.getId() == null || member.getId() == 0L) {
             return Collections.emptyMap();
         }
         return recordRepository.isInProgress(member, challenges, startTime).stream()
