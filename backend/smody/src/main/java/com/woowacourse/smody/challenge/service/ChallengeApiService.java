@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.woowacourse.smody.record.dto.ChallengersResult;
-import com.woowacourse.smody.record.dto.InProgressResult;
 import com.woowacourse.smody.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,8 +55,8 @@ public class ChallengeApiService {
             return getChallengeTabResponsesWhenRandom(searchTime, pagingParams, member);
         }
         List<Challenge> challenges = challengeService.findAllByFilter(pagingParams);
-        Map<Long, Long> count = recordService.countChallengers(challenges, searchTime);
-        Map<Long, Boolean> inProgressResults = recordService.calculateInProgress(member, challenges, searchTime);
+        Map<Long, Long> count = recordService.countChallengersIn(challenges, searchTime);
+        Map<Long, Boolean> inProgressResults = recordService.calculateInProgressIn(member, challenges, searchTime);
         return getChallengeTabResponses(challenges, count, inProgressResults);
     }
 
@@ -122,12 +120,12 @@ public class ChallengeApiService {
     ) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
         Challenge challenge = challengeService.search(challengeId);
-        List<Cycle> cycles = cycleService.findInProgressByChallenge(searchTime, challenge);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
+        Map<Long, Long> count = recordService.countChallengers(challenge, searchTime);
+        Map<Long, Boolean> inProgressResults = recordService.calculateInProgress(member, challenge, searchTime);
         return new ChallengeResponse(
                 challenge,
-                challengingRecords.countChallenger(challenge),
-                challengingRecords.isChallenging(challenge, member)
+                count.get(challengeId).intValue(),
+                inProgressResults.get(challengeId)
         );
     }
 

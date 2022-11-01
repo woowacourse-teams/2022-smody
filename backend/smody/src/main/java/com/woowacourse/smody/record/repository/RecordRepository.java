@@ -18,21 +18,29 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     Optional<Record> findByMemberAndAndChallenge(Member member, Challenge challenge);
 
-    @Query("select count(r) from Record r "
-            + "where r.deadLineTime >= :startTime and r.isSuccess=false ")
-    Long countChallengers(@Param("startTime") LocalDateTime startTime);
-
     @Query(value = "select r.challenge_id, count(r.member_id) from record r where (select r.record_id from record r " +
             "where r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
             "order by r.dead_line_time, r.record_id limit 1) <= r.record_id and r.challenge_id in :challenges and r.dead_line_time >= :startTime and r.is_success=false " +
             "group by r.challenge_id", nativeQuery = true)
-    List<Long []> countChallengers(@Param("challenges") List<Challenge> challenges,
+    List<Long []> countChallengersMultipleChallenge(@Param("challenges") List<Challenge> challenges,
                                              @Param("startTime") LocalDateTime startTime);
 
     @Query("select " +
             "new com.woowacourse.smody.record.dto.InProgressResult(r.challenge.id, count(r.member.id)) from Record r " +
             "where r.member=:member and r.challenge in :challenges and r.deadLineTime >= :startTime and r.isSuccess=false " +
             "group by r.challenge")
-    List<InProgressResult> isInProgress(@Param("member") Member member, @Param("challenges") List<Challenge> challenges,
+    List<InProgressResult> isInProgressMultipleChallenge(@Param("member") Member member, @Param("challenges") List<Challenge> challenges,
                                         @Param("startTime") LocalDateTime startTime);
+
+    @Query(value = "select r.challenge_id, count(r.member_id) from record r where (select r.record_id from record r " +
+            "where r.challenge_id = :challenge and r.dead_line_time >= :startTime and r.is_success=false " +
+            "order by r.dead_line_time, r.record_id limit 1) <= r.record_id and r.challenge_id = :challenge and r.dead_line_time >= :startTime and r.is_success=false ", nativeQuery = true)
+    Long[] countChallengersSingleChallenge(@Param("challenge") Challenge challenge,
+                                                    @Param("startTime") LocalDateTime startTime);
+
+    @Query("select " +
+            "new com.woowacourse.smody.record.dto.InProgressResult(r.challenge.id, count(r.member.id)) from Record r " +
+            "where r.member=:member and r.challenge = :challenges and r.deadLineTime >= :startTime and r.isSuccess=false ")
+    InProgressResult isInProgressSingleChallenge(@Param("member") Member member, @Param("challenge") Challenge challenge,
+                                                         @Param("startTime") LocalDateTime startTime);
 }

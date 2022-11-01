@@ -2,16 +2,13 @@ package com.woowacourse.smody.record.service;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.record.domain.Record;
-import com.woowacourse.smody.record.dto.ChallengersResult;
 import com.woowacourse.smody.record.dto.InProgressResult;
 import com.woowacourse.smody.record.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,16 +61,29 @@ public class RecordService {
                 .orElseThrow(() -> new BusinessException(ExceptionData.NOT_FOUND_RECORD));
     }
 
-    public Map<Long, Long> countChallengers(List<Challenge> challenges, LocalDateTime startTime) {
-        return recordRepository.countChallengers(challenges, startTime).stream()
+    public Map<Long, Long> countChallengersIn(List<Challenge> challenges, LocalDateTime startTime) {
+        return recordRepository.countChallengersMultipleChallenge(challenges, startTime).stream()
                 .collect(Collectors.toMap(each -> each[0], each -> each[1]));
     }
 
-    public Map<Long, Boolean> calculateInProgress(Member member, List<Challenge> challenges, LocalDateTime startTime) {
+    public Map<Long, Boolean> calculateInProgressIn(Member member, List<Challenge> challenges, LocalDateTime startTime) {
         if (member.getId() == null || member.getId() == 0L) {
             return Collections.emptyMap();
         }
-        return recordRepository.isInProgress(member, challenges, startTime).stream()
+        return recordRepository.isInProgressMultipleChallenge(member, challenges, startTime).stream()
                 .collect(Collectors.toMap(InProgressResult::getChallengeId, InProgressResult::isInProgress));
+    }
+
+    public Map<Long, Long> countChallengers(Challenge challenge, LocalDateTime startTime) {
+        Long[] result = recordRepository.countChallengersSingleChallenge(challenge, startTime);
+        return Map.of(result[0], result[1]);
+    }
+
+    public Map<Long, Boolean> calculateInProgress(Member member, Challenge challenge, LocalDateTime startTime) {
+        if (member.getId() == null || member.getId() == 0L) {
+            return Collections.emptyMap();
+        }
+        InProgressResult inProgressResult = recordRepository.isInProgressSingleChallenge(member, challenge, startTime);
+        return Map.of(inProgressResult.getChallengeId(), inProgressResult.isInProgress());
     }
 }
