@@ -1,3 +1,4 @@
+import { CommentInput } from './components/CommentInput';
 import { MenuBottomSheetProps } from './type';
 import useFeedDetailPage from './useFeedDetailPage';
 import { useEffect } from 'react';
@@ -9,7 +10,6 @@ import {
   Text,
   FlexBox,
   CommentItem,
-  CommentInput,
   FeedItem,
   BottomSheet,
   Title,

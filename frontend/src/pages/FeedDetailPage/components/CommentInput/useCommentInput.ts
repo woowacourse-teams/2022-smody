@@ -1,4 +1,5 @@
 import { UseCommentInputProps } from './type';
+import useMention from './useMention';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
 import { useState, useEffect, useRef } from 'react';
@@ -8,8 +9,6 @@ import { useRecoilValue } from 'recoil';
 import { isLoginState } from 'recoil/auth/atoms';
 
 import useSnackBar from 'hooks/useSnackBar';
-
-import useMention from 'components/CommentInput/useMention';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';

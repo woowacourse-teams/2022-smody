@@ -1,6 +1,5 @@
+import { CommentInput } from '.';
 import { CommentInputProps } from './type';
-
-import { CommentInput } from 'components/CommentInput';
 
 export default {
   title: 'Components/CommentInput',

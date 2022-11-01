@@ -1,3 +1,4 @@
+import usePopover from './usePopover';
 import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
 import {
   useState,
@@ -10,8 +11,6 @@ import {
 import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
-
-import usePopover from 'components/CommentInput/usePopover';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 
