@@ -1,5 +1,5 @@
-import { Tabs } from 'components/Tabs';
-import { TabsProps } from 'components/Tabs/type';
+import { Tabs } from 'components/@shared/Tabs';
+import { TabsProps } from 'components/@shared/Tabs/type';
 
 import { CLIENT_PATH } from 'constants/path';
 
