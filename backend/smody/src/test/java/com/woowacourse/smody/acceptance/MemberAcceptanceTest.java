@@ -18,7 +18,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberAcceptanceTest extends AcceptanceTest {
+class MemberAcceptanceTest extends AcceptanceTest {
 
     @DisplayName("회원이 나의 정보를 조회한다.")
     @Test

@@ -126,7 +126,7 @@ class CycleAcceptanceTest extends AcceptanceTest {
         assertAll(
             OK_응답(response),
             () -> assertThat(actual.getTotalCount()).isEqualTo(2),
-            () -> assertThat(actual.getSuccessCount()).isEqualTo(0)
+            () -> assertThat(actual.getSuccessCount()).isZero()
         );
     }
 

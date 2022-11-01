@@ -40,7 +40,9 @@ class PushAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 알림_구독_해제_요청(조조그린_토큰, endpoint);
 
         // then
-        NO_CONTENT_응답(response);
+        assertAll(
+            NO_CONTENT_응답(response)
+        );
     }
 
     @DisplayName("피드에서 멘션 알림을 저장한다.")

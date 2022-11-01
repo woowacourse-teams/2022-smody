@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 public class ChallengingRecords {
 
-    private final Map<Challenge, List<ChallengingRecord>> challengingRecords;
+    private final Map<Challenge, List<ChallengingRecord>> values;
 
     private ChallengingRecords(Map<Challenge, List<ChallengingRecord>> challengingRecords) {
-        this.challengingRecords = challengingRecords;
+        this.values = challengingRecords;
     }
 
     public static ChallengingRecords from(List<Cycle> cycles) {
@@ -44,7 +44,7 @@ public class ChallengingRecords {
     }
 
     private List<ChallengingRecord> findByChallenge(Challenge challenge) {
-        return Optional.ofNullable(challengingRecords.get(challenge))
+        return Optional.ofNullable(values.get(challenge))
                 .orElse(List.of());
     }
 
@@ -54,7 +54,7 @@ public class ChallengingRecords {
     }
 
     public List<ChallengingRecord> sortByLatestProgressTime() {
-        return challengingRecords.values().stream()
+        return values.values().stream()
                 .flatMap(Collection::stream)
                 .sorted(Comparator.comparing(ChallengingRecord::getLatestProgressTime).reversed()
                         .thenComparing(challengingRecord -> challengingRecord.getChallenge().getId()))
@@ -62,9 +62,9 @@ public class ChallengingRecords {
     }
 
     public List<Challenge> getChallengesOrderByChallenger() {
-        return challengingRecords.keySet()
+        return values.keySet()
                 .stream()
-                .sorted(Comparator.comparing(challenge -> challengingRecords.get(challenge).size()).reversed())
+                .sorted(Comparator.comparing(challenge -> values.get(challenge).size()).reversed())
                 .collect(toList());
     }
 }

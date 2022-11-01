@@ -31,7 +31,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class MemberControllerTest extends ControllerTest {
+class MemberControllerTest extends ControllerTest {
 
     @DisplayName("나의 정보를 조회한다.")
     @Test
