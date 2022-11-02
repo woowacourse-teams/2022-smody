@@ -26,7 +26,7 @@ public class DynamicChallengeRepositoryImpl implements DynamicChallengeRepositor
     public List<Challenge> findAllByFilter(PagingParams pagingParams) {
         String searchWord = pagingParams.getFilter();
         BooleanBuilder conditions = DynamicQuery.builder()
-                .and(() -> containsWithFullText(pagingParams.getFilter()))
+                .and(() -> challenge.name.contains(searchWord))
                 .and(() -> challenge.id.gt(pagingParams.getCursorId()))
                 .build();
 
