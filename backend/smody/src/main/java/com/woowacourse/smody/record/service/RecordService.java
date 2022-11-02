@@ -71,7 +71,7 @@ public class RecordService {
             return Collections.emptyMap();
         }
         return recordRepository.isInProgressMultipleChallenge(member, challenges, startTime).stream()
-                .collect(Collectors.toMap(InProgressResult::getChallengeId, InProgressResult::isInProgress));
+                .collect(Collectors.toMap(each -> each, each -> true));
     }
 
     public Long countChallengers(Challenge challenge, LocalDateTime startTime) {
@@ -82,7 +82,7 @@ public class RecordService {
         if (member.getId() == null || member.getId() == 0L) {
             return Collections.emptyMap();
         }
-        InProgressResult inProgressResult = recordRepository.isInProgressSingleChallenge(member, challenge, startTime);
-        return Map.of(inProgressResult.getChallengeId(), inProgressResult.isInProgress());
+        Long inProgressResult = recordRepository.isInProgressSingleChallenge(member, challenge, startTime);
+        return Map.of(inProgressResult, true);
     }
 }
