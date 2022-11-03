@@ -53,8 +53,4 @@ export * from 'components/Header/ErrorFallbackSubscriptionButton';
 export * from 'components/Header/ErrorFallbackNotificationMessage';
 export * from 'components/MentionableInput/MembersPopover';
 export * from 'components/CheckSuccessCycle';
-// export * from 'components/Tabs';
-// export * from 'components/Tooltip';
-// export * from 'components/InstallPrompt';
-// export * from 'components/SROnly';
 export * from 'components/MentionableInput';
