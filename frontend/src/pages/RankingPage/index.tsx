@@ -1,6 +1,9 @@
+import { RankingList } from './components/RankingList';
+import { RankingPeriodsList } from './components/RankingPeriodsList';
+import { UserRanking } from './components/UserRanking';
 import styled from 'styled-components';
 
-import { FlexBox, RankingPeriodsList, UserRanking, RankingList } from 'components';
+import { FlexBox } from 'components';
 
 const RankingPage = () => {
   return (

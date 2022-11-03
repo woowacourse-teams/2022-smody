@@ -1,3 +1,4 @@
+import { UserWithdrawalModal } from './components/UserWithdrawalModal';
 import { useGetMyInfo, usePatchMyInfo, usePostProfileImage } from 'apis';
 import { queryKeys } from 'apis/constants';
 import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
@@ -11,14 +12,7 @@ import useInput from 'hooks/useInput';
 import useSnackBar from 'hooks/useSnackBar';
 import useThemeContext from 'hooks/useThemeContext';
 
-import {
-  FlexBox,
-  Button,
-  Input,
-  UserWithdrawalModal,
-  Title,
-  LoadingButton,
-} from 'components';
+import { FlexBox, Button, Input, Title, LoadingButton } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 

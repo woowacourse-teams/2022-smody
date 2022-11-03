@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { SnackBarProps } from 'components/SnackBar/type';
+import { SnackBarProps } from 'components/@shared/SnackBar/type';
 
 export const snackBarState = atom<SnackBarProps & { isVisible: boolean }>({
   key: 'snackBarState',
