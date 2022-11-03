@@ -1,6 +1,6 @@
 import { usePostCycleProgress } from 'apis';
 import { usePostMentionNotifications } from 'apis/feedApi';
-import { useState, useRef, useMemo, FormEventHandler, ChangeEventHandler } from 'react';
+import { useState, useRef, useMemo, FormEventHandler } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';

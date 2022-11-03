@@ -1,7 +1,6 @@
 import { MentionableInput } from '../../components/MentionableInput';
 import useCertFormPage from './useCertFormPage';
 import Plus from 'assets/plus.svg';
-import { useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { CertImageWrapperProps, TextAreaProps } from 'pages/CertFormPage/type';
@@ -47,14 +46,10 @@ const CertFormPage = () => {
     renderImageInput,
     handleSubmitCert,
     handleCloseModal,
-
     editableElementRef,
     mentionedMemberIds,
     setMentionedMemberIds,
   } = useCertFormPage();
-
-  const editableElementRef = useRef<HTMLDivElement>(null);
-  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
