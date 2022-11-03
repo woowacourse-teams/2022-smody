@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class ProgressTest {
+class ProgressTest {
 
     private static final LocalDateTime START_TIME =
             LocalDateTime.of(2022, 1, 1, 0, 0, 0);

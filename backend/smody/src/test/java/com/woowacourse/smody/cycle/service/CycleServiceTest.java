@@ -124,7 +124,7 @@ class CycleServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.size()).isEqualTo(3),
+                () -> assertThat(actual).hasSize(3),
                 () -> assertThat((int) actual.stream()
                         .filter(c -> c.getProgress().equals(Progress.SUCCESS)).count())
                         .isEqualTo(2)
@@ -149,7 +149,7 @@ class CycleServiceTest extends IntegrationTest {
 
         // then
         assertAll(
-                () -> assertThat(actual.size()).isEqualTo(3),
+                () -> assertThat(actual).hasSize(3),
                 () -> assertThat(actual.stream()
                         .filter(c -> c.getChallenge().getId().equals(미라클_모닝_ID)).count())
                         .isEqualTo(2),
@@ -221,7 +221,7 @@ class CycleServiceTest extends IntegrationTest {
         List<Cycle> actual = cycleService.findInProgressByChallenge(now, fixture.챌린지_조회(미라클_모닝_ID));
 
         // then
-        assertThat(actual.size()).isEqualTo(2);
+        assertThat(actual).hasSize(2);
     }
 
     @DisplayName("특정 멤버의 특정 챌린지에 대한 사이클 중 특정 PROGRESS 에 해당하는 것들만 모두 조회한다.")
@@ -244,7 +244,7 @@ class CycleServiceTest extends IntegrationTest {
         );
 
         // then
-        assertThat(actual.size()).isEqualTo(2);
+        assertThat(actual).hasSize(2);
     }
 
     @DisplayName("진행중인 사이클을 조회한다.")
