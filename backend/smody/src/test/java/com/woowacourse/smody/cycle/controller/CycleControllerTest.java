@@ -44,7 +44,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class CycleControllerTest extends ControllerTest {
+class CycleControllerTest extends ControllerTest {
 
     @DisplayName("사이클을 정상적으로 생성할 때 201을 응답한다.")
     @Test

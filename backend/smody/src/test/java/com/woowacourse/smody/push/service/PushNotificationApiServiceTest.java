@@ -26,7 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class PushNotificationApiServiceTest extends IntegrationTest {
+class PushNotificationApiServiceTest extends IntegrationTest {
 
     @Autowired
     private PushNotificationApiService pushNotificationApiService;

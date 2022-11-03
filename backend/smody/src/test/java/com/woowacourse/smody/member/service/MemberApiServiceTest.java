@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class MemberApiServiceTest extends IntegrationTest {
+class MemberApiServiceTest extends IntegrationTest {
 
     @Autowired
     private MemberApiService memberApiService;
