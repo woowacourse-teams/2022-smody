@@ -53,6 +53,9 @@ const CertFormPage = () => {
     setMentionedMemberIds,
   } = useCertFormPage();
 
+  const editableElementRef = useRef<HTMLDivElement>(null);
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
+
   return (
     <Wrapper flexDirection="column" alignItems="center">
       <Title text="인증하기" linkTo={CLIENT_PATH.CERT} />
