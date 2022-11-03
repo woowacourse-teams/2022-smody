@@ -1,5 +1,6 @@
 import { usePostCycleProgress } from 'apis';
-import { useState, useMemo, FormEventHandler, ChangeEventHandler } from 'react';
+import { usePostMentionNotifications } from 'apis/feedApi';
+import { useState, useRef, useMemo, FormEventHandler, ChangeEventHandler } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';
@@ -12,10 +13,18 @@ import { CertFormPageLocationState } from 'pages/CertFormPage/type';
 const FORM_DATA_IMAGE_NAME = 'progressImage';
 
 const useCertFormPage = () => {
+  const editableElementRef = useRef<HTMLDivElement>(null);
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
+
   const isDark = useRecoilValue(isDarkState);
   const themeContext = useThemeContext();
   const [description, setDescription] = useState('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const {
+    mutate: postMentionNotifications,
+    isLoading: isLoadingPostMentionNotifications,
+  } = usePostMentionNotifications();
 
   const {
     previewImageUrl,
@@ -37,8 +46,15 @@ const useCertFormPage = () => {
     isLoading: isLoadingPost,
     isSuccess: isSuccessPost,
   } = usePostCycleProgress({
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       setIsSuccessModalOpen(true);
+
+      if (mentionedMemberIds.length > 0) {
+        postMentionNotifications({
+          memberIds: Array.from(new Set(mentionedMemberIds)),
+          pathId: Number(data.cycleDetailId),
+        });
+      }
     },
   });
 
@@ -96,6 +112,9 @@ const useCertFormPage = () => {
     handleCloseModal,
     handleChangeDescription,
     textAreaRef,
+    editableElementRef,
+    mentionedMemberIds,
+    setMentionedMemberIds,
   };
 };
 

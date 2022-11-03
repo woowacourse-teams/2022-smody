@@ -49,10 +49,10 @@ const CertFormPage = () => {
     handleCloseModal,
     handleChangeDescription,
     textAreaRef,
+    editableElementRef,
+    mentionedMemberIds,
+    setMentionedMemberIds,
   } = useCertFormPage();
-
-  const editableElementRef = useRef<HTMLDivElement>(null);
-  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
 
   return (
     <Wrapper flexDirection="column" alignItems="center">

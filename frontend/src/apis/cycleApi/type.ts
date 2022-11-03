@@ -16,7 +16,8 @@ export type PostCycleProgressPayload = Pick<Cycle, 'cycleId'> & { formData: Form
 
 export type GetCycleByIdParams = Pick<Cycle, 'cycleId'>;
 
-export type PostCycleProgressResponse = Pick<Cycle, 'progressCount'>;
+export type PostCycleProgressResponse = Pick<Cycle, 'progressCount'> &
+  Pick<CycleDetail, 'cycleDetailId'>;
 
 export type GetMyCyclesStatResponse = UserChallengeStat;
 
