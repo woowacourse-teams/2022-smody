@@ -39,11 +39,11 @@ export const CommentInput = ({
       <TopRowWrapper alignItems="center" gap="0.5rem">
         <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
           <MentionableInput
-            commentInputRef={commentInputRef}
+            editableElementRef={commentInputRef}
+            editableElement={<CommentInputElement />}
             setContent={setContent}
             mentionedMemberIds={mentionedMemberIds}
             setMentionedMemberIds={setMentionedMemberIds}
-            editableElement={<CommentInputElement />}
           />
           <WriteButton
             disabled={

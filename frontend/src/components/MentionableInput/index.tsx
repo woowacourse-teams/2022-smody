@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { MembersPopover } from 'components/MembersPopover';
 
 export const MentionableInput = ({
-  commentInputRef,
+  editableElementRef,
   setContent,
   mentionedMemberIds,
   setMentionedMemberIds,
@@ -22,7 +22,7 @@ export const MentionableInput = ({
     handleKeydownCommentInput,
     handleInputCommentInput,
   } = useMentionableInput({
-    commentInputRef,
+    editableElementRef,
     setContent,
     mentionedMemberIds,
     setMentionedMemberIds,
@@ -31,7 +31,7 @@ export const MentionableInput = ({
   return (
     <>
       {cloneElement(editableElement, {
-        ref: commentInputRef,
+        ref: editableElementRef,
         contentEditable: true,
         onKeyDown: handleKeydownCommentInput,
         onInput: handleInputCommentInput,

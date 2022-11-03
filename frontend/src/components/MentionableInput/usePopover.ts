@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { insertAfter } from 'utils';
 
 const usePopover = ({
-  commentInputRef,
+  editableElementRef,
   mentionedMemberIds,
   setMentionedMemberIds,
   lastMentionSymbolPosition,
@@ -23,14 +23,14 @@ const usePopover = ({
 
   // selectMember
   const selectMember = (memberId: number, nickname: string) => {
-    if (commentInputRef.current === null) {
+    if (editableElementRef.current === null) {
       return;
     }
 
     mentionedMemberIds.push(memberId);
     setMentionedMemberIds(mentionedMemberIds);
 
-    const childNodes = commentInputRef.current.childNodes;
+    const childNodes = editableElementRef.current.childNodes;
 
     let accLength = 0;
 
@@ -67,9 +67,9 @@ const usePopover = ({
     const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
 
     if (currentNodeIndex === 0) {
-      commentInputRef.current.appendChild(frontTextNode);
-      commentInputRef.current.appendChild(nicknameSpan);
-      commentInputRef.current.appendChild(backTextNode);
+      editableElementRef.current.appendChild(frontTextNode);
+      editableElementRef.current.appendChild(nicknameSpan);
+      editableElementRef.current.appendChild(backTextNode);
     } else {
       const prevNode = childNodes[currentNodeIndex - 1];
 
@@ -78,7 +78,7 @@ const usePopover = ({
       insertAfter(nicknameSpan, backTextNode);
     }
 
-    commentInputRef.current.removeChild(currentNode);
+    editableElementRef.current.removeChild(currentNode);
     const ABSENCE_SYMBOL_POSITION = -1;
 
     // init 삼형제
@@ -87,7 +87,7 @@ const usePopover = ({
     isFilterValueInitiated.current = true;
 
     // contenteditable div에서 cursor position에 focus 하기
-    const element = commentInputRef.current;
+    const element = editableElementRef.current;
     const selection = window.getSelection();
     const range = document.createRange();
     selection!.removeAllRanges();
