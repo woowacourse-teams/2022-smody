@@ -1,4 +1,4 @@
-import { UseCommentInputProps } from './type';
+import { CommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
 import { usePostMentionNotifications } from 'apis/feedApi';
@@ -19,7 +19,7 @@ const useCommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
-}: UseCommentInputProps) => {
+}: CommentInputProps) => {
   // 댓글 작성 및 수정하여 db에 보내는 관련 로직
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
