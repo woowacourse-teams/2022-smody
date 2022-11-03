@@ -47,8 +47,7 @@ const CertFormPage = () => {
     renderImageInput,
     handleSubmitCert,
     handleCloseModal,
-    handleChangeDescription,
-    textAreaRef,
+
     editableElementRef,
     mentionedMemberIds,
     setMentionedMemberIds,

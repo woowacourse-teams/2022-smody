@@ -85,10 +85,6 @@ const useCertFormPage = () => {
     setIsSuccessModalOpen(false);
   };
 
-  const handleChangeDescription: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
-    setDescription(event.target.value);
-  };
-
   return {
     themeContext,
     isDark,
@@ -110,8 +106,6 @@ const useCertFormPage = () => {
     renderImageInput,
     handleSubmitCert,
     handleCloseModal,
-    handleChangeDescription,
-    textAreaRef,
     editableElementRef,
     mentionedMemberIds,
     setMentionedMemberIds,
