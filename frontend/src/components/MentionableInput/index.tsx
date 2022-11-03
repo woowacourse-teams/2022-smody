@@ -3,7 +3,7 @@ import useMentionableInput from './useMentionableInput';
 import { cloneElement } from 'react';
 import styled, { css } from 'styled-components';
 
-import { MembersPopover } from 'components/MembersPopover';
+import { MembersPopover } from 'components/MentionableInput/MembersPopover';
 
 export const MentionableInput = ({
   editableElementRef,

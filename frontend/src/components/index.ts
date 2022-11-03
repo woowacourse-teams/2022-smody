@@ -51,7 +51,7 @@ export * from 'components/ErrorFallbackMain';
 export * from 'components/Header/ErrorFallbackLoginButton';
 export * from 'components/Header/ErrorFallbackSubscriptionButton';
 export * from 'components/Header/ErrorFallbackNotificationMessage';
-export * from 'components/MembersPopover';
+export * from 'components/MentionableInput/MembersPopover';
 export * from 'components/CheckSuccessCycle';
 // export * from 'components/Tabs';
 // export * from 'components/Tooltip';
