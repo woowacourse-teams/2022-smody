@@ -1,11 +1,6 @@
-<<<<<<< HEAD:frontend/src/components/MentionableInput/useMentionableInput.ts
 import { useMentionableInputProps } from './type';
 import usePopover from './usePopover';
 import { useGetMembers } from 'apis/feedApi';
-=======
-import usePopover from './usePopover';
-import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
->>>>>>> 9e4ca7eb9a733d77f6b3cf549917a4a4e5fff164:frontend/src/pages/FeedDetailPage/components/CommentInput/useMention.ts
 import {
   useState,
   useEffect,
