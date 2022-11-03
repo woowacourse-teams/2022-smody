@@ -1,5 +1,6 @@
-import { useMentionableInputProps } from './type';
+import { MentionableInputProps } from './type';
 import useMentionableInput from './useMentionableInput';
+import { cloneElement } from 'react';
 import styled, { css } from 'styled-components';
 
 import { MembersPopover } from 'components/MembersPopover';
@@ -9,7 +10,8 @@ export const MentionableInput = ({
   setContent,
   mentionedMemberIds,
   setMentionedMemberIds,
-}: useMentionableInputProps) => {
+  editableElement,
+}: MentionableInputProps) => {
   const {
     isPopoverOpen,
     handleClosePopover,
@@ -28,12 +30,12 @@ export const MentionableInput = ({
 
   return (
     <>
-      <CommentInputElement
-        contentEditable={true}
-        ref={commentInputRef}
-        onKeyDown={handleKeydownCommentInput}
-        onInput={handleInputCommentInput}
-      />
+      {cloneElement(editableElement, {
+        ref: commentInputRef,
+        contentEditable: true,
+        onKeyDown: handleKeydownCommentInput,
+        onInput: handleInputCommentInput,
+      })}
       {isPopoverOpen && (
         <MembersPopover
           handleClosePopover={handleClosePopover}

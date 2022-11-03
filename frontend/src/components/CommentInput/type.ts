@@ -1,4 +1,4 @@
-import { useMentionableInputProps } from 'components/MentionableInput/type';
+import { RefObject } from 'react';
 
 export type InnerWrapperProps = {
   isShowLengthWarning: boolean;
@@ -16,5 +16,10 @@ export type CommentInputProps = {
   };
   turnOffEditMode: () => void;
 };
-export type UseCommentInputProps = CommentInputProps &
-  useMentionableInputProps & { content: string };
+export type UseCommentInputProps = CommentInputProps & {
+  commentInputRef: RefObject<HTMLDivElement>;
+  mentionedMemberIds: number[];
+  setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
+  content: string;
+  setContent: (arg0: string) => void;
+};

@@ -1,11 +1,17 @@
-import { RefObject, MutableRefObject } from 'react';
+import { RefObject, MutableRefObject, ReactElement } from 'react';
 
-export type useMentionableInputProps = {
+export type MentionableInputProps = {
   commentInputRef: RefObject<HTMLDivElement>;
   mentionedMemberIds: number[];
   setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
   setContent: (arg0: string) => void;
+  editableElement: ReactElement;
 };
+
+export type useMentionableInputProps = Pick<
+  MentionableInputProps,
+  'commentInputRef' | 'mentionedMemberIds' | 'setMentionedMemberIds' | 'setContent'
+>;
 
 export type usePopoverProps = Pick<
   useMentionableInputProps,

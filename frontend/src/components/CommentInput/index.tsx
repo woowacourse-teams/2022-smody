@@ -43,6 +43,7 @@ export const CommentInput = ({
             setContent={setContent}
             mentionedMemberIds={mentionedMemberIds}
             setMentionedMemberIds={setMentionedMemberIds}
+            editableElement={<CommentInputElement />}
           />
           <WriteButton
             disabled={
@@ -106,6 +107,41 @@ const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`
     background-color: ${theme.input};
     border: ${isShowLengthWarning ? `solid 2px ${theme.error}` : 'none'};
     border-radius: 20px;
+  `}
+`;
+
+const CommentInputElement = styled.div`
+  ${({ theme }) => css`
+    flex-grow: 1;
+    max-height: 60px;
+    outline: none;
+    background-color: ${theme.input};
+    border: none;
+    resize: none;
+    font-size: 1rem;
+    color: ${theme.onInput};
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-y: scroll;
+    // 스크롤바
+    /* 스크롤바 설정*/
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    /* 스크롤바 막대 설정*/
+    &::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: ${theme.primary};
+      border-radius: 100px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    &::-webkit-scrollbar-track {
+      background-color: ${theme.surface};
+      border-radius: 100px;
+    }
   `}
 `;
 
