@@ -49,7 +49,7 @@ public class CycleController {
         return ResponseEntity.ok(progressResponse);
     }
 
-    @GetMapping(value = "/me")
+    @GetMapping("/me")
     @RequiredLogin
     public ResponseEntity<List<InProgressCycleResponse>> findAllInProgressByMe(@LoginMember TokenPayload tokenPayload,
                                                                                @ModelAttribute PagingParams pagingParams) {

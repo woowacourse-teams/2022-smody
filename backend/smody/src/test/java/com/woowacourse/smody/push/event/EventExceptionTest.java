@@ -1,13 +1,19 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.스모디_방문하기_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.willThrow;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.domain.Comment;
@@ -28,18 +34,10 @@ import com.woowacourse.smody.push.dto.SubscriptionRequest;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.push.service.PushSubscriptionApiService;
 import com.woowacourse.smody.push.service.PushSubscriptionService;
-import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import com.woowacourse.smody.support.EventListenerMockTest;
 
 @DisplayName("알림 이벤트에 예외가 발생해도 ")
-class EventExceptionTest extends IntegrationTest {
+class EventExceptionTest extends EventListenerMockTest {
 
     @Autowired
     private CycleApiService cycleApiService;
@@ -62,15 +60,6 @@ class EventExceptionTest extends IntegrationTest {
     @Autowired
     private CommentService commentService;
 
-    @MockBean
-    private ChallengePushEventListener challengePushStrategy;
-
-    @MockBean
-    private SubscriptionPushEventListener subscriptionPushStrategy;
-
-    @MockBean
-    private CommentPushEventListener commentPushStrategy;
-
     @DisplayName("새로운 사이클이 저장된다.")
     @Test
     void cycleCreate_pushEventException() throws InterruptedException {
@@ -83,12 +72,10 @@ class EventExceptionTest extends IntegrationTest {
         // when
         AtomicReference<Long> cycleId = new AtomicReference<>();
 
-        synchronize(() -> {
-            cycleId.set(cycleApiService.create(
-                    new TokenPayload(조조그린_ID),
-                    new CycleRequest(now, 스모디_방문하기_ID)
-            ));
-        });
+        synchronize(() -> cycleId.set(cycleApiService.create(
+                new TokenPayload(조조그린_ID),
+                new CycleRequest(now, 스모디_방문하기_ID)
+        )));
 
         // then
         Optional<Cycle> cycle = cycleService.findById(cycleId.get());
@@ -141,9 +128,9 @@ class EventExceptionTest extends IntegrationTest {
         // when
         AtomicReference<Long> commentId = new AtomicReference<>();
 
-        synchronize(() -> {
-            commentId.set(commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest));
-        });
+        synchronize(() ->
+            commentId.set(commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest))
+        );
 
         // then
         List<PushNotification> notifications = pushNotificationRepository.findAll();
