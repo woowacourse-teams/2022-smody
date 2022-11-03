@@ -2,7 +2,7 @@ import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
 import { usePostMentionNotifications } from 'apis/feedApi';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -19,17 +19,15 @@ const useCommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
-  commentInputRef,
-  mentionedMemberIds,
-  setMentionedMemberIds,
-  content,
-  setContent,
 }: UseCommentInputProps) => {
   // 댓글 작성 및 수정하여 db에 보내는 관련 로직
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
   const { cycleDetailId } = useParams();
   const renderSnackBar = useSnackBar();
+  const commentInputRef = useRef<HTMLDivElement>(null);
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
+  const [content, setContent] = useState('');
 
   const {
     mutate: postMentionNotifications,
@@ -122,7 +120,6 @@ const useCommentInput = ({
   };
 
   return {
-    content,
     isVisibleWriteButton,
     isCommentError,
     commentErrorMessage,
@@ -130,6 +127,11 @@ const useCommentInput = ({
     isLoadingPatchComment,
     handleClickWrite,
     isLoadingPostMentionNotifications,
+    commentInputRef,
+    mentionedMemberIds,
+    setMentionedMemberIds,
+    content,
+    setContent,
   };
 };
 

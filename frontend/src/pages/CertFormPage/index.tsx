@@ -1,5 +1,7 @@
+import { MentionableInput } from '../../components/MentionableInput';
 import useCertFormPage from './useCertFormPage';
 import Plus from 'assets/plus.svg';
+import { useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { CertImageWrapperProps, TextAreaProps } from 'pages/CertFormPage/type';
@@ -39,6 +41,7 @@ const CertFormPage = () => {
     isSuccessPost,
     isSuccessModalOpen,
     description,
+    setDescription,
     previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,
@@ -47,6 +50,9 @@ const CertFormPage = () => {
     handleChangeDescription,
     textAreaRef,
   } = useCertFormPage();
+
+  const editableElementRef = useRef<HTMLDivElement>(null);
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
 
   return (
     <Wrapper flexDirection="column" alignItems="center">
@@ -98,14 +104,12 @@ const CertFormPage = () => {
             기록
           </MiniTitle>
           <TextAreaWrapper isDark={isDark}>
-            <TextArea
-              cols={50}
-              rows={5}
-              maxLength={MAX_TEXTAREA_LENGTH - 1}
-              value={description}
-              onChange={handleChangeDescription}
-              isDark={isDark}
-              ref={textAreaRef}
+            <MentionableInput
+              editableElementRef={editableElementRef}
+              editableElement={<TextArea isDark={isDark} />}
+              setContent={setDescription}
+              mentionedMemberIds={mentionedMemberIds}
+              setMentionedMemberIds={setMentionedMemberIds}
             />
           </TextAreaWrapper>
           <TextLength as="span" size={12} color={themeContext.mainText}>
@@ -207,12 +211,15 @@ const TextAreaWrapper = styled.div<TextAreaProps>`
   `}
 `;
 
-const TextArea = styled.textarea<TextAreaProps>`
+const TextArea = styled.div<TextAreaProps>`
   ${({ theme, isDark }) => css`
+    width: 431px;
+    overflow-y: scroll;
+    min-height: 137px;
+    max-height: 137px;
     padding-right: 1rem;
     border: none;
     resize: none;
-    width: 100%;
     font-size: 1rem;
     background-color: ${isDark ? theme.input : theme.background};
     color: ${theme.onInput};

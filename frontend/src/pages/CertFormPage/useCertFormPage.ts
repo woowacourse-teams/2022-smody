@@ -88,6 +88,7 @@ const useCertFormPage = () => {
     isSuccessPost,
     isSuccessModalOpen,
     description,
+    setDescription,
     previewImageUrl,
     handleImageInputButtonClick,
     renderImageInput,

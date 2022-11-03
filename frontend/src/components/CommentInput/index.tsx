@@ -11,10 +11,6 @@ export const CommentInput = ({
   editMode,
   turnOffEditMode,
 }: CommentInputProps) => {
-  const commentInputRef = useRef<HTMLDivElement>(null);
-  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
-  const [content, setContent] = useState('');
-
   const {
     isVisibleWriteButton,
     isCommentError,
@@ -23,15 +19,15 @@ export const CommentInput = ({
     isLoadingPatchComment,
     handleClickWrite,
     isLoadingPostMentionNotifications,
-  } = useCommentInput({
-    selectedCommentId,
-    editMode,
-    turnOffEditMode,
     commentInputRef,
     mentionedMemberIds,
     setMentionedMemberIds,
     setContent,
     content,
+  } = useCommentInput({
+    selectedCommentId,
+    editMode,
+    turnOffEditMode,
   });
 
   return (
@@ -120,9 +116,6 @@ const CommentInputElement = styled.div`
     resize: none;
     font-size: 1rem;
     color: ${theme.onInput};
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
     overflow-y: scroll;
     // 스크롤바
     /* 스크롤바 설정*/

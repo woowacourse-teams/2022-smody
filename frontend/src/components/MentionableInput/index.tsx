@@ -35,6 +35,11 @@ export const MentionableInput = ({
         contentEditable: true,
         onKeyDown: handleKeydownCommentInput,
         onInput: handleInputCommentInput,
+        style: {
+          whiteSpace: 'pre-wrap',
+          wordWrap: 'break-word',
+          wordBreak: 'break-all',
+        },
       })}
       {isPopoverOpen && (
         <MembersPopover
