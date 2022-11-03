@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { setCookie, getCookie } from 'utils';
+import { setCookie, getCookie, isIOS } from 'utils';
 
 import useInstallApp from 'hooks/useInstallApp';
 import useThemeContext from 'hooks/useThemeContext';
@@ -10,8 +10,8 @@ import { FlexBox, Text, Button, BottomSheet } from 'components';
 export const InstallPrompt = () => {
   const themeContext = useThemeContext();
 
-  const { installApp, isInstallPromptDeferred, isNotInstalledInIOS } = useInstallApp();
-  const isAbleInstall = isNotInstalledInIOS || isInstallPromptDeferred;
+  const { installApp, isInstallPromptDeferred } = useInstallApp();
+  const isInstallBannerShow = isIOS || isInstallPromptDeferred;
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true);
   const [isInstallPromptHide, setIsInstallPromptHide] = useState('show');
 
@@ -33,7 +33,7 @@ export const InstallPrompt = () => {
 
   return (
     <>
-      {isInstallPromptHide === 'show' && isBottomSheetOpen && isAbleInstall && (
+      {isInstallPromptHide === 'show' && isBottomSheetOpen && isInstallBannerShow && (
         <BottomSheet handleCloseBottomSheet={handleCloseBottomSheet} height="225px">
           <FlexBox flexDirection="column" gap="1rem" style={{ width: '80%' }}>
             {isInstallPromptDeferred && (
@@ -52,7 +52,7 @@ export const InstallPrompt = () => {
               </FlexBox>
             )}
 
-            {isNotInstalledInIOS && (
+            {isIOS && (
               <FlexBox flexDirection="column" alignItems="center" gap="0.7rem">
                 <Text size={20} fontWeight="bold" color={themeContext.onSurface}>
                   iOS에서 Smody 앱 설치 방법
