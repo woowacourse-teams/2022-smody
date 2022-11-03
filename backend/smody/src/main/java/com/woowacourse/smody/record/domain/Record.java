@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "unique_column_in_record", columnNames = {"member_id", "challenge_id"})})
@@ -42,10 +43,12 @@ public class Record {
     private Integer progressCount;
 
     @Column(nullable = false)
-    private LocalDateTime deadLineTime;
+    private Long deadLineTime;
 
     @Column(nullable = false)
     private boolean isSuccess;
+
+    private static final Long base = LocalDateTime.of(2022, 1, 1, 0, 0).atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
 
     public Record(Member member, Challenge challenge, Integer successCount,
                   Integer progressCount, LocalDateTime deadLineTime, boolean isSuccess) {
@@ -55,8 +58,12 @@ public class Record {
         this.challenge = challenge;
         this.successCount = successCount;
         this.progressCount = progressCount;
-        this.deadLineTime = deadLineTime;
+        this.deadLineTime = convertToMillSecond(deadLineTime);
         this.isSuccess = isSuccess;
+    }
+
+    private Long convertToMillSecond(LocalDateTime localDateTime) {
+        return LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli() - base;
     }
 
     private void validateSuccessCount(Integer successCount) {
@@ -75,7 +82,7 @@ public class Record {
         if (days == null || days > 3L || days < 1L) {
             throw new BusinessException(ExceptionData.CANNOT_UPDATE_DEADLINE);
         }
-        this.deadLineTime = startTime.plusDays(days);
+        this.deadLineTime = convertToMillSecond(startTime.plusDays(days));
     }
 
     public void toNotSuccess() {
