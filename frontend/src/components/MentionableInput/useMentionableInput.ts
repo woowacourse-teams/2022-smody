@@ -1,17 +1,16 @@
-import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
+import { useMentionableInputProps } from './type';
+import usePopover from './usePopover';
+import { useGetMembers } from 'apis/feedApi';
 import {
   useState,
   useEffect,
   useRef,
   FormEventHandler,
-  RefObject,
   KeyboardEventHandler,
 } from 'react';
 import { getCursorPosition } from 'utils';
 
 import useMutationObserver from 'hooks/useMutationObserver';
-
-import usePopover from 'components/CommentInput/usePopover';
 
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 
@@ -23,26 +22,17 @@ const resizeHeight = (element: HTMLElement) => {
   element.style.height = element.scrollHeight + 'px';
 };
 
-type useMentionProps<T extends HTMLElement> = {
-  commentInputRef: RefObject<T>;
-  setContent: (arg0: string) => void;
-  mentionedMemberIds: number[];
-  setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
 const ABSENCE_SYMBOL_POSITION = -1;
 
-const useMention = <T extends HTMLElement>({
+const useMentionableInput = ({
   commentInputRef,
   setContent,
   mentionedMemberIds,
   setMentionedMemberIds,
-}: useMentionProps<T>) => {
-  // ------- 멘션 알림 기능 ------------------------
+}: useMentionableInputProps) => {
+  // 멘션 알림 기능
   const isFirstRendered = useRef(true);
   const [filterValue, setFilterValue] = useState('');
-
-  // lastMentionSymbolPositionRef
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiatedRef = useRef(false);
 
@@ -58,7 +48,6 @@ const useMention = <T extends HTMLElement>({
     });
 
   const {
-    isFetching: isFetchingMembers,
     data: membersData,
     hasNextPage: hasNextMembersPage,
     fetchNextPage: fetchNextMembersPage,
@@ -72,7 +61,6 @@ const useMention = <T extends HTMLElement>({
           return;
         }
 
-        // 멘션 심볼 포지션(@)이 없다면 아래 함수를 호출하지 않도록 고쳐야한다.
         handleOpenPopover();
       },
       enabled: false,
@@ -80,11 +68,6 @@ const useMention = <T extends HTMLElement>({
       staleTime: 600000, // 10분
     },
   );
-
-  const {
-    mutate: postMentionNotifications,
-    isLoading: isLoadingPostMentionNotifications,
-  } = usePostMentionNotifications();
 
   const isNotDeleteSpanNode = (nodes: NodeList) =>
     nodes.length === 0 || nodes[0].nodeName !== 'SPAN';
@@ -116,10 +99,9 @@ const useMention = <T extends HTMLElement>({
     });
   };
 
-  useMutationObserver<T>(commentInputRef, inputChangeHandler);
+  useMutationObserver(commentInputRef, inputChangeHandler);
 
   useEffect(() => {
-    // useGetMembers의 enables 옵션을 false로 했기 때문에 해당 로직은 제거해도 될 거 같다.
     if (isFirstRendered.current) {
       isFirstRendered.current = false;
       return;
@@ -318,8 +300,6 @@ const useMention = <T extends HTMLElement>({
   };
 
   return {
-    postMentionNotifications,
-    isLoadingPostMentionNotifications,
     isPopoverOpen,
     handleClosePopover,
     membersData,
@@ -331,4 +311,4 @@ const useMention = <T extends HTMLElement>({
   };
 };
 
-export default useMention;
+export default useMentionableInput;

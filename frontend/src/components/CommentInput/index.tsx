@@ -1,17 +1,21 @@
+import { MentionableInput } from '../MentionableInput';
 import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
+import { useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage, MembersPopover, Tooltip } from 'components';
+import { FlexBox, ValidationMessage, Tooltip } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
 }: CommentInputProps) => {
+  const commentInputRef = useRef<HTMLDivElement>(null);
+  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
+  const [content, setContent] = useState('');
+
   const {
-    commentInputRef,
-    content,
     isVisibleWriteButton,
     isCommentError,
     commentErrorMessage,
@@ -19,25 +23,26 @@ export const CommentInput = ({
     isLoadingPatchComment,
     handleClickWrite,
     isLoadingPostMentionNotifications,
-    isPopoverOpen,
-    handleClosePopover,
-    membersData,
-    hasNextMembersPage,
-    fetchNextMembersPage,
-    selectMember,
-    handleKeydownCommentInput,
-    handleInputCommentInput,
-  } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
+  } = useCommentInput({
+    selectedCommentId,
+    editMode,
+    turnOffEditMode,
+    commentInputRef,
+    mentionedMemberIds,
+    setMentionedMemberIds,
+    setContent,
+    content,
+  });
 
   return (
     <Wrapper flexDirection="column">
       <TopRowWrapper alignItems="center" gap="0.5rem">
         <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
-          <CommentInputElement
-            contentEditable={true}
-            ref={commentInputRef}
-            onKeyDown={handleKeydownCommentInput}
-            onInput={handleInputCommentInput}
+          <MentionableInput
+            commentInputRef={commentInputRef}
+            setContent={setContent}
+            mentionedMemberIds={mentionedMemberIds}
+            setMentionedMemberIds={setMentionedMemberIds}
           />
           <WriteButton
             disabled={
@@ -73,15 +78,6 @@ export const CommentInput = ({
           />
         </ValidationMessageWrapper>
       )}
-      {isPopoverOpen && (
-        <MembersPopover
-          handleClosePopover={handleClosePopover}
-          membersData={membersData}
-          hasNextMembersPage={hasNextMembersPage}
-          fetchNextMembersPage={fetchNextMembersPage}
-          selectMember={selectMember}
-        />
-      )}
     </Wrapper>
   );
 };
@@ -110,41 +106,6 @@ const InnerWrapper = styled(FlexBox)<InnerWrapperProps>`
     background-color: ${theme.input};
     border: ${isShowLengthWarning ? `solid 2px ${theme.error}` : 'none'};
     border-radius: 20px;
-  `}
-`;
-
-const CommentInputElement = styled.div`
-  ${({ theme }) => css`
-    flex-grow: 1;
-    max-height: 60px;
-    outline: none;
-    background-color: ${theme.input};
-    border: none;
-    resize: none;
-    font-size: 1rem;
-    color: ${theme.onInput};
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
-    overflow-y: scroll;
-    // 스크롤바
-    /* 스크롤바 설정*/
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    /* 스크롤바 막대 설정*/
-    &::-webkit-scrollbar-thumb {
-      height: 17%;
-      background-color: ${theme.primary};
-      border-radius: 100px;
-    }
-
-    /* 스크롤바 뒷 배경 설정*/
-    &::-webkit-scrollbar-track {
-      background-color: ${theme.surface};
-      border-radius: 100px;
-    }
   `}
 `;
 

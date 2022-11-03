@@ -1,3 +1,5 @@
+import { useMentionableInputProps } from 'components/MentionableInput/type';
+
 export type InnerWrapperProps = {
   isShowLengthWarning: boolean;
 };
@@ -14,4 +16,5 @@ export type CommentInputProps = {
   };
   turnOffEditMode: () => void;
 };
-export type UseCommentInputProps = CommentInputProps;
+export type UseCommentInputProps = CommentInputProps &
+  useMentionableInputProps & { content: string };

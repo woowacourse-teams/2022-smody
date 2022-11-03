@@ -1,7 +1,8 @@
 import { UseCommentInputProps } from './type';
 import { queryKeys } from 'apis/constants';
 import { usePatchComments, usePostComment } from 'apis/feedApi';
-import { useState, useEffect, useRef } from 'react';
+import { usePostMentionNotifications } from 'apis/feedApi';
+import { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -9,62 +10,41 @@ import { isLoginState } from 'recoil/auth/atoms';
 
 import useSnackBar from 'hooks/useSnackBar';
 
-import useMention from 'components/CommentInput/useMention';
-
 import { MAX_TEXTAREA_LENGTH } from 'constants/domain';
 import { CLIENT_PATH } from 'constants/path';
 
-const INITIAL_CONTENT = '';
 const DEFAULT_INPUT_HEIGHT = '1.5rem';
 
 const useCommentInput = ({
   selectedCommentId,
   editMode,
   turnOffEditMode,
+  commentInputRef,
+  mentionedMemberIds,
+  setMentionedMemberIds,
+  content,
+  setContent,
 }: UseCommentInputProps) => {
-  // ---------- 댓글 작성 및 수정하여 db에 보내는 관련 로직 ----------------
-
-  const [content, setContent] = useState(INITIAL_CONTENT);
+  // 댓글 작성 및 수정하여 db에 보내는 관련 로직
   const queryClient = useQueryClient();
   const isLogin = useRecoilValue(isLoginState);
   const { cycleDetailId } = useParams();
   const renderSnackBar = useSnackBar();
 
-  const commentInputRef = useRef<HTMLDivElement>(null);
-  const [mentionedMemberIds, setMentionedMemberIds] = useState<Array<number>>([]);
-
   const {
-    postMentionNotifications,
-    isLoadingPostMentionNotifications,
-    isPopoverOpen,
-    handleClosePopover,
-    membersData,
-    hasNextMembersPage,
-    fetchNextMembersPage,
-    selectMember,
-    handleKeydownCommentInput,
-    handleInputCommentInput,
-  } = useMention({
-    commentInputRef,
-    setContent,
-    mentionedMemberIds,
-    setMentionedMemberIds,
-  });
+    mutate: postMentionNotifications,
+    isLoading: isLoadingPostMentionNotifications,
+  } = usePostMentionNotifications();
 
   const { mutate: postComment, isLoading: isLoadingPostComment } = usePostComment(
     { cycleDetailId: Number(cycleDetailId) },
     {
       onSuccess: () => {
         invalidateQueries();
-
-        setContent(INITIAL_CONTENT);
-
+        setContent('');
         commentInputRef.current!.textContent = '';
-
         setMentionedMemberIds([]);
-
         resizeToInitialHeight();
-
         renderSnackBar({
           status: 'SUCCESS',
           message: '댓글이 작성됐습니다.',
@@ -76,20 +56,14 @@ const useCommentInput = ({
   const { mutate: patchComment, isLoading: isLoadingPatchComment } = usePatchComments({
     onSuccess: () => {
       invalidateQueries();
-
-      setContent(INITIAL_CONTENT);
-
+      setContent('');
       commentInputRef.current!.textContent = '';
-
       setMentionedMemberIds([]);
-
       resizeToInitialHeight();
-
       renderSnackBar({
         status: 'SUCCESS',
         message: '댓글이 수정됐습니다.',
       });
-
       turnOffEditMode();
     },
   });
@@ -148,7 +122,6 @@ const useCommentInput = ({
   };
 
   return {
-    commentInputRef,
     content,
     isVisibleWriteButton,
     isCommentError,
@@ -157,14 +130,6 @@ const useCommentInput = ({
     isLoadingPatchComment,
     handleClickWrite,
     isLoadingPostMentionNotifications,
-    isPopoverOpen,
-    handleClosePopover,
-    membersData,
-    hasNextMembersPage,
-    fetchNextMembersPage,
-    selectMember,
-    handleKeydownCommentInput,
-    handleInputCommentInput,
   };
 };
 

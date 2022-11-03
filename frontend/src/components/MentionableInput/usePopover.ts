@@ -1,17 +1,8 @@
-import { RefObject, MutableRefObject, useState } from 'react';
-import { getCursorPosition, insertAfter } from 'utils';
+import { usePopoverProps } from './type';
+import { useState } from 'react';
+import { insertAfter } from 'utils';
 
-type usePopoverProps<T extends HTMLElement> = {
-  commentInputRef: RefObject<T>;
-  mentionedMemberIds: number[];
-  setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
-  lastMentionSymbolPosition: MutableRefObject<number>;
-  filterValue: string;
-  setFilterValue: (arg0: string) => void;
-  isFilterValueInitiated: MutableRefObject<boolean>;
-};
-
-const usePopover = <T extends HTMLElement>({
+const usePopover = ({
   commentInputRef,
   mentionedMemberIds,
   setMentionedMemberIds,
@@ -19,7 +10,7 @@ const usePopover = <T extends HTMLElement>({
   filterValue,
   setFilterValue,
   isFilterValueInitiated,
-}: usePopoverProps<T>) => {
+}: usePopoverProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleClosePopover = () => {
@@ -39,7 +30,6 @@ const usePopover = <T extends HTMLElement>({
     mentionedMemberIds.push(memberId);
     setMentionedMemberIds(mentionedMemberIds);
 
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
     const childNodes = commentInputRef.current.childNodes;
 
     let accLength = 0;
