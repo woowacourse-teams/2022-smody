@@ -1,4 +1,4 @@
-import { EventChallengeItem } from './components';
+import { EventChallengeItem } from './components/EventChallengeItem';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
