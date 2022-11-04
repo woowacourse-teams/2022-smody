@@ -56,7 +56,8 @@ class CycleAcceptanceTest extends AcceptanceTest {
         ProgressResponse actual = toResponseDto(response, ProgressResponse.class);
         assertAll(
             OK_응답(response),
-            () -> assertThat(actual.getProgressCount()).isEqualTo(1)
+            () -> assertThat(actual.getProgressCount()).isEqualTo(1),
+            () -> assertThat(actual.getCycleDetailId()).isNotNull()
         );
     }
 

@@ -94,7 +94,7 @@ class CycleControllerTest extends ControllerTest {
     void increaseProgress_200() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        ProgressResponse response = new ProgressResponse(2);
+        ProgressResponse response = new ProgressResponse(2, 1L);
         given(cycleApiService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willReturn(response);
 
@@ -116,7 +116,8 @@ class CycleControllerTest extends ControllerTest {
                                 parameterWithName("description").description("인증 설명")
                         ),
                         responseFields(
-                                fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도")
+                                fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
+                                fieldWithPath("cycleDetailId").type(JsonFieldType.NUMBER).description("생성된 인증 ID")
                         )));
     }
 
