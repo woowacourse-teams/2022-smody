@@ -23,7 +23,7 @@
     "start:dev": "webpack serve --config webpack/webpack.dev.js",
     "build:prod": "webpack --config webpack/webpack.prod.js",
     "build:dev": "webpack --config webpack/webpack.dev.js",
-    "test": "jest --watchAll --silent",
+    "test": "jest --silent",
     "pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
