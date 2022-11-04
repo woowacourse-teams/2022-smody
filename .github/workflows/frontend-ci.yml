@@ -33,6 +33,12 @@ jobs:
 
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
+        with:
+          coverage-summary-path: ./src/coverage/coverage-summary.json
+          title: Frontend Test
+          summary-title: Jest Coverage
+          badge-title: Coverage
+          create-new-comment: true
 
       - name: Component test
         run: yarn run test
