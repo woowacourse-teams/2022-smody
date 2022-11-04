@@ -11,20 +11,20 @@ import { CLIENT_PATH } from 'constants/path';
 
 const tabList = [
   {
-    path: CLIENT_PATH.CHALLENGE_EVENT,
-    tabName: '⭐ 이벤트',
+    path: CLIENT_PATH.CHALLENGE_RANDOM,
+    tabName: '🎲 추천',
   },
   {
     path: CLIENT_PATH.CHALLENGE_POPULAR,
     tabName: '🔥 인기',
   },
   {
-    path: CLIENT_PATH.CHALLENGE_RANDOM,
-    tabName: '🎲 추천',
-  },
-  {
     path: CLIENT_PATH.CHALLENGE_SEARCH,
     tabName: '🔎 검색',
+  },
+  {
+    path: CLIENT_PATH.CHALLENGE_EVENT,
+    tabName: '⭐ 이벤트',
   },
 ];
 

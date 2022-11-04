@@ -18,10 +18,10 @@ const EventPage = () => {
       as="section"
     >
       <TitleText color={themeContext.onBackground} size={20} fontWeight="bold" as="h1">
-        ⭐ 우테코 팀프로젝트 사용 챌린지 이벤트 ⭐
+        ⭐ 우테코 팀프로젝트 사용 챌린지 ⭐
       </TitleText>
       <DescriptionText color={themeContext.onBackground} size={16}>
-        챌린지를 1회라도 인증한다면 추첨을 통해 스모디 컵을 드립니다!
+        우테코 4기의 다른 프로젝트를 이용해 보세요!
       </DescriptionText>
       <FlexBox as="ul" flexDirection="column" gap="27px">
         {EVENT_CHALLENGE_ID_LIST.map((challengeId: number) => (
