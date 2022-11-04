@@ -20,6 +20,7 @@ const config: Config.InitialOptions = {
   },
   rootDir: './src',
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
+  setupFiles: ['fake-indexeddb/auto'],
 };
 
 export default config;
