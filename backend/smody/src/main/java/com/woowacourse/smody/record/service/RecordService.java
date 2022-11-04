@@ -75,7 +75,7 @@ public class RecordService {
     }
 
     public Long countChallengers(Challenge challenge, LocalDateTime startTime) {
-        return recordRepository.countChallengersSingleChallenge(challenge, startTime);
+        return recordRepository.countChallengersSingleChallengeNaive(challenge, startTime);
     }
 
     public Map<Long, Boolean> calculateInProgress(Member member, Challenge challenge, LocalDateTime startTime) {

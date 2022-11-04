@@ -27,9 +27,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     List<Long> isInProgressMultipleChallenge(@Param("member") Member member, @Param("challenges") List<Challenge> challenges,
                                         @Param("startTime") LocalDateTime startTime);
 
-    @Query(value = "select count(r.record_id) from record r where (select r.record_id from record r " +
-            "where r.challenge_id = :challenge and r.dead_line >= :startTime and r.is_success=false " +
-            "order by r.record_id limit 1) <= r.record_id and r.challenge_id = :challenge and r.dead_line >= :startTime and r.is_success=false ", nativeQuery = true)
+    @Query(value = "select count(*) from record r where r.challenge_id = :challenge and r.dead_line >= :startTime", nativeQuery = true)
     Long countChallengersSingleChallenge(@Param("challenge") Challenge challenge,
                                                     @Param("startTime") LocalDateTime startTime);
 
@@ -41,4 +39,9 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
             "group by r.challenge_id", nativeQuery = true)
     List<Long[]> countChallengersMultipleChallengeNaive(@Param("challenges") List<Challenge> challenges,
                                      @Param("startTime") LocalDateTime startTime);
+
+    @Query(value = "select r.challenge_id, count(r.member_id) from record r where r.challenge_id = :challenge and r.dead_line >= :startTime and r.is_success=false " +
+            "group by r.challenge_id", nativeQuery = true)
+    Long countChallengersSingleChallengeNaive(@Param("challenge") Challenge challenge,
+                                         @Param("startTime") LocalDateTime startTime);
 }
