@@ -26,6 +26,16 @@ jobs:
 
       - name: Install node packages
         run: yarn
+        
+      - name: Install dependencies
+        run: yarn ci
+
+      - name: Run tests
+        run: |
+          npx jest --silent --coverage --coverageReporters json-summary
+
+      - name: Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
 
       - name: Component test
         run: yarn run test
