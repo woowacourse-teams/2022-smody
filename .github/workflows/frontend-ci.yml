@@ -26,9 +26,6 @@ jobs:
 
       - name: Install node packages
         run: yarn
-        
-      - name: Install dependencies
-        run: yarn ci
 
       - name: Run tests
         run: |
