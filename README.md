@@ -15,8 +15,6 @@
 - 작심삼일 컨셉의 동기 부여 서비스
 - 목표하는 챌린지의 주기를 3일 정해서 작은 성공을 반복할 수 있도록 도와주는 서비스
 
----
-
 ## 🐶 멤버
 
 ### Frontend
@@ -33,8 +31,6 @@
 | <img src="https://avatars.githubusercontent.com/u/59171113?v=4" alt="tonic" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/50986686?v=4" alt="alpha" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/78652144?v=4" alt="does" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/82805588?v=4" alt="jojo_green" width="100" height="100"> |
 |                                [tonic523](https://github.com/tonic523)                                |                                 [bcc0830](https://github.com/bcc0830)                                 |                              [ldk980130](https://github.com/ldk980130)                               |                               [jojogreen91](https://github.com/jojogreen91)                                |
 
----
-
 ## 🌞 프로젝트 작업 방식
 
 ### 스프린트 루틴 - 2주
@@ -44,8 +40,6 @@
 ### Git 전략  - Git Flow Strategy
 
 ![](../../Downloads/스크린샷 2022-11-03 오후 6.25.05.png)
-
----
 
 ## 🛠 기술스택
 
@@ -65,13 +59,9 @@
 
 <img width="528" alt="image" src="https://user-images.githubusercontent.com/59413128/185350044-159d30d9-751a-495e-94b5-3f61a433f5e9.png">
 
----
-
 ## 🏛 인프라 설계
 
 ![](../../Downloads/111123.jpg)
-
----
 
 ## 🤵🏻‍♂️ CI / CD
 
