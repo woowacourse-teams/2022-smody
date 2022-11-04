@@ -34,7 +34,7 @@ jobs:
       - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          coverage-summary-path: ./src/coverage/coverage-summary.json
+          coverage-summary-path: frontend/src/coverage/coverage-summary.json
           title: Frontend Test
           summary-title: Jest Coverage
           badge-title: Coverage
