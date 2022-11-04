@@ -26,7 +26,7 @@ export const Navbar = () => {
               alignItems="center"
               gap="6px"
               as={Link}
-              to={CLIENT_PATH.CHALLENGE_EVENT}
+              to={CLIENT_PATH.CHALLENGE_RANDOM}
             >
               <ImFire size={23} color={challengeColor} />
               <Text size={11} color={challengeColor} aria-label="챌린지 탭">
