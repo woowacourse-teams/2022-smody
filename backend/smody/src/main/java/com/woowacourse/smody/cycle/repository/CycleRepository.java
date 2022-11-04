@@ -38,7 +38,7 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Cycle c where c.member = :member")
-    void deleteByMember(@Param("member") Member member);
+    void deleteByMember(@Param("member") Member member); // TODO-안쓰는 메서드?
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select c from Cycle c where c.id = :cycleId")
