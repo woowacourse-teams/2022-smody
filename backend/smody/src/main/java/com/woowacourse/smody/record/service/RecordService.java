@@ -62,7 +62,7 @@ public class RecordService {
     }
 
     public Map<Long, Long> countChallengersIn(List<Challenge> challenges, LocalDateTime startTime) {
-        return recordRepository.countChallengersMultipleChallengeNaive(challenges, startTime).stream()
+        return recordRepository.countChallengersMultipleChallenge(challenges, startTime).stream()
                 .collect(Collectors.toMap(each -> each[0], each -> each[1]));
     }
 
