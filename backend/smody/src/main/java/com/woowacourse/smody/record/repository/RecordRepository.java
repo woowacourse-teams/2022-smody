@@ -19,7 +19,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Optional<Record> findByMemberAndAndChallenge(Member member, Challenge challenge);
 
     @Query(value = "select r.challenge_id, count(*) from record r" +
-            " where r.challenge_id in :challenges and r.dead_line >= :startTIme group by r.challenge_id", nativeQuery = true)
+            " where r.challenge_id in :challenges and r.dead_line >= :startTime group by r.challenge_id", nativeQuery = true)
     List<Long []> countChallengersMultipleChallenge(@Param("challenges") List<Challenge> challenges,
                                              @Param("startTime") LocalDateTime startTime);
 
