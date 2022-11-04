@@ -27,26 +27,21 @@ jobs:
       - name: Install node packages
         run: yarn
 
-      - name: Run tests
-        run: |
-          npx jest --silent --coverage --coverageReporters json-summary
-
-      - name: Jest Coverage Comment
+      - name: Jest Component Test
+        run: yarn run test-ci
+        
+      - name: Jest Test Comment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: frontend/src/coverage/coverage-summary.json
           title: Frontend Test
           summary-title: Smody
           badge-title: Coverage
+          hide-comment: false
           create-new-comment: true
           hide-summary: false
-          junitxml-title: Frontend JUnit
-          junitxml-path: frontend/src/coverage/junit.xml
-          coverage-title: Frontend Coverage
-          coverage-path: frontend/src/coverage.txt
-
-      - name: Component test
-        run: yarn run test
+          junitxml-title: Jest Component Test
+          junitxml-path: frontend/src/junit.xml
 
       - name: TypeScript test
         run: yarn run typecheck
