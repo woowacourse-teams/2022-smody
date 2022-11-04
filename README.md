@@ -1,12 +1,12 @@
-# SMODY 스모디
+# PROJECT SMODY (스모디)
 
 <img src="https://user-images.githubusercontent.com/59413128/185350531-1ecaaf78-e295-4bf5-b14a-4c5208e84c65.png" width="100"> <img src="https://user-images.githubusercontent.com/59413128/185350386-6b9d9f8b-8f86-4f63-84c1-9b52dd9fbf19.png" alt="PWA" width="300">
 
-- [SMODY 스모디 링크](https://www.smody.co.kr)
+- [SMODY 링크](https://www.smody.co.kr)
 
 - [프로젝트 소개 페이지](https://sites.google.com/woowahan.com/woowacourse-demo-4th/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EC%8A%A4%EB%AA%A8%EB%94%94)
 
-## 🥤 작심삼일에 지쳤을 때, Three More Days. SMODY
+## 🥤 작심삼일에 지쳤을 때, Three More Days, SMODY
 
 > 작심삼일을 극복하는 가장 좋은 방법은 3일마다 결심을 반복하는 것!  
 > 스모디를 통해서 3일간의 챌린지에 도전하고 반복적인 습관을 만들어봐요!
@@ -35,11 +35,11 @@
 
 ### 스프린트 루틴 - 2주
 
-![](../../Downloads/스크린샷 2022-11-03 오후 6.24.08.png)
+<img width="1225" alt="스크린샷 2022-11-03 오후 6 24 08" src="https://user-images.githubusercontent.com/82805588/199913648-3b7792f7-5aa0-41b5-a3e3-03b9104602a4.png">
 
 ### Git 전략  - Git Flow Strategy
 
-![](../../Downloads/스크린샷 2022-11-03 오후 6.25.05.png)
+<img width="1225" alt="스크린샷 2022-11-03 오후 6 25 05" src="https://user-images.githubusercontent.com/82805588/199913717-8054d9d6-4baa-4be8-93df-7192dc4a706b.png">
 
 ## 🛠 기술스택
 
@@ -61,19 +61,15 @@
 
 ## 🏛 인프라 설계
 
-![](../../Downloads/111123.jpg)
+![111123](https://user-images.githubusercontent.com/82805588/199913807-48288cf0-214f-41ad-81ad-804fda221f18.jpg)
 
 ## 🤵🏻‍♂️ CI / CD
 
-![](../../Downloads/4363463.jpg)
-
----
+![4363463](https://user-images.githubusercontent.com/82805588/199913857-ef1427f9-5f0d-417e-818a-9323a6f76a37.jpg)
 
 ## 📕 ERD
 
-![](../../Downloads/스크린샷 2022-11-03 오후 4.46.44.png)
-
----
+<img width="1230" alt="스크린샷 2022-11-03 오후 4 46 44" src="https://user-images.githubusercontent.com/82805588/199913896-79135ad4-34da-452a-8f1f-e6b2a73d1fdd.png">
 
 ## 🐧 로컬 실행 방법
 
