@@ -43,7 +43,7 @@ public class Record {
     private Integer progressCount;
 
     @Column(nullable = false)
-    private Long deadLineTime;
+    private LocalDateTime deadLine;
 
     @Column(nullable = false)
     private boolean isSuccess;
@@ -58,7 +58,7 @@ public class Record {
         this.challenge = challenge;
         this.successCount = successCount;
         this.progressCount = progressCount;
-        this.deadLineTime = convertToMillSecond(deadLineTime);
+        this.deadLine = deadLineTime;
         this.isSuccess = isSuccess;
     }
 
@@ -82,7 +82,7 @@ public class Record {
         if (days == null || days > 3L || days < 1L) {
             throw new BusinessException(ExceptionData.CANNOT_UPDATE_DEADLINE);
         }
-        this.deadLineTime = convertToMillSecond(startTime.plusDays(days));
+        this.deadLine = startTime.plusDays(days);
     }
 
     public void toNotSuccess() {
