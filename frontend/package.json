@@ -23,7 +23,7 @@
     "start:dev": "cross-env NODE_ENV=development webpack serve --mode development",
     "build:prod": "cross-env NODE_ENV=production webpack --mode production",
     "build:dev": "webpack --mode development",
-    "test": "jest --watch --no-cache",
+    "test": "jest",
     "pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
