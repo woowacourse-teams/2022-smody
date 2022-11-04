@@ -86,7 +86,7 @@ cd backend/smody
 
 ### 프론트엔드
 
-- node 버전은 16.1.0이어야 한다.
+- node 버전은 16.10.0 이어야 한다.
 
 ```bash
 cd frontend
