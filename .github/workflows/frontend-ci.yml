@@ -41,7 +41,7 @@ jobs:
           create-new-comment: true
           hide-summary: false
           junitxml-title: Jest Component Test
-          junitxml-path: frontend/src/junit.xml
+          junitxml-path: frontend/junit.xml
 
       - name: TypeScript test
         run: yarn run typecheck
