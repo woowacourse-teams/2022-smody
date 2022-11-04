@@ -33,7 +33,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     Long countChallengersSingleChallenge(@Param("challenge") Challenge challenge,
                                                     @Param("startTime") LocalDateTime startTime);
 
-    @Query(value = "select r.challenge from Record r where r.member = :member and r.challenge = :challenge and r.deadLine >= :startTime and r.isSuccess = false")
+    @Query(value = "select r.challenge_id from record r where r.member_id = :member and r.challenge_id = :challenge and r.dead_line >= :startTime", nativeQuery = true)
     Long isInProgressSingleChallenge(@Param("member") Member member, @Param("challenge") Challenge challenge,
                                                          @Param("startTime") LocalDateTime startTime);
 
