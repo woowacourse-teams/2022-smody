@@ -28,8 +28,7 @@ public class CommentService {
     public Comment create(Long memberId, Long cycleDetailId, String content) {
         Member member = memberService.search(memberId);
         CycleDetail cycleDetail = cycleService.searchCycleDetail(cycleDetailId);
-        Comment comment = commentRepository.save(new Comment(cycleDetail, member, content));
-        return comment;
+        return commentRepository.save(new Comment(cycleDetail, member, content));
     }
 
     @Transactional

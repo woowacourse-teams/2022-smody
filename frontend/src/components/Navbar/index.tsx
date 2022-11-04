@@ -17,8 +17,8 @@ export const Navbar = () => {
   const { certColor, challengeColor, feedColor, profileColor, rankColor } = useNavBar();
 
   return (
-    <Footer>
-      <nav>
+    <Footer aria-label="하단 내브바">
+      <nav aria-label="하단 내브바 링크 목록">
         <NavItemsContainer justifyContent="space-around" alignItems="center" as="ul">
           <li>
             <NavLink
@@ -26,10 +26,10 @@ export const Navbar = () => {
               alignItems="center"
               gap="6px"
               as={Link}
-              to={CLIENT_PATH.CHALLENGE_EVENT}
+              to={CLIENT_PATH.CHALLENGE_RANDOM}
             >
               <ImFire size={23} color={challengeColor} />
-              <Text size={11} color={challengeColor}>
+              <Text size={11} color={challengeColor} aria-label="챌린지 탭">
                 챌린지
               </Text>
             </NavLink>
@@ -44,7 +44,7 @@ export const Navbar = () => {
               fill={feedColor}
             >
               <Feed />
-              <Text size={11} color={feedColor}>
+              <Text size={11} color={feedColor} aria-label="피드 탭">
                 피드
               </Text>
             </NavLink>
@@ -59,7 +59,7 @@ export const Navbar = () => {
               fill={certColor}
             >
               <Plus />
-              <Text size={11} color={certColor}>
+              <Text size={11} color={certColor} aria-label="인증 탭">
                 인증
               </Text>
             </NavLink>
@@ -73,7 +73,7 @@ export const Navbar = () => {
               to={CLIENT_PATH.RANK}
             >
               <BsTrophyFill size={23} color={rankColor} />
-              <Text size={11} color={rankColor}>
+              <Text size={11} color={rankColor} aria-label="랭킹 탭">
                 랭킹
               </Text>
             </NavLink>
@@ -88,7 +88,7 @@ export const Navbar = () => {
               fill={profileColor}
             >
               <Profile />
-              <Text size={11} color={profileColor}>
+              <Text size={11} color={profileColor} aria-label="프로필 탭">
                 프로필
               </Text>
             </NavLink>

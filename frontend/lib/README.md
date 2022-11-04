@@ -17,6 +17,7 @@ npm install smody-library --save-dev
 
 - 실행
 
+MappedKeyToUnion
 ```tsx
 import { MappedKeyToUnion } from 'smody-library';
 
@@ -28,6 +29,22 @@ const COLOR = {
 
 type AvailablePickedColor = MappedKeyToUnion<typeof COLOR>;
 // => type AvailablePickedColor = "#F5F3FF" | "#7B61FF" | "#7054FE";
+```
+
+PickType
+```tsx
+import { PickType } from 'smody-library';
+
+type Person = {
+  name: string;
+  age: number;
+}
+
+type PickedName = PickType<Person, 'name'>
+// => PickedName type is string
+
+type PickedAge = PickType<Person, 'age'>
+// => PickedAge type is number
 ```
 
 - [smody 유틸 npm 라이브러리 주소](https://www.npmjs.com/package/smody-library)

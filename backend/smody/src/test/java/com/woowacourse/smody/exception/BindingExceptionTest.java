@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.woowacourse.smody.support.ControllerTest;
 
-public class BindingExceptionTest extends ControllerTest {
+class BindingExceptionTest extends ControllerTest {
 
     @DisplayName("path variable 타입이 올바르지 않으면 400 예외가 발생한다.")
     @Test

@@ -22,6 +22,7 @@ import com.woowacourse.smody.ranking.domain.RankingActivity;
 import com.woowacourse.smody.ranking.domain.RankingPeriod;
 import com.woowacourse.smody.ranking.repository.RankingActivityRepository;
 import com.woowacourse.smody.ranking.repository.RankingPeriodRepository;
+import com.woowacourse.smody.support.EventListenerMockTest;
 import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class RankingEventExceptionTest extends IntegrationTest {
+class RankingEventExceptionTest extends EventListenerMockTest {
 
     @Autowired
     private RankingPeriodRepository rankingPeriodRepository;
@@ -43,9 +44,6 @@ class RankingEventExceptionTest extends IntegrationTest {
 
     @Autowired
     private CycleService cycleService;
-
-    @MockBean
-    private RankingPointEventListener rankingPointEventListener;
 
     @DisplayName("랭킹에 예외가 발생해도 인증은 되어야 한다.")
     @Test

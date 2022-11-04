@@ -1,4 +1,4 @@
-import { EventChallengeItem } from './components';
+import { EventChallengeItem } from './components/EventChallengeItem';
 import styled from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -11,12 +11,17 @@ const EventPage = () => {
   const themeContext = useThemeContext();
 
   return (
-    <FlexBox flexDirection="column" justifyContent="center">
-      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
-        ⭐ 우테코 팀프로젝트 사용 챌린지 이벤트 ⭐
+    <FlexBox
+      flexDirection="column"
+      justifyContent="center"
+      aria-label="이벤트 챌린지 페이지"
+      as="section"
+    >
+      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold" as="h1">
+        ⭐ 우테코 팀프로젝트 사용 챌린지 ⭐
       </TitleText>
       <DescriptionText color={themeContext.onBackground} size={16}>
-        챌린지를 1회라도 인증한다면 추첨을 통해 스모디 컵을 드립니다!
+        우테코 4기의 다른 프로젝트를 이용해 보세요!
       </DescriptionText>
       <FlexBox as="ul" flexDirection="column" gap="27px">
         {EVENT_CHALLENGE_ID_LIST.map((challengeId: number) => (

@@ -49,6 +49,9 @@ export const SuccessModal = ({
         alignItems="center"
         justifyContent="center"
         gap="1rem"
+        role="dialog"
+        aria-label="인증 성공 모달"
+        tabIndex={0}
       >
         <CloseButton onClick={handleClickClose} aria-label="닫기">
           <Close />
@@ -93,7 +96,7 @@ export const SuccessModal = ({
             </RetryButton>
           </FlexBox>
         ) : (
-          <Button autoFocus onClick={handleClickCheck} size="medium" isActive={false}>
+          <Button onClick={handleClickCheck} size="medium" isActive={false}>
             기록 확인
           </Button>
         )}

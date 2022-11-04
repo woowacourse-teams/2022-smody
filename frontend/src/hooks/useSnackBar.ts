@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { snackBarState } from 'recoil/snackbar/atoms';
 
-import { SnackBarProps } from 'components/SnackBar/type';
+import { SnackBarProps } from 'components/@shared/SnackBar/type';
 
 const useSnackBar = () => {
   const setSnackBar = useSetRecoilState(snackBarState);

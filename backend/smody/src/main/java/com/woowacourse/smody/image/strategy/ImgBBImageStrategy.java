@@ -43,8 +43,7 @@ public class ImgBBImageStrategy implements ImageStrategy {
     private HttpEntity<MultiValueMap<String, Object>> generateRequestHttpEntity(MultipartFile rawImage) {
         MultiValueMap<String, Object> body = generateBody(rawImage);
         HttpHeaders headers = generateHeaders();
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
-        return httpEntity;
+        return new HttpEntity<>(body, headers);
     }
 
     private MultiValueMap<String, Object> generateBody(MultipartFile rawImage) {

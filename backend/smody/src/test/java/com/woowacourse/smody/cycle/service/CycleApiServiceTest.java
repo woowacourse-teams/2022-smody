@@ -95,7 +95,10 @@ public class CycleApiServiceTest extends IntegrationTest {
         ProgressResponse progressResponse = cycleApiService.increaseProgress(tokenPayload, request);
 
         // then
-        assertThat(progressResponse.getProgressCount()).isEqualTo(expected);
+        assertAll(
+            () -> assertThat(progressResponse.getProgressCount()).isEqualTo(expected),
+            () -> assertThat(progressResponse.getCycleDetailId()).isNotNull()
+        );
     }
 
     @DisplayName("진행도를 증가 시킬 때 유효하지 않은 시간인 경우 예외 발생")

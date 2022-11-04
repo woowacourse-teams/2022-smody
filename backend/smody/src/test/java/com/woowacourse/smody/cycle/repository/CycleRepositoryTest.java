@@ -41,7 +41,7 @@ class CycleRepositoryTest extends RepositoryTest {
 
         // then
         assertAll(
-                () -> assertThat(cycles.size()).isEqualTo(1),
+                () -> assertThat(cycles).hasSize(1),
                 () -> assertThat(cycles.get(0).getId()).isEqualTo(cycle1.getId())
         );
     }
@@ -59,7 +59,7 @@ class CycleRepositoryTest extends RepositoryTest {
         // then
         List<CycleDetail> cycleDetails = cycleRepository.findById(cycle.getId()).get().getCycleDetailsOrderByProgress();
         assertAll(
-                () -> assertThat(cycleDetails.size()).isEqualTo(1),
+                () -> assertThat(cycleDetails).hasSize(1),
                 () -> assertThat(cycleDetails.get(0).getProgressImage()).isEqualTo("image.jpg"),
                 () -> assertThat(cycleDetails.get(0).getDescription()).isEqualTo("인증 완료")
         );

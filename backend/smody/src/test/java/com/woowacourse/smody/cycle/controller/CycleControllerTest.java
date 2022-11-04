@@ -44,7 +44,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
-public class CycleControllerTest extends ControllerTest {
+class CycleControllerTest extends ControllerTest {
 
     @DisplayName("사이클을 정상적으로 생성할 때 201을 응답한다.")
     @Test
@@ -94,7 +94,7 @@ public class CycleControllerTest extends ControllerTest {
     void increaseProgress_200() throws Exception {
         // given
         String token = jwtTokenProvider.createToken(new TokenPayload(1L));
-        ProgressResponse response = new ProgressResponse(2);
+        ProgressResponse response = new ProgressResponse(2, 1L);
         given(cycleApiService.increaseProgress(any(TokenPayload.class), any(ProgressRequest.class)))
                 .willReturn(response);
 
@@ -116,7 +116,8 @@ public class CycleControllerTest extends ControllerTest {
                                 parameterWithName("description").description("인증 설명")
                         ),
                         responseFields(
-                                fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도")
+                                fieldWithPath("progressCount").type(JsonFieldType.NUMBER).description("사이클 진척도"),
+                                fieldWithPath("cycleDetailId").type(JsonFieldType.NUMBER).description("생성된 인증 ID")
                         )));
     }
 

@@ -1,6 +1,13 @@
 package com.woowacourse.smody.cycle.service;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
@@ -13,14 +20,11 @@ import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
+import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,6 +59,24 @@ public class CycleService {
 
     private boolean isRetry(final LocalDateTime startTime, final Cycle cycle) {
         return cycle.isSuccess() && cycle.isInDays(startTime);
+    }
+
+    @Transactional
+    public Cycle increaseProgress(
+        Long memberId, Long cycleId, LocalDateTime progressTime, Image progressImage, String description
+    ) {
+        Cycle cycle = searchWithLock(cycleId);
+        validateAuthorizedMember(memberId, cycle);
+
+        cycle.increaseProgress(progressTime, progressImage, description);
+        cycleRepository.flush();
+        return cycle;
+    }
+
+    private void validateAuthorizedMember(Long memberId, Cycle cycle) {
+        if (!cycle.matchMember(memberId)) {
+            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
+        }
     }
 
     public int countSuccess(Member member, Challenge challenge) {
