@@ -21,6 +21,7 @@ const config: Config.InitialOptions = {
   rootDir: './src',
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   setupFiles: ['fake-indexeddb/auto'],
+  reporters: ['default', 'jest-junit'],
 };
 
 export default config;
