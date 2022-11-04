@@ -35,12 +35,12 @@ jobs:
         with:
           coverage-summary-path: frontend/src/coverage/coverage-summary.json
           title: Frontend Test
-          summary-title: Smody
+          summary-title: Jest Test Coverage
           badge-title: Coverage
           hide-comment: false
           create-new-comment: true
           hide-summary: false
-          junitxml-title: Jest Component Test
+          junitxml-title: Jest Test Result
           junitxml-path: frontend/junit.xml
 
       - name: TypeScript test
