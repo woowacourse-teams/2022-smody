@@ -13,7 +13,14 @@ declare global {
 
 const useInstallApp = () => {
   const [isInstallPromptDeferred, setIsInstallPromptDeferred] = useState(false);
-  const [pwaMode, setPwaMode] = useState('browser');
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', deferInstall);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', deferInstall);
+    };
+  }, []);
 
   const deferInstall = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -21,46 +28,12 @@ const useInstallApp = () => {
     setIsInstallPromptDeferred(!!deferredPrompt);
   };
 
-  useEffect(() => {
-    (() => {
-      window.addEventListener('beforeinstallprompt', deferInstall);
-    })();
-
-    setPwaMode(getPWADisplayMode());
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', deferInstall);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (pwaMode !== 'browser') {
-      setIsInstallPromptDeferred(false);
-    }
-  }, [pwaMode]);
-
-  const installApp = async () => {
+  const installApp = () => {
     deferredPrompt.prompt();
     deferredPrompt = null;
   };
 
-  function getPWADisplayMode() {
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    if (document.referrer.startsWith('android-app://')) {
-      return 'twa';
-    } else if (navigator.standalone || isStandalone) {
-      return 'standalone';
-    }
-    return 'browser';
-  }
-
-  const isIOS =
-    (/iPad|iPhone|iPod/.test(navigator.platform) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
-    !window.MSStream;
-
-  const isNotInstalledInIOS = pwaMode === 'browser' && isIOS;
-  return { installApp, isInstallPromptDeferred, isNotInstalledInIOS };
+  return { installApp, isInstallPromptDeferred };
 };
 
 export default useInstallApp;

@@ -4,8 +4,6 @@ import { server } from 'mocks/server';
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 
-const originalError = console.error;
-
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
@@ -40,11 +38,9 @@ beforeEach(() => {
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 });
 
-jest.mock('react-router-dom', () => {
-  return {
-    __esModule: true,
-    ...jest.requireActual('react-router-dom'),
-  };
-});
+jest.doMock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();

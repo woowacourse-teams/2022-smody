@@ -50,7 +50,7 @@ const FeedPage = () => {
       isFetching={isFetching}
       loader={<LoadingSpinner />}
     >
-      <FeedContainer as="ul">
+      <FeedContainer as="ul" aria-label="피드 목록">
         {feedInfiniteData?.pages.map((page) =>
           page?.data.map((feedInfo) => (
             <li key={feedInfo.cycleDetailId}>

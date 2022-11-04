@@ -1,10 +1,11 @@
+import { InstallPrompt } from './components/InstallPrompt';
 import ServiceExamplePng from 'assets/service_example.png';
 import ServiceExampleWebp from 'assets/service_example.webp';
 import styled, { keyframes } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import { FlexBox, Text, Logo, InstallPrompt, FixedButton } from 'components';
+import { FlexBox, Text, Logo, FixedButton } from 'components';
 
 const LandingPage = () => {
   const themeContext = useThemeContext();

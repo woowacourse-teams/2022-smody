@@ -11,20 +11,20 @@ import { CLIENT_PATH } from 'constants/path';
 
 const tabList = [
   {
-    path: CLIENT_PATH.CHALLENGE_EVENT,
-    tabName: '⭐ 이벤트',
+    path: CLIENT_PATH.CHALLENGE_RANDOM,
+    tabName: '🎲 추천',
   },
   {
     path: CLIENT_PATH.CHALLENGE_POPULAR,
     tabName: '🔥 인기',
   },
   {
-    path: CLIENT_PATH.CHALLENGE_RANDOM,
-    tabName: '🎲 추천',
-  },
-  {
     path: CLIENT_PATH.CHALLENGE_SEARCH,
     tabName: '🔎 검색',
+  },
+  {
+    path: CLIENT_PATH.CHALLENGE_EVENT,
+    tabName: '⭐ 이벤트',
   },
 ];
 
@@ -32,8 +32,8 @@ const ChallengePage = () => {
   const { handleCreateChallengeButton } = useChallengePage();
   return (
     <FlexBox flexDirection="column">
-      <Tabs tabList={tabList} />
-      <ContentWrapper>
+      <Tabs tabList={tabList} ariaLabel="챌린지 페이지 탭 목록" />
+      <ContentWrapper aria-label="탭 컨텐츠">
         <Suspense fallback={<LoadingSpinner />}>
           <ContentPage />
         </Suspense>

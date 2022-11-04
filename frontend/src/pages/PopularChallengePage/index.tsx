@@ -36,8 +36,8 @@ const PopularChallengePage = () => {
   }
 
   return (
-    <FlexBox flexDirection="column">
-      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold">
+    <FlexBox flexDirection="column" aria-label="인기 챌린지 페이지" as="section">
+      <TitleText color={themeContext.onBackground} size={20} fontWeight="bold" as="h1">
         🔥 가장 많이 참여하고 있는 챌린지 🔥
       </TitleText>
       <ChallengeList challengeInfiniteData={challengeInfiniteData.pages} />

@@ -1,6 +1,14 @@
 package com.woowacourse.smody.cycle.service;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
+
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.challenge.domain.Challenge;
@@ -18,19 +26,12 @@ import com.woowacourse.smody.cycle.dto.ProgressResponse;
 import com.woowacourse.smody.cycle.dto.StatResponse;
 import com.woowacourse.smody.db_support.CursorPaging;
 import com.woowacourse.smody.db_support.PagingParams;
-import com.woowacourse.smody.exception.BusinessException;
-import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.image.strategy.ImageStrategy;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,19 +56,15 @@ public class CycleApiService {
 
     @Transactional
     public ProgressResponse increaseProgress(TokenPayload tokenPayload, ProgressRequest progressRequest) {
-        Cycle cycle = cycleService.searchWithLock(progressRequest.getCycleId());
-        validateAuthorizedMember(tokenPayload, cycle);
-        Image progressImage = new Image(progressRequest.getProgressImage(), imageStrategy);
-        cycle.increaseProgress(progressRequest.getProgressTime(), progressImage, progressRequest.getDescription());
-
+        Cycle cycle = cycleService.increaseProgress(
+            tokenPayload.getId(),
+            progressRequest.getCycleId(),
+            progressRequest.getProgressTime(),
+            new Image(progressRequest.getProgressImage(), imageStrategy),
+            progressRequest.getDescription()
+        );
         applicationEventPublisher.publishEvent(new CycleProgressEvent(cycle));
-        return new ProgressResponse(cycle.getProgress());
-    }
-
-    private void validateAuthorizedMember(TokenPayload tokenPayload, Cycle cycle) {
-        if (!cycle.matchMember(tokenPayload.getId())) {
-            throw new BusinessException(ExceptionData.UNAUTHORIZED_MEMBER);
-        }
+        return new ProgressResponse(cycle);
     }
 
     public List<InProgressCycleResponse> findInProgressByMe(TokenPayload tokenPayload,

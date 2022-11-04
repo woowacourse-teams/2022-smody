@@ -1,6 +1,8 @@
 import { useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from 'recoil/auth/atoms';
 import { isDarkState } from 'recoil/darkMode/atoms';
 import { LocationState } from 'types/internal';
 
@@ -14,6 +16,7 @@ export const useHeader = () => {
   const [isDark, setIsDark] = useRecoilState(isDarkState);
   const scrollDirection = useScrollDirection();
   const { pathname, state } = useLocation();
+  const isLogin = useRecoilValue(isLoginState);
 
   useEffect(() => {
     if (isNotNeedScrollAnimation || wrapperRef.current === null) {
@@ -56,5 +59,6 @@ export const useHeader = () => {
     wrapperRef,
     isDark,
     handleDarkToggle,
+    isLogin,
   };
 };

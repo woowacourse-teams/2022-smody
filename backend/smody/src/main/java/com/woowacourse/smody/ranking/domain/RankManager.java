@@ -25,10 +25,9 @@ public class RankManager {
     }
 
     private static List<RankingActivity> sortByPointDesc(final List<RankingActivity> rankingActivities) {
-        List<RankingActivity> sortedRankinActivities = rankingActivities.stream()
+        return rankingActivities.stream()
                 .sorted(Comparator.comparing(RankingActivity::getPoint).reversed())
                 .collect(Collectors.toList());
-        return sortedRankinActivities;
     }
 
     public Integer getRanking(RankingActivity rankingActivity) {

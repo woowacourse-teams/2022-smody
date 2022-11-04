@@ -1,3 +1,4 @@
+import { SearchBar } from './components/SearchBar';
 import styled from 'styled-components';
 
 import useSnackBar from 'hooks/useSnackBar';
@@ -8,9 +9,9 @@ import {
   LoadingSpinner,
   FlexBox,
   InfiniteScroll,
-  SearchBar,
   ChallengeList,
   ChallengeItem,
+  SROnly,
 } from 'components';
 
 const SearchPage = () => {
@@ -54,7 +55,12 @@ const SearchPage = () => {
   }
 
   return (
-    <SearchContentWrapper flexDirection="column">
+    <SearchContentWrapper
+      flexDirection="column"
+      aria-label="챌린지 검색 페이지"
+      as="section"
+    >
+      <SROnly as="h1">챌린지를 검색할 수 있습니다.</SROnly>
       <SearchBar
         searchInput={searchInput}
         handleChangeSearch={handleChangeSearch}

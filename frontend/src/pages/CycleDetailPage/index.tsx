@@ -1,17 +1,11 @@
+import { CycleDetailList } from './components/CycleDetailList';
 import useCycleDetailPage from './useCycleDetailPage';
 import styled from 'styled-components';
 import { parseTime } from 'utils';
 
 import useThemeContext from 'hooks/useThemeContext';
 
-import {
-  Text,
-  ChallengeIcon,
-  CycleDetailList,
-  FlexBox,
-  Title,
-  ShareButton,
-} from 'components';
+import { Text, ChallengeIcon, FlexBox, Title, ShareButton } from 'components';
 
 import { CLIENT_PATH } from 'constants/path';
 import { colorList } from 'constants/style';
