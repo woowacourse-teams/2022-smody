@@ -2,7 +2,7 @@ import { InnerWrapperProps, CommentInputProps, WriteButtonProps } from './type';
 import useCommentInput from './useCommentInput';
 import styled, { css } from 'styled-components';
 
-import { FlexBox, ValidationMessage, MembersPopover, Tooltip } from 'components';
+import { FlexBox, ValidationMessage, Tooltip, MentionableInput } from 'components';
 
 export const CommentInput = ({
   selectedCommentId,
@@ -10,8 +10,6 @@ export const CommentInput = ({
   turnOffEditMode,
 }: CommentInputProps) => {
   const {
-    commentInputRef,
-    content,
     isVisibleWriteButton,
     isCommentError,
     commentErrorMessage,
@@ -19,25 +17,27 @@ export const CommentInput = ({
     isLoadingPatchComment,
     handleClickWrite,
     isLoadingPostMentionNotifications,
-    isPopoverOpen,
-    handleClosePopover,
-    membersData,
-    hasNextMembersPage,
-    fetchNextMembersPage,
-    selectMember,
-    handleKeydownCommentInput,
-    handleInputCommentInput,
-  } = useCommentInput({ selectedCommentId, editMode, turnOffEditMode });
+    commentInputRef,
+    mentionedMemberIds,
+    setMentionedMemberIds,
+    setContent,
+    content,
+  } = useCommentInput({
+    selectedCommentId,
+    editMode,
+    turnOffEditMode,
+  });
 
   return (
     <Wrapper flexDirection="column">
       <TopRowWrapper alignItems="center" gap="0.5rem">
         <InnerWrapper alignItems="center" isShowLengthWarning={isCommentError}>
-          <CommentInputElement
-            contentEditable={true}
-            ref={commentInputRef}
-            onKeyDown={handleKeydownCommentInput}
-            onInput={handleInputCommentInput}
+          <MentionableInput
+            editableElementRef={commentInputRef}
+            editableElement={<CommentInputElement />}
+            setContent={setContent}
+            mentionedMemberIds={mentionedMemberIds}
+            setMentionedMemberIds={setMentionedMemberIds}
           />
           <WriteButton
             disabled={
@@ -72,15 +72,6 @@ export const CommentInput = ({
             message={commentErrorMessage}
           />
         </ValidationMessageWrapper>
-      )}
-      {isPopoverOpen && (
-        <MembersPopover
-          handleClosePopover={handleClosePopover}
-          membersData={membersData}
-          hasNextMembersPage={hasNextMembersPage}
-          fetchNextMembersPage={fetchNextMembersPage}
-          selectMember={selectMember}
-        />
       )}
     </Wrapper>
   );
@@ -123,9 +114,6 @@ const CommentInputElement = styled.div`
     resize: none;
     font-size: 1rem;
     color: ${theme.onInput};
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-all;
     overflow-y: scroll;
     // 스크롤바
     /* 스크롤바 설정*/

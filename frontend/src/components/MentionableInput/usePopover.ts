@@ -1,25 +1,16 @@
-import { RefObject, MutableRefObject, useState } from 'react';
-import { getCursorPosition, insertAfter } from 'utils';
+import { usePopoverProps } from './type';
+import { useState } from 'react';
+import { insertAfter } from 'utils';
 
-type usePopoverProps<T extends HTMLElement> = {
-  commentInputRef: RefObject<T>;
-  mentionedMemberIds: number[];
-  setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
-  lastMentionSymbolPosition: MutableRefObject<number>;
-  filterValue: string;
-  setFilterValue: (arg0: string) => void;
-  isFilterValueInitiated: MutableRefObject<boolean>;
-};
-
-const usePopover = <T extends HTMLElement>({
-  commentInputRef,
+const usePopover = ({
+  editableElementRef,
   mentionedMemberIds,
   setMentionedMemberIds,
   lastMentionSymbolPosition,
   filterValue,
   setFilterValue,
   isFilterValueInitiated,
-}: usePopoverProps<T>) => {
+}: usePopoverProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleClosePopover = () => {
@@ -32,15 +23,14 @@ const usePopover = <T extends HTMLElement>({
 
   // selectMember
   const selectMember = (memberId: number, nickname: string) => {
-    if (commentInputRef.current === null) {
+    if (editableElementRef.current === null) {
       return;
     }
 
     mentionedMemberIds.push(memberId);
     setMentionedMemberIds(mentionedMemberIds);
 
-    const cursorPosition = getCursorPosition(commentInputRef.current)!;
-    const childNodes = commentInputRef.current.childNodes;
+    const childNodes = editableElementRef.current.childNodes;
 
     let accLength = 0;
 
@@ -77,9 +67,9 @@ const usePopover = <T extends HTMLElement>({
     const backTextNode = document.createTextNode(currentText!.substring(targetEnd)!);
 
     if (currentNodeIndex === 0) {
-      commentInputRef.current.appendChild(frontTextNode);
-      commentInputRef.current.appendChild(nicknameSpan);
-      commentInputRef.current.appendChild(backTextNode);
+      editableElementRef.current.appendChild(frontTextNode);
+      editableElementRef.current.appendChild(nicknameSpan);
+      editableElementRef.current.appendChild(backTextNode);
     } else {
       const prevNode = childNodes[currentNodeIndex - 1];
 
@@ -88,7 +78,7 @@ const usePopover = <T extends HTMLElement>({
       insertAfter(nicknameSpan, backTextNode);
     }
 
-    commentInputRef.current.removeChild(currentNode);
+    editableElementRef.current.removeChild(currentNode);
     const ABSENCE_SYMBOL_POSITION = -1;
 
     // init 삼형제
@@ -97,7 +87,7 @@ const usePopover = <T extends HTMLElement>({
     isFilterValueInitiated.current = true;
 
     // contenteditable div에서 cursor position에 focus 하기
-    const element = commentInputRef.current;
+    const element = editableElementRef.current;
     const selection = window.getSelection();
     const range = document.createRange();
     selection!.removeAllRanges();

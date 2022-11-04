@@ -1,11 +1,11 @@
+import { useMentionableInputProps } from './type';
 import usePopover from './usePopover';
-import { useGetMembers, usePostMentionNotifications } from 'apis/feedApi';
+import { useGetMembers } from 'apis/feedApi';
 import {
   useState,
   useEffect,
   useRef,
   FormEventHandler,
-  RefObject,
   KeyboardEventHandler,
 } from 'react';
 import { getCursorPosition } from 'utils';
@@ -22,32 +22,23 @@ const resizeHeight = (element: HTMLElement) => {
   element.style.height = element.scrollHeight + 'px';
 };
 
-type useMentionProps<T extends HTMLElement> = {
-  commentInputRef: RefObject<T>;
-  setContent: (arg0: string) => void;
-  mentionedMemberIds: number[];
-  setMentionedMemberIds: React.Dispatch<React.SetStateAction<number[]>>;
-};
-
 const ABSENCE_SYMBOL_POSITION = -1;
 
-const useMention = <T extends HTMLElement>({
-  commentInputRef,
+const useMentionableInput = ({
+  editableElementRef,
   setContent,
   mentionedMemberIds,
   setMentionedMemberIds,
-}: useMentionProps<T>) => {
-  // ------- 멘션 알림 기능 ------------------------
+}: useMentionableInputProps) => {
+  // 멘션 알림 기능
   const isFirstRendered = useRef(true);
   const [filterValue, setFilterValue] = useState('');
-
-  // lastMentionSymbolPositionRef
   const lastMentionSymbolPositionRef = useRef(ABSENCE_SYMBOL_POSITION);
   const isFilterValueInitiatedRef = useRef(false);
 
   const { isPopoverOpen, handleOpenPopover, handleClosePopover, selectMember } =
     usePopover({
-      commentInputRef,
+      editableElementRef,
       mentionedMemberIds,
       setMentionedMemberIds,
       lastMentionSymbolPosition: lastMentionSymbolPositionRef,
@@ -57,7 +48,6 @@ const useMention = <T extends HTMLElement>({
     });
 
   const {
-    isFetching: isFetchingMembers,
     data: membersData,
     hasNextPage: hasNextMembersPage,
     fetchNextPage: fetchNextMembersPage,
@@ -71,7 +61,6 @@ const useMention = <T extends HTMLElement>({
           return;
         }
 
-        // 멘션 심볼 포지션(@)이 없다면 아래 함수를 호출하지 않도록 고쳐야한다.
         handleOpenPopover();
       },
       enabled: false,
@@ -79,11 +68,6 @@ const useMention = <T extends HTMLElement>({
       staleTime: 600000, // 10분
     },
   );
-
-  const {
-    mutate: postMentionNotifications,
-    isLoading: isLoadingPostMentionNotifications,
-  } = usePostMentionNotifications();
 
   const isNotDeleteSpanNode = (nodes: NodeList) =>
     nodes.length === 0 || nodes[0].nodeName !== 'SPAN';
@@ -115,10 +99,9 @@ const useMention = <T extends HTMLElement>({
     });
   };
 
-  useMutationObserver<T>(commentInputRef, inputChangeHandler);
+  useMutationObserver(editableElementRef, inputChangeHandler);
 
   useEffect(() => {
-    // useGetMembers의 enables 옵션을 false로 했기 때문에 해당 로직은 제거해도 될 거 같다.
     if (isFirstRendered.current) {
       isFirstRendered.current = false;
       return;
@@ -152,8 +135,8 @@ const useMention = <T extends HTMLElement>({
   };
 
   const handleInputCommentInput: FormEventHandler<HTMLDivElement> = () => {
-    resizeHeight(commentInputRef.current!);
-    const { innerText } = commentInputRef.current!;
+    resizeHeight(editableElementRef.current!);
+    const { innerText } = editableElementRef.current!;
 
     resetIsFilterValueInitiated();
 
@@ -187,20 +170,20 @@ const useMention = <T extends HTMLElement>({
 
     const detectedFilterValue = text.slice(
       lastMentionSymbolPositionRef.current,
-      getCursorPosition(commentInputRef.current!)!,
+      getCursorPosition(editableElementRef.current!)!,
     );
 
     setFilterValue(detectedFilterValue);
   };
 
-  const isStartPosition = () => getCursorPosition(commentInputRef.current!) === 0;
+  const isStartPosition = () => getCursorPosition(editableElementRef.current!) === 0;
 
   const isCurrentCharacterWhiteSpace = (text: string) =>
-    text[getCursorPosition(commentInputRef.current!)! - 1] === ' ';
+    text[getCursorPosition(editableElementRef.current!)! - 1] === ' ';
 
   // 문자열 새로 입력됐을 때
   const detectMentionSymbolWhenTextAdded = (text: string) => {
-    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
+    const cursorPosition = getCursorPosition(editableElementRef.current!)!;
     const currentCharacter = text[cursorPosition - 1];
 
     // 1. 현재 cursor 포지션의 바로 앞이 @인 경우에만 @ 이벤트를 호출한다.
@@ -222,8 +205,8 @@ const useMention = <T extends HTMLElement>({
   };
 
   const detectMentionSymbolWhenTextDeleted = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
-    const { innerText } = commentInputRef.current!;
+    const cursorPosition = getCursorPosition(editableElementRef.current!)!;
+    const { innerText } = editableElementRef.current!;
 
     // 지우려는 element 첫 번째 자식인 경우 contentEditable 부모에서 해당 element를 삭제할 수 없는 이슈 때문에
     // 다음과 같은 분기문을 통해 첫 번째 element도 삭제 가능하도록 이슈 해결함
@@ -231,7 +214,7 @@ const useMention = <T extends HTMLElement>({
       initializeMention();
 
       // 아래 공백의 타당한 이유가 없다면 제거
-      commentInputRef.current!.textContent = '';
+      editableElementRef.current!.textContent = '';
       return;
     }
 
@@ -268,9 +251,9 @@ const useMention = <T extends HTMLElement>({
   };
 
   const isFirstMentionTag = () =>
-    commentInputRef.current!.childNodes.length === 3 &&
-    commentInputRef.current!.childNodes[1].nodeName &&
-    commentInputRef.current!.childNodes[0].textContent === '';
+    editableElementRef.current!.childNodes.length === 3 &&
+    editableElementRef.current!.childNodes[1].nodeName &&
+    editableElementRef.current!.childNodes[0].textContent === '';
 
   const isNotIncludeMentionSymbol = (text: string) => !text.includes('@');
 
@@ -285,8 +268,8 @@ const useMention = <T extends HTMLElement>({
     mentionSymbolPosition !== 0 && text[mentionSymbolPosition - 1] !== ' ';
 
   const detectLeftEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
-    const { innerText } = commentInputRef.current!;
+    const cursorPosition = getCursorPosition(editableElementRef.current!)!;
+    const { innerText } = editableElementRef.current!;
 
     if (isEscapingLeftMentionArea(innerText, cursorPosition)) {
       initializeMention();
@@ -297,8 +280,8 @@ const useMention = <T extends HTMLElement>({
     text[cursorPosition - 2] === ' ';
 
   const detectRightEscapingMentionArea = () => {
-    const cursorPosition = getCursorPosition(commentInputRef.current!)!;
-    const { innerText } = commentInputRef.current!;
+    const cursorPosition = getCursorPosition(editableElementRef.current!)!;
+    const { innerText } = editableElementRef.current!;
 
     if (isEscapingRightMentionArea(innerText, cursorPosition)) {
       initializeMention();
@@ -317,8 +300,6 @@ const useMention = <T extends HTMLElement>({
   };
 
   return {
-    postMentionNotifications,
-    isLoadingPostMentionNotifications,
     isPopoverOpen,
     handleClosePopover,
     membersData,
@@ -330,4 +311,4 @@ const useMention = <T extends HTMLElement>({
   };
 };
 
-export default useMention;
+export default useMentionableInput;
