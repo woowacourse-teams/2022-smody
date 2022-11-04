@@ -24,7 +24,10 @@ jobs:
           cache-dependency-path: '**/yarn.lock'
 
       - name: Install node packages
-        run: yarn --frozen-lockfile
+        run: yarn
 
       - name: Component test
         run: yarn run test
+
+      - name: TypeScript test
+        run: yarn run typecheck
