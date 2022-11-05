@@ -4,3 +4,4 @@ dist
 build-storybook.log
 .env
 testOutDir
+junit.xml
