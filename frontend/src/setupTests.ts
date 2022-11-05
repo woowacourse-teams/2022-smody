@@ -38,9 +38,11 @@ beforeEach(() => {
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 });
 
-jest.doMock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn(),
-}));
+jest.mock('react-router-dom', () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual('react-router-dom'),
+  };
+});
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
