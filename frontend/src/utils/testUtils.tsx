@@ -9,13 +9,13 @@ import { render, RenderResult } from '@testing-library/react';
 
 import { darkTheme } from 'styles/theme';
 
-setLogger({
-  log: console.log,
-  warn: console.warn,
-  error: () => {
-    // swallow the errors
-  },
-});
+// setLogger({
+//   log: console.log,
+//   warn: console.warn,
+//   error: () => {
+//     // swallow the errors
+//   },
+// });
 
 const generateTestQueryClient = () => {
   const client = generateQueryClient();
