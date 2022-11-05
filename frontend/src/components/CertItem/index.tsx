@@ -50,7 +50,7 @@ export const CertItem = ({
           size={20}
           fontWeight="bold"
           color={themeContext.onBackground}
-          aria-label={`챌린지 이름 ${challengeName}`}
+          aria-label="진행중인 챌린지 이름"
         >
           {challengeName}
         </TitleText>
