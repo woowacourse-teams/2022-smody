@@ -1,4 +1,5 @@
 import useUserWithdrawalModal from './useUserWithdrawalModal';
+import Close from 'assets/close.svg';
 import styled, { css } from 'styled-components';
 
 import useThemeContext from 'hooks/useThemeContext';
@@ -19,6 +20,9 @@ export const UserWithdrawalModal = ({
   return (
     <ModalOverlay handleCloseModal={handleCloseModal}>
       <Wrapper flexDirection="column" alignItems="center" gap="1.5rem">
+        <CloseButton onClick={handleCloseModal} aria-label="닫기">
+          <Close />
+        </CloseButton>
         <Text color={themeContext.primary} size={20} fontWeight="bold">
           정말로 떠나시겠습니까?
         </Text>
@@ -56,6 +60,11 @@ export const UserWithdrawalModal = ({
 const Wrapper = styled(FlexBox)`
   width: 100%;
   padding: 2rem 1rem;
+  padding: 1rem 1rem 2rem;
+`;
+
+const CloseButton = styled.button`
+  align-self: flex-end;
 `;
 
 const WithdrawalButton = styled(Button)`
