@@ -25,7 +25,6 @@ export const SuccessModal = ({
 }: SuccessModalProps) => {
   const themeContext = useThemeContext();
   const {
-    wrapperRef,
     successMessage,
     isChallengeComplete,
     handleClickClose,
@@ -44,14 +43,11 @@ export const SuccessModal = ({
   return (
     <ModalOverlay handleCloseModal={handleClickClose}>
       <Wrapper
-        ref={wrapperRef}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
         gap="1rem"
-        role="dialog"
         aria-label="인증 성공 모달"
-        tabIndex={0}
       >
         <CloseButton onClick={handleClickClose} aria-label="닫기">
           <Close />

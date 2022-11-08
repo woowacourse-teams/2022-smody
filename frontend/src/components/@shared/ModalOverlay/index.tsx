@@ -1,5 +1,5 @@
 import { ModalOverlayProps, ModalProps } from './type';
-import { PropsWithChildren } from 'react';
+import { useRef, useEffect, PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 
@@ -10,6 +10,18 @@ export const ModalOverlay = ({
   handleCloseModal,
   isFullSize = false,
 }: PropsWithChildren<ModalOverlayProps>) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const rootElement = document.getElementById('root') as HTMLElement;
+    modalRef.current?.focus();
+    rootElement.setAttribute('aria-hidden', 'true');
+
+    return () => {
+      rootElement.removeAttribute('aria-hidden');
+    };
+  }, []);
+
   return (
     <>
       {ReactDOM.createPortal(
@@ -17,7 +29,7 @@ export const ModalOverlay = ({
         document.getElementById('backdrop-root') as HTMLElement,
       )}
       {ReactDOM.createPortal(
-        <Modal isFullSize={isFullSize} role="dialog" aria-modal="true">
+        <Modal ref={modalRef} isFullSize={isFullSize} role="dialog" tabIndex={0}>
           {children}
         </Modal>,
         document.getElementById('overlay-root') as HTMLElement,
