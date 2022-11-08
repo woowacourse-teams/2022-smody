@@ -12,7 +12,7 @@ describe('인증 페이지 테스트', () => {
     renderWithProviders(<CertPage />);
   });
 
-  test('[useGetMyCyclesInProgress] query 응답에 따라 내가 진행중인 챌린지가 렌더링되는지 확인한다.', async () => {
+  test('[useGetMyCyclesInProgress] API 응답 결과, "내가 진행중인 챌린지"가 렌더링되는지 확인한다.', async () => {
     const challengeName = await waitFor(
       () => screen.getAllByLabelText('진행중인 챌린지 이름')[1],
     );
