@@ -1,6 +1,6 @@
+import { renderWithProviders } from '__test__/renderWithProviders';
 import { authApiClient } from 'apis/apiClient';
 import { accessTokenData } from 'mocks/data';
-import { renderWithProviders } from 'utils/testUtils';
 
 import { screen, waitFor } from '@testing-library/react';
 

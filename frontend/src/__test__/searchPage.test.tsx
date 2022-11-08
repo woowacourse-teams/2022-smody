@@ -1,4 +1,4 @@
-import { renderWithProviders } from 'utils/testUtils';
+import { renderWithProviders } from '__test__/renderWithProviders';
 
 import { screen, waitFor } from '@testing-library/react';
 
