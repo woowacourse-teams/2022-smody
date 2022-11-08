@@ -39,8 +39,6 @@ const useSuccessModal = ({
     elementSize: 17,
   });
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
   const isEvent = EVENT_CHALLENGE_ID_LIST.includes(challengeId);
   const { reward: emojiReward } = useReward('emojiRewardId', 'emoji', {
     emoji: isEvent ? ['❤️', '🧡', '💛', '💚', '💙', '💜'] : [emojiList[emojiIndex]],
@@ -82,12 +80,9 @@ const useSuccessModal = ({
   useEffect(() => {
     confettiReward();
     emojiReward();
-
-    wrapperRef.current!.focus();
   }, []);
 
   return {
-    wrapperRef,
     successMessage,
     isChallengeComplete,
     handleClickClose,
