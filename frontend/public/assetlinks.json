@@ -1,6 +1,13 @@
-[{
-        "relation": ["delegate_permission/common.handle_all_urls"],
-        "target" : { "namespace": "android_app", "package_name": "kr.co.smody.www.twa",
-                     "sha256_cert_fingerprints": ["3D:89:72:9F:2B:1E:69:3F:8F:7E:42:F2:CE:F9:4B:10:8C:56:F8:94:2C:32:D7:5B:7E:6E:33:AD:6F:F8:D8:0F"] }
-      }
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "kr.co.smody.www.twa",
+      "sha256_cert_fingerprints": [
+        "3D:89:72:9F:2B:1E:69:3F:8F:7E:42:F2:CE:F9:4B:10:8C:56:F8:94:2C:32:D7:5B:7E:6E:33:AD:6F:F8:D8:0F",
+        "CB:F5:1C:1E:EE:EA:E9:BF:2B:BA:DB:48:5E:94:56:C9:D5:96:D0:05:69:FA:91:D3:CB:A7:DA:05:12:29:80:2B"
+      ]
+    }
+  }
 ]
