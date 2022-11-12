@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskSynchronizer {
 
+    private static final int TIME_OUT_MILLS = 5000;
+
     private final ThreadPoolExecutor threadPoolExecutor;
 
     public TaskSynchronizer(TaskExecutor asyncExecutor) {
@@ -16,30 +18,40 @@ public class TaskSynchronizer {
         this.threadPoolExecutor = threadPoolTaskExecutor.getThreadPoolExecutor();
     }
 
-    protected void synchronize(Runnable runnable) {
+    public void synchronize(Runnable runnable) {
         runnable.run();
         waitUntilCompleted(threadPoolExecutor.getCompletedTaskCount());
     }
 
     private void waitUntilCompleted(long beforeCompletedCount) {
         long completedTaskCount;
-        int taskCount = 1;
+        int totalTaskCount = 1;
+
+        long beforeTime = System.currentTimeMillis();
         do {
-            taskCount = Math.max(taskCount, threadPoolExecutor.getActiveCount());
+            totalTaskCount = Math.max(totalTaskCount, threadPoolExecutor.getActiveCount());
             completedTaskCount = threadPoolExecutor.getCompletedTaskCount();
-        } while (isNotCompletedAllTask(beforeCompletedCount, taskCount, completedTaskCount));
+        } while (
+            isNotCompletedAllTask(beforeCompletedCount, totalTaskCount, completedTaskCount)
+            && isNotTimeOut(beforeTime)
+        );
     }
 
-    private boolean isNotCompletedAllTask(long beforeCompletedCount, int taskCount, long completedTaskCount) {
-        return beforeCompletedCount + taskCount != completedTaskCount;
+    private boolean isNotCompletedAllTask(long beforeCompletedCount, int totalTaskCount, long completedTaskCount) {
+        return beforeCompletedCount + totalTaskCount != completedTaskCount;
     }
 
-    protected void synchronizeException(Runnable runnable) {
+    private boolean isNotTimeOut(long beforeTime) {
+        return System.currentTimeMillis() - beforeTime <= TIME_OUT_MILLS;
+    }
+
+    public void synchronizeException(Runnable runnable) {
         runnable.run();
-        while (true) {
-            if (threadPoolExecutor.getActiveCount() == 0) {
-                break;
-            }
-        }
+
+        int activeCount;
+        long beforeTime = System.currentTimeMillis();
+        do {
+            activeCount = threadPoolExecutor.getActiveCount();
+        } while (activeCount > 0 && isNotTimeOut(beforeTime));
     }
 }
