@@ -62,7 +62,7 @@ class EventExceptionTest extends EventListenerMockTest {
 
     @DisplayName("새로운 사이클이 저장된다.")
     @Test
-    void cycleCreate_pushEventException() throws InterruptedException {
+    void cycleCreate_pushEventException() {
         // given
         LocalDateTime now = LocalDateTime.now();
 
@@ -88,7 +88,7 @@ class EventExceptionTest extends EventListenerMockTest {
 
     @DisplayName("구독 정보는 저장된다.")
     @Test
-    void subscribe_pushNotification() throws InterruptedException {
+    void subscribe_pushNotification() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(
@@ -114,7 +114,7 @@ class EventExceptionTest extends EventListenerMockTest {
 
     @DisplayName("댓글은 저장된다.")
     @Test
-    void createComment_push() throws InterruptedException {
+    void createComment_push() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);

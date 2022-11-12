@@ -25,7 +25,7 @@ class SubscriptionPushEventListenerTest extends IntegrationTest {
 
     @DisplayName("알림 구독에 대한 알림을 저장한다")
     @Test
-    void push() throws InterruptedException {
+    void push() {
         // given
         PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
 

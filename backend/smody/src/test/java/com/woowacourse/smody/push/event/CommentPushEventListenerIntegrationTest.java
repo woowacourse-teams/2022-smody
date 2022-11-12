@@ -1,10 +1,15 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.support.ResourceFixture.더즈_ID;
-import static com.woowacourse.smody.support.ResourceFixture.미라클_모닝_ID;
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.comment.dto.CommentRequest;
@@ -16,11 +21,6 @@ import com.woowacourse.smody.push.domain.PushNotification;
 import com.woowacourse.smody.push.domain.PushStatus;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 
@@ -32,7 +32,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 
     @DisplayName("댓글을 작성하면 알림이 저장 된다.")
     @Test
-    void createComment_push() throws InterruptedException {
+    void createComment_push() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);
@@ -56,7 +56,7 @@ class CommentPushEventListenerIntegrationTest extends IntegrationTest {
 
     @DisplayName("자신의 댓글을 작성하면 알림이 저장되지 않는다.")
     @Test
-    void createComment_notPush() throws InterruptedException {
+    void createComment_notPush() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now);

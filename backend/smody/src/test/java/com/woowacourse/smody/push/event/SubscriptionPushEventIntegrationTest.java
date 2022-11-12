@@ -26,7 +26,7 @@ class SubscriptionPushEventIntegrationTest extends IntegrationTest {
 
     @DisplayName("알림을 구독하면 푸시 알람 내역이 발송된 상태로 저장된다.")
     @Test
-    void subscribe_pushNotification() throws InterruptedException {
+    void subscribe_pushNotification() {
         // given
         TokenPayload tokenPayload = new TokenPayload(조조그린_ID);
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest(

@@ -39,7 +39,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
     void
-    handle_firstRank_notPeriod(Progress progress, Integer expected) throws InterruptedException {
+    handle_firstRank_notPeriod(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, progress, startTime);
@@ -62,7 +62,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @DisplayName("랭킹 기간이 존재하고 처음 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
-    void handle_firstRank(Progress progress, Integer expected) throws InterruptedException {
+    void handle_firstRank(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         RankingPeriod period = rankingPeriodRepository.save(new RankingPeriod(startTime.minusDays(2), Duration.WEEK));
@@ -86,7 +86,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @DisplayName("랭킹 기간이 있고 두번째 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,110", "SECOND,130", "SUCCESS,160"})
-    void handle_secondRank(Progress progress, Integer expected) throws InterruptedException {
+    void handle_secondRank(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         RankingPeriod period = rankingPeriodRepository.save(new RankingPeriod(startTime.minusDays(2), Duration.WEEK));
@@ -116,7 +116,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
 
     @DisplayName("똑같은 날에 똑같은 기간으로 기간을 생성하지 못한다.")
     @Test
-    void unique() throws InterruptedException {
+    void unique() {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         Cycle cycle1 = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, startTime);

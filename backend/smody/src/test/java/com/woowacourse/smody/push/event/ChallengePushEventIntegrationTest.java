@@ -41,19 +41,17 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 
     @DisplayName("새로운 사이클을 생성하면 발송 예정인 알림이 저장된다.")
     @Test
-    void cycleCreate_pushNotification() throws InterruptedException {
+    void cycleCreate_pushNotification() {
         // given
         LocalDateTime now = LocalDateTime.now();
 
         // when
         AtomicReference<Long> pathId = new AtomicReference<>();
 
-        synchronize(() -> {
-            pathId.set(cycleApiService.create(
-                    new TokenPayload(조조그린_ID),
-                    new CycleRequest(now, 스모디_방문하기_ID)
-            ));
-        });
+        synchronize(() -> pathId.set(cycleApiService.create(
+                new TokenPayload(조조그린_ID),
+                new CycleRequest(now, 스모디_방문하기_ID)
+        )));
 
         // then
         LocalDateTime pushTime = now
@@ -75,7 +73,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 
     @DisplayName("사이클을 진행하면 발송 예정인 알림이 저장된다.")
     @Test
-    void increaseProgress_sendNotification() throws InterruptedException {
+    void increaseProgress_sendNotification() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_FIRST(조조그린_ID, 미라클_모닝_ID, now.minusDays(1L));
@@ -108,7 +106,7 @@ class ChallengePushEventIntegrationTest extends IntegrationTest {
 
     @DisplayName("사이클을 성공하면 알림이 저장되지 않는다.")
     @Test
-    void increaseProgressSuccess_sendNotification_no() throws InterruptedException {
+    void increaseProgressSuccess_sendNotification_no() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_SECOND(조조그린_ID, 미라클_모닝_ID, now.minusDays(2L));

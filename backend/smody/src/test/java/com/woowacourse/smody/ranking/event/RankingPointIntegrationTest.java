@@ -40,7 +40,7 @@ class RankingPointIntegrationTest extends IntegrationTest {
     @DisplayName("주간 랭킹에 첫 사이클 인증을 하면 포인트가 늘어난다.")
     @ParameterizedTest
     @CsvSource({"NOTHING,0,10", "FIRST,1,30", "SECOND,2,60"})
-    void progress_first(Progress progress, Long day, Integer expected) throws InterruptedException {
+    void progress_first(Progress progress, Long day, Integer expected) {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, progress, now);
