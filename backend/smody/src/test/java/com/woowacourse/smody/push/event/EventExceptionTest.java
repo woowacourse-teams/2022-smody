@@ -72,7 +72,7 @@ class EventExceptionTest extends EventListenerMockTest {
         // when
         AtomicReference<Long> cycleId = new AtomicReference<>();
 
-        synchronize(() -> cycleId.set(cycleApiService.create(
+        synchronizeException(() -> cycleId.set(cycleApiService.create(
                 new TokenPayload(조조그린_ID),
                 new CycleRequest(now, 스모디_방문하기_ID)
         )));
@@ -98,7 +98,7 @@ class EventExceptionTest extends EventListenerMockTest {
                 .given(subscriptionPushStrategy).handle(any(PushSubscribeEvent.class));
 
         // when
-        synchronize(() -> pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest));
+        synchronizeException(() -> pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest));
 
         // then
         List<PushSubscription> subscriptions = pushSubscriptionService.findByMembers(
@@ -128,7 +128,7 @@ class EventExceptionTest extends EventListenerMockTest {
         // when
         AtomicReference<Long> commentId = new AtomicReference<>();
 
-        synchronize(() ->
+        synchronizeException(() ->
             commentId.set(commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest))
         );
 

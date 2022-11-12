@@ -27,6 +27,7 @@ import com.woowacourse.smody.support.IntegrationTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -60,7 +61,7 @@ class RankingEventExceptionTest extends EventListenerMockTest {
                 .when(rankingPointEventListener).handle(any(CycleProgressEvent.class));
 
         // when
-        synchronize(() -> cycleApiService.increaseProgress(
+        synchronizeException(() -> cycleApiService.increaseProgress(
                 new TokenPayload(조조그린_ID),
                 new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
         ));
