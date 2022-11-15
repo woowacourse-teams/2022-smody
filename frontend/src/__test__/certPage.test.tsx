@@ -1,15 +1,15 @@
+import { renderWithProviders } from '__test__/utils/renderWithProviders';
 import { authApiClient } from 'apis/apiClient';
 import { accessTokenData } from 'mocks/data';
-import { renderWithProviders } from 'utils/testUtils';
 
 import { screen, waitFor } from '@testing-library/react';
 
-import { CertPage } from 'pages';
+import { CLIENT_PATH } from 'constants/path';
 
 describe('인증 페이지 테스트', () => {
   beforeEach(() => {
     authApiClient.updateAuth(accessTokenData);
-    renderWithProviders(<CertPage />);
+    renderWithProviders({ route: CLIENT_PATH.CERT });
   });
 
   test('[useGetMyCyclesInProgress] query 응답에 따라 내가 진행중인 챌린지가 렌더링되는지 확인한다.', async () => {

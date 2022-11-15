@@ -1,15 +1,15 @@
+import { renderWithProviders } from '__test__/utils/renderWithProviders';
 import { authApiClient } from 'apis/apiClient';
 import { accessTokenData } from 'mocks/data';
-import { renderWithProviders } from 'utils/testUtils';
 
 import { screen, waitFor } from '@testing-library/react';
 
-import { ProfilePage } from 'pages';
+import { CLIENT_PATH } from 'constants/path';
 
 describe('프로필 페이지 테스트', () => {
   beforeEach(() => {
     authApiClient.updateAuth(accessTokenData);
-    renderWithProviders(<ProfilePage />);
+    renderWithProviders({ route: CLIENT_PATH.PROFILE });
   });
 
   test('[useGetMyInfo] query 응답에 따라 나의 프로필 정보가 렌더링되는지 확인한다.', async () => {
