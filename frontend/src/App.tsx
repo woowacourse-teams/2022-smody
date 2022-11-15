@@ -1,6 +1,7 @@
 import Router from 'Router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { BrowserRouter } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDarkState } from 'recoil/darkMode/atoms';
 import { ThemeProvider } from 'styled-components';
@@ -29,7 +30,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
-        <Router />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </QueryClientProvider>
