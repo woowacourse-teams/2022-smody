@@ -57,10 +57,10 @@ class RankingEventExceptionTest extends EventListenerMockTest {
                 .when(rankingPointEventListener).handle(any(CycleProgressEvent.class));
 
         // when
-        synchronizeException(() -> cycleApiService.increaseProgress(
-                new TokenPayload(조조그린_ID),
-                new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
-        ));
+        cycleApiService.increaseProgress(
+            new TokenPayload(조조그린_ID),
+            new ProgressRequest(cycle.getId(), now.plusMinutes(1L), MULTIPART_FILE, "인증")
+        );
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);

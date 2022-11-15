@@ -1,8 +1,12 @@
 package com.woowacourse.smody.push.event;
 
-import static com.woowacourse.smody.support.ResourceFixture.조조그린_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.woowacourse.smody.support.ResourceFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.woowacourse.smody.push.domain.PushCase;
 import com.woowacourse.smody.push.domain.PushNotification;
@@ -11,9 +15,6 @@ import com.woowacourse.smody.push.domain.PushSubscribeEvent;
 import com.woowacourse.smody.push.domain.PushSubscription;
 import com.woowacourse.smody.push.repository.PushNotificationRepository;
 import com.woowacourse.smody.support.IntegrationTest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class SubscriptionPushEventListenerTest extends IntegrationTest {
 
@@ -30,7 +31,7 @@ class SubscriptionPushEventListenerTest extends IntegrationTest {
         PushSubscription pushSubscription = fixture.알림_구독(조조그린_ID, "endpoint");
 
         // when
-        synchronize(() -> pushStrategy.handle(new PushSubscribeEvent(pushSubscription)));
+        pushStrategy.handle(new PushSubscribeEvent(pushSubscription));
 
         // then
         PushNotification pushNotification = pushNotificationRepository.findAll().get(0);

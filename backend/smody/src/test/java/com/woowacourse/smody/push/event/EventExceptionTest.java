@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,18 +66,16 @@ class EventExceptionTest extends EventListenerMockTest {
         LocalDateTime now = LocalDateTime.now();
 
         willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
-                .given(challengePushStrategy).handle(any(CycleCreateEvent.class));
+                .given(challengePushEventListener).handle(any(CycleCreateEvent.class));
 
         // when
-        AtomicReference<Long> cycleId = new AtomicReference<>();
-
-        synchronizeException(() -> cycleId.set(cycleApiService.create(
-                new TokenPayload(조조그린_ID),
-                new CycleRequest(now, 스모디_방문하기_ID)
-        )));
+        Long cycleId = cycleApiService.create(
+            new TokenPayload(조조그린_ID),
+            new CycleRequest(now, 스모디_방문하기_ID)
+        );
 
         // then
-        Optional<Cycle> cycle = cycleService.findById(cycleId.get());
+        Optional<Cycle> cycle = cycleService.findById(cycleId);
         List<PushNotification> notifications = pushNotificationRepository.findAll();
         assertAll(
                 () -> assertThat(cycle).isPresent(),
@@ -95,10 +92,10 @@ class EventExceptionTest extends EventListenerMockTest {
                 "endpoint-link", "p256dh", "auth");
 
         willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
-                .given(subscriptionPushStrategy).handle(any(PushSubscribeEvent.class));
+                .given(subscriptionPushEventListener).handle(any(PushSubscribeEvent.class));
 
         // when
-        synchronizeException(() -> pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest));
+        pushSubscriptionApiService.subscribe(tokenPayload, subscriptionRequest);
 
         // then
         List<PushSubscription> subscriptions = pushSubscriptionService.findByMembers(
@@ -123,18 +120,15 @@ class EventExceptionTest extends EventListenerMockTest {
         CommentRequest commentRequest = new CommentRequest("댓글입니다");
 
         willThrow(new RuntimeException("알림 로직에 예상치 못한 예외 발생!"))
-                .given(commentPushStrategy).handle(any(CommentCreateEvent.class));
+                .given(commentPushEventListener).handle(any(CommentCreateEvent.class));
 
         // when
-        AtomicReference<Long> commentId = new AtomicReference<>();
 
-        synchronizeException(() ->
-            commentId.set(commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest))
-        );
+        Long commentId = commentApiService.create(new TokenPayload(더즈_ID), cycleDetail.getId(), commentRequest);
 
         // then
         List<PushNotification> notifications = pushNotificationRepository.findAll();
-        Comment comment = commentService.search(commentId.get());
+        Comment comment = commentService.search(commentId);
         assertAll(
                 () -> assertThat(comment.getMember().getId()).isEqualTo(더즈_ID),
                 () -> assertThat(notifications).isEmpty()

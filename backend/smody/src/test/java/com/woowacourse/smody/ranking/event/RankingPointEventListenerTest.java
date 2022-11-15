@@ -46,7 +46,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAll();
@@ -70,7 +70,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
@@ -99,7 +99,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
@@ -116,7 +116,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
 
     @DisplayName("똑같은 날에 똑같은 기간으로 기간을 생성하지 못한다.")
     @Test
-    void unique() {
+    void unique() throws InterruptedException {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         Cycle cycle1 = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, Progress.FIRST, startTime);
@@ -126,10 +126,13 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event2 = new CycleProgressEvent(cycle2);
 
         // when
-        synchronize(() -> {
-            eventListener.handle(event1);
-            eventListener.handle(event2);
-        });
+        Thread task1 = new Thread(() -> eventListener.handle(event1));
+        Thread task2 = new Thread(() -> eventListener.handle(event2));
+        task1.start();
+        task2.start();
+
+        task1.join();
+        task2.join();
 
         assertAll(
                 () -> assertThat(rankingPeriodRepository.findAll()).hasSize(1),

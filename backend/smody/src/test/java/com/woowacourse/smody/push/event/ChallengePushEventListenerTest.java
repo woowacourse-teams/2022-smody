@@ -36,7 +36,7 @@ class ChallengePushEventListenerTest extends IntegrationTest {
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
 
         // when
-        synchronize(() -> pushStrategy.handle(new CycleCreateEvent(cycle)));
+        pushStrategy.handle(new CycleCreateEvent(cycle));
 
         // then
         LocalDateTime pushTime = now
@@ -61,11 +61,11 @@ class ChallengePushEventListenerTest extends IntegrationTest {
         // given
         LocalDateTime now = LocalDateTime.now();
         Cycle cycle = fixture.사이클_생성_NOTHING(조조그린_ID, 미라클_모닝_ID, now);
-        synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
+        pushStrategy.handle(new CycleProgressEvent(cycle));
         fixture.사이클_인증(cycle.getId(), now.plusMinutes(1));
 
-        // when\
-        synchronize(() -> pushStrategy.handle(new CycleProgressEvent(cycle)));
+        // when
+        pushStrategy.handle(new CycleProgressEvent(cycle));
 
         // then
         LocalDateTime pushTime = now
