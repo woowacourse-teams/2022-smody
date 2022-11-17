@@ -114,7 +114,7 @@ export const FeedItem = ({
       <Text size={14} color={themeContext.mainText}>
         {`${year}.${month}.${date} ${hours}:${minutes}`}
       </Text>
-      <MainText size={16} color={themeContext.onBackground} aria-label={`피드 내용`}>
+      <MainText size={16} color={themeContext.onBackground} aria-label="피드 내용">
         {description}
       </MainText>
       <CommentCount size={14} color={themeContext.mainText}>
