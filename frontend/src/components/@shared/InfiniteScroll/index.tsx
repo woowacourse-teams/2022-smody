@@ -2,7 +2,7 @@ import { InfiniteScrollProps } from './type';
 import { RefObject, useMemo, useRef, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-import useIntersect from 'hooks/useIntersect';
+import useIntersect, { OnIntersect } from 'hooks/useIntersect';
 
 import { FlexBox } from 'components';
 
@@ -16,14 +16,15 @@ export const InfiniteScroll = ({
 }: PropsWithChildren<InfiniteScrollProps>) => {
   const rootRef = useRef() as RefObject<HTMLDivElement>;
 
-  const options = useMemo(() => ({ root: rootRef.current, threshold }), []);
-
-  const targetRef = useIntersect<HTMLDivElement>((entry, observer) => {
+  const onIntersect: OnIntersect = (entry, observer) => {
     if (hasMore) {
       loadMore();
     }
     observer.unobserve(entry.target);
-  }, options);
+  };
+  const options = useMemo(() => ({ root: rootRef.current, threshold }), []);
+
+  const targetRef = useIntersect<HTMLDivElement>(onIntersect, options);
 
   return (
     <Wrapper ref={rootRef} flexDirection="column">
