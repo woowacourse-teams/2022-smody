@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: touch ./backend/smody/src/main/resources/application.properties
       - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./backend/smody/src/main/resources/application.properties
-      - run: cat ./src/main/resources/application.properties
+      - run: cat ./backend/smody/src/main/resources/application.properties
 
       # 빌드(CI)
       - name: Build with Gradle
