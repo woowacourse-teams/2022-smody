@@ -29,8 +29,8 @@ jobs:
 
       # secret에 있는 application.properties 값 셋팅
       - uses: actions/checkout@v3
-      - run: touch ./src/main/resources/application.properties
-      - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > .backend/smody/src/main/resources/application.properties
+      - run: touch ./backend/smody/src/main/resources/application.properties
+      - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./backend/smody/src/main/resources/application.properties
       - run: cat ./src/main/resources/application.properties
 
       # 빌드(CI)
