@@ -32,12 +32,9 @@ jobs:
       - run: touch ./backend/smody/src/main/resources/application.properties
       - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./backend/smody/src/main/resources/application.properties
       - run: cat ./backend/smody/src/main/resources/application.properties
+      - run: cd backend/smody
 
       # 빌드(CI)
-      - name: move build directory
-        uses: actions/checkout@v3
-        run: cd backend/smody
-
       - name: build
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
