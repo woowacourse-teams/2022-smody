@@ -16,8 +16,11 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend/smody
 
     steps:
       - uses: actions/checkout@v3
@@ -29,10 +32,9 @@ jobs:
 
       # secret에 있는 application.properties 값 셋팅
       - uses: actions/checkout@v3
-      - run: touch ./backend/smody/src/main/resources/application.properties
-      - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./backend/smody/src/main/resources/application.properties
-      - run: cat ./backend/smody/src/main/resources/application.properties
-      - run: cd backend/smody
+      - run: touch ./src/main/resources/application.properties
+      - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
+      - run: cat ./src/main/resources/application.properties
 
       # 빌드(CI)
       - name: build
