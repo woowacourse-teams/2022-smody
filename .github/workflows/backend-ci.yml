@@ -34,11 +34,11 @@ jobs:
       - run: cat ./backend/smody/src/main/resources/application.properties
 
       # 빌드(CI)
-      - name: Build with Gradle
-        - uses: actions/checkout@v3
-        - run: cd backend/smody
+      - name: move build directory
+        uses: actions/checkout@v3
+        run: cd backend/smody
 
-        - uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        - run: cd backend/smody
-        - with:
-            arguments: build
+      - name: build
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: build
