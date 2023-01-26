@@ -1,4 +1,4 @@
-package com.woowacourse.smody.support;
+package com.woowacourse.smody.support.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
