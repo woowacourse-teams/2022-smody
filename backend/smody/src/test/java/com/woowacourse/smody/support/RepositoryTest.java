@@ -1,5 +1,6 @@
 package com.woowacourse.smody.support;
 
+import com.woowacourse.smody.support.config.QueryFactoryTestConfig;
 import com.woowacourse.smody.support.isoloation.SmodyDatabaseManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

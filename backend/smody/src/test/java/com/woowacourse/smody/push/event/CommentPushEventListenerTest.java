@@ -45,12 +45,12 @@ class CommentPushEventListenerTest extends IntegrationTest {
 
     @DisplayName("댓글을 남기면 피드 작성자에게 미발송 상태의 알림이 저장 된다.")
     @Test
-    void push() throws InterruptedException {
+    void push() {
         // given
         Comment comment = fixture.댓글_등록(cycleDetail, 더즈_ID, "댓글입니다.");
 
         // when
-        synchronize(() -> pushStrategy.handle(new CommentCreateEvent(comment)));
+        pushStrategy.handle(new CommentCreateEvent(comment));
 
         // then
         PushNotification pushNotification = pushNotificationRepository.findAll().get(0);

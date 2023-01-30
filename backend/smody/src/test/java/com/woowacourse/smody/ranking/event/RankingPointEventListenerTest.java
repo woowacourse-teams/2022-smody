@@ -39,14 +39,14 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
     void
-    handle_firstRank_notPeriod(Progress progress, Integer expected) throws InterruptedException {
+    handle_firstRank_notPeriod(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         Cycle cycle = fixture.사이클_생성(조조그린_ID, 미라클_모닝_ID, progress, startTime);
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAll();
@@ -62,7 +62,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @DisplayName("랭킹 기간이 존재하고 처음 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,10", "SECOND,30", "SUCCESS,60"})
-    void handle_firstRank(Progress progress, Integer expected) throws InterruptedException {
+    void handle_firstRank(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         RankingPeriod period = rankingPeriodRepository.save(new RankingPeriod(startTime.minusDays(2), Duration.WEEK));
@@ -70,7 +70,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
@@ -86,7 +86,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
     @DisplayName("랭킹 기간이 있고 두번째 인증했을 때 progress에 따라 점수를 얻는다.")
     @ParameterizedTest
     @CsvSource({"FIRST,110", "SECOND,130", "SUCCESS,160"})
-    void handle_secondRank(Progress progress, Integer expected) throws InterruptedException {
+    void handle_secondRank(Progress progress, Integer expected) {
         // given
         LocalDateTime startTime = LocalDateTime.now().minusDays(1);
         RankingPeriod period = rankingPeriodRepository.save(new RankingPeriod(startTime.minusDays(2), Duration.WEEK));
@@ -99,7 +99,7 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event = new CycleProgressEvent(cycle);
 
         // when
-        synchronize(() -> eventListener.handle(event));
+        eventListener.handle(event);
 
         // then
         List<RankingActivity> activities = rankingActivityRepository.findAllByRankingPeriodOrderByPointDesc(period);
@@ -126,10 +126,13 @@ class RankingPointEventListenerTest extends IntegrationTest {
         CycleProgressEvent event2 = new CycleProgressEvent(cycle2);
 
         // when
-        synchronize(() -> {
-            eventListener.handle(event1);
-            eventListener.handle(event2);
-        });
+        Thread task1 = new Thread(() -> eventListener.handle(event1));
+        Thread task2 = new Thread(() -> eventListener.handle(event2));
+        task1.start();
+        task2.start();
+
+        task1.join();
+        task2.join();
 
         assertAll(
                 () -> assertThat(rankingPeriodRepository.findAll()).hasSize(1),

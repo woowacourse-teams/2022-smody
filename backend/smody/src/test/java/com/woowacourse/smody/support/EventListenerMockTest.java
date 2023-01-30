@@ -10,13 +10,13 @@ import com.woowacourse.smody.ranking.event.RankingPointEventListener;
 public class EventListenerMockTest extends IntegrationTest {
 
     @MockBean
-    protected ChallengePushEventListener challengePushStrategy;
+    protected ChallengePushEventListener challengePushEventListener;
 
     @MockBean
-    protected SubscriptionPushEventListener subscriptionPushStrategy;
+    protected SubscriptionPushEventListener subscriptionPushEventListener;
 
     @MockBean
-    protected CommentPushEventListener commentPushStrategy;
+    protected CommentPushEventListener commentPushEventListener;
 
     @MockBean
     protected RankingPointEventListener rankingPointEventListener;
