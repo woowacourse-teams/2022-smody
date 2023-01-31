@@ -13,6 +13,7 @@ import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
 import com.woowacourse.smody.challenge.sorthandler.ChallengeSortHandler;
+import com.woowacourse.smody.challenge.sorthandler.ChallengeSortHandlerMapping;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.db_support.CursorPaging;
@@ -33,7 +34,7 @@ public class ChallengeApiService {
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
-    private final ChallengeSortHandler challengeSortHandler;
+    private final ChallengeSortHandlerMapping challengeSortHandlerMapping;
 
     public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime,
                                                                          PagingParams pagingParams) {
@@ -45,8 +46,8 @@ public class ChallengeApiService {
                                                                          PagingParams pagingParams) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
         ChallengingRecords challengingRecords = ChallengingRecords.create();
-        List<Challenge> sortedChallenges = challengeSortHandler.handle(searchTime, pagingParams,
-                challengingRecords);
+        ChallengeSortHandler handler = challengeSortHandlerMapping.getHandler(pagingParams.getSort());
+        List<Challenge> sortedChallenges = handler.handle(searchTime, pagingParams, challengingRecords);
         return getChallengeTabResponses(sortedChallenges, member, challengingRecords);
     }
 

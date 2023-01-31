@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RandomChallengeSort implements ChallengeSort {
+public class RandomChallengeSortHandler implements ChallengeSortHandler {
 
     private static final String SORT_VALUE = "random";
 
@@ -22,8 +22,8 @@ public class RandomChallengeSort implements ChallengeSort {
     private final CycleService cycleService;
 
     @Override
-    public List<Challenge> getSortedChallenges(LocalDateTime searchTime, PagingParams pagingParams,
-                                               ChallengingRecords challengingRecords) {
+    public List<Challenge> handle(LocalDateTime searchTime, PagingParams pagingParams,
+                                  ChallengingRecords challengingRecords) {
         List<Cycle> cycles = cycleService.findInProgress(searchTime);
         challengingRecords.record(cycles);
         List<Challenge> randomChallenges = challengeService.findRandomChallenges(pagingParams.getSize());
