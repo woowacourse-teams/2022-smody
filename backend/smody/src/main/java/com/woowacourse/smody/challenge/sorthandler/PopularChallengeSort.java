@@ -1,4 +1,4 @@
-package com.woowacourse.smody.challenge.sort;
+package com.woowacourse.smody.challenge.sorthandler;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecords;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class Popular implements ChallengeSort {
+public class PopularChallengeSort implements ChallengeSort {
+
+    private static final String SORT_VALUE = "popular";
 
     private final CycleService cycleService;
 
@@ -24,5 +26,10 @@ public class Popular implements ChallengeSort {
         challengingRecords.record(cycles);
         List<Challenge> challenges = challengingRecords.getChallengesOrderByChallenger();
         return CursorPaging.apply(challenges, null, pagingParams.getSize());
+    }
+
+    @Override
+    public String getSortValue() {
+        return SORT_VALUE;
     }
 }

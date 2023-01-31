@@ -1,4 +1,4 @@
-package com.woowacourse.smody.challenge.sort;
+package com.woowacourse.smody.challenge.sorthandler;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecords;
@@ -10,4 +10,6 @@ public interface ChallengeSort {
 
     List<Challenge> getSortedChallenges(LocalDateTime searchTime, PagingParams pagingParams,
                                         ChallengingRecords challengingRecords);
+
+    String getSortValue();
 }
