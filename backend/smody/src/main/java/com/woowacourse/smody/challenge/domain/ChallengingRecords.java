@@ -21,14 +21,16 @@ public class ChallengingRecords {
         this.values = challengingRecords;
     }
 
-    public static ChallengingRecords from(List<Cycle> cycles) {
+    public static ChallengingRecords create() {
+        return new ChallengingRecords(new HashMap<>());
+    }
+
+    public void record(List<Cycle> cycles) {
         Map<Challenge, List<Cycle>> byChallenge = cycles.stream()
                 .collect(groupingBy(Cycle::getChallenge));
-        Map<Challenge, List<ChallengingRecord>> value = new HashMap<>();
         for (Challenge challenge : byChallenge.keySet()) {
-            value.put(challenge, makeRecords(byChallenge, challenge));
+            values.put(challenge, makeRecords(byChallenge, challenge));
         }
-        return new ChallengingRecords(value);
     }
 
     private static List<ChallengingRecord> makeRecords(Map<Challenge, List<Cycle>> byChallenge, Challenge challenge) {
@@ -37,20 +39,6 @@ public class ChallengingRecords {
         return byMember.values().stream()
                 .map(ChallengingRecord::new)
                 .collect(Collectors.toList());
-    }
-
-    // TODO: 2023/01/31 from 관련 로직을 다음 로직으로 개선
-    public static ChallengingRecords create() {
-        return new ChallengingRecords(new HashMap<>());
-    }
-
-    // TODO: 2023/01/31 test 코드 필요
-    public void record(List<Cycle> cycles) {
-        Map<Challenge, List<Cycle>> byChallenge = cycles.stream()
-                .collect(groupingBy(Cycle::getChallenge));
-        for (Challenge challenge : byChallenge.keySet()) {
-            values.put(challenge, makeRecords(byChallenge, challenge));
-        }
     }
 
     public int countChallenger(Challenge challenge) {

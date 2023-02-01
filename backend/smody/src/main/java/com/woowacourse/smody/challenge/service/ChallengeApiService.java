@@ -66,13 +66,14 @@ public class ChallengeApiService {
         return findWithChallengerCount(TokenPayload.NOT_LOGIN_TOKEN_PAYLOAD, searchTime, challengeId);
     }
 
-    public ChallengeResponse findWithChallengerCount(
-            TokenPayload tokenPayload, LocalDateTime searchTime, Long challengeId
-    ) {
+    public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload,
+                                                     LocalDateTime searchTime,
+                                                     Long challengeId) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
         Challenge challenge = challengeService.search(challengeId);
+        ChallengingRecords challengingRecords = ChallengingRecords.create();
         List<Cycle> cycles = cycleService.findInProgressByChallenge(searchTime, challenge);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
+        challengingRecords.record(cycles);
         return new ChallengeResponse(
                 challenge,
                 challengingRecords.countChallenger(challenge),
@@ -83,9 +84,9 @@ public class ChallengeApiService {
     public List<ChallengeOfMineResponse> findAllByMeAndFilter(TokenPayload tokenPayload,
                                                               PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload.getId());
-        ChallengingRecords challengingRecords = ChallengingRecords.from(
-                cycleService.findAllByMemberAndFilter(member, pagingParams)
-        );
+        ChallengingRecords challengingRecords = ChallengingRecords.create();
+        List<Cycle> cycles = cycleService.findAllByMemberAndFilter(member, pagingParams);
+        challengingRecords.record(cycles);
         List<ChallengingRecord> sortedRecords = challengingRecords.sortByLatestProgressTime();
 
         ChallengingRecord cursorChallengingRecord = getCursorChallengeRecord(pagingParams, sortedRecords);
