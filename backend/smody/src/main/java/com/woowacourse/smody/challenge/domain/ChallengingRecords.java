@@ -21,14 +21,16 @@ public class ChallengingRecords {
         this.values = challengingRecords;
     }
 
-    public static ChallengingRecords from(List<Cycle> cycles) {
+    public static ChallengingRecords create() {
+        return new ChallengingRecords(new HashMap<>());
+    }
+
+    public void record(List<Cycle> cycles) {
         Map<Challenge, List<Cycle>> byChallenge = cycles.stream()
                 .collect(groupingBy(Cycle::getChallenge));
-        Map<Challenge, List<ChallengingRecord>> value = new HashMap<>();
         for (Challenge challenge : byChallenge.keySet()) {
-            value.put(challenge, makeRecords(byChallenge, challenge));
+            values.put(challenge, makeRecords(byChallenge, challenge));
         }
-        return new ChallengingRecords(value);
     }
 
     private static List<ChallengingRecord> makeRecords(Map<Challenge, List<Cycle>> byChallenge, Challenge challenge) {

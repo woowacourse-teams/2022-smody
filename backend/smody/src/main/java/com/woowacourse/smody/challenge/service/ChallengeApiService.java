@@ -12,6 +12,8 @@ import com.woowacourse.smody.challenge.dto.ChallengeRequest;
 import com.woowacourse.smody.challenge.dto.ChallengeResponse;
 import com.woowacourse.smody.challenge.dto.ChallengeTabResponse;
 import com.woowacourse.smody.challenge.dto.ChallengersResponse;
+import com.woowacourse.smody.challenge.sorthandler.ChallengeSortHandler;
+import com.woowacourse.smody.challenge.sorthandler.ChallengeSortHandlerMapping;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.service.CycleService;
 import com.woowacourse.smody.db_support.CursorPaging;
@@ -32,6 +34,7 @@ public class ChallengeApiService {
     private final ChallengeService challengeService;
     private final MemberService memberService;
     private final CycleService cycleService;
+    private final ChallengeSortHandlerMapping challengeSortHandlerMapping;
 
     public List<ChallengeTabResponse> findAllWithChallengerCountByFilter(LocalDateTime searchTime,
                                                                          PagingParams pagingParams) {
@@ -42,36 +45,10 @@ public class ChallengeApiService {
                                                                          LocalDateTime searchTime,
                                                                          PagingParams pagingParams) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
-        if (pagingParams.getSort().equals("popular")) {
-            return getChallengeTabResponsesWhenPopular(searchTime, pagingParams, member);
-        }
-        if (pagingParams.getSort().equals("random")) {
-            return getChallengeTabResponsesWhenRandom(searchTime, pagingParams, member);
-        }
-        List<Challenge> challenges = challengeService.findAllByFilter(pagingParams);
-        List<Cycle> cycles = cycleService.findInProgressByChallenges(searchTime, challenges);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
-        return getChallengeTabResponses(challenges, member, challengingRecords);
-    }
-
-    private List<ChallengeTabResponse> getChallengeTabResponsesWhenPopular(LocalDateTime searchTime,
-                                                                           PagingParams pagingParams,
-                                                                           Member member) {
-        List<Cycle> cycles = cycleService.findInProgress(searchTime);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
-        List<Challenge> challenges = challengingRecords.getChallengesOrderByChallenger();
-        List<Challenge> pagedChallenges = CursorPaging.apply(challenges, null, pagingParams.getSize());
-        return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
-    }
-
-    private List<ChallengeTabResponse> getChallengeTabResponsesWhenRandom(final LocalDateTime searchTime,
-                                                                          final PagingParams pagingParams,
-                                                                          final Member member) {
-        List<Challenge> randomChallenges = challengeService.findRandomChallenges(pagingParams.getSize());
-        List<Cycle> cycles = cycleService.findInProgress(searchTime);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
-        List<Challenge> pagedChallenges = CursorPaging.apply(randomChallenges, null, pagingParams.getSize());
-        return getChallengeTabResponses(pagedChallenges, member, challengingRecords);
+        ChallengingRecords challengingRecords = ChallengingRecords.create();
+        ChallengeSortHandler handler = challengeSortHandlerMapping.getHandler(pagingParams.getSort());
+        List<Challenge> sortedChallenges = handler.handle(searchTime, pagingParams, challengingRecords);
+        return getChallengeTabResponses(sortedChallenges, member, challengingRecords);
     }
 
     private List<ChallengeTabResponse> getChallengeTabResponses(List<Challenge> challenges,
@@ -89,13 +66,14 @@ public class ChallengeApiService {
         return findWithChallengerCount(TokenPayload.NOT_LOGIN_TOKEN_PAYLOAD, searchTime, challengeId);
     }
 
-    public ChallengeResponse findWithChallengerCount(
-            TokenPayload tokenPayload, LocalDateTime searchTime, Long challengeId
-    ) {
+    public ChallengeResponse findWithChallengerCount(TokenPayload tokenPayload,
+                                                     LocalDateTime searchTime,
+                                                     Long challengeId) {
         Member member = memberService.searchLoginMember(tokenPayload.getId());
         Challenge challenge = challengeService.search(challengeId);
+        ChallengingRecords challengingRecords = ChallengingRecords.create();
         List<Cycle> cycles = cycleService.findInProgressByChallenge(searchTime, challenge);
-        ChallengingRecords challengingRecords = ChallengingRecords.from(cycles);
+        challengingRecords.record(cycles);
         return new ChallengeResponse(
                 challenge,
                 challengingRecords.countChallenger(challenge),
@@ -106,9 +84,9 @@ public class ChallengeApiService {
     public List<ChallengeOfMineResponse> findAllByMeAndFilter(TokenPayload tokenPayload,
                                                               PagingParams pagingParams) {
         Member member = memberService.search(tokenPayload.getId());
-        ChallengingRecords challengingRecords = ChallengingRecords.from(
-                cycleService.findAllByMemberAndFilter(member, pagingParams)
-        );
+        ChallengingRecords challengingRecords = ChallengingRecords.create();
+        List<Cycle> cycles = cycleService.findAllByMemberAndFilter(member, pagingParams);
+        challengingRecords.record(cycles);
         List<ChallengingRecord> sortedRecords = challengingRecords.sortByLatestProgressTime();
 
         ChallengingRecord cursorChallengingRecord = getCursorChallengeRecord(pagingParams, sortedRecords);

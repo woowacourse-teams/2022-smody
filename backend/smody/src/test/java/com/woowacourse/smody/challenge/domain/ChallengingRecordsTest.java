@@ -24,6 +24,7 @@ class ChallengingRecordsTest {
     // 각 챌린지 인증 시간을 기준으로 정렬할 수 있다.
     @BeforeEach
     void setUp() {
+        challengingRecords = ChallengingRecords.create();
         Challenge challenge2 = new Challenge("운동하기", "설명", 1, 1);
         Cycle cycle = new Cycle(member1, challenge1, Progress.NOTHING, now);
         cycle.increaseProgress(now.plusMinutes(1L), 이미지, "인증");
@@ -39,7 +40,7 @@ class ChallengingRecordsTest {
                 new Cycle(member2, challenge2, Progress.SUCCESS, now.minusDays(3L)),
                 new Cycle(member2, challenge2, Progress.SUCCESS, now.minusDays(6L))
         );
-        challengingRecords = ChallengingRecords.from(cycles);
+        challengingRecords.record(cycles);
     }
 
     @DisplayName("특정 챌린지의 현재 도전자 수를 구한다.")
