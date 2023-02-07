@@ -6,17 +6,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.cycle.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.service.ChallengeService;
-import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.CycleDetail;
-import com.woowacourse.smody.cycle.domain.Progress;
 import com.woowacourse.smody.cycle.repository.CycleDetailRepository;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -40,25 +37,7 @@ public class CycleService {
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
-        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
-        if (optionalCycle.isPresent()) {
-            startTime = calculateNewStartTime(startTime, optionalCycle.get());
-        }
-        return cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
-    }
-
-    private LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
-        if (cycle.isInProgress(startTime)) {
-            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
-        }
-        if (isRetry(startTime, cycle)) {
-            return cycle.getStartTime().plusDays(Cycle.DAYS);
-        }
-        return startTime;
-    }
-
-    private boolean isRetry(final LocalDateTime startTime, final Cycle cycle) {
-        return cycle.isSuccess() && cycle.isInDays(startTime);
+        return CycleFactory.create(member, challenge, startTime, cycleRepository);
     }
 
     @Transactional

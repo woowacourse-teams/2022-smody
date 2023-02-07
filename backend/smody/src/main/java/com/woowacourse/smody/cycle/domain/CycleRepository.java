@@ -1,7 +1,8 @@
-package com.woowacourse.smody.cycle.repository;
+package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.cycle.domain.Cycle;
+import com.woowacourse.smody.cycle.repository.DynamicCycleRepository;
 import com.woowacourse.smody.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.cycle.domain.CycleRepository;
 import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;

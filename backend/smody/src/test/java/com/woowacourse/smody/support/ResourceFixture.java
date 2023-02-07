@@ -7,7 +7,7 @@ import com.woowacourse.smody.comment.repository.CommentRepository;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import com.woowacourse.smody.cycle.domain.Progress;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
+import com.woowacourse.smody.cycle.domain.CycleRepository;
 import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.repository.MemberRepository;

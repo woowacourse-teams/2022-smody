@@ -96,12 +96,16 @@ public class Cycle {
         return progress.isInProgress(startTime, now);
     }
 
-    public boolean isSuccess() {
-        return this.progress.isSuccess();
+    public boolean isRetry(LocalDateTime startTime) {
+        return isSuccess() && isInDays(startTime);
     }
 
-    public boolean isInDays(LocalDateTime now) {
+    private boolean isInDays(LocalDateTime now) {
         return now.isBefore(this.getStartTime().plusDays(DAYS));
+    }
+
+    public boolean isSuccess() {
+        return this.progress.isSuccess();
     }
 
     public long calculateDeadLineToMillis(LocalDateTime searchTime) {

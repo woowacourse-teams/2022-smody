@@ -12,7 +12,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.smody.auth.dto.TokenPayload;
 import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
+import com.woowacourse.smody.cycle.domain.CycleRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.member.domain.Member;
