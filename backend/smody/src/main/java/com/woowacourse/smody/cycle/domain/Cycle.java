@@ -96,7 +96,17 @@ public class Cycle {
         return progress.isInProgress(startTime, now);
     }
 
-    public boolean isRetry(LocalDateTime startTime) {
+    public LocalDateTime calculateRetryStartTime(LocalDateTime retryStartTime) {
+        if (isInProgress(retryStartTime)) {
+            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+        }
+        if (isRetry(retryStartTime)) {
+            return startTime.plusDays(Cycle.DAYS);
+        }
+        return retryStartTime;
+    }
+
+    private boolean isRetry(LocalDateTime startTime) {
         return isSuccess() && isInDays(startTime);
     }
 

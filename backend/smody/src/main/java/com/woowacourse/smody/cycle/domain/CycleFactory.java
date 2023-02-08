@@ -17,20 +17,11 @@ public class CycleFactory {
     public Cycle create(Member member, Challenge challenge, LocalDateTime startTime) {
         Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
         if (optionalCycle.isPresent()) {
-            startTime = calculateNewStartTime(startTime, optionalCycle.get());
+            Cycle cycle = optionalCycle.get();
+            startTime = cycle.calculateRetryStartTime(startTime);
         }
         Cycle cycle = new Cycle(member, challenge, Progress.NOTHING, startTime);
         cycleRepository.save(cycle);
         return cycle;
-    }
-
-    private LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
-        if (cycle.isInProgress(startTime)) {
-            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
-        }
-        if (cycle.isRetry(startTime)) {
-            return cycle.getStartTime().plusDays(Cycle.DAYS);
-        }
-        return startTime;
     }
 }
