@@ -21,23 +21,33 @@ import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class CycleService {
 
     private final CycleRepository cycleRepository;
     private final CycleDetailRepository cycleDetailRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
+    private final CycleFactory cycleFactory;
+
+    public CycleService(CycleRepository cycleRepository,
+                        CycleDetailRepository cycleDetailRepository,
+                        MemberService memberService,
+                        ChallengeService challengeService) {
+        this.cycleRepository = cycleRepository;
+        this.cycleDetailRepository = cycleDetailRepository;
+        this.memberService = memberService;
+        this.challengeService = challengeService;
+        this.cycleFactory = new CycleFactory(cycleRepository);
+    }
+
 
     @Transactional
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
-        return CycleFactory.create(member, challenge, startTime, cycleRepository);
+        return cycleFactory.create(member, challenge, startTime);
     }
 
     @Transactional

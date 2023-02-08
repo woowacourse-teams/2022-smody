@@ -4,17 +4,17 @@ import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class CycleFactory {
 
-    public static Cycle create(Member member,
-                               Challenge challenge,
-                               LocalDateTime startTime,
-                               CycleRepository cycleRepository
-    ) {
+    private final CycleRepository cycleRepository;
+
+    public Cycle create(Member member, Challenge challenge, LocalDateTime startTime) {
         Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
         if (optionalCycle.isPresent()) {
             startTime = calculateNewStartTime(startTime, optionalCycle.get());
@@ -24,7 +24,7 @@ public class CycleFactory {
         return cycle;
     }
 
-    private static LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
+    private LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
         if (cycle.isInProgress(startTime)) {
             throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
         }

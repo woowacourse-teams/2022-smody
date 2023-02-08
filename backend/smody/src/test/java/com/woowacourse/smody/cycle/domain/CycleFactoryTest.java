@@ -4,6 +4,7 @@ import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
 import com.woowacourse.smody.member.domain.Member;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,19 +32,26 @@ class CycleFactoryTest {
     @Mock
     private CycleRepository cycleRepository;
 
+    private CycleFactory cycleFactory;
+
+    @BeforeEach
+    void init() {
+        given(member.getId()).willReturn(조조그린_ID);
+        given(challenge.getId()).willReturn(미라클_모닝_ID);
+        cycleFactory = new CycleFactory(cycleRepository);
+    }
+
     @DisplayName("사이클을 생성한다.")
     @Test
     void create() {
         // given
-        given(member.getId()).willReturn(조조그린_ID);
-        given(challenge.getId()).willReturn(미라클_모닝_ID);
         given(cycleRepository.findRecent(조조그린_ID, 미라클_모닝_ID))
                 .willReturn(Optional.empty());
 
         LocalDateTime startTime = LocalDateTime.now();
 
         // when
-        Cycle actual = CycleFactory.create(member, challenge, startTime, cycleRepository);
+        Cycle actual = cycleFactory.create(member, challenge, startTime);
 
         // then
         assertThat(actual.getStartTime()).isEqualTo(startTime);
@@ -53,8 +61,6 @@ class CycleFactoryTest {
     @Test
     void create_duplicateInProgressChallenge() {
         // given
-        given(member.getId()).willReturn(조조그린_ID);
-        given(challenge.getId()).willReturn(미라클_모닝_ID);
         given(cycleRepository.findRecent(조조그린_ID, 미라클_모닝_ID))
                 .willReturn(
                         Optional.of(new Cycle(member, challenge, Progress.FIRST, LocalDateTime.now().minusDays(1)))
@@ -63,7 +69,7 @@ class CycleFactoryTest {
         LocalDateTime startTime = LocalDateTime.now();
 
         // when then
-        assertThatThrownBy(() -> CycleFactory.create(member, challenge, startTime, cycleRepository))
+        assertThatThrownBy(() -> cycleFactory.create(member, challenge, startTime))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
@@ -73,8 +79,6 @@ class CycleFactoryTest {
     @Test
     void create_overOneDay() {
         // given
-        given(member.getId()).willReturn(조조그린_ID);
-        given(challenge.getId()).willReturn(미라클_모닝_ID);
         given(cycleRepository.findRecent(조조그린_ID, 미라클_모닝_ID))
                 .willReturn(Optional.empty());
 
@@ -83,7 +87,7 @@ class CycleFactoryTest {
                 .plusSeconds(1);
 
         // when then
-        assertThatThrownBy(() -> CycleFactory.create(member, challenge, startTime, cycleRepository))
+        assertThatThrownBy(() -> cycleFactory.create(member, challenge, startTime))
                 .isInstanceOf(BusinessException.class)
                 .extracting("exceptionData")
                 .isEqualTo(ExceptionData.INVALID_START_TIME);
@@ -93,8 +97,6 @@ class CycleFactoryTest {
     @Test
     void create_alreadySuccessChallenge() {
         // given
-        given(member.getId()).willReturn(조조그린_ID);
-        given(challenge.getId()).willReturn(미라클_모닝_ID);
         LocalDateTime beforeStartTime = LocalDateTime.now().minusDays(2);
         given(cycleRepository.findRecent(조조그린_ID, 미라클_모닝_ID))
                 .willReturn(
@@ -104,7 +106,7 @@ class CycleFactoryTest {
         LocalDateTime startTime = LocalDateTime.now();
 
         // when
-        Cycle actual = CycleFactory.create(member, challenge, startTime, cycleRepository);
+        Cycle actual = cycleFactory.create(member, challenge, startTime);
 
         // then
         assertThat(actual.getStartTime()).isEqualTo(beforeStartTime.plusDays(3));
