@@ -69,7 +69,7 @@ class CycleFactoryTest {
                 .isEqualTo(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
     }
 
-    @DisplayName("현재 시각 기준 24시간이 이후가 지난 시작시간을 가진 사이클을 생성할 때 예외를 발생시킨다.")
+    @DisplayName("현재 시각 기준 24시간이 지난 시작시간을 가진 사이클을 생성할 때 예외를 발생시킨다.")
     @Test
     void create_overOneDay() {
         // given
