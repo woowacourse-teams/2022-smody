@@ -1,7 +1,6 @@
 package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.cycle.repository.DynamicCycleRepository;
 import com.woowacourse.smody.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
+public interface CycleRepository extends JpaRepository<Cycle, Long> {
 
     @Query("select c from Cycle c "
             + "join fetch c.challenge "
