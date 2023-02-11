@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.cycle.domain.CycleDetail;
+import com.woowacourse.smody.cycle.domain.CycleRepository;
 import com.woowacourse.smody.support.RepositoryTest;
 import com.woowacourse.smody.support.ResourceFixture;
 import java.time.LocalDateTime;
@@ -24,6 +25,8 @@ class CycleRepositoryTest extends RepositoryTest {
 
     @Autowired
     private CycleRepository cycleRepository;
+    @Autowired
+    private DynamicCycleRepository dynamicCycleRepository;
 
     @Autowired
     private ResourceFixture fixture;
@@ -83,7 +86,7 @@ class CycleRepositoryTest extends RepositoryTest {
         fixture.사이클_생성_SUCCESS(더즈_ID, 오늘의_운동_ID, now.plusSeconds(1L));
 
         // when
-        List<ChallengingRecord> actual = cycleRepository.findAllChallengingRecordByMemberAfterTime(조조그린_ID,
+        List<ChallengingRecord> actual = dynamicCycleRepository.findAllChallengingRecordByMemberAfterTime(조조그린_ID,
                 now.minusDays(3));
 
         for (ChallengingRecord challengingRecord : actual) {

@@ -6,17 +6,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.woowacourse.smody.cycle.domain.*;
+import com.woowacourse.smody.cycle.repository.DynamicCycleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
 import com.woowacourse.smody.challenge.domain.ChallengingRecord;
 import com.woowacourse.smody.challenge.service.ChallengeService;
-import com.woowacourse.smody.cycle.domain.Cycle;
-import com.woowacourse.smody.cycle.domain.CycleDetail;
-import com.woowacourse.smody.cycle.domain.Progress;
-import com.woowacourse.smody.cycle.repository.CycleDetailRepository;
-import com.woowacourse.smody.cycle.repository.CycleRepository;
+import com.woowacourse.smody.cycle.domain.CycleDetailRepository;
 import com.woowacourse.smody.db_support.PagingParams;
 import com.woowacourse.smody.exception.BusinessException;
 import com.woowacourse.smody.exception.ExceptionData;
@@ -24,41 +22,36 @@ import com.woowacourse.smody.image.domain.Image;
 import com.woowacourse.smody.member.domain.Member;
 import com.woowacourse.smody.member.service.MemberService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class CycleService {
 
     private final CycleRepository cycleRepository;
+    private final DynamicCycleRepository dynamicCycleRepository;
     private final CycleDetailRepository cycleDetailRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
+    private final CycleFactory cycleFactory;
+
+    public CycleService(CycleRepository cycleRepository,
+                        DynamicCycleRepository dynamicCycleRepository,
+                        CycleDetailRepository cycleDetailRepository,
+                        MemberService memberService,
+                        ChallengeService challengeService) {
+        this.cycleRepository = cycleRepository;
+        this.dynamicCycleRepository = dynamicCycleRepository;
+        this.cycleDetailRepository = cycleDetailRepository;
+        this.memberService = memberService;
+        this.challengeService = challengeService;
+        this.cycleFactory = new CycleFactory(cycleRepository);
+    }
+
 
     @Transactional
     public Cycle create(Long memberId, Long challengeId, LocalDateTime startTime) {
         Member member = memberService.search(memberId);
         Challenge challenge = challengeService.search(challengeId);
-        Optional<Cycle> optionalCycle = cycleRepository.findRecent(member.getId(), challenge.getId());
-        if (optionalCycle.isPresent()) {
-            startTime = calculateNewStartTime(startTime, optionalCycle.get());
-        }
-        return cycleRepository.save(new Cycle(member, challenge, Progress.NOTHING, startTime));
-    }
-
-    private LocalDateTime calculateNewStartTime(LocalDateTime startTime, Cycle cycle) {
-        if (cycle.isInProgress(startTime)) {
-            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
-        }
-        if (isRetry(startTime, cycle)) {
-            return cycle.getStartTime().plusDays(Cycle.DAYS);
-        }
-        return startTime;
-    }
-
-    private boolean isRetry(final LocalDateTime startTime, final Cycle cycle) {
-        return cycle.isSuccess() && cycle.isInDays(startTime);
+        return cycleFactory.create(member, challenge, startTime);
     }
 
     @Transactional
@@ -112,7 +105,7 @@ public class CycleService {
     }
 
     public List<Cycle> findAllByMemberAndFilter(Member member, PagingParams pagingParams) {
-        return cycleRepository.findAllByMemberAndFilter(member.getId(), pagingParams);
+        return dynamicCycleRepository.findAllByMemberAndFilter(member.getId(), pagingParams);
     }
 
     public List<Cycle> findInProgressByChallenges(LocalDateTime searchTime, List<Challenge> challenges) {
@@ -132,11 +125,11 @@ public class CycleService {
     public List<Cycle> findAllByMemberAndChallengeAndFilter(Long memberId,
                                                             Long challengeId,
                                                             PagingParams pagingParams) {
-        return cycleRepository.findAllByMemberAndChallengeAndFilter(memberId, challengeId, pagingParams);
+        return dynamicCycleRepository.findAllByMemberAndChallengeAndFilter(memberId, challengeId, pagingParams);
     }
 
     public List<ChallengingRecord> findAllChallengingRecordByMember(Member member) {
-        return cycleRepository.findAllChallengingRecordByMemberAfterTime(
+        return dynamicCycleRepository.findAllChallengingRecordByMemberAfterTime(
                 member.getId(),
                 LocalDateTime.now().minusDays(Cycle.DAYS)
         );

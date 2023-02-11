@@ -96,12 +96,26 @@ public class Cycle {
         return progress.isInProgress(startTime, now);
     }
 
-    public boolean isSuccess() {
-        return this.progress.isSuccess();
+    public LocalDateTime calculateRetryStartTime(LocalDateTime retryStartTime) {
+        if (isInProgress(retryStartTime)) {
+            throw new BusinessException(ExceptionData.DUPLICATE_IN_PROGRESS_CHALLENGE);
+        }
+        if (isRetry(retryStartTime)) {
+            return startTime.plusDays(Cycle.DAYS);
+        }
+        return retryStartTime;
     }
 
-    public boolean isInDays(LocalDateTime now) {
+    private boolean isRetry(LocalDateTime startTime) {
+        return isSuccess() && isInDays(startTime);
+    }
+
+    private boolean isInDays(LocalDateTime now) {
         return now.isBefore(this.getStartTime().plusDays(DAYS));
+    }
+
+    public boolean isSuccess() {
+        return this.progress.isSuccess();
     }
 
     public long calculateDeadLineToMillis(LocalDateTime searchTime) {

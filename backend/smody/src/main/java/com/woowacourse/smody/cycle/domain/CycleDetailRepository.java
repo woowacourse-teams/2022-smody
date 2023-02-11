@@ -1,4 +1,4 @@
-package com.woowacourse.smody.cycle.repository;
+package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.cycle.domain.CycleDetail;
 import org.springframework.data.jpa.repository.JpaRepository;

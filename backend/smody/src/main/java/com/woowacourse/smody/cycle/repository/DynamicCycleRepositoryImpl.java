@@ -20,8 +20,10 @@ import com.woowacourse.smody.db_support.PagingParams;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
+@Repository
 public class DynamicCycleRepositoryImpl implements DynamicCycleRepository {
 
     private final JPAQueryFactory queryFactory;

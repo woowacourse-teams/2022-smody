@@ -1,19 +1,18 @@
-package com.woowacourse.smody.cycle.repository;
+package com.woowacourse.smody.cycle.domain;
 
 import com.woowacourse.smody.challenge.domain.Challenge;
-import com.woowacourse.smody.cycle.domain.Cycle;
 import com.woowacourse.smody.member.domain.Member;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycleRepository {
+import javax.persistence.LockModeType;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+public interface CycleRepository extends JpaRepository<Cycle, Long> {
 
     @Query("select c from Cycle c "
             + "join fetch c.challenge "
@@ -35,10 +34,6 @@ public interface CycleRepository extends JpaRepository<Cycle, Long>, DynamicCycl
     Optional<Cycle> findRecent(@Param("memberId") Long memberId, @Param("challengeId") Long challengeId);
 
     List<Cycle> findByMember(Member member);
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("delete from Cycle c where c.member = :member")
-    void deleteByMember(@Param("member") Member member);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select c from Cycle c where c.id = :cycleId")
