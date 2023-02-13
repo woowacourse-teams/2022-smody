@@ -1,19 +1,16 @@
 import { QueryClient } from 'react-query';
 
-export const generateQueryClient = (
-  queryErrorHandler?: (error: any) => void,
-): QueryClient => {
-  return new QueryClient({
+export const generateQueryClient = () =>
+  new QueryClient({
     defaultOptions: {
       queries: {
         retry: 0,
-        refetchOnWindowFocus: false,
-        onError: queryErrorHandler,
         suspense: true,
+        useErrorBoundary: true,
+        refetchOnWindowFocus: false,
       },
       mutations: {
-        onError: queryErrorHandler,
+        useErrorBoundary: true,
       },
     },
   });
-};

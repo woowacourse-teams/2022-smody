@@ -1,6 +1,6 @@
+import { renderWithProviders } from '__test__/renderWithProviders';
 import { authApiClient } from 'apis/apiClient';
 import { accessTokenData } from 'mocks/data';
-import { renderWithProviders } from 'utils/testUtils';
 
 import { screen, waitFor } from '@testing-library/react';
 
@@ -12,7 +12,7 @@ describe('프로필 페이지 테스트', () => {
     renderWithProviders(<ProfilePage />);
   });
 
-  test('[useGetMyInfo] query 응답에 따라 나의 프로필 정보가 렌더링되는지 확인한다.', async () => {
+  test('[useGetMyInfo] API 응답 결과, "나의 프로필 정보"가 렌더링되는지 확인한다.', async () => {
     const nickname = await waitFor(() => screen.getByLabelText('닉네임'));
     await waitFor(() => expect(nickname).toHaveTextContent('테스트닉네임'));
 
@@ -20,7 +20,7 @@ describe('프로필 페이지 테스트', () => {
     await waitFor(() => expect(introduction).toHaveTextContent('테스트 자기소개'));
   });
 
-  test('[useGetMyCyclesStat] query 응답에 따라 나의 챌린지 통계가 렌더링되는지 확인한다.', async () => {
+  test('[useGetMyCyclesStat] API 응답 결과,"나의 챌린지 통계"가 렌더링되는지 확인한다.', async () => {
     const totalCount = await waitFor(() => screen.getByLabelText('시도한 챌린지 횟수'));
     await waitFor(() => expect(totalCount).toHaveTextContent('35'));
 
@@ -28,7 +28,7 @@ describe('프로필 페이지 테스트', () => {
     await waitFor(() => expect(successCount).toHaveTextContent('5'));
   });
 
-  test('[useGetMySuccessChallenges] query 응답에 따라 성공한 챌린지 목록이 렌더링되는지 확인한다.', async () => {
+  test('[useGetMySuccessChallenges] API 응답 결과, "성공한 챌린지 목록"이 렌더링되는지 확인한다.', async () => {
     const successChallenge = await waitFor(
       () => screen.getAllByLabelText('성공한 챌린지 이름')[0],
     );
