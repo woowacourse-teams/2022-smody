@@ -1,12 +1,12 @@
-import { renderWithProviders } from 'utils/testUtils';
+import { renderWithProviders } from '__test__/utils/renderWithProviders';
 
 import { screen, waitFor } from '@testing-library/react';
 
-import { SearchPage } from 'pages';
+import { CLIENT_PATH } from 'constants/path';
 
 describe('검색 페이지 테스트', () => {
   beforeEach(() => {
-    renderWithProviders(<SearchPage />);
+    renderWithProviders({ route: CLIENT_PATH.CHALLENGE_SEARCH });
   });
 
   test('[useGetAllChallenges] query 응답에 따라 모든 챌린지가 렌더링되는지 확인한다.', async () => {
