@@ -89,12 +89,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // router navigate 응답
-  if (event.request.mode === 'navigate') {
-    event.respondWith(caches.match('/index.html') || fetch(event.request));
+  // router navigate 응답 ->
+  // if (event.request.mode === 'navigate') {
+  //   event.respondWith(caches.match('/index.html') || fetch(event.request));
 
-    return;
-  }
+  //   return;
+  // }
 
   // 이미지(Network First)
   // Network First 전략은 항상 네트워크 요청에 대한 응답을 사용하고, 네트워크 실패 시 대비책으로서 캐시를 이용한다.
